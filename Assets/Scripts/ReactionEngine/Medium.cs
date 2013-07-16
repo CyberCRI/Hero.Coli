@@ -152,11 +152,20 @@ public class Medium
   }
 
   /*!
+    \brief Set the concentration of each molecules of the medium to their new values
+   */
+  public void updateMoleculesConcentrations()
+  {
+    foreach (Molecule m in _molecules)
+      m.updateConcentration();
+  }
+
+  /*!
     \brief Execute everything about simulation into the Medium
    */
   public void Update()
   {
-    LinkedListExtensions.Shuffle<IReaction>(_reactions);
+ //    LinkedListExtensions.Shuffle<IReaction>(_reactions);
     foreach (IReaction reaction in _reactions)
       reaction.react(_molecules);
 
@@ -165,17 +174,17 @@ public class Medium
     if (_name == "Cellia")
       {
         if (Input.GetKey(KeyCode.UpArrow))
-          ReactionEngine.getMoleculeFromName("X", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("X", _molecules).getConcentration() + 5f);
+          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(100f);
         if (Input.GetKey(KeyCode.DownArrow))
-          ReactionEngine.getMoleculeFromName("X", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("X", _molecules).getConcentration() - 5f);
+          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(- 100f);
         if (Input.GetKey(KeyCode.RightArrow))
-          ReactionEngine.getMoleculeFromName("O", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration() + 5f);
+          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() + 0.1f);
         if (Input.GetKey(KeyCode.LeftArrow))
-          ReactionEngine.getMoleculeFromName("O", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration() - 5f);
+          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() - 0.1f);
         if (Input.GetKey(KeyCode.E))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() + 5f);
+          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() + 0.1f);
         if (Input.GetKey(KeyCode.D))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() - 5f);
+          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() - 0.1f);
       }
   }
 }

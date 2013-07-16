@@ -52,8 +52,8 @@ public class InstantReaction : IReaction
   }
 
 
-  public new string getName() { return _name; }
-  public new void setName(string str) { _name = str; }
+  public string getName() { return _name; }
+  public void setName(string str) { _name = str; }
   public void addReactant(Product reactant) { if (reactant != null) _reactants.AddLast(reactant); }
 
 
@@ -116,12 +116,12 @@ public class InstantReaction : IReaction
     foreach (Product react in _reactants)
       {
         mol = ReactionEngine.getMoleculeFromName(react.getName(), molecules);
-        mol.subConcentration(delta * react.getQuantityFactor());
+        mol.subNewConcentration(delta * react.getQuantityFactor());
       }
     foreach (Product prod in _products)
       {
         mol = ReactionEngine.getMoleculeFromName(prod.getName(), molecules);
-        mol.addConcentration(delta * prod.getQuantityFactor());
+        mol.addNewConcentration(delta * prod.getQuantityFactor());
       }
   }
 

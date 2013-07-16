@@ -234,9 +234,11 @@ Where:
         if (mol2 != null && mol2.getSize() <= Fick.MaximumMoleculeSize)
           {
             c2 = mol2.getConcentration();
-            result = (c2 - c1) * _P * _surface * _reactionSpeed * ReactionEngine.reactionsSpeed * Time.deltaTime;
-            mol2.setConcentration(c2 - result);
-            mol1.setConcentration(c1 + result);
+            result = (c2 - c1) * _P * _surface * _reactionSpeed * ReactionEngine.reactionsSpeed;
+//             mol2.setConcentration(c2 - result);
+//             mol1.setConcentration(c1 + result);
+            mol2.subNewConcentration(result);
+            mol1.addNewConcentration(result);
           }
       }
   }

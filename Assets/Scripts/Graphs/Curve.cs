@@ -111,7 +111,7 @@ public class Curve
         Debug.Log("No molecule define for this Curve");
         return ;
       }
-    Vector2 p = new Vector2((float)Time.timeSinceLevelLoad * 5000f, _mol.getConcentration());
+    Vector2 p = new Vector2((float)Time.timeSinceLevelLoad * 200f, _mol.getConcentration());
     addPoint(p);
   }
 
@@ -126,7 +126,7 @@ public class Curve
     foreach (Vector2 pt in _points)
       {
         Vector2 tmpPt = new Vector2();
-        tmpPt.y = pt.y * 100f;
+        tmpPt.y = pt.y * 3f;
         tmpPt.x = pt.x;
         tmpPt.x -= getMinX();
 //         if (i == 0)

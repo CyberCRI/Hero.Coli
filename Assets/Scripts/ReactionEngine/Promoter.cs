@@ -303,8 +303,8 @@ For each Product P in the operon :
       {
 //         Debug.Log(pro.getName());
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        mol.setConcentration(mol.getConcentration() + delta * pro.getQuantityFactor() * _terminatorFactor * _beta
-                             * ReactionEngine.reactionsSpeed * _reactionSpeed *0.01f// * Time.deltaTime
+        mol.addNewConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
+                             * ReactionEngine.reactionsSpeed * _reactionSpeed // * Time.deltaTime
                              );
       }
     //       pro.setConcentration(pro.getConcentration() * delta);

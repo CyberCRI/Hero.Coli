@@ -30,7 +30,7 @@ public class ReactionEngine : MonoBehaviour {
   public string[]         _moleculesFiles;           //!< all the molecules files
   public string[]       _fickFiles;                     //!< all the Fick diffusion files
   public string[]       _activeTransportFiles;                     //!< all the Fick diffusion files
-  public static float   reactionsSpeed = 2f;
+  public static float   reactionsSpeed = 0.1f;
 
   public Fick getFick() { return _fick; }
   
@@ -172,5 +172,7 @@ public class ReactionEngine : MonoBehaviour {
     _activeTransport.react();
     foreach (Medium medium in _mediums)
       medium.Update();
+    foreach (Medium medium in _mediums)
+      medium.updateMoleculesConcentrations();    
   }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -30,6 +31,7 @@ public class Molecule
   private eType _type;                  //! The type of the molecule
   private string _description;          //! The description of the molecule (optionnal)
   private float _concentration;         //! The concentration of the molecule
+  private float _newConcentration;      //! The concentration of the molecule for the next stage
   private float _degradationRate;       //! The degradation rate of the molecule
   private float _size;                  //! The size of the molecule (not used for now)
 
@@ -44,6 +46,7 @@ public class Molecule
         _concentration = mol._concentration;
         _degradationRate = mol._degradationRate;
         _size = mol._size;
+        _newConcentration = mol._newConcentration;
       }
   }
 
@@ -59,6 +62,10 @@ public class Molecule
   public void setDescription(string description) { _description = description; }
   public void setConcentration(float concentration) { _concentration = concentration; if (_concentration < 0) _concentration = 0;}
   public void setDegradationRate(float degradationRate) { _degradationRate = degradationRate; }
+  public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_concentration < 0) _concentration = 0; }
+  public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_concentration < 0) _concentration = 0; }
+  public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_concentration < 0) _concentration = 0; }
+
   public void setSize(float size) { _size = size; }
   /*!
     \brief Add molecule concentration
@@ -70,6 +77,13 @@ public class Molecule
     \param concentration The concentration
    */
   public void subConcentration(float concentration) { _concentration -= concentration; if (_concentration < 0) _concentration = 0;}
+
+  //! \brief This function set the actual concentration to it new value
+  public void updateConcentration()
+  {
+    _concentration = _newConcentration;
+//     _newConcentration = 0f;
+  }
 }
 
 
@@ -110,6 +124,7 @@ public abstract class IReaction
   protected LinkedList<Product> _products;      //! The list of products
   protected bool _isActive;                     //! Activation booleen
   protected float _reactionSpeed;               //! Speed coefficient of the reaction
+  protected float _energyCost;
 
   //! Default constructor
   public IReaction()
@@ -117,12 +132,15 @@ public abstract class IReaction
     _products = new LinkedList<Product>();
     _isActive = true;
     _reactionSpeed = 1f;
+    _energyCost = 0f;
   }
 
   public void setName(string name) { _name = Tools.epurStr(name); }
   public string getName() { return _name; }
   public void setReactionSpeed(float speed) { _reactionSpeed = speed; }
   public float getReactionSpeed() { return _reactionSpeed; }
+  public float getEnergyCost() { return _reactionSpeed; }
+  public float setEnergyCost() { return _reactionSpeed; }
 
   //! This function should be implemented by each reaction that inherit from this class.
   //! It's called at each tick of the game.
@@ -148,12 +166,14 @@ public class Degradation : IReaction
 {
   private float _degradationRate;               //! The degradation speed
   private string _molName;                      //! Molecule name's
+  private NumberGenerator _numberGenerator;     //! Random number generator
 
   //! Default constructor
   public Degradation(float degradationRate, string molName)
   {
     _degradationRate = degradationRate;
     _molName = molName;
+    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -0.5f, 0.5f, 0.01f);
   }
 
   // FIXME : use _degradationRate
@@ -169,9 +189,16 @@ public class Degradation : IReaction
     if (!_isActive)
       return;
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
-    mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed  * 0.01f// * Time.deltaTime
-                         );
-    Debug.Log(Time.deltaTime);
+    float delta = mol.getDegradationRate() * mol.getConcentration();
+    Debug.Log(delta);
+    delta += _numberGenerator.getNumber() ;
+//     Debug.Log(delta);
+//     Debug.Log("test");
+    mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
+//     mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed  * 0.01f// * Time.deltaTime
+//                          );
+//     Debug.Log(Time.deltaTime);
+//     Debug.Log(_numberGenerator.getNumber());
     //     mol.setConcentration(mol.getConcentration() - mol.getDegradationRate() * mol.getConcentration() * 1f//  * 0.05f
     //                          );
   }

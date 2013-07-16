@@ -1,10 +1,11 @@
 <Document>
+
   <reactions id="CelliaReactions">
     <promoter>
       <name>PromY</name>
-      <productionMax>50</productionMax>
+      <productionMax>100</productionMax>
       <terminatorFactor>1</terminatorFactor>
-      <formula>![0.2,1]X</formula>
+      <formula>![8,2]X</formula>
       <operon>
 	<gene>
 	  <name>Y</name>
@@ -15,9 +16,9 @@
 
     <promoter>
       <name>PromX</name>
-      <productionMax>50</productionMax>
+      <productionMax>100</productionMax>
       <terminatorFactor>1</terminatorFactor>
-      <formula>![0.2,1]Z</formula>
+      <formula>![0.8,2]Z</formula>
       <operon>
 	<gene>
 	  <name>X</name>
@@ -28,9 +29,9 @@
 
     <promoter>
       <name>PromZ</name>
-      <productionMax>50</productionMax>
+      <productionMax>100</productionMax>
       <terminatorFactor>1</terminatorFactor>
-      <formula>![0.2,1]Y</formula>
+      <formula>![0.8,2]Y</formula>
       <operon>
 	<gene>
 	  <name>Z</name>
@@ -38,28 +39,46 @@
 	</gene>
       </operon>
     </promoter>
-
-
+    
+    <promoter>
+      <name>PromGFP</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![8,2]Y</formula>
+      <operon>
+	<gene>
+	  <name>GFP</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
   </reactions>
   
   <molecules id="CelliaMolecules">
     <molecule type="transcription_factor">
       <name>X</name>
       <description></description>
-      <concentration>10000</concentration>
-      <degradationRate>0.9</degradationRate>
+      <concentration>10</concentration>
+      <degradationRate>0.1</degradationRate>
     </molecule>
     <molecule type="transcription_factor">
       <name>Z</name>
       <description></description>
       <concentration>1.5</concentration>
-      <degradationRate>0.9</degradationRate>
+      <degradationRate>0.1</degradationRate>
     </molecule>
     <molecule type="transcription_factor">
       <name>Y</name>
       <description></description>
       <concentration>1.5</concentration>
-      <degradationRate>0.9</degradationRate>
+      <degradationRate>0.1</degradationRate>
     </molecule>
+    <molecule type="other">
+      <name>GFP</name>
+      <description>tamere</description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+      <size>0.2</size>
+    </molecule> 
   </molecules>
 </Document>
