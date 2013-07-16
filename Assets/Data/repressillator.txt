@@ -1,0 +1,65 @@
+<Document>
+  <reactions id="CelliaReactions">
+    <promoter>
+      <name>PromY</name>
+      <productionMax>50</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![0.2,1]X</formula>
+      <operon>
+	<gene>
+	  <name>Y</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+
+    <promoter>
+      <name>PromX</name>
+      <productionMax>50</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![0.2,1]Z</formula>
+      <operon>
+	<gene>
+	  <name>X</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+
+    <promoter>
+      <name>PromZ</name>
+      <productionMax>50</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![0.2,1]Y</formula>
+      <operon>
+	<gene>
+	  <name>Z</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+
+
+  </reactions>
+  
+  <molecules id="CelliaMolecules">
+    <molecule type="transcription_factor">
+      <name>X</name>
+      <description></description>
+      <concentration>10000</concentration>
+      <degradationRate>0.9</degradationRate>
+    </molecule>
+    <molecule type="transcription_factor">
+      <name>Z</name>
+      <description></description>
+      <concentration>1.5</concentration>
+      <degradationRate>0.9</degradationRate>
+    </molecule>
+    <molecule type="transcription_factor">
+      <name>Y</name>
+      <description></description>
+      <concentration>1.5</concentration>
+      <degradationRate>0.9</degradationRate>
+    </molecule>
+  </molecules>
+</Document>
