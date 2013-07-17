@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 /*!
   \brief This class represent a Medium
   \details
@@ -24,6 +25,8 @@ public class Medium
   private string        _name;                          //!< The name of the Medium
   private string        _reactionsSet;                  //!< The ReactionSet id affected to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
+  private bool          _enableSequential;
+  private bool          _enableNoise;
 
 
   public void setId(int id) { _id = id;}
@@ -35,6 +38,21 @@ public class Medium
   public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
   public string getMoleculesSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
+
+
+  public void enableSequential(bool b)
+  {
+    _enableSequential = b;
+    foreach (IReaction r in _reactions)
+      r.enableSequential = b;
+  }
+
+  public void enableNoise(bool b)
+  {
+    _enableNoise = b;
+    foreach (IReaction r in _reactions)
+      r.enableNoise = b;
+  }
 
   public void addReaction(IReaction reaction)
   {
@@ -149,6 +167,11 @@ public class Medium
     initReactionsFromReactionsSet(reactSet);
     initMoleculesFromMoleculesSets(molSet, allMolecules);
     initDegradationReactions(allMolecules);
+    foreach (IReaction r in _reactions)
+      {
+        r.enableSequential = _enableSequential;
+        r.enableNoise = _enableNoise;
+      }
   }
 
   /*!
@@ -165,26 +188,39 @@ public class Medium
    */
   public void Update()
   {
- //    LinkedListExtensions.Shuffle<IReaction>(_reactions);
     foreach (IReaction reaction in _reactions)
       reaction.react(_molecules);
-
-//     foreach (Molecule m in _molecules)
-//       Debug.Log(m.getConcentration());
+    
     if (_name == "Cellia")
       {
         if (Input.GetKey(KeyCode.UpArrow))
-          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(100f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(10f);
+          }
         if (Input.GetKey(KeyCode.DownArrow))
-          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(- 100f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addConcentration(- 10f);
+            else
+              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(- 10f);
+          }
         if (Input.GetKey(KeyCode.RightArrow))
-          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() + 0.1f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("atc", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("atc", _molecules).addNewConcentration(100f);
+          }
         if (Input.GetKey(KeyCode.LeftArrow))
-          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() - 0.1f);
-        if (Input.GetKey(KeyCode.E))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() + 0.1f);
-        if (Input.GetKey(KeyCode.D))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() - 0.1f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("atc", _molecules).addConcentration(- 10f);
+            else
+              ReactionEngine.getMoleculeFromName("atc", _molecules).addNewConcentration(- 100f);
+          }
       }
   }
 }

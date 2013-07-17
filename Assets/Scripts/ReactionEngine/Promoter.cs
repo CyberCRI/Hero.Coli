@@ -299,15 +299,21 @@ For each Product P in the operon :
     if (!_isActive)
       return;
     float delta = execNode(_formula, molecules);
+    if (enableNoise)
+      {
+        float noise = _numberGenerator.getNumber();
+        delta += noise;
+      }
     foreach (Product pro in _products)
       {
-//         Debug.Log(pro.getName());
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        mol.addNewConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
-                             * ReactionEngine.reactionsSpeed * _reactionSpeed // * Time.deltaTime
-                             );
+        if (enableSequential)
+          mol.addConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
+                               * ReactionEngine.reactionsSpeed * _reactionSpeed);
+        else
+          mol.addNewConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
+                                  * ReactionEngine.reactionsSpeed * _reactionSpeed);
       }
-    //       pro.setConcentration(pro.getConcentration() * delta);
   }
 
 }

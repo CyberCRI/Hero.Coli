@@ -40,12 +40,22 @@ public class ActiveTransportReaction : EnzymeReaction
       return ;
 
     float delta = execEnzymeReaction(molSrcMed) * _reactionSpeed * ReactionEngine.reactionsSpeed;
-
-    substrate.subNewConcentration(delta);
+    if (enableNoise)
+      {
+        float noise = _numberGenerator.getNumber();
+        delta += noise;
+      }
+    if (enableSequential)
+      substrate.subConcentration(delta);
+    else
+      substrate.subNewConcentration(delta);
     foreach (Product pro in _products)
       {
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molDstMed);
-        mol.addNewConcentration(delta);
+        if (enableSequential)
+          mol.addConcentration(delta);
+        else
+          mol.addNewConcentration(delta);
       }    
   }
 }

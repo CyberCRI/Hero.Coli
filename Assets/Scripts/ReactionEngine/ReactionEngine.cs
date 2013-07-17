@@ -30,7 +30,9 @@ public class ReactionEngine : MonoBehaviour {
   public string[]         _moleculesFiles;           //!< all the molecules files
   public string[]       _fickFiles;                     //!< all the Fick diffusion files
   public string[]       _activeTransportFiles;                     //!< all the Fick diffusion files
-  public static float   reactionsSpeed = 0.1f;
+  public static float   reactionsSpeed = 0.9f;
+  public bool enableSequential;
+  public bool enableNoise;
 
   public Fick getFick() { return _fick; }
   
@@ -157,7 +159,11 @@ public class ReactionEngine : MonoBehaviour {
     foreach (string file in _mediumsFiles)
       LinkedListExtensions.AppendRange<Medium>(_mediums, mediumLoader.loadMediumsFromFile(file));
     foreach (Medium medium in _mediums)
-      medium.Init(_reactionsSets, _moleculesSets);
+      {
+        medium.Init(_reactionsSets, _moleculesSets);
+        medium.enableSequential(enableSequential);
+        medium.enableNoise(enableNoise);
+      }
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
@@ -172,7 +178,8 @@ public class ReactionEngine : MonoBehaviour {
     _activeTransport.react();
     foreach (Medium medium in _mediums)
       medium.Update();
-    foreach (Medium medium in _mediums)
-      medium.updateMoleculesConcentrations();    
+    if (!enableSequential)
+      foreach (Medium medium in _mediums)
+        medium.updateMoleculesConcentrations();    
   }
 }

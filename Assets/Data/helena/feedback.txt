@@ -1,0 +1,90 @@
+<Document>
+
+  <reactions id="CelliaReactions">
+    <promoter>
+      <name>PromA</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>[0.000008,2]A*![0.8,2]LacI</formula>
+      <operon>
+	<gene>
+	  <name>A</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+
+    <promoter>
+      <name>PromLacI</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>[80000,2]A</formula>
+      <operon>
+	<gene>
+	  <name>LacI</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+      <promoter>
+      <name>PromGFP</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>[80000,2]A</formula>
+      <operon>
+	<gene>
+	  <name>GFP</name>
+	  <RBSFactor>0.1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+    
+    <allostery>
+      <name>inhibit-LacI</name>
+      <effector>IPTG</effector>
+      <K>1.3</K>
+      <n>2</n>
+      <protein>LacI</protein>
+      <products>LacI*</products>
+    </allostery>  
+
+  </reactions>
+  
+  <molecules id="CelliaMolecules">
+
+    <molecule type="transcription_factor">
+      <name>A</name>
+      <description></description>
+      <concentration>10</concentration>
+      <degradationRate>0.386</degradationRate>
+    </molecule>
+    <molecule type="transcription_factor">
+      <name>LacI</name>
+      <description>inhibiteur de pLac</description>
+      <concentration>0</concentration>
+      <degradationRate>0.1386</degradationRate>
+      <size>0.1</size>
+    </molecule>
+    <molecule type="other">
+      <name>LacI*</name>
+      <description>inactive form of lacI</description>
+      <concentration>0</concentration>
+      <degradationRate>0.5</degradationRate>
+      <size>0.4</size>
+    </molecule>
+    <molecule type="other">
+      <name>IPTG</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.0001795</degradationRate>
+      <size>0.3</size>
+    </molecule> 
+    <molecule type="other">
+      <name>GFP</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.12</degradationRate>
+      <size>0.3</size>
+    </molecule> 
+  </molecules>
+</Document>

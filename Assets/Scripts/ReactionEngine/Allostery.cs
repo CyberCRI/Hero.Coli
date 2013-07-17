@@ -130,9 +130,23 @@ public class Allostery : IReaction
       {
         m = (float)Math.Pow(effector.getConcentration() / _K, _n);
         delta =  (m / (1 + m)) * protein.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed;
-        product.addNewConcentration(delta);
-        protein.subNewConcentration(delta);
-        effector.subNewConcentration(delta);
+        if (enableNoise)
+          {
+            float noise = _numberGenerator.getNumber();
+            delta += noise;
+          }
+        if (enableSequential)
+          {
+            product.addConcentration(delta);
+            protein.subConcentration(delta);
+            effector.subConcentration(delta);            
+          }
+        else
+          {
+            product.addNewConcentration(delta);
+            protein.subNewConcentration(delta);
+            effector.subNewConcentration(delta);
+          }
       }
   }
 
