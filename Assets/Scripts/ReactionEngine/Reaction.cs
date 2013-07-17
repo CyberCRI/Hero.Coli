@@ -146,7 +146,7 @@ public abstract class IReaction
   public void setReactionSpeed(float speed) { _reactionSpeed = speed; }
   public float getReactionSpeed() { return _reactionSpeed; }
   public float getEnergyCost() { return _reactionSpeed; }
-  public float setEnergyCost() { return _reactionSpeed; }
+  public void setEnergyCost(float energy) { _energyCost = energy; }
 
   //! This function should be implemented by each reaction that inherit from this class.
   //! It's called at each tick of the game.

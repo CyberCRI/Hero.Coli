@@ -8,6 +8,7 @@ public class InstantReactionProprieties
   public string name;
   public LinkedList<Product> reactants;
   public LinkedList<Product> products;
+  public float energyCost;
 }
 
 /*!
@@ -36,6 +37,7 @@ public class InstantReaction : IReaction
     InstantReaction reaction = new InstantReaction();
 
     reaction.setName(props.name);
+    reaction.setEnergyCost(props.energyCost);
     Product newReactant;
     foreach (Product r in props.reactants)
       {

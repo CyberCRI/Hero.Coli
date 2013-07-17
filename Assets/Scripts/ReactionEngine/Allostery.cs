@@ -11,6 +11,7 @@ public class AllosteryProprieties
   public string product;
   public float K;
   public int n;
+  public float energyCost;
 }
 
 /*!
@@ -77,7 +78,7 @@ public class Allostery : IReaction
   public void setProduct(string str) { _product = str;}
   public string getProduct() { return _product; }
 
-
+//FIXME : Create fonction that create prop with this reaction
   
   public static IReaction       buildAllosteryFromProps(AllosteryProprieties props)
   {
@@ -89,6 +90,8 @@ public class Allostery : IReaction
     reaction.setN(props.n);
     reaction.setProtein(props.protein);
     reaction.setProduct(props.product);
+    reaction.setEnergyCost(props.energyCost);
+
     return reaction;
   }
 

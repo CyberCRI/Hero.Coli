@@ -26,6 +26,7 @@ public class ActiveTransportProprieties
   public float Km;                    //!< Affinity coefficient between substrate and enzyme
   public float Ki;                    //!< Affinity coefficient between effector and enzyme
   public LinkedList<Product> products;  //!< The list of the products
+  public float energyCost;
 }
 
 /*!
@@ -67,6 +68,7 @@ public class ActiveTransport {
         reaction.setBeta(prop.beta);
         reaction.setKm(prop.Km);
         reaction.setKi(prop.Ki);
+        reaction.setEnergyCost(prop.energyCost);
         foreach (Product p in prop.products)
           reaction.addProduct(p);
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);

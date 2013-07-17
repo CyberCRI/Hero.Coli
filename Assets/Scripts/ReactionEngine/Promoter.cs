@@ -11,6 +11,7 @@ public class PromoterProprieties
   public float terminatorFactor;
   public string formula;
   public LinkedList<Product> products;
+  public float energyCost;
 }
 
 /*!
@@ -152,6 +153,7 @@ public class Promoter : IReaction
     reaction.setName(props.name);
     reaction.setBeta(props.beta);
     reaction.setTerminatorFactor(props.terminatorFactor);
+    reaction.setEnergyCost(props.energyCost);
     TreeNode<PromoterNodeData> formula = parser.Parse(props.formula);
     reaction.setFormula(formula);
     Product newProd;

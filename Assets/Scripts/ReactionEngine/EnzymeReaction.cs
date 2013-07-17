@@ -15,6 +15,7 @@ public class EnzymeReactionProprieties
   public float Km;
   public float Ki;
   public LinkedList<Product> products;
+  public float energyCost;
 }
 
 /*!
@@ -76,6 +77,7 @@ public class EnzymeReaction : IReaction
     reaction.setBeta(props.beta);
     reaction.setKm(props.Km);
     reaction.setKi(props.Ki);
+    reaction.setEnergyCost(props.energyCost);
 
     Product newProd;
     foreach (Product p in props.products)
