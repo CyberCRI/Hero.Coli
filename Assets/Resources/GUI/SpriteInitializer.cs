@@ -25,7 +25,7 @@ public class SpriteInitializer : MonoBehaviour {
 			sprite.atlas = atlas.GetComponent<UIAtlas>();
 		}
 		
-		if(_spriteName != null) {
+		if(_spriteName != null && _spriteName != "") {
 			sprite.spriteName = _spriteName;
 		} else {
 			int randomIdx = Random.Range(0, _defaultSpriteNames.Count);
