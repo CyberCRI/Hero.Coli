@@ -6,13 +6,24 @@ public class cameraFollow : MonoBehaviour {
 	public bool useScenePosition = true;
 	public Vector3 offset;
 	
-	public bool zoom = true;
+	public bool _transition = true;
+	public bool _zoomed = false;
+	public float zoomedCameraDistanceMin = 5;
 	public float cameraDistanceMin = 20;
   	public float cameraDistanceMax = 75;
   	public float scrollSpeed = 5;
 	public float zoomSmooth = 3;
 	
 	private float fov;
+	
+	public void SetZoom(bool zoomIn) {
+		_zoomed = zoomIn;
+		if(zoomIn) {
+			fov = 10.0f;
+		} else {
+			fov = 65.0f;
+		}
+	}
 	
 	// Use this for initialization
 	void Start () {
@@ -25,8 +36,10 @@ public class cameraFollow : MonoBehaviour {
 	void LateUpdate () {
 		transform.position = target.position + offset;
 		
-		if(zoom){
-			fov = Mathf.Clamp(fov + Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
+		if(_transition){
+			if(!_zoomed) {
+				fov = Mathf.Clamp(fov + Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
+			}
 			camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, fov, Time.deltaTime * zoomSmooth);
 		}
 	}
