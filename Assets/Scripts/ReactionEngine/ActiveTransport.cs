@@ -85,7 +85,8 @@ public class ActiveTransport {
             break;
           }
         reaction.setDstMedium(med);
-        _reactions.AddLast(reaction);
+        reaction.getSrcMedium().addReaction(reaction);
+//         _reactions.AddLast(reaction);
      }
   }
 
@@ -100,12 +101,4 @@ public class ActiveTransport {
     loadActiveTransportReactionsFromProprieties(proprieties, mediums);
   }
 
-  /*!
-   \brief Do all the ActiveTransportReaction
-   */
-  public void react()
-  {
-    foreach (ActiveTransportReaction r in _reactions)
-      r.react(null);
-  }
 }

@@ -128,6 +128,7 @@ public abstract class IReaction
   protected NumberGenerator _numberGenerator;     //! Random number generator
   public bool enableNoise;
   public bool enableSequential;
+  public bool enableEnergy;
 
   //! Default constructor
   public IReaction()
@@ -138,6 +139,7 @@ public abstract class IReaction
     _energyCost = 0f;
     enableNoise = false;
     enableSequential = true;
+    enableEnergy = false;
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 

@@ -27,7 +27,8 @@ public class Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
-
+  private bool          _enableEnergy;
+  private float         _energy;                        //!< Represent the quantity of ATP
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -38,7 +39,17 @@ public class Medium
   public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
   public string getMoleculesSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
+  public void setEnergy(float v) { _energy = v; if (_energy < 0f) _energy = 0f; }
+  public float getEnergy() { return _energy; }
+  public void addEnergy(float v) { _energy += v; if (_energy < 0) _energy = 0f; }
+  public void subEnergy(float v) { _energy -= v; if (_energy < 0) _energy = 0f; }
 
+  public void enableEnergy(bool b)
+  {
+    _enableEnergy = b;
+    foreach (IReaction r in _reactions)
+      r.enableEnergy = b;
+  }
 
   public void enableSequential(bool b)
   {
@@ -196,30 +207,30 @@ public class Medium
         if (Input.GetKey(KeyCode.UpArrow))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(10f);
+              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
           }
         if (Input.GetKey(KeyCode.DownArrow))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(- 10f);
           }
         if (Input.GetKey(KeyCode.RightArrow))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("atc", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("atc", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
           }
         if (Input.GetKey(KeyCode.LeftArrow))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("atc", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("atc", _molecules).addNewConcentration(- 100f);
+              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(- 100f);
           }
       }
   }

@@ -5,7 +5,7 @@
     <MediumDst>2</MediumDst>
     <substrate>O</substrate>
     <enzyme>H</enzyme>
-    <Kcat>1</Kcat>
+    <Kcat>0.1</Kcat>
     <effector>False</effector>
     <alpha>1</alpha>
     <beta>0</beta>
