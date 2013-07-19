@@ -190,7 +190,6 @@ public class Degradation : IReaction
       return;
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
     float delta = mol.getDegradationRate() * mol.getConcentration();
-    Debug.Log(delta);
     delta += _numberGenerator.getNumber() ;
 //     Debug.Log(delta);
 //     Debug.Log("test");
