@@ -16,23 +16,43 @@ public class VectrosityPanel : MonoBehaviour {
 	public float padding = 20f; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
 	public PanelInfos infos; //!< Will provide the panel information to all the lines drawn \sa PanelInfo
 	public List<Line> line {get{return _lines;}} //!< List of the lines being drawn
+
+  public ReactionEngine _reactionEngine;
+  public int _mediumId;
 	
-	private List<Line> _lines; 
-	private List<float> _values;
+  private List<Line> _lines; 
+  private ArrayList _molecules;
 	
 	// Use this for initialization
 	void Start () {
 		infos = new PanelInfos();
 		refreshInfos();
 		
-		VectorLine.SetCamera3D(GUICam);		
+		VectorLine.SetCamera3D(GUICam);
 		
 		_lines = new List<Line>();
-		_values = new List<float>();
-		for(int i = 0; i < 20; i++){
-			_lines.Add(new Line(200, 800, infos));
-			_values.Add(0f);
-		}
+
+                if (_reactionEngine == null)
+                  return ;
+
+                LinkedList<Medium> mediums = _reactionEngine.getMediumList();
+                if (mediums == null)
+                  return ;
+
+                Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
+                if (medium == null)
+                  {
+                    Debug.Log("Can't find the given medium (" + _mediumId + ")");
+                    return ;
+                  }
+
+                _molecules = medium.getMolecules();
+                if (_molecules == null)
+                  return ;
+
+                foreach (Molecule m in _molecules)
+                  _lines.Add(new Line(200, 800, infos, m.getName()));
+
 		drawLines(true);
 	}
 	
@@ -47,18 +67,17 @@ public class VectrosityPanel : MonoBehaviour {
 	 * \param resize If true will resize the lines first
  	*/
 	void drawLines(bool resize) {
-		int i = 0;
-		foreach(Line line in _lines){
-			_values[i] += Random.Range(-50, 50);
-			_values[i] = Mathf.Clamp(_values[i], 0, 850);
-			if(resize) line.resize();
-			if(draw)
-				line.addPoint(_values[i]);
-			else
-				line.addPoint();
-			line.redraw();
-			i++;
-		}
+          if (_molecules == null)
+            return ;
+          foreach(Line line in _lines){
+            Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
+            if(resize) line.resize();
+            if (m != null)
+              line.addPoint(m.getConcentration());
+            else
+              line.addPoint();
+            line.redraw();
+          }
 	}
 	
 	/*!
