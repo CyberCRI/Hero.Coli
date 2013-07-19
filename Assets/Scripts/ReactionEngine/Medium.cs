@@ -164,17 +164,17 @@ public class Medium
 //       Debug.Log(m.getConcentration());
     if (_name == "Cellia")
       {
-        if (Input.GetKey(KeyCode.UpArrow))
-          ReactionEngine.getMoleculeFromName("X", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("X", _molecules).getConcentration() + 5f);
-        if (Input.GetKey(KeyCode.DownArrow))
-          ReactionEngine.getMoleculeFromName("X", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("X", _molecules).getConcentration() - 5f);
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.T))
+          ReactionEngine.getMoleculeFromName("H", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("H", _molecules).getConcentration() + 5f);
+        if (Input.GetKey(KeyCode.R))
+          ReactionEngine.getMoleculeFromName("H", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("H", _molecules).getConcentration() - 5f);
+        if (Input.GetKey(KeyCode.G))
           ReactionEngine.getMoleculeFromName("O", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration() + 5f);
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.F)) 
           ReactionEngine.getMoleculeFromName("O", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration() - 5f);
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.B))
           ReactionEngine.getMoleculeFromName("Toxine", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() + 5f);
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.V))
           ReactionEngine.getMoleculeFromName("Toxine", _molecules).setConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() - 5f);
       }
   }
