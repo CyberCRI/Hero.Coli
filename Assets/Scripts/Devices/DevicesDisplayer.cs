@@ -14,8 +14,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	static private Vector3 _positionOffset = new Vector3(10.0f, 75.0f, 0.0f);
 	
 	
-	public void addDevice(int deviceID) {
-		Debug.Log("addDevice("+deviceID+")");
+	public void addDevice(int deviceID, DeviceInfo deviceInfo) {
+		Debug.Log("addDevice("+deviceID+", "+deviceInfo+")");
 		if(!_devices.Exists(device => device.getID() == deviceID)) { 
 			Vector3 localPosition = _positionOffset + new Vector3(0.0f, -_devices.Count*_height, 0.0f);
 			Device device = Device.Create (gameObject.transform, localPosition, deviceID);
@@ -50,7 +50,16 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(Time.time - _timeCounter > _timeDelta) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE
 				int randomID = Random.Range(0, 12000);
-	        	addDevice(randomID);
+				DeviceInfo deviceInfo = new DeviceInfo(
+					"pLac",
+					10.0f,
+					1.0f,
+					0.8f,
+					2.0f,
+					"LacI",
+					"GFP",
+					1.0f);
+	        	addDevice(randomID, deviceInfo);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				if(_devices.Count > 0) {
