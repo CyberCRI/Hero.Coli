@@ -24,7 +24,8 @@ public class CellControl : MonoBehaviour{
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
 			//Translate
 			Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));;
-			transform.Translate(inputMovement * moveSpeed * Time.deltaTime, Space.World);
+			this.collider.attachedRigidbody.AddForce(inputMovement * moveSpeed);
+			//transform.Translate(inputMovement * moveSpeed * Time.deltaTime, Space.World);
 		}
 	}
 

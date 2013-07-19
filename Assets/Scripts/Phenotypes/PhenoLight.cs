@@ -11,7 +11,7 @@ using System;
  */
 public class PhenoLight : Phenotype {
 
-  public Color         _color;          //! Color of the Light
+  public Color _color;          //! Color of the Light
   public bool isActive;                 //! Activity of the light
 
 
