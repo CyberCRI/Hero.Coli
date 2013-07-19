@@ -52,6 +52,9 @@ public class AllosteryLoader
               case "K":
                 b = b && loadAllosteryFloat(attr.InnerText, ar.setK);
                 break;
+              case "EnergyCost":
+                b = b && loadAllosteryFloat(attr.InnerText, ar.setEnergyCost);
+                break;
               case "n":
                 ar.setN(Convert.ToInt32(attr.InnerText));
                 break;

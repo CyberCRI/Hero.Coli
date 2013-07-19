@@ -15,6 +15,7 @@ public class FickProprieties
   public int MediumId2  {get; set;}
   public float P  {get; set;}
   public float surface  {get; set;}
+  public float energyCost {get; set;}
 }
 
 /*!
@@ -162,6 +163,14 @@ public class FickReaction : IReaction
     _medium2 = null;
   }
 
+  public FickReaction(FickReaction r) : base(r)
+  {
+    _surface = r._surface;
+    _P = r._P;
+    _medium1 = r._medium1;
+    _medium2 = r._medium2;
+  }
+
   public void setSurface(float surface) { _surface = surface;}
   public float getSurface() { return _surface;}
   public void setPermCoef(float P) { _P = P;}
@@ -170,6 +179,27 @@ public class FickReaction : IReaction
   public Medium getMedium1() { return _medium1;}
   public void setMedium2(Medium medium) { _medium2 = medium;}
   public Medium getMedium2() { return _medium2;}
+
+  public static IReaction        buildFickReactionFromProps(FickProprieties props, LinkedList<Medium> mediums)
+  {
+    FickReaction reaction = new FickReaction();
+    Medium med1 = ReactionEngine.getMediumFromId(props.MediumId1, mediums);
+    Medium med2 = ReactionEngine.getMediumFromId(props.MediumId2, mediums);
+
+    if (med1 == null || med2 == null)
+      {
+        Debug.Log("failed to build FickReaction from FickProprieties beacause one or all the medium id don't exist");
+        return null;
+      }
+    reaction.setSurface(props.surface);
+    reaction.setPermCoef(props.P);
+    reaction.setMedium1(med1);
+    reaction.setMedium2(med2);
+    reaction.setEnergyCost(props.energyCost);
+
+    return reaction;
+  }
+
 
   //! Return all the FickReactions possible from a Medium list.
   /*!

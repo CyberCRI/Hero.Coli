@@ -44,7 +44,7 @@ public class NumberGenerator
     int j = 0;
     while (i < max)
       {
-        _tab[j] = func(i, 0f, 0.1f) + last;
+        _tab[j] = func(i, 0f, 0.01f) + last;
 //         Debug.Log(j);
 //         Debug.Log(_tab[j]);
         last = _tab[j];

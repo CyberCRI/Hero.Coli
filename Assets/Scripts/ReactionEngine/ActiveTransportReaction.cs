@@ -23,6 +23,17 @@ public class ActiveTransportReaction : EnzymeReaction
   public void setSrcMedium(Medium med) { _srcMedium = med; }
   public void setDstMedium(Medium med) { _dstMedium = med; }
 
+
+  public ActiveTransportReaction()
+  {
+  }
+
+  public ActiveTransportReaction(ActiveTransportReaction r) : base(r)
+  {
+    _srcMedium = r._srcMedium;
+    _dstMedium = r._dstMedium;
+  }
+
   /*
     \brief This function do the reaction.
     \param molecules dont usefull, must be set to null
@@ -40,6 +51,24 @@ public class ActiveTransportReaction : EnzymeReaction
       return ;
 
     float delta = execEnzymeReaction(molSrcMed) * _reactionSpeed * ReactionEngine.reactionsSpeed;
+
+    float energyCoef;
+    float energyCostTot;
+    if (delta > 0f && _energyCost > 0f && enableEnergy)
+      {
+        energyCostTot = _energyCost * delta;
+        energyCoef = _medium.getEnergy() / energyCostTot;
+        if (energyCoef > 1f)
+          energyCoef = 1f;
+        _medium.subEnergy(energyCostTot);
+      }
+    else
+      energyCoef = 1f;
+
+    delta *= energyCoef;
+//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
+//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
+
     if (enableNoise)
       {
         float noise = _numberGenerator.getNumber();

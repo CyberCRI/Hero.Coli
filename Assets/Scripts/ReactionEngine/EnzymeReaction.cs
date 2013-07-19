@@ -15,6 +15,7 @@ public class EnzymeReactionProprieties
   public float Km;
   public float Ki;
   public LinkedList<Product> products;
+  public float energyCost;
 }
 
 /*!
@@ -62,6 +63,22 @@ public class EnzymeReaction : IReaction
   public void setKi(float value) { _Ki = value;}
   public float getKi() { return _Ki; }
 
+  public EnzymeReaction()
+  {
+  }
+
+  public EnzymeReaction(EnzymeReaction r) : base(r)
+  {
+    _substrate = r._substrate;
+    _enzyme = r._enzyme;
+    _Kcat = r._Kcat;
+    _effector = r._effector;
+    _alpha = r._alpha;
+    _beta = r._beta;
+    _Km = r._Km;
+    _Ki = r._Ki;
+  }
+
 
   public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProprieties props)
   {
@@ -76,6 +93,7 @@ public class EnzymeReaction : IReaction
     reaction.setBeta(props.beta);
     reaction.setKm(props.Km);
     reaction.setKi(props.Ki);
+    reaction.setEnergyCost(props.energyCost);
 
     Product newProd;
     foreach (Product p in props.products)
@@ -152,6 +170,25 @@ public class EnzymeReaction : IReaction
     if (substrate == null)
       return ;
     float delta = execEnzymeReaction(molecules) * 1f;
+
+    float energyCoef;
+    float energyCostTot;    
+    if (delta > 0f && _energyCost > 0f && enableEnergy)
+      {
+        energyCostTot = _energyCost * delta;
+        energyCoef = _medium.getEnergy() / energyCostTot;
+        if (energyCoef > 1f)
+          energyCoef = 1f;
+        _medium.subEnergy(energyCostTot);
+      }
+    else
+      energyCoef = 1f;
+
+    delta *= energyCoef;
+//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
+//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
+
+
     if (enableNoise)
       {
         float noise = _numberGenerator.getNumber();

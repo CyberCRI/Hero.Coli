@@ -15,6 +15,7 @@ using System.Collections.Generic;
 public class ActiveTransportProprieties
 {
   public string name;
+  public int mediumId;                    //!< The Medium where the reaction will be executed
   public int srcMediumId;            //!< The source medium for the transport
   public int dstMediumId;            //!< The destination medium for the transport
   public string substrate;            //!< The substrate of the reaction
@@ -26,6 +27,7 @@ public class ActiveTransportProprieties
   public float Km;                    //!< Affinity coefficient between substrate and enzyme
   public float Ki;                    //!< Affinity coefficient between effector and enzyme
   public LinkedList<Product> products;  //!< The list of the products
+  public float energyCost;              //!< Cost in energy for one reaction
 }
 
 /*!
@@ -67,6 +69,7 @@ public class ActiveTransport {
         reaction.setBeta(prop.beta);
         reaction.setKm(prop.Km);
         reaction.setKi(prop.Ki);
+        reaction.setEnergyCost(prop.energyCost);
         foreach (Product p in prop.products)
           reaction.addProduct(p);
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);
@@ -83,7 +86,15 @@ public class ActiveTransport {
             break;
           }
         reaction.setDstMedium(med);
-        _reactions.AddLast(reaction);
+        med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
+        if (med == null)
+          {
+            Debug.Log("Cannot load Active Transport proprieties because the medium Id : " + prop.mediumId + " is unknown.");
+            break;
+          }
+        reaction.setMedium(med);
+        med.addReaction(reaction);
+        //         _reactions.AddLast(reaction);
      }
   }
 
@@ -96,14 +107,5 @@ public class ActiveTransport {
   {
     LinkedList<ActiveTransportProprieties> proprieties = _loader.getActiveTransportProprietiesFromFiles(filesPaths);
     loadActiveTransportReactionsFromProprieties(proprieties, mediums);
-  }
-
-  /*!
-   \brief Do all the ActiveTransportReaction
-   */
-  public void react()
-  {
-    foreach (ActiveTransportReaction r in _reactions)
-      r.react(null);
   }
 }
