@@ -1,3 +1,6 @@
+using UnityEngine;
+using System.Collections.Generic;
+
 public class ModuleInfo {
 	
 	/*
@@ -22,7 +25,7 @@ public class ModuleInfo {
 	public string _formula;
 	
 	//operon
-	public string _geneName;
+	public string _proteinName;
 	public float _rbsFactor = 1.0f;
 	
 	public ModuleInfo(
@@ -30,24 +33,43 @@ public class ModuleInfo {
 			float productionMax,
 			float terminatorFactor,
 			string formula,
-			string geneName,
+			string proteinName,
 			float rbsFactor) {
 		_promoterName = promoterName;
 		_productionMax = productionMax;
 		_terminatorFactor = terminatorFactor;
 		_formula = formula;
-		_geneName = geneName;
+		_proteinName = proteinName;
 		_rbsFactor = rbsFactor;
 	}
 	
-	public ModuleInfo copy() {
-		return new ModuleInfo(
-			_promoterName = _promoterName,
-			_productionMax = _productionMax,
-			_terminatorFactor = _terminatorFactor,
-			_formula = _formula,
-			_geneName = _geneName,
-			_rbsFactor = _rbsFactor);
+	public PromoterProprieties getProprieties() {
+			PromoterProprieties proprieties = new PromoterProprieties();
+			
+  			proprieties.name = _promoterName;
+  			proprieties.beta = _productionMax;
+  			proprieties.terminatorFactor = _terminatorFactor;
+  			proprieties.formula = _formula;
+		
+		//
+			LinkedList<Product> products = new LinkedList<Product>();
+			products.AddLast(new Product(_proteinName, _rbsFactor));
+  			proprieties.products = products;
+  			proprieties.energyCost = 0;
+		
+		return proprieties;
+	}
+	
+	public void addToReactionEngine(int mediumID, ReactionEngine reactionEngine) {		
+		Debug.Log("module promoter: "+_promoterName);
+		
+		PromoterProprieties proprieties = getProprieties();
+		Debug.Log("proprieties="+proprieties);
+		
+		IReaction reaction = Promoter.buildPromoterFromProps(proprieties);
+		Debug.Log("reaction="+reaction);
+		
+		reactionEngine.addReactionToMedium(mediumID, reaction);
 	}
 	
 	
@@ -58,7 +80,7 @@ public class ModuleInfo {
 			+", _productionMax = "+_productionMax
 			+", _terminatorFactor = "+_terminatorFactor
 			+", _formula = "+_formula
-			+", _geneName = "+_geneName
+			+", _proteinName = "+_proteinName
 			+", _rbsFactor = "+_rbsFactor
 			+"]";
 	}

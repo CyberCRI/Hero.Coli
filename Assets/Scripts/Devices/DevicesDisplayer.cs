@@ -13,6 +13,9 @@ public class DevicesDisplayer : MonoBehaviour {
 	static private float _height = 45.0f;
 	static private Vector3 _positionOffset = new Vector3(10.0f, 75.0f, 0.0f);
 	
+	public ReactionEngine reactionEngine;
+	public int celliaMediumID = 1;
+	
 	
 	public void addDevice(int deviceID, DeviceInfo deviceInfo) {
 		Debug.Log("addDevice("+deviceID+", "+deviceInfo+")");
@@ -20,8 +23,14 @@ public class DevicesDisplayer : MonoBehaviour {
 			Vector3 localPosition = _positionOffset + new Vector3(0.0f, -_devices.Count*_height, 0.0f);
 			Device device = Device.Create (gameObject.transform, localPosition, deviceID);
 			_devices.Add(device);
+			
+			//let's add reaction to reaction engine
+			//for each module of deviceInfo, add to reaction engine
+			deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
 		}
 	}
+	
+	
 	
 	public void removeDevice(int deviceID) {
 		Debug.Log("removeDevice("+deviceID+")");
