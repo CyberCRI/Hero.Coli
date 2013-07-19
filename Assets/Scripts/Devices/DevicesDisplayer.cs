@@ -50,15 +50,20 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(Time.time - _timeCounter > _timeDelta) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE
 				int randomID = Random.Range(0, 12000);
-				DeviceInfo deviceInfo = new DeviceInfo(
+				ModuleInfo moduleInfo = new ModuleInfo(
 					"pLac",
 					10.0f,
 					1.0f,
-					0.8f,
-					2.0f,
-					"LacI",
+					"![0.8,2]LacI",
 					"GFP",
 					1.0f);
+				List<ModuleInfo> modules = new List<ModuleInfo>();
+				modules.Add(moduleInfo);
+				DeviceInfo deviceInfo = new DeviceInfo(
+					randomID,
+					"testDevice",
+					modules
+					);
 	        	addDevice(randomID, deviceInfo);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
