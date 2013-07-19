@@ -62,9 +62,9 @@ public class Molecule
   public void setDescription(string description) { _description = description; }
   public void setConcentration(float concentration) { _concentration = concentration; if (_concentration < 0) _concentration = 0;}
   public void setDegradationRate(float degradationRate) { _degradationRate = degradationRate; }
-  public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_concentration < 0) _concentration = 0; }
-  public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_concentration < 0) _concentration = 0; }
-  public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_concentration < 0) _concentration = 0; }
+  public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0; }
+  public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0; }
+  public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0; }
 
   public void setSize(float size) { _size = size; }
   /*!
@@ -124,7 +124,10 @@ public abstract class IReaction
   protected LinkedList<Product> _products;      //! The list of products
   protected bool _isActive;                     //! Activation booleen
   protected float _reactionSpeed;               //! Speed coefficient of the reaction
-  protected float _energyCost;
+  protected float _energyCost;                  //! Energy cosumed for the reaction
+  protected NumberGenerator _numberGenerator;     //! Random number generator
+  public bool enableNoise;
+  public bool enableSequential;
 
   //! Default constructor
   public IReaction()
@@ -133,6 +136,9 @@ public abstract class IReaction
     _isActive = true;
     _reactionSpeed = 1f;
     _energyCost = 0f;
+    enableNoise = false;
+    enableSequential = true;
+    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
   public void setName(string name) { _name = Tools.epurStr(name); }
@@ -166,14 +172,12 @@ public class Degradation : IReaction
 {
   private float _degradationRate;               //! The degradation speed
   private string _molName;                      //! Molecule name's
-  private NumberGenerator _numberGenerator;     //! Random number generator
 
   //! Default constructor
   public Degradation(float degradationRate, string molName)
   {
     _degradationRate = degradationRate;
     _molName = molName;
-    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -0.5f, 0.5f, 0.01f);
   }
 
   // FIXME : use _degradationRate
@@ -188,17 +192,17 @@ public class Degradation : IReaction
   {
     if (!_isActive)
       return;
+
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
     float delta = mol.getDegradationRate() * mol.getConcentration();
-    delta += _numberGenerator.getNumber() ;
-//     Debug.Log(delta);
-//     Debug.Log("test");
-    mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
-//     mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed  * 0.01f// * Time.deltaTime
-//                          );
-//     Debug.Log(Time.deltaTime);
-//     Debug.Log(_numberGenerator.getNumber());
-    //     mol.setConcentration(mol.getConcentration() - mol.getDegradationRate() * mol.getConcentration() * 1f//  * 0.05f
-    //                          );
+    if (enableNoise)
+      {
+        float noise = _numberGenerator.getNumber();
+        delta += noise;
+      }
+    if (enableSequential)
+      mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed);
+    else
+      mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
   }
 }

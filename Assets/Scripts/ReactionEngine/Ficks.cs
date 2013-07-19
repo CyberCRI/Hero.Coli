@@ -235,10 +235,21 @@ Where:
           {
             c2 = mol2.getConcentration();
             result = (c2 - c1) * _P * _surface * _reactionSpeed * ReactionEngine.reactionsSpeed;
-//             mol2.setConcentration(c2 - result);
-//             mol1.setConcentration(c1 + result);
-            mol2.subNewConcentration(result);
-            mol1.addNewConcentration(result);
+            if (enableNoise)
+              {
+                float noise = _numberGenerator.getNumber();
+                result += noise;
+              }
+            if (enableSequential)
+              {
+                mol2.addConcentration(- result);
+                mol1.addConcentration(result);
+              }
+            else
+              {
+                mol2.subNewConcentration(result);
+                mol1.addNewConcentration(result);
+              }
           }
       }
   }

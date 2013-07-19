@@ -111,17 +111,28 @@ public class InstantReaction : IReaction
       return;
     
     float delta = getLimitantFactor(molecules);
+    
+    if (enableNoise)
+      {
+        float noise = _numberGenerator.getNumber();
+        delta += noise;
+      }    
     Molecule mol;
-
     foreach (Product react in _reactants)
       {
         mol = ReactionEngine.getMoleculeFromName(react.getName(), molecules);
-        mol.subNewConcentration(delta * react.getQuantityFactor());
+        if (enableSequential)
+          mol.subConcentration(delta * react.getQuantityFactor());
+        else
+          mol.subNewConcentration(delta * react.getQuantityFactor());
       }
     foreach (Product prod in _products)
       {
         mol = ReactionEngine.getMoleculeFromName(prod.getName(), molecules);
-        mol.addNewConcentration(delta * prod.getQuantityFactor());
+        if (enableSequential)
+          mol.addConcentration(delta * prod.getQuantityFactor());
+        else
+          mol.addNewConcentration(delta * prod.getQuantityFactor());
       }
   }
 

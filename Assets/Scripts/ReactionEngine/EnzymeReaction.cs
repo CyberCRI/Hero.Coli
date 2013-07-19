@@ -147,16 +147,27 @@ public class EnzymeReaction : IReaction
   {
     if (!_isActive)
       return;
-
+    
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
       return ;
     float delta = execEnzymeReaction(molecules) * 1f;
-    substrate.subNewConcentration(delta);
+    if (enableNoise)
+      {
+        float noise = _numberGenerator.getNumber();
+        delta += noise;
+      }
+    if (enableSequential)
+      substrate.subConcentration(delta);
+    else
+      substrate.subNewConcentration(delta);
     foreach (Product pro in _products)
       {
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        mol.addNewConcentration(delta);
+        if (enableSequential)
+          mol.addConcentration(delta);
+        else
+          mol.addNewConcentration(delta);
       }
   }
 
