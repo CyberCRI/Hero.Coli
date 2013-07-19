@@ -59,13 +59,15 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(Time.time - _timeCounter > _timeDelta) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE
 				int randomID = Random.Range(0, 12000);
+				LinkedList<Product> products = new LinkedList<Product>();
+				products.AddLast(new Product("GFP",1.0f));
 				ModuleInfo moduleInfo = new ModuleInfo(
 					"pLac",
 					10.0f,
 					1.0f,
 					"![0.8,2]LacI",
-					"GFP",
-					1.0f);
+					products
+					);
 				List<ModuleInfo> modules = new List<ModuleInfo>();
 				modules.Add(moduleInfo);
 				DeviceInfo deviceInfo = new DeviceInfo(

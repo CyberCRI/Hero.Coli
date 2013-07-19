@@ -15,7 +15,7 @@ public class DeviceInfo {
 	
 	public override string ToString ()
 	{
-		string res = "DeviceInfo[_id:"+_id+",_name:"+_name+",";
+		string res = "DeviceInfo[_id:"+_id+", _name:"+_name+", ";
 		_modules.ForEach(module => res = res+module.ToString()+",");
 		return res+"]";
 	}

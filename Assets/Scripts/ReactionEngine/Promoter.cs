@@ -12,6 +12,22 @@ public class PromoterProprieties
   public string formula;
   public LinkedList<Product> products;
   public float energyCost;
+	
+  public override string ToString() {
+	string productsString = "Products[";
+	IEnumerator<Product> enumerator = products.GetEnumerator();
+	while (enumerator.MoveNext()) {
+	  productsString = productsString + enumerator.Current.ToString()+", ";
+	}
+	productsString += "]";
+    return "PromoterProprieties["+
+      "name:"+name+
+      ", beta:"+beta+
+      ", terminatorFactor:"+terminatorFactor+
+      ", formula:"+formula+
+      ", products:"+productsString+
+      ", energyCost:"+energyCost+"]";
+  }
 }
 
 /*!

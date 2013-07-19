@@ -113,6 +113,10 @@ public class Product
   public string getName() { return _name; }
   public void setQuantityFactor(float quantity) { _quantityFactor = quantity; }
   public float getQuantityFactor() { return _quantityFactor; }
+	
+  public override string ToString() {
+    return "Product[name:"+_name+", quantityFactor:"+_quantityFactor+"]";
+  }
 }
 
 /*!
