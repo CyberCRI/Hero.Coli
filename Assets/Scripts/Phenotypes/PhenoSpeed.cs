@@ -25,7 +25,7 @@ public class PhenoSpeed : Phenotype
 		Molecule mol = ReactionEngine.getMoleculeFromName ("H2O", _molecules);
 		if (mol == null)
 			return ;
-		float intensity = Phenotype.hill (mol.getConcentration(), 100.0f, 1f, minSpeed, maxSpeed);
+		float intensity = Phenotype.hill (mol.getConcentration(), 50f, 1f, minSpeed, maxSpeed);
 		gameObject.GetComponent<CellControl>().moveSpeed = intensity;
 	}
 }

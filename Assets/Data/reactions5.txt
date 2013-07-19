@@ -43,7 +43,7 @@
       <name>H2O</name>
       <description>de l'eau!</description>
       <concentration>0</concentration>
-      <degradationRate>0.13</degradationRate>
+      <degradationRate>0.013</degradationRate>
     </molecule> 
 </molecules>
                                   
