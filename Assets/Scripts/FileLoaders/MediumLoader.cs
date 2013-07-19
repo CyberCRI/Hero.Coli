@@ -13,6 +13,48 @@ public class MediumLoader
 {
 
   
+  private bool loadEnergy(string value, Medium med)
+  {
+    if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty Energy field. default value = 0");
+        med.setEnergy(0f);
+      }
+    else
+      med.setEnergy(float.Parse(value.Replace(",", ".")));
+    return true;
+  }
+
+  private bool loadEnergyProductionRate(string value, Medium med)
+  {
+    float productionRate;
+
+    if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+        productionRate = 0f;
+      }
+    else
+      productionRate = float.Parse(value.Replace(",", ".")); 
+    med.setEnergyProductionRate(productionRate);
+    return true;
+  }
+
+  private bool loadMaxEnergy(string value, Medium med)
+  {
+    float prodMax;
+
+    if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+        prodMax = 0f;
+      }
+    else
+      prodMax = float.Parse(value.Replace(",", ".")); 
+    med.setMaxEnergy(prodMax);
+    return true;
+  }
+
   public Medium   loadMedium(XmlNode node)
   {
     Medium medium = new Medium();
@@ -26,6 +68,15 @@ public class MediumLoader
             break;
           case "Name":
             medium.setName(attr.InnerText);
+            break;
+          case "Energy":
+            loadEnergy(attr.InnerText, medium);
+            break;
+          case "EnergyProductionRate":
+            loadEnergyProductionRate(attr.InnerText, medium);
+            break;
+          case "MaxEnergy":
+            loadMaxEnergy(attr.InnerText, medium);
             break;
           case "ReactionsSet":
             medium.setReactionsSet(attr.InnerText);

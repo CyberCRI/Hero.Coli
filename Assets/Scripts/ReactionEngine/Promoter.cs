@@ -145,6 +145,17 @@ public class Promoter : IReaction
   public TreeNode<PromoterNodeData> getFormula() { return _formula; }
 
 
+  public Promoter()
+  {
+  }
+
+  public Promoter(Promoter r) : base(r)
+  {
+    _terminatorFactor = r._terminatorFactor;
+    _formula = r._formula;
+    _beta = r._beta;
+  }
+
   public static IReaction       buildPromoterFromProps(PromoterProprieties props)
   {
     PromoterParser parser = new PromoterParser();
@@ -301,6 +312,24 @@ For each Product P in the operon :
     if (!_isActive)
       return;
     float delta = execNode(_formula, molecules);
+
+    float energyCoef;
+    float energyCostTot;    
+    if (delta > 0f && _energyCost > 0f && enableEnergy)
+      {
+        energyCostTot = _energyCost * delta;
+        energyCoef = _medium.getEnergy() / energyCostTot;
+        if (energyCoef > 1f)
+          energyCoef = 1f;
+        _medium.subEnergy(energyCostTot);
+      }
+    else
+      energyCoef = 1f;
+
+    delta *= energyCoef;
+//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
+//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
+
     if (enableNoise)
       {
         float noise = _numberGenerator.getNumber();

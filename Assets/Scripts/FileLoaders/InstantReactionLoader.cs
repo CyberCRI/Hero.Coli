@@ -66,6 +66,17 @@ public class InstantReactionLoader
     return true;
   }
 
+  private bool loadEnergyCost(string value, InstantReaction ir)
+  {
+    if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty EnergyCost field. default value = 0");
+        ir.setEnergyCost(0f);
+      }
+    else
+      ir.setEnergyCost(float.Parse(value.Replace(",", ".")));
+    return true;
+  }
 
   public bool loadInstantReactions(XmlNode node, LinkedList<IReaction> reactions)
   {
@@ -87,6 +98,9 @@ public class InstantReactionLoader
                 break;
               case "products":
                 loadInstantReactionProducts(attr, ir);
+                break;
+              case "EnergyCost":
+                loadEnergyCost(attr.InnerText, ir);
                 break;
               }
           }

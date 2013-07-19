@@ -14,8 +14,10 @@ using System.Collections.Generic;
   <activeTransports>
    <ATProp>
      <name>name</name>                  -> The name
+     <Medium>1<Medium>                  -> In wich medium the reaction is done.
      <MediumSrc>1</MediumSrc>           -> Medium where the reaction takes place
      <MediumDst>2</MediumDst>           -> Medium where the product will be released
+     <EnergyCost>0.1</EnergyCost>       -> Energy that cost a reaction
      <substrate>S</substrate>           -> The Molecule that will be consumed in the SrcMedium
      <enzyme>E</enzyme>                 -> The Molecule wich will play the role of the tunnel
      <Kcat>1</Kcat>                     -> 
@@ -193,6 +195,12 @@ public class ActiveTransportLoader
             break;
           case "Ki":
             prop.Ki = checkActiveTransportFloat(attr.InnerText);
+            break;
+          case "Medium":
+            prop.mediumId = checkActiveTransportInt(attr.InnerText);
+            break;
+          case "EnergyCost":
+            prop.energyCost = checkActiveTransportFloat(attr.InnerText);
             break;
           case "MediumSrc":
             prop.srcMediumId = checkActiveTransportInt(attr.InnerText);

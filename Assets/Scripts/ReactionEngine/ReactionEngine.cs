@@ -34,6 +34,8 @@ public class ReactionEngine : MonoBehaviour {
   public bool enableSequential;
   public bool enableNoise;
   public bool enableEnergy;
+  public bool enableShufflingReactionOrder;
+  public bool enableShufflingMediumOrder;
 
   public Fick getFick() { return _fick; }
   
@@ -162,9 +164,13 @@ public class ReactionEngine : MonoBehaviour {
     foreach (Medium medium in _mediums)
       {
         medium.Init(_reactionsSets, _moleculesSets);
+//         medium.setEnergy(1000f);
+
+        //create energyProducer
         medium.enableSequential(enableSequential);
         medium.enableNoise(enableNoise);
         medium.enableEnergy(enableEnergy);
+        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
       }
 
     _fick = new Fick();
@@ -178,6 +184,8 @@ public class ReactionEngine : MonoBehaviour {
   {
     _fick.react();
 //     _activeTransport.react();
+    if (enableShufflingMediumOrder)
+      LinkedListExtensions.Shuffle<Medium>(_mediums);
     foreach (Medium medium in _mediums)
       medium.Update();
     if (!enableSequential)

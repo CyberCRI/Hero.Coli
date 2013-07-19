@@ -163,6 +163,14 @@ public class FickReaction : IReaction
     _medium2 = null;
   }
 
+  public FickReaction(FickReaction r) : base(r)
+  {
+    _surface = r._surface;
+    _P = r._P;
+    _medium1 = r._medium1;
+    _medium2 = r._medium2;
+  }
+
   public void setSurface(float surface) { _surface = surface;}
   public float getSurface() { return _surface;}
   public void setPermCoef(float P) { _P = P;}

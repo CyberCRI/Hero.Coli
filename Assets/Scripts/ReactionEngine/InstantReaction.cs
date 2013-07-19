@@ -32,6 +32,11 @@ public class InstantReaction : IReaction
     _reactants = new LinkedList<Product>();
   }
 
+  public InstantReaction(InstantReaction r) : base(r)
+  {
+    _reactants = r._reactants;
+  }
+
   public static IReaction       buildInstantReactionFromProps(InstantReactionProprieties props)
   {
     InstantReaction reaction = new InstantReaction();
@@ -113,7 +118,24 @@ public class InstantReaction : IReaction
       return;
     
     float delta = getLimitantFactor(molecules);
-    
+
+    float energyCoef;
+    float energyCostTot;    
+    if (delta > 0f && _energyCost > 0f && enableEnergy)
+      {
+        energyCostTot = _energyCost * delta;
+        energyCoef = _medium.getEnergy() / energyCostTot;
+        if (energyCoef > 1f)
+          energyCoef = 1f;
+        _medium.subEnergy(energyCostTot);
+      }
+    else
+      energyCoef = 1f;
+
+    delta *= energyCoef;
+//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
+//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
+
     if (enableNoise)
       {
         float noise = _numberGenerator.getNumber();

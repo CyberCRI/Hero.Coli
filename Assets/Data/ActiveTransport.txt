@@ -1,8 +1,10 @@
 <activeTransports>
   <ATProp>
-    <name>ExpTox1</name>
+    <name>exportH2O</name>
+    <Medium>1</Medium>
     <MediumSrc>1</MediumSrc>
     <MediumDst>2</MediumDst>
+    <EnergyCost>0.1</EnergyCost>
     <substrate>O</substrate>
     <enzyme>H</enzyme>
     <Kcat>0.1</Kcat>

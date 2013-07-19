@@ -15,6 +15,7 @@ using System.Collections.Generic;
 public class ActiveTransportProprieties
 {
   public string name;
+  public int mediumId;                    //!< The Medium where the reaction will be executed
   public int srcMediumId;            //!< The source medium for the transport
   public int dstMediumId;            //!< The destination medium for the transport
   public string substrate;            //!< The substrate of the reaction
@@ -26,7 +27,7 @@ public class ActiveTransportProprieties
   public float Km;                    //!< Affinity coefficient between substrate and enzyme
   public float Ki;                    //!< Affinity coefficient between effector and enzyme
   public LinkedList<Product> products;  //!< The list of the products
-  public float energyCost;
+  public float energyCost;              //!< Cost in energy for one reaction
 }
 
 /*!
@@ -85,8 +86,15 @@ public class ActiveTransport {
             break;
           }
         reaction.setDstMedium(med);
-        reaction.getSrcMedium().addReaction(reaction);
-//         _reactions.AddLast(reaction);
+        med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
+        if (med == null)
+          {
+            Debug.Log("Cannot load Active Transport proprieties because the medium Id : " + prop.mediumId + " is unknown.");
+            break;
+          }
+        reaction.setMedium(med);
+        med.addReaction(reaction);
+        //         _reactions.AddLast(reaction);
      }
   }
 
@@ -100,5 +108,4 @@ public class ActiveTransport {
     LinkedList<ActiveTransportProprieties> proprieties = _loader.getActiveTransportProprietiesFromFiles(filesPaths);
     loadActiveTransportReactionsFromProprieties(proprieties, mediums);
   }
-
 }
