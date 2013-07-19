@@ -25,12 +25,17 @@ public class ReactionEngine : MonoBehaviour {
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
   private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
   private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
-  public string[]        _mediumsFiles;                 //!< all the medium files
-  public string[]         _reactionsFiles;           //!< all the reactions files
-  public string[]         _moleculesFiles;           //!< all the molecules files
-  public string[]       _fickFiles;                     //!< all the Fick diffusion files
-  public string[]       _activeTransportFiles;                     //!< all the Fick diffusion files
-  public static float   reactionsSpeed = 0.1f;
+  public string[]      _mediumsFiles;                 //!< all the medium files
+  public string[]      _reactionsFiles;           //!< all the reactions files
+  public string[]      _moleculesFiles;           //!< all the molecules files
+  public string[]      _fickFiles;                     //!< all the Fick diffusion files
+  public string[]      _activeTransportFiles;                     //!< all the Fick diffusion files
+  public static float  reactionsSpeed = 0.9f;
+  public bool enableSequential;
+  public bool enableNoise;
+  public bool enableEnergy;
+  public bool enableShufflingReactionOrder;
+  public bool enableShufflingMediumOrder;
 
   public Fick getFick() { return _fick; }
   
@@ -157,7 +162,16 @@ public class ReactionEngine : MonoBehaviour {
     foreach (string file in _mediumsFiles)
       LinkedListExtensions.AppendRange<Medium>(_mediums, mediumLoader.loadMediumsFromFile(file));
     foreach (Medium medium in _mediums)
-      medium.Init(_reactionsSets, _moleculesSets);
+      {
+        medium.Init(_reactionsSets, _moleculesSets);
+//         medium.setEnergy(1000f);
+
+        //create energyProducer
+        medium.enableSequential(enableSequential);
+        medium.enableNoise(enableNoise);
+        medium.enableEnergy(enableEnergy);
+        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+      }
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
@@ -169,10 +183,13 @@ public class ReactionEngine : MonoBehaviour {
   public void Update()
   {
     _fick.react();
-    _activeTransport.react();
+//     _activeTransport.react();
+    if (enableShufflingMediumOrder)
+      LinkedListExtensions.Shuffle<Medium>(_mediums);
     foreach (Medium medium in _mediums)
       medium.Update();
-    foreach (Medium medium in _mediums)
-      medium.updateMoleculesConcentrations();    
+    if (!enableSequential)
+      foreach (Medium medium in _mediums)
+        medium.updateMoleculesConcentrations();    
   }
 }

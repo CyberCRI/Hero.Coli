@@ -2,8 +2,8 @@
   <reactions id="CelliaReactions">
 
     <instantReaction>
-      <name>A-BtoAB</name>
-
+      <name>Water</name>
+      <EnergyCost>0.1</EnergyCost>
       <reactants>
 	<reactant>
 	  <name>O</name>

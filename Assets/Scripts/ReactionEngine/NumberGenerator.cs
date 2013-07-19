@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-class NumberGenerator
+public class NumberGenerator
 {
 
   public delegate float repartitionFunc(float x, float esp, float ecartType);
@@ -58,7 +58,7 @@ class NumberGenerator
 
   public float getNumber()
   {
-    float nb = UnityEngine.Random.Range(_min, _localMax);
+    float nb = UnityEngine.Random.Range(0f, _localMax);
 
     int i = 0;
 //     Debug.Log("Start");
@@ -71,8 +71,14 @@ class NumberGenerator
       }
 //     Debug.Log("End");
     if (i == 0)
-      return 0f;
+      {
+        Debug.Log("error ===============");
+        Debug.Log(nb);
+        Debug.Log(_localMax);
+        Debug.Log("============");
+        return 0f;
+      }
 //     Debug.Log("return : " + ((float)(i - 1) * _step + _min));
-    return (float)(i - 1) * _step + _min;
+    return (float)(i) * _step + _min;
   } 
 }

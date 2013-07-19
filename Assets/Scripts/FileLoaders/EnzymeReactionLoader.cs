@@ -74,6 +74,9 @@ public class EnzymeReactionLoader
               case "alpha":
                 b = b && loadEnzymeFloat(attr.InnerText, er.setAlpha);
                 break;
+              case "EnergyCost":
+                b = b && loadEnzymeFloat(attr.InnerText, er.setEnergyCost);
+                break;
               case "beta":
                 b = b && loadEnzymeFloat(attr.InnerText, er.setBeta);
                 break;

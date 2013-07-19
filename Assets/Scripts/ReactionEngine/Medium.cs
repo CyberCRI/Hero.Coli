@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 /*!
   \brief This class represent a Medium
   \details
@@ -24,22 +25,65 @@ public class Medium
   private string        _name;                          //!< The name of the Medium
   private string        _reactionsSet;                  //!< The ReactionSet id affected to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
-
+  private bool          _enableSequential;
+  private bool          _enableNoise;
+  private bool          _enableEnergy;
+  private float         _energy;                        //!< Represent the quantity of ATP
+  private float         _maxEnergy;                     //!< The maximum quantity of ATP
+  private float         _energyProductionRate;
+  public bool           enableShufflingReactionOrder;
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
   public void setName(string name) { _name = name;}
   public string getName() { return _name;}
+  public void setReactions(LinkedList<IReaction> RL) { _reactions = RL;}
+  public LinkedList<IReaction> getReactions() { return _reactions;}
   public void setReactionsSet(string reactionsSet) { _reactionsSet = reactionsSet;}
   public string getReactionsSet() { return _reactionsSet;}
   public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
   public string getMoleculesSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
+  public void setEnergy(float v) { _energy = v; if (_energy < 0f) _energy = 0f; }
+  public float getEnergy() { return _energy; }
+  public void addEnergy(float v) { _energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
+  public void subEnergy(float v) { _energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
+  public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
+  public float getMaxEnergy() { return _maxEnergy; }
+  public void setEnergyProductionRate(float v) { _energyProductionRate = v;}
+  public float getEnergyProductionRate() { return _energyProductionRate;}
+
+  public void enableEnergy(bool b)
+  {
+    _enableEnergy = b;
+    foreach (IReaction r in _reactions)
+      r.enableEnergy = b;
+  }
+
+  public void enableSequential(bool b)
+  {
+    _enableSequential = b;
+    foreach (IReaction r in _reactions)
+      r.enableSequential = b;
+  }
+
+  public void enableNoise(bool b)
+  {
+    _enableNoise = b;
+    foreach (IReaction r in _reactions)
+      r.enableNoise = b;
+  }
 
   public void addReaction(IReaction reaction)
   {
     if (reaction != null)
-      _reactions.AddLast(reaction);
+      {
+//         Debug.Log("---> " + reaction.getName());
+//         Debug.Log("Medium name ====> " + this.getName());
+        reaction.setMedium(this);
+        reaction.enableEnergy = _enableEnergy;
+        _reactions.AddLast(reaction);
+      }
   }
 
   public void removeReactionByName(string name)
@@ -92,8 +136,9 @@ public class Medium
   {
     if (reactionsSet == null)
       return;
-    foreach (IReaction reactions in reactionsSet.reactions)
-      _reactions.AddLast(reactions);
+    foreach (IReaction reaction in reactionsSet.reactions)
+      addReaction(IReaction.copyReaction(reaction));
+//       _reactions.AddLast(reaction);
   }
 
   /*!
@@ -103,7 +148,7 @@ public class Medium
   public void initDegradationReactions(ArrayList allMolecules)
   {
     foreach (Molecule mol in allMolecules)
-      _reactions.AddLast(new Degradation(mol.getDegradationRate(), mol.getName()));
+      addReaction(new Degradation(mol.getDegradationRate(), mol.getName()));
   }
 
   /*!
@@ -129,6 +174,16 @@ public class Medium
       }   
   }
 
+  private void initATPProduction()
+  {
+    ATPProducer reaction = new ATPProducer();
+    reaction.setProduction(_energyProductionRate);
+    reaction.setName("ATP Production");
+    if (_reactions == null)
+      setReactions(new LinkedList<IReaction>());
+    addReaction(reaction);
+  }
+
   /*!
     \brief Initialize the Medium
     \param reactionsSets The list of all the reactions sets
@@ -146,9 +201,15 @@ public class Medium
     if (molSet == null)
       Debug.Log("Cannot find group of molecules named" + _moleculesSet);
 
+    initATPProduction();
     initReactionsFromReactionsSet(reactSet);
     initMoleculesFromMoleculesSets(molSet, allMolecules);
     initDegradationReactions(allMolecules);
+    foreach (IReaction r in _reactions)
+      {
+        r.enableSequential = _enableSequential;
+        r.enableNoise = _enableNoise;
+      }
   }
 
   /*!
@@ -165,26 +226,47 @@ public class Medium
    */
   public void Update()
   {
- //    LinkedListExtensions.Shuffle<IReaction>(_reactions);
-    foreach (IReaction reaction in _reactions)
-      reaction.react(_molecules);
+    if (enableShufflingReactionOrder)
+      LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
-//     foreach (Molecule m in _molecules)
-//       Debug.Log(m.getConcentration());
+    //         Debug.Log("============================");
+    foreach (IReaction reaction in _reactions)
+      {
+        //         Debug.Log("/!\\" + reaction.getMedium().getName() + " " + reaction.getName());
+        reaction.react(_molecules);
+        //       reaction.setMedium(this);
+      }
+
     if (_name == "Cellia")
       {
         if (Input.GetKey(KeyCode.UpArrow))
-          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(100f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
+          }
         if (Input.GetKey(KeyCode.DownArrow))
-          ReactionEngine.getMoleculeFromName("IPTG", _molecules).addNewConcentration(- 100f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(- 10f);
+            else
+              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(- 10f);
+          }
         if (Input.GetKey(KeyCode.RightArrow))
-          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() + 0.1f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
+          }
         if (Input.GetKey(KeyCode.LeftArrow))
-          ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Y", _molecules).getConcentration() - 0.1f);
-        if (Input.GetKey(KeyCode.E))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() + 0.1f);
-        if (Input.GetKey(KeyCode.D))
-          ReactionEngine.getMoleculeFromName("Toxine", _molecules).addNewConcentration(ReactionEngine.getMoleculeFromName("Toxine", _molecules).getConcentration() - 0.1f);
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(- 10f);
+            else
+              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(- 100f);
+          }
       }
   }
 }

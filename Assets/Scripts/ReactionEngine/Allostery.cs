@@ -11,6 +11,7 @@ public class AllosteryProprieties
   public string product;
   public float K;
   public int n;
+  public float energyCost;
 }
 
 /*!
@@ -77,7 +78,21 @@ public class Allostery : IReaction
   public void setProduct(string str) { _product = str;}
   public string getProduct() { return _product; }
 
+  public Allostery()
+  {
+  }
 
+  public Allostery(Allostery r) : base(r)
+  {
+    _effector = r._effector;
+    _K = r._K;
+    _n = r._n;
+    _protein = r._protein;
+    _product = r._product;
+  }
+
+
+//FIXME : Create fonction that create prop with this reaction
   
   public static IReaction       buildAllosteryFromProps(AllosteryProprieties props)
   {
@@ -89,6 +104,8 @@ public class Allostery : IReaction
     reaction.setN(props.n);
     reaction.setProtein(props.protein);
     reaction.setProduct(props.product);
+    reaction.setEnergyCost(props.energyCost);
+
     return reaction;
   }
 
@@ -130,9 +147,42 @@ public class Allostery : IReaction
       {
         m = (float)Math.Pow(effector.getConcentration() / _K, _n);
         delta =  (m / (1 + m)) * protein.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed;
-        product.addNewConcentration(delta);
-        protein.subNewConcentration(delta);
-        effector.subNewConcentration(delta);
+
+        float energyCoef;
+        float energyCostTot;    
+        if (delta > 0f && _energyCost > 0f && enableEnergy)
+          {
+            energyCostTot = _energyCost * delta;
+            energyCoef = _medium.getEnergy() / energyCostTot;
+            if (energyCoef > 1f)
+              energyCoef = 1f;
+            _medium.subEnergy(energyCostTot);
+          }
+        else
+          energyCoef = 1f;
+        
+        delta *= energyCoef;
+//         Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
+//         Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
+        
+
+        if (enableNoise)
+          {
+            float noise = _numberGenerator.getNumber();
+            delta += noise;
+          }
+        if (enableSequential)
+          {
+            product.addConcentration(delta);
+            protein.subConcentration(delta);
+            effector.subConcentration(delta);            
+          }
+        else
+          {
+            product.addNewConcentration(delta);
+            protein.subNewConcentration(delta);
+            effector.subNewConcentration(delta);
+          }
       }
   }
 

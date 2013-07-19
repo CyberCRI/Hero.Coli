@@ -45,6 +45,18 @@ public class PromoterLoader
     return true;
   }
 
+  private bool loadEnergyCost(string value, Promoter prom)
+  {
+    if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty EnergyCost field. default value = 0");
+        prom.setEnergyCost(0f);
+      }
+    else
+      prom.setEnergyCost(float.Parse(value.Replace(",", ".")));
+    return true;
+  }
+
   private bool loadGene(Promoter prom, string name, string RBSf)
   {
     Product gene = new Product();
@@ -129,6 +141,9 @@ public class PromoterLoader
                 break;
               case "terminatorFactor":
                 b = b && loadPromoterTerminatorFactor(attr.InnerText, p);
+                break;
+              case "EnergyCost":
+                b = b && loadEnergyCost(attr.InnerText, p);
                 break;
               case "formula":
                 b = b && loadPromoterFormula(attr.InnerText, p);

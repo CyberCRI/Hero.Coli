@@ -1,0 +1,117 @@
+<Document>
+  <reactions id="CelliaReactions">
+    <promoter>
+      <name>ptet</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![0.8,3]tetR</formula>
+      <operon>
+	<gene>
+	  <name>RFP</name>
+	  <RBSFactor>0.12</RBSFactor>
+	</gene>
+	<gene>
+	  <name>LacI</name>
+	  <RBSFactor>0.12</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+     <promoter>
+      <name>pLac</name>
+      <productionMax>100</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>![0.8,2]LacI</formula>
+      <operon>
+	<gene>
+	  <name>GFP</name>	
+	  <RBSFactor>0.12</RBSFactor>
+	</gene>
+	<gene>
+	  <name>tetR</name>
+	  <RBSFactor>0.12</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>
+
+
+      
+    <allostery>
+      <name>inhibit-LacI</name>
+      <effector>IPTG</effector>
+      <K>1.3</K>
+      <n>2</n>
+      <protein>LacI</protein>
+      <products>LacI*</products>
+    </allostery>   
+    <allostery>
+      <name>inhibit-tetR</name>
+      <effector>atc</effector>v
+      <K>1.3</K>
+      <n>3</n>	
+      <protein>tetR</protein>
+      <products>tetR*</products>
+    </allostery>
+  </reactions>
+
+ 	 
+  <molecules id="CelliaMolecules">
+    <molecule type="transcription_factor">
+      <name>LacI</name>
+      <description>inhibiteur de pLac</description>
+      <concentration>0</concentration>
+      <degradationRate>0.1386</degradationRate>
+      <size>0.1</size>
+    </molecule>
+    <molecule type="other">
+      <name>LacI*</name>
+      <description>inactive form of lacI</description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+      <size>0.4</size>
+    </molecule>
+    <molecule type="other">
+    <name>tetR</name>
+      <description>inhibiteur de ptet</description>
+      <concentration>50</concentration>
+      <degradationRate>0.1386</degradationRate>
+      <size>0.1</size>
+    </molecule>
+    <molecule type="other">
+      <name>tetR*</name>
+      <description>inactive form of tetR</description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+      <size>0.4</size>
+    </molecule>
+    
+    <molecule type="other">
+      <name>GFP</name>
+      <description>tamere</description>
+      <concentration>0</concentration>
+      <degradationRate>0.085</degradationRate>
+      <size>0.2</size>
+    </molecule> 
+    <molecule type="other">
+      <name>RFP</name>
+      <description>tamere</description>
+      <concentration>0</concentration>
+      <degradationRate>0.085</degradationRate>
+      <size>0.2</size>
+    </molecule>
+
+    <molecule type="other">
+      <name>IPTG</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.0001795</degradationRate>
+      <size>0.3</size>
+    </molecule>
+    <molecule type="other">
+      <name>atc</name>
+      <description></description>
+      <concentration>50</concentration>
+      <degradationRate>0.0001795</degradationRate>
+      <size>0.3</size>
+    </molecule>
+  </molecules>
+</Document>
