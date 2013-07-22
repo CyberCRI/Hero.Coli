@@ -18,7 +18,7 @@ public class GUITransitioner : MonoBehaviour {
 	
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
-	
+	public DevicesDisplayer _devicesDisplayer;
 	// Use this for initialization
 	void Start () {
 		SetScreen2(false);
@@ -82,7 +82,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen3(false);
 					SetScreen1(true);
 				}
-				
+				_devicesDisplayer.UpdateScreen(1);
 				ZoomOut();
 				_currentScreen = GameScreen.screen1;
 				
@@ -108,7 +108,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen3(false);
 					SetScreen2(true);
 				}	
-				
+				_devicesDisplayer.UpdateScreen(2);
 				ZoomIn();
 				_currentScreen = GameScreen.screen2;			
 				
@@ -132,7 +132,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen3(true);
 					
 				}	
-				
+				_devicesDisplayer.UpdateScreen(3);
 				ZoomIn();					
 				_currentScreen = GameScreen.screen3;			
 				
