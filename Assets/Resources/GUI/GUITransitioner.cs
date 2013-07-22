@@ -57,6 +57,20 @@ public class GUITransitioner : MonoBehaviour {
 	}
 		
 	
+	private bool gamePaused = false;
+	private void Pause(bool pause) {
+		//Screen.showCursor = false;
+		if(pause) {
+			gamePaused = true;
+			Screen.showCursor = true;
+			Time.timeScale = 0;
+		} else {
+			gamePaused = false;
+			Screen.showCursor = false;
+			Time.timeScale = 1;
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		if(Time.time - _timeCounter > _timeDelta) {
@@ -82,6 +96,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen3(false);
 					SetScreen1(true);
 				}
+				Pause(false);
 				_devicesDisplayer.UpdateScreen(1);
 				ZoomOut();
 				_currentScreen = GameScreen.screen1;
@@ -107,7 +122,9 @@ public class GUITransitioner : MonoBehaviour {
 					//add medium info
 					SetScreen3(false);
 					SetScreen2(true);
-				}	
+				}
+				
+				Pause(true);
 				_devicesDisplayer.UpdateScreen(2);
 				ZoomIn();
 				_currentScreen = GameScreen.screen2;			
@@ -132,6 +149,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen3(true);
 					
 				}	
+				Pause(true);
 				_devicesDisplayer.UpdateScreen(3);
 				ZoomIn();					
 				_currentScreen = GameScreen.screen3;			

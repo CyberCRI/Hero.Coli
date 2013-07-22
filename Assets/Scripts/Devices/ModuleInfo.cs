@@ -37,6 +37,24 @@ public class ModuleInfo {
 		_products = products;
 	}
 	
+	public ModuleInfo(
+			string promoterName,
+			float productionMax,
+			float terminatorFactor,
+			string formula,
+			string product,
+			float rbs) {
+		_promoterName = promoterName;
+		_productionMax = productionMax;
+		_terminatorFactor = terminatorFactor;
+		_formula = formula;
+		
+		LinkedList<Product> products = new LinkedList<Product>();
+		products.AddLast(new Product(product,rbs));
+		
+		_products = products;
+	}
+	
 	public PromoterProprieties getProprieties() {
 			PromoterProprieties proprieties = new PromoterProprieties();
 			

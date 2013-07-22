@@ -81,45 +81,35 @@ public class DevicesDisplayer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Time.time - _timeCounter > _timeDelta) {
-			if (Input.GetKey(KeyCode.V)) {//CREATE
+			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device
 				int randomID = Random.Range(0, 12000);
-				LinkedList<Product> products = new LinkedList<Product>();
-				products.AddLast(new Product("GFP",1.0f));
-				ModuleInfo moduleInfo = new ModuleInfo(
+				DeviceInfo deviceInfo = new DeviceInfo(
+					randomID,
+					"testDevice",
 					"pLac",
 					10.0f,
 					1.0f,
 					"![0.8,2]LacI",
-					products
-					);
-				List<ModuleInfo> modules = new List<ModuleInfo>();
-				modules.Add(moduleInfo);
-				DeviceInfo deviceInfo = new DeviceInfo(
-					randomID,
-					"testDevice",
-					modules
+					"GFP",
+					1.0f
 					);
 	        	addDevice(randomID, deviceInfo, true);
 				equipedDevicesCount++;
 				
 			}
 			
-			if (Input.GetKey(KeyCode.B)) {//CREATE
+			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				
 				int randomID = Random.Range(0, 12000);
-				ModuleInfo moduleInfo = new ModuleInfo(
+				DeviceInfo deviceInfo = new DeviceInfo(
+					randomID,
+					"testDevice",
 					"pLac",
 					10.0f,
 					1.0f,
 					"![0.8,2]LacI",
 					"GFP",
-					1.0f);
-				List<ModuleInfo> modules = new List<ModuleInfo>();
-				modules.Add(moduleInfo);
-				DeviceInfo deviceInfo = new DeviceInfo(
-					randomID,
-					"testDevice",
-					modules
+					1.0f
 					);
 	        	addDevice(randomID, deviceInfo, false);
 			}
