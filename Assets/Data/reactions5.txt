@@ -30,7 +30,7 @@
     <molecule type="transcription_factor">
       <name>O</name>
       <description>oxygene</description>
-      <concentration>0</concentration>
+      <concentration>10</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
     <molecule type="transcription_factor">
