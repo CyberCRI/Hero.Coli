@@ -60,7 +60,7 @@ class RBSBrick : BioBrick
 class GeneBrick : BioBrick
 {
   private string _proteinName;
-
+           
   public void setProteinName(string name) { _proteinName = name; }
   public string getProteinName() { return _proteinName; }
 
