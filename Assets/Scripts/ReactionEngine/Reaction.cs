@@ -100,7 +100,6 @@ public class Product
     _quantityFactor = p._quantityFactor;
   }
 
-  // FIXME : Potentially add a ptr to the molecule
   public void setName(string name) { _name = Tools.epurStr(name); }
   public string getName() { return _name; }
   public void setQuantityFactor(float quantity) { _quantityFactor = quantity; }
@@ -232,7 +231,6 @@ public class Degradation : IReaction
     _molName = r._molName;
   }
 
-  // FIXME : use _degradationRate
   /*!
     \details The degradation reaction following the formula above:
 

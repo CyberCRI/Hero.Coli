@@ -214,7 +214,6 @@ public class Promoter : IReaction
     return 0f;
   }
 
-  //   FIXME : Check all possible issues like product or molecule not exists;
   /*! 
     Execute a Node of type : Constant
     \param node The node of the tree to execute
@@ -236,7 +235,6 @@ public class Promoter : IReaction
     return hillFunc(K, mol.getConcentration(), n);
   }
 
-  // FIXME : check issues like node == null etc;
   /*! 
     Execute a Node of type : Word
     \param node The node of the tree to execute
@@ -245,10 +243,11 @@ public class Promoter : IReaction
   */
   private Molecule execWord(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
+    if (node == null || molecules == null)
+      return null;
     return ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
   }
 
-  // FIXME : check issues like node == null etc;
   /*! 
     Execute a Node of type : Bool
     \param node The node of the tree to execute
@@ -256,12 +255,13 @@ public class Promoter : IReaction
   */
   private float execBool(TreeNode<PromoterNodeData> node)
   {
+    if (node == null)
+      return 0f;
     if (node.getData().value == "T")
       return 1f;
     return 0f;
   }
 
-  // FIXME : check issues like bad parse and node == null
   /*! 
     Execute a Node of type : Num
     \param node The node of the tree to execute
@@ -270,6 +270,8 @@ public class Promoter : IReaction
   */
   private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
+    if (node == null || molecules == null)
+      return 0f;
     return float.Parse(node.getData().value.Replace(",", "."));
   }
 

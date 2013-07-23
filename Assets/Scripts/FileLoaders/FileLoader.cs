@@ -108,7 +108,6 @@ public class FileLoader
     return true;
   }
 
-//FIXME : patch parser to return correct boolean by checking if last node is a ending Token
   /*!
     \brief This function load reactions from xml node
     \param node The xml node
