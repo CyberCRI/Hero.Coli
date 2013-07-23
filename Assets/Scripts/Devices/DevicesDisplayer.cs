@@ -6,7 +6,6 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	private List<Device> _devices = new List<Device>();
 	private int equipedDevicesCount = 0;
-	public GameObject _devicePrefab;
 	private float _timeCounter;
 	private float _timeDelta = 0.1f;
 	//TODO use real device width
@@ -17,25 +16,21 @@ public class DevicesDisplayer : MonoBehaviour {
 	public UIPanel catalogPanel;
 	public UISprite equipPanelSlotPosition;	
 	public UISprite catalogPanelSlotPosition;
-	public UIPanel catalogPanelOffset;
-	public UIPanel equipPanelOffset;
 	public void addDevice(int deviceID, DeviceInfo deviceInfo, bool isEquiped) {
 		if(isEquiped){
 			Debug.Log("addDevice("+deviceID+", "+deviceInfo+")");
 			if(!_devices.Exists(device => device.getID() == deviceID)) { 
-				Vector3 localPosition = equipPanelSlotPosition.transform.localPosition;//+ new Vector3(0.0f, -equipedDevicesCount*_height, 0.0f);
-				Device device = Device.Create (equipPanelOffset.transform, localPosition, deviceID);
+				Vector3 localPosition = equipPanelSlotPosition.transform.localPosition + new Vector3(0.0f, -equipedDevicesCount*_height, 0.0f);
+				Device device = Device.Create (equipPanel.transform, localPosition, deviceID);
 				_devices.Add(device);
 			}
-		}
-		else{
-			
+		} else {			
 			Debug.Log("addDevice("+deviceID+") in catalog");
-				if(!_devices.Exists(device => device.getID() == deviceID)) { 
-					Vector3 localPosition = catalogPanelSlotPosition.transform.localPosition; //+ new Vector3((_devices.Count%3)*_height, -(_devices.Count/3)*_height, 0.0f);
-					Device device = Device.Create (catalogPanelOffset.transform, localPosition, deviceID);
-					_devices.Add(device);
-				}
+			if(!_devices.Exists(device => device.getID() == deviceID)) { 
+				Vector3 localPosition = catalogPanelSlotPosition.transform.localPosition + new Vector3((_devices.Count%3)*_height, -(_devices.Count/3)*_height, 0.0f);
+				Device device = Device.Create (catalogPanel.transform, localPosition, deviceID);
+				_devices.Add(device);
+			}
 		}
 			
 			//let's add reaction to reaction engine

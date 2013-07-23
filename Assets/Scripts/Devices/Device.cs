@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class Device : MonoBehaviour {
 	
 	private static string _activeSuffix = "Active";
-	private static string _prefix = "Textures/Devices/";
-	private static List<string> textureNames = new List<string>( new string [] {
+	private static List<string> spriteNames = new List<string>( new string [] {
 		"Backdrop"
 		,"brick"
 		,"brickNM"
@@ -15,18 +14,18 @@ public class Device : MonoBehaviour {
 	});
 	
 	
-	private UITexture _equipedDeviceIcon;
-	private string _uri;
-	private bool _isActive;
-	private int _deviceID;
-	
+	public string _currentSpriteName;
+	public UIAtlas _atlas;
+	public bool _isActive;
+	public int _deviceID;
+	public UISprite _sprite;
 	
 	
 	public int getID() {
 		return _deviceID;
 	}
 	
-	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/EquipedDeviceSlotPrefab");
+	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceSpritePrefab");
 	public static Device Create(Transform parentTransform, Vector3 localPosition, int deviceID)
 	{
 	    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
@@ -34,12 +33,13 @@ public class Device : MonoBehaviour {
 		newDevice.transform.localPosition = localPosition;
 		newDevice.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 		
-	    Device yourObject = newDevice.GetComponent<Device>();
-		yourObject._deviceID = deviceID;
+	    Device deviceScript = newDevice.GetComponent<Device>();
+		deviceScript._deviceID = deviceID;
+		deviceScript._sprite = newDevice.GetComponent<UISprite>();
 	 
 	    //do additional initialization steps here
 	 
-	    return yourObject;
+	    return deviceScript;
 	}
 	
 	public void Remove() {
@@ -50,17 +50,9 @@ public class Device : MonoBehaviour {
 		gameObject.transform.localPosition = newLocalPosition;
 	}
 	
-	private void setTexture(string textureUri) {
-		/*
-		// "material" version 
-		string materialUri = "Materials/Backdrop";		
-		Material myMaterial = Resources.Load(materialUri, typeof(Material)) as Material;		
-		_equipedDeviceIcon.material = myMaterial;
-		_equipedDeviceIcon.material.mainTexture = myMaterial.mainTexture;
-		*/
-		
-		// "_texture" version
-		_equipedDeviceIcon.mainTexture = Resources.Load(textureUri, typeof(Texture)) as Texture;
+	private void setSprite(string spriteName) {
+		Debug.Log("setSprite("+spriteName+")");
+		_sprite.spriteName = spriteName;
 	}
 	
 	public void setActivity(bool activity) {
@@ -73,24 +65,27 @@ public class Device : MonoBehaviour {
 	}
 	
 	public void setActive() {
+		Debug.Log("setActive");
 		_isActive = true;
-		setTexture(_uri + _activeSuffix);		
+		setSprite(_currentSpriteName + _activeSuffix);		
 	}
 	
 	public void setInactive() {
+		Debug.Log("setInactive");
 		_isActive = false;
-		setTexture(_uri);
+		setSprite(_currentSpriteName);
 	}
 	
-	private string getRandomTexture() {
-		int randomIndex = Random.Range(0, textureNames.Count);
-		return _prefix + textureNames[randomIndex];
+	private string getRandomSprite() {
+		int randomIndex = Random.Range(0, spriteNames.Count);
+		return spriteNames[randomIndex];
 	}
 	
 	// Use this for initialization
-	void Start () {		
-		_equipedDeviceIcon = transform.Find ("EquipedDeviceIcon").GetComponent<UITexture>();
-		_uri = getRandomTexture();
+	void Start () {
+		//_sprite.atlas = Resources.Load("Atlases/TestAtlas") as UIAtlas;
+		_sprite.atlas = _atlas;
+		_currentSpriteName = getRandomSprite();
 		setActive();
 	}
 	
