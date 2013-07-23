@@ -17,7 +17,7 @@ using System.IO;
         <P>0.05</P>                             -> Permeability coefficient
         <surface>0.003</surface>                -> contact surface between the two medium
       </fickProp>
-    </ficks>
+     </ficks>
 
  *  \author    Pierre COLLET
  *  \mail      pierre.collet91@gmail.com

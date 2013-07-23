@@ -9,17 +9,17 @@ using UnityEngine;
  *  \details   This class load everything about mediums from medium files
  A medium file should respect this synthax :
 
-<Mediums>
-  <Medium type="Cellia">
-    <Id>01</Id>                                         -> Unique ID of the medium
-    <Name>Cellia</Name>                                 -> Name of the medium
-    <ReactionsSet>CelliaReactions</ReactionsSet>        -> ReactionsSet to load in the medium
-    <MoleculesSet>CelliaMolecules</MoleculesSet>        -> MoleculesSet to load in the medium
-    <Energy>1000</Energy>                               -> Initial Energy
-    <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
-    <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
-  </Medium>
-</Mediums>
+        <Mediums>
+          <Medium type="Cellia">
+            <Id>01</Id>                                         -> Unique ID of the medium
+            <Name>Cellia</Name>                                 -> Name of the medium
+            <ReactionsSet>CelliaReactions</ReactionsSet>        -> ReactionsSet to load in the medium
+            <MoleculesSet>CelliaMolecules</MoleculesSet>        -> MoleculesSet to load in the medium
+            <Energy>1000</Energy>                               -> Initial Energy
+            <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
+            <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
+          </Medium>
+        </Mediums>
 
  *  \author    Pierre COLLET
  *  \sa ReactionsSet

@@ -7,21 +7,21 @@ using System.Xml;
   \brief This class load all enzymatics reactions from a file
   \detail A enzymatic reaction should be declared by respecting this convention :
 
-    <enzyme>
-      <name>ER</name>                   -> Name of the reaction
-      <EnergyCost>0</EnergyCost>        -> Energy cost of the reaction
-      <substrate>X</substrate>          -> Substrate molecule's name
-      <enzyme>E</enzyme>                -> Enzyme molecule's name
-      <Kcat>10</Kcat>                   -> Reaction constant of enzymatic reaction
-      <effector>False</effector>        -> The name of the effector (or false if there is no effector)
-      <alpha>1000</alpha>               -> Competitive parameter (see EnzymeReaction class for more infos)
-      <beta>0</beta>                    -> Activation or inhibition character of the effector (see EnzymeReaction class for more infos)
-      <Km>0.5</Km>                      -> Affinity between substrate and enzyme
-      <Ki>0.05</Ki>                     -> Affinity between effector and enzyme
-      <Products>
-	<name>X*</name>                 -> Molecule's name of the product
-      </Products>
-    </enzyme>
+        <enzyme>
+          <name>ER</name>                   -> Name of the reaction
+          <EnergyCost>0</EnergyCost>        -> Energy cost of the reaction
+          <substrate>X</substrate>          -> Substrate molecule's name
+          <enzyme>E</enzyme>                -> Enzyme molecule's name
+          <Kcat>10</Kcat>                   -> Reaction constant of enzymatic reaction
+          <effector>False</effector>        -> The name of the effector (or false if there is no effector)
+          <alpha>1000</alpha>               -> Competitive parameter (see EnzymeReaction class for more infos)
+          <beta>0</beta>                    -> Activation or inhibition character of the effector (see EnzymeReaction class for more infos)
+          <Km>0.5</Km>                      -> Affinity between substrate and enzyme
+          <Ki>0.05</Ki>                     -> Affinity between effector and enzyme
+          <Products>
+            <name>X*</name>                 -> Molecule's name of the product
+          </Products>
+        </enzyme>
 
   \author Pierre COLLET
   \sa EnzymeReaction

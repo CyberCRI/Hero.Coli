@@ -7,26 +7,26 @@ using System.Xml;
   \brief This class parse and load instant reactions
   \details A Instant reaction should respect this synthax :
 
-    <instantReaction>
-      <name>Water</name>                        -> Name of the reaction
-      <EnergyCost>0.1</EnergyCost>              -> Energy cost of the reaction
-      <reactants>
-	<reactant>
-	  <name>O</name>                        -> Reactant name
-	  <quantity>1</quantity>                -> Reactant coefficiant (how much of this to make products)
-	</reactant>
-	<reactant>
-	  <name>H</name>
-	  <quantity>2</quantity>
-	</reactant>
-      </reactants>
-      <products>
-	<product>
-	  <name>H2O</name>                      -> Product Name
-	  <quantity>1</quantity>                -> Product Quantity (how much is created)
-	</product>
-      </products>
-    </instantReaction>
+        <instantReaction>
+          <name>Water</name>                        -> Name of the reaction
+          <EnergyCost>0.1</EnergyCost>              -> Energy cost of the reaction
+          <reactants>
+            <reactant>
+              <name>O</name>                        -> Reactant name
+              <quantity>1</quantity>                -> Reactant coefficiant (how much of this to make products)
+            </reactant>
+            <reactant>
+              <name>H</name>
+              <quantity>2</quantity>
+            </reactant>
+          </reactants>
+          <products>
+            <product>
+              <name>H2O</name>                      -> Product Name
+              <quantity>1</quantity>                -> Product Quantity (how much is created)
+            </product>
+          </products>
+        </instantReaction>
 
   \sa InstantReaction
   \author Pierre COLLET

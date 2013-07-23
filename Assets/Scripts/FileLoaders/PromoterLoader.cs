@@ -7,25 +7,25 @@ using System.Collections.Generic;
   \brief This class load promoters reactions from xml files
   \details
 
-  A Promoter reaction should respect this synthax:
+A Promoter reaction should respect this synthax:
 
-  <promoter>
-    <name>ptet</name>                           -> The name of the reaction
-    <productionMax>100</productionMax>          -> The maximal production speed of the promoter
-    <terminatorFactor>1</terminatorFactor>      -> between 0 and 1, represent the Terminator
-    <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see Promoter class for more infos)
-    <EnergyCost>0.1</EnergyCost>                -> The cost in energy
-    <operon>
-      <gene>
-        <name>RFP</name>                        -> The molecule name of a product
-        <RBSFactor>0.12</RBSFactor>             -> The RBS factor that represent the affinity between Ribosome and RBS
-      </gene>
-      <gene>
-        <name>LacI</name>
-        <RBSFactor>0.12</RBSFactor>
-      </gene>
-    </operon>
-  </promoter>
+        <promoter>
+          <name>ptet</name>                           -> The name of the reaction
+          <productionMax>100</productionMax>          -> The maximal production speed of the promoter
+          <terminatorFactor>1</terminatorFactor>      -> between 0 and 1, represent the Terminator
+          <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see Promoter class for more infos)
+          <EnergyCost>0.1</EnergyCost>                -> The cost in energy
+          <operon>
+            <gene>
+              <name>RFP</name>                        -> The molecule name of a product
+              <RBSFactor>0.12</RBSFactor>             -> The RBS factor that represent the affinity between Ribosome and RBS
+            </gene>
+            <gene>
+              <name>LacI</name>
+              <RBSFactor>0.12</RBSFactor>
+            </gene>
+          </operon>
+        </promoter>
 
   \sa Promoter
   \author Pierre COLLET
