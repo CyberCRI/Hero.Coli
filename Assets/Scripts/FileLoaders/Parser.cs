@@ -7,23 +7,37 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
+/*!
+  \brief This class create token from Promoter reaction formula
+  \details The tokens list should be given to the PromoterParser in order to parse the string
+  \author Pierre COLLET
+  \sa PromoterParser
+ */
 public class PromoterLexer
 {
+  /*!
+    The different tokens
+   */
   public enum eToken
   {
-    OP_OR,
-    OP_AND,
-    LPAR,
-    RPAR,
-    OP_NOT,
-    LHOOK,
-    RHOOK,
-    COMMA,
-    NUM,
-    CHAR,
-    END
+    OP_OR,      //!< OR operator
+    OP_AND,     //!< AND operator
+    LPAR,       //!< Left Parenthis
+    RPAR,       //!< Right Parenthis
+    OP_NOT,     //!< NOT Operator
+    LHOOK,      //!< Left hook
+    RHOOK,      //!< Right hook
+    COMMA,      //!< Comma character
+    NUM,        //!< Number
+    CHAR,       //!< Character
+    END         //!< Ending Token
   }
 
+  /*!
+    \brief This struct is a token.
+    \details It contain a string and the corresponding eToken
+    \author Pierre COLLET
+   */
   public struct Token
   {
     public Token(eToken t, string c)
@@ -49,6 +63,11 @@ public class PromoterLexer
     };
 
   
+  /*!
+    \brief This class return the token that correspond to the given char
+    \param c The character
+    \return return the corresponding token
+   */
   public PromoterLexer.Token getToken(char c)
   {
     foreach (Token i in _tokenTab)
@@ -59,6 +78,11 @@ public class PromoterLexer
     return new Token(eToken.CHAR, new string(c, 1));
   }
 
+  /*!
+    \brief Build the token List
+    \param str The string to lex
+    \return Return the list of token corresponding to the string
+   */
   public LinkedList<Token> lex(string str)
   {
     LinkedList<Token> tokList = new LinkedList<Token>();
@@ -69,8 +93,11 @@ public class PromoterLexer
     return tokList;
   }
 
-// ==================== Debug ========================
-  
+  /*!
+    \brief This function is a debugging function for the lexer
+    \details This function print the token list
+    \param list The token list
+   */
   public void PPTokenList(LinkedList<Token> list)
   {
     int i = 0;
@@ -117,6 +144,10 @@ public class PromoterLexer
   }
 }
 
+/*!
+  \brief This class is the node of the synthax tree of the promoter formula
+  \author Pierre COLLET
+ */
 public class PromoterNodeData
 {
   public PromoterNodeData(PromoterParser.eNodeType t = default(PromoterParser.eNodeType), string v = default(string))
@@ -128,23 +159,33 @@ public class PromoterNodeData
   public string         value  {get; set;}
 }
 
+/*!
+  \brief This class parse a promoter formula
+  \details For more information about the grammar, see Promoter class
+  \sa Promoter
+  \author Pierre COLLET
+ */
 public class PromoterParser
 {
+  /*!
+    The different type of node
+   */
   public enum eNodeType
   {
-    OR,
-    AND,
-    NOT,
-    CONSTANT,
-    WORD,
-    NUM,
-    BOOL
+    OR,                 //!< OR operator
+    AND,                //!< AND operator
+    NOT,                //!< NOT operator
+    CONSTANT,           //!< Constants node (example [2.1,1])
+    WORD,               //!< WORD node
+    NUM,                //!< Number node
+    BOOL                //!< Booleen node (T or F)
   }
 
 
-  LinkedList<PromoterLexer.Token>     _restoreList;
-  int                   _restoreStatus;
+  LinkedList<PromoterLexer.Token>     _restoreList;     //!< The trash bin of token wich serve to restore token list
+  int                   _restoreStatus;                 //!< The state of the parsing
 
+  //! Default Constructor
   public PromoterParser()
   {
     _restoreStatus = 0;
@@ -152,7 +193,10 @@ public class PromoterParser
   }
 
 
-
+  /*!
+    \brief Pop the first token of the given list
+    \param list The list where to pop the token
+   */
   public void           popToken(LinkedList<PromoterLexer.Token> list)
   {
     PromoterLexer.Token tok = list.First();
@@ -161,6 +205,10 @@ public class PromoterParser
     _restoreStatus += 1;
   }
 
+  /*!
+    \brief Restore last token that were poped in the given list
+    \param list The list where to restore token
+   */
   public void           restoreToken(LinkedList<PromoterLexer.Token> list)
   {
     PromoterLexer.Token tok = _restoreList.First();
@@ -169,21 +217,38 @@ public class PromoterParser
     _restoreStatus -= 1;
   }
 
+  /*!
+    \brief This function restore the given list to the given state
+    \param list The list to restore
+    \param state The state that should be restore
+   */
   public void           restoreListState(LinkedList<PromoterLexer.Token> list, int state)
   {
     while (_restoreStatus > state)
       restoreToken(list);
   }
 
+  //! Return the current Status
   public int            getRestoreListStatus()
   {
     return _restoreStatus;
   }
 
+  /*!
+    \brief Parse the formula
+    \param tokenList The list of tokens to parse
+    \return Return the synthax tree or null if the parsing fail
+   */
   public TreeNode<PromoterNodeData>     ParseFormula(LinkedList<PromoterLexer.Token> tokenList)
   {
     return ParseORExpr(tokenList);
   }
+
+  /*!
+    \brief Parse an Or expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+   */
   public TreeNode<PromoterNodeData>     ParseORExpr(LinkedList<PromoterLexer.Token> tokenList)
   {
     PromoterNodeData data = new PromoterNodeData();
@@ -215,6 +280,11 @@ public class PromoterParser
       return left;
   }
 
+  /*!
+    \brief Parse an And expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+   */
   public TreeNode<PromoterNodeData>     ParseAndExpr(LinkedList<PromoterLexer.Token> tokenList)
   {
     PromoterNodeData data = new PromoterNodeData();
@@ -246,6 +316,11 @@ public class PromoterParser
       return left;
   }
 
+  /*!
+    \brief Parse a Parenthis expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+   */
   public TreeNode<PromoterNodeData>     ParseParExpr(LinkedList<PromoterLexer.Token> tokenList)
   {
     int restoreStatus;
@@ -279,6 +354,11 @@ public class PromoterParser
   }
 
 
+  /*!
+    \brief Parse a Not expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseNotExpr(LinkedList<PromoterLexer.Token> tokenList)
   {
     PromoterNodeData data = new PromoterNodeData();
@@ -303,6 +383,11 @@ public class PromoterParser
     return ParseOperandExpr(tokenList);
   }
 
+  /*!
+    \brief Parse an Operand expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseOperandExpr(LinkedList<PromoterLexer.Token> tokenList)
   {
     TreeNode<PromoterNodeData> left;
@@ -362,6 +447,11 @@ public class PromoterParser
     return new TreeNode<PromoterNodeData>(data);
   }
 
+  /*!
+    \brief Parse a Constant expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseConstantsNumList(LinkedList<PromoterLexer.Token> tokenList)
   {
     int restoreStatus;
@@ -393,6 +483,11 @@ public class PromoterParser
     return nodeK;
   }
 
+  /*!
+    \brief Parse a Constants tokens
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseConstants(LinkedList<PromoterLexer.Token> tokenList)
   {
     TreeNode<PromoterNodeData> node;
@@ -420,6 +515,11 @@ public class PromoterParser
     return node;
   }
 
+  /*!
+    \brief Parse a Word expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseWord(LinkedList<PromoterLexer.Token> tokenList)
   {
     PromoterNodeData data = new PromoterNodeData();
@@ -445,6 +545,11 @@ public class PromoterParser
     return new TreeNode<PromoterNodeData>(data);
   }
 
+  /*!
+    \brief Parse a Number expression
+    \param tokenList The list of tokens
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData>     ParseNumber(LinkedList<PromoterLexer.Token> tokenList)
   {
     PromoterNodeData data = new PromoterNodeData();
@@ -470,7 +575,11 @@ public class PromoterParser
     return new TreeNode<PromoterNodeData>(data);
   }
 
-
+  /*!
+    \brief Parse a string
+    \param str The string to parse
+    \return Return the tree corresponding to the expression or null if the parsing fail.
+  */
   public TreeNode<PromoterNodeData> Parse(string str)
   {
     clear();
@@ -490,10 +599,12 @@ public class PromoterParser
     _restoreStatus = 0;
   }
 
-
-
-// ========================== Pretty Print Tree =================================
-
+  /*!
+    \brief This function pretty print the tree for debugging.
+    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \param node The root of the tree
+    \param str The string where to append the text
+   */
   public void  PPRecTree(TreeNode<PromoterNodeData> node, ref string str)
   {
     if (node != null)
@@ -511,7 +622,13 @@ public class PromoterParser
       }
   }
 
-  public void PPTree(TreeNode<PromoterNodeData> tree)
+  /*!
+    \brief This function pretty print the tree for debugging.
+    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \param tree The tree to pretty print
+    \return Return a string that contain the text
+  */
+  public string PPTree(TreeNode<PromoterNodeData> tree)
   {
     string output;
     if (tree == null)
@@ -519,12 +636,6 @@ public class PromoterParser
     output = "Digraph G {";
     PPRecTree(tree, ref output);
     output += "}";
-//     string path = "graph.txt";
-
-    // This text is added only once to the file. 
-//     if (!File.Exists(path))
-//       {
-//         File.WriteAllText(path, output);
-//       }
+    return output;
   }
 }

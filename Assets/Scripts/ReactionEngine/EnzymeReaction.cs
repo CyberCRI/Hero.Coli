@@ -44,7 +44,7 @@ public class EnzymeReaction : IReaction
 {
   protected string _substrate;            //!< The substrate of the reaction
   protected string _enzyme;               //!< The enzyme of the reaction
-  protected float _Kcat;                  //!< The affinity between the substrate and the enzyme coefficient
+  protected float _Kcat;                  //!< Reaction constant of enzymatic reaction
   protected string  _effector;            //!< The effector of the reaction
   protected float _alpha;                 //!< Alpha descriptor of the effector
   protected float _beta;                  //!< Beta descriptor of the effector

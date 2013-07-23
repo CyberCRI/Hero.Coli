@@ -8,6 +8,17 @@ using System.IO;
 /*!
  *  \brief     Load fick reaction files
  *  \details   Load files that describe FickReaction.
+ A fick reaction file should respect this synthax :
+ 
+     <ficks>
+      <fickProp>
+        <MediumId1>2</MediumId1>                -> Unique ID of the first medium
+        <MediumId2>1</MediumId2>                -> Unique ID of the second medium
+        <P>0.05</P>                             -> Permeability coefficient
+        <surface>0.003</surface>                -> contact surface between the two medium
+      </fickProp>
+    </ficks>
+
  *  \author    Pierre COLLET
  *  \mail      pierre.collet91@gmail.com
  */
@@ -53,9 +64,6 @@ public class FickLoader
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.Load(ms);
 
-//     XmlDocument xmlDoc = new XmlDocument();
-//     Debug.Log(filePath);
-//     xmlDoc.LoadXml(filePath);
     XmlNodeList ficksLists = xmlDoc.GetElementsByTagName("ficks");
     foreach (XmlNode ficksNodes in ficksLists)
       {
@@ -68,13 +76,6 @@ public class FickLoader
               }
           }
       }
-
-//     StreamReader fileStream = new StreamReader(@filePath);
-// //     LinkedList<FickProprieties> mediums;
-
-//     string text = fileStream.ReadToEnd();
-//     Debug.Log(text);
-//     fileStream.Close();
 
     if (ficksProps.Count == 0)
       return null;

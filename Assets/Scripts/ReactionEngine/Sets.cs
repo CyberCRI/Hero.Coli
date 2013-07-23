@@ -5,6 +5,15 @@ using System.Collections.Generic;
   \brief Represent a Molecule set
   \details A MoleculeSet is assigned to a medium and so describe
   what quantity of which molecule is present in a medium.
+
+A molecule set must be declared in molecule's files respecting this synthax :
+
+    <Document>
+      <molecules id="CelliaMolecules">
+         [...] (molecules declarations)
+      </molecules>
+    <Document>
+
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
@@ -18,6 +27,15 @@ public class MoleculesSet
   \brief Represent a Reaction set
   \details A ReactionSet is assigned to a medium and so describe
   which reaction is present in each medium.
+
+A reaction set musth be declare in molecule's files respecting this synthax :
+
+    <Document>
+      <reactions id="CelliaReactions">
+         [...] (reactions declarations)
+      </reactions>
+    </Document>
+
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
