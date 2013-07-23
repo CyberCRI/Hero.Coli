@@ -59,16 +59,9 @@ public class GUITransitioner : MonoBehaviour {
 	
 	private bool gamePaused = false;
 	private void Pause(bool pause) {
-		//Screen.showCursor = false;
-		if(pause) {
-			gamePaused = true;
-			Screen.showCursor = true;
-			Time.timeScale = 0;
-		} else {
-			gamePaused = false;
-			Screen.showCursor = false;
-			Time.timeScale = 1;
-		}
+		gamePaused = pause;
+		Screen.showCursor = pause;
+		//Time.timeScale = pause?0:1;
 	}
 	
 	// Update is called once per frame
