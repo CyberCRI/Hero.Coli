@@ -1,35 +1,55 @@
 using System;
 using UnityEngine;
 
+/*!
+  \brief This class gives discretes randoms numbers based on a distribution function
+ */
 public class NumberGenerator
 {
 
-  public delegate float repartitionFunc(float x, float esp, float ecartType);
+  public delegate float repartitionFunc(float x, float esp, float ecartType);           //!< The delegate of a repartition function
 
-  private float _min;
-  private float _max;
-  private float _step;
-  private repartitionFunc _func;
-  private float[] _tab;
-  private int _sizeTab;
-  private float _localMax;
+  private float _min;                           //!< The minimum
+  private float _max;                           //!< The maximum
+  private float _step;                          //!< The step
+  private repartitionFunc _func;                //!< The repartition function
+  private float[] _tab;                         //!< The table of number used to generate number
+  private int _sizeTab;                         //!< The size of the table
+  private float _localMax;                      //!< The maximum in the tab
 
+  /*!
+    \brief A basic uniform distribution function
+    \return Return always 1;
+   */
   public static float uniform(float x, float esp, float ecartType)
   {
     return 1f;
   }
 
+  /*!
+    \brief A normal distribution function
+    \param x x parameter
+    \param esperance The esperance
+    \param ecartType The ecartType
+   */
   public static float normale(float x, float esperance, float ecartType)
   {
     return (float)(1f / ecartType * Math.Sqrt(2f*Math.PI)) * (float)Math.Exp((-1f/2f) * Math.Pow((x - esperance) / ecartType, 2f));
   }
 
-
+  //! Constructor
   public NumberGenerator(repartitionFunc func, float min, float max, float step = 0.1f)
   {
     init(func, min, max, step);
   }
 
+  /*!
+    \brief Initialize the generator
+    \param func The repartition function
+    \param min The minimum value
+    \param max The maximum value
+    \param step The step
+   */
   public void init(repartitionFunc func, float min, float max, float step = 0.1f)
   {
     _func = func;
@@ -45,40 +65,23 @@ public class NumberGenerator
     while (i < max)
       {
         _tab[j] = func(i, 0f, 0.01f) + last;
-//         Debug.Log(j);
-//         Debug.Log(_tab[j]);
         last = _tab[j];
         j++;
         i += step;
       }
     _localMax = last;
-//     Debug.Log(j + " != " + _sizeTab + " i = " + i);
-//     _tab[j] = last;
   }
 
+  //! return a random number
   public float getNumber()
   {
     float nb = UnityEngine.Random.Range(0f, _localMax);
 
     int i = 0;
-//     Debug.Log("Start");
-//     Debug.Log(nb);
     while (i < _sizeTab && _tab[i] <= nb)
-      {
-//         Debug.Log(_tab[i] + " <= " + nb);
-//         Debug.Log(i);
-        i++;
-      }
-//     Debug.Log("End");
+      i++;
     if (i == 0)
-      {
-        Debug.Log("error ===============");
-        Debug.Log(nb);
-        Debug.Log(_localMax);
-        Debug.Log("============");
         return 0f;
-      }
-//     Debug.Log("return : " + ((float)(i - 1) * _step + _min));
     return (float)(i) * _step + _min;
   } 
 }

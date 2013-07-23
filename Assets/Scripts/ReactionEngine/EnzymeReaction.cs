@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*!
+  \brief This class represent an EnzymeReaction and can be loaded by the ReactionEngine class
+  \author Pierre COLLET
+  \sa EnzymeReaction
+ */
 public class EnzymeReactionProprieties
 {
   public string name;
@@ -63,10 +68,11 @@ public class EnzymeReaction : IReaction
   public void setKi(float value) { _Ki = value;}
   public float getKi() { return _Ki; }
 
+  //! Default Constructor
   public EnzymeReaction()
-  {
-  }
+  {}
 
+  //! Copy constructor
   public EnzymeReaction(EnzymeReaction r) : base(r)
   {
     _substrate = r._substrate;
@@ -80,8 +86,16 @@ public class EnzymeReaction : IReaction
   }
 
 
+  /*!
+    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProprieties
+    \param props The proprities class
+    \return This function return a new EnzymeReaction or null if props is null.
+   */
   public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProprieties props)
   {
+    if (props == null)
+      return null;
+
     EnzymeReaction reaction = new EnzymeReaction();
 
     reaction.setName(props.name);
@@ -185,9 +199,6 @@ public class EnzymeReaction : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
-
 
     if (enableNoise)
       {
@@ -207,5 +218,4 @@ public class EnzymeReaction : IReaction
           mol.addNewConcentration(delta);
       }
   }
-
 }

@@ -80,7 +80,7 @@ public class Fick
             react.setSurface(prop.surface);
           }
         else
-          Debug.Log("da fuck dude!?");
+          Debug.Log("Cannot initialize this fick reaction because there is some non-logical declaration of FickReaction. Please verify your files");
       }
   }
 
@@ -89,11 +89,11 @@ public class Fick
       \param files Array of files which contain information about diffusion reaction.
       \param mediums The list of all the medium.
 
-This function load the diffusions reactions based on Fick model. It take a Array of file paths
-and a list of Medium that should contain all the mediums of the simulation.
-This function create the list of all the reactions between each Medium wich exist and initialize their parameters to 0.
-Only the reactions explicitly defined in files are initialized to the values explicited in files.
-If a parameter of a fick reaction is not specified in files then this parameter will be equal to 0.
+      This function load the diffusions reactions based on Fick model. It take a Array of file paths
+      and a list of Medium that should contain all the mediums of the simulation.
+      This function create the list of all the reactions between each Medium wich exist and initialize their parameters to 0.
+      Only the reactions explicitly defined in files are initialized to the values explicited in files.
+      If a parameter of a fick reaction is not specified in files then this parameter will be equal to 0.
     */
   public void           loadFicksReactionsFromFiles(string[] files, LinkedList<Medium> mediums)
   {
@@ -106,11 +106,6 @@ If a parameter of a fick reaction is not specified in files then this parameter 
         if (newPropList != null)
           LinkedListExtensions.AppendRange<FickProprieties>(propsList, newPropList);
       }
-//     foreach (string file in files)
-//       {
-//         propsList = _loader.loadFickProprietiesFromFile(file);
-        
-//       }
     _reactions = FickReaction.getFickReactionsFromMediumList(mediums);
     finalizeFickReactionFromProps(propsList, _reactions);
   }

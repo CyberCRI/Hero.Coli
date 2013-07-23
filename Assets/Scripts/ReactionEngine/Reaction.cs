@@ -56,7 +56,6 @@ public class Molecule
   public float getConcentration() {return _concentration; }
   public float getDegradationRate() {return _degradationRate; }
   public float getSize() { return _size; }
-
   public void setName(string name) { _name = name; }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }
@@ -65,13 +64,14 @@ public class Molecule
   public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0; }
-
   public void setSize(float size) { _size = size; }
+
   /*!
     \brief Add molecule concentration
     \param concentration The concentration
    */
   public void addConcentration(float concentration) { _concentration += concentration; if (_concentration < 0) _concentration = 0;}
+
   /*!
     \brief Add molecule concentration
     \param concentration The concentration
@@ -79,11 +79,7 @@ public class Molecule
   public void subConcentration(float concentration) { _concentration -= concentration; if (_concentration < 0) _concentration = 0;}
 
   //! \brief This function set the actual concentration to it new value
-  public void updateConcentration()
-  {
-    _concentration = _newConcentration;
-//     _newConcentration = 0f;
-  }
+  public void updateConcentration() { _concentration = _newConcentration; }
 }
 
 
@@ -144,6 +140,7 @@ public abstract class IReaction
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
+  //! Copy Constructor
   public IReaction(IReaction r)
   {
     _products = new LinkedList<Product>();
@@ -169,6 +166,11 @@ public abstract class IReaction
   public void setMedium(Medium med) { _medium = med; }
 
 
+  /*!
+    \brief This function copy a reaction by calling it's real copy constructor (not IReaction constructor but for example Promoter constructor)
+    \param r Reaction to copy
+    \return Return a reference on the new reaction or null if the give reaction is not a well know one.
+   */
   public static IReaction       copyReaction(IReaction r)
   {
     if (r as Promoter != null)
@@ -193,7 +195,7 @@ public abstract class IReaction
   //! This function should be implemented by each reaction that inherit from this class.
   //! It's called at each tick of the game.
   public abstract void react(ArrayList molecules);
-//   public abstract void getCopy();
+
   /*! 
     \brief Add a Product to the product list.
     \param prod The product to be added to the list
@@ -223,6 +225,7 @@ public class Degradation : IReaction
     _molName = molName;
   }
 
+  //! Copy Constructor
   public Degradation(Degradation r) : base(r)
   {
     _degradationRate = r._degradationRate;
