@@ -105,7 +105,7 @@ public class Line{
 		}
 		
 		//Unknown values
-		for(i = i; i < _graphWidth; i++){
+		for(; i < _graphWidth; i++){
 			_pointsArray[i] = newPoint(i);
 		}
 	}

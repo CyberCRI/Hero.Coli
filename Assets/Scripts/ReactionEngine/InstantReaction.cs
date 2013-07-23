@@ -72,8 +72,6 @@ public class InstantReaction : IReaction
   }
 
 
-  public string getName() { return _name; }
-  public void setName(string str) { _name = str; }
   public void addReactant(Product reactant) { if (reactant != null) _reactants.AddLast(reactant); }
 
 

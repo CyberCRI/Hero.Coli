@@ -10,9 +10,7 @@ public class NumberGenerator
   public delegate float repartitionFunc(float x, float esp, float ecartType);           //!< The delegate of a repartition function
 
   private float _min;                           //!< The minimum
-  private float _max;                           //!< The maximum
   private float _step;                          //!< The step
-  private repartitionFunc _func;                //!< The repartition function
   private float[] _tab;                         //!< The table of number used to generate number
   private int _sizeTab;                         //!< The size of the table
   private float _localMax;                      //!< The maximum in the tab
@@ -52,8 +50,6 @@ public class NumberGenerator
    */
   public void init(repartitionFunc func, float min, float max, float step = 0.1f)
   {
-    _func = func;
-    _max = max;
     _min = min;
     _step = step;
     _tab = new float[(int)((max - min) / step) + 3];

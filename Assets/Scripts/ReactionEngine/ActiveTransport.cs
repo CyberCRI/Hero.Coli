@@ -38,13 +38,11 @@ public class ActiveTransportProprieties
 public class ActiveTransport {
 
   private ActiveTransportLoader                 _loader;        //!< The file loader that reads proprieties from files
-  private LinkedList<ActiveTransportReaction>   _reactions;     //!< The reaction list.
 
   //! Default Constructor
   public ActiveTransport()
   {
     _loader = new ActiveTransportLoader();
-    _reactions = new LinkedList<ActiveTransportReaction>();
   }
 
   /*!

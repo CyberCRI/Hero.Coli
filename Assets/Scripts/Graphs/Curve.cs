@@ -15,7 +15,7 @@ public class Curve
   private Vector2[] _pts;
 
   private LineType[] _linesTypes;
-  private VectorLine[] _lines;
+//   private VectorLine[] _lines;
 
   private float _minY;
   private float _maxY;
@@ -38,7 +38,7 @@ public class Curve
     _vectroCam = VectroCam;
 //     _pos = pos;
 
-    _lines = new VectorLine[_maxPoints];
+//     _lines = new VectorLine[_maxPoints];
 //     _linesTypes = new _linesTypes[_maxPoints - 1];
 
     VectorManager.useDraw3D = true;

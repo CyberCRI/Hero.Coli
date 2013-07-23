@@ -70,8 +70,6 @@ public class Allostery : IReaction
   private string _product;              //! The name of the product
 
 
-  public string getName() { return _name; }
-  public void setName(string str) { _name = str; }
   public string getEffector() { return _effector; }
   public void setEffector(string str) { _effector = str; }
   public float getK() { return _K; }
