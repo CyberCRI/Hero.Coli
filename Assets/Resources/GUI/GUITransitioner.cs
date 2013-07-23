@@ -3,8 +3,12 @@ using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
 	
-	private float _timeCounter = 0.0f;
 	private float _timeDelta = 0.2f;
+	
+    private float _timeAtLastFrame = 0f;
+    private float _timeAtCurrentFrame = 0f;
+    private float _deltaTime = 0f;
+	
 	private GameScreen _currentScreen = GameScreen.screen1;
 	private enum GameScreen {
 		screen1,
@@ -61,12 +65,16 @@ public class GUITransitioner : MonoBehaviour {
 	private void Pause(bool pause) {
 		gamePaused = pause;
 		Screen.showCursor = pause;
-		//Time.timeScale = pause?0:1;
+		Time.timeScale = pause?0:1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - _timeCounter > _timeDelta) {
+		
+		_timeAtCurrentFrame = Time.realtimeSinceStartup;
+        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+		
+		if(_deltaTime > _timeDelta) {
 			if (Input.GetKey(KeyCode.Alpha1)) {//GOTO screen1
 				if(_currentScreen == GameScreen.screen2) {
 					Debug.Log("2->1");
@@ -148,7 +156,8 @@ public class GUITransitioner : MonoBehaviour {
 				_currentScreen = GameScreen.screen3;			
 				
 			}
-			_timeCounter = Time.time;
+			
+        	_timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
 }

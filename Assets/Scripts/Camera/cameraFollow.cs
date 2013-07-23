@@ -16,6 +16,10 @@ public class cameraFollow : MonoBehaviour {
 	
 	private float fov;
 	
+    private float _timeAtLastFrame = 0f;
+    private float _timeAtCurrentFrame = 0f;
+    private float deltaTime = 0f;
+	
 	public void SetZoom(bool zoomIn) {
 		_zoomed = zoomIn;
 		if(zoomIn) {
@@ -34,13 +38,17 @@ public class cameraFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
+		_timeAtCurrentFrame = Time.realtimeSinceStartup;
+        deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+        _timeAtLastFrame = _timeAtCurrentFrame;
+		
 		transform.position = target.position + offset;
 		
 		if(_transition){
 			if(!_zoomed) {
 				fov = Mathf.Clamp(fov + Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
 			}
-			camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, fov, Time.deltaTime * zoomSmooth);
+			camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, fov, deltaTime * zoomSmooth);
 		}
 	}
 }
