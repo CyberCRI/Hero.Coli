@@ -26,7 +26,7 @@ public class Device : MonoBehaviour {
 	}
 	
 	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceSpritePrefab");
-	public static Device Create(Transform parentTransform, Vector3 localPosition, int deviceID)
+	public static Device Create(Transform parentTransform, Vector3 localPosition, int deviceID, DevicesDisplayer.DeviceType deviceType)
 	{
 	    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
 		newDevice.transform.parent = parentTransform;

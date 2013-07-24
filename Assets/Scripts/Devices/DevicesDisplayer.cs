@@ -2,10 +2,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class DevicesDisplayer : MonoBehaviour {
 	
-	private List<Device> _devices = new List<Device>();
-	private int equipedDevicesCount = 0;
+	public enum DeviceType {
+		Equiped,
+		Inventory
+	}
+	
+	private List<Device> _equipedDevices = new List<Device>();
+	private List<Device> _inventoryDevices = new List<Device>();
 	
 	private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
@@ -22,27 +28,32 @@ public class DevicesDisplayer : MonoBehaviour {
 	public UIPanel inventoryPanel;
 	public GameObject equipedDevice;	
 	public GameObject inventoryDevice;
-	public void addDevice(int deviceID, DeviceInfo deviceInfo, bool isEquiped) {
-		if(isEquiped){
-			Debug.Log("addDevice("+deviceID+", "+deviceInfo+")");
-			if(!_devices.Exists(device => device.getID() == deviceID)) { 
-				Vector3 localPosition = equipedDevice.transform.localPosition + new Vector3(0.0f, -equipedDevicesCount*_height, -0.1f);
-				Device device = Device.Create (equipPanel.transform, localPosition, deviceID);
-				_devices.Add(device);
-			}
-		} else {			
-			Debug.Log("addDevice("+deviceID+") in inventory");
-			if(!_devices.Exists(device => device.getID() == deviceID)) { 
-				Vector3 localPosition = inventoryDevice.transform.localPosition + new Vector3((_devices.Count%3)*_height, -(_devices.Count/3)*_height, -0.1f);
-				Device device = Device.Create (inventoryPanel.transform, localPosition, deviceID);
-				_devices.Add(device);
-			}
-		}
-			
-		//let's add reaction to reaction engine
-		//for each module of deviceInfo, add to reaction engine
-		//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+	
+	
+	public void addDevice(int deviceID, DeviceInfo deviceInfo, DeviceType deviceType) {
 		
+		Debug.Log("addDevice("+deviceID+", "+deviceInfo+", "+deviceType+")");
+		
+		if((!_equipedDevices.Exists(device => device.getID() == deviceID))
+			&& (!_inventoryDevices.Exists(device => device.getID() == deviceID))) { 
+			Vector3 localPosition;
+			UnityEngine.Transform parent;
+			List<Device> devices;
+			if(deviceType == DeviceType.Equiped) {
+				parent = equipPanel.transform;
+				devices = _equipedDevices;
+			} else {			
+				Debug.Log("addDevice("+deviceID+") in inventory");
+				parent = inventoryPanel.transform;
+				devices = _inventoryDevices;
+			}
+			localPosition = getNewPosition(deviceType);
+			Device newDevice = Device.Create (parent, localPosition, deviceID, deviceType);
+			devices.Add(newDevice);
+			//let's add reaction to reaction engine
+			//for each module of deviceInfo, add to reaction engine
+			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+		}
 	}
 	
 	public void UpdateScreen(int screenID){
@@ -57,15 +68,35 @@ public class DevicesDisplayer : MonoBehaviour {
 		}
 	}
 	
+	public Vector3 getNewPosition(DeviceType deviceType) {
+		Vector3 res;
+		if(deviceType == DeviceType.Equiped) {
+			res = equipedDevice.transform.localPosition + new Vector3(0.0f, -_equipedDevices.Count*_height, -0.1f);
+		} else {
+			res = inventoryDevice.transform.localPosition + new Vector3((_inventoryDevices.Count%3)*_height, -(_inventoryDevices.Count/3)*_height, -0.1f);
+		}		
+		return res;
+	}
+	
 	public void removeDevice(int deviceID) {
 		Debug.Log("removeDevice("+deviceID+")");
-		Device toRemove = _devices.Find(device => device.getID() == deviceID);
+		Device toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
+		List<Device> devices = _equipedDevices;
+		Vector3 position = equipedDevice.transform.localPosition;
+		DeviceType deviceType = DeviceType.Equiped;
+		if(toRemove == null) {
+			toRemove = _inventoryDevices.Find(device => device.getID() == deviceID);
+			devices = _inventoryDevices;
+			position = inventoryDevice.transform.localPosition;
+			deviceType = DeviceType.Inventory;
+		}
+		
 		if(toRemove != null) {
-			_devices.Remove(toRemove);
+			devices.Remove(toRemove);
 			toRemove.Remove();
-			for(int i = 0; i < equipedDevicesCount; i++) {
-				Vector3 newLocalPosition = equipedDevice.transform.localPosition + new Vector3(0.0f, -i*_height, 0.0f);
-				_devices[i].Redraw(newLocalPosition);
+			for(int i = 0; i < devices.Count; i++) {
+				Vector3 newLocalPosition = getNewPosition(deviceType);
+				devices[i].Redraw(newLocalPosition);
 			}
 		}
 	}
@@ -101,8 +132,7 @@ public class DevicesDisplayer : MonoBehaviour {
 					"GFP",
 					1.0f
 					);
-	        	addDevice(randomID, deviceInfo, true);
-				equipedDevicesCount++;
+	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Equiped);
 				
 			}
 			
@@ -119,14 +149,15 @@ public class DevicesDisplayer : MonoBehaviour {
 					"GFP",
 					1.0f
 					);
-	        	addDevice(randomID, deviceInfo, false);
+	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Inventory);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
-				if( equipedDevicesCount > 0) {
-					int randomIdx = Random.Range(0, _devices.Count);
-					Device randomDevice = _devices[randomIdx];
+				//FIXME
+				//TODO
+				if( _equipedDevices.Count > 0) {
+					int randomIdx = Random.Range(0, _equipedDevices.Count);
+					Device randomDevice = _equipedDevices[randomIdx];
 		        	removeDevice(randomDevice.getID());
-					equipedDevicesCount--;
 				}
 			}
 			_timeAtLastFrame = _timeAtCurrentFrame;
