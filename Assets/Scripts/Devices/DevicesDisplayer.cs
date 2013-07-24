@@ -9,43 +9,47 @@ public class DevicesDisplayer : MonoBehaviour {
 	private float _timeCounter;
 	private float _timeDelta = 0.1f;
 	//TODO use real device width
-	static private float _height = 45.0f;
+	static private float _height = 52.0f;
 	public ReactionEngine reactionEngine;
 	public int celliaMediumID = 1;
 	public UIPanel equipPanel;
-	public UIPanel catalogPanel;
-	public UISprite equipPanelSlotPosition;	
-	public UISprite catalogPanelSlotPosition;
+	public GameObject equipment;
+	public GameObject inventory;
+	public UIPanel inventoryPanel;
+	public GameObject equipedDevice;	
+	public GameObject inventoryDevice;
 	public void addDevice(int deviceID, DeviceInfo deviceInfo, bool isEquiped) {
 		if(isEquiped){
 			Debug.Log("addDevice("+deviceID+", "+deviceInfo+")");
 			if(!_devices.Exists(device => device.getID() == deviceID)) { 
-				Vector3 localPosition = equipPanelSlotPosition.transform.localPosition + new Vector3(0.0f, -equipedDevicesCount*_height, 0.0f);
+				Vector3 localPosition = equipedDevice.transform.localPosition + new Vector3(0.0f, -equipedDevicesCount*_height, -0.1f);
 				Device device = Device.Create (equipPanel.transform, localPosition, deviceID);
 				_devices.Add(device);
 			}
 		} else {			
-			Debug.Log("addDevice("+deviceID+") in catalog");
+			Debug.Log("addDevice("+deviceID+") in inventory");
 			if(!_devices.Exists(device => device.getID() == deviceID)) { 
-				Vector3 localPosition = catalogPanelSlotPosition.transform.localPosition + new Vector3((_devices.Count%3)*_height, -(_devices.Count/3)*_height, 0.0f);
-				Device device = Device.Create (catalogPanel.transform, localPosition, deviceID);
+				Vector3 localPosition = inventoryDevice.transform.localPosition + new Vector3((_devices.Count%3)*_height, -(_devices.Count/3)*_height, -0.1f);
+				Device device = Device.Create (inventoryPanel.transform, localPosition, deviceID);
 				_devices.Add(device);
 			}
 		}
 			
-			//let's add reaction to reaction engine
-			//for each module of deviceInfo, add to reaction engine
-			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+		//let's add reaction to reaction engine
+		//for each module of deviceInfo, add to reaction engine
+		//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
 		
 	}
 	
 	public void UpdateScreen(int screenID){
 		Debug.Log(screenID + " screen");
 		if(screenID == 1 || screenID == 3){
-			catalogPanel.SetAlphaRecursive(0,true);
+			//inventoryPanel.SetAlphaRecursive(0,true);
+			inventoryPanel.gameObject.SetActive(false);
 		}
 		if(screenID == 2){
-			catalogPanel.SetAlphaRecursive(100,true);
+			//inventoryPanel.SetAlphaRecursive(100,true);
+			inventoryPanel.gameObject.SetActive(true);
 		}
 	}
 	
@@ -56,7 +60,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			_devices.Remove(toRemove);
 			toRemove.Remove();
 			for(int i = 0; i < equipedDevicesCount; i++) {
-				Vector3 newLocalPosition = equipPanelSlotPosition.transform.localPosition + new Vector3(0.0f, -i*_height, 0.0f);
+				Vector3 newLocalPosition = equipedDevice.transform.localPosition + new Vector3(0.0f, -i*_height, 0.0f);
 				_devices[i].Redraw(newLocalPosition);
 			}
 		}
@@ -64,7 +68,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {		
-		catalogPanel.SetAlphaRecursive(0,true);//screen 1 at the beginning = no catalog
+		//inventoryPanel.SetAlphaRecursive(0,true);//screen 1 at the beginning = no inventory
+		inventoryPanel.gameObject.SetActive(false);
 		/*
 		for(int i = 0; i < 5; i++) {
 			addDevice (i);

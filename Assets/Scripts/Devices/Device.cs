@@ -31,7 +31,7 @@ public class Device : MonoBehaviour {
 	    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
 		newDevice.transform.parent = parentTransform;
 		newDevice.transform.localPosition = localPosition;
-		newDevice.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+		newDevice.transform.localScale = new Vector3(50f, 50f, 0);
 		
 	    Device deviceScript = newDevice.GetComponent<Device>();
 		deviceScript._deviceID = deviceID;

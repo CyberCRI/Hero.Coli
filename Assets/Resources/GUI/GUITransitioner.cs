@@ -28,6 +28,12 @@ public class GUITransitioner : MonoBehaviour {
 		SetScreen2(false);
 		SetScreen3(false);
 		SetScreen1(true);
+		
+		Pause(false);
+		_devicesDisplayer.UpdateScreen(1);
+		_currentScreen = GameScreen.screen1;
+		
+		_timeAtLastFrame = Time.realtimeSinceStartup;
 	}
 	
 	
@@ -80,7 +86,7 @@ public class GUITransitioner : MonoBehaviour {
 					Debug.Log("2->1");
 					//2 -> 1
 					//set zoom1
-					//remove catalog device, deviceID
+					//remove inventory device, deviceID
 					//add graphs
 					//move devices and potions?
 					
@@ -107,7 +113,7 @@ public class GUITransitioner : MonoBehaviour {
 					Debug.Log("1->2");
 					//1 -> 2
 					//set zoom2
-					//add catalog device, deviceID
+					//add inventory device, deviceID
 					//remove graphs
 					//move devices and potions?
 					
@@ -116,7 +122,7 @@ public class GUITransitioner : MonoBehaviour {
 					//3 -> 1
 					//set zoom2
 					//remove craft screen
-					//add catalog device, deviceID
+					//add inventory device, deviceID
 					//add potions
 					//add devices
 					//add life/energy
@@ -135,7 +141,7 @@ public class GUITransitioner : MonoBehaviour {
 					Debug.Log("1->3");
 					//1 -> 3
 					//remove everything
-					//add device catalog, parameters
+					//add device inventory, parameters
 					//remove graphs
 					//move devices and potions?
 					SetScreen1(false);
