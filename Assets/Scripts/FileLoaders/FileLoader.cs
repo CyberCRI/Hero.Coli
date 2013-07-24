@@ -61,8 +61,8 @@ public class FileLoader
           case "degradationRate":
             mol.setDegradationRate(float.Parse(attr.InnerText.Replace(",", ".")));
             break;
-          case "size":
-            mol.setSize(float.Parse(attr.InnerText.Replace(",", ".")));
+          case "FickFactor":
+            mol.setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
             break;
           }
      }

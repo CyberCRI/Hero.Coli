@@ -31,18 +31,21 @@
       <description>oxygene</description>
       <concentration>10</concentration>
       <degradationRate>0.1386</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="transcription_factor">
       <name>H</name>
       <description>hydrogene</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
       <description>de l'eau!</description>
       <concentration>0</concentration>
       <degradationRate>0.013</degradationRate>
+      <FickFactor>0.33</FickFactor>
     </molecule> 
 </molecules>
                                   

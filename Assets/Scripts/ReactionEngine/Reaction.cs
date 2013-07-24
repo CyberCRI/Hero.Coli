@@ -14,6 +14,18 @@ using System.Collections;
         - A degradation rate -> used for degradation reaction
         - A Size -> used for fick reaction (not implemented yet)
 
+
+Molecules wich are declared in files should respect this synthax :
+
+      <molecule type="other">
+        <name>H2O</name>
+        <description>de l'eau!</description>
+        <concentration>0</concentration>
+        <degradationRate>0.013</degradationRate>
+        <FickFactor>0.33</FickFactor>
+      </molecule>
+
+
    \author Pierre COLLET
    \mail pierre.collet91@gmail.com
  */
@@ -27,13 +39,13 @@ public class Molecule
     OTHER
   }
 
-  private string _name;                 //! The name of the molecule
-  private eType _type;                  //! The type of the molecule
-  private string _description;          //! The description of the molecule (optionnal)
-  private float _concentration;         //! The concentration of the molecule
-  private float _newConcentration;      //! The concentration of the molecule for the next stage
-  private float _degradationRate;       //! The degradation rate of the molecule
-  private float _size;                  //! The size of the molecule (not used for now)
+  private string _name;                 //!< The name of the molecule
+  private eType _type;                  //!< The type of the molecule
+  private string _description;          //!< The description of the molecule (optionnal)
+  private float _concentration;         //!< The concentration of the molecule
+  private float _newConcentration;      //!< The concentration of the molecule for the next stage
+  private float _degradationRate;       //!< The degradation rate of the molecule
+  private float _fickFactor;            //!< The FickFactor is a coefficient for FickReaction
 
   //! Default constructor
   public Molecule(Molecule mol = null)
@@ -45,7 +57,7 @@ public class Molecule
         _description = mol._description;
         _concentration = mol._concentration;
         _degradationRate = mol._degradationRate;
-        _size = mol._size;
+        _fickFactor = mol._fickFactor;
         _newConcentration = mol._newConcentration;
       }
   }
@@ -55,7 +67,7 @@ public class Molecule
   public string getDescription() {return _description; }
   public float getConcentration() {return _concentration; }
   public float getDegradationRate() {return _degradationRate; }
-  public float getSize() { return _size; }
+  public float getFickFactor() { return _fickFactor; }
   public void setName(string name) { _name = name; }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }
@@ -64,7 +76,7 @@ public class Molecule
   public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0; }
-  public void setSize(float size) { _size = size; }
+  public void setFickFactor(float v) { _fickFactor = v; }
 
   /*!
     \brief Add molecule concentration

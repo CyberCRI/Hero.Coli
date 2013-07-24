@@ -256,10 +256,10 @@ Where:
       {
         c1 = mol1.getConcentration();
         mol2 = ReactionEngine.getMoleculeFromName(mol1.getName(), molMed2);
-        if (mol2 != null && mol2.getSize() <= Fick.MaximumMoleculeSize)
+        if (mol2 != null && mol2.getFickFactor() > 0f)
           {
             c2 = mol2.getConcentration();
-            result = (c2 - c1) * _P * _surface * _reactionSpeed * ReactionEngine.reactionsSpeed;
+            result = (c2 - c1) * _P * _surface * mol2.getFickFactor() * _reactionSpeed * ReactionEngine.reactionsSpeed;
             if (enableNoise)
               {
                 float noise = _numberGenerator.getNumber();

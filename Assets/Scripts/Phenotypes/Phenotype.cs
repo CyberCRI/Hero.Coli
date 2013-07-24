@@ -22,8 +22,8 @@ using System.Collections.Generic;
  */
 public abstract class Phenotype : MonoBehaviour
 {
-  public ReactionEngine _RE;                    //! The ReactionEngine (ReactionEngine)
-  public int            _mediumId;              //! The medium id
+  public ReactionEngine _RE;                    //!< The ReactionEngine (ReactionEngine)
+  public int            _mediumId;              //!< The medium id
 
   protected ArrayList             _molecules;
   protected Medium                _mediumRef;
