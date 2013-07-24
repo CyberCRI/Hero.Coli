@@ -27,6 +27,7 @@ public class Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
+  private NumberGenerator _numberGenerator;           //!< Random number generator
   private bool          _enableEnergy;
   private float         _energy;                        //!< Represent the quantity of ATP
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
@@ -70,8 +71,6 @@ public class Medium
   public void enableNoise(bool b)
   {
     _enableNoise = b;
-    foreach (IReaction r in _reactions)
-      r.enableNoise = b;
   }
 
   /*!
@@ -204,6 +203,7 @@ public class Medium
   public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
   {
     _reactions = new LinkedList<IReaction>();
+    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
     ReactionsSet reactSet = ReactionEngine.getReactionsSetFromId(_reactionsSet, reactionsSets);
     MoleculesSet molSet = ReactionEngine.getMoleculesSetFromId(_moleculesSet, moleculesSets);
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
@@ -220,7 +220,6 @@ public class Medium
     foreach (IReaction r in _reactions)
       {
         r.enableSequential = _enableSequential;
-        r.enableNoise = _enableNoise;
       }
   }
 
@@ -245,6 +244,19 @@ public class Medium
     foreach (IReaction reaction in _reactions)
         reaction.react(_molecules);
 
+    if (_enableNoise)
+      {
+        float noise;
+
+        foreach (Molecule m in _molecules)
+          {
+            noise = _numberGenerator.getNumber();
+            if (_enableSequential)
+              m.addConcentration(noise);
+            else
+              m.addNewConcentration(noise);
+          }
+      }
     //#FIXME : Delete theses this a the end
     if (_name == "Cellia")
       {

@@ -260,11 +260,6 @@ Where:
           {
             c2 = mol2.getConcentration();
             result = (c2 - c1) * _P * _surface * mol2.getFickFactor() * _reactionSpeed * ReactionEngine.reactionsSpeed;
-            if (enableNoise)
-              {
-                float noise = _numberGenerator.getNumber();
-                result += noise;
-              }
             if (enableSequential)
               {
                 mol2.addConcentration(- result);

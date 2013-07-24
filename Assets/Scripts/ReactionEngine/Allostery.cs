@@ -174,12 +174,6 @@ public class Allostery : IReaction
           energyCoef = 1f;
         
         delta *= energyCoef;
-
-        if (enableNoise)
-          {
-            float noise = _numberGenerator.getNumber();
-            delta += noise;
-          }
         if (enableSequential)
           {
             product.addConcentration(delta);

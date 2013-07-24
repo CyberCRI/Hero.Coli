@@ -127,14 +127,12 @@ public class Product
  */
 public abstract class IReaction
 {
-  protected string _name;                       //! The name of the reaction.
-  protected LinkedList<Product> _products;      //! The list of products
-  protected bool _isActive;                     //! Activation booleen
+  protected string _name;                       //!< The name of the reaction.
+  protected LinkedList<Product> _products;      //!< The list of products
+  protected bool _isActive;                     //!< Activation booleen
   protected Medium _medium;               //!< The medium where the reaction will be executed.
-  protected float _reactionSpeed;               //! Speed coefficient of the reaction
-  protected float _energyCost;                  //! Energy cosumed for the reaction
-  protected NumberGenerator _numberGenerator;     //! Random number generator
-  public bool enableNoise;
+  protected float _reactionSpeed;               //!< Speed coefficient of the reaction
+  protected float _energyCost;                  //!< Energy cosumed for the reaction
   public bool enableSequential;
   public bool enableEnergy;
 
@@ -145,10 +143,8 @@ public abstract class IReaction
     _isActive = true;
     _reactionSpeed = 1f;
     _energyCost = 0f;
-    enableNoise = false;
     enableSequential = true;
     enableEnergy = false;
-    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
   //! Copy Constructor
@@ -160,11 +156,9 @@ public abstract class IReaction
     _isActive = r._isActive;
     _reactionSpeed = r._reactionSpeed;
      _energyCost = r._energyCost;
-     enableNoise = r.enableNoise;
      enableSequential = r.enableSequential;
      enableEnergy = r.enableEnergy;
      _medium = r._medium;
-     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
   public void setName(string name) { _name = Tools.epurStr(name); }
@@ -257,11 +251,6 @@ public class Degradation : IReaction
 
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
     float delta = mol.getDegradationRate() * mol.getConcentration();
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed);
     else

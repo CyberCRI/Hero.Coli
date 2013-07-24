@@ -60,7 +60,7 @@ public class NumberGenerator
     int j = 0;
     while (i < max)
       {
-        _tab[j] = func(i, 0f, 0.01f) + last;
+        _tab[j] = func(i, 0f, 0.3f) + last;
         last = _tab[j];
         j++;
         i += step;

@@ -337,11 +337,6 @@ public class Promoter : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     foreach (Product pro in _products)
       {
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);

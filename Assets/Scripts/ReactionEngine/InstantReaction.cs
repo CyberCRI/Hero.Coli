@@ -144,11 +144,6 @@ public class InstantReaction : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }    
     Molecule mol;
     foreach (Product react in _reactants)
       {

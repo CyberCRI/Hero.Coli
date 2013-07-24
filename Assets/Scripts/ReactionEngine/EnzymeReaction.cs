@@ -200,11 +200,6 @@ public class EnzymeReaction : IReaction
 
     delta *= energyCoef;
 
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       substrate.subConcentration(delta);
     else

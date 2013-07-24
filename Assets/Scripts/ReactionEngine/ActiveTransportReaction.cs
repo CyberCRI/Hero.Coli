@@ -71,12 +71,6 @@ public class ActiveTransportReaction : EnzymeReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       substrate.subConcentration(delta);
     else
