@@ -6,8 +6,12 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	private List<Device> _devices = new List<Device>();
 	private int equipedDevicesCount = 0;
-	private float _timeCounter;
-	private float _timeDelta = 0.1f;
+	
+	private float _timeAtLastFrame = 0f;
+    private float _timeAtCurrentFrame = 0f;
+    private float _deltaTime = 0f;	
+	private float _deltaTimeThreshold = 0.2f;
+	
 	//TODO use real device width
 	static private float _height = 52.0f;
 	public ReactionEngine reactionEngine;
@@ -80,7 +84,11 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - _timeCounter > _timeDelta) {
+		
+		_timeAtCurrentFrame = Time.realtimeSinceStartup;
+        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;		
+		
+		if(_deltaTime > _deltaTimeThreshold) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device
 				int randomID = Random.Range(0, 12000);
 				DeviceInfo deviceInfo = new DeviceInfo(
@@ -121,7 +129,7 @@ public class DevicesDisplayer : MonoBehaviour {
 					equipedDevicesCount--;
 				}
 			}
-			_timeCounter = Time.time;
+			_timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
 }
