@@ -1,6 +1,6 @@
 
 
-## Create and add new reactions type
+## Reaction Engine : Create and add new reactions type
 
 
 The reaction engine was made so as to add and remove reactions easily.
@@ -48,3 +48,16 @@ in FileLoader.cs. This function should respect this prototype :
 And you have to add at the end of the reactions param the new instance of your reaction.
 
 *See AllosteryFileLoader.cs if you want an example*
+
+
+### 3. Dynamicaly add/remove a reaction
+
+In order to add dynamicaly a new reaction to a medium, simply use the ReactionEngine.addReactionToMedium
+function in ReactionEngine.cs
+
+
+	      public void addReactionToMedium(int mediumId, IReaction reaction)
+
+To remove a reaction from a medium, simply use the ReactionEngine.removeReactionFromMediumByName()
+
+   	      public void removeReactionFromMediumByName(int mediumId, string name)

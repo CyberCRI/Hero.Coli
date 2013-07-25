@@ -1,6 +1,6 @@
 
 
-## Introduction
+## Reaction Engine : Introduction and Architecture
 
 This reaction engine is a non-stochastic simulator. It's means that it's
 only a loop where each turn is a unit of time. At each turn the reaction
@@ -10,12 +10,12 @@ engine call a list of reaction and repeat this work as long as needed.
 ## Architecture
 
 The architecture of this simulator is quite simple.
-Mainely there is 4 differents classes :
+Mainly there is 4 differents classes :
 
-	- ReactionEngine
-	- Medium
-	- IReaction
-	- Molecule
+		- ReactionEngine
+		- Medium
+		- IReaction
+		- Molecule
 
 1. The **ReactionEngine** is everything. It's the master classes that regulate and execute reactions and more.
 2. The **Medium** class contains a list of reactions and a list of molecules
@@ -24,9 +24,9 @@ Mainely there is 4 differents classes :
 4. The **Molecule** class represent a molecule. It contains information such as name, actual concentration etc.
 
 
-This 4 classes are instantied like this :
+This 4 classes are organized like this :
 
-//Schema de l'architecture.
+![Reaction Engine Architecture](./ReactionEngineArchitecture.png "ReactionEngineArchitecture")
 
 ## Processing
 
