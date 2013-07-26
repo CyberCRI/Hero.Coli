@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Device : MonoBehaviour {
+public class DisplayedDevice : MonoBehaviour {
 	
 	private static string _activeSuffix = "Active";
 	
@@ -21,7 +21,7 @@ public class Device : MonoBehaviour {
 	}
 	
 	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceSpritePrefab");
-	public static Device Create(
+	public static DisplayedDevice Create(
 		Transform parentTransform, 
 		Vector3 localPosition, 
 		int deviceID, 
@@ -42,7 +42,7 @@ public class Device : MonoBehaviour {
 		newDevice.transform.localPosition = localPosition;
 		newDevice.transform.localScale = new Vector3(50f, 50f, 0);
 		
-	    Device deviceScript = newDevice.GetComponent<Device>();
+	    DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
 		deviceScript._deviceID = deviceID;
 		deviceScript._deviceType = deviceType;
 		deviceScript._deviceInfo = deviceInfo;

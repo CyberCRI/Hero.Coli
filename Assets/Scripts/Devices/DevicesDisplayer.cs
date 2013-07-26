@@ -19,8 +19,8 @@ public class DevicesDisplayer : MonoBehaviour {
 		Inventory
 	}
 	
-	private List<Device> _equipedDevices = new List<Device>();
-	private List<Device> _inventoryDevices = new List<Device>();
+	private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
+	private List<DisplayedDevice> _inventoryDevices = new List<DisplayedDevice>();
 	
 	private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
@@ -52,7 +52,7 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(alreadyEquiped || alreadyInventory) { 
 			Vector3 localPosition;
 			UnityEngine.Transform parent;
-			List<Device> devices;
+			List<DisplayedDevice> devices;
 			int newDeviceId = deviceID;
 			if(deviceType == DeviceType.Equiped) {
 				parent = equipPanel.transform;
@@ -67,7 +67,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				Debug.Log("addDevice("+newDeviceId+") in inventory");
 			}
 			localPosition = getNewPosition(deviceType);
-			Device newDevice = Device.Create (parent, localPosition, newDeviceId, deviceType, deviceInfo, this);
+			DisplayedDevice newDevice = DisplayedDevice.Create (parent, localPosition, newDeviceId, deviceType, deviceInfo, this);
 			devices.Add(newDevice);
 			//let's add reaction to reaction engine
 			//for each module of deviceInfo, add to reaction engine
@@ -101,8 +101,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	public void removeDevice(int deviceID) {
 		Debug.Log("removeDevice("+deviceID+")");
-		Device toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
-		List<Device> devices = _equipedDevices;
+		DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
+		List<DisplayedDevice> devices = _equipedDevices;
 		DeviceType deviceType = DeviceType.Equiped;
 		if(toRemove == null) {
 			toRemove = _inventoryDevices.Find(device => device.getID() == deviceID);
@@ -180,7 +180,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				//TODO
 				if( _equipedDevices.Count > 0) {
 					int randomIdx = Random.Range(0, _equipedDevices.Count);
-					Device randomDevice = _equipedDevices[randomIdx];
+					DisplayedDevice randomDevice = _equipedDevices[randomIdx];
 		        	removeDevice(randomDevice.getID());
 				}
 			}

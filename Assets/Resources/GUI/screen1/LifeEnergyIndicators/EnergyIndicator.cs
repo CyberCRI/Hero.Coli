@@ -5,7 +5,7 @@ public class EnergyIndicator : MonoBehaviour {
 	
 	public Hero hero;
 	private Vector3 initialScale;
-	public float maxXScale = 0.0f;
+	public float maxXScale = 1.0f;
 	public float startEnergy = 1.0f;
 
 	// Use this for initialization
