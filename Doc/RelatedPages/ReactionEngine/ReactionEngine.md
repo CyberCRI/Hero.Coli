@@ -26,11 +26,11 @@ Mainly there is 4 differents classes :
 
 This 4 classes are organized like this :
 
-![Reaction Engine Architecture](./ReactionEngineArchitecture.png "ReactionEngineArchitecture")
+![Reaction Engine Architecture](./img/ReactionEngineArchitecture.png "ReactionEngineArchitecture")
 
 ## Processing
 
 At each turn of the loop, the reaction engine call for each of its mediums the function Medium.Update(), this function
-call each Reaction.react() functions of it's list of reaction, and at the end modify the concentration of each molecule
+call each IReaction.react() functions of it's list of reaction, and at the end modify the concentration of each molecule
 of each medium.
 
