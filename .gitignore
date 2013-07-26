@@ -19,7 +19,6 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
- 
 # ============ #
 # OS generated #
 # ============ #
@@ -31,3 +30,4 @@ ExportedObj/
 Icon?
 ehthumbs.db
 Thumbs.db
+/Build/

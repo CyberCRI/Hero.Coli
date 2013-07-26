@@ -11,19 +11,14 @@ using System;
  */
 public class PhenoLight : Phenotype {
 
-  public Color         _color;          //! Color of the Light
-  public bool isActive;                 //! Activity of the light
+  public Light affectedLight;
+  public Color color;          //! Color of the Light
 
 
   //! Called at the begening
   public override void StartPhenotype()
   {
-    gameObject.AddComponent<Light>();
-    gameObject.light.color = _color;
-    gameObject.light.type = LightType.Point;
-    gameObject.light.color = Color.blue;
-    gameObject.light.range = 2.5f;
-    gameObject.light.intensity = 1;
+    affectedLight.color = color;
   }
 
   /*!
@@ -34,13 +29,13 @@ public class PhenoLight : Phenotype {
    */
   public override void UpdatePhenotype()
   {
-    gameObject.light.enabled = true;
-    if (!isActive)
-      return ;
     Molecule mol = ReactionEngine.getMoleculeFromName("H2O", _molecules);
     if (mol == null)
       return ;
     float intensity = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 8f);
-    gameObject.light.intensity = intensity;
+	float colRadius = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+    
+	affectedLight.intensity = intensity;
+	((SphereCollider)affectedLight.collider).radius = colRadius;
   }
 }

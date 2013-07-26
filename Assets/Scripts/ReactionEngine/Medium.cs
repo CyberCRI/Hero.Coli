@@ -239,28 +239,30 @@ public class Medium
 
     if (_name == "Cellia")
       {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.T))
           {
             if (_enableSequential)
               ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
             else
               ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
+			Debug.Log("H: " + ReactionEngine.getMoleculeFromName("H", _molecules).getConcentration());
           }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.R))
           {
             if (_enableSequential)
               ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(- 10f);
             else
               ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(- 10f);
           }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.G))
           {
             if (_enableSequential)
               ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
             else
               ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
+			Debug.Log("O: " + ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration());
           }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.F))
           {
             if (_enableSequential)
               ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(- 10f);
