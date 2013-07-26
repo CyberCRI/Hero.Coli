@@ -38,7 +38,7 @@ public class PromoterBrick : BioBrick
   public void setBeta(float v) { _beta = v; }
   public float getBeta() { return _beta; }
   public void setFormula(string v) { _formula = v; }
-  public string getForumla() { return _formula; }
+  public string getFormula() { return _formula; }
 
   public PromoterBrick() : base(BioBrick.Type.PROMOTER)
   {

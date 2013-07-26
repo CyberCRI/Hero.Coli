@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 class Device
 {
@@ -29,6 +30,83 @@ class Device
     foreach (ExpressionModule em in _modules)
       _modules.AddLast(new ExpressionModule(em));
   }
+
+  public LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
+  {
+    LinkedList<Product> products = new LinkedList<Product>();
+    Product prod;
+    RBSBrick rbs;
+    GeneBrick gene;
+    float RBSf = 0f;
+    string molName = "Unknown";
+    int i = 0;
+
+    foreach (BioBrick b in list)
+      {
+        rbs = b as RBSBrick;
+        if (rbs != null)
+          RBSf = rbs.getRBSFactor();
+        else
+          {
+            gene = b as GeneBrick;
+            if (gene != null)
+              {
+                molName = gene.getProteinName();
+                prod = new Product();
+                prod.setName(molName);
+                prod.setQuantityFactor(RBSf);
+                products.AddLast(prod);
+              }
+            else
+              Debug.Log("This case should never arrive. Bad Biobrick in operon.");
+          }
+        i++;
+      }
+    while (i > 0)
+      list.RemoveFirst();
+    return products;
+  }
+
+  public PromoterProprieties getPromoterReaction(ExpressionModule em, int id)
+  {
+    PromoterProprieties prom = new PromoterProprieties();
+    LinkedList<BioBrick> bricks = em.getBioBricks();
+
+    prom.name = _name + id;
+    PromoterBrick p = bricks.First.Value as PromoterBrick;
+    prom.formula = p.getFormula();
+    prom.beta = p.getBeta();
+    bricks.RemoveFirst();
+
+    prom.products = getProductsFromBiobricks(bricks);
+
+    TerminatorBrick tb = bricks.First.Value as TerminatorBrick;
+    prom.terminatorFactor = tb.getTerminatorFactor();
+    bricks.RemoveFirst();
+
+    prom.energyCost = getSize();
+    return prom;
+  }
+
+  public LinkedList<PromoterProprieties> getPromoterReactions()
+  {
+    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+    LinkedList<PromoterProprieties> reactions = new LinkedList<PromoterProprieties>();
+    PromoterProprieties reaction;
+    int i = 0;
+
+    foreach (ExpressionModule em in modules)
+      {
+        reaction = getPromoterReaction(em, i);
+        if (reaction != null)
+          reactions.AddLast(reaction);
+        i++;
+      }
+    if (reactions.Count == 0)
+      return null;
+    return reactions;
+  }
+
 
   private static bool checkPromoter(BioBrick b)
   {
