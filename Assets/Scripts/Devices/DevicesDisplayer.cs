@@ -33,26 +33,33 @@ public class DevicesDisplayer : MonoBehaviour {
 	public void addDevice(int deviceID, DeviceInfo deviceInfo, DeviceType deviceType) {
 		
 		Debug.Log("addDevice("+deviceID+", "+deviceInfo+", "+deviceType+")");
-		
-		if((!_equipedDevices.Exists(device => device.getID() == deviceID))
-			&& (!_inventoryDevices.Exists(device => device.getID() == deviceID))) { 
+		bool alreadyEquiped = (!_equipedDevices.Exists(device => device.getID() == deviceID));
+		bool alreadyInventory = (!_inventoryDevices.Exists(device => device.getID() == deviceID)); 
+		if(alreadyEquiped || alreadyInventory) { 
 			Vector3 localPosition;
 			UnityEngine.Transform parent;
 			List<Device> devices;
+			int newDeviceId = deviceID;
 			if(deviceType == DeviceType.Equiped) {
 				parent = equipPanel.transform;
 				devices = _equipedDevices;
+				if(deviceID == 0) {
+					newDeviceId = devices.Count;
+				}
+				Debug.Log("addDevice("+newDeviceId+") in equipment");
 			} else {			
-				Debug.Log("addDevice("+deviceID+") in inventory");
 				parent = inventoryPanel.transform;
 				devices = _inventoryDevices;
+				Debug.Log("addDevice("+newDeviceId+") in inventory");
 			}
 			localPosition = getNewPosition(deviceType);
-			Device newDevice = Device.Create (parent, localPosition, deviceID, deviceType);
+			Device newDevice = Device.Create (parent, localPosition, newDeviceId, deviceType, deviceInfo, this);
 			devices.Add(newDevice);
 			//let's add reaction to reaction engine
 			//for each module of deviceInfo, add to reaction engine
 			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+		} else {
+			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped+", alreadyInventory="+alreadyInventory);
 		}
 	}
 	
@@ -132,13 +139,13 @@ public class DevicesDisplayer : MonoBehaviour {
 					"GFP",
 					1.0f
 					);
-	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Equiped);
+	        	addDevice(0, deviceInfo, DevicesDisplayer.DeviceType.Equiped);
 				
 			}
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				
-				int randomID = Random.Range(0, 12000);
+				int randomID = Random.Range(50, 12000);
 				DeviceInfo deviceInfo = new DeviceInfo(
 					randomID,
 					"testDevice",
