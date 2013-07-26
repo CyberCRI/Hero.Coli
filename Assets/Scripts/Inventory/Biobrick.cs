@@ -40,7 +40,7 @@ public class PromoterBrick : BioBrick
   public void setFormula(string v) { _formula = v; }
   public string getForumla() { return _formula; }
 
-  public PromoterBrick(BioBrick.Type type) : base(type)
+  public PromoterBrick() : base(BioBrick.Type.PROMOTER)
   {
   }
 }
@@ -52,7 +52,7 @@ class RBSBrick : BioBrick
   public void setRBSFactor(float v) { _RBSFactor = v; }
   public float getRBSFactor() { return _RBSFactor; }
 
-  public RBSBrick(BioBrick.Type type) : base(type)
+  public RBSBrick() : base(BioBrick.Type.RBS)
   {
   }
 }
@@ -64,7 +64,7 @@ class GeneBrick : BioBrick
   public void setProteinName(string name) { _proteinName = name; }
   public string getProteinName() { return _proteinName; }
 
-  public GeneBrick(BioBrick.Type type) : base(type)
+  public GeneBrick() : base(BioBrick.Type.GENE)
   {
   }
 }
@@ -76,8 +76,7 @@ class TerminatorBrick : BioBrick
   public void setTerminatorFactor(float v) { _terminatorFactor = v; }
   public float getTerminatorFactor() { return _terminatorFactor; }
 
-  public TerminatorBrick(BioBrick.Type type) : base(type)
+  public TerminatorBrick() : base(BioBrick.Type.TERMINATOR)
   {
-    
   }
 }
