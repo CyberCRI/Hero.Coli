@@ -20,15 +20,14 @@ class Device
   }
 
   private Device()
-  {
-  }
+  {}
 
   private Device(string name, LinkedList<ExpressionModule> bricks)
   {
     _name = name;
     _modules = new LinkedList<ExpressionModule>();
-//     foreach (ExpressionModule em in _modules)
-//       _modules.Add(em);
+    foreach (ExpressionModule em in _modules)
+      _modules.AddLast(new ExpressionModule(em));
   }
 
   private static bool checkPromoter(BioBrick b)

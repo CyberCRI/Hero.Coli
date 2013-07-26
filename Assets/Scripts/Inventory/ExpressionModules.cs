@@ -27,4 +27,12 @@ public class ExpressionModule
     foreach (BioBrick b in bricks)
       _bioBricks.AddLast(b);
   }
+
+  public ExpressionModule(ExpressionModule m)
+  {
+    _name = m._name;
+    _bioBricks = new LinkedList<BioBrick>();
+    foreach (BioBrick b in m.getBioBricks())
+      _bioBricks.AddLast(b);
+  }
 }
