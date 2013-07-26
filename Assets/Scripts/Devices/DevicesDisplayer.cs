@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public class DevicesDisplayer : MonoBehaviour {
 	
+	//FOR DEBUG
+	private static List<string> spriteNames = new List<string>( new string [] {
+		"Backdrop"
+		,"brick"
+		,"brickNM"
+		,"burlap"
+		,"sand"
+	});
+	
 	public enum DeviceType {
 		Equiped,
 		Inventory
@@ -29,6 +38,11 @@ public class DevicesDisplayer : MonoBehaviour {
 	public GameObject equipedDevice;	
 	public GameObject inventoryDevice;
 	
+	//FOR DEBUG
+	private string getRandomSprite() {
+		int randomIndex = Random.Range(0, spriteNames.Count);
+		return spriteNames[randomIndex];
+	}
 	
 	public void addDevice(int deviceID, DeviceInfo deviceInfo, DeviceType deviceType) {
 		
@@ -89,12 +103,10 @@ public class DevicesDisplayer : MonoBehaviour {
 		Debug.Log("removeDevice("+deviceID+")");
 		Device toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
 		List<Device> devices = _equipedDevices;
-		Vector3 position = equipedDevice.transform.localPosition;
 		DeviceType deviceType = DeviceType.Equiped;
 		if(toRemove == null) {
 			toRemove = _inventoryDevices.Find(device => device.getID() == deviceID);
 			devices = _inventoryDevices;
-			position = inventoryDevice.transform.localPosition;
 			deviceType = DeviceType.Inventory;
 		}
 		
@@ -128,10 +140,13 @@ public class DevicesDisplayer : MonoBehaviour {
 		
 		if(_deltaTime > _deltaTimeThreshold) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device
-				int randomID = Random.Range(0, 12000);
+				int randomID = Random.Range(0, 12000);				
+				string spriteName = getRandomSprite();
+				
 				DeviceInfo deviceInfo = new DeviceInfo(
 					randomID,
 					"testDevice",
+					spriteName,
 					"pLac",
 					10.0f,
 					1.0f,
@@ -145,10 +160,12 @@ public class DevicesDisplayer : MonoBehaviour {
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				
-				int randomID = Random.Range(50, 12000);
+				int randomID = Random.Range(50, 12000);			
+				string spriteName = getRandomSprite();
 				DeviceInfo deviceInfo = new DeviceInfo(
 					randomID,
 					"testDevice",
+					spriteName,
 					"pLac",
 					10.0f,
 					1.0f,

@@ -5,14 +5,6 @@ using System.Collections.Generic;
 public class Device : MonoBehaviour {
 	
 	private static string _activeSuffix = "Active";
-	private static List<string> spriteNames = new List<string>( new string [] {
-		"Backdrop"
-		,"brick"
-		,"brickNM"
-		,"burlap"
-		,"sand"
-	});
-	
 	
 	public string _currentSpriteName;
 	public UIAtlas _atlas;
@@ -55,6 +47,7 @@ public class Device : MonoBehaviour {
 		deviceScript._deviceType = deviceType;
 		deviceScript._deviceInfo = deviceInfo;
 		deviceScript._devicesDisplayer = devicesDisplayer;
+		deviceScript._currentSpriteName = deviceInfo._spriteName;
 		/*
 		//deviceScript._sprite = newDevice.transform.GetComponentInChildren<UISprite>();
 		GameObject background = newDevice.transform.Find("Background").gameObject;
@@ -105,17 +98,11 @@ public class Device : MonoBehaviour {
 		setSprite(_currentSpriteName);
 	}
 	
-	private string getRandomSprite() {
-		int randomIndex = Random.Range(0, spriteNames.Count);
-		return spriteNames[randomIndex];
-	}
-	
 	// Use this for initialization
 	void Start () {
 		//_sprite.atlas = Resources.Load("Atlases/TestAtlas") as UIAtlas;
 		Debug.Log("start: access _sprite="+_sprite);
 		_sprite.atlas = _atlas;
-		_currentSpriteName = getRandomSprite();
 		setActive();
 	}
 	

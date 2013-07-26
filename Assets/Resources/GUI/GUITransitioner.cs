@@ -67,9 +67,7 @@ public class GUITransitioner : MonoBehaviour {
 	}
 		
 	
-	private bool gamePaused = false;
 	private void Pause(bool pause) {
-		gamePaused = pause;
 		Time.timeScale = pause?0:1;
 	}
 	
