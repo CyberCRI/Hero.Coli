@@ -4,9 +4,12 @@ using System.Collections;
 public class LifeIndicator : MonoBehaviour {
 	
 	public Hero hero;
-	private Vector3 initialScale;
-	public float maxXScale = 1.0f;
+	private Vector3 _initialScale;
+	public float maxXScale = 200.0f;
 	public float startLife = 1.0f;
+	
+	private Transform _background;
+	private Transform _foreground;
 
 	// Use this for initialization
 	void Start () {
@@ -14,15 +17,16 @@ public class LifeIndicator : MonoBehaviour {
 		hero = GameObject.Find ("Hero").GetComponent<Hero>();
 		GameObject lifeIndicator = GameObject.Find ("LifeIndicator");
 		Transform progressBar = lifeIndicator.transform.Find("ProgressBar");
-		Transform background = progressBar.transform.Find("Background");
-		maxXScale = background.transform.localScale.x;
-		initialScale = transform.localScale;
+		_background = progressBar.transform.Find("Background");
+		_foreground = progressBar.transform.Find("Foreground");
+		//maxXScale = background.transform.localScale.x;
+		_initialScale = _foreground.localScale;
 		
 		hero.setLife(startLife);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		transform.localScale = new Vector3(hero.getLife ()*maxXScale, initialScale.y, initialScale.z);
+		_foreground.localScale = new Vector3(hero.getLife ()*maxXScale, _initialScale.y, _initialScale.z);
 	}
 }
