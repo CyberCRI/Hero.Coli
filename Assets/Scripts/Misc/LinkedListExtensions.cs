@@ -31,6 +31,11 @@ public static class LinkedListExtensions
         source.AddBefore(first, item);
   }
 
+  
+  /*!
+    \brief Shuffle a LinkedList
+    \param list The list to shuffle
+   */
   public static void Shuffle<T>(LinkedList<T> list)
   {
     

@@ -6,11 +6,11 @@ public class MolCheckBoxList : MonoBehaviour {
 
   public Transform _checkBoxPrefab;
   private Medium _medium;
-  LinkedList<Transform> _checkBoxes;
+//   LinkedList<Transform> _checkBoxes;
 
   MolCheckBoxList()
   {
-    _checkBoxes = new LinkedList<Transform>();
+//     _checkBoxes = new LinkedList<Transform>();
   }
 
   public void setMedium(Medium med)

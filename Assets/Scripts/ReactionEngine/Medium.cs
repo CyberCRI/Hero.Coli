@@ -27,11 +27,12 @@ public class Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
+  private NumberGenerator _numberGenerator;           //!< Random number generator
   private bool          _enableEnergy;
   private float         _energy;                        //!< Represent the quantity of ATP
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
-  private float         _energyProductionRate;
-  public bool           enableShufflingReactionOrder;
+  private float         _energyProductionRate;          //!< The energy production speed
+  public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -70,22 +71,28 @@ public class Medium
   public void enableNoise(bool b)
   {
     _enableNoise = b;
-    foreach (IReaction r in _reactions)
-      r.enableNoise = b;
   }
 
+  /*!
+    \brief Add a new reaction to the medium
+    \param reaction The reaction to add.
+   */
   public void addReaction(IReaction reaction)
   {
     if (reaction != null)
       {
-//         Debug.Log("---> " + reaction.getName());
-//         Debug.Log("Medium name ====> " + this.getName());
         reaction.setMedium(this);
         reaction.enableEnergy = _enableEnergy;
         _reactions.AddLast(reaction);
       }
+    else
+      Debug.Log("Cannot add this reaction because null was given");
   }
 
+  /*!
+    \brief Remove the reaction that correspond to the given name
+    \param name The name of the reaction to remove.
+   */
   public void removeReactionByName(string name)
   {
     LinkedListNode<IReaction> node = _reactions.First;
@@ -174,6 +181,10 @@ public class Medium
       }   
   }
 
+  /*!
+    \brief This function initialize the production of ATP.
+    \details It create a reaction of type ATPProducer
+   */
   private void initATPProduction()
   {
     ATPProducer reaction = new ATPProducer();
@@ -192,6 +203,7 @@ public class Medium
   public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
   {
     _reactions = new LinkedList<IReaction>();
+    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
     ReactionsSet reactSet = ReactionEngine.getReactionsSetFromId(_reactionsSet, reactionsSets);
     MoleculesSet molSet = ReactionEngine.getMoleculesSetFromId(_moleculesSet, moleculesSets);
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
@@ -208,12 +220,12 @@ public class Medium
     foreach (IReaction r in _reactions)
       {
         r.enableSequential = _enableSequential;
-        r.enableNoise = _enableNoise;
       }
   }
 
   /*!
     \brief Set the concentration of each molecules of the medium to their new values
+    \details Called only if sequential is disabled
    */
   public void updateMoleculesConcentrations()
   {
@@ -229,14 +241,23 @@ public class Medium
     if (enableShufflingReactionOrder)
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
-    //         Debug.Log("============================");
     foreach (IReaction reaction in _reactions)
-      {
-        //         Debug.Log("/!\\" + reaction.getMedium().getName() + " " + reaction.getName());
         reaction.react(_molecules);
-        //       reaction.setMedium(this);
-      }
 
+    if (_enableNoise)
+      {
+        float noise;
+
+        foreach (Molecule m in _molecules)
+          {
+            noise = _numberGenerator.getNumber();
+            if (_enableSequential)
+              m.addConcentration(noise);
+            else
+              m.addNewConcentration(noise);
+          }
+      }
+    //#FIXME : Delete theses this a the end
     if (_name == "Cellia")
       {
         if (Input.GetKey(KeyCode.T))
@@ -245,7 +266,6 @@ public class Medium
               ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
             else
               ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
-			Debug.Log("H: " + ReactionEngine.getMoleculeFromName("H", _molecules).getConcentration());
           }
         if (Input.GetKey(KeyCode.R))
           {
@@ -260,7 +280,7 @@ public class Medium
               ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
             else
               ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
-			Debug.Log("O: " + ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration());
+//             Debug.Log("O: " + ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration());
           }
         if (Input.GetKey(KeyCode.F))
           {

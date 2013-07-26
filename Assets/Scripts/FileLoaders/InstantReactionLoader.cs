@@ -3,8 +3,42 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
+/*!
+  \brief This class parse and load instant reactions
+  \details A Instant reaction should respect this synthax :
+
+        <instantReaction>
+          <name>Water</name>                        -> Name of the reaction
+          <EnergyCost>0.1</EnergyCost>              -> Energy cost of the reaction
+          <reactants>
+            <reactant>
+              <name>O</name>                        -> Reactant name
+              <quantity>1</quantity>                -> Reactant coefficiant (how much of this to make products)
+            </reactant>
+            <reactant>
+              <name>H</name>
+              <quantity>2</quantity>
+            </reactant>
+          </reactants>
+          <products>
+            <product>
+              <name>H2O</name>                      -> Product Name
+              <quantity>1</quantity>                -> Product Quantity (how much is created)
+            </product>
+          </products>
+        </instantReaction>
+
+  \sa InstantReaction
+  \author Pierre COLLET
+ */
 public class InstantReactionLoader
 {
+  /*!
+    \brief Parse and load reactants of an InstantReaction
+    \param node The xml node to parse
+    \param ir the InstantReaction to initialize
+    \return return always true
+   */
   private bool loadInstantReactionReactants(XmlNode node, InstantReaction ir)
   {
     foreach (XmlNode attr in node)
@@ -13,6 +47,12 @@ public class InstantReactionLoader
     return true;
   }
 
+  /*!
+    \brief Parse and load reactant of an InstantReaction
+    \param node The xml node to parse
+    \param ir the InstantReaction to initialize
+    \return return always true
+  */
   private bool loadInstantReactionReactant(XmlNode node, InstantReaction ir)
   {
     Product prod = new Product();
@@ -35,6 +75,12 @@ public class InstantReactionLoader
     return true;
   }
 
+  /*!
+    \brief Parse and load reactant of an InstantReaction
+    \param node The xml node to parse
+    \param ir the InstantReaction to initialize
+    \return return always true
+  */
   private bool loadInstantReactionProducts(XmlNode node, InstantReaction ir)
   {
     foreach (XmlNode attr in node)
@@ -43,7 +89,12 @@ public class InstantReactionLoader
     return true;
   }
 
-
+  /*!
+    \brief Parse and load products of an InstantReaction
+    \param node The xml node to parse
+    \param ir the InstantReaction to initialize
+    \return return always true
+  */
   private bool loadInstantReactionProduct(XmlNode node, InstantReaction ir)
   {
     Product prod = new Product();
@@ -66,6 +117,12 @@ public class InstantReactionLoader
     return true;
   }
 
+  /*!
+    \brief Parse and load the energy cost of an InstantReaction
+    \param value The value string
+    \param ir the InstantReaction to initialize
+    \return return always true
+  */
   private bool loadEnergyCost(string value, InstantReaction ir)
   {
     if (String.IsNullOrEmpty(value))
@@ -78,6 +135,12 @@ public class InstantReactionLoader
     return true;
   }
 
+  /*!
+    \brief Parse and load the instants reactions from an xml node and push them in the given IReaction list
+    \param node The XmlNode
+    \param reactions The list of IReaction where to push the new InstantReaction
+    \return return always true
+  */
   public bool loadInstantReactions(XmlNode node, LinkedList<IReaction> reactions)
   {
     XmlNodeList IReactionsList = node.SelectNodes("instantReaction");

@@ -11,6 +11,7 @@ using Vectrosity;
 */
 public class Line{
 	public Color color {get; set;} //!< The line color
+	public string name {get; set;} //!< The line name
 	public float graphHeight {get; set;} //!< The line max Y value
 	public VectorLine vectorline {get{return _vectorline;}} //!< The Vectrosity line
 	public Vector3[] pointsArray {get{return _pointsArray;}} //!< The Vector3 array used by vectrosity to draw the lines
@@ -29,7 +30,8 @@ public class Line{
 	 * \param graphWidth Max number of values on the X axis (cannot be modified)
 	 * \param panelinfos contains the panel Transform values \sa PanelInfos
  	*/
-	public Line(int graphWidth, float graphHeight, PanelInfos panelInfos){
+  public Line(int graphWidth, float graphHeight, PanelInfos panelInfos, string name = ""){
+    this.name = name;
 		this._panelInfos = panelInfos;
 		this._graphWidth = graphWidth;
 		this.graphHeight = graphHeight;
@@ -103,7 +105,7 @@ public class Line{
 		}
 		
 		//Unknown values
-		for(i = i; i < _graphWidth; i++){
+		for(; i < _graphWidth; i++){
 			_pointsArray[i] = newPoint(i);
 		}
 	}

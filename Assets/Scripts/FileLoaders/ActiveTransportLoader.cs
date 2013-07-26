@@ -11,26 +11,26 @@ using System.Collections.Generic;
   \important
   A file should respects this convention :
 
-  <activeTransports>
-   <ATProp>
-     <name>name</name>                  -> The name
-     <Medium>1<Medium>                  -> In wich medium the reaction is done.
-     <MediumSrc>1</MediumSrc>           -> Medium where the reaction takes place
-     <MediumDst>2</MediumDst>           -> Medium where the product will be released
-     <EnergyCost>0.1</EnergyCost>       -> Energy that cost a reaction
-     <substrate>S</substrate>           -> The Molecule that will be consumed in the SrcMedium
-     <enzyme>E</enzyme>                 -> The Molecule wich will play the role of the tunnel
-     <Kcat>1</Kcat>                     -> 
-     <effector>False</effector>         -> The Molecule that will inhibit the reaction or activate the reaction (False value is accepted to said that there is no effector)
-     <alpha>1</alpha>                   -> Alpha parameter. Describe the competitivity of the effector (see execEnzymeReaction in EnzymeReaction)
-     <beta>0</beta>                     -> Beta parameter. Describe the extend of inhibition or the extend of activation (see execEnzymeReaction in EnzymeReaction)
-     <Km>1.3</Km>                       -> Km parameter. Affinity between substrate and enzyme
-     <Ki>0.0000001</Ki>                 -> Ki parameter. Affinity between effector and enzyme
-     <Products>                         -> List of the products
-       <name>O</name>
-     </Products>
-   </ATProp>
-  </activeTransports>
+        <activeTransports>
+          <ATProp>
+            <name>name</name>                  -> The name
+            <Medium>1<Medium>                  -> In wich medium the reaction is done.
+            <MediumSrc>1</MediumSrc>           -> Medium where the reaction takes place
+            <MediumDst>2</MediumDst>           -> Medium where the product will be released
+            <EnergyCost>0.1</EnergyCost>       -> Energy that cost a reaction
+            <substrate>S</substrate>           -> The Molecule that will be consumed in the SrcMedium
+            <enzyme>E</enzyme>                 -> The Molecule wich will play the role of the tunnel
+            <Kcat>1</Kcat>                     -> Reaction constant of enzymatic reaction
+            <effector>False</effector>         -> The Molecule that will inhibit the reaction or activate the reaction (False value is accepted to said that there is no effector)
+            <alpha>1</alpha>                   -> Alpha parameter. Describe the competitivity of the effector (see execEnzymeReaction in EnzymeReaction)
+            <beta>0</beta>                     -> Beta parameter. Describe the extend of inhibition or the extend of activation (see execEnzymeReaction in EnzymeReaction)
+            <Km>1.3</Km>                       -> Km parameter. Affinity between substrate and enzyme
+            <Ki>0.0000001</Ki>                 -> Ki parameter. Affinity between effector and enzyme
+            <Products>                         -> List of the products
+              <name>O</name>                   -> Name of the product molecule
+            </Products>
+          </ATProp>
+        </activeTransports>
 
   \sa EnzymeReaction
   \author Pierre COLLET

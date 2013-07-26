@@ -14,6 +14,18 @@ using System.Collections;
         - A degradation rate -> used for degradation reaction
         - A Size -> used for fick reaction (not implemented yet)
 
+
+Molecules wich are declared in files should respect this synthax :
+
+      <molecule type="other">
+        <name>H2O</name>
+        <description>de l'eau!</description>
+        <concentration>0</concentration>
+        <degradationRate>0.013</degradationRate>
+        <FickFactor>0.33</FickFactor>
+      </molecule>
+
+
    \author Pierre COLLET
    \mail pierre.collet91@gmail.com
  */
@@ -27,13 +39,13 @@ public class Molecule
     OTHER
   }
 
-  private string _name;                 //! The name of the molecule
-  private eType _type;                  //! The type of the molecule
-  private string _description;          //! The description of the molecule (optionnal)
-  private float _concentration;         //! The concentration of the molecule
-  private float _newConcentration;      //! The concentration of the molecule for the next stage
-  private float _degradationRate;       //! The degradation rate of the molecule
-  private float _size;                  //! The size of the molecule (not used for now)
+  private string _name;                 //!< The name of the molecule
+  private eType _type;                  //!< The type of the molecule
+  private string _description;          //!< The description of the molecule (optionnal)
+  private float _concentration;         //!< The concentration of the molecule
+  private float _newConcentration;      //!< The concentration of the molecule for the next stage
+  private float _degradationRate;       //!< The degradation rate of the molecule
+  private float _fickFactor;            //!< The FickFactor is a coefficient for FickReaction
 
   //! Default constructor
   public Molecule(Molecule mol = null)
@@ -45,7 +57,7 @@ public class Molecule
         _description = mol._description;
         _concentration = mol._concentration;
         _degradationRate = mol._degradationRate;
-        _size = mol._size;
+        _fickFactor = mol._fickFactor;
         _newConcentration = mol._newConcentration;
       }
   }
@@ -55,8 +67,7 @@ public class Molecule
   public string getDescription() {return _description; }
   public float getConcentration() {return _concentration; }
   public float getDegradationRate() {return _degradationRate; }
-  public float getSize() { return _size; }
-
+  public float getFickFactor() { return _fickFactor; }
   public void setName(string name) { _name = name; }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }
@@ -65,13 +76,14 @@ public class Molecule
   public void addNewConcentration(float concentration) { _newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void subNewConcentration(float concentration) { _newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0; }
   public void setNewConcentration(float concentration) { _newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0; }
+  public void setFickFactor(float v) { _fickFactor = v; }
 
-  public void setSize(float size) { _size = size; }
   /*!
     \brief Add molecule concentration
     \param concentration The concentration
    */
   public void addConcentration(float concentration) { _concentration += concentration; if (_concentration < 0) _concentration = 0;}
+
   /*!
     \brief Add molecule concentration
     \param concentration The concentration
@@ -79,11 +91,7 @@ public class Molecule
   public void subConcentration(float concentration) { _concentration -= concentration; if (_concentration < 0) _concentration = 0;}
 
   //! \brief This function set the actual concentration to it new value
-  public void updateConcentration()
-  {
-    _concentration = _newConcentration;
-//     _newConcentration = 0f;
-  }
+  public void updateConcentration() { _concentration = _newConcentration; }
 }
 
 
@@ -104,7 +112,6 @@ public class Product
     _quantityFactor = p._quantityFactor;
   }
 
-  // FIXME : Potentially add a ptr to the molecule
   public void setName(string name) { _name = Tools.epurStr(name); }
   public string getName() { return _name; }
   public void setQuantityFactor(float quantity) { _quantityFactor = quantity; }
@@ -120,14 +127,12 @@ public class Product
  */
 public abstract class IReaction
 {
-  protected string _name;                       //! The name of the reaction.
-  protected LinkedList<Product> _products;      //! The list of products
-  protected bool _isActive;                     //! Activation booleen
+  protected string _name;                       //!< The name of the reaction.
+  protected LinkedList<Product> _products;      //!< The list of products
+  protected bool _isActive;                     //!< Activation booleen
   protected Medium _medium;               //!< The medium where the reaction will be executed.
-  protected float _reactionSpeed;               //! Speed coefficient of the reaction
-  protected float _energyCost;                  //! Energy cosumed for the reaction
-  protected NumberGenerator _numberGenerator;     //! Random number generator
-  public bool enableNoise;
+  protected float _reactionSpeed;               //!< Speed coefficient of the reaction
+  protected float _energyCost;                  //!< Energy cosumed for the reaction
   public bool enableSequential;
   public bool enableEnergy;
 
@@ -138,12 +143,11 @@ public abstract class IReaction
     _isActive = true;
     _reactionSpeed = 1f;
     _energyCost = 0f;
-    enableNoise = false;
     enableSequential = true;
     enableEnergy = false;
-    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
+  //! Copy Constructor
   public IReaction(IReaction r)
   {
     _products = new LinkedList<Product>();
@@ -152,11 +156,9 @@ public abstract class IReaction
     _isActive = r._isActive;
     _reactionSpeed = r._reactionSpeed;
      _energyCost = r._energyCost;
-     enableNoise = r.enableNoise;
      enableSequential = r.enableSequential;
      enableEnergy = r.enableEnergy;
      _medium = r._medium;
-     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
   }
 
   public void setName(string name) { _name = Tools.epurStr(name); }
@@ -169,6 +171,11 @@ public abstract class IReaction
   public void setMedium(Medium med) { _medium = med; }
 
 
+  /*!
+    \brief This function copy a reaction by calling it's real copy constructor (not IReaction constructor but for example Promoter constructor)
+    \param r Reaction to copy
+    \return Return a reference on the new reaction or null if the give reaction is not a well know one.
+   */
   public static IReaction       copyReaction(IReaction r)
   {
     if (r as Promoter != null)
@@ -193,7 +200,7 @@ public abstract class IReaction
   //! This function should be implemented by each reaction that inherit from this class.
   //! It's called at each tick of the game.
   public abstract void react(ArrayList molecules);
-//   public abstract void getCopy();
+
   /*! 
     \brief Add a Product to the product list.
     \param prod The product to be added to the list
@@ -223,13 +230,13 @@ public class Degradation : IReaction
     _molName = molName;
   }
 
+  //! Copy Constructor
   public Degradation(Degradation r) : base(r)
   {
     _degradationRate = r._degradationRate;
     _molName = r._molName;
   }
 
-  // FIXME : use _degradationRate
   /*!
     \details The degradation reaction following the formula above:
 
@@ -244,11 +251,6 @@ public class Degradation : IReaction
 
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
     float delta = mol.getDegradationRate() * mol.getConcentration();
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed);
     else

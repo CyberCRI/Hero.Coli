@@ -11,8 +11,8 @@ using System;
  */
 public class PhenoLight : Phenotype {
 
-  public Light affectedLight;
-  public Color color;          //! Color of the Light
+  public Light affectedLight;   //!< The light that will be affected by the phenotype
+  public Color color;          //!< Color of the Light
 
 
   //! Called at the begening

@@ -8,11 +8,8 @@ public class RandomEnnemies : MonoBehaviour {
 	public int nbOfEnemies = 2;
 	public float delayBetweenMov = 0.5f;
 	
-	private Transform tr;
-		
 	// Use this for initialization
 	void Awake() {
-		tr = this.transform;
 		for(int i = 0 ; i < nbOfEnemies; i++){
 			GameObject enemy = (GameObject) Instantiate(toInstanciate);
 			enemy.transform.parent = transform;

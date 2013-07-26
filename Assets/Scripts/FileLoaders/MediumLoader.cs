@@ -7,12 +7,34 @@ using UnityEngine;
 /*! 
  *  \brief     Load medium files
  *  \details   This class load everything about mediums from medium files
+ A medium file should respect this synthax :
+
+        <Mediums>
+          <Medium type="Cellia">
+            <Id>01</Id>                                         -> Unique ID of the medium
+            <Name>Cellia</Name>                                 -> Name of the medium
+            <ReactionsSet>CelliaReactions</ReactionsSet>        -> ReactionsSet to load in the medium
+            <MoleculesSet>CelliaMolecules</MoleculesSet>        -> MoleculesSet to load in the medium
+            <Energy>1000</Energy>                               -> Initial Energy
+            <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
+            <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
+          </Medium>
+        </Mediums>
+
  *  \author    Pierre COLLET
+ *  \sa ReactionsSet
+ *  \sa MoleculesSet
+ *  \sa Medium
  */
 public class MediumLoader
 {
 
-  
+  /*!
+    \brief This function load the initial energy of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
   private bool loadEnergy(string value, Medium med)
   {
     if (String.IsNullOrEmpty(value))
@@ -25,6 +47,12 @@ public class MediumLoader
     return true;
   }
 
+  /*!
+    \brief This function load the energy production rate of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
   private bool loadEnergyProductionRate(string value, Medium med)
   {
     float productionRate;
@@ -40,6 +68,12 @@ public class MediumLoader
     return true;
   }
 
+  /*!
+    \brief This function load the maximum energy in the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
   private bool loadMaxEnergy(string value, Medium med)
   {
     float prodMax;
@@ -55,6 +89,11 @@ public class MediumLoader
     return true;
   }
 
+  /*!
+    \brief This function create a new Medium based on the information in the given XML Node
+    \param node The XmlNode to load.
+    \return Return the new Medium
+  */
   public Medium   loadMedium(XmlNode node)
   {
     Medium medium = new Medium();
@@ -89,6 +128,11 @@ public class MediumLoader
     return medium;
   }
 
+  /*!
+    \brief Create a list of Medium declared in the given file
+    \param filePath The path of the file to load
+    \return Return a LinkedList of Medium or null if no medium are declared in the given file
+   */
   public LinkedList<Medium>     loadMediumsFromFile(string filePath)
   {
 
@@ -100,9 +144,6 @@ public class MediumLoader
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.Load(ms);
 
-//     XmlDocument xmlDoc = new XmlDocument();
-//     Debug.Log(filePath);
-//     xmlDoc.LoadXml(filePath);
     XmlNodeList mediumsLists = xmlDoc.GetElementsByTagName("Mediums");
     foreach (XmlNode mediumNodes in mediumsLists)
       {
@@ -112,13 +153,6 @@ public class MediumLoader
             mediums.AddLast(medium);
           }
       }
-
-//     StreamReader fileStream = new StreamReader(@filePath);
-// //     LinkedList<Medium> mediums;
-
-//     string text = fileStream.ReadToEnd();
-//     Debug.Log(text);
-//     fileStream.Close();
 
     if (mediums.Count == 0)
       return null;

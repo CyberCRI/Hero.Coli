@@ -24,10 +24,12 @@ public class ActiveTransportReaction : EnzymeReaction
   public void setDstMedium(Medium med) { _dstMedium = med; }
 
 
+  //! Default Constructor
   public ActiveTransportReaction()
   {
   }
 
+  //! Copy Constructor
   public ActiveTransportReaction(ActiveTransportReaction r) : base(r)
   {
     _srcMedium = r._srcMedium;
@@ -36,7 +38,10 @@ public class ActiveTransportReaction : EnzymeReaction
 
   /*
     \brief This function do the reaction.
-    \param molecules dont usefull, must be set to null
+    \details The ActiveTransportReaction is a reaction that is exactly the same as EnzymeReaction.
+    The only difference is that the production are added to the destination medium and not to the 
+    medium where the reaction is going on.
+    \param molecules dont usefull, can be set to null
     \sa execEnzymeReaction
    */
   public override void react(ArrayList molecules)
@@ -66,14 +71,6 @@ public class ActiveTransportReaction : EnzymeReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
-
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       substrate.subConcentration(delta);
     else

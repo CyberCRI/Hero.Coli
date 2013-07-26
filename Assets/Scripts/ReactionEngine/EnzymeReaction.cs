@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*!
+  \brief This class represent an EnzymeReaction and can be loaded by the ReactionEngine class
+  \author Pierre COLLET
+  \sa EnzymeReaction
+ */
 public class EnzymeReactionProprieties
 {
   public string name;
@@ -39,7 +44,7 @@ public class EnzymeReaction : IReaction
 {
   protected string _substrate;            //!< The substrate of the reaction
   protected string _enzyme;               //!< The enzyme of the reaction
-  protected float _Kcat;                  //!< The affinity between the substrate and the enzyme coefficient
+  protected float _Kcat;                  //!< Reaction constant of enzymatic reaction
   protected string  _effector;            //!< The effector of the reaction
   protected float _alpha;                 //!< Alpha descriptor of the effector
   protected float _beta;                  //!< Beta descriptor of the effector
@@ -63,10 +68,11 @@ public class EnzymeReaction : IReaction
   public void setKi(float value) { _Ki = value;}
   public float getKi() { return _Ki; }
 
+  //! Default Constructor
   public EnzymeReaction()
-  {
-  }
+  {}
 
+  //! Copy constructor
   public EnzymeReaction(EnzymeReaction r) : base(r)
   {
     _substrate = r._substrate;
@@ -80,8 +86,16 @@ public class EnzymeReaction : IReaction
   }
 
 
+  /*!
+    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProprieties
+    \param props The proprities class
+    \return This function return a new EnzymeReaction or null if props is null.
+   */
   public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProprieties props)
   {
+    if (props == null)
+      return null;
+
     EnzymeReaction reaction = new EnzymeReaction();
 
     reaction.setName(props.name);
@@ -185,15 +199,7 @@ public class EnzymeReaction : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
 
-
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     if (enableSequential)
       substrate.subConcentration(delta);
     else
@@ -207,5 +213,4 @@ public class EnzymeReaction : IReaction
           mol.addNewConcentration(delta);
       }
   }
-
 }

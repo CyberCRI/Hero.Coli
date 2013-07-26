@@ -4,14 +4,19 @@ using System;
 using UnityEngine;
 
 
+/*!
+  \brief This class represent a Promoter reaction and can be loaded by the simulator.
+  \author Pierre COLLET
+  \sa Promoter
+ */
 public class PromoterProprieties
 {
-  public string name;
-  public float beta;
-  public float terminatorFactor;
-  public string formula;
-  public LinkedList<Product> products;
-  public float energyCost;
+  public string name;                           //!< The name of the reaction
+  public float beta;                            //!< The maximal production rate of the promoter
+  public float terminatorFactor;                //!< The Coefficient that represent the terminator
+  public string formula;                        //!< The formula that drive the promoter behaviour
+  public LinkedList<Product> products;          //!< The list of products
+  public float energyCost;                      //!< The cost in energy
 }
 
 /*!
@@ -40,7 +45,7 @@ public class PromoterProprieties
                 
         Default Operators:
 
-                OP_OR ::= "+"
+                OP_OR ::= "|"
                 OP_AND ::= "*"
                 OP_LPAR ::= "("
                 OP_RPAR ::= ")"
@@ -59,7 +64,7 @@ public class PromoterProprieties
                 - F                             Always false
                 - [1.2,1]X                      Activated when  [X] >= 1.2 with Stepness = 1
 
-                - [1.3,1]X*([2.4,2]Y+[2.5,1]Z)  Activated when  [X] >= 1.3 with Stepness = 1 AND
+                - [1.3,1]X*([2.4,2]Y|[2.5,1]Z)  Activated when  [X] >= 1.3 with Stepness = 1 AND
                                                                  ([Y] >= 2.4 with Stepness = 2 OR
                                                                   [Z] >= 2.5 with stepness = 1)
 
@@ -102,7 +107,7 @@ Each node is executed by a specific function.
 See below how each kind of node ares executed :
 
         - AND (*) node:                         return Min(leftNode, RightNode)
-        - OR (+) node:                          return leftNode + rightNode
+        - OR (+) node:                          return Max(leftNode, rightNode)
         - Not (!) node:                         return 1 - leftNode
         - constant (C) node:                    return hill_function with  K parameter = leftNode  and  n parameter = leftNode of leftNode
         - Transcription factor:                 return concentration of concerned transcription factor
@@ -145,10 +150,12 @@ public class Promoter : IReaction
   public TreeNode<PromoterNodeData> getFormula() { return _formula; }
 
 
+  //! Default Constructor
   public Promoter()
   {
   }
 
+  //! Copy constructor
   public Promoter(Promoter r) : base(r)
   {
     _terminatorFactor = r._terminatorFactor;
@@ -156,8 +163,16 @@ public class Promoter : IReaction
     _beta = r._beta;
   }
 
+  /*!
+    \brief This reaction build a Promoter reaction from a PromoterProprieties class
+    \param props The PromoterProprieties wich will serve to create the reaction
+    \return Return the new reaction or null if it fail.
+   */
   public static IReaction       buildPromoterFromProps(PromoterProprieties props)
   {
+    if (props == null)
+      return null;
+
     PromoterParser parser = new PromoterParser();
     Promoter reaction = new Promoter();
 
@@ -177,10 +192,10 @@ public class Promoter : IReaction
   }
 
   /*! 
-Implementation of a Hill function
-\param K Threshold value
-\param concentration Quantity of the molecule
-\param n Stepness parameter
+    Implementation of a Hill function
+    \param K Threshold value
+    \param concentration Quantity of the molecule
+    \param n Stepness parameter
   */
   public static float hillFunc(float K, float concentration, double n)
   {
@@ -188,9 +203,9 @@ Implementation of a Hill function
   }
 
   /*! 
-Implementation of a step function function
-\param K Threshold value
-\param concentration Quantity of the molecule
+    Implementation of a step function function
+    \param K Threshold value
+    \param concentration Quantity of the molecule
   */
   public static float stepFunc(float K, float concentration)
   {
@@ -199,12 +214,11 @@ Implementation of a step function function
     return 0f;
   }
 
-//   FIXME : Check all possible issues like product or molecule not exists;
   /*! 
-Execute a Node of type : Constant
-\param node The node of the tree to execute
-\param molecules The list of molecules
-\return The result of the hill function.
+    Execute a Node of type : Constant
+    \param node The node of the tree to execute
+    \param molecules The list of molecules
+    \return The result of the hill function.
   */
   private float execConstant(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
@@ -218,58 +232,54 @@ Execute a Node of type : Constant
     float n = 1f;
     if (node.getLeftNode() != null && node.getLeftNode().getLeftNode() != null)
       n = execNum(node.getLeftNode().getLeftNode(), molecules);
-//     Debug.Log("concentration de " + mol.getName() + " = " + mol.getConcentration());
-//     return stepFunc(K, mol.getConcentration());
-//     if (mol.getName() == "Y")
-//       Debug.Log("hill : " + hillFunc(K, mol.getConcentration(), 4));
-//     else
-//       Debug.Log(mol.getName());
-//     return stepFunc(K, mol.getConcentration());
     return hillFunc(K, mol.getConcentration(), n);
   }
 
-  // FIXME : check issues like node == null etc;
   /*! 
-Execute a Node of type : Word
-\param node The node of the tree to execute
-\param molecules The list of molecules
-\return return the concentration of the molecule in the node.
+    Execute a Node of type : Word
+    \param node The node of the tree to execute
+    \param molecules The list of molecules
+    \return return the concentration of the molecule in the node.
   */
   private Molecule execWord(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
+    if (node == null || molecules == null)
+      return null;
     return ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
   }
 
-  // FIXME : check issues like node == null etc;
   /*! 
-Execute a Node of type : Bool
-\param node The node of the tree to execute
-\return 1 if the value of the node is True, 0 else
+    Execute a Node of type : Bool
+    \param node The node of the tree to execute
+    \return 1 if the value of the node is True, 0 else
   */
   private float execBool(TreeNode<PromoterNodeData> node)
   {
+    if (node == null)
+      return 0f;
     if (node.getData().value == "T")
       return 1f;
     return 0f;
   }
 
-  // FIXME : check issues like bad parse and node == null
   /*! 
-Execute a Node of type : Num
-\param node The node of the tree to execute
-\param molecules The list of molecules
-\return The value that contain the node
+    Execute a Node of type : Num
+    \param node The node of the tree to execute
+    \param molecules The list of molecules
+    \return The value that contain the node
   */
   private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
+    if (node == null || molecules == null)
+      return 0f;
     return float.Parse(node.getData().value.Replace(",", "."));
   }
 
   /*! 
-Execute a Node.
-\param node The node of the tree to execute
-\param molecules The list of molecules
-\return The result of the function
+    Execute a Node.
+    \param node The node of the tree to execute
+    \param molecules The list of molecules
+    \return The result of the function
   */
   private float execNode(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {
@@ -298,14 +308,14 @@ Execute a Node.
   }
 
   /*! 
-\brief Execute a promoter reaction as describe in the detailled reaction
-\details Once the tree is executed, the result is put in delta and used as follow :
-
-For each Product P in the operon :
-
-        [P] += delta * RBSf * TerminatorFactor * beta(Maximal production)
-
-\param molecules The list of molecules
+    \brief Execute a promoter reaction as describe in the detailled reaction
+    \details Once the tree is executed, the result is put in delta and used as follow :
+    
+    For each Product P in the operon :
+    
+                [P] += delta * RBSf * TerminatorFactor * beta(Maximal production)
+    
+    \param molecules The list of molecules
   */
   public override void react(ArrayList molecules)
   {
@@ -327,14 +337,6 @@ For each Product P in the operon :
       energyCoef = 1f;
 
     delta *= energyCoef;
-//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
-
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }
     foreach (Product pro in _products)
       {
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);

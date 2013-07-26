@@ -3,12 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*!
+  \brief Describe an InstantReaction. This class can be loaded by the ReactionEngine
+  \author Pierre COLLET
+ */
 public class InstantReactionProprieties
 {
-  public string name;
-  public LinkedList<Product> reactants;
-  public LinkedList<Product> products;
-  public float energyCost;
+  public string name;                           //!< The name of the reaction
+  public LinkedList<Product> reactants;         //!< The List of reactants
+  public LinkedList<Product> products;          //!< The products of the reaction
+  public float energyCost;                      //!< The cost in energy of the reaction
 }
 
 /*!
@@ -32,13 +36,22 @@ public class InstantReaction : IReaction
     _reactants = new LinkedList<Product>();
   }
 
+  //! Default constructor
   public InstantReaction(InstantReaction r) : base(r)
   {
     _reactants = r._reactants;
   }
 
+  /*!
+    \brief Build an Instant reaction with a InstantReactionProprieties class
+    \param props The proprieties
+    \return Return a new reaction or null if it fail.
+   */
   public static IReaction       buildInstantReactionFromProps(InstantReactionProprieties props)
   {
+    if (props == null)
+      return null;
+
     InstantReaction reaction = new InstantReaction();
 
     reaction.setName(props.name);
@@ -59,8 +72,6 @@ public class InstantReaction : IReaction
   }
 
 
-  public string getName() { return _name; }
-  public void setName(string str) { _name = str; }
   public void addReactant(Product reactant) { if (reactant != null) _reactants.AddLast(reactant); }
 
 
@@ -133,14 +144,6 @@ public class InstantReaction : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-//     Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//     Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
-
-    if (enableNoise)
-      {
-        float noise = _numberGenerator.getNumber();
-        delta += noise;
-      }    
     Molecule mol;
     foreach (Product react in _reactants)
       {
@@ -159,5 +162,4 @@ public class InstantReaction : IReaction
           mol.addNewConcentration(delta * prod.getQuantityFactor());
       }
   }
-
 }

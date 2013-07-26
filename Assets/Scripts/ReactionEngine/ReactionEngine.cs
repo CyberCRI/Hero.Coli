@@ -30,15 +30,20 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _moleculesFiles;           //!< all the molecules files
   public string[]      _fickFiles;                     //!< all the Fick diffusion files
   public string[]      _activeTransportFiles;                     //!< all the Fick diffusion files
-  public static float  reactionsSpeed = 0.9f;
-  public bool enableSequential;
-  public bool enableNoise;
-  public bool enableEnergy;
-  public bool enableShufflingReactionOrder;
-  public bool enableShufflingMediumOrder;
+  public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
+  public bool enableSequential;                         //!< Enable sequential mode (if reaction is compute one's after the others)
+  public bool enableNoise;                              //!< Add Noise in each Reaction
+  public bool enableEnergy;                             //!< Enable energy consomation
+  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
+  public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
 
   public Fick getFick() { return _fick; }
   
+  /*!
+    \brief Add an IReaction to a medium
+    \param mediumId The medium ID.
+    \param reaction The reaction to add.
+   */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
@@ -48,6 +53,11 @@ public class ReactionEngine : MonoBehaviour {
     med.addReaction(reaction);
   }
 
+  /*!
+    \brief remove a reaction from a medium
+    \param mediumId The medium ID.
+    \param name The reaction's name.
+   */  
   public void removeReactionFromMediumByName(int mediumId, string name)
   {
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
@@ -109,12 +119,16 @@ public class ReactionEngine : MonoBehaviour {
     return false;
   }
 
+  /*!
+    \brief Return the List of mediums.
+    \return Return the List of mediums.
+  */
   public LinkedList<Medium>    getMediumList()
   {
     return _mediums;
   }
 
-//! Return an ArrayList that contain all the differents molecules an list of MoleculesSet
+  //! Return an ArrayList that contain all the differents molecules an list of MoleculesSet
   /*!
       \param list the list of MoleculesSet
   */
@@ -164,9 +178,6 @@ public class ReactionEngine : MonoBehaviour {
     foreach (Medium medium in _mediums)
       {
         medium.Init(_reactionsSets, _moleculesSets);
-//         medium.setEnergy(1000f);
-
-        //create energyProducer
         medium.enableSequential(enableSequential);
         medium.enableNoise(enableNoise);
         medium.enableEnergy(enableEnergy);
@@ -183,7 +194,6 @@ public class ReactionEngine : MonoBehaviour {
   public void Update()
   {
     _fick.react();
-//     _activeTransport.react();
     if (enableShufflingMediumOrder)
       LinkedListExtensions.Shuffle<Medium>(_mediums);
     foreach (Medium medium in _mediums)

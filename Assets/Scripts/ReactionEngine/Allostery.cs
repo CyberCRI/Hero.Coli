@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*!
+  \brief This class represent an Allostery reaction and can be loaded by the ReactionEngine class.
+  \author Pierre COLLET
+  \sa Allostery
+ */
 public class AllosteryProprieties
 {
   public string name;
@@ -65,8 +70,6 @@ public class Allostery : IReaction
   private string _product;              //! The name of the product
 
 
-  public string getName() { return _name; }
-  public void setName(string str) { _name = str; }
   public string getEffector() { return _effector; }
   public void setEffector(string str) { _effector = str; }
   public float getK() { return _K; }
@@ -78,10 +81,11 @@ public class Allostery : IReaction
   public void setProduct(string str) { _product = str;}
   public string getProduct() { return _product; }
 
+  //! Default constructor
   public Allostery()
-  {
-  }
+  {}
 
+  //! Copy constructor
   public Allostery(Allostery r) : base(r)
   {
     _effector = r._effector;
@@ -92,10 +96,18 @@ public class Allostery : IReaction
   }
 
 
-//FIXME : Create fonction that create prop with this reaction
-  
+  //FIXME : Create fonction that create prop with this reaction
+
+  /*!
+    \brief This function create a new Allostery reaction from an AllosteryProprieties
+    \param props Proprieties of the reaction
+    \return This function return a new Allostery reaction or null if props is null
+   */
   public static IReaction       buildAllosteryFromProps(AllosteryProprieties props)
   {
+    if (props == null)
+      return null;
+
     Allostery reaction = new Allostery();
 
     reaction.setName(props.name);
@@ -162,15 +174,6 @@ public class Allostery : IReaction
           energyCoef = 1f;
         
         delta *= energyCoef;
-//         Debug.Log("medium name = "+_medium.getName() + " energycoef : " + energyCoef);
-//         Debug.Log("medium name = "+_medium.getName() + " energy : " + _medium.getEnergy());
-        
-
-        if (enableNoise)
-          {
-            float noise = _numberGenerator.getNumber();
-            delta += noise;
-          }
         if (enableSequential)
           {
             product.addConcentration(delta);
@@ -185,5 +188,4 @@ public class Allostery : IReaction
           }
       }
   }
-
 }

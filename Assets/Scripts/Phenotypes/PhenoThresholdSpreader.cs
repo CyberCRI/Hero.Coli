@@ -11,9 +11,9 @@ using System;
  */
 public class PhenoThresholdSpreader : Phenotype {
 
-  public string        MoleculeName;
-  public float         Threshold;
-  public Component     component;
+  public string        MoleculeName;    //!< The molecule's name
+  public float         Threshold;       //!< The threshold
+  public Component     component;       //!< Component to create
 
   //! Called at the begening
   public override void StartPhenotype()
