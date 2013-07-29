@@ -28,7 +28,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	private float _deltaTimeThreshold = 0.2f;
 	
 	//TODO use real device width
-	static private float _height = 52.0f;
+	static private float _height = 54.0f;
 	public ReactionEngine reactionEngine;
 	public int celliaMediumID = 1;
 	public UIPanel equipPanel;
@@ -89,18 +89,20 @@ public class DevicesDisplayer : MonoBehaviour {
 		}
 	}
 	
-	public Vector3 getNewPosition(DeviceType deviceType) {
+	public Vector3 getNewPosition(DeviceType deviceType, int index = -1) {
 		Vector3 res;
+		int idx = index;
 		if(deviceType == DeviceType.Equiped) {
-			res = equipedDevice.transform.localPosition + new Vector3(0.0f, -_equipedDevices.Count*_height, -0.1f);
+			if(idx == -1) idx = _equipedDevices.Count;
+			res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_height, -0.1f);
 		} else {
-			res = inventoryDevice.transform.localPosition + new Vector3((_inventoryDevices.Count%3)*_height, -(_inventoryDevices.Count/3)*_height, -0.1f);
+			if(idx == -1) idx = _inventoryDevices.Count;
+			res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_height, -(idx/3)*_height, -0.1f);
 		}		
 		return res;
 	}
 	
 	public void removeDevice(int deviceID) {
-		Debug.Log("removeDevice("+deviceID+")");
 		DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
 		List<DisplayedDevice> devices = _equipedDevices;
 		DeviceType deviceType = DeviceType.Equiped;
@@ -108,14 +110,29 @@ public class DevicesDisplayer : MonoBehaviour {
 			toRemove = _inventoryDevices.Find(device => device.getID() == deviceID);
 			devices = _inventoryDevices;
 			deviceType = DeviceType.Inventory;
+		} else {
 		}
 		
 		if(toRemove != null) {
+			int startIndex = devices.IndexOf(toRemove);
+			
+			if(deviceType == DeviceType.Equiped) {
+				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count);
+			} else {
+				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from inventory of count "+_inventoryDevices.Count);
+			}
+			
 			devices.Remove(toRemove);
 			toRemove.Remove();
-			for(int i = 0; i < devices.Count; i++) {
-				Vector3 newLocalPosition = getNewPosition(deviceType);
-				devices[i].Redraw(newLocalPosition);
+			if(deviceType == DeviceType.Equiped) {
+				Debug.Log("removeDevice("+deviceID+") from equipment of count "+_equipedDevices.Count+" done");
+			} else {
+				Debug.Log("removeDevice("+deviceID+") from inventory of count "+_inventoryDevices.Count+" done");
+			}
+			for(int idx = startIndex; idx < devices.Count; idx++) {
+				Vector3 newLocalPosition = getNewPosition(deviceType, idx);
+				Debug.Log("removeDevice("+deviceID+") redrawing idx "+idx+" at position "+newLocalPosition);
+				devices[idx].Redraw(newLocalPosition);
 			}
 		}
 	}

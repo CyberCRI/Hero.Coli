@@ -7,8 +7,6 @@ public class LifeIndicator : MonoBehaviour {
 	private Vector3 _initialScale;
 	public float maxXScale = 200.0f;
 	public float startLife = 1.0f;
-	
-	private Transform _background;
 	private Transform _foreground;
 
 	// Use this for initialization
@@ -17,9 +15,7 @@ public class LifeIndicator : MonoBehaviour {
 		hero = GameObject.Find ("Hero").GetComponent<Hero>();
 		GameObject lifeIndicator = GameObject.Find ("LifeIndicator");
 		Transform progressBar = lifeIndicator.transform.Find("ProgressBar");
-		_background = progressBar.transform.Find("Background");
 		_foreground = progressBar.transform.Find("Foreground");
-		//maxXScale = background.transform.localScale.x;
 		_initialScale = _foreground.localScale;
 		
 		hero.setLife(startLife);

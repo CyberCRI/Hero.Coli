@@ -20,7 +20,7 @@ public class DisplayedDevice : MonoBehaviour {
 		return _deviceID;
 	}
 	
-	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceSpritePrefab");
+	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceButtonPrefab");
 	public static DisplayedDevice Create(
 		Transform parentTransform, 
 		Vector3 localPosition, 
@@ -40,7 +40,7 @@ public class DisplayedDevice : MonoBehaviour {
 	    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
 		newDevice.transform.parent = parentTransform;
 		newDevice.transform.localPosition = localPosition;
-		newDevice.transform.localScale = new Vector3(50f, 50f, 0);
+		newDevice.transform.localScale = new Vector3(1f, 1f, 0);
 		
 	    DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
 		deviceScript._deviceID = deviceID;
@@ -100,8 +100,7 @@ public class DisplayedDevice : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		//_sprite.atlas = Resources.Load("Atlases/TestAtlas") as UIAtlas;
-		Debug.Log("start: access _sprite="+_sprite);
+		Debug.Log("start: _currentSpriteName="+_currentSpriteName+", _sprite.spriteName="+_sprite.spriteName);
 		_sprite.atlas = _atlas;
 		setActive();
 	}
@@ -117,8 +116,14 @@ public class DisplayedDevice : MonoBehaviour {
 	
 	void OnPress(bool isPressed) {
 		Debug.Log("on press("+isPressed+") "+getDebugInfos());
-		if(_deviceType == DevicesDisplayer.DeviceType.Inventory && !isPressed) {
-			_devicesDisplayer.addDevice(0, _deviceInfo, DevicesDisplayer.DeviceType.Equiped);
+		if(isPressed) {
+			if(_deviceType == DevicesDisplayer.DeviceType.Inventory) {
+				_devicesDisplayer.addDevice(0, _deviceInfo, DevicesDisplayer.DeviceType.Equiped);
+			} else if (_deviceType == DevicesDisplayer.DeviceType.Equiped) {
+				_devicesDisplayer.removeDevice(_deviceID);
+			} else {
+				Debug.Log("device type "+_deviceType+" not managed in OnPress");
+			}
 		}
 	}
 }
