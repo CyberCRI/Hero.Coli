@@ -12,13 +12,13 @@ using System;
 public class PhenoLight : Phenotype {
 
   public Light affectedLight;   //!< The light that will be affected by the phenotype
-  public Color color;          //!< Color of the Light
+  //public Color color;          //!< Color of the Light
 
 
   //! Called at the begening
   public override void StartPhenotype()
   {
-    affectedLight.color = color;
+    //affectedLight.color = color;
   }
 
   /*!
@@ -32,7 +32,7 @@ public class PhenoLight : Phenotype {
     Molecule mol = ReactionEngine.getMoleculeFromName("H2O", _molecules);
     if (mol == null)
       return ;
-    float intensity = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 8f);
+    float intensity = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
 	float colRadius = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
 	affectedLight.intensity = intensity;
