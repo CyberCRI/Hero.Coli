@@ -38,6 +38,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	public GameObject equipedDevice;	
 	public GameObject inventoryDevice;
 	
+	public GUITransitioner transitioner;
+	
 	//FOR DEBUG
 	private string getRandomSprite() {
 		int randomIndex = Random.Range(0, spriteNames.Count);
@@ -77,13 +79,23 @@ public class DevicesDisplayer : MonoBehaviour {
 		}
 	}
 	
-	public void UpdateScreen(int screenID){
-		Debug.Log(screenID + " screen");
-		if(screenID == 1 || screenID == 3){
+	public bool IsScreen(int screen) {
+		return (((transitioner._currentScreen == GUITransitioner.GameScreen.screen1) && (screen == 1))
+			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen2) && (screen == 2))
+			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen3) && (screen == 3)));
+	}
+	
+	public bool IsEquipScreen() {
+		return (transitioner._currentScreen == GUITransitioner.GameScreen.screen2);
+	}
+	
+	public void UpdateScreen(){
+		Debug.Log("UpdateScreen " + transitioner._currentScreen);
+		if(IsScreen(1) || IsScreen(3)){
 			//inventoryPanel.SetAlphaRecursive(0,true);
 			inventoryPanel.gameObject.SetActive(false);
-		}
-		if(screenID == 2){
+		} else {
+		//if(IsScreen(2)){
 			//inventoryPanel.SetAlphaRecursive(100,true);
 			inventoryPanel.gameObject.SetActive(true);
 		}

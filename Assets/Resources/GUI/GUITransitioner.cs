@@ -9,8 +9,8 @@ public class GUITransitioner : MonoBehaviour {
     private float _timeAtCurrentFrame = 0f;
     private float _deltaTime = 0f;
 	
-	private GameScreen _currentScreen = GameScreen.screen1;
-	private enum GameScreen {
+	public GameScreen _currentScreen = GameScreen.screen1;
+	public enum GameScreen {
 		screen1,
 		screen2,
 		screen3
@@ -30,7 +30,7 @@ public class GUITransitioner : MonoBehaviour {
 		SetScreen1(true);
 		
 		Pause(false);
-		_devicesDisplayer.UpdateScreen(1);
+		_devicesDisplayer.UpdateScreen();
 		_currentScreen = GameScreen.screen1;
 		
 		_timeAtLastFrame = Time.realtimeSinceStartup;
@@ -101,7 +101,7 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen1(true);
 				}
 				Pause(false);
-				_devicesDisplayer.UpdateScreen(1);
+				_devicesDisplayer.UpdateScreen();
 				ZoomOut();
 				_currentScreen = GameScreen.screen1;
 				
@@ -129,7 +129,7 @@ public class GUITransitioner : MonoBehaviour {
 				}
 				
 				Pause(true);
-				_devicesDisplayer.UpdateScreen(2);
+				_devicesDisplayer.UpdateScreen();
 				ZoomIn();
 				_currentScreen = GameScreen.screen2;			
 				
@@ -154,7 +154,7 @@ public class GUITransitioner : MonoBehaviour {
 					
 				}	
 				Pause(true);
-				_devicesDisplayer.UpdateScreen(3);
+				_devicesDisplayer.UpdateScreen();
 				ZoomIn();					
 				_currentScreen = GameScreen.screen3;			
 				

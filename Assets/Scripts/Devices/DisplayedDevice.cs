@@ -115,12 +115,12 @@ public class DisplayedDevice : MonoBehaviour {
 	}
 	
 	void OnPress(bool isPressed) {
-		Debug.Log("on press("+isPressed+") "+getDebugInfos());
 		if(isPressed) {
+			Debug.Log("on press() "+getDebugInfos());
 			if(_deviceType == DevicesDisplayer.DeviceType.Inventory) {
 				_devicesDisplayer.addDevice(0, _deviceInfo, DevicesDisplayer.DeviceType.Equiped);
 			} else if (_deviceType == DevicesDisplayer.DeviceType.Equiped) {
-				_devicesDisplayer.removeDevice(_deviceID);
+				if (_devicesDisplayer.IsEquipScreen()) _devicesDisplayer.removeDevice(_deviceID);
 			} else {
 				Debug.Log("device type "+_deviceType+" not managed in OnPress");
 			}
