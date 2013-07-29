@@ -153,7 +153,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	void Update () {
 		
 		_timeAtCurrentFrame = Time.realtimeSinceStartup;
-        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;		
+        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 		
 		if(_deltaTime > _deltaTimeThreshold) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device
