@@ -106,6 +106,10 @@ public class Product
   protected float       _quantityFactor;        //! The factor of production
 
   public Product() { }
+  public Product(string name, float quantityFactor) {
+    _name = name;
+	_quantityFactor = quantityFactor;
+  }
   public Product(Product p)
   {
     _name = p._name;
@@ -116,6 +120,10 @@ public class Product
   public string getName() { return _name; }
   public void setQuantityFactor(float quantity) { _quantityFactor = quantity; }
   public float getQuantityFactor() { return _quantityFactor; }
+	
+  public override string ToString() {
+    return "Product[name:"+_name+", quantityFactor:"+_quantityFactor+"]";
+  }
 }
 
 /*!

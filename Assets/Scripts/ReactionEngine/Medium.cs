@@ -280,7 +280,6 @@ public class Medium
               ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
             else
               ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
-//             Debug.Log("O: " + ReactionEngine.getMoleculeFromName("O", _molecules).getConcentration());
           }
         if (Input.GetKey(KeyCode.F))
           {
