@@ -12,8 +12,8 @@ using System;
 public class PhenoLight : Phenotype {
 
   	public GameObject phenoLight;   //!< The light that will be affected by the phenotype
-  	//public Color color;          //!< Color of the Light
-
+  	
+	private bool colliderActivated = false;
 
   	//! Called at the begening
   	public override void StartPhenotype()
@@ -36,17 +36,25 @@ public class PhenoLight : Phenotype {
 		float colRadius = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
 		phenoLight.light.intensity = intensity;
-		((SphereCollider)phenoLight.collider).radius = colRadius;
+		if(colliderActivated)
+			((SphereCollider)phenoLight.collider).radius = colRadius;
   	}
 	
 	void OnTriggerEnter(Collider col){
-		phenoLight.SetActive(true);
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
-		if(lm)
+		if(lm){
+			phenoLight.light.enabled = true;
+			colliderActivated = true;
 			phenoLight.light.color = lm.colorTo;
+		}
  	}
 	
 	void OnTriggerExit(Collider col){
-		phenoLight.SetActive(false);
+		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
+		if(lm){
+			phenoLight.light.enabled = false;
+			((SphereCollider)phenoLight.collider).radius = 0;
+			colliderActivated = false;
+		}
 	}
 }
