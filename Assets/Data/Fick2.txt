@@ -3,6 +3,6 @@
     <MediumId1>2</MediumId1>
     <MediumId2>1</MediumId2>
     <P>0.05</P>
-    <surface>0.003</surface>
+    <surface>0.000</surface>
   </fickProp>
 </ficks>
