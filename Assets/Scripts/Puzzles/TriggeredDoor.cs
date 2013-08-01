@@ -14,7 +14,6 @@ public class TriggeredDoor : TriggeredBehaviour {
 	}
 	
 	public override void triggerStart(){
-		Debug.Log (moveTo.localPosition);
 		iTween.MoveTo(gameObject, iTween.Hash(
 			"position", moveTo,
 			"speed", speed,

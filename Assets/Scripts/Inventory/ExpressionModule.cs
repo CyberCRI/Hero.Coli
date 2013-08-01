@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class ExpressionModule
 {
   private string                _name;
-  private List<BioBrick>        _bioBricks;
+  private LinkedList<BioBrick>        _bioBricks;
 
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
-  public List<BioBrick> getBioBricks() { return _bioBricks; }
+  public LinkedList<BioBrick> getBioBricks() { return _bioBricks; }
 
   public int getSize()
   {
@@ -20,11 +20,19 @@ public class ExpressionModule
     return sum;
   }
 
-  public ExpressionModule(string name, List<BioBrick> bricks)
+  public ExpressionModule(string name, LinkedList<BioBrick> bricks)
   {
     _name = name;
-    _bioBricks = new List<BioBrick>();
+    _bioBricks = new LinkedList<BioBrick>();
     foreach (BioBrick b in bricks)
-      _bioBricks.Add(b);
+      _bioBricks.AddLast(b);
+  }
+
+  public ExpressionModule(ExpressionModule m)
+  {
+    _name = m._name;
+    _bioBricks = new LinkedList<BioBrick>();
+    foreach (BioBrick b in m.getBioBricks())
+      _bioBricks.AddLast(b);
   }
 }

@@ -40,11 +40,11 @@ public class PromoterBrick : BioBrick
   public void setFormula(string v) { _formula = v; }
   public string getFormula() { return _formula; }
 
-  public PromoterBrick() : base(Type.PROMOTER)
+  public PromoterBrick() : base(BioBrick.Type.PROMOTER)
   {
   }
 	
-  public PromoterBrick(float beta, string formula) : base(Type.PROMOTER)
+  public PromoterBrick(float beta, string formula) : base(BioBrick.Type.PROMOTER)
   {
 		_beta = beta;
 		_formula = formula;
@@ -58,11 +58,11 @@ class RBSBrick : BioBrick
   public void setRBSFactor(float v) { _RBSFactor = v; }
   public float getRBSFactor() { return _RBSFactor; }
 
-  public RBSBrick() : base(Type.RBS)
+  public RBSBrick() : base(BioBrick.Type.RBS)
   {
   }
 
-  public RBSBrick(float RBSFactor) : base(Type.RBS)
+  public RBSBrick() : base(BioBrick.Type.RBS)
   {
 		_RBSFactor = RBSFactor;
   }
@@ -75,11 +75,11 @@ class GeneBrick : BioBrick
   public void setProteinName(string name) { _proteinName = name; }
   public string getProteinName() { return _proteinName; }
 
-  public GeneBrick() : base(Type.GENE)
+  public GeneBrick() : base(BioBrick.Type.GENE)
   {
   }
 
-  public GeneBrick(string proteinName) : base(Type.GENE)
+  public GeneBrick(string proteinName) : base(BioBrick.Type.GENE)
   {
 		_proteinName = proteinName;
   }
@@ -92,11 +92,11 @@ class TerminatorBrick : BioBrick
   public void setTerminatorFactor(float v) { _terminatorFactor = v; }
   public float getTerminatorFactor() { return _terminatorFactor; }
 
-  public TerminatorBrick() : base(Type.TERMINATOR)
+  public TerminatorBrick() : base(BioBrick.Type.TERMINATOR)
   {
   }
 
-  public TerminatorBrick(float terminatorFactor) : base(Type.TERMINATOR)
+  public TerminatorBrick(float terminatorFactor) : base(BioBrick.Type.TERMINATOR)
   {
 		_terminatorFactor = terminatorFactor;
   }
