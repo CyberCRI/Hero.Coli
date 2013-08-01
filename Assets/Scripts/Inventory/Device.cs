@@ -5,7 +5,7 @@ using UnityEngine;
 public class Device
 {
   private string                        _name;
-  private LinkedList<ExpressionModule>       _modules;
+  private LinkedList<ExpressionModule>	_modules;
   
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
@@ -187,11 +187,35 @@ public class Device
     return true;
   }
 
-  public static Device builDevice(string name, LinkedList<ExpressionModule> bricks)
+  public static Device buildDevice(string name, LinkedList<ExpressionModule> bricks)
   {
     if (bricks == null || checkDeviceValidity(bricks) == false)
       return null;
     Device device = new Device(name, bricks);
     return device;
   }
+	
+	//helper for simple devices
+	public static Device buildDevice(string name,
+		float beta,//promoter
+		string formula,//promoter
+		float rbsFactor,//rbs
+		string proteinName,//gene
+		float terminatorFactor//terminator
+		) {
+		
+		BioBrick[] bioBrickArray = {
+			new PromoterBrick(beta, formula),
+			new RBSBrick(rbsFactor),
+			new GeneBrick(proteinName),
+			new TerminatorBrick(terminatorFactor)
+		};
+		
+		LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBrickArray);
+		
+		ExpressionModule[] modulesArray = { new ExpressionModule(name+"_module", bricks) };
+		LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(modulesArray);
+		
+		return Device.buildDevice(name, modules);
+	}
 }

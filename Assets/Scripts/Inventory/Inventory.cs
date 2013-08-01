@@ -3,24 +3,21 @@ using System.Collections.Generic;
 
 class Inventory : DeviceContainer
 {
-	private PromoterBrick 		testPromoter = new PromoterBrick();
-	private RBSBrick 			testRBS = new RBSBrick();
-	private GeneBrick 			testGene = new GeneBrick();
-	private TerminatorBrick 	testTerminator = new TerminatorBrick();
-	private List<BioBrick> 		testBricks = new List<BioBrick>();
+					
+	//promoter
+	private static float testbeta = 10.0f;
+	private static string testformula = "![0.8,2]LacI";
+	//rbs
+	private static float testrbsFactor = 1.0f;
+	//gene
+	private static string testproteinName = "testProtein";
+	//terminator
+	private static float testterminatorFactor = 1.0f;
+	
 		
-	private Device getTestDevice() {
+	private static Device getTestDevice() {
 		
-		testBricks.Add(testPromoter);
-		testBricks.Add(testRBS);
-		testBricks.Add(testGene);
-		testBricks.Add(testTerminator);
-		
-		ExpressionModule testModule = new ExpressionModule("testModule", testBricks); 
-		List<ExpressionModule> testModules = new List<ExpressionModule>();
-		testModules.Add(testModule);
-		
-		Device testDevice = new Device("testDevice", testModules);
+		Device testDevice = Device.buildDevice("testDevice", testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
 		
 		return testDevice;
 	}
@@ -34,9 +31,12 @@ class Inventory : DeviceContainer
 		OnChanged(new List<Device>(), new List<Device>(), _devices);
 	}
 	
+	//TODO
 	public override void OnChanged(List<Device> removed, List<Device> added, List<Device> edited) {
+		/*
 		Device head = added[0];
 		_displayer.OnChange(DevicesDisplayer.DeviceType.Inventoried, removed, added, edited);
+		*/
 	}
 }
 

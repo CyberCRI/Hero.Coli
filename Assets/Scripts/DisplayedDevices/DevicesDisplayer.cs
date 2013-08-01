@@ -218,23 +218,29 @@ public class DevicesDisplayer : MonoBehaviour {
 		}
 	}
 	
+	//TODO
 	public void removeDevice(DeviceType type, Device toRemove) {
+		/*
 		if(type == DeviceType.Equiped) {
 			DisplayedDevice found = _equipedDevices.Find(device => device._deviceID == 0);
 			
 		} else {
 			List<DisplayedDevice> devices = _inventoriedDevices;
 		}
+		*/
 	}
 	
 	// to be called when devices are added, deleted, or edited
+	//TODO
 	public void OnChange(DeviceType type, List<Device> removed, List<Device> added, List<Device> edited) {
+		/*
 		if(type == DeviceType.Equiped) {
 			List<DisplayedDevice> devices = _equipedDevices;
 			
 		} else {
 			List<DisplayedDevice> devices = _inventoriedDevices;
 		}
+		*/
 	}
 	
 	// Use this for initialization
@@ -256,24 +262,23 @@ public class DevicesDisplayer : MonoBehaviour {
         _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 		
 		if(_deltaTime > _deltaTimeThreshold) {
-			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device
-				int randomID = Random.Range(0, 12000);				
-				string spriteName = getRandomSprite();
-				
+			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device				
+				//promoter
 				float beta = 10.0f;
 				string formula = "![0.8,2]LacI";
+				//rbs
+				float rbsFactor = 1.0f;
+				//gene
 				string proteinName = "testProtein";
-				
-				List<BioBrick> bricks = new List<BioBrick>() {
-					new PromoterBrick(),
-					new RBSBrick(),
-					new GeneBrick(proteinName),
-					new TerminatorBrick()
-				};
-				List<ExpressionModule> modules = new List<ExpressionModule>() {
-					new ExpressionModule("testModule", bricks)
-				};
-				Device newDevice = new Device("test1", modules);
+				//terminator
+				float terminatorFactor = 1.0f;
+				Device newDevice = Device.buildDevice("test1",
+				 beta,//promoter
+				 formula,//promoter
+				 rbsFactor,//rbs
+				 proteinName,//gene
+				 terminatorFactor//terminator
+				);
 				addEquipedDevice(newDevice);
 				/*
 				 * 
@@ -307,6 +312,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				
+				/*
 				int randomID = Random.Range(50, 12000);			
 				string spriteName = getRandomSprite();
 				DeviceInfo deviceInfo = new DeviceInfo(
@@ -321,6 +327,24 @@ public class DevicesDisplayer : MonoBehaviour {
 					1.0f
 					);
 	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Inventoried);
+				*/
+				//promoter
+				float beta = 10.0f;
+				string formula = "![0.8,2]LacI";
+				//rbs
+				float rbsFactor = 1.0f;
+				//gene
+				string proteinName = "testProtein";
+				//terminator
+				float terminatorFactor = 1.0f;
+				Device newDevice = Device.buildDevice("test2",
+				 beta,//promoter
+				 formula,//promoter
+				 rbsFactor,//rbs
+				 proteinName,//gene
+				 terminatorFactor//terminator
+				);
+				addInventoriedDevice(newDevice);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				//FIXME

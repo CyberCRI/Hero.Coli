@@ -94,7 +94,7 @@ public abstract class DisplayedDevice : MonoBehaviour {
 	
 	}
 	
-	string getDebugInfos() {
+	protected string getDebugInfos() {
 		return "device "+_deviceID+", time="+Time.realtimeSinceStartup;
 	}
 	

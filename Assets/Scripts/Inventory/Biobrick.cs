@@ -62,7 +62,7 @@ class RBSBrick : BioBrick
   {
   }
 
-  public RBSBrick() : base(BioBrick.Type.RBS)
+  public RBSBrick(float RBSFactor) : base(BioBrick.Type.RBS)
   {
 		_RBSFactor = RBSFactor;
   }
