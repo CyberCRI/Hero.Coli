@@ -31,7 +31,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
     private float _deltaTime = 0f;	
-	private float _deltaTimeThreshold = 0.2f;
+	private float _deltaTimeThreshold = 0.5f;
 	
 	//TODO use real device width
 	static private float _height = 54.0f;
@@ -90,7 +90,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	public string getSpriteName(string deviceName) {
 		string fromDico = spriteNamesDictionary[deviceName];
-		string res = (fromDico==null)?fromDico:getRandomSprite();
+		string res = (fromDico!=null)?fromDico:getRandomSprite();
 		Debug.Log("getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")");
 		return res;
 	}
@@ -104,7 +104,15 @@ public class DevicesDisplayer : MonoBehaviour {
 			int deviceID = _inventoriedDevices.Count;
 			
 			DisplayedDevice newDevice = 
-				InventoriedDisplayedDevice.Create (parent, localPosition, deviceID, device, this, getSpriteName(device.getName()));
+				InventoriedDisplayedDevice.Create (
+          DevicesDisplayer.DeviceType.Inventoried,
+          parent,
+          localPosition,
+          deviceID,
+          device,
+          this,
+          getSpriteName(device.getName())
+        );
 			_inventoriedDevices.Add(newDevice);
 			//let's add reaction to reaction engine
 			//for each module of deviceInfo, add to reaction engine
@@ -115,7 +123,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 	
 	public void addEquipedDevice(Device device) {
-		Debug.Log("addEquipedDevice("+device+")");
+		Debug.Log("addEquipedDevice("+device.ToString()+")");
 		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
 		if(alreadyEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
@@ -123,7 +131,15 @@ public class DevicesDisplayer : MonoBehaviour {
 			int deviceID = _inventoriedDevices.Count;
 			
 			DisplayedDevice newDevice = 
-				InventoriedDisplayedDevice.Create (parent, localPosition, deviceID, device, this, "sand");
+				EquipedDisplayedDevice.Create (
+          DevicesDisplayer.DeviceType.Equiped,
+          parent,
+          localPosition,
+          deviceID,
+          device,
+          this,
+          getSpriteName(device.getName())
+        );
 			_equipedDevices.Add(newDevice);
 			//let's add reaction to reaction engine
 			//for each module of deviceInfo, add to reaction engine
@@ -259,12 +275,15 @@ public class DevicesDisplayer : MonoBehaviour {
 	void Update () {
 		
 		_timeAtCurrentFrame = Time.realtimeSinceStartup;
-        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+    _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 		
-		if(_deltaTime > _deltaTimeThreshold) {
+		bool update = (_deltaTime > _deltaTimeThreshold);
+		
+		if(update) {
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
+				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("V - create equiped device");
+				Debug.Log("V - create equiped device starting...");
 				
 				//promoter
 				float beta = 10.0f;
@@ -282,13 +301,19 @@ public class DevicesDisplayer : MonoBehaviour {
 				 proteinName,//gene
 				 terminatorFactor//terminator
 				);
-				addEquipedDevice(newDevice);
+				if(newDevice == null) {
+					Debug.Log("failed to provide device");
+				} else {
+					addEquipedDevice(newDevice);
+				}
+        Debug.Log("V - create equiped device ...done!");
 								
 			}
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
+				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("B - create inventory device");
+				Debug.Log("B - create inventory device starting ...");
 				
 				//promoter
 				float beta = 10.0f;
@@ -306,9 +331,15 @@ public class DevicesDisplayer : MonoBehaviour {
 				 proteinName,//gene
 				 terminatorFactor//terminator
 				);
-				addInventoriedDevice(newDevice);
+       if(newDevice == null) {
+          Debug.Log("failed to provide device");
+        } else {
+			    addInventoriedDevice(newDevice);
+        }
+        Debug.Log("V - create equiped device ... done!");
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
+				_timeAtLastFrame = _timeAtCurrentFrame;
 				
 				Debug.Log("T - remove random device");
 				//FIXME
@@ -319,8 +350,8 @@ public class DevicesDisplayer : MonoBehaviour {
 		        	removeDevice(randomDevice.getID());
 					//removeDevice(DevicesDisplayer.DeviceType.Equiped, randomDevice);
 				}
+				
 			}
-			_timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
 }

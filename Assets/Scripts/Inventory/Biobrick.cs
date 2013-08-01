@@ -44,8 +44,9 @@ public class PromoterBrick : BioBrick
   {
   }
 	
-  public PromoterBrick(float beta, string formula) : base(BioBrick.Type.PROMOTER)
+  public PromoterBrick(string name, float beta, string formula) : base(BioBrick.Type.PROMOTER)
   {
+    _name = name;
 		_beta = beta;
 		_formula = formula;
   }
@@ -67,8 +68,9 @@ class RBSBrick : BioBrick
   {
   }
 
-  public RBSBrick(float RBSFactor) : base(BioBrick.Type.RBS)
+  public RBSBrick(string name, float RBSFactor) : base(BioBrick.Type.RBS)
   {
+    _name = name;
 		_RBSFactor = RBSFactor;
   }
 	
@@ -89,8 +91,9 @@ class GeneBrick : BioBrick
   {
   }
 
-  public GeneBrick(string proteinName) : base(BioBrick.Type.GENE)
+  public GeneBrick(string name, string proteinName) : base(BioBrick.Type.GENE)
   {
+    _name = name;
 		_proteinName = proteinName;
   }
 	
@@ -111,13 +114,14 @@ class TerminatorBrick : BioBrick
   {
   }
 
-  public TerminatorBrick(float terminatorFactor) : base(BioBrick.Type.TERMINATOR)
+  public TerminatorBrick(string name, float terminatorFactor) : base(BioBrick.Type.TERMINATOR)
   {
+    _name = name;
 		_terminatorFactor = terminatorFactor;
   }
 	
   public override string ToString ()
   {
-	return string.Format ("[TerminatorBrick: name: {0}, terminatorFactor: {1}]", _name, _terminatorFactor);
+	  return string.Format ("[TerminatorBrick: name: {0}, terminatorFactor: {1}]", _name, _terminatorFactor);
   }
 }

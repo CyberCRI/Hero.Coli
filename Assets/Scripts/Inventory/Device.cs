@@ -167,42 +167,64 @@ public class Device
 
   private static bool checkModuleValidity(ExpressionModule module)
   {
-    if (module == null)
+    Debug.Log("checkModuleValidity("+module.ToString()+")");
+    if (module == null) {
+      Debug.Log("(module == null)");
       return false;
+    }
 
     LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(module.getBioBricks());
-    if (bricks == null)
+    if (bricks == null) {
+      Debug.Log("(bricks == null)");
       return false;
-    if (bricks.Count == 0 || bricks.First.Value == null)
+    }
+    if (bricks.Count == 0 || bricks.First.Value == null) {
+      Debug.Log("(bricks.Count == 0 || bricks.First.Value == null)");
       return false;
-    if (checkPromoter(bricks.First.Value) == false)
+    }
+    if (checkPromoter(bricks.First.Value) == false) {
+      Debug.Log("(checkPromoter(bricks.First.Value) == false)");
       return false;
+    }
     bricks.RemoveFirst();
 
-    if (checkOperon(bricks) == false)
+    if (checkOperon(bricks) == false) {
+      Debug.Log("(checkOperon(bricks) == false)");
       return false;
+    }
 
-    if (bricks.Count == 0 || bricks.First.Value != null || checkTerminator(bricks.First.Value) == false)
+    bool b1 = (bricks.Count == 0);
+    bool b2 = (bricks.First.Value == null);
+    bool b3 = (checkTerminator(bricks.First.Value) == false);
+    if (b1 || b2 || b3) {
+      //Debug.Log("(bricks.Count == 0 || bricks.First.Value != null || checkTerminator(bricks.First.Value) == false)");
+      if (b1) Debug.Log("(bricks.Count == 0) = true");
+      if (b2) Debug.Log("(bricks.First.Value != null) = true");
+      if (b3) Debug.Log("(checkTerminator(bricks.First.Value) == false) = true");
       return false;
+    }
     bricks.RemoveFirst();
-    if (bricks.Count != 0)
+    if (bricks.Count != 0) {
+      Debug.Log("(bricks.Count != 0)");
       return false;
+    }
     return true;
   }
 
-  private static bool checkDeviceValidity(LinkedList<ExpressionModule> device)
+  private static bool checkDeviceValidity(LinkedList<ExpressionModule> modules)
   {
-    foreach (ExpressionModule em in device)
+    foreach (ExpressionModule em in modules)
       if (checkModuleValidity(em) == false)
         return false;
     return true;
   }
 
-  public static Device buildDevice(string name, LinkedList<ExpressionModule> bricks)
+  public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
   {
-    if (bricks == null || checkDeviceValidity(bricks) == false)
+    if (modules == null || checkDeviceValidity(modules) == false) {
       return null;
-    Device device = new Device(name, bricks);
+	  }
+    Device device = new Device(name, modules);
     return device;
   }
 	
@@ -215,17 +237,28 @@ public class Device
 		float terminatorFactor//terminator
 		) {
 		
+		Debug.Log("buildDevice("+name+", "+beta+", '"+formula+"', "+rbsFactor+", "+proteinName+", "+terminatorFactor+") starting...");
+		
 		BioBrick[] bioBrickArray = {
-			new PromoterBrick(beta, formula),
-			new RBSBrick(rbsFactor),
-			new GeneBrick(proteinName),
-			new TerminatorBrick(terminatorFactor)
+			new PromoterBrick(name+"_promoter", beta, formula),
+			new RBSBrick(name+"_rbs", rbsFactor),
+			new GeneBrick(name+"_gene", proteinName),
+			new TerminatorBrick(name+"_terminator", terminatorFactor)
 		};
 		
+		//Debug.Log("(bioBrickArray == null)="+(bioBrickArray == null));
+
 		LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBrickArray);
+
+		//Debug.Log("(bricks == null)="+(bricks == null));
 		
 		ExpressionModule[] modulesArray = { new ExpressionModule(name+"_module", bricks) };
+
+		//Debug.Log("(modulesArray == null)="+(modulesArray == null));
+
 		LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(modulesArray);
+
+		//Debug.Log("(modules == null)="+(modules == null));
 		
 		return Device.buildDevice(name, modules);
 	}
