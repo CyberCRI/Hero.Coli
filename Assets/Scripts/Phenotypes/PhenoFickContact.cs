@@ -96,12 +96,4 @@ public class PhenoFickContact : Phenotype {
     reaction.setSurface(0);
   }
 
-  public void OnTriggerStay(Collider collisionInfo)
-  {
-    
-//     foreach (ContactPoint contact in collisionInfo.contacts)
-//       {
-//         Debug.DrawRay(contact.point, contact.normal * 10, Color.white);
-//       }
-  }
 }
