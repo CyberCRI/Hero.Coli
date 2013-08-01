@@ -30,6 +30,17 @@ public class Device
     foreach (ExpressionModule em in modules)
       _modules.AddLast(new ExpressionModule(em));
   }
+	
+  public override string ToString ()
+  {
+		string modulesString = "Modules: [";
+		foreach (ExpressionModule module in _modules) {
+			modulesString += (module.ToString() + ", ");
+		}
+		modulesString += "]";
+		
+		return string.Format ("[Device: name: {0}, modules: {1}]", _name, modulesString);
+  }
 
   public LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
   {

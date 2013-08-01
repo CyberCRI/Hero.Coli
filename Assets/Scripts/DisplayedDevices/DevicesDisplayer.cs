@@ -219,7 +219,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 	
 	//TODO
-	public void removeDevice(DeviceType type, Device toRemove) {
+	public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
 		/*
 		if(type == DeviceType.Equiped) {
 			DisplayedDevice found = _equipedDevices.Find(device => device._deviceID == 0);
@@ -262,7 +262,10 @@ public class DevicesDisplayer : MonoBehaviour {
         _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 		
 		if(_deltaTime > _deltaTimeThreshold) {
-			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device				
+			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
+				
+				Debug.Log("V - create equiped device");
+				
 				//promoter
 				float beta = 10.0f;
 				string formula = "![0.8,2]LacI";
@@ -280,54 +283,13 @@ public class DevicesDisplayer : MonoBehaviour {
 				 terminatorFactor//terminator
 				);
 				addEquipedDevice(newDevice);
-				/*
-				 * 
-				 * 
-				
-				int id,		
-				string deviceName,
-				string spriteName,
-				string promoterName,
-				float productionMax,
-				float terminatorFactor,
-				string formula,
-				string product,
-				float rbs
-				
-				DeviceInfo deviceInfo = new DeviceInfo(
-					randomID,
-					"testDevice",
-					spriteName,
-					"pLac",
-					10.0f,
-					1.0f,
-					"![0.8,2]LacI",
-					"GFP",
-					1.0f
-					);
-	        	addDevice(0, deviceInfo, DevicesDisplayer.DeviceType.Equiped);
-	        	*/
-				
+								
 			}
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				
-				/*
-				int randomID = Random.Range(50, 12000);			
-				string spriteName = getRandomSprite();
-				DeviceInfo deviceInfo = new DeviceInfo(
-					randomID,
-					"testDevice",
-					spriteName,
-					"pLac",
-					10.0f,
-					1.0f,
-					"![0.8,2]LacI",
-					"GFP",
-					1.0f
-					);
-	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Inventoried);
-				*/
+				Debug.Log("B - create inventory device");
+				
 				//promoter
 				float beta = 10.0f;
 				string formula = "![0.8,2]LacI";
@@ -347,12 +309,15 @@ public class DevicesDisplayer : MonoBehaviour {
 				addInventoriedDevice(newDevice);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
+				
+				Debug.Log("T - remove random device");
 				//FIXME
 				//TODO
 				if( _equipedDevices.Count > 0) {
 					int randomIdx = Random.Range(0, _equipedDevices.Count);
 					DisplayedDevice randomDevice = _equipedDevices[randomIdx];
 		        	removeDevice(randomDevice.getID());
+					//removeDevice(DevicesDisplayer.DeviceType.Equiped, randomDevice);
 				}
 			}
 			_timeAtLastFrame = _timeAtCurrentFrame;

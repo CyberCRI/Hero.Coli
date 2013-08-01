@@ -101,9 +101,9 @@ public class GUITransitioner : MonoBehaviour {
 					SetScreen1(true);
 				}
 				Pause(false);
-				_devicesDisplayer.UpdateScreen();
 				ZoomOut();
 				_currentScreen = GameScreen.screen1;
+				_devicesDisplayer.UpdateScreen();
 				
 			} else if (Input.GetKey(KeyCode.Alpha2)) {//GOTO screen2
 				if(_currentScreen == GameScreen.screen1) {
@@ -129,9 +129,9 @@ public class GUITransitioner : MonoBehaviour {
 				}
 				
 				Pause(true);
-				_devicesDisplayer.UpdateScreen();
 				ZoomIn();
 				_currentScreen = GameScreen.screen2;			
+				_devicesDisplayer.UpdateScreen();
 				
 			} else if (Input.GetKey(KeyCode.Alpha3)) {//GOTO screen3
 				if(_currentScreen == GameScreen.screen1) {
@@ -154,9 +154,9 @@ public class GUITransitioner : MonoBehaviour {
 					
 				}	
 				Pause(true);
-				_devicesDisplayer.UpdateScreen();
 				ZoomIn();					
-				_currentScreen = GameScreen.screen3;			
+				_currentScreen = GameScreen.screen3;
+				_devicesDisplayer.UpdateScreen();			
 				
 			}
 			
