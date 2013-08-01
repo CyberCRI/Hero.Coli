@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DisplayedDevice : MonoBehaviour {
+public abstract class DisplayedDevice : MonoBehaviour {
 	
 	private static string _activeSuffix = "Active";
 	
@@ -12,29 +12,27 @@ public class DisplayedDevice : MonoBehaviour {
 	public int _deviceID;
 	public UISprite _sprite;
 	public DevicesDisplayer.DeviceType _deviceType;
-	public DeviceInfo _deviceInfo;
+	public Device _device;
 	public DevicesDisplayer _devicesDisplayer;
-	
 	
 	public int getID() {
 		return _deviceID;
 	}
 	
-	public static Object prefab = Resources.Load("GUI/screen1/EquipedDevices/DeviceButtonPrefab");
+	public static Object prefab;
 	public static DisplayedDevice Create(
 		Transform parentTransform, 
 		Vector3 localPosition, 
 		int deviceID, 
-		DevicesDisplayer.DeviceType deviceType,
-		DeviceInfo deviceInfo,
-		DevicesDisplayer devicesDisplayer
+		Device device,
+		DevicesDisplayer devicesDisplayer,
+		string spriteName
 		)
 	{
 		Debug.Log("create device "+deviceID
 		+ " parentTransform="+parentTransform
 		+ " localPosition="+localPosition 
-		+ " deviceType="+deviceType
-		+ "deviceInfo="+deviceInfo
+		+ "device="+device
 		+ "devicesDisplayer="+devicesDisplayer);
 		
 	    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
@@ -44,23 +42,9 @@ public class DisplayedDevice : MonoBehaviour {
 		
 	    DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
 		deviceScript._deviceID = deviceID;
-		deviceScript._deviceType = deviceType;
-		deviceScript._deviceInfo = deviceInfo;
+		deviceScript._device = device;
 		deviceScript._devicesDisplayer = devicesDisplayer;
-		deviceScript._currentSpriteName = deviceInfo._spriteName;
-		/*
-		//deviceScript._sprite = newDevice.transform.GetComponentInChildren<UISprite>();
-		GameObject background = newDevice.transform.Find("Background").gameObject;
-		if(background) {
-			deviceScript._sprite = background.GetComponent<UISprite>();
-			Debug.Log("init _sprite as "+deviceScript._sprite);
-		} else {
-			Debug.Log("init _sprite impossible: no background found");
-		}
-		*/
-	 
-	    //do additional initialization steps here
-	 
+		deviceScript._currentSpriteName = spriteName;	 
 	    return deviceScript;
 	}
 	
@@ -114,16 +98,5 @@ public class DisplayedDevice : MonoBehaviour {
 		return "device "+_deviceID+", time="+Time.realtimeSinceStartup;
 	}
 	
-	void OnPress(bool isPressed) {
-		if(isPressed) {
-			Debug.Log("on press() "+getDebugInfos());
-			if(_deviceType == DevicesDisplayer.DeviceType.Inventory) {
-				_devicesDisplayer.addDevice(0, _deviceInfo, DevicesDisplayer.DeviceType.Equiped);
-			} else if (_deviceType == DevicesDisplayer.DeviceType.Equiped) {
-				if (_devicesDisplayer.IsEquipScreen()) _devicesDisplayer.removeDevice(_deviceID);
-			} else {
-				Debug.Log("device type "+_deviceType+" not managed in OnPress");
-			}
-		}
-	}
+	protected abstract void OnPress(bool isPressed);
 }

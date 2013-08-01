@@ -1,29 +1,29 @@
 using System;
 using System.Collections.Generic;
 
-class Device
+public class Device
 {
   private string                        _name;
-  private List<ExpressionModules>       _modules;
+  private List<ExpressionModule>       _modules;
   
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
-  public List<ExpressionModules> getBioBricks() { return _modules; }
+  public List<ExpressionModule> getBioBricks() { return _modules; }
 
   public int getSize()
   {
     int sum = 0;
 
-    foreach (ExpressionModules em in _modules)
+    foreach (ExpressionModule em in _modules)
       sum += em.getSize();
     return sum;
   }
 
-  public Device(string name, List<ExpressionModules> bricks)
+  public Device(string name, List<ExpressionModule> modules)
   {
     _name = name;
-    _modules = new List<ExpressionModules>();
-    foreach (ExpressionModules em in _modules)
+    _modules = new List<ExpressionModule>();
+    foreach (ExpressionModule em in modules)
       _modules.Add(em);
   }
 }

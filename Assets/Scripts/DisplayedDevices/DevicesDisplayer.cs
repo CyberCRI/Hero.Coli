@@ -14,13 +14,19 @@ public class DevicesDisplayer : MonoBehaviour {
 		,"sand"
 	});
 	
+	private static Dictionary<string, string> spriteNamesDictionary = new Dictionary<string,string>(){
+		{"test1", "Backdrop"},
+		{"test2", "brick"},
+		{"test3", "brickNM"}
+	};
+	
 	public enum DeviceType {
 		Equiped,
-		Inventory
+		Inventoried
 	}
 	
 	private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
-	private List<DisplayedDevice> _inventoryDevices = new List<DisplayedDevice>();
+	private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
 	
 	private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
@@ -46,11 +52,12 @@ public class DevicesDisplayer : MonoBehaviour {
 		return spriteNames[randomIndex];
 	}
 	
+	/*
 	public void addDevice(int deviceID, DeviceInfo deviceInfo, DeviceType deviceType) {
 		
 		Debug.Log("addDevice("+deviceID+", "+deviceInfo+", "+deviceType+")");
 		bool alreadyEquiped = (!_equipedDevices.Exists(device => device.getID() == deviceID));
-		bool alreadyInventory = (!_inventoryDevices.Exists(device => device.getID() == deviceID)); 
+		bool alreadyInventory = (!_inventoriedDevices.Exists(device => device.getID() == deviceID)); 
 		if(alreadyEquiped || alreadyInventory) { 
 			Vector3 localPosition;
 			UnityEngine.Transform parent;
@@ -65,11 +72,12 @@ public class DevicesDisplayer : MonoBehaviour {
 				Debug.Log("addDevice("+newDeviceId+") in equipment");
 			} else {			
 				parent = inventoryPanel.transform;
-				devices = _inventoryDevices;
+				devices = _inventoriedDevices;
 				Debug.Log("addDevice("+newDeviceId+") in inventory");
 			}
 			localPosition = getNewPosition(deviceType);
-			DisplayedDevice newDevice = DisplayedDevice.Create (parent, localPosition, newDeviceId, deviceType, deviceInfo, this);
+			
+			DisplayedDevice newDevice = DisplayedDevice.Create (parent, localPosition, newDeviceId, device, this, "sand");
 			devices.Add(newDevice);
 			//let's add reaction to reaction engine
 			//for each module of deviceInfo, add to reaction engine
@@ -77,6 +85,67 @@ public class DevicesDisplayer : MonoBehaviour {
 		} else {
 			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped+", alreadyInventory="+alreadyInventory);
 		}
+	}
+	*/
+	
+	public string getSpriteName(string deviceName) {
+		string fromDico = spriteNamesDictionary[deviceName];
+		string res = (fromDico==null)?fromDico:getRandomSprite();
+		Debug.Log("getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")");
+		return res;
+	}
+	
+	public void addInventoriedDevice(Device device) {
+		Debug.Log("addInventoriedDevice("+device+")");
+		bool alreadyInventoried = (!_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode())); 
+		if(alreadyInventoried) { 
+			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
+			UnityEngine.Transform parent = inventoryPanel.transform;
+			int deviceID = _inventoriedDevices.Count;
+			
+			DisplayedDevice newDevice = 
+				InventoriedDisplayedDevice.Create (parent, localPosition, deviceID, device, this, getSpriteName(device.getName()));
+			_inventoriedDevices.Add(newDevice);
+			//let's add reaction to reaction engine
+			//for each module of deviceInfo, add to reaction engine
+			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+		} else {
+			Debug.Log("addDevice failed: alreadyInventoried="+alreadyInventoried);
+		}
+	}
+	
+	public void addEquipedDevice(Device device) {
+		Debug.Log("addEquipedDevice("+device+")");
+		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
+		if(alreadyEquiped) { 
+			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
+			UnityEngine.Transform parent = inventoryPanel.transform;
+			int deviceID = _inventoriedDevices.Count;
+			
+			DisplayedDevice newDevice = 
+				InventoriedDisplayedDevice.Create (parent, localPosition, deviceID, device, this, "sand");
+			_equipedDevices.Add(newDevice);
+			//let's add reaction to reaction engine
+			//for each module of deviceInfo, add to reaction engine
+			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
+		} else {
+			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped);
+		}
+	}
+	
+	public delegate DisplayedDevice CreateDisplayedDeviceFunc(
+		Transform parentTransform, 
+		Vector3 localPosition, 
+		int deviceID, 
+		Device device,
+		DevicesDisplayer devicesDisplayer,
+		string spriteName);
+	
+	private DisplayedDevice createDevice(Device device, DeviceType type, Transform parent, int deviceID,
+		CreateDisplayedDeviceFunc createFunc ) {
+		Vector3 localPosition = getNewPosition(type);			
+		DisplayedDevice newDevice = createFunc(parent, localPosition, deviceID, device, this, "sand");		
+		return newDevice;
 	}
 	
 	public bool IsScreen(int screen) {
@@ -108,7 +177,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			if(idx == -1) idx = _equipedDevices.Count;
 			res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_height, -0.1f);
 		} else {
-			if(idx == -1) idx = _inventoryDevices.Count;
+			if(idx == -1) idx = _inventoriedDevices.Count;
 			res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_height, -(idx/3)*_height, -0.1f);
 		}		
 		return res;
@@ -119,9 +188,9 @@ public class DevicesDisplayer : MonoBehaviour {
 		List<DisplayedDevice> devices = _equipedDevices;
 		DeviceType deviceType = DeviceType.Equiped;
 		if(toRemove == null) {
-			toRemove = _inventoryDevices.Find(device => device.getID() == deviceID);
-			devices = _inventoryDevices;
-			deviceType = DeviceType.Inventory;
+			toRemove = _inventoriedDevices.Find(device => device.getID() == deviceID);
+			devices = _inventoriedDevices;
+			deviceType = DeviceType.Inventoried;
 		} else {
 		}
 		
@@ -131,7 +200,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			if(deviceType == DeviceType.Equiped) {
 				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count);
 			} else {
-				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from inventory of count "+_inventoryDevices.Count);
+				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count);
 			}
 			
 			devices.Remove(toRemove);
@@ -139,13 +208,32 @@ public class DevicesDisplayer : MonoBehaviour {
 			if(deviceType == DeviceType.Equiped) {
 				Debug.Log("removeDevice("+deviceID+") from equipment of count "+_equipedDevices.Count+" done");
 			} else {
-				Debug.Log("removeDevice("+deviceID+") from inventory of count "+_inventoryDevices.Count+" done");
+				Debug.Log("removeDevice("+deviceID+") from inventory of count "+_inventoriedDevices.Count+" done");
 			}
 			for(int idx = startIndex; idx < devices.Count; idx++) {
 				Vector3 newLocalPosition = getNewPosition(deviceType, idx);
 				Debug.Log("removeDevice("+deviceID+") redrawing idx "+idx+" at position "+newLocalPosition);
 				devices[idx].Redraw(newLocalPosition);
 			}
+		}
+	}
+	
+	public void removeDevice(DeviceType type, Device toRemove) {
+		if(type == DeviceType.Equiped) {
+			DisplayedDevice found = _equipedDevices.Find(device => device._deviceID == 0);
+			
+		} else {
+			List<DisplayedDevice> devices = _inventoriedDevices;
+		}
+	}
+	
+	// to be called when devices are added, deleted, or edited
+	public void OnChange(DeviceType type, List<Device> removed, List<Device> added, List<Device> edited) {
+		if(type == DeviceType.Equiped) {
+			List<DisplayedDevice> devices = _equipedDevices;
+			
+		} else {
+			List<DisplayedDevice> devices = _inventoriedDevices;
 		}
 	}
 	
@@ -172,6 +260,35 @@ public class DevicesDisplayer : MonoBehaviour {
 				int randomID = Random.Range(0, 12000);				
 				string spriteName = getRandomSprite();
 				
+				float beta = 10.0f;
+				string formula = "![0.8,2]LacI";
+				string proteinName = "testProtein";
+				
+				List<BioBrick> bricks = new List<BioBrick>() {
+					new PromoterBrick(),
+					new RBSBrick(),
+					new GeneBrick(proteinName),
+					new TerminatorBrick()
+				};
+				List<ExpressionModule> modules = new List<ExpressionModule>() {
+					new ExpressionModule("testModule", bricks)
+				};
+				Device newDevice = new Device("test1", modules);
+				addEquipedDevice(newDevice);
+				/*
+				 * 
+				 * 
+				
+				int id,		
+				string deviceName,
+				string spriteName,
+				string promoterName,
+				float productionMax,
+				float terminatorFactor,
+				string formula,
+				string product,
+				float rbs
+				
 				DeviceInfo deviceInfo = new DeviceInfo(
 					randomID,
 					"testDevice",
@@ -184,6 +301,7 @@ public class DevicesDisplayer : MonoBehaviour {
 					1.0f
 					);
 	        	addDevice(0, deviceInfo, DevicesDisplayer.DeviceType.Equiped);
+	        	*/
 				
 			}
 			
@@ -202,7 +320,7 @@ public class DevicesDisplayer : MonoBehaviour {
 					"GFP",
 					1.0f
 					);
-	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Inventory);
+	        	addDevice(randomID, deviceInfo, DevicesDisplayer.DeviceType.Inventoried);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				//FIXME

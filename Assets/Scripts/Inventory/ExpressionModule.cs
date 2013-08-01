@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ExpressionModules
+public class ExpressionModule
 {
   private string                _name;
   private List<BioBrick>        _bioBricks;
@@ -20,7 +20,7 @@ public class ExpressionModules
     return sum;
   }
 
-  public ExpressionModules(string name, List<BioBrick> bricks)
+  public ExpressionModule(string name, List<BioBrick> bricks)
   {
     _name = name;
     _bioBricks = new List<BioBrick>();
