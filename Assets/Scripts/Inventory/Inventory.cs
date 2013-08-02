@@ -1,42 +1,46 @@
-using System;
+using UnityEngine;
 using System.Collections.Generic;
 
-class Inventory : DeviceContainer
+public class Inventory : DeviceContainer
 {
 					
-	//promoter
-	private static float testbeta = 10.0f;
-	private static string testformula = "![0.8,2]LacI";
-	//rbs
-	private static float testrbsFactor = 1.0f;
-	//gene
-	private static string testproteinName = "testProtein";
-	//terminator
-	private static float testterminatorFactor = 1.0f;
-	
-		
-	private static Device getTestDevice() {
-		
-		Device testDevice = Device.buildDevice("testDevice", testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
-		
-		return testDevice;
-	}
-	
-	public Inventory() {
-		//by default: contains a test device
-		List<Device> devices = new List<Device>();
-		devices.Add(getTestDevice());
-		_devices = devices;
-		
-		OnChanged(new List<Device>(), new List<Device>(), _devices);
-	}
-	
-	//TODO
-	public override void OnChanged(List<Device> removed, List<Device> added, List<Device> edited) {
-		/*
-		Device head = added[0];
-		_displayer.OnChange(DevicesDisplayer.DeviceType.Inventoried, removed, added, edited);
-		*/
-	}
-}
+  //promoter
+  private static float testbeta = 10.0f;
+  private static string testformula = "![0.8,2]LacI";
+  //rbs
+  private static float testrbsFactor = 1.0f;
+  //gene
+  private static string testproteinName = "testProtein";
+  //terminator
+  private static float testterminatorFactor = 1.0f;
+  
+  	
+  private static Device getTestDevice() {
+  
+    string randomName = DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];
+  	Device testDevice = Device.buildDevice(randomName, testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
+  	
+  	return testDevice;
+  }
 
+  public Inventory() {
+  	//by default: contains a test device
+    _devices = new List<Device>();
+  	UpdateData(new List<Device>() { getTestDevice() }, new List<Device>(), new List<Device>());
+  }
+
+  public override void addDevice(Device device) {
+    _devices.Add(device);
+    _displayer.addInventoriedDevice(device);
+  }
+
+  public override void removeDevice(Device device) {
+    _devices.Remove(device);
+    _displayer.removeInventoriedDevice(device);
+  }
+
+  public override void editDevice(Device device) {
+    //TODO
+    Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
+  }
+}

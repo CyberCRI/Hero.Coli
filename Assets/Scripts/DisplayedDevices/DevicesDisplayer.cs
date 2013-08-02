@@ -53,6 +53,9 @@ public class DevicesDisplayer : MonoBehaviour {
 	public UIPanel inventoryPanel;
 	public GameObject equipedDevice;	
 	public GameObject inventoryDevice;
+
+  public Equipment _equipment;
+  public Inventory _inventory;
 	
 	public GUITransitioner transitioner;
 	
@@ -61,50 +64,23 @@ public class DevicesDisplayer : MonoBehaviour {
 		int randomIndex = Random.Range(0, spriteNames.Count);
 		return spriteNames[randomIndex];
 	}
-	
-	/*
-	public void addDevice(int deviceID, DeviceInfo deviceInfo, DeviceType deviceType) {
-		
-		Debug.Log("addDevice("+deviceID+", "+deviceInfo+", "+deviceType+")");
-		bool alreadyEquiped = (!_equipedDevices.Exists(device => device.getID() == deviceID));
-		bool alreadyInventory = (!_inventoriedDevices.Exists(device => device.getID() == deviceID)); 
-		if(alreadyEquiped || alreadyInventory) { 
-			Vector3 localPosition;
-			UnityEngine.Transform parent;
-			List<DisplayedDevice> devices;
-			int newDeviceId = deviceID;
-			if(deviceType == DeviceType.Equiped) {
-				parent = equipPanel.transform;
-				devices = _equipedDevices;
-				if(deviceID == 0) {
-					newDeviceId = devices.Count;
-				}
-				Debug.Log("addDevice("+newDeviceId+") in equipment");
-			} else {			
-				parent = inventoryPanel.transform;
-				devices = _inventoriedDevices;
-				Debug.Log("addDevice("+newDeviceId+") in inventory");
-			}
-			localPosition = getNewPosition(deviceType);
-			
-			DisplayedDevice newDevice = DisplayedDevice.Create (parent, localPosition, newDeviceId, device, this, "sand");
-			devices.Add(newDevice);
-			//let's add reaction to reaction engine
-			//for each module of deviceInfo, add to reaction engine
-			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
-		} else {
-			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped+", alreadyInventory="+alreadyInventory);
-		}
-	}
-	*/
-	
+
 	public string getSpriteName(string deviceName) {
 		string fromDico = spriteNamesDictionary[deviceName];
 		string res = (fromDico!=null)?fromDico:getRandomSprite();
 		Debug.Log("getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")");
 		return res;
 	}
-	
+
+
+
+
+
+  /*
+   *  ADD
+   *
+   */
+
 	public void addInventoriedDevice(Device device) {
 		Debug.Log("addInventoriedDevice("+device+")");
 		bool alreadyInventoried = (!_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode())); 
@@ -154,7 +130,16 @@ public class DevicesDisplayer : MonoBehaviour {
 			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped);
 		}
 	}
-	
+
+  public void askAddEquipedDevice(Device device) {
+    _equipment.addDevice(device);
+  }
+
+
+
+
+
+
 	public bool IsScreen(int screen) {
 		return (((transitioner._currentScreen == GUITransitioner.GameScreen.screen1) && (screen == 1))
 			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen2) && (screen == 2))
@@ -186,6 +171,22 @@ public class DevicesDisplayer : MonoBehaviour {
 		}		
 		return res;
 	}
+
+
+
+
+
+
+  /*
+   *  REMOVE
+   *
+   */
+
+
+
+  public void askRemoveEquipedDevice(Device device) {
+    _equipment.removeDevice(device);
+  }
 	
 	public void removeDevice(int deviceID) {
 		DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
@@ -200,6 +201,14 @@ public class DevicesDisplayer : MonoBehaviour {
 
     removeDevice(toRemove, devices, deviceType);
 	}
+
+  public void removeEquipedDevice(Device toRemove) {
+    removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
+  }
+
+  public void removeInventoriedDevice(Device toRemove) {
+    removeDevice(DevicesDisplayer.DeviceType.Inventoried, toRemove);
+  }
 
   public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
     List<DisplayedDevice> devices;
@@ -283,7 +292,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				if(newDevice == null) {
 					Debug.Log("failed to provide device");
 				} else {
-					addEquipedDevice(newDevice);
+					_equipment.addDevice(newDevice);
 				}
         Debug.Log("V - create equiped device ...done!");
 								
@@ -313,7 +322,7 @@ public class DevicesDisplayer : MonoBehaviour {
        if(newDevice == null) {
           Debug.Log("failed to provide device");
         } else {
-			    addInventoriedDevice(newDevice);
+			    _inventory.addDevice(newDevice);
         }
         Debug.Log("V - create equiped device ... done!");
 			}
@@ -324,9 +333,8 @@ public class DevicesDisplayer : MonoBehaviour {
 				if( _equipedDevices.Count > 0) {
 					int randomIdx = Random.Range(0, _equipedDevices.Count);
 					DisplayedDevice randomDevice = _equipedDevices[randomIdx];
-		        	removeDevice(randomDevice.getID());
-				}
-				
+		      _equipment.removeDevice(randomDevice._device);
+        }
 			}
 		}
 	}

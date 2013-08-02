@@ -8,8 +8,7 @@ class EquipedDisplayedDevice : DisplayedDevice {
 		if(isPressed) {
 			Debug.Log("EquipedDisplayedDevice on press() "+getDebugInfos());
 			if (_devicesDisplayer.IsEquipScreen()) {
-				_devicesDisplayer.removeDevice(_deviceID);
-				//_devicesDisplayer.removeDevice(DevicesDisplayer.DeviceType.Equiped, _device);
+				_devicesDisplayer.askRemoveEquipedDevice(_device);
 			}
 		}
 	}
