@@ -6,18 +6,28 @@ using System.Collections.Generic;
 public class DevicesDisplayer : MonoBehaviour {
 	
 	//FOR DEBUG
-	private static List<string> spriteNames = new List<string>( new string [] {
-		"Backdrop"
-		,"brick"
-		,"brickNM"
-		,"burlap"
-		,"sand"
-	});
-	
+ private static List<string> spriteNames = new List<string>( new string [] {
+   "Backdrop"
+   ,"brick"
+   ,"brickNM"
+   ,"burlap"
+   ,"sand"
+ });
+
+ public static List<string> devicesNames = new List<string>( new string [] {
+   "test1"
+   ,"test2"
+   ,"test3"
+   ,"test4"
+   ,"test5"
+ });
+
 	private static Dictionary<string, string> spriteNamesDictionary = new Dictionary<string,string>(){
-		{"test1", "Backdrop"},
-		{"test2", "brick"},
-		{"test3", "brickNM"}
+    {devicesNames[0], spriteNames[0]},
+    {devicesNames[1], spriteNames[1]},
+    {devicesNames[2], spriteNames[2]},
+    {devicesNames[3], spriteNames[3]},
+		{devicesNames[4], spriteNames[4]}
 	};
 	
 	public enum DeviceType {
@@ -101,14 +111,12 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(alreadyInventoried) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
 			UnityEngine.Transform parent = inventoryPanel.transform;
-			int deviceID = _inventoriedDevices.Count;
 			
 			DisplayedDevice newDevice = 
 				InventoriedDisplayedDevice.Create (
           DevicesDisplayer.DeviceType.Inventoried,
           parent,
           localPosition,
-          deviceID,
           device,
           this,
           getSpriteName(device.getName())
@@ -126,16 +134,14 @@ public class DevicesDisplayer : MonoBehaviour {
 		Debug.Log("addEquipedDevice("+device.ToString()+")");
 		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
 		if(alreadyEquiped) { 
-			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
-			UnityEngine.Transform parent = inventoryPanel.transform;
-			int deviceID = _inventoriedDevices.Count;
+			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
+			UnityEngine.Transform parent = equipPanel.transform;
 			
 			DisplayedDevice newDevice = 
 				EquipedDisplayedDevice.Create (
           DevicesDisplayer.DeviceType.Equiped,
           parent,
           localPosition,
-          deviceID,
           device,
           this,
           getSpriteName(device.getName())
@@ -147,21 +153,6 @@ public class DevicesDisplayer : MonoBehaviour {
 		} else {
 			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped);
 		}
-	}
-	
-	public delegate DisplayedDevice CreateDisplayedDeviceFunc(
-		Transform parentTransform, 
-		Vector3 localPosition, 
-		int deviceID, 
-		Device device,
-		DevicesDisplayer devicesDisplayer,
-		string spriteName);
-	
-	private DisplayedDevice createDevice(Device device, DeviceType type, Transform parent, int deviceID,
-		CreateDisplayedDeviceFunc createFunc ) {
-		Vector3 localPosition = getNewPosition(type);			
-		DisplayedDevice newDevice = createFunc(parent, localPosition, deviceID, device, this, "sand");		
-		return newDevice;
 	}
 	
 	public bool IsScreen(int screen) {
@@ -294,7 +285,8 @@ public class DevicesDisplayer : MonoBehaviour {
 				string proteinName = "testProtein";
 				//terminator
 				float terminatorFactor = 1.0f;
-				Device newDevice = Device.buildDevice("test1",
+
+				Device newDevice = Device.buildDevice(null,
 				 beta,//promoter
 				 formula,//promoter
 				 rbsFactor,//rbs
@@ -324,7 +316,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				string proteinName = "testProtein";
 				//terminator
 				float terminatorFactor = 1.0f;
-				Device newDevice = Device.buildDevice("test2",
+				Device newDevice = Device.buildDevice(null,
 				 beta,//promoter
 				 formula,//promoter
 				 rbsFactor,//rbs

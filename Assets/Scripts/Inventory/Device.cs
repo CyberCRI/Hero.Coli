@@ -236,14 +236,27 @@ public class Device
 		string proteinName,//gene
 		float terminatorFactor//terminator
 		) {
-		
-		Debug.Log("buildDevice("+name+", "+beta+", '"+formula+"', "+rbsFactor+", "+proteinName+", "+terminatorFactor+") starting...");
+
+    string nullName = (name==null)?"(null)":"";
+		Debug.Log("buildDevice(name="+name+nullName
+      +", beta="+beta
+      +", formula='"+formula
+      +"', rbsFactor="+rbsFactor
+      +", proteinName="+proteinName
+      +", terminatorFactor="+terminatorFactor
+      +") starting...");
+
+    string notNullName = name;
+    if(notNullName==null) {
+      int idx = UnityEngine.Random.Range (0, DevicesDisplayer.devicesNames.Count);
+      notNullName = DevicesDisplayer.devicesNames[idx];
+    }
 		
 		BioBrick[] bioBrickArray = {
-			new PromoterBrick(name+"_promoter", beta, formula),
-			new RBSBrick(name+"_rbs", rbsFactor),
-			new GeneBrick(name+"_gene", proteinName),
-			new TerminatorBrick(name+"_terminator", terminatorFactor)
+			new PromoterBrick(notNullName+"_promoter", beta, formula),
+			new RBSBrick(notNullName+"_rbs", rbsFactor),
+			new GeneBrick(notNullName+"_gene", proteinName),
+			new TerminatorBrick(notNullName+"_terminator", terminatorFactor)
 		};
 		
 		//Debug.Log("(bioBrickArray == null)="+(bioBrickArray == null));
@@ -252,7 +265,7 @@ public class Device
 
 		//Debug.Log("(bricks == null)="+(bricks == null));
 		
-		ExpressionModule[] modulesArray = { new ExpressionModule(name+"_module", bricks) };
+		ExpressionModule[] modulesArray = { new ExpressionModule(notNullName+"_module", bricks) };
 
 		//Debug.Log("(modulesArray == null)="+(modulesArray == null));
 
@@ -260,6 +273,6 @@ public class Device
 
 		//Debug.Log("(modules == null)="+(modules == null));
 		
-		return Device.buildDevice(name, modules);
+		return Device.buildDevice(notNullName, modules);
 	}
 }

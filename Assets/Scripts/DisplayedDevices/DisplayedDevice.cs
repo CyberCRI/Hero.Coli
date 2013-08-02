@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public abstract class DisplayedDevice : MonoBehaviour {
 	
 	private static string _activeSuffix = "Active";
+  private static int _idCounter = 0;
 	
 	public string _currentSpriteName;
 	public UIAtlas _atlas;
@@ -13,18 +14,17 @@ public abstract class DisplayedDevice : MonoBehaviour {
 	public UISprite _sprite;
 	public Device _device;
 	public DevicesDisplayer _devicesDisplayer;
-	
-	public int getID() {
-		return _deviceID;
-	}
 
   public DevicesDisplayer.DeviceType _deviceType;
+ 
+  public int getID() {
+    return _deviceID;
+  }
 
 	public static DisplayedDevice Create(
     DevicesDisplayer.DeviceType deviceType,
 		Transform parentTransform, 
-		Vector3 localPosition, 
-		int deviceID, 
+		Vector3 localPosition,
 		Device device,
 		DevicesDisplayer devicesDisplayer,
 		string spriteName
@@ -36,7 +36,6 @@ public abstract class DisplayedDevice : MonoBehaviour {
 		Debug.Log("DisplayedDevice::Create(type="+deviceType
 		+ ", parentTransform="+parentTransform
 		+ ", localPosition="+localPosition
-    + ", deviceID="+deviceID
 		+ ", device="+device
 		+ ", devicesDisplayer="+devicesDisplayer
     + ", spriteName="+spriteName+nullSpriteName);
@@ -45,7 +44,7 @@ public abstract class DisplayedDevice : MonoBehaviour {
 
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
       prefab = Resources.Load("GUI/screen1/Devices/EquipedDeviceButtonPrefab");
-    } else if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
+    } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
       prefab = Resources.Load("GUI/screen1/Devices/InventoriedDeviceButtonPrefab");
     } else {
       Debug.Log("DisplayedDevice.Create : unmanaged device type "+deviceType);
@@ -60,11 +59,14 @@ public abstract class DisplayedDevice : MonoBehaviour {
 		newDevice.transform.localScale = new Vector3(1f, 1f, 0);
 		
 	  DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
-		deviceScript._deviceID = deviceID;
+		deviceScript._deviceID = ++_idCounter;
+    Debug.Log("deviceScript._deviceID = "+deviceScript._deviceID);
+
 		deviceScript._device = device;
 		deviceScript._devicesDisplayer = devicesDisplayer;
 		deviceScript._currentSpriteName = spriteName;
     deviceScript._deviceType = deviceType;
+    deviceScript.setActive();
 
     return deviceScript;
 	}
@@ -105,10 +107,6 @@ public abstract class DisplayedDevice : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-    //_currentSpriteName is null
-		//Debug.Log("start: _currentSpriteName="+_currentSpriteName+", _sprite.spriteName="+_sprite.spriteName);
-		//_sprite.atlas = _atlas;
-		setActive();
 	}
 	
 	// Update is called once per frame
