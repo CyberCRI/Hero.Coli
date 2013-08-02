@@ -6,9 +6,9 @@ class InventoriedDisplayedDevice : DisplayedDevice {
 	
 	protected override void OnPress(bool isPressed) {
 		if(isPressed) {
-			Debug.Log("on press() "+getDebugInfos());
+			Debug.Log("InventoriedDisplayedDevice on press() "+getDebugInfos());
 			if(_deviceType == DevicesDisplayer.DeviceType.Inventoried) {
-				_devicesDisplayer.addInventoriedDevice(_device);
+				_devicesDisplayer.addEquipedDevice(_device);
 			}
 		}
 	}

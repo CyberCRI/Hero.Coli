@@ -168,11 +168,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	public void UpdateScreen(){
 		Debug.Log("UpdateScreen " + transitioner._currentScreen);
 		if(IsScreen(1) || IsScreen(3)){
-			//inventoryPanel.SetAlphaRecursive(0,true);
 			inventoryPanel.gameObject.SetActive(false);
 		} else {
-		//if(IsScreen(2)){
-			//inventoryPanel.SetAlphaRecursive(100,true);
 			inventoryPanel.gameObject.SetActive(true);
 		}
 	}
@@ -200,65 +197,55 @@ public class DevicesDisplayer : MonoBehaviour {
 			deviceType = DeviceType.Inventoried;
 		} else {
 		}
-		
-		if(toRemove != null) {
-			int startIndex = devices.IndexOf(toRemove);
-			
-			if(deviceType == DeviceType.Equiped) {
-				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count);
-			} else {
-				Debug.Log("removeDevice("+deviceID+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count);
-			}
-			
-			devices.Remove(toRemove);
-			toRemove.Remove();
-			if(deviceType == DeviceType.Equiped) {
-				Debug.Log("removeDevice("+deviceID+") from equipment of count "+_equipedDevices.Count+" done");
-			} else {
-				Debug.Log("removeDevice("+deviceID+") from inventory of count "+_inventoriedDevices.Count+" done");
-			}
-			for(int idx = startIndex; idx < devices.Count; idx++) {
-				Vector3 newLocalPosition = getNewPosition(deviceType, idx);
-				Debug.Log("removeDevice("+deviceID+") redrawing idx "+idx+" at position "+newLocalPosition);
-				devices[idx].Redraw(newLocalPosition);
-			}
-		}
+
+    removeDevice(toRemove, devices, deviceType);
 	}
-	
-	//TODO
-	public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
-		/*
-		if(type == DeviceType.Equiped) {
-			DisplayedDevice found = _equipedDevices.Find(device => device._deviceID == 0);
-			
-		} else {
-			List<DisplayedDevice> devices = _inventoriedDevices;
-		}
-		*/
-	}
-	
-	// to be called when devices are added, deleted, or edited
-	//TODO
-	public void OnChange(DeviceType type, List<Device> removed, List<Device> added, List<Device> edited) {
-		/*
-		if(type == DeviceType.Equiped) {
-			List<DisplayedDevice> devices = _equipedDevices;
-			
-		} else {
-			List<DisplayedDevice> devices = _inventoriedDevices;
-		}
-		*/
-	}
+
+  public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
+    List<DisplayedDevice> devices;
+    DisplayedDevice found;
+    if(type == DevicesDisplayer.DeviceType.Equiped) {
+      devices = _equipedDevices;
+    } else {
+      devices = _inventoriedDevices;
+    }
+    found = devices.Find(device => device._device.Equals(toRemove));
+
+    if (found != null) {
+      removeDevice(found, devices, type);
+    } else {
+      Debug.Log("removeDevice(type="+type+", toRemove="+toRemove+") found no matching device");
+    }
+ }
+
+  private void removeDevice(DisplayedDevice toRemove, List<DisplayedDevice> devices, DeviceType deviceType) {
+   if(toRemove != null) {
+     int startIndex = devices.IndexOf(toRemove);
+
+     if(deviceType == DeviceType.Equiped) {
+       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count);
+     } else {
+       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count);
+     }
+
+     devices.Remove(toRemove);
+     toRemove.Remove();
+     if(deviceType == DeviceType.Equiped) {
+       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") from equipment of count "+_equipedDevices.Count+" done");
+     } else {
+       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") from inventory of count "+_inventoriedDevices.Count+" done");
+     }
+     for(int idx = startIndex; idx < devices.Count; idx++) {
+       Vector3 newLocalPosition = getNewPosition(deviceType, idx);
+       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") redrawing idx "+idx+" at position "+newLocalPosition);
+       devices[idx].Redraw(newLocalPosition);
+     }
+   }
+  }
 	
 	// Use this for initialization
-	void Start () {		
-		//inventoryPanel.SetAlphaRecursive(0,true);//screen 1 at the beginning = no inventory
+	void Start () {
 		inventoryPanel.gameObject.SetActive(false);
-		/*
-		for(int i = 0; i < 5; i++) {
-			addDevice (i);
-		}
-		*/
 	}
 
 	
@@ -334,13 +321,10 @@ public class DevicesDisplayer : MonoBehaviour {
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				
 				Debug.Log("T - remove random device");
-				//FIXME
-				//TODO
 				if( _equipedDevices.Count > 0) {
 					int randomIdx = Random.Range(0, _equipedDevices.Count);
 					DisplayedDevice randomDevice = _equipedDevices[randomIdx];
 		        	removeDevice(randomDevice.getID());
-					//removeDevice(DevicesDisplayer.DeviceType.Equiped, randomDevice);
 				}
 				
 			}
