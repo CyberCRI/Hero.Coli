@@ -5,22 +5,31 @@ using System.Collections.Generic;
 
 public class DevicesDisplayer : MonoBehaviour {
 	
-	//FOR DEBUG
- private static List<string> spriteNames = new List<string>( new string [] {
+  //FOR DEBUG
+  private static List<string> spriteNames = new List<string>( new string [] {
    "Backdrop"
    ,"brick"
    ,"brickNM"
    ,"burlap"
    ,"sand"
- });
-
- public static List<string> devicesNames = new List<string>( new string [] {
+  });
+  
+  public static List<string> devicesNames = new List<string>( new string [] {
    "test1"
    ,"test2"
    ,"test3"
    ,"test4"
    ,"test5"
- });
+  });
+
+  public static List<string> proteinNames = new List<string>( new string[] {
+    "LacI"
+    ,"pLac"
+    ,"GFP"
+    ,"H"
+    ,"O"
+    ,"H2O"
+  });
 
 	private static Dictionary<string, string> spriteNamesDictionary = new Dictionary<string,string>(){
     {devicesNames[0], spriteNames[0]},
@@ -45,8 +54,6 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	//TODO use real device width
 	static private float _height = 54.0f;
-	public ReactionEngine reactionEngine;
-	public int celliaMediumID = 1;
 	public UIPanel equipPanel;
 	public GameObject equipment;
 	public GameObject inventory;
@@ -98,9 +105,6 @@ public class DevicesDisplayer : MonoBehaviour {
           getSpriteName(device.getName())
         );
 			_inventoriedDevices.Add(newDevice);
-			//let's add reaction to reaction engine
-			//for each module of deviceInfo, add to reaction engine
-			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
 		} else {
 			Debug.Log("addDevice failed: alreadyInventoried="+alreadyInventoried);
 		}
@@ -123,9 +127,6 @@ public class DevicesDisplayer : MonoBehaviour {
           getSpriteName(device.getName())
         );
 			_equipedDevices.Add(newDevice);
-			//let's add reaction to reaction engine
-			//for each module of deviceInfo, add to reaction engine
-			//deviceInfo._modules.ForEach( module => module.addToReactionEngine(celliaMediumID, reactionEngine));
 		} else {
 			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped);
 		}
@@ -251,6 +252,10 @@ public class DevicesDisplayer : MonoBehaviour {
      }
    }
   }
+
+  public static string getRandomProteinName() {
+    return proteinNames[Random.Range(0, proteinNames.Count)];
+  }
 	
 	// Use this for initialization
 	void Start () {
@@ -278,7 +283,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				//rbs
 				float rbsFactor = 1.0f;
 				//gene
-				string proteinName = "testProtein";
+				string proteinName = getRandomProteinName();
 				//terminator
 				float terminatorFactor = 1.0f;
 
@@ -294,14 +299,14 @@ public class DevicesDisplayer : MonoBehaviour {
 				} else {
 					_equipment.addDevice(newDevice);
 				}
-        Debug.Log("V - create equiped device ...done!");
+        Debug.Log("V - create equiped device... done!");
 								
 			}
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("B - create inventory device starting ...");
+				Debug.Log("B - create inventory device starting...");
 				
 				//promoter
 				float beta = 10.0f;
@@ -309,7 +314,7 @@ public class DevicesDisplayer : MonoBehaviour {
 				//rbs
 				float rbsFactor = 1.0f;
 				//gene
-				string proteinName = "testProtein";
+				string proteinName = getRandomProteinName();
 				//terminator
 				float terminatorFactor = 1.0f;
 				Device newDevice = Device.buildDevice(null,
@@ -324,7 +329,7 @@ public class DevicesDisplayer : MonoBehaviour {
         } else {
 			    _inventory.addDevice(newDevice);
         }
-        Debug.Log("V - create equiped device ... done!");
+        Debug.Log("B - create inventoried device... done!");
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				_timeAtLastFrame = _timeAtCurrentFrame;

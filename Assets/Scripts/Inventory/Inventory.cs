@@ -10,7 +10,7 @@ public class Inventory : DeviceContainer
   //rbs
   private static float testrbsFactor = 1.0f;
   //gene
-  private static string testproteinName = "testProtein";
+  private static string testproteinName = DevicesDisplayer.getRandomProteinName();
   //terminator
   private static float testterminatorFactor = 1.0f;
   
@@ -26,7 +26,9 @@ public class Inventory : DeviceContainer
   public Inventory() {
   	//by default: contains a test device
     _devices = new List<Device>();
-  	UpdateData(new List<Device>() { getTestDevice() }, new List<Device>(), new List<Device>());
+    Device device = getTestDevice();
+    Debug.Log("Inventory: constructing, calling UpdateData(List("+device.ToString()+"), List(), List())");
+  	UpdateData(new List<Device>() { device }, new List<Device>(), new List<Device>());
   }
 
   public override void addDevice(Device device) {

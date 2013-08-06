@@ -30,37 +30,37 @@
 
      <molecule type="transcription_factor">
       <name>LacI</name>
-      <description>oxygene</description>
+      <description>LacI</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>pLac</name>
-      <description>oxygene</description>
+      <description>pLac</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>GFP</name>
-      <description>oxygene</description>
+      <description>Green Fluorescence Protein</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>O</name>
-      <description>oxygene</description>
+      <description>oxygen</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
-    <molecule type="transcription_factor">
+    <molecule type="other">
       <name>H</name>
-      <description>hydrogene</description>
+      <description>hydrogen</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
-      <description>de l'eau!</description>
+      <description>water</description>
       <concentration>0</concentration>
       <degradationRate>0.13</degradationRate>
     </molecule> 

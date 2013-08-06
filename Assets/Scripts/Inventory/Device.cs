@@ -33,17 +33,23 @@ public class Device
 	
   public override string ToString ()
   {
-		string modulesString = "Modules: [";
+		string modulesString = "ExpressionModules: [";
 		foreach (ExpressionModule module in _modules) {
 			modulesString += (module.ToString() + ", ");
 		}
 		modulesString += "]";
 		
-		return string.Format ("[Device: name: {0}, modules: {1}]", _name, modulesString);
+		return string.Format ("[Device: name: {0}, expression modules: {1}]", _name, modulesString);
   }
 
-  public LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
+  private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
   {
+    string listString = "list[";
+    foreach (BioBrick brick in list) {
+      listString += brick.ToString()+", ";
+    }
+    listString += "]";
+    Debug.Log("getProductsFromBioBricks("+listString+")");
     LinkedList<Product> products = new LinkedList<Product>();
     Product prod;
     RBSBrick rbs;
@@ -54,11 +60,15 @@ public class Device
 
     foreach (BioBrick b in list)
       {
+        Debug.Log("getProductsFromBioBricks: starting treatment of "+b.ToString());
         rbs = b as RBSBrick;
-        if (rbs != null)
+        if (rbs != null) {
+          Debug.Log("getProductsFromBioBricks: rbs spotted");
           RBSf = rbs.getRBSFactor();
+      }
         else
           {
+            Debug.Log("getProductsFromBioBricks: not an rbs");
             gene = b as GeneBrick;
             if (gene != null)
               {
@@ -69,17 +79,26 @@ public class Device
                 products.AddLast(prod);
               }
             else
-              Debug.Log("This case should never arrive. Bad Biobrick in operon.");
+              {
+                if (b as TerminatorBrick == null)
+                  Debug.Log("This case should never arrive. Bad Biobrick in operon.");
+                else {
+                 break;
+                }
+              }
           }
         i++;
       }
-    while (i > 0)
+    while (i > 0) {
       list.RemoveFirst();
+      i--;
+    }
     return products;
   }
 
-  public PromoterProprieties getPromoterReaction(ExpressionModule em, int id)
+  private PromoterProprieties getPromoterReaction(ExpressionModule em, int id)
   {
+    Debug.Log("getPromoterReaction("+em.ToString()+", "+id+")");
     PromoterProprieties prom = new PromoterProprieties();
     LinkedList<BioBrick> bricks = em.getBioBricks();
 
@@ -95,26 +114,39 @@ public class Device
     prom.terminatorFactor = tb.getTerminatorFactor();
     bricks.RemoveFirst();
 
+    if(bricks.Count != 0) {
+      Debug.Log("Warning: bricks.Count ="+bricks.Count);
+    }
+
     prom.energyCost = getSize();
     return prom;
   }
 
-  public LinkedList<PromoterProprieties> getPromoterReactions()
+  private LinkedList<PromoterProprieties> getPromoterReactions()
   {
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
     LinkedList<PromoterProprieties> reactions = new LinkedList<PromoterProprieties>();
     PromoterProprieties reaction;
-    int i = 0;
 
     foreach (ExpressionModule em in modules)
       {
-        reaction = getPromoterReaction(em, i);
+        reaction = getPromoterReaction(em, em.GetHashCode());
         if (reaction != null)
           reactions.AddLast(reaction);
-        i++;
       }
     if (reactions.Count == 0)
       return null;
+    return reactions;
+  }
+
+  public LinkedList<IReaction> getReactions() {
+    LinkedList<IReaction> reactions = new LinkedList<IReaction>();
+    LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
+
+    foreach (PromoterProprieties promoterProps in props) {
+      reactions.AddLast(Promoter.buildPromoterFromProps(promoterProps));
+    }
+
     return reactions;
   }
 
