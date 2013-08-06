@@ -47,12 +47,12 @@ public abstract class DisplayedDevice : MonoBehaviour {
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
       prefab = Resources.Load("GUI/screen1/Devices/InventoriedDeviceButtonPrefab");
     } else {
-      Debug.Log("DisplayedDevice.Create : unmanaged device type "+deviceType);
+      Debug.Log("DisplayedDevice::Create : unmanaged device type "+deviceType);
       return null;
     }
 
     GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-    Debug.Log("instantiation done");
+    Debug.Log("DisplayedDevice::Create instantiation done");
 
 		newDevice.transform.parent = parentTransform;
 		newDevice.transform.localPosition = localPosition;
@@ -60,13 +60,15 @@ public abstract class DisplayedDevice : MonoBehaviour {
 		
 	  DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
 		deviceScript._deviceID = ++_idCounter;
-    Debug.Log("deviceScript._deviceID = "+deviceScript._deviceID);
+    Debug.Log("DisplayedDevice::Create deviceScript._deviceID = "+deviceScript._deviceID);
 
-		deviceScript._device = device;
+		deviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    Debug.Log("DisplayedDevice::Create built device "+deviceScript._device+" from "+device);
 		deviceScript._devicesDisplayer = devicesDisplayer;
 		deviceScript._currentSpriteName = spriteName;
     deviceScript._deviceType = deviceType;
     deviceScript.setActive();
+    Debug.Log("DisplayedDevice::Create ends");
 
     return deviceScript;
 	}
@@ -115,7 +117,7 @@ public abstract class DisplayedDevice : MonoBehaviour {
 	}
 	
 	protected string getDebugInfos() {
-		return "device "+_deviceID+", time="+Time.realtimeSinceStartup;
+		return "device "+_deviceID+", inner device "+_device+" time="+Time.realtimeSinceStartup;
 	}
 	
 	protected abstract void OnPress(bool isPressed);

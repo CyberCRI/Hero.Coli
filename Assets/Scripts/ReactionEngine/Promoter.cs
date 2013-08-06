@@ -372,4 +372,9 @@ public class Promoter : IReaction
       }
   }
 
+  public override string ToString ()
+  {
+    return string.Format ("[Promoter: name: "+_name+", beta: "+_beta+", formula: "+_formula+"]");
+  }
+
 }

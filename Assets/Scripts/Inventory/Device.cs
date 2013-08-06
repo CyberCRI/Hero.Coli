@@ -9,7 +9,7 @@ public class Device
   
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
-  public LinkedList<ExpressionModule> getBioBricks() { return _modules; }
+  public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
 
   public int getSize()
   {
@@ -124,12 +124,15 @@ public class Device
 
   private LinkedList<PromoterProprieties> getPromoterReactions()
   {
+    Debug.Log("Device::getPromoterReactions() starting... device="+this);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
     LinkedList<PromoterProprieties> reactions = new LinkedList<PromoterProprieties>();
     PromoterProprieties reaction;
+    Debug.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count);
 
     foreach (ExpressionModule em in modules)
       {
+        Debug.Log("Device::getPromoterReactions() analyzing em="+em);
         reaction = getPromoterReaction(em, em.GetHashCode());
         if (reaction != null)
           reactions.AddLast(reaction);
@@ -140,10 +143,17 @@ public class Device
   }
 
   public LinkedList<IReaction> getReactions() {
+    Debug.Log ("Device::getReactions(); device="+this);
     LinkedList<IReaction> reactions = new LinkedList<IReaction>();
     LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
+    string propsString = "";
+    foreach (PromoterProprieties prop in props) {
+      propsString += prop.ToString()+", ";
+    }
+    Debug.Log ("Device::getReactions(); props="+propsString);
 
     foreach (PromoterProprieties promoterProps in props) {
+      Debug.Log("Device::getReactions() adding prop "+promoterProps);
       reactions.AddLast(Promoter.buildPromoterFromProps(promoterProps));
     }
 
