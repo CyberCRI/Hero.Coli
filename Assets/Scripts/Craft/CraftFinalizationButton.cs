@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class CraftFinalizationButton : MonoBehaviour {
+  public CraftFinalizer _craftFinalizer;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,6 @@ public class CraftFinalizationButton : MonoBehaviour {
 
   void OnPress (bool isPressed) {
     Debug.Log ("CraftFinalizationButton::OnPress("+isPressed+")");
-    
+    if(isPressed) _craftFinalizer.finalizeCraft();
   }
 }
