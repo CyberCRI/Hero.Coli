@@ -33,23 +33,14 @@ public class Device
 	
   public override string ToString ()
   {
-		string modulesString = "ExpressionModules: [";
-		foreach (ExpressionModule module in _modules) {
-			modulesString += (module.ToString() + ", ");
-		}
-		modulesString += "]";
+		string modulesString = "[ExpressionModules: "+Logger.ToString(_modules)+"]";
 		
 		return string.Format ("[Device: name: {0}, expression modules: {1}]", _name, modulesString);
   }
 
   private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
   {
-    string listString = "list[";
-    foreach (BioBrick brick in list) {
-      listString += brick.ToString()+", ";
-    }
-    listString += "]";
-    Debug.Log("getProductsFromBioBricks("+listString+")");
+    Debug.Log("getProductsFromBioBricks([list: "+Logger.ToString(list)+"])");
     LinkedList<Product> products = new LinkedList<Product>();
     Product prod;
     RBSBrick rbs;
@@ -146,11 +137,7 @@ public class Device
     Debug.Log ("Device::getReactions(); device="+this);
     LinkedList<IReaction> reactions = new LinkedList<IReaction>();
     LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
-    string propsString = "";
-    foreach (PromoterProprieties prop in props) {
-      propsString += prop.ToString()+", ";
-    }
-    Debug.Log ("Device::getReactions(); props="+propsString);
+    Debug.Log ("Device::getReactions(); [props: "+Logger.ToString(props)+"]");
 
     foreach (PromoterProprieties promoterProps in props) {
       Debug.Log("Device::getReactions() adding prop "+promoterProps);

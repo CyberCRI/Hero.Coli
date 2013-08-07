@@ -38,12 +38,7 @@ public class ExpressionModule
 	
   public override string ToString ()
   {
-		string bricksString = "BioBricks: [";
-		foreach (BioBrick brick in _bioBricks) {
-			bricksString += (brick.ToString() + ", ");
-		}
-		bricksString += "]";
-		
+		string bricksString = "[BioBricks: "+Logger.ToString(_bioBricks)+"]";
 		return string.Format ("[ExpressionModule: name: {0}, bricks: {1}]", _name, bricksString);
   }
 }
