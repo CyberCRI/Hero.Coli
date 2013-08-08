@@ -32,8 +32,9 @@ public class Inventory : DeviceContainer
   }
 
   public override void addDevice(Device device) {
-    _devices.Add(device);
-    _displayer.addInventoriedDevice(device);
+    Device copy = Device.buildDevice(device);
+    _devices.Add(copy);
+    _displayer.addInventoriedDevice(copy);
   }
 
   public override void removeDevice(Device device) {

@@ -10,6 +10,7 @@ public class DisplayedBioBrick : MonoBehaviour {
   public UIAtlas _atlas;
   public int _biobrickID;
   public UISprite _sprite;
+  public UILabel _label;
   public BioBrick _biobrick;
   public CraftZoneManager _craftZoneManager;
   public static string prefabURI = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
@@ -52,6 +53,7 @@ public class DisplayedBioBrick : MonoBehaviour {
     biobrickScript._craftZoneManager = craftZoneManager;
     biobrickScript._currentSpriteName = spriteName;
     biobrickScript.setSprite(biobrickScript._currentSpriteName);
+    biobrickScript._label.text = biobrick.getName();
     Debug.Log("DisplayedBioBrick::Create ends");
 
     return biobrickScript;

@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CraftZoneManager : MonoBehaviour {
-  LinkedList<DisplayedBioBrick> bricks;
+  private LinkedList<DisplayedBioBrick> bricks;
   public GameObject displayedBioBrick;
   //width of a displayed BioBrick
-  public int _width = 52;
+  public int _width = 200;
 
+  public LinkedList<DisplayedBioBrick> getCurrentBioBricks() {
+    return new LinkedList<DisplayedBioBrick>(bricks);
+  }
 
   public Vector3 getNewPosition(int index ) {
       return displayedBioBrick.transform.localPosition + new Vector3(index*_width, 0.0f, -0.1f);

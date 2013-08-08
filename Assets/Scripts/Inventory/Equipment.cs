@@ -24,9 +24,10 @@ public class Equipment : DeviceContainer
   }
 
   public override void addDevice(Device device) {
-      _devices.Add(device);
-      _displayer.addEquipedDevice(device);
-      addToReactionEngine(device);
+      Device copy = Device.buildDevice(device);
+      _devices.Add(copy);
+      _displayer.addEquipedDevice(copy);
+      addToReactionEngine(copy);
   }
 
   //TODO

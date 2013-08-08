@@ -256,6 +256,11 @@ public class Device
     Device device = new Device(name, modules);
     return device;
   }
+
+  public static Device buildDevice(Device device)
+  {
+    return buildDevice(device.getName(), device._modules);
+  }
 	
 	//helper for simple devices
 	public static Device buildDevice(string name,
