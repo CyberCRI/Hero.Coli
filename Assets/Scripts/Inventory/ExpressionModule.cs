@@ -35,7 +35,26 @@ public class ExpressionModule
     foreach (BioBrick b in m.getBioBricks())
       _bioBricks.AddLast(b);
   }
-	
+
+  public bool hasSameBricks(ExpressionModule module) {
+    if(module._bioBricks.Count != _bioBricks.Count) {
+      Logger.Log("Device::hasSameBricks("+module+") of "+this+" differ on count: "+module._bioBricks.Count+"≠"+_bioBricks.Count);
+      return false;
+    }
+
+    IEnumerator<BioBrick> enumerator1 = module._bioBricks.GetEnumerator();
+    IEnumerator<BioBrick> enumerator2 = _bioBricks.GetEnumerator();
+
+    while(enumerator1.MoveNext() && enumerator2.MoveNext()) {
+      if(!enumerator1.Current.Equals(enumerator2.Current)) {
+        Logger.Log("ExpressionModule::hasSameBricks("+module+") of "+this+" differ on "+enumerator1.Current+"≠"+enumerator2.Current);
+        return false;
+      }
+    }
+    Logger.Log("ExpressionModule::hasSameBricks("+module+") of "+this+" coincide");
+    return true;
+  }
+
   public override string ToString ()
   {
 		string bricksString = "[BioBricks: "+Logger.ToString(_bioBricks)+"]";

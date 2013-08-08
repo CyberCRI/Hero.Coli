@@ -38,7 +38,7 @@ public class CraftFinalizer : MonoBehaviour {
     LinkedList<ExpressionModule> craftedModules = new LinkedList<ExpressionModule>();
     craftedModules.AddLast(craftedModule);
     Device craftedDevice = Device.buildDevice(randomName, craftedModules);
-    _inventory.addDevice(craftedDevice);
+    _inventory.askAddDevice(craftedDevice);
   }
 
 	// Use this for initialization

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 public class Inventory : DeviceContainer
 {
+  public enum AddingFailure {
+    NONE,
+    SAME_NAME,
+    SAME_BRICKS,
+    DEFAULT
+  }
 					
   //promoter
   private static float testbeta = 10.0f;
@@ -35,6 +41,21 @@ public class Inventory : DeviceContainer
     Device copy = Device.buildDevice(device);
     _devices.Add(copy);
     _displayer.addInventoriedDevice(copy);
+  }
+
+  public AddingFailure askAddDevice(Device device) {
+    bool sameBricks = false;
+    if (_devices.Exists(d => d.getName() == device.getName())) {
+      Logger.Log("Inventory::askAddDevice: AddingFailure.SAME_NAME");
+      return AddingFailure.SAME_NAME;
+    } else if (_devices.Exists(d => d.hasSameBricks(device))) {
+      Logger.Log("Inventory::askAddDevice: AddingFailure.SAME_BRICKS");
+      return AddingFailure.SAME_BRICKS;
+    } else {
+      Logger.Log("Inventory::askAddDevice: AddingFailure.NONE");
+      addDevice(device);
+      return AddingFailure.NONE;
+    }
   }
 
   public override void removeDevice(Device device) {

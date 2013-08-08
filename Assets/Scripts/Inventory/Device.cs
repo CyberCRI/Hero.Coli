@@ -309,4 +309,23 @@ public class Device
 		
 		return Device.buildDevice(notNullName, modules);
 	}
+
+  public bool hasSameBricks(Device device) {
+    if(device._modules.Count != _modules.Count) {
+      Logger.Log("Device::hasSameBricks("+device+") of "+this+" differ on count: "+device._modules.Count+"≠"+_modules.Count);
+      return false;
+    }
+
+    IEnumerator<ExpressionModule> enumerator1 = device._modules.GetEnumerator();
+    IEnumerator<ExpressionModule> enumerator2 = _modules.GetEnumerator();
+
+    while(enumerator1.MoveNext() && enumerator2.MoveNext()) {
+      if(!enumerator1.Current.hasSameBricks(enumerator2.Current)) {
+        Logger.Log("Device::hasSameBricks("+device+") of "+this+" differ on "+enumerator1.Current+"≠"+enumerator2.Current);
+        return false;
+      }
+    }
+    Logger.Log("Device::hasSameBricks("+device+") of "+this+" coincide");
+    return true;
+  }
 }
