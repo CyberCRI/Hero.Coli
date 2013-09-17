@@ -1,76 +1,57 @@
 using UnityEngine;
+using System; //for Action<>
 using System.Collections;
 using System.Collections.Generic;
 
-public class DisplayedBioBrick : MonoBehaviour {
-
-  private static int _idCounter = 0;
-
-  public string _currentSpriteName;
-  public UIAtlas _atlas;
-  public int _biobrickID;
-  public UISprite _sprite;
+public class DisplayedBioBrick : DisplayedElement {
   public UILabel _label;
   public BioBrick _biobrick;
-  public CraftZoneManager _craftZoneManager;
+  public static CraftZoneManager _craftZoneManager;
   public static string prefabURI = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
-  public static Object prefab = null;
- 
-  public int getID() {
-    return _biobrickID;
-  }
+  public static UnityEngine.Object prefab = null;
+  public static string assemblyZonePanelName = "AssemblyZonePanel";
 
  public static DisplayedBioBrick Create(
-   Transform parentTransform, 
+   Transform parentTransform,
    Vector3 localPosition,
-   BioBrick biobrick,
-   CraftZoneManager craftZoneManager,
-   string spriteName
+   string spriteName,
+   BioBrick biobrick
    )
  {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
+    _craftZoneManager = _craftZoneManager!=null?_craftZoneManager:GameObject.Find (assemblyZonePanelName).GetComponent<CraftZoneManager>();
 
     Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
     + ", localPosition="+localPosition
+    + ", spriteName="+spriteName+nullSpriteName
     + ", biobrick="+biobrick
-    + ", craftZoneManager="+craftZoneManager
-    + ", spriteName="+spriteName+nullSpriteName);
+    + ", craftZoneManager="+_craftZoneManager);
 
     if(prefab == null) prefab = Resources.Load(prefabURI);
-    GameObject newBioBrick = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-    Debug.Log("DisplayedBioBrick::Create instantiation done");
 
-    newBioBrick.transform.parent = parentTransform;
-    newBioBrick.transform.localPosition = localPosition;
-    newBioBrick.transform.localScale = new Vector3(1f, 1f, 0);
-    
-    DisplayedBioBrick biobrickScript = newBioBrick.GetComponent<DisplayedBioBrick>();
-    biobrickScript._biobrickID = ++_idCounter;
-    Debug.Log("DisplayedBioBrick::Create biobrickScript._biobrickID = "+biobrickScript._biobrickID);
+    DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
+      parentTransform
+      ,localPosition
+      ,spriteName
+      ,prefab
+      //,GetInitializer(biobrick, "testString")
+      );
 
-    biobrickScript._biobrick = biobrick;
-    Debug.Log("DisplayedBioBrick::Create biobrick "+biobrickScript._biobrick);
-    biobrickScript._craftZoneManager = craftZoneManager;
-    biobrickScript._currentSpriteName = spriteName;
-    biobrickScript.setSprite(biobrickScript._currentSpriteName);
-    biobrickScript._label.text = biobrick.getName();
-    Debug.Log("DisplayedBioBrick::Create ends");
+    Initialize(result, biobrick);
 
-    return biobrickScript;
+    return result;
  }
- 
- public void Remove() {
-   Destroy(gameObject);
- }
- 
- public void Redraw(Vector3 newLocalPosition) {
-   gameObject.transform.localPosition = newLocalPosition;
- }
- 
- private void setSprite(string spriteName) {
-   Debug.Log("setSprite("+spriteName+")");
-   _sprite.spriteName = spriteName;
- }
+
+  private static void Initialize(
+    DisplayedBioBrick biobrickScript
+    ,BioBrick biobrick
+  ) {
+      Debug.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts");
+      biobrickScript._biobrick = biobrick;
+      Debug.Log("DisplayedBioBrick::Create biobrick "+biobrickScript._biobrick);
+      biobrickScript._label.text = biobrick.getName();
+      Debug.Log("DisplayedBioBrick::Initialize ends");
+  }
  
  // Use this for initialization
  void Start () {
@@ -82,10 +63,10 @@ public class DisplayedBioBrick : MonoBehaviour {
  }
  
  protected string getDebugInfos() {
-   return "biobrick "+_biobrickID+", inner biobrick "+_biobrick+" time="+Time.realtimeSinceStartup;
+   return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", label="+_label.text+" time="+Time.realtimeSinceStartup;
  }
- 
-  private void OnPress(bool isPressed) {
-    Logger.Log("DisplayedBioBrick::OnPress _biobrickID="+_biobrickID);
+
+ protected override void OnPress(bool isPressed) {
+    Logger.Log("DisplayedBioBrick::OnPress _id="+_id);
   }
 }

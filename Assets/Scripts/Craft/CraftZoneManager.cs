@@ -39,10 +39,10 @@ public class CraftZoneManager : MonoBehaviour {
     };
 
     DisplayedBioBrick[] dBioBrickArray = {
-      DisplayedBioBrick.Create(transform, getNewPosition(0), bioBrickArray[0], this, "promoter"),
-      DisplayedBioBrick.Create(transform, getNewPosition(1), bioBrickArray[1], this, "RBS"),
-      DisplayedBioBrick.Create(transform, getNewPosition(2), bioBrickArray[2], this, "gene"),
-      DisplayedBioBrick.Create(transform, getNewPosition(3), bioBrickArray[3], this, "terminator")
+      DisplayedBioBrick.Create(transform, getNewPosition(0), "promoter", bioBrickArray[0])
+      ,DisplayedBioBrick.Create(transform, getNewPosition(1), "RBS", bioBrickArray[1])
+      ,DisplayedBioBrick.Create(transform, getNewPosition(2), "gene", bioBrickArray[2])
+      ,DisplayedBioBrick.Create(transform, getNewPosition(3), "terminator", bioBrickArray[3])
     };
 
     bricks = new LinkedList<DisplayedBioBrick>( dBioBrickArray );
