@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+//TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour {
   private LinkedList<DisplayedBioBrick> bricks;
   public GameObject displayedBioBrick;
