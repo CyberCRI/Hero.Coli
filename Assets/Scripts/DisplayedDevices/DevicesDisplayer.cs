@@ -97,12 +97,12 @@ public class DevicesDisplayer : MonoBehaviour {
 			
 			DisplayedDevice newDevice = 
 				InventoriedDisplayedDevice.Create (
-          DevicesDisplayer.DeviceType.Inventoried,
           parent,
           localPosition,
+          getSpriteName(device.getName()),
           device,
           this,
-          getSpriteName(device.getName())
+          DevicesDisplayer.DeviceType.Inventoried
         );
 			_inventoriedDevices.Add(newDevice);
 		} else {
@@ -119,12 +119,12 @@ public class DevicesDisplayer : MonoBehaviour {
 			
 			DisplayedDevice newDevice = 
 				EquipedDisplayedDevice.Create (
-          DevicesDisplayer.DeviceType.Equiped,
           parent,
           localPosition,
+          getSpriteName(device.getName()),
           device,
           this,
-          getSpriteName(device.getName())
+          DevicesDisplayer.DeviceType.Equiped
         );
 			_equipedDevices.Add(newDevice);
 		} else {

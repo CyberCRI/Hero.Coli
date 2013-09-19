@@ -7,10 +7,14 @@ public abstract class DisplayedElement : MonoBehaviour {
 
   protected static int  _idCounter = 0;
 
-  protected string    _currentSpriteName;
-  public UIAtlas      _atlas;
-  public int          _id;
-  public UISprite     _sprite;
+  protected string      _currentSpriteName;
+  public UIAtlas        _atlas;
+  public int            _id;
+  public UISprite       _sprite;
+
+  public int getID() {
+    return _id;
+  }
 
   public static DisplayedElement Create(
     Transform parentTransform
@@ -54,7 +58,7 @@ public abstract class DisplayedElement : MonoBehaviour {
    gameObject.transform.localPosition = newLocalPosition;
  }
 
- private void setSprite(string spriteName) {
+ protected void setSprite(string spriteName) {
    Debug.Log("setSprite("+spriteName+")");
    _sprite.spriteName = spriteName;
  }

@@ -1,15 +1,16 @@
 using UnityEngine;
-using System; //for Action<>
 using System.Collections;
 using System.Collections.Generic;
 
 public class DisplayedBioBrick : DisplayedElement {
-  public UILabel _label;
-  public BioBrick _biobrick;
-  public static CraftZoneManager _craftZoneManager;
-  public static string prefabURI = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
-  public static UnityEngine.Object prefab = null;
-  public static string assemblyZonePanelName = "AssemblyZonePanel";
+
+  public static CraftZoneManager    craftZoneManager;
+  public static string              prefabURI             = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
+  public static UnityEngine.Object  prefab                = null;
+  public static string              assemblyZonePanelName = "AssemblyZonePanel";
+
+  public UILabel                    _label;
+  public BioBrick                   _biobrick;
 
  public static DisplayedBioBrick Create(
    Transform parentTransform,
@@ -19,22 +20,20 @@ public class DisplayedBioBrick : DisplayedElement {
    )
  {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
-    _craftZoneManager = _craftZoneManager!=null?_craftZoneManager:GameObject.Find (assemblyZonePanelName).GetComponent<CraftZoneManager>();
+    if(craftZoneManager == null) craftZoneManager = GameObject.Find (assemblyZonePanelName).GetComponent<CraftZoneManager>();
+    if(prefab == null) prefab = Resources.Load(prefabURI);
 
     Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
     + ", localPosition="+localPosition
     + ", spriteName="+spriteName+nullSpriteName
     + ", biobrick="+biobrick
-    + ", craftZoneManager="+_craftZoneManager);
-
-    if(prefab == null) prefab = Resources.Load(prefabURI);
+    + ", craftZoneManager="+craftZoneManager);
 
     DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
       parentTransform
       ,localPosition
       ,spriteName
       ,prefab
-      //,GetInitializer(biobrick, "testString")
       );
 
     Initialize(result, biobrick);

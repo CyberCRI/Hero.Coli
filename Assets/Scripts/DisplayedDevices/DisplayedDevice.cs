@@ -2,46 +2,28 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class DisplayedDevice : MonoBehaviour {
+public abstract class DisplayedDevice : DisplayedElement {
 	
-	private static string _activeSuffix = "Active";
-  private static int _idCounter = 0;
-	
-	public string _currentSpriteName;
-	public UIAtlas _atlas;
-	public bool _isActive;
-	public int _deviceID;
-	public UISprite _sprite;
-	public Device _device;
-	public DevicesDisplayer _devicesDisplayer;
+	private static string               _activeSuffix = "Active";
 
-  public DevicesDisplayer.DeviceType _deviceType;
- 
-  public int getID() {
-    return _deviceID;
-  }
+	public bool                         _isActive;
+	public Device                       _device;
+	public DevicesDisplayer             _devicesDisplayer;
+  public DevicesDisplayer.DeviceType  _deviceType;
+
 
 	public static DisplayedDevice Create(
-    DevicesDisplayer.DeviceType deviceType,
-		Transform parentTransform, 
-		Vector3 localPosition,
-		Device device,
-		DevicesDisplayer devicesDisplayer,
-		string spriteName
+		Transform parentTransform
+		, Vector3 localPosition
+    , string spriteName
+		, Device device
+		, DevicesDisplayer devicesDisplayer
+    , DevicesDisplayer.DeviceType deviceType
 		)
 	{
 
     string nullSpriteName = (spriteName!=null)?"":"(null)";
-
-		Debug.Log("DisplayedDevice::Create(type="+deviceType
-		+ ", parentTransform="+parentTransform
-		+ ", localPosition="+localPosition
-		+ ", device="+device
-		+ ", devicesDisplayer="+devicesDisplayer
-    + ", spriteName="+spriteName+nullSpriteName);
-
     Object prefab;
-
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
       prefab = Resources.Load("GUI/screen1/Devices/EquipedDeviceButtonPrefab");
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
@@ -51,40 +33,41 @@ public abstract class DisplayedDevice : MonoBehaviour {
       return null;
     }
 
-    GameObject newDevice = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-    Debug.Log("DisplayedDevice::Create instantiation done");
+		Debug.Log("DisplayedDevice::Create(type="+deviceType
+		+ ", parentTransform="+parentTransform
+		+ ", localPosition="+localPosition
+		+ ", device="+device
+		+ ", devicesDisplayer="+devicesDisplayer
+    + ", spriteName="+spriteName+nullSpriteName);
 
-		newDevice.transform.parent = parentTransform;
-		newDevice.transform.localPosition = localPosition;
-		newDevice.transform.localScale = new Vector3(1f, 1f, 0);
-		
-	  DisplayedDevice deviceScript = newDevice.GetComponent<DisplayedDevice>();
-		deviceScript._deviceID = ++_idCounter;
-    Debug.Log("DisplayedDevice::Create deviceScript._deviceID = "+deviceScript._deviceID);
+    DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
+      parentTransform
+      ,localPosition
+      ,spriteName
+      ,prefab
+      );
 
-		deviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
-    Debug.Log("DisplayedDevice::Create built device "+deviceScript._device+" from "+device);
-		deviceScript._devicesDisplayer = devicesDisplayer;
-		deviceScript._currentSpriteName = spriteName;
-    deviceScript._deviceType = deviceType;
-    deviceScript.setActive();
-    Debug.Log("DisplayedDevice::Create ends");
+    Initialize(result, device, devicesDisplayer, deviceType);
 
-    return deviceScript;
+    return result;
 	}
-	
-	public void Remove() {
-		Destroy(gameObject);
-	}
-	
-	public void Redraw(Vector3 newLocalPosition) {
-		gameObject.transform.localPosition = newLocalPosition;
-	}
-	
-	private void setSprite(string spriteName) {
-		Debug.Log("setSprite("+spriteName+")");
-		_sprite.spriteName = spriteName;
-	}
+
+  public static void Initialize(
+    DisplayedDevice displayedDeviceScript
+    , Device device
+    , DevicesDisplayer devicesDisplayer
+    , DevicesDisplayer.DeviceType deviceType
+    ) {
+
+    Debug.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts");
+    displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    Debug.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device);
+    displayedDeviceScript._devicesDisplayer = devicesDisplayer;
+    displayedDeviceScript._deviceType = deviceType;
+    displayedDeviceScript.setActive();
+    Debug.Log("DisplayedDevice::Initialize ends");
+
+  }
 	
 	public void setActivity(bool activity) {
 		_isActive = activity;
@@ -117,8 +100,8 @@ public abstract class DisplayedDevice : MonoBehaviour {
 	}
 	
 	protected string getDebugInfos() {
-		return "device "+_deviceID+", inner device "+_device+" time="+Time.realtimeSinceStartup;
+		return "device id="+_id+", inner device="+_device+", device type="+_deviceType+", time="+Time.realtimeSinceStartup;
 	}
 	
-	protected abstract void OnPress(bool isPressed);
+	protected override abstract void OnPress(bool isPressed);
 }
