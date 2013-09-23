@@ -44,7 +44,6 @@ public class Inventory : DeviceContainer
   }
 
   public AddingFailure askAddDevice(Device device) {
-    bool sameBricks = false;
     if (_devices.Exists(d => d.getName() == device.getName())) {
       Logger.Log("Inventory::askAddDevice: AddingFailure.SAME_NAME");
       return AddingFailure.SAME_NAME;

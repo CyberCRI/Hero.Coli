@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class DisplayedBioBrick : DisplayedElement {
 
-  public static CraftZoneManager                    craftZoneManager;
-  public static string                              prefabURI             = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
+  //public static CraftZoneManager                    craftZoneManager;
+  public static string                              prefabURI             = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
   public static UnityEngine.Object                  prefab                = null;
   public static string                              assemblyZonePanelName = "AssemblyZonePanel";
   public static Dictionary<BioBrick.Type, string>   spriteNamesDico = new Dictionary<BioBrick.Type, string>() {
@@ -20,27 +20,29 @@ public class DisplayedBioBrick : DisplayedElement {
   public BioBrick                   _biobrick;
 
  public static DisplayedBioBrick Create(
-   Transform parentTransform,
-   Vector3 localPosition,
-   string spriteName,
-   BioBrick biobrick
+   Transform parentTransform
+   ,Vector3 localPosition
+   ,string spriteName
+   ,BioBrick biobrick
+   ,Object externalPrefab = null
    )
  {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
-    if(craftZoneManager == null) craftZoneManager = GameObject.Find (assemblyZonePanelName).GetComponent<CraftZoneManager>();
+
     if(prefab == null) prefab = Resources.Load(prefabURI);
+    Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
 
     Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
-    + ", localPosition="+localPosition
-    + ", spriteName="+spriteName+nullSpriteName
-    + ", biobrick="+biobrick
-    + ", craftZoneManager="+craftZoneManager);
+      + ", localPosition="+localPosition
+      + ", spriteName="+spriteName+nullSpriteName
+      + ", biobrick="+biobrick
+      );
 
     DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
       parentTransform
       ,localPosition
       ,spriteName
-      ,prefab
+      ,prefabToUse
       );
 
     Initialize(result, biobrick);
@@ -48,7 +50,7 @@ public class DisplayedBioBrick : DisplayedElement {
     return result;
  }
 
-  private static void Initialize(
+  protected static void Initialize(
     DisplayedBioBrick biobrickScript
     ,BioBrick biobrick
   ) {
@@ -59,24 +61,24 @@ public class DisplayedBioBrick : DisplayedElement {
       Debug.Log("DisplayedBioBrick::Initialize ends");
   }
  
- // Use this for initialization
- void Start () {
- }
+  // Use this for initialization
+  void Start () {
+  }
  
- // Update is called once per frame
- void Update () {
- 
- }
+  // Update is called once per frame
+  void Update () {
+  
+  }
 
-  public static string getSpriteName(BioBrick brick) {
+  public static string getSpriteName<T>(T brick) where T:BioBrick {
     return spriteNamesDico[brick.getType()];
   }
  
- protected string getDebugInfos() {
-   return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", label="+_label.text+" time="+Time.realtimeSinceStartup;
- }
+  protected string getDebugInfos() {
+    return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", label="+_label.text+" time="+Time.realtimeSinceStartup;
+  }
 
- protected override void OnPress(bool isPressed) {
+  protected override void OnPress(bool isPressed) {
     Logger.Log("DisplayedBioBrick::OnPress _id="+_id);
   }
 }

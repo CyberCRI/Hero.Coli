@@ -4,27 +4,51 @@ using System.Collections.Generic;
 
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class AvailableBioBricksManager : MonoBehaviour {
-  public GameObject availableBioBrick;
-  //width of a displayed BioBrick
-  public int _width = 200;
 
+  //width of a displayed BioBrick
+  public int _width = 12;
+
+  //prefab for available biobricks
+  public GameObject availableBioBrick;
+
+  //visual, clickable biobricks currently displayed
   LinkedList<AvailableDisplayedBioBrick>  _displayedBioBricks   = new LinkedList<AvailableDisplayedBioBrick>();
 
-  private LinkedList<PromoterBrick>       _availablePromoters   = new LinkedList<PromoterBrick>();
-  private LinkedList<RBSBrick>            _availableRBS         = new LinkedList<RBSBrick>();
-  private LinkedList<GeneBrick>           _availableGenes       = new LinkedList<GeneBrick>();
-  private LinkedList<TerminatorBrick>     _availableTerminators = new LinkedList<TerminatorBrick>();
+  //biobrick arrays
+  private static PromoterBrick[]    promoters   = new PromoterBrick[]{};//{new PromoterBrick("testProm", 0.5f, "promoter1")};
+  private static RBSBrick[]         rbs         = new RBSBrick[]{new RBSBrick("testRBS", 1.0f)};
+  private static GeneBrick[]        genes       = new GeneBrick[]{new GeneBrick("testGene", "gene1"), new GeneBrick("testGene2", "gene2")};
+  private static TerminatorBrick[]  terminators = new TerminatorBrick[]{new TerminatorBrick("testTerminator", 1.0f), new TerminatorBrick("testTerminator2", 1.0f), new TerminatorBrick("testTerminator3", 1.0f)};
 
-  LinkedList<AvailableDisplayedBioBrick>       _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
-  LinkedList<AvailableDisplayedBioBrick>       _displayableAvailableRBS         = new LinkedList<AvailableDisplayedBioBrick>();
-  LinkedList<AvailableDisplayedBioBrick>       _displayableAvailableGenes       = new LinkedList<AvailableDisplayedBioBrick>();
-  LinkedList<AvailableDisplayedBioBrick>       _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
+  //biobrick data catalog
+  private static LinkedList<PromoterBrick>       _availablePromoters   = new LinkedList<PromoterBrick>(promoters);
+  private static LinkedList<RBSBrick>            _availableRBS         = new LinkedList<RBSBrick>(rbs);
+  private static LinkedList<GeneBrick>           _availableGenes       = new LinkedList<GeneBrick>(genes);
+  private static LinkedList<TerminatorBrick>     _availableTerminators = new LinkedList<TerminatorBrick>(terminators);
+
+  //visual, clickable biobrick catalog
+  LinkedList<AvailableDisplayedBioBrick>  _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
+  LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableRBS         = new LinkedList<AvailableDisplayedBioBrick>();
+  LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableGenes       = new LinkedList<AvailableDisplayedBioBrick>();
+  LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
 
   private void updateDisplayedBioBricks() {
-    _displayableAvailablePromoters   = getDisplayableAvailableBioBricks(_availablePromoters);
-    _displayableAvailableRBS         = getDisplayableAvailableBioBricks(_availableRBS);
-    _displayableAvailableGenes       = getDisplayableAvailableBioBricks(_availableGenes);
-    _displayableAvailableTerminators = getDisplayableAvailableBioBricks(_availableTerminators);
+    _displayableAvailablePromoters   = getDisplayableAvailableBioBricks<PromoterBrick>(
+      _availablePromoters
+      , getDisplayableAvailableBioBrick<PromoterBrick>
+      );
+    _displayableAvailableRBS         = getDisplayableAvailableBioBricks<RBSBrick>(
+      _availableRBS
+      , getDisplayableAvailableBioBrick<RBSBrick>
+      );
+    _displayableAvailableGenes       = getDisplayableAvailableBioBricks<GeneBrick>(
+      _availableGenes
+      , getDisplayableAvailableBioBrick<GeneBrick>
+      );
+    _displayableAvailableTerminators = getDisplayableAvailableBioBricks<TerminatorBrick>(
+      _availableTerminators
+      , getDisplayableAvailableBioBrick<TerminatorBrick>
+      );
   }
 
   public Vector3 getNewPosition(int index ) {
@@ -32,53 +56,42 @@ public class AvailableBioBricksManager : MonoBehaviour {
       return availableBioBrick.transform.localPosition + new Vector3(index*_width, 0.0f, -0.1f);
   }
 
-  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(LinkedList<BioBrick> bioBricks) {
+  private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator<T>(T brick, int index) where T:BioBrick;
+
+  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks<T>(
+    LinkedList<T> bioBricks
+    , DisplayableAvailableBioBrickCreator<T> creator
+  ) where T:BioBrick {
     LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
-    foreach (BioBrick brick in bioBricks) {
-      result.AddLast(getDisplayableAvailableBioBrick(brick, result.Count));
+    foreach (T brick in bioBricks) {
+      AvailableDisplayedBioBrick availableBrick = creator(brick, result.Count);
+      availableBrick.display(false);
+      result.AddLast(availableBrick);
     }
     return result;
   }
 
-  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(LinkedList<PromoterBrick> bioBricks) {
-    LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
-    foreach (PromoterBrick brick in bioBricks) {
-      result.AddLast(getDisplayableAvailableBioBrick(brick, result.Count));
-    }
-    return result;
-  }
+  private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick<T>(T brick, int index) where T:BioBrick {
 
-  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(LinkedList<GeneBrick> bioBricks) {
-    LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
-    foreach (GeneBrick brick in bioBricks) {
-      result.AddLast(getDisplayableAvailableBioBrick(brick, result.Count));
-    }
-    return result;
-  }
+    Transform parentTransformParam = transform;
+    Vector3 localPositionParam = getNewPosition(index);
+    string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName<T>(brick);
+    T biobrickParam = brick;
 
-  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(LinkedList<RBSBrick> bioBricks) {
-    LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
-    foreach (RBSBrick brick in bioBricks) {
-      result.AddLast(getDisplayableAvailableBioBrick(brick, result.Count));
-    }
-    return result;
-  }
+    Logger.Log("AvailableBioBricksManager::getDisplayableAvailableBioBrick(brick="+brick+", index="+index+"),"
+      +", parentTransformParam="+parentTransformParam
+      +", localPositionParam="+localPositionParam
+      +" (width="+_width+")"
+      +", spriteNameParam="+spriteNameParam
+      +", biobrickParam="+biobrickParam
+      );
 
-  private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(LinkedList<TerminatorBrick> bioBricks) {
-    LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
-    foreach (TerminatorBrick brick in bioBricks) {
-      result.AddLast(getDisplayableAvailableBioBrick(brick, result.Count));
-    }
-    return result;
-  }
-
-  private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick(BioBrick brick, int index) {
-    AvailableDisplayedBioBrick resultBrick = (AvailableDisplayedBioBrick)AvailableDisplayedBioBrick.Create(
-          transform
-          ,getNewPosition(index)
-          ,AvailableDisplayedBioBrick.getSpriteName(brick)
-          ,availableBioBrick
-        );
+    AvailableDisplayedBioBrick resultBrick = AvailableDisplayedBioBrick.Create(
+      parentTransformParam
+      ,localPositionParam
+      ,spriteNameParam
+      ,biobrickParam
+    );
     return resultBrick;
   }
 
@@ -99,14 +112,28 @@ public class AvailableBioBricksManager : MonoBehaviour {
     switchTo(_displayableAvailableTerminators);
   }
   private void switchTo(LinkedList<AvailableDisplayedBioBrick> list) {
-    Logger.Log("AvailableBioBricksManager::switchTo("+list+")");
+    string listToString = "list=[";
+    foreach(AvailableDisplayedBioBrick brick in list) {
+      listToString += brick.ToString()+", ";
+    }
+    listToString += "]";
+    Logger.Log("AvailableBioBricksManager::switchTo("+listToString+")");
+    display(_displayedBioBricks, false);
     _displayedBioBricks.Clear();
     _displayedBioBricks.AppendRange(list);
+    display(_displayedBioBricks, true);
+  }
+
+  private void display(LinkedList<AvailableDisplayedBioBrick> bricks, bool enabled) {
+    foreach (AvailableDisplayedBioBrick brick in bricks) {
+      brick.display(enabled);
+    }
   }
 
 	// Use this for initialization
 	void Start () {
-	
+	  updateDisplayedBioBricks();
+    displayPromoters();
 	}
 	
 	// Update is called once per frame

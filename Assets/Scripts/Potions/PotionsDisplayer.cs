@@ -21,7 +21,7 @@ public class PotionsDisplayer : MonoBehaviour {
 		Debug.Log("addPotion("+potionID+")");
 		if(!_potions.Exists(potion => potion.getID() == potionID)) { 
 			Vector3 localPosition = _positionOffset + new Vector3(_potions.Count*_width, 0.0f, 0.0f);
-			Potion potion = Potion.Create (gameObject.transform, localPosition, potionID);
+			Potion potion = Potion.Create(gameObject.transform, localPosition, potionID);
 			_potions.Add(potion);
 		}
 	}

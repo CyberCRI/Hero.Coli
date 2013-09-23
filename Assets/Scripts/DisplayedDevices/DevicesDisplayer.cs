@@ -96,7 +96,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			UnityEngine.Transform parent = inventoryPanel.transform;
 			
 			DisplayedDevice newDevice = 
-				InventoriedDisplayedDevice.Create (
+				InventoriedDisplayedDevice.Create(
           parent,
           localPosition,
           getSpriteName(device.getName()),
@@ -118,7 +118,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			UnityEngine.Transform parent = equipPanel.transform;
 			
 			DisplayedDevice newDevice = 
-				EquipedDisplayedDevice.Create (
+				EquipedDisplayedDevice.Create(
           parent,
           localPosition,
           getSpriteName(device.getName()),
