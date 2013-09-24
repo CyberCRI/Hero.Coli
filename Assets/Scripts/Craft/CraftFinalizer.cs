@@ -16,7 +16,7 @@ public class CraftFinalizer : MonoBehaviour {
   //terminator
   private static float testterminatorFactor = 1.0f;
   
-   
+  /*
   private static Device getTestDevice() {
   
     string randomName = DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];
@@ -24,6 +24,7 @@ public class CraftFinalizer : MonoBehaviour {
 
     return testDevice;
   }
+  */
 
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
@@ -38,7 +39,12 @@ public class CraftFinalizer : MonoBehaviour {
     LinkedList<ExpressionModule> craftedModules = new LinkedList<ExpressionModule>();
     craftedModules.AddLast(craftedModule);
     Device craftedDevice = Device.buildDevice(randomName, craftedModules);
-    _inventory.askAddDevice(craftedDevice);
+    if(craftedDevice!=null){
+      Logger.Log("CraftFinalizer::finalizeCraft() succeeded: craftedDevice="+craftedDevice);
+      _inventory.askAddDevice(craftedDevice);
+    } else {
+      Logger.Log("CraftFinalizer::finalizeCraft() failed: craftedModules="+craftedModules);
+    }
   }
 
 	// Use this for initialization

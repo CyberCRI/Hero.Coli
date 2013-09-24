@@ -18,4 +18,8 @@ public class CraftFinalizationButton : MonoBehaviour {
     Debug.Log ("CraftFinalizationButton::OnPress("+isPressed+")");
     if(isPressed) _craftFinalizer.finalizeCraft();
   }
+
+  public void SetActive(bool active) {
+    gameObject.SetActive(active);
+  }
 }

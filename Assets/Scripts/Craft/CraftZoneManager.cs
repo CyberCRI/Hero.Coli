@@ -2,18 +2,29 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * TODO:
+ * Replace LinkedList by an array or fields
+ * OnHover for DisplayedBioBrick
+ * OnPress for AvailableDisplayedBioBrick + Update of _currentCraftBricks in CraftZone
+ * OnPress for CraftZoneDisplayedBioBrick + Update of _currentCraftBricks in CraftZone
+ * Update of state of CraftFinalizationButton
+ */
+
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour {
-  private LinkedList<DisplayedBioBrick> bricks;
+
+  private LinkedList<DisplayedBioBrick> _currentCraftBricks;
   public GameObject displayedBioBrick;
   //width of a displayed BioBrick
   public int _width = 200;
 
+
   public LinkedList<DisplayedBioBrick> getCurrentBioBricks() {
-    return new LinkedList<DisplayedBioBrick>(bricks);
+    return new LinkedList<DisplayedBioBrick>(_currentCraftBricks);
   }
 
-  public Vector3 getNewPosition(int index ) {
+  private Vector3 getNewPosition(int index ) {
       return displayedBioBrick.transform.localPosition + new Vector3(index*_width, 0.0f, -0.1f);
   }
 
@@ -46,10 +57,35 @@ public class CraftZoneManager : MonoBehaviour {
       ,DisplayedBioBrick.Create(transform, getNewPosition(3), "terminator", bioBrickArray[3])
     };
 
-    bricks = new LinkedList<DisplayedBioBrick>( dBioBrickArray );
+    _currentCraftBricks = new LinkedList<DisplayedBioBrick>( dBioBrickArray );
 
     Logger.Log("CraftZoneManager::Start ...ending!");
 	}
+
+  private DisplayedBioBrick findFirstBioBrick(BioBrick.Type type) {
+    foreach(DisplayedBioBrick brick in _currentCraftBricks) {
+      if(brick._biobrick.getType() == type) return brick;
+    }
+    Logger.Log("CraftZoneManager::findFirstBioBrick("+type+") failed with current bricks="+_currentCraftBricks);
+    return null;
+  }
+
+  public void replaceWithBrick(DisplayedBioBrick dBioBrick) {
+
+    DisplayedBioBrick toReplace = findFirstBioBrick(dBioBrick._biobrick.getType());
+    LinkedListNode<DisplayedBioBrick> toReplaceNode = _currentCraftBricks.Find(toReplace);
+
+    DisplayedBioBrick newBrick = DisplayedBioBrick.Create(
+      transform,
+      toReplace.transform.position,
+      dBioBrick._biobrick.getName(),
+      dBioBrick._biobrick
+      );
+
+    _currentCraftBricks.AddAfter(toReplaceNode, newBrick);
+    _currentCraftBricks.Remove(toReplace);
+    Destroy(toReplace.gameObject);
+  }
 	
 	// Update is called once per frame
 	void Update () {

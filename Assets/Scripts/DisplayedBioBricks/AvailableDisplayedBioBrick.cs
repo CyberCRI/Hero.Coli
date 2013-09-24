@@ -5,6 +5,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
   public static new string              prefabURI = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
   public static new UnityEngine.Object  prefab    = null;
+  public static CraftZoneManager        craftZoneManager = null;
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -15,6 +16,9 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     if(prefab == null) prefab = Resources.Load(prefabURI);
+    if(craftZoneManager == null) {
+      craftZoneManager = (CraftZoneManager)GameObject.Find("AssemblyZonePanel").GetComponent<CraftZoneManager>();
+    }
 
     Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
@@ -51,5 +55,6 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
   protected override void OnPress(bool isPressed) {
     Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id);
+    craftZoneManager.replaceWithBrick(this);
   }
 }
