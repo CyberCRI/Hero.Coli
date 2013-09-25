@@ -77,8 +77,8 @@ public class CraftZoneManager : MonoBehaviour {
 
     DisplayedBioBrick newBrick = DisplayedBioBrick.Create(
       transform,
-      toReplace.transform.position,
-      dBioBrick._biobrick.getName(),
+      toReplace.transform.localPosition,
+      dBioBrick._sprite.spriteName,
       dBioBrick._biobrick
       );
 
