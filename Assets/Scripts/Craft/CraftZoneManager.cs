@@ -16,6 +16,8 @@ public class CraftZoneManager : MonoBehaviour {
 
   private LinkedList<DisplayedBioBrick> _currentCraftBricks;
   public GameObject displayedBioBrick;
+  public LastHoveredInfoManager lastHoveredInfoManager;
+
   //width of a displayed BioBrick
   public int _width = 200;
 
@@ -58,6 +60,9 @@ public class CraftZoneManager : MonoBehaviour {
     };
 
     _currentCraftBricks = new LinkedList<DisplayedBioBrick>( dBioBrickArray );
+
+    //to initialize the "last hovered biobrick" info window
+    lastHoveredInfoManager.setHoveredBioBrick(dBioBrickArray[0]._biobrick);
 
     Logger.Log("CraftZoneManager::Start ...ending!");
 	}
