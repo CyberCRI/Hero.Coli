@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class CraftFinalizer : MonoBehaviour {
   public Inventory _inventory;
   public CraftZoneManager _craftZoneManager;
-         
+
+  /*
   //promoter
   private static float testbeta = 10.0f;
   private static string testformula = "![0.8,2]LacI";
@@ -15,8 +16,7 @@ public class CraftFinalizer : MonoBehaviour {
   private static string testproteinName = DevicesDisplayer.getRandomProteinName();
   //terminator
   private static float testterminatorFactor = 1.0f;
-  
-  /*
+
   private static Device getTestDevice() {
   
     string randomName = DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];

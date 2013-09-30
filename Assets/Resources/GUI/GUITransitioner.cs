@@ -70,6 +70,103 @@ public class GUITransitioner : MonoBehaviour {
 	private void Pause(bool pause) {
 		Time.timeScale = pause?0:1;
 	}
+
+  public void GoToScreen(GameScreen destination) {
+    Logger.Log("GUITransitioner::GoToScreen("+destination+")");
+    if(destination == GameScreen.screen1) {
+      if(_currentScreen == GameScreen.screen2) {
+         Logger.Log("2->1", Logger.Level.INFO);
+         //2 -> 1
+         //set zoom1
+         //remove inventory device, deviceID
+         //add graphs
+         //move devices and potions?
+         
+       } else if(_currentScreen == GameScreen.screen3) {
+         Logger.Log("3->1");
+         //3 -> 1
+         //set zoom1
+         //remove craft screen
+         //add graphs
+         //add potions
+         //add devices
+         //add life/energy
+         //add medium info
+         SetScreen3(false);
+         SetScreen1(true);
+       }
+       Pause(false);
+       ZoomOut();
+       _currentScreen = GameScreen.screen1;
+       _devicesDisplayer.UpdateScreen();
+
+    } else if (destination == GameScreen.screen2) {
+      if(_currentScreen == GameScreen.screen1) {
+         Debug.Log("1->2");
+         //1 -> 2
+         //set zoom2
+         //add inventory device, deviceID
+         //remove graphs
+         //move devices and potions?
+       } else if(_currentScreen == GameScreen.screen3) {
+         Debug.Log("3->2");          
+         //3 -> 1
+         //set zoom2
+         //remove craft screen
+         //add inventory device, deviceID
+         //add potions
+         //add devices
+         //add life/energy
+         //add medium info
+         SetScreen3(false);
+         SetScreen2(true);
+       }
+       
+       Pause(true);
+       ZoomIn();
+       _currentScreen = GameScreen.screen2;      
+       _devicesDisplayer.UpdateScreen();
+
+    } else if (destination == GameScreen.screen3) {
+      if(_currentScreen == GameScreen.screen1) {
+         Debug.Log("1->3");
+         //1 -> 3
+         //remove everything
+         //add device inventory, parameters
+         //remove graphs
+         //move devices and potions?
+         SetScreen1(false);
+         SetScreen3(true);
+         
+       } else if(_currentScreen == GameScreen.screen2) {
+         Debug.Log("2->3");          
+         //3 -> 1
+         //remove everything
+         //add craft screen
+         SetScreen2(false);
+         SetScreen3(true);
+         
+       } 
+       Pause(true);
+       ZoomIn();         
+       _currentScreen = GameScreen.screen3;
+       _devicesDisplayer.UpdateScreen();
+
+    } else {
+      Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
+    }
+  }
+
+  public void SwitchScreen(GameScreen alternate1, GameScreen alternate2) {
+      Logger.Log ("GuiTransitioner::SwitchScreen("+alternate1+","+alternate2+")");
+    if (_currentScreen == alternate1) {
+      GoToScreen(alternate2);
+    } else if (_currentScreen == alternate2) {
+      GoToScreen(alternate1);
+    } else {
+      Logger.Log ("GuiTransitioner::SwitchScreen("+alternate1+","+alternate2+"): error: unmanaged alternate", Logger.Level.WARN);
+    }
+  }
 	
 	// Update is called once per frame
 	void Update () {
@@ -78,89 +175,14 @@ public class GUITransitioner : MonoBehaviour {
         _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 		
 		if(_deltaTime > _timeDelta) {
-			if (Input.GetKey(KeyCode.Alpha1)) {//GOTO screen1
-				if(_currentScreen == GameScreen.screen2) {
-					Debug.Log("2->1");
-					//2 -> 1
-					//set zoom1
-					//remove inventory device, deviceID
-					//add graphs
-					//move devices and potions?
-					
-				} else if(_currentScreen == GameScreen.screen3) {
-					Debug.Log("3->1");					
-					//3 -> 1
-					//set zoom1
-					//remove craft screen
-					//add graphs
-					//add potions
-					//add devices
-					//add life/energy
-					//add medium info
-					SetScreen3(false);
-					SetScreen1(true);
-				}
-				Pause(false);
-				ZoomOut();
-				_currentScreen = GameScreen.screen1;
-				_devicesDisplayer.UpdateScreen();
-				
-			} else if (Input.GetKey(KeyCode.Alpha2)) {//GOTO screen2
-				if(_currentScreen == GameScreen.screen1) {
-					Debug.Log("1->2");
-					//1 -> 2
-					//set zoom2
-					//add inventory device, deviceID
-					//remove graphs
-					//move devices and potions?
-					
-				} else if(_currentScreen == GameScreen.screen3) {
-					Debug.Log("3->2");					
-					//3 -> 1
-					//set zoom2
-					//remove craft screen
-					//add inventory device, deviceID
-					//add potions
-					//add devices
-					//add life/energy
-					//add medium info
-					SetScreen3(false);
-					SetScreen2(true);
-				}
-				
-				Pause(true);
-				ZoomIn();
-				_currentScreen = GameScreen.screen2;			
-				_devicesDisplayer.UpdateScreen();
-				
-			} else if (Input.GetKey(KeyCode.Alpha3)) {//GOTO screen3
-				if(_currentScreen == GameScreen.screen1) {
-					Debug.Log("1->3");
-					//1 -> 3
-					//remove everything
-					//add device inventory, parameters
-					//remove graphs
-					//move devices and potions?
-					SetScreen1(false);
-					SetScreen3(true);
-					
-				} else if(_currentScreen == GameScreen.screen2) {
-					Debug.Log("2->3");					
-					//3 -> 1
-					//remove everything
-					//add craft screen
-					SetScreen2(false);
-					SetScreen3(true);
-					
-				}	
-				Pause(true);
-				ZoomIn();					
-				_currentScreen = GameScreen.screen3;
-				_devicesDisplayer.UpdateScreen();			
-				
+			if (Input.GetKey(KeyCode.Alpha1)) {
+        GoToScreen(GameScreen.screen1);
+			} else if (Input.GetKey(KeyCode.Alpha2)) {
+        GoToScreen(GameScreen.screen2);
+			} else if (Input.GetKey(KeyCode.Alpha3)) {
+        GoToScreen(GameScreen.screen3);
 			}
-			
-        	_timeAtLastFrame = _timeAtCurrentFrame;
+      _timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
 }
