@@ -5,9 +5,11 @@ using System.Collections.Generic;
 public class DisplayedBioBrick : DisplayedElement {
 
   //public static CraftZoneManager                    craftZoneManager;
-  public static string                              prefabURI             = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
-  public static UnityEngine.Object                  prefab                = null;
-  public static string                              assemblyZonePanelName = "AssemblyZonePanel";
+  public static string                              prefabURI               = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
+  public static UnityEngine.Object                  prefab                  = null;
+  public static string                              assemblyZonePanelName   = "AssemblyZonePanel";
+  public static LastHoveredInfoManager              lastHoveredInfoManager  = null;
+
   public static Dictionary<BioBrick.Type, string>   spriteNamesDico = new Dictionary<BioBrick.Type, string>() {
     {BioBrick.Type.GENE,        "gene"},
     {BioBrick.Type.PROMOTER,    "promoter"},
@@ -15,6 +17,8 @@ public class DisplayedBioBrick : DisplayedElement {
     {BioBrick.Type.TERMINATOR,  "terminator"},
     {BioBrick.Type.UNKNOWN,     "unknown"}
   };
+
+
 
   public UILabel                    _label;
   public BioBrick                   _biobrick;
@@ -31,6 +35,8 @@ public class DisplayedBioBrick : DisplayedElement {
 
     if(prefab == null) prefab = Resources.Load(prefabURI);
     Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
+
+    if(lastHoveredInfoManager==null) lastHoveredInfoManager = GameObject.Find("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
 
     Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
@@ -80,5 +86,12 @@ public class DisplayedBioBrick : DisplayedElement {
 
   protected override void OnPress(bool isPressed) {
     Logger.Log("DisplayedBioBrick::OnPress _id="+_id);
+  }
+
+  protected void OnHover(bool isOver) {
+    if (isOver) {
+      Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.DEBUG);
+      lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
+    }
   }
 }
