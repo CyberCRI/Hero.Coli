@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class DisplayedDevice : DisplayedElement {
-	
-	private static string               _activeSuffix = "Active";
 
-	public bool                         _isActive;
 	public Device                       _device;
 	public DevicesDisplayer             _devicesDisplayer;
   public DevicesDisplayer.DeviceType  _deviceType;
@@ -28,6 +25,8 @@ public abstract class DisplayedDevice : DisplayedElement {
       prefab = Resources.Load("GUI/screen1/Devices/EquipedDeviceButtonPrefab");
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
       prefab = Resources.Load("GUI/screen1/Devices/InventoriedDeviceButtonPrefab");
+    } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
+      prefab = Resources.Load("GUI/screen3/Devices/ListedDeviceButtonPrefab");
     } else {
       Debug.Log("DisplayedDevice::Create : unmanaged device type "+deviceType);
       return null;
@@ -64,31 +63,9 @@ public abstract class DisplayedDevice : DisplayedElement {
     Debug.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device);
     displayedDeviceScript._devicesDisplayer = devicesDisplayer;
     displayedDeviceScript._deviceType = deviceType;
-    displayedDeviceScript.setActive();
     Debug.Log("DisplayedDevice::Initialize ends");
 
   }
-	
-	public void setActivity(bool activity) {
-		_isActive = activity;
-		if(activity) {
-			setActive();
-		} else {
-			setInactive();
-		}
-	}
-	
-	public void setActive() {
-		Debug.Log("setActive");
-		_isActive = true;
-		setSprite(_currentSpriteName + _activeSuffix);		
-	}
-	
-	public void setInactive() {
-		Debug.Log("setInactive");
-		_isActive = false;
-		setSprite(_currentSpriteName);
-	}
 	
 	// Use this for initialization
 	void Start () {

@@ -41,11 +41,13 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	public enum DeviceType {
 		Equiped,
-		Inventoried
+		Inventoried,
+    Listed
 	}
 	
 	private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
 	private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
+  private List<ListedDevice> _listedInventoriedDevices = new List<ListedDevice>();
 	
 	private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
