@@ -30,17 +30,23 @@ public class Inventory : DeviceContainer
   }
 
   public Inventory() {
-  	//by default: contains a test device
-    _devices = new List<Device>();
-    Device device = getTestDevice();
-    Debug.Log("Inventory: constructing, calling UpdateData(List("+device.ToString()+"), List(), List())");
-  	UpdateData(new List<Device>() { device }, new List<Device>(), new List<Device>());
+    Logger.Log("Inventory() done", Logger.Level.TRACE);
   }
 
   public override void addDevice(Device device) {
+    Logger.Log("Inventory::addDevice("+device+"), count before="+_devices.Count);
     Device copy = Device.buildDevice(device);
+    string displayerString = _displayer!=null?"name="+_displayer.name:"null";
+    Logger.Log("Inventory::addDevice("+device+")"
+      +", copy="+copy
+      +", count before="+_devices.Count
+      +", _devices="+_devices
+      +", _displayer="+displayerString
+      );
     _devices.Add(copy);
+    Logger.Log("Inventory::addDevice _devices.Add(copy); done");
     _displayer.addInventoriedDevice(copy);
+    Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count);
   }
 
   public AddingFailure askAddDevice(Device device) {
@@ -65,5 +71,17 @@ public class Inventory : DeviceContainer
   public override void editDevice(Device device) {
     //TODO
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
+  }
+
+  // Use this for initialization
+  void Start () {
+    Logger.Log("Inventory::Start()...", Logger.Level.TRACE);
+    base.Start();
+   //by default: contains a test device
+    _devices = new List<Device>();
+    Device device = getTestDevice();
+    Logger.Log("Inventory: constructing, calling UpdateData(List("+device.ToString()+"), List(), List())");
+    UpdateData(new List<Device>() { device }, new List<Device>(), new List<Device>());
+    Logger.Log("Inventory::Start()...done", Logger.Level.TRACE);
   }
 }

@@ -13,10 +13,10 @@ public class Logger : MonoBehaviour {
     WARN,
     ERROR
   }
-  private static Level _level = Level.DEBUG;
+  private static Level _level = Level.ALL;
 
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(level >= _level) Debug.Log(debugMsg);
+    if(level >= _level) Debug.Log(level.ToString()+" "+ DateTime.Now.ToString("hh:mm:ss") +" "+debugMsg);
   }
 
   public static string ToString<T>(ICollection<T> objects, string separator = defaultSeparator) {

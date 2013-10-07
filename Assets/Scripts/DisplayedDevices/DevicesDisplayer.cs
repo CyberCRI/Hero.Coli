@@ -50,18 +50,26 @@ public class DevicesDisplayer : MonoBehaviour {
   private List<ListedDevice> _listedInventoriedDevices = new List<ListedDevice>();
 	
 	private float _timeAtLastFrame = 0f;
-    private float _timeAtCurrentFrame = 0f;
-    private float _deltaTime = 0f;	
+  private float _timeAtCurrentFrame = 0f;
+  private float _deltaTime = 0f;
 	private float _deltaTimeThreshold = 0.5f;
 	
-	//TODO use real device width
-	static private float _height = 54.0f;
-	public UIPanel equipPanel;
-	public GameObject equipment;
-	public GameObject inventory;
+	//TODO use game object texture dimensions
+  static private float _equipedHeight = 54.0f;
+  static private float _inventoriedWidth = 54.0f;
+  static private float _inventoriedHeight = 54.0f;
+  static private float _listedInventoriedHeight = 20.0f;
+
+	//public GameObject equipment;
+	//public GameObject inventory;
+  //public GameObject listed;
+
+  public UIPanel equipPanel;
 	public UIPanel inventoryPanel;
-	public GameObject equipedDevice;	
-	public GameObject inventoryDevice;
+
+	public GameObject equipedDevice;
+  public GameObject inventoryDevice;
+  public GameObject listedInventoryDevice;
 
   public Equipment _equipment;
   public Inventory _inventory;
@@ -91,7 +99,7 @@ public class DevicesDisplayer : MonoBehaviour {
    */
 
 	public void addInventoriedDevice(Device device) {
-		Debug.Log("addInventoriedDevice("+device+")");
+		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+")");
 		bool alreadyInventoried = (!_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode())); 
 		if(alreadyInventoried) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
@@ -107,8 +115,13 @@ public class DevicesDisplayer : MonoBehaviour {
           DevicesDisplayer.DeviceType.Inventoried
         );
 			_inventoriedDevices.Add(newDevice);
+
+      // TODO ADD TO LISTED DEVICES
+      ListedDevice newListedDevice = null;
+      _listedInventoriedDevices.Add(newListedDevice);
+      //rgzergzerhzeht
 		} else {
-			Debug.Log("addDevice failed: alreadyInventoried="+alreadyInventoried);
+			Debug.Log("DevicesDisplayer::addDevice failed: alreadyInventoried="+alreadyInventoried);
 		}
 	}
 	
@@ -161,19 +174,25 @@ public class DevicesDisplayer : MonoBehaviour {
 			inventoryPanel.gameObject.SetActive(true);
 		}
 	}
-	
-	public Vector3 getNewPosition(DeviceType deviceType, int index = -1) {
-		Vector3 res;
-		int idx = index;
-		if(deviceType == DeviceType.Equiped) {
-			if(idx == -1) idx = _equipedDevices.Count;
-			res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_height, -0.1f);
-		} else {
-			if(idx == -1) idx = _inventoriedDevices.Count;
-			res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_height, -(idx/3)*_height, -0.1f);
-		}		
-		return res;
-	}
+ 
+  public Vector3 getNewPosition(DeviceType deviceType, int index = -1) {
+    Vector3 res;
+    int idx = index;
+    if(deviceType == DeviceType.Equiped) {
+      if(idx == -1) idx = _equipedDevices.Count;
+      res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
+    } else if(deviceType == DeviceType.Inventoried) {
+      if(idx == -1) idx = _inventoriedDevices.Count;
+      res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_inventoriedWidth, -(idx/3)*_inventoriedHeight, -0.1f);
+    } else if(deviceType == DeviceType.Inventoried) {
+      if(idx == -1) idx = _listedInventoriedDevices.Count;
+      res = listedInventoryDevice.transform.localPosition + new Vector3(0.0f, -idx*_listedInventoriedHeight, -0.1f);
+    } else {
+      Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
+      res = new Vector3();
+    }
+    return res;
+ }
 
 
 
