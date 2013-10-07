@@ -10,18 +10,18 @@ class ListedDevice : DisplayedDevice {
 
   protected override void OnPress(bool isPressed) {
     //TODO load clicked device into top craft screen
-    Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.DEBUG);
+    Debug.Log("ListedDevice::OnPress("+isPressed+")");
     setPressed(isPressed);
   }
 
   protected void OnHover(bool isHovered) {
-    Logger.Log("ListedDevice::OnHover("+isHovered+")", Logger.Level.DEBUG);
+    Logger.Log("ListedDevice::OnHover("+isHovered+")", Logger.Level.TRACE);
     setHovered(isHovered);
   }
 
 
   private void setHovered(bool isHovered) {
-    Logger.Log("ListedDevice::setHovered("+isHovered+")", Logger.Level.DEBUG);
+    Logger.Log("ListedDevice::setHovered("+isHovered+")", Logger.Level.TRACE);
     if(isHovered) {
       setSprite(_currentSpriteName + _hoveredSuffix);
     } else {
@@ -31,7 +31,7 @@ class ListedDevice : DisplayedDevice {
 
 
   private void setPressed(bool isPressed) {
-    Logger.Log("ListedDevice::setPressed("+isPressed+")", Logger.Level.DEBUG);
+    Debug.Log("ListedDevice::setPressed("+isPressed+")");
     if(isPressed) {
       setSprite(_currentSpriteName + _pressedSuffix);
     } else {
