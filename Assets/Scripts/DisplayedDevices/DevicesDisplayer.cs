@@ -66,6 +66,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
   public UIPanel equipPanel;
 	public UIPanel inventoryPanel;
+  public UIPanel listedInventoryPanel;
 
 	public GameObject equipedDevice;
   public GameObject inventoryDevice;
@@ -100,8 +101,8 @@ public class DevicesDisplayer : MonoBehaviour {
 
 	public void addInventoriedDevice(Device device) {
 		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+")");
-		bool alreadyInventoried = (!_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode())); 
-		if(alreadyInventoried) { 
+		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
+		if(!alreadyInventoried) {
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
 			UnityEngine.Transform parent = inventoryPanel.transform;
 			
@@ -117,11 +118,24 @@ public class DevicesDisplayer : MonoBehaviour {
 			_inventoriedDevices.Add(newDevice);
 
       // TODO ADD TO LISTED DEVICES
-      ListedDevice newListedDevice = null;
+      Debug.Log("DevicesDisplayer::addInventoriedDevice: adding listed device");
+      localPosition = getNewPosition(DeviceType.Listed);
+      Debug.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition);
+      parent = listedInventoryPanel.transform;
+      Debug.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent);
+      ListedDevice newListedDevice =
+        (ListedDevice)DisplayedDevice.Create(
+          parent
+          , localPosition
+          , getSpriteName(device.getName())
+          , device
+          , this
+          , DevicesDisplayer.DeviceType.Listed
+        );
+      Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice);
       _listedInventoriedDevices.Add(newListedDevice);
-      //rgzergzerhzeht
 		} else {
-			Debug.Log("DevicesDisplayer::addDevice failed: alreadyInventoried="+alreadyInventoried);
+			Debug.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried);
 		}
 	}
 	
@@ -168,10 +182,15 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	public void UpdateScreen(){
 		Debug.Log("UpdateScreen " + transitioner._currentScreen);
-		if(IsScreen(1) || IsScreen(3)){
+		if(IsScreen(1)) {
 			inventoryPanel.gameObject.SetActive(false);
-		} else {
-			inventoryPanel.gameObject.SetActive(true);
+      listedInventoryPanel.gameObject.SetActive(false);
+		} else if(IsScreen(2)) {
+     inventoryPanel.gameObject.SetActive(true);
+      listedInventoryPanel.gameObject.SetActive(false);
+    } else {
+			inventoryPanel.gameObject.SetActive(false);
+      listedInventoryPanel.gameObject.SetActive(true);
 		}
 	}
  
@@ -184,9 +203,14 @@ public class DevicesDisplayer : MonoBehaviour {
     } else if(deviceType == DeviceType.Inventoried) {
       if(idx == -1) idx = _inventoriedDevices.Count;
       res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_inventoriedWidth, -(idx/3)*_inventoriedHeight, -0.1f);
-    } else if(deviceType == DeviceType.Inventoried) {
+    } else if(deviceType == DeviceType.Listed) {
       if(idx == -1) idx = _listedInventoriedDevices.Count;
       res = listedInventoryDevice.transform.localPosition + new Vector3(0.0f, -idx*_listedInventoriedHeight, -0.1f);
+      Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
+        +", idx="+idx
+        +", localPosition="+listedInventoryDevice.transform.localPosition
+        +", res="+res
+        );
     } else {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
       res = new Vector3();
