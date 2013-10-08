@@ -47,7 +47,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
 	private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
-  private List<ListedDevice> _listedInventoriedDevices = new List<ListedDevice>();
+  private List<DisplayedDevice> _listedInventoriedDevices = new List<DisplayedDevice>();
 	
 	private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
@@ -100,13 +100,13 @@ public class DevicesDisplayer : MonoBehaviour {
    */
 
 	public void addInventoriedDevice(Device device) {
-		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+")");
+		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+") starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
 		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
 		if(!alreadyInventoried) {
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
 			UnityEngine.Transform parent = inventoryPanel.transform;
 			
-			DisplayedDevice newDevice = 
+			DisplayedDevice newDevice =
 				InventoriedDisplayedDevice.Create(
           parent,
           localPosition,
@@ -123,11 +123,11 @@ public class DevicesDisplayer : MonoBehaviour {
       Debug.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition);
       parent = listedInventoryPanel.transform;
       Debug.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent);
-      ListedDevice newListedDevice =
-        (ListedDevice)DisplayedDevice.Create(
+      DisplayedDevice newListedDevice =
+        ListedDevice.Create(
           parent
           , localPosition
-          , getSpriteName(device.getName())
+          , "bullet"//, getSpriteName(device.getName())
           , device
           , this
           , DevicesDisplayer.DeviceType.Listed
@@ -137,6 +137,7 @@ public class DevicesDisplayer : MonoBehaviour {
 		} else {
 			Debug.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried);
 		}
+    Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+") end with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
 	}
 	
 	public void addEquipedDevice(Device device) {

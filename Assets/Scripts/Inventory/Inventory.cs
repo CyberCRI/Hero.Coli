@@ -74,7 +74,7 @@ public class Inventory : DeviceContainer
   }
 
   // Use this for initialization
-  void Start () {
+  new void Start () {
     Logger.Log("Inventory::Start()...", Logger.Level.TRACE);
     base.Start();
    //by default: contains a test device

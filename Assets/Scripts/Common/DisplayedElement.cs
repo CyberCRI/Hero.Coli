@@ -38,7 +38,7 @@ public abstract class DisplayedElement : MonoBehaviour {
     newElement.transform.parent = parentTransform;
     newElement.transform.localPosition = localPosition;
     newElement.transform.localScale = new Vector3(1f, 1f, 0);
-
+    Debug.Log("DisplayedElement::Create GetComponent<DisplayedElement>()");
     DisplayedElement script = newElement.GetComponent<DisplayedElement>();
     script._id = ++_idCounter;
     Debug.Log("DisplayedElement::Create script._id = "+script._id);
