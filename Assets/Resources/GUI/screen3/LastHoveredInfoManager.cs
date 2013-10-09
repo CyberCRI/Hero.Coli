@@ -8,6 +8,7 @@ public class LastHoveredInfoManager : MonoBehaviour {
 
   public UILabel                  _nameLabel;
   public UILabel                  _lengthLabel;
+  //TODO refactor with FinalizationInfoPanelManager
   private string                  _lengthPrefix = "Length: ";
   private string                  _lengthPostfix = " bp";
 

@@ -49,18 +49,26 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count);
   }
 
-  public AddingFailure askAddDevice(Device device) {
+  public AddingFailure canAddDevice(Device device) {
     if (_devices.Exists(d => d.getName() == device.getName())) {
-      Logger.Log("Inventory::askAddDevice: AddingFailure.SAME_NAME");
+      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_NAME",Logger.Level.INFO);
       return AddingFailure.SAME_NAME;
     } else if (_devices.Exists(d => d.hasSameBricks(device))) {
-      Logger.Log("Inventory::askAddDevice: AddingFailure.SAME_BRICKS");
+      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_BRICKS",Logger.Level.INFO);
       return AddingFailure.SAME_BRICKS;
     } else {
-      Logger.Log("Inventory::askAddDevice: AddingFailure.NONE");
-      addDevice(device);
+      Logger.Log("Inventory::canAddDevice: AddingFailure.NONE",Logger.Level.INFO);
       return AddingFailure.NONE;
     }
+  }
+
+  public AddingFailure askAddDevice(Device device) {
+    AddingFailure failure = canAddDevice(device);
+    if(failure == AddingFailure.NONE){
+      Logger.Log("Inventory::askAddDevice: AddingFailure.NONE, added device",Logger.Level.INFO);
+      addDevice(device);
+    }
+    return failure;
   }
 
   public override void removeDevice(Device device) {

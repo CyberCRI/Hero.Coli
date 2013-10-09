@@ -29,7 +29,7 @@ public class CraftFinalizer : MonoBehaviour {
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
     //TODO names for crafted elements???
-    LinkedList<DisplayedBioBrick> dBricks = _craftZoneManager.getCurrentBioBricks();
+    LinkedList<DisplayedBioBrick> dBricks = _craftZoneManager.getCurrentDisplayedBricks();
     LinkedList<BioBrick> bricks = new LinkedList<BioBrick>();
     foreach (DisplayedBioBrick dBrick in dBricks) {
       bricks.AddLast(dBrick._biobrick);

@@ -13,7 +13,7 @@ public class Logger : MonoBehaviour {
     WARN,
     ERROR
   }
-  private static Level _level = Level.ALL;
+  private static Level _level = Level.WARN;
 
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
     if(level >= _level) Debug.Log(level.ToString()+" "+ DateTime.Now.ToString("hh:mm:ss") +" "+debugMsg);

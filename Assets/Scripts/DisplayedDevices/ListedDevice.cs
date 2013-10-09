@@ -15,7 +15,7 @@ class ListedDevice : DisplayedDevice {
     Debug.Log("ListedDevice::OnPress("+isPressed+")");
     setPressed(isPressed);
     //ask craft zone to display biobricks associated to this device
-    craftZoneManager.displayDevice(_device);
+    craftZoneManager.setDevice(_device);
   }
 
   protected void OnHover(bool isHovered) {
