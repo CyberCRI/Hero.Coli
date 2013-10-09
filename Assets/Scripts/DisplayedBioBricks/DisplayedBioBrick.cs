@@ -31,7 +31,8 @@ public class DisplayedBioBrick : DisplayedElement {
    ,Object externalPrefab = null
    )
  {
-    string nullSpriteName = (spriteName!=null)?"":"(null)";
+    string usedSpriteName = ((spriteName!=null)&&(spriteName!=""))?spriteName:getSpriteName(biobrick);
+    string nullSpriteName = ((spriteName!=null)&&(spriteName!=""))?"":"(null)=>"+usedSpriteName;
 
     if(prefab == null) prefab = Resources.Load(prefabURI);
     Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
@@ -47,7 +48,7 @@ public class DisplayedBioBrick : DisplayedElement {
     DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
       parentTransform
       ,localPosition
-      ,spriteName
+      ,usedSpriteName
       ,prefabToUse
       );
 
@@ -76,7 +77,7 @@ public class DisplayedBioBrick : DisplayedElement {
   
   }
 
-  public static string getSpriteName<T>(T brick) where T:BioBrick {
+  public static string getSpriteName(BioBrick brick) {
     return spriteNamesDico[brick.getType()];
   }
  

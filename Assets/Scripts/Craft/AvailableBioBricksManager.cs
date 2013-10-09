@@ -75,7 +75,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
     Transform parentTransformParam = transform;
     Vector3 localPositionParam = getNewPosition(index);
-    string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName<T>(brick);
+    string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
     T biobrickParam = brick;
 
     Logger.Log("AvailableBioBricksManager::getDisplayableAvailableBioBrick(brick="+brick+", index="+index+"),"

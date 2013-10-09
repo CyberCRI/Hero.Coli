@@ -14,7 +14,7 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour {
 
-  private LinkedList<DisplayedBioBrick> _currentCraftBricks;
+  private LinkedList<DisplayedBioBrick> _currentCraftBricks = new LinkedList<DisplayedBioBrick>();
   public GameObject displayedBioBrick;
   public LastHoveredInfoManager lastHoveredInfoManager;
 
@@ -32,8 +32,7 @@ public class CraftZoneManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-    Logger.Log("CraftZoneManager::Start starting...");
+    Logger.Log("CraftZoneManager::Start starting...", Logger.Level.TRACE);
     //promoter
     float beta = 10.0f;
     string formula = "![0.8,2]LacI";
@@ -45,27 +44,45 @@ public class CraftZoneManager : MonoBehaviour {
     float terminatorFactor = 1.0f;
 
     string notNullName = "craftTest";
-    BioBrick[] bioBrickArray = {
-      new PromoterBrick(notNullName+"_promoter", beta, formula),
-      new RBSBrick(notNullName+"_rbs", rbsFactor),
-      new GeneBrick(notNullName+"_gene", proteinName),
-      new TerminatorBrick(notNullName+"_terminator", terminatorFactor)
-    };
+    LinkedList<BioBrick> bioBrickList = new LinkedList<BioBrick>();
+    bioBrickList.AddLast(new PromoterBrick(notNullName+"_promoter", beta, formula));
+    bioBrickList.AddLast(new RBSBrick(notNullName+"_rbs", rbsFactor));
+    bioBrickList.AddLast(new GeneBrick(notNullName+"_gene", proteinName));
+    bioBrickList.AddLast(new TerminatorBrick(notNullName+"_terminator", terminatorFactor));
+    displayBioBricks(bioBrickList);
 
-    DisplayedBioBrick[] dBioBrickArray = {
-      DisplayedBioBrick.Create(transform, getNewPosition(0), "promoter", bioBrickArray[0])
-      ,DisplayedBioBrick.Create(transform, getNewPosition(1), "RBS", bioBrickArray[1])
-      ,DisplayedBioBrick.Create(transform, getNewPosition(2), "gene", bioBrickArray[2])
-      ,DisplayedBioBrick.Create(transform, getNewPosition(3), "terminator", bioBrickArray[3])
-    };
+    Logger.Log("CraftZoneManager::Start ...ending!", Logger.Level.TRACE);
+	}
 
-    _currentCraftBricks = new LinkedList<DisplayedBioBrick>( dBioBrickArray );
+  public void displayBioBricks(LinkedList<BioBrick> bricks) {
+    Debug.Log("CraftZoneManager::displayBioBricks("+Logger.ToString<BioBrick>(bricks)+")");
+    //remove all previous biobricks
+    foreach (DisplayedBioBrick brick in _currentCraftBricks) {
+      Destroy(brick.gameObject);
+    }
+    _currentCraftBricks.Clear();
+
+    //add new biobricks
+    LinkedList<BioBrick>.Enumerator enumerator = bricks.GetEnumerator();
+    enumerator.MoveNext();
+    int index = 0;
+    foreach (BioBrick brick in bricks) {
+      Debug.Log("CraftZoneManager::displayBioBricks brick="+brick);
+      _currentCraftBricks.AddLast(DisplayedBioBrick.Create(transform, getNewPosition(index), null, brick));
+      index++;
+    }
 
     //to initialize the "last hovered biobrick" info window
-    lastHoveredInfoManager.setHoveredBioBrick(dBioBrickArray[0]._biobrick);
+    lastHoveredInfoManager.setHoveredBioBrick(bricks.First.Value);
+  }
 
-    Logger.Log("CraftZoneManager::Start ...ending!");
-	}
+  public void displayDevice(Device device) {
+    Debug.Log("CraftZoneManager::displayDevice("+device+")");
+    LinkedList<ExpressionModule> modules = device.getExpressionModules();
+    ExpressionModule firstModule = modules.First.Value;
+    LinkedList<BioBrick> bricks = firstModule.getBioBricks();
+    displayBioBricks(bricks);
+  }
 
   private DisplayedBioBrick findFirstBioBrick(BioBrick.Type type) {
     foreach(DisplayedBioBrick brick in _currentCraftBricks) {
@@ -76,7 +93,6 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public void replaceWithBrick(DisplayedBioBrick dBioBrick) {
-
     DisplayedBioBrick toReplace = findFirstBioBrick(dBioBrick._biobrick.getType());
     LinkedListNode<DisplayedBioBrick> toReplaceNode = _currentCraftBricks.Find(toReplace);
 

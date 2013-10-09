@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 class ListedDevice : DisplayedDevice {
+  private static string craftZoneManagerObjectName = "AssemblyZonePanel";
+  private static CraftZoneManager craftZoneManager;
 
   private static string _hoveredSuffix = "Hovered";
   private static string _pressedSuffix = "Pressed";
@@ -12,6 +14,8 @@ class ListedDevice : DisplayedDevice {
     //TODO load clicked device into top craft screen
     Debug.Log("ListedDevice::OnPress("+isPressed+")");
     setPressed(isPressed);
+    //ask craft zone to display biobricks associated to this device
+    craftZoneManager.displayDevice(_device);
   }
 
   protected void OnHover(bool isHovered) {
@@ -38,5 +42,10 @@ class ListedDevice : DisplayedDevice {
       //managed by hover
       //setSprite(_currentSpriteName);
     }
+  }
+
+  // Use this for initialization
+  void Start () {
+    craftZoneManager = (CraftZoneManager)GameObject.Find(craftZoneManagerObjectName).GetComponent<CraftZoneManager>();
   }
 }

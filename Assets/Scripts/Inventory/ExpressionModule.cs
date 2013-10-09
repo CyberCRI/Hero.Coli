@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ExpressionModule
 {
   private string                _name;
-  private LinkedList<BioBrick>        _bioBricks;
+  private LinkedList<BioBrick>  _bioBricks;
 
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }

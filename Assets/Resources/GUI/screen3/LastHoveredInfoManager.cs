@@ -15,7 +15,7 @@ public class LastHoveredInfoManager : MonoBehaviour {
     Logger.Log("LastHoveredInfoManager::setHoveredBioBrick("+bioBrick+")", Logger.Level.TRACE);
     _nameLabel.text = bioBrick.getName();
     _lengthLabel.text = _lengthPrefix+bioBrick.getSize()+_lengthPostfix;
-    _sprite.spriteName = DisplayedBioBrick.getSpriteName<T>(bioBrick);
+    _sprite.spriteName = DisplayedBioBrick.getSpriteName(bioBrick);
   }
 
 	// Use this for initialization
