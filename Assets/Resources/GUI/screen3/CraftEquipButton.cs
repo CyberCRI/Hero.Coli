@@ -16,8 +16,8 @@ public class CraftEquipButton : MonoBehaviour {
  }
 
   private void OnPress(bool isPressed) {
-    Logger.Log("CraftEquipButton::OnPress("+isPressed+")");
     if(isPressed) {
+      Logger.Log("CraftEquipButton::OnPress()", Logger.Level.INFO);
       transitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
     }
   }

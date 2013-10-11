@@ -15,6 +15,9 @@ public class AvailableTerminatorsButton : MonoBehaviour {
 	}
 
   void OnPress(bool isPressed) {
-    if(isPressed) _availableBioBricksManager.displayTerminators();
+    if(isPressed) {
+      Logger.Log("AvailableTerminatorsButton::OnPress()", Logger.Level.INFO);
+      _availableBioBricksManager.displayTerminators();
+    }
   }
 }

@@ -16,8 +16,8 @@ public class WorldEquipButton : MonoBehaviour {
 	}
 
   private void OnPress(bool isPressed) {
-    Logger.Log("WorldEquipButton::OnPress("+isPressed+")");
     if(isPressed) {
+      Logger.Log("WorldEquipButton::OnPress()", Logger.Level.INFO);
       transitioner.SwitchScreen(GUITransitioner.GameScreen.screen1, GUITransitioner.GameScreen.screen2);
     }
   }

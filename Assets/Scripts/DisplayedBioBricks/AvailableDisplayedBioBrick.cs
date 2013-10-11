@@ -43,7 +43,9 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   }
 
   protected override void OnPress(bool isPressed) {
-    Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
-    craftZoneManager.replaceWithBioBrick(_biobrick);
+    if(isPressed) {
+      Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
+      craftZoneManager.replaceWithBioBrick(_biobrick);
+    }
   }
 }

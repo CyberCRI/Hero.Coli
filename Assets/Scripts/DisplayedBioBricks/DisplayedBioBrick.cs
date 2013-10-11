@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class DisplayedBioBrick : DisplayedElement {
 
-  //public static CraftZoneManager                    craftZoneManager;
   public static string                              prefabURI               = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
   public static UnityEngine.Object                  prefab                  = null;
   public static string                              assemblyZonePanelName   = "AssemblyZonePanel";
@@ -67,15 +66,6 @@ public class DisplayedBioBrick : DisplayedElement {
       biobrickScript._label.text = biobrick.getName();
       Logger.Log("DisplayedBioBrick::Initialize ends", Logger.Level.TRACE);
   }
- 
-  // Use this for initialization
-  void Start () {
-  }
- 
-  // Update is called once per frame
-  void Update () {
-  
-  }
 
   public static string getSpriteName(BioBrick brick) {
     return spriteNamesDico[brick.getType()];
@@ -86,7 +76,7 @@ public class DisplayedBioBrick : DisplayedElement {
   }
 
   protected override void OnPress(bool isPressed) {
-    Logger.Log("DisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
+    Logger.Log("DisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
   }
 
   protected void OnHover(bool isOver) {

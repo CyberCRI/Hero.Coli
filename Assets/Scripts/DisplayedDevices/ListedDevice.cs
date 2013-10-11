@@ -42,10 +42,12 @@ class ListedDevice : DisplayedDevice {
 
   protected override void OnPress(bool isPressed) {
     //TODO load clicked device into top craft screen
-    Debug.Log("ListedDevice::OnPress("+isPressed+")");
+    Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.INFO);
     setPressed(isPressed);
-    //ask craft zone to display biobricks associated to this device
-    craftZoneManager.setDevice(_device);
+    if(isPressed) {
+      //ask craft zone to display biobricks associated to this device
+      craftZoneManager.setDevice(_device);
+    }
   }
 
   protected void OnHover(bool isHovered) {

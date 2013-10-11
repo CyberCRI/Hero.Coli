@@ -15,6 +15,9 @@ public class AvailableGenesButton : MonoBehaviour {
 	}
 
   void OnPress(bool isPressed) {
-    if(isPressed) _availableBioBricksManager.displayGenes();
+    if(isPressed) {
+      Logger.Log("AvailableGenesButton::OnPress()", Logger.Level.INFO);
+      _availableBioBricksManager.displayGenes();
+    }
   }
 }

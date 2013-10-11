@@ -26,7 +26,7 @@ public class Inventory : DeviceContainer
 
   private Device getTestDevice() {
   
-    string randomName = getAvailableDeviceName(); //DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];
+    string randomName = getAvailableDeviceName();
   	Device testDevice = Device.buildDevice(randomName, testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
   	
   	return testDevice;

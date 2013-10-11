@@ -11,7 +11,7 @@ class EquipedDisplayedDevice : DisplayedDevice {
 
 	protected override void OnPress(bool isPressed) {
 		if(isPressed) {
-			Debug.Log("EquipedDisplayedDevice on press() "+getDebugInfos());
+			Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
 			if (_devicesDisplayer.IsEquipScreen()) {
 				_devicesDisplayer.askRemoveEquipedDevice(_device);
 			}

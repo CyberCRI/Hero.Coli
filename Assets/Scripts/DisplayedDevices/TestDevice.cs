@@ -4,16 +4,6 @@ using System.Collections;
 public class TestDevice : MonoBehaviour {
 	
 	public int _deviceID;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	void OnPress() {
 		Debug.Log("on press "+_deviceID);

@@ -15,6 +15,9 @@ public class AvailableRBSButton : MonoBehaviour {
 	}
 
   void OnPress(bool isPressed) {
-    if(isPressed) _availableBioBricksManager.displayRBS();
+    if(isPressed) {
+      Logger.Log("AvailableRBSButton::OnPress()", Logger.Level.INFO);
+      _availableBioBricksManager.displayRBS();
+    }
   }
 }

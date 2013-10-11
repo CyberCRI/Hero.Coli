@@ -5,8 +5,10 @@ public class CraftFinalizationButton : MonoBehaviour {
   public CraftFinalizer _craftFinalizer;
 
   void OnPress (bool isPressed) {
-    Debug.Log ("CraftFinalizationButton::OnPress("+isPressed+")");
-    if(isPressed) _craftFinalizer.finalizeCraft();
+    if(isPressed) {
+      Logger.Log("CraftFinalizationButton::OnPress()", Logger.Level.INFO);
+      _craftFinalizer.finalizeCraft();
+    }
   }
 
   public void SetActive(bool active) {
