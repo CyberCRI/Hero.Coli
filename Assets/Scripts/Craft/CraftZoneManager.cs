@@ -40,41 +40,6 @@ public class CraftZoneManager : MonoBehaviour {
       return displayedBioBrick.transform.localPosition + new Vector3(index*_width, 0.0f, -0.1f);
   }
 
-	// Use this for initialization
-	void Start () {
-    Logger.Log("CraftZoneManager::Start starting...", Logger.Level.TRACE);
-
-    /*
-    //promoter
-    float beta = 10.0f;
-    string formula = "![0.8,2]LacI";
-    //rbs
-    float rbsFactor = 1.0f;
-    //gene
-    string proteinName = DevicesDisplayer.getRandomProteinName();
-    //terminator
-    float terminatorFactor = 1.0f;
-
-    string notNullName = "craftTest";
-    LinkedList<BioBrick> bioBrickList = new LinkedList<BioBrick>();
-    PromoterBrick promoter = new PromoterBrick(notNullName+"_promoter", beta, formula);
-    bioBrickList.AddLast(promoter);
-
-    RBSBrick RBS = new RBSBrick(notNullName+"_rbs", rbsFactor);
-    bioBrickList.AddLast(RBS);
-
-    GeneBrick gene = new GeneBrick(notNullName+"_gene", proteinName);
-    bioBrickList.AddLast(gene);
-
-    TerminatorBrick terminator = new TerminatorBrick(notNullName+"_terminator", terminatorFactor);
-    bioBrickList.AddLast(terminator);
-
-    setBioBricks(bioBrickList);
-    */
-
-    Logger.Log("CraftZoneManager::Start ...ending!", Logger.Level.TRACE);
-	}
-
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +54,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   private void OnBioBricksChanged() {
+    Logger.Log("CraftZoneManager::OnBioBricksChanged()", Logger.Level.DEBUG);
     displayBioBricks();
 
     _currentDevice = getDeviceFromBricks(_currentBioBricks);
@@ -96,13 +62,13 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   private void displayBioBricks() {
-    Debug.Log("CraftZoneManager::displayBioBricks() with _currentBioBricks="+Logger.ToString<BioBrick>(_currentBioBricks));
+    Logger.Log("CraftZoneManager::displayBioBricks() with _currentBioBricks="+Logger.ToString<BioBrick>(_currentBioBricks), Logger.Level.TRACE);
     removePreviousDisplayedBricks();
 
     //add new biobricks
     int index = 0;
     foreach (BioBrick brick in _currentBioBricks) {
-      Debug.Log("CraftZoneManager::displayBioBricks brick="+brick);
+      Logger.Log("CraftZoneManager::displayBioBricks brick="+brick, Logger.Level.TRACE);
       _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(transform, getNewPosition(index), null, brick));
       index++;
     }
@@ -112,7 +78,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   private void removePreviousDisplayedBricks() {
-    Logger.Log("CraftZoneManager::removePreviousDisplayedBricks()", Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::removePreviousDisplayedBricks()", Logger.Level.TRACE);
     //remove all previous biobricks
     foreach (DisplayedBioBrick brick in _currentDisplayedBricks) {
       Destroy(brick.gameObject);
@@ -127,7 +93,7 @@ public class CraftZoneManager : MonoBehaviour {
     foreach(BioBrick brick in _currentBioBricks) {
       if(brick.getType() == type) return brick;
     }
-    Logger.Log("CraftZoneManager::findFirstBioBrick("+type+") failed with current bricks="+_currentBioBricks, Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::findFirstBioBrick("+type+") failed with current bricks="+_currentBioBricks, Logger.Level.TRACE);
     return null;
   }
 
@@ -146,14 +112,14 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   public void askSetDevice(Device device) {
-    Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.DEBUG);
     if(_currentDevice == null) {
       setDevice(device);
     }
   }
 
   public void setDevice(Device device) {
-    Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.INFO);
     _currentDevice = device;
     displayDevice();
 
@@ -163,7 +129,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   private void displayDevice() {
-    Debug.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")");
+    Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.TRACE);
     craftFinalizer.setDisplayedDevice(_currentDevice);
   }
 
@@ -171,12 +137,12 @@ public class CraftZoneManager : MonoBehaviour {
   // utilities
 
   private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
-    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.DEBUG);
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);
     Device device = Device.buildDevice(inventory.getAvailableDeviceName(), modules);
-    Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.WARN);
+    Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);
     return device;
   }
 

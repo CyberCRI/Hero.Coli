@@ -39,10 +39,11 @@ public class DisplayedBioBrick : DisplayedElement {
 
     if(lastHoveredInfoManager==null) lastHoveredInfoManager = GameObject.Find("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
 
-    Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+    Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
       + ", spriteName="+spriteName+nullSpriteName
       + ", biobrick="+biobrick
+      , Logger.Level.DEBUG
       );
 
     DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
@@ -61,11 +62,10 @@ public class DisplayedBioBrick : DisplayedElement {
     DisplayedBioBrick biobrickScript
     ,BioBrick biobrick
   ) {
-      Debug.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts");
+      Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
       biobrickScript._biobrick = biobrick;
-      Debug.Log("DisplayedBioBrick::Create biobrick "+biobrickScript._biobrick);
       biobrickScript._label.text = biobrick.getName();
-      Debug.Log("DisplayedBioBrick::Initialize ends");
+      Logger.Log("DisplayedBioBrick::Initialize ends", Logger.Level.TRACE);
   }
  
   // Use this for initialization
@@ -86,7 +86,7 @@ public class DisplayedBioBrick : DisplayedElement {
   }
 
   protected override void OnPress(bool isPressed) {
-    Logger.Log("DisplayedBioBrick::OnPress _id="+_id);
+    Logger.Log("DisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
   }
 
   protected void OnHover(bool isOver) {

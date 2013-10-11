@@ -20,10 +20,11 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       craftZoneManager = (CraftZoneManager)GameObject.Find("AssemblyZonePanel").GetComponent<CraftZoneManager>();
     }
 
-    Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+    Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
       + ", spriteName="+spriteName+nullSpriteName
       + ", biobrick="+biobrick
+      , Logger.Level.DEBUG
       );
 
     AvailableDisplayedBioBrick result = (AvailableDisplayedBioBrick)DisplayedBioBrick.Create(
@@ -42,7 +43,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   }
 
   protected override void OnPress(bool isPressed) {
-    Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id);
+    Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
     craftZoneManager.replaceWithBioBrick(_biobrick);
   }
 }

@@ -53,15 +53,15 @@ public class Inventory : DeviceContainer
   }
 
   public AddingFailure canAddDevice(Device device) {
-    Logger.Log("Inventory::canAddDevice("+device+")", Logger.Level.WARN);
+    Logger.Log("Inventory::canAddDevice("+device+")", Logger.Level.TRACE);
     if (_devices.Exists(d => d.getName() == device.getName())) {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_NAME",Logger.Level.INFO);
+      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_NAME",Logger.Level.TRACE);
       return AddingFailure.SAME_NAME;
     } else if (_devices.Exists(d => d.hasSameBricks(device))) {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_BRICKS",Logger.Level.INFO);
+      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_BRICKS",Logger.Level.TRACE);
       return AddingFailure.SAME_BRICKS;
     } else {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.NONE",Logger.Level.INFO);
+      Logger.Log("Inventory::canAddDevice: AddingFailure.NONE",Logger.Level.TRACE);
       return AddingFailure.NONE;
     }
   }
@@ -86,7 +86,7 @@ public class Inventory : DeviceContainer
   }
 
   public string getAvailableDeviceName() {
-    Logger.Log("Inventory::getAvailableDeviceName()", Logger.Level.WARN);
+    Logger.Log("Inventory::getAvailableDeviceName()", Logger.Level.TRACE);
     bool taken;
     string currentName;
     int number = _devices.Count;
@@ -99,7 +99,7 @@ public class Inventory : DeviceContainer
         return currentName;
       }
     } while (taken);
-    Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.WARN);
+    Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.TRACE);
     return currentName;
   }
 

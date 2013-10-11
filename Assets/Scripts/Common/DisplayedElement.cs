@@ -25,27 +25,28 @@ public abstract class DisplayedElement : MonoBehaviour {
   {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
 
-    Debug.Log("DisplayedElement::Create("
+    Logger.Log("DisplayedElement::Create("
     + "parentTransform="+parentTransform
     + ", localPosition="+localPosition
     + ", spriteName="+spriteName+nullSpriteName
     + ", prefab="+prefab
-      );
+    , Logger.Level.DEBUG
+    );
 
     GameObject newElement = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-    Debug.Log("DisplayedElement::Create instantiated");
+    Logger.Log("DisplayedElement::Create instantiated", Logger.Level.TRACE);
 
     newElement.transform.parent = parentTransform;
     newElement.transform.localPosition = localPosition;
     newElement.transform.localScale = new Vector3(1f, 1f, 0);
-    Debug.Log("DisplayedElement::Create GetComponent<DisplayedElement>()");
+    Logger.Log("DisplayedElement::Create GetComponent<DisplayedElement>()", Logger.Level.TRACE);
     DisplayedElement script = newElement.GetComponent<DisplayedElement>();
     script._id = ++_idCounter;
-    Debug.Log("DisplayedElement::Create script._id = "+script._id);
+    Logger.Log("DisplayedElement::Create script._id = "+script._id, Logger.Level.TRACE);
     script._currentSpriteName = spriteName;
     script.setSprite(script._currentSpriteName);
-    Debug.Log("DisplayedElement::Create script._currentSpriteName = "+script._currentSpriteName);
-    Debug.Log("DisplayedDevice::Create ends");
+    Logger.Log("DisplayedElement::Create script._currentSpriteName = "+script._currentSpriteName, Logger.Level.TRACE);
+    Logger.Log("DisplayedDevice::Create ends", Logger.Level.TRACE);
 
     return script;
  }

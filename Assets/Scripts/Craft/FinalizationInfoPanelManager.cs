@@ -24,20 +24,25 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
     , string infos = _defaultInfo
     , string name = _defaultName
     ){
-    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice("+device+") with _device="+_device, Logger.Level.WARN);
+    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice("+device+")"
+      +"with status="+status
+      +", infos="+infos
+      +", name="+name
+      +", _device="+_device
+      , Logger.Level.DEBUG
+      );
 
     _device = device;
     string displayedInfo = _device!=null?_lengthPrefix+_device.getSize().ToString()+_lengthPostfix:infos;
     finalizationInfoLabel.text = displayedInfo;
+    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationInfoLabel.text="+finalizationInfoLabel.text, Logger.Level.TRACE);
 
     string displayedName = _device!=null?_device.getName():name;
     finalizationNameLabel.text = displayedName;
+    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
 
     finalizationStatusLabel.text = status;
-  }
-
-  void Start() {
-    setDisplayedDevice(null, "status");
+    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
   }
 }
 

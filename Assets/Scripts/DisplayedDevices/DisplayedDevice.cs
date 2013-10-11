@@ -8,6 +8,10 @@ public abstract class DisplayedDevice : DisplayedElement {
 	public DevicesDisplayer             _devicesDisplayer;
   public DevicesDisplayer.DeviceType  _deviceType;
 
+  private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
+  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDeviceButtonPrefab";
+
 
 	public static DisplayedDevice Create(
 		Transform parentTransform
@@ -22,22 +26,24 @@ public abstract class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
-      prefab = Resources.Load("GUI/screen1/Devices/EquipedDeviceButtonPrefab");
+      prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
-      prefab = Resources.Load("GUI/screen1/Devices/InventoriedDeviceButtonPrefab");
+      prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
-      prefab = Resources.Load("GUI/screen3/Devices/ListedDeviceButtonPrefab");
+      prefab = Resources.Load(listedPrefabURI);
     } else {
-      Debug.Log("DisplayedDevice::Create : unmanaged device type "+deviceType);
+      Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);
       return null;
     }
 
-		Debug.Log("DisplayedDevice::Create(type="+deviceType
+		Logger.Log("DisplayedDevice::Create(type="+deviceType
 		+ ", parentTransform="+parentTransform
 		+ ", localPosition="+localPosition
 		+ ", device="+device
 		+ ", devicesDisplayer="+devicesDisplayer
-    + ", spriteName="+spriteName+nullSpriteName);
+    + ", spriteName="+spriteName+nullSpriteName
+    , Logger.Level.DEBUG
+    );
 
     DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
       parentTransform
@@ -58,23 +64,14 @@ public abstract class DisplayedDevice : DisplayedElement {
     , DevicesDisplayer.DeviceType deviceType
     ) {
 
-    Debug.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts");
+    Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.TRACE);
     displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
-    Debug.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device);
+    Logger.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device, Logger.Level.TRACE);
     displayedDeviceScript._devicesDisplayer = devicesDisplayer;
     displayedDeviceScript._deviceType = deviceType;
-    Debug.Log("DisplayedDevice::Initialize ends");
+    Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
 
   }
-	
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	protected string getDebugInfos() {
 		return "device id="+_id+", inner device="+_device+", device type="+_deviceType+", time="+Time.realtimeSinceStartup;

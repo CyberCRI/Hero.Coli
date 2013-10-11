@@ -8,8 +8,9 @@ class ListedDevice : DisplayedDevice {
 
   private static string _hoveredSuffix = "Hovered";
   private static string _pressedSuffix = "Pressed";
+  private static string _defaultSpriteName = "bullet";
 
-  protected new string _currentSpriteName = "bullet";
+  //protected new string _currentSpriteName = "bullet";
   public UILabel _nameLabel;
 
 
@@ -17,7 +18,6 @@ class ListedDevice : DisplayedDevice {
  public static ListedDevice Create(
    Transform parentTransform
    , Vector3 localPosition
-   , string spriteName
    , Device device
    , DevicesDisplayer devicesDisplayer
    )
@@ -25,7 +25,7 @@ class ListedDevice : DisplayedDevice {
     ListedDevice result = (ListedDevice)DisplayedDevice.Create(
           parentTransform
           , localPosition
-          , spriteName
+          , _defaultSpriteName
           , device
           , devicesDisplayer
           , DevicesDisplayer.DeviceType.Listed

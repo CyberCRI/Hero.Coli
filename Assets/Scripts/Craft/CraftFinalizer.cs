@@ -68,12 +68,12 @@ public class CraftFinalizer : MonoBehaviour {
   }
 
   public void setDisplayedDevice(Device device){
-    Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.WARN);
+    Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.DEBUG);
     finalizationInfoPanelManager.setDisplayedDevice(device, getDeviceStatus(device));
   }
 
   private string getDeviceStatus(Device device){
-    Logger.Log("CraftFinalizer::getDeviceStatus("+device+")", Logger.Level.WARN);
+    Logger.Log("CraftFinalizer::getDeviceStatus("+device+")", Logger.Level.TRACE);
     if(device!=null) {
       Inventory.AddingFailure failure = inventory.canAddDevice(device);
       return statusMessagesDictionary[failure];
@@ -84,16 +84,16 @@ public class CraftFinalizer : MonoBehaviour {
   }
 
   public void randomRename() {
-    Logger.Log("CraftFinalizer::randomRename", Logger.Level.WARN);
+    Logger.Log("CraftFinalizer::randomRename", Logger.Level.DEBUG);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     string newName = inventory.getAvailableDeviceName();
     Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
     if(newDevice != null){
-      Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")");
+      Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
       craftZoneManager.setDevice(newDevice);
     } else {
       Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
-        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
+        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.TRACE);
     }
   }
 }

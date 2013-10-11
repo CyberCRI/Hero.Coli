@@ -131,7 +131,6 @@ public class DevicesDisplayer : MonoBehaviour {
         ListedDevice.Create(
           parent
           , localPosition
-          , "bullet"//, getSpriteName(device.getName())
           , device
           , this
         );
@@ -139,7 +138,7 @@ public class DevicesDisplayer : MonoBehaviour {
       _listedInventoriedDevices.Add(newListedDevice);
 
       if(_listedInventoriedDevices.Count == 1) {
-        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.WARN);
+        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TRACE);
         craftZoneManager.askSetDevice(device);
       }
 		} else {
