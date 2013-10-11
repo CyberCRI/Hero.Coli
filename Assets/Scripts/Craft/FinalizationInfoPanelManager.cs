@@ -37,7 +37,7 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
   }
 
   void Start() {
-    setDisplayedDevice(null, "test");
+    setDisplayedDevice(null, "status");
   }
 }
 

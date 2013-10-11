@@ -5,7 +5,7 @@ public abstract class DeviceContainer : MonoBehaviour {
 
   public static string _displayerName = "DevicesDisplayersPanel";
 
-  protected List<Device> _devices;
+  protected List<Device> _devices = new List<Device>();
   protected DevicesDisplayer _displayer;
 	
   public void UpdateData(List<Device> added, List<Device> removed, List<Device> edited) {

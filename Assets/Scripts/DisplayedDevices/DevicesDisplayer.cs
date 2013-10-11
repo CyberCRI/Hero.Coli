@@ -38,7 +38,9 @@ public class DevicesDisplayer : MonoBehaviour {
     {devicesNames[3], spriteNames[3]},
 		{devicesNames[4], spriteNames[4]}
 	};
-	
+  private static string defaultSpriteName = spriteNames[4];
+
+
 	public enum DeviceType {
 		Equiped,
 		Inventoried,
@@ -76,6 +78,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public Inventory _inventory;
 	
 	public GUITransitioner transitioner;
+  public CraftZoneManager craftZoneManager;
 	
 	//FOR DEBUG
 	private string getRandomSprite() {
@@ -84,7 +87,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
 	public string getSpriteName(string deviceName) {
-		string fromDico = spriteNamesDictionary[deviceName];
+		string fromDico = spriteNamesDictionary.ContainsKey(deviceName)?spriteNamesDictionary[deviceName]:defaultSpriteName;
 		string res = (fromDico!=null)?fromDico:getRandomSprite();
 		Debug.Log("getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")");
 		return res;
@@ -103,6 +106,7 @@ public class DevicesDisplayer : MonoBehaviour {
 		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+") starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
 		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
 		if(!alreadyInventoried) {
+      // ADD TO EQUIPABLE DEVICES
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
 			UnityEngine.Transform parent = inventoryPanel.transform;
 			
@@ -117,23 +121,27 @@ public class DevicesDisplayer : MonoBehaviour {
         );
 			_inventoriedDevices.Add(newDevice);
 
-      // TODO ADD TO LISTED DEVICES
+      // ADD TO LISTED DEVICES
       Debug.Log("DevicesDisplayer::addInventoriedDevice: adding listed device");
       localPosition = getNewPosition(DeviceType.Listed);
       Debug.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition);
       parent = listedInventoryPanel.transform;
       Debug.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent);
-      DisplayedDevice newListedDevice =
+      ListedDevice newListedDevice =
         ListedDevice.Create(
           parent
           , localPosition
           , "bullet"//, getSpriteName(device.getName())
           , device
           , this
-          , DevicesDisplayer.DeviceType.Listed
         );
       Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice);
       _listedInventoriedDevices.Add(newListedDevice);
+
+      if(_listedInventoriedDevices.Count == 1) {
+        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.WARN);
+        craftZoneManager.askSetDevice(device);
+      }
 		} else {
 			Debug.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried);
 		}
@@ -318,6 +326,7 @@ public class DevicesDisplayer : MonoBehaviour {
 		bool update = (_deltaTime > _deltaTimeThreshold);
 		
 		if(update) {
+      //TODO remove this debug code
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				

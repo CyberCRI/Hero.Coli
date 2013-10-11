@@ -59,7 +59,7 @@ public abstract class DisplayedElement : MonoBehaviour {
  }
 
  protected void setSprite(string spriteName) {
-   Debug.Log("setSprite("+spriteName+")");
+   Logger.Log("setSprite("+spriteName+")", Logger.Level.TRACE);
    _sprite.spriteName = spriteName;
  }
  

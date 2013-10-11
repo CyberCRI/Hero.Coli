@@ -8,7 +8,37 @@ class ListedDevice : DisplayedDevice {
 
   private static string _hoveredSuffix = "Hovered";
   private static string _pressedSuffix = "Pressed";
+
   protected new string _currentSpriteName = "bullet";
+  public UILabel _nameLabel;
+
+
+
+ public static ListedDevice Create(
+   Transform parentTransform
+   , Vector3 localPosition
+   , string spriteName
+   , Device device
+   , DevicesDisplayer devicesDisplayer
+   )
+ {
+    ListedDevice result = (ListedDevice)DisplayedDevice.Create(
+          parentTransform
+          , localPosition
+          , spriteName
+          , device
+          , devicesDisplayer
+          , DevicesDisplayer.DeviceType.Listed
+      );
+
+    result.setNameLabel(device.getName());
+
+    return result;
+ }
+
+  public void setNameLabel(string name) {
+    _nameLabel.text = name;
+  }
 
   protected override void OnPress(bool isPressed) {
     //TODO load clicked device into top craft screen

@@ -9,21 +9,24 @@ public class Inventory : DeviceContainer
     SAME_BRICKS,
     DEFAULT
   }
-					
+
+  private string            _genericDeviceNamePrefix = "device";
+
+
   //promoter
-  private static float testbeta = 10.0f;
-  private static string testformula = "![0.8,2]LacI";
+  private static float      testbeta = 10.0f;
+  private static string     testformula = "![0.8,2]LacI";
   //rbs
-  private static float testrbsFactor = 1.0f;
+  private static float      testrbsFactor = 1.0f;
   //gene
-  private static string testproteinName = DevicesDisplayer.getRandomProteinName();
+  private static string     testproteinName = DevicesDisplayer.getRandomProteinName();
   //terminator
-  private static float testterminatorFactor = 1.0f;
+  private static float      testterminatorFactor = 1.0f;
   
-  	
-  private static Device getTestDevice() {
+
+  private Device getTestDevice() {
   
-    string randomName = DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];
+    string randomName = getAvailableDeviceName(); //DevicesDisplayer.devicesNames[Random.Range (0, DevicesDisplayer.devicesNames.Count)];
   	Device testDevice = Device.buildDevice(randomName, testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
   	
   	return testDevice;
@@ -50,6 +53,7 @@ public class Inventory : DeviceContainer
   }
 
   public AddingFailure canAddDevice(Device device) {
+    Logger.Log("Inventory::canAddDevice("+device+")", Logger.Level.WARN);
     if (_devices.Exists(d => d.getName() == device.getName())) {
       Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_NAME",Logger.Level.INFO);
       return AddingFailure.SAME_NAME;
@@ -79,6 +83,24 @@ public class Inventory : DeviceContainer
   public override void editDevice(Device device) {
     //TODO
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
+  }
+
+  public string getAvailableDeviceName() {
+    Logger.Log("Inventory::getAvailableDeviceName()", Logger.Level.WARN);
+    bool taken;
+    string currentName;
+    int number = _devices.Count;
+    do {
+      currentName = _genericDeviceNamePrefix+number;
+      taken = _devices.Exists(d => (d.getName() == currentName));
+      if(taken){
+        number++;
+      } else {
+        return currentName;
+      }
+    } while (taken);
+    Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.WARN);
+    return currentName;
   }
 
   // Use this for initialization

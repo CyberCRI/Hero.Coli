@@ -25,19 +25,11 @@ public class CraftZoneManager : MonoBehaviour {
 
   public GameObject                         displayedBioBrick;
   public LastHoveredInfoManager             lastHoveredInfoManager;
-  public FinalizationInfoPanelManager       finalizationInfoPanelManager;
+  public CraftFinalizer                     craftFinalizer;
   public Inventory                          inventory;
 
   //width of a displayed BioBrick
   public int _width = 200;
-
-  public static Dictionary<Inventory.AddingFailure, string>   statusMessagesDictionary =
-    new Dictionary<Inventory.AddingFailure, string>() {
-      {Inventory.AddingFailure.DEFAULT,         "invalid device!"},
-      {Inventory.AddingFailure.NONE,            "new device"},
-      {Inventory.AddingFailure.SAME_BRICKS,     "device with same bricks already exists!"},
-      {Inventory.AddingFailure.SAME_NAME,       "device with same name already exists!"}
-    };
 
 
   public LinkedList<DisplayedBioBrick> getCurrentDisplayedBricks() {
@@ -51,6 +43,8 @@ public class CraftZoneManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
     Logger.Log("CraftZoneManager::Start starting...", Logger.Level.TRACE);
+
+    /*
     //promoter
     float beta = 10.0f;
     string formula = "![0.8,2]LacI";
@@ -76,6 +70,7 @@ public class CraftZoneManager : MonoBehaviour {
     bioBrickList.AddLast(terminator);
 
     setBioBricks(bioBrickList);
+    */
 
     Logger.Log("CraftZoneManager::Start ...ending!", Logger.Level.TRACE);
 	}
@@ -90,9 +85,13 @@ public class CraftZoneManager : MonoBehaviour {
   public void setBioBricks(LinkedList<BioBrick> bricks) {
     _currentBioBricks.Clear();
     _currentBioBricks.AppendRange(bricks);
+    OnBioBricksChanged();
+  }
+
+  private void OnBioBricksChanged() {
     displayBioBricks();
 
-    _currentDevice = getDeviceFromBricks(bricks);
+    _currentDevice = getDeviceFromBricks(_currentBioBricks);
     displayDevice();
   }
 
@@ -124,28 +123,20 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // utilities
 
-  private DisplayedBioBrick findFirstBioBrick(BioBrick.Type type) {
-    foreach(DisplayedBioBrick brick in _currentDisplayedBricks) {
-      if(brick._biobrick.getType() == type) return brick;
+  private BioBrick findFirstBioBrick(BioBrick.Type type) {
+    foreach(BioBrick brick in _currentBioBricks) {
+      if(brick.getType() == type) return brick;
     }
-    Logger.Log("CraftZoneManager::findFirstBioBrick("+type+") failed with current bricks="+_currentDisplayedBricks);
+    Logger.Log("CraftZoneManager::findFirstBioBrick("+type+") failed with current bricks="+_currentBioBricks, Logger.Level.WARN);
     return null;
   }
 
-  public void replaceWithBrick(DisplayedBioBrick dBioBrick) {
-    DisplayedBioBrick toReplace = findFirstBioBrick(dBioBrick._biobrick.getType());
-    LinkedListNode<DisplayedBioBrick> toReplaceNode = _currentDisplayedBricks.Find(toReplace);
-
-    DisplayedBioBrick newBrick = DisplayedBioBrick.Create(
-      transform,
-      toReplace.transform.localPosition,
-      dBioBrick._sprite.spriteName,
-      dBioBrick._biobrick
-      );
-
-    _currentDisplayedBricks.AddAfter(toReplaceNode, newBrick);
-    _currentDisplayedBricks.Remove(toReplace);
-    Destroy(toReplace.gameObject);
+  public void replaceWithBioBrick(BioBrick brick) {
+    BioBrick toReplace = findFirstBioBrick(brick.getType());
+    LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(toReplace);
+    _currentBioBricks.AddAfter(toReplaceNode, brick);
+    _currentBioBricks.Remove(toReplace);
+    OnBioBricksChanged();
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +145,15 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  public void askSetDevice(Device device) {
+    Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.WARN);
+    if(_currentDevice == null) {
+      setDevice(device);
+    }
+  }
+
   public void setDevice(Device device) {
+    Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.WARN);
     _currentDevice = device;
     displayDevice();
 
@@ -165,31 +164,23 @@ public class CraftZoneManager : MonoBehaviour {
 
   private void displayDevice() {
     Debug.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")");
-    string status = getDeviceStatus(_currentDevice);
-    finalizationInfoPanelManager.setDisplayedDevice(_currentDevice, status);
+    craftFinalizer.setDisplayedDevice(_currentDevice);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // utilities
-
-  private string getDeviceStatus(Device device){
-    Logger.Log("CraftZoneManager::getDeviceStatus("+device+")", Logger.Level.WARN);
-    if(device!=null) {
-      Inventory.AddingFailure failure = inventory.canAddDevice(device);
-      return statusMessagesDictionary[failure];
-    } else {
-      Logger.Log("CraftZoneManager::getDeviceStatus: invalid device", Logger.Level.WARN);
-      return statusMessagesDictionary[Inventory.AddingFailure.DEFAULT];
-    }
-  }
 
   private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
     Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.WARN);
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);
-    Device device = Device.buildDevice("test", modules);
+    Device device = Device.buildDevice(inventory.getAvailableDeviceName(), modules);
     Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.WARN);
     return device;
+  }
+
+  public Device getCurrentDevice() {
+    return _currentDevice;
   }
 }

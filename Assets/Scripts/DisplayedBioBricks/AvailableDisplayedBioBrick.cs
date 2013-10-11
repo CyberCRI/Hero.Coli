@@ -34,20 +34,8 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       ,prefab
       );
 
-    //Initialize(result, biobrick);
-
     return result;
  }
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
   public void display(bool enabled) {
     gameObject.SetActive(enabled);
@@ -55,6 +43,6 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
   protected override void OnPress(bool isPressed) {
     Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id);
-    craftZoneManager.replaceWithBrick(this);
+    craftZoneManager.replaceWithBioBrick(_biobrick);
   }
 }
