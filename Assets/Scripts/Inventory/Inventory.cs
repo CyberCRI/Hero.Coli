@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 public class Inventory : DeviceContainer
 {
-  public enum AddingFailure {
-    NONE,
-    SAME_NAME,
-    SAME_BRICKS,
-    DEFAULT
+  public enum AddingResult {
+    SUCCESS,
+    FAILURE_SAME_NAME,
+    FAILURE_SAME_BRICKS,
+    FAILURE_SAME_DEVICE,
+    FAILURE_DEFAULT
   }
 
   private string            _genericDeviceNamePrefix = "device";
@@ -52,24 +53,35 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count);
   }
 
-  public AddingFailure canAddDevice(Device device) {
+  public AddingResult canAddDevice(Device device) {
     Logger.Log("Inventory::canAddDevice("+device+")", Logger.Level.TRACE);
-    if (_devices.Exists(d => d.getName() == device.getName())) {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_NAME",Logger.Level.TRACE);
-      return AddingFailure.SAME_NAME;
-    } else if (_devices.Exists(d => d.hasSameBricks(device))) {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.SAME_BRICKS",Logger.Level.TRACE);
-      return AddingFailure.SAME_BRICKS;
+
+    if(device == null) {
+      Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
+      return AddingResult.FAILURE_DEFAULT;
     } else {
-      Logger.Log("Inventory::canAddDevice: AddingFailure.NONE",Logger.Level.TRACE);
-      return AddingFailure.NONE;
+      if (_devices.Exists(d => d.getName() == device.getName())) {
+        if (_devices.Exists(d => d.hasSameBricks(device))) {
+          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE",Logger.Level.TRACE);
+          return AddingResult.FAILURE_SAME_DEVICE;
+        } else {
+          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME",Logger.Level.TRACE);
+          return AddingResult.FAILURE_SAME_NAME;
+        }
+      } else if (_devices.Exists(d => d.hasSameBricks(device))) {
+        Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS",Logger.Level.TRACE);
+        return AddingResult.FAILURE_SAME_BRICKS;
+      } else {
+        Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS",Logger.Level.TRACE);
+        return AddingResult.SUCCESS;
+      }
     }
   }
 
-  public AddingFailure askAddDevice(Device device) {
-    AddingFailure failure = canAddDevice(device);
-    if(failure == AddingFailure.NONE){
-      Logger.Log("Inventory::askAddDevice: AddingFailure.NONE, added device",Logger.Level.INFO);
+  public AddingResult askAddDevice(Device device) {
+    AddingResult failure = canAddDevice(device);
+    if(failure == AddingResult.SUCCESS){
+      Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device",Logger.Level.INFO);
       addDevice(device);
     }
     return failure;

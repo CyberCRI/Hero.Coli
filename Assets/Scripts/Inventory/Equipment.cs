@@ -12,13 +12,13 @@ public class Equipment : DeviceContainer
 	}
 
   private void addToReactionEngine(Device device) {
-    Debug.Log("Equipment::addToReactionEngine reactions from device "+device.getName()+" ("+device.ToString ()+")");
+    Logger.Log("Equipment::addToReactionEngine reactions from device "+device.getName()+" ("+device.ToString ()+")", Logger.Level.INFO);
 
     LinkedList<IReaction> reactions = device.getReactions();
-    Debug.Log("Equipment::addToReactionEngine reactions="+reactions);
+    Logger.Log("Equipment::addToReactionEngine reactions="+reactions, Logger.Level.TRACE);
 
     foreach (IReaction reaction in reactions) {
-      Debug.Log("Equipment::addToReactionEngine adding reaction="+reaction.ToString());
+      Logger.Log("Equipment::addToReactionEngine adding reaction="+reaction.ToString(), Logger.Level.TRACE);
       _reactionEngine.addReactionToMedium(_celliaMediumID, reaction);
     }
   }
@@ -32,13 +32,13 @@ public class Equipment : DeviceContainer
 
   //TODO
   private void removeFromReactionEngine(Device device) {
-    Debug.Log("Equipment::removeFromReactionEngine reactions from device "+device);
+    Logger.Log("Equipment::removeFromReactionEngine reactions from device "+device, Logger.Level.INFO);
 
     LinkedList<IReaction> reactions = device.getReactions();
-    Debug.Log("Equipment::removeFromReactionEngine reactions="+reactions);
+    Logger.Log("Equipment::removeFromReactionEngine reactions="+reactions, Logger.Level.TRACE);
 
     foreach (IReaction reaction in reactions) {
-      Debug.Log("Equipment::removeFromReactionEngine removing reactions="+reaction);
+      Logger.Log("Equipment::removeFromReactionEngine removing reactions="+reaction, Logger.Level.TRACE);
       _reactionEngine.removeReactionFromMediumByName(_celliaMediumID, reaction.getName());
     }
   }

@@ -67,7 +67,7 @@ class ListedDevice : DisplayedDevice {
 
 
   private void setPressed(bool isPressed) {
-    Debug.Log("ListedDevice::setPressed("+isPressed+")");
+    Logger.Log("ListedDevice::setPressed("+isPressed+")", Logger.Level.TRACE);
     if(isPressed) {
       setSprite(_currentSpriteName + _pressedSuffix);
     } else {

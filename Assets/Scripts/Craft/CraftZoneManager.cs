@@ -128,7 +128,7 @@ public class CraftZoneManager : MonoBehaviour {
     displayBioBricks();
   }
 
-  private void displayDevice() {
+  public void displayDevice() {
     Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.TRACE);
     craftFinalizer.setDisplayedDevice(_currentDevice);
   }

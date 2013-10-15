@@ -7,6 +7,16 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   public static new UnityEngine.Object  prefab    = null;
   public static CraftZoneManager        craftZoneManager = null;
 
+  /*TODO
+   *automatically choose name:
+   *    1 if Device already exists: name it like real one
+   *    2 else name it with methodology
+   *    3 else name it with fun name or device0/1/2/3/4...
+   *if player creates already existing device
+   *    select this already existing device
+   */
+
+
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
    Vector3 localPosition,
