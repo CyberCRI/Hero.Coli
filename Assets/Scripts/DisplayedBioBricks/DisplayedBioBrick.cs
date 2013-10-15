@@ -80,9 +80,11 @@ public class DisplayedBioBrick : DisplayedElement {
   }
 
   protected void OnHover(bool isOver) {
-    if (isOver) {
       Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
+    if (isOver) {
       lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
+    } else {
+      lastHoveredInfoManager.setHoveredDefault();
     }
   }
 }

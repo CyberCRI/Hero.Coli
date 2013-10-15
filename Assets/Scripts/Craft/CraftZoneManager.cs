@@ -73,8 +73,8 @@ public class CraftZoneManager : MonoBehaviour {
       index++;
     }
 
-    //initialize the "last hovered biobrick" info window
-    lastHoveredInfoManager.setHoveredBioBrick(_currentBioBricks.First.Value);
+    //uncomment to initialize the "last hovered biobrick" info window
+    //lastHoveredInfoManager.setHoveredBioBrick(_currentBioBricks.First.Value);
   }
 
   private void removePreviousDisplayedBricks() {
