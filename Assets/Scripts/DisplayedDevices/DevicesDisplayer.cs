@@ -105,7 +105,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	public void addInventoriedDevice(Device device) {
 		Logger.Log("DevicesDisplayer::addInventoriedDevice("+device+")"
       +" starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices),
-      Logger.Level.WARN);
+      Logger.Level.TRACE);
     //TODO replace hashing
 		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
 		if(!alreadyInventoried) {

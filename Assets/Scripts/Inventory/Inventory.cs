@@ -126,11 +126,13 @@ public class Inventory : DeviceContainer
   }
 
   public AddingResult askAddDevice(Device device) {
-    Logger.Log("Inventory::askAddDevice",Logger.Level.WARN);
+    Logger.Log("Inventory::askAddDevice",Logger.Level.TRACE);
     AddingResult addingResult = canAddDevice(device);
     if(addingResult == AddingResult.SUCCESS){
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device="+device,Logger.Level.INFO);
       addDevice(device);
+    } else {
+      Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
     return addingResult;
   }
