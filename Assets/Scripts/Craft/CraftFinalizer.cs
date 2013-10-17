@@ -11,11 +11,11 @@ public class CraftFinalizer : MonoBehaviour {
 
   public static Dictionary<Inventory.AddingResult, string>   statusMessagesDictionary =
     new Dictionary<Inventory.AddingResult, string>() {
-      {Inventory.AddingResult.SUCCESS,         "new device"},
-      {Inventory.AddingResult.FAILURE_SAME_NAME,       "device with same name already exists!"},
-      {Inventory.AddingResult.FAILURE_SAME_BRICKS,     "device with same bricks already exists!"},
-      {Inventory.AddingResult.FAILURE_SAME_DEVICE,     ""},//a device with same name and same bricks already exists
-      {Inventory.AddingResult.FAILURE_DEFAULT,         "invalid device!"}
+      {Inventory.AddingResult.SUCCESS,                "new device"},
+      {Inventory.AddingResult.FAILURE_SAME_NAME,      "device with same name already exists!"},
+      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "device with same bricks already exists!"},
+      {Inventory.AddingResult.FAILURE_SAME_DEVICE,    ""},//a device with same name and same bricks already exists
+      {Inventory.AddingResult.FAILURE_DEFAULT,        "invalid device!"}
     };
 
   public void finalizeCraft() {
@@ -23,8 +23,8 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.TRACE);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
-      Inventory.AddingResult failure = inventory.askAddDevice(currentDevice);
-      if(failure == Inventory.AddingResult.SUCCESS) {
+      Inventory.AddingResult addingResult = inventory.askAddDevice(currentDevice);
+      if(addingResult == Inventory.AddingResult.SUCCESS) {
         craftZoneManager.displayDevice();
         Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
       } else {
@@ -36,17 +36,22 @@ public class CraftFinalizer : MonoBehaviour {
   }
 
   public void setDisplayedDevice(Device device){
-    Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.DEBUG);
+    Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);
 
-    Inventory.AddingResult failure = inventory.canAddDevice(device);
-    string status = statusMessagesDictionary[failure];
+    Inventory.AddingResult addingResult = inventory.canAddDevice(device);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult, Logger.Level.TRACE);
+    string status = statusMessagesDictionary[addingResult];
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): status="+status, Logger.Level.TRACE);
 
-    craftFinalizationButton.SetActive(failure == Inventory.AddingResult.SUCCESS);
+    bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
+    craftFinalizationButton.setEnabled(enabled);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     finalizationInfoPanelManager.setDisplayedDevice(device, status);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice(device, status)", Logger.Level.TRACE);
   }
 
   public void randomRename() {
-    Logger.Log("CraftFinalizer::randomRename", Logger.Level.DEBUG);
+    Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     string newName = inventory.getAvailableDeviceName();
     Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());

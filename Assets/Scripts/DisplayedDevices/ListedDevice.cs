@@ -9,8 +9,6 @@ class ListedDevice : DisplayedDevice {
   private static string _hoveredSuffix = "Hovered";
   private static string _pressedSuffix = "Pressed";
   private static string _defaultSpriteName = "bullet";
-
-  //protected new string _currentSpriteName = "bullet";
   public UILabel _nameLabel;
 
 
@@ -41,7 +39,6 @@ class ListedDevice : DisplayedDevice {
   }
 
   protected override void OnPress(bool isPressed) {
-    //TODO load clicked device into top craft screen
     Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.INFO);
     setPressed(isPressed);
     if(isPressed) {
@@ -78,6 +75,9 @@ class ListedDevice : DisplayedDevice {
 
   // Use this for initialization
   void Start () {
+    if(_nameLabel == null) {
+      _nameLabel = gameObject.GetComponentInChildren<UILabel>();
+    }
     craftZoneManager = (CraftZoneManager)GameObject.Find(craftZoneManagerObjectName).GetComponent<CraftZoneManager>();
   }
 }

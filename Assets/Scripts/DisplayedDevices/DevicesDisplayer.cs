@@ -89,7 +89,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	public string getSpriteName(string deviceName) {
 		string fromDico = spriteNamesDictionary.ContainsKey(deviceName)?spriteNamesDictionary[deviceName]:defaultSpriteName;
 		string res = (fromDico!=null)?fromDico:getRandomSprite();
-		Debug.Log("getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")");
+		Logger.Log("DevicesDisplayer::getSpriteName("+deviceName+")="+res+" (fromDico="+fromDico+")", Logger.Level.TRACE);
 		return res;
 	}
 
@@ -103,7 +103,10 @@ public class DevicesDisplayer : MonoBehaviour {
    */
 
 	public void addInventoriedDevice(Device device) {
-		Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+") starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+		Logger.Log("DevicesDisplayer::addInventoriedDevice("+device+")"
+      +" starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices),
+      Logger.Level.WARN);
+    //TODO replace hashing
 		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
 		if(!alreadyInventoried) {
       // ADD TO EQUIPABLE DEVICES
@@ -122,11 +125,11 @@ public class DevicesDisplayer : MonoBehaviour {
 			_inventoriedDevices.Add(newDevice);
 
       // ADD TO LISTED DEVICES
-      Debug.Log("DevicesDisplayer::addInventoriedDevice: adding listed device");
+      Logger.Log("DevicesDisplayer::addInventoriedDevice: adding listed device", Logger.Level.TRACE);
       localPosition = getNewPosition(DeviceType.Listed);
-      Debug.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition);
+      Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
       parent = listedInventoryPanel.transform;
-      Debug.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent);
+      Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
       ListedDevice newListedDevice =
         ListedDevice.Create(
           parent
@@ -134,7 +137,7 @@ public class DevicesDisplayer : MonoBehaviour {
           , device
           , this
         );
-      Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice);
+      Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
 
       if(_listedInventoriedDevices.Count == 1) {
@@ -142,13 +145,15 @@ public class DevicesDisplayer : MonoBehaviour {
         craftZoneManager.askSetDevice(device);
       }
 		} else {
-			Debug.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried);
+			Logger.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried, Logger.Level.WARN);
 		}
-    Debug.Log("DevicesDisplayer::addInventoriedDevice("+device+") end with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+    Logger.Log("DevicesDisplayer::addInventoriedDevice("+device+")"
+      +" end with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices),
+      Logger.Level.TRACE);
 	}
 	
 	public void addEquipedDevice(Device device) {
-		Debug.Log("addEquipedDevice("+device.ToString()+")");
+		Logger.Log("addEquipedDevice("+device.ToString()+")", Logger.Level.TRACE);
 		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
 		if(alreadyEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
@@ -165,7 +170,7 @@ public class DevicesDisplayer : MonoBehaviour {
         );
 			_equipedDevices.Add(newDevice);
 		} else {
-			Debug.Log("addDevice failed: alreadyEquiped="+alreadyEquiped);
+			Logger.Log("addDevice failed: alreadyEquiped="+alreadyEquiped, Logger.Level.TRACE);
 		}
 	}
 
@@ -189,17 +194,19 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 	
 	public void UpdateScreen(){
-		Debug.Log("UpdateScreen " + transitioner._currentScreen);
+		Logger.Log("DevicesDisplayer::UpdateScreen " + transitioner._currentScreen, Logger.Level.TRACE);
 		if(IsScreen(1)) {
 			inventoryPanel.gameObject.SetActive(false);
       listedInventoryPanel.gameObject.SetActive(false);
 		} else if(IsScreen(2)) {
-     inventoryPanel.gameObject.SetActive(true);
+      inventoryPanel.gameObject.SetActive(true);
       listedInventoryPanel.gameObject.SetActive(false);
-    } else {
+    } else if(IsScreen(3)) {
 			inventoryPanel.gameObject.SetActive(false);
       listedInventoryPanel.gameObject.SetActive(true);
-		}
+		} else {
+      Logger.Log("DevicesDisplayer::UpdateScreen unknown current screen", Logger.Level.WARN);
+    }
 	}
  
   public Vector3 getNewPosition(DeviceType deviceType, int index = -1) {
@@ -277,7 +284,7 @@ public class DevicesDisplayer : MonoBehaviour {
     if (found != null) {
       removeDevice(found, devices, type);
     } else {
-      Debug.Log("removeDevice(type="+type+", toRemove="+toRemove+") found no matching device");
+      Logger.Log("removeDevice(type="+type+", toRemove="+toRemove+") found no matching device", Logger.Level.WARN);
     }
  }
 
@@ -286,21 +293,21 @@ public class DevicesDisplayer : MonoBehaviour {
      int startIndex = devices.IndexOf(toRemove);
 
      if(deviceType == DeviceType.Equiped) {
-       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count);
+       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count, Logger.Level.TRACE);
      } else {
-       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count);
+       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count, Logger.Level.TRACE);
      }
 
      devices.Remove(toRemove);
      toRemove.Remove();
      if(deviceType == DeviceType.Equiped) {
-       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") from equipment of count "+_equipedDevices.Count+" done");
+       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") from equipment of count "+_equipedDevices.Count+" done", Logger.Level.TRACE);
      } else {
-       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") from inventory of count "+_inventoriedDevices.Count+" done");
+       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") from inventory of count "+_inventoriedDevices.Count+" done", Logger.Level.TRACE);
      }
      for(int idx = startIndex; idx < devices.Count; idx++) {
        Vector3 newLocalPosition = getNewPosition(deviceType, idx);
-       Debug.Log("removeDevice("+toRemove+", devices, "+deviceType+") redrawing idx "+idx+" at position "+newLocalPosition);
+       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") redrawing idx "+idx+" at position "+newLocalPosition, Logger.Level.TRACE);
        devices[idx].Redraw(newLocalPosition);
      }
    }
@@ -329,7 +336,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("V - create equiped device starting...");
+				Logger.Log("V - create equiped device starting...", Logger.Level.INFO);
 				
 				//promoter
 				float beta = 10.0f;
@@ -349,18 +356,18 @@ public class DevicesDisplayer : MonoBehaviour {
 				 terminatorFactor//terminator
 				);
 				if(newDevice == null) {
-					Debug.Log("failed to provide device");
+					Logger.Log("failed to provide device", Logger.Level.WARN);
 				} else {
 					_equipment.addDevice(newDevice);
 				}
-        Debug.Log("V - create equiped device... done!");
+        Logger.Log("V - create equiped device... done!", Logger.Level.TRACE);
 								
 			}
 			
 			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("B - create inventory device starting...");
+				Logger.Log("B - create inventory device starting...", Logger.Level.INFO);
 				
 				//promoter
 				float beta = 10.0f;
@@ -379,16 +386,16 @@ public class DevicesDisplayer : MonoBehaviour {
 				 terminatorFactor//terminator
 				);
        if(newDevice == null) {
-          Debug.Log("failed to provide device");
+          Logger.Log("failed to provide device", Logger.Level.WARN);
         } else {
 			    _inventory.addDevice(newDevice);
         }
-        Debug.Log("B - create inventoried device... done!");
+        Logger.Log("B - create inventoried device... done!", Logger.Level.TRACE);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				_timeAtLastFrame = _timeAtCurrentFrame;
 				
-				Debug.Log("T - remove random device");
+				Logger.Log("T - remove random device", Logger.Level.TRACE);
 				if( _equipedDevices.Count > 0) {
 					int randomIdx = Random.Range(0, _equipedDevices.Count);
 					DisplayedDevice randomDevice = _equipedDevices[randomIdx];

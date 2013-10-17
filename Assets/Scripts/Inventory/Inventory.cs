@@ -23,14 +23,60 @@ public class Inventory : DeviceContainer
   private static string     testproteinName = DevicesDisplayer.getRandomProteinName();
   //terminator
   private static float      testterminatorFactor = 1.0f;
-  
 
-  private Device getTestDevice() {
-  
-    string randomName = getAvailableDeviceName();
-  	Device testDevice = Device.buildDevice(randomName, testbeta, testformula, testrbsFactor, testproteinName, testterminatorFactor);
-  	
+  private static string[] proteinsIn = new string[]{
+    "Collagen",
+    "Actin",
+    "Keratin",
+    "Elastin"
+  };
+  private static string[] proteinsOut = new string[]{
+    "Cadherin",
+    "Ependymin",
+    "Integrin",
+    "Selectin"
+  };
+
+  private static float getTestBeta() { return Random.Range(0.0f, 10.0f); }
+  private static string getTestFormula() {
+    string result = "";
+    if(Random.Range(0.0f, 1.0f) > 0.5f){
+      result += "!";
+    }
+    result += "[";
+    result += (0.1f + Random.Range(0, 8)/10);
+    result += ",";
+    result += Random.Range (0.1f, 3.0f);
+    result += "]";
+    result += proteinsIn[Random.Range(0, proteinsIn.Length-1)];
+    return result;
+  }
+  private static float getTestRBS() { return Random.Range(0.9f, 1.1f); }
+  private static string getTestProtein() { return proteinsOut[Random.Range(0, proteinsOut.Length)]; }
+  private static float getTestTerminator() { return Random.Range(0.9f, 1.1f); }
+
+  private Device getTestDevice(string name) {
+    Logger.Log("Inventory::getTestDevice()", Logger.Level.TRACE);
+  	Device testDevice = Device.buildDevice(
+      name,
+      getTestBeta(),
+      getTestFormula(),
+      getTestRBS(),
+      getTestProtein(),
+      getTestTerminator()
+      );
+  	Logger.Log("Inventory::getTestDevice() testDevice="+testDevice, Logger.Level.TRACE);
   	return testDevice;
+  }
+
+  private List<Device> getTestDevices() {
+    Logger.Log("Inventory::getTestDevices()", Logger.Level.TRACE);
+    List<Device> result = new List<Device>();
+    result.Add(getTestDevice("MyDevice"));
+    result.Add(getTestDevice("MonDispositif"));
+    result.Add(getTestDevice("MeinGeraet"));
+    Logger.Log("Inventory::getTestDevices() result="+Logger.ToString<Device>(result), Logger.Level.TRACE);
+    return result;
   }
 
   public Inventory() {
@@ -38,7 +84,7 @@ public class Inventory : DeviceContainer
   }
 
   public override void addDevice(Device device) {
-    Logger.Log("Inventory::addDevice("+device+"), count before="+_devices.Count);
+    Logger.Log("Inventory::addDevice("+device+"), count before="+_devices.Count, Logger.Level.TRACE);
     Device copy = Device.buildDevice(device);
     string displayerString = _displayer!=null?"name="+_displayer.name:"null";
     Logger.Log("Inventory::addDevice("+device+")"
@@ -46,11 +92,12 @@ public class Inventory : DeviceContainer
       +", count before="+_devices.Count
       +", _devices="+_devices
       +", _displayer="+displayerString
+      , Logger.Level.TRACE
       );
     _devices.Add(copy);
-    Logger.Log("Inventory::addDevice _devices.Add(copy); done");
+    Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
     _displayer.addInventoriedDevice(copy);
-    Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count);
+    Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count, Logger.Level.TRACE);
   }
 
   public AddingResult canAddDevice(Device device) {
@@ -79,12 +126,13 @@ public class Inventory : DeviceContainer
   }
 
   public AddingResult askAddDevice(Device device) {
-    AddingResult failure = canAddDevice(device);
-    if(failure == AddingResult.SUCCESS){
-      Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device",Logger.Level.INFO);
+    Logger.Log("Inventory::askAddDevice",Logger.Level.WARN);
+    AddingResult addingResult = canAddDevice(device);
+    if(addingResult == AddingResult.SUCCESS){
+      Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device="+device,Logger.Level.INFO);
       addDevice(device);
     }
-    return failure;
+    return addingResult;
   }
 
   public override void removeDevice(Device device) {
@@ -121,9 +169,9 @@ public class Inventory : DeviceContainer
     base.Start();
    //by default: contains a test device
     _devices = new List<Device>();
-    Device device = getTestDevice();
-    Logger.Log("Inventory: constructing, calling UpdateData(List("+device.ToString()+"), List(), List())");
-    UpdateData(new List<Device>() { device }, new List<Device>(), new List<Device>());
+    List<Device> devices = getTestDevices();
+    Logger.Log("Inventory: constructing, calling UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())");
+    UpdateData(devices, new List<Device>(), new List<Device>());
     Logger.Log("Inventory::Start()...done", Logger.Level.TRACE);
   }
 }

@@ -48,13 +48,14 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   public void setBioBricks(LinkedList<BioBrick> bricks) {
+    Logger.Log("CraftZoneManager::setBioBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
     _currentBioBricks.Clear();
     _currentBioBricks.AppendRange(bricks);
     OnBioBricksChanged();
   }
 
   private void OnBioBricksChanged() {
-    Logger.Log("CraftZoneManager::OnBioBricksChanged()", Logger.Level.DEBUG);
+    Logger.Log("CraftZoneManager::OnBioBricksChanged()", Logger.Level.TRACE);
     displayBioBricks();
 
     _currentDevice = getDeviceFromBricks(_currentBioBricks);
@@ -98,6 +99,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public void replaceWithBioBrick(BioBrick brick) {
+    Logger.Log("CraftZoneManager::replaceWithBioBrick("+brick+")", Logger.Level.TRACE);
     BioBrick toReplace = findFirstBioBrick(brick.getType());
     LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(toReplace);
     _currentBioBricks.AddAfter(toReplaceNode, brick);
@@ -112,14 +114,14 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   public void askSetDevice(Device device) {
-    Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.DEBUG);
+    Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.TRACE);
     if(_currentDevice == null) {
       setDevice(device);
     }
   }
 
   public void setDevice(Device device) {
-    Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.INFO);
+    Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
     _currentDevice = device;
     displayDevice();
 
@@ -137,7 +139,7 @@ public class CraftZoneManager : MonoBehaviour {
   // utilities
 
   private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
-    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.DEBUG);
+    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);

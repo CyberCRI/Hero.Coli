@@ -102,15 +102,15 @@ public class GUITransitioner : MonoBehaviour {
 
     } else if (destination == GameScreen.screen2) {
       if(_currentScreen == GameScreen.screen1) {
-         Debug.Log("1->2");
+         Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
          //1 -> 2
          //set zoom2
          //add inventory device, deviceID
          //remove graphs
          //move devices and potions?
        } else if(_currentScreen == GameScreen.screen3) {
-         Debug.Log("3->2");          
-         //3 -> 1
+        Logger.Log("GUITransitioner::GoToScreen 3->2", Logger.Level.INFO);
+         //3 -> 2
          //set zoom2
          //remove craft screen
          //add inventory device, deviceID
@@ -129,7 +129,7 @@ public class GUITransitioner : MonoBehaviour {
 
     } else if (destination == GameScreen.screen3) {
       if(_currentScreen == GameScreen.screen1) {
-         Debug.Log("1->3");
+        Logger.Log("GUITransitioner::GoToScreen 1->3", Logger.Level.INFO);
          //1 -> 3
          //remove everything
          //add device inventory, parameters
@@ -139,8 +139,8 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(true);
          
        } else if(_currentScreen == GameScreen.screen2) {
-         Debug.Log("2->3");          
-         //3 -> 1
+        Logger.Log("GUITransitioner::GoToScreen 2->3", Logger.Level.INFO);
+         //2 -> 3
          //remove everything
          //add craft screen
          SetScreen2(false);
