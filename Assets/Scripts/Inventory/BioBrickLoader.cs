@@ -141,7 +141,7 @@ public class BioBrickLoader {
                 Logger.Log ("BioBrickLoader::loadBioBricksFromFile wrong type "+bioBrickType, Logger.Level.WARN);
                 break;
             }
-            if(bioBrick != null){
+            if(bioBrick != null && checkString(bioBrickSize)){
               bioBrick.setSize(parseInt(bioBrickSize));
               resultBioBricks.AddLast(bioBrick);
             }

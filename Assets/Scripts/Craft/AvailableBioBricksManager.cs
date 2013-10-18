@@ -153,17 +153,34 @@ public class AvailableBioBricksManager : MonoBehaviour {
     _availableTerminators = new LinkedList<TerminatorBrick>();
 
     foreach (string file in _bioBrickFiles) {
-      //LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, fileLoader.loadReactionsFromFile(file));
-      loader.loadBioBricksFromFile(file);
       Logger.Log("AvailableBioBricksManager::Awake loads "+file, Logger.Level.WARN);
+      sortInto(loader.loadBioBricksFromFile(file));
     }
     Logger.Log("AvailableBioBricksManager::Awake DONE", Logger.Level.WARN);
   }
 
-  /*
-  private void sortInto(LinkedList<T> bricks) where T:BioBrick {
-
+  private void sortInto(LinkedList<BioBrick> bricks) {
+    Logger.Log("AvailableBioBricksManager::sortInto START with "+Logger.ToString<BioBrick>(bricks), Logger.Level.WARN);
+    foreach (BioBrick brick in bricks) {
+      switch(brick.getType()) {
+        case BioBrick.Type.PROMOTER:
+          _availablePromoters.AddLast((PromoterBrick)brick);
+          break;
+        case BioBrick.Type.RBS:
+          _availableRBS.AddLast((RBSBrick)brick);
+          break;
+        case BioBrick.Type.GENE:
+          _availableGenes.AddLast((GeneBrick)brick);
+          break;
+        case BioBrick.Type.TERMINATOR:
+          _availableTerminators.AddLast((TerminatorBrick)brick);
+          break;
+        default:
+          Logger.Log("AvailableBioBricksManager::sortInto unknown type "+brick.getType(), Logger.Level.WARN);
+          break;
+      }
+    }
+    Logger.Log("AvailableBioBricksManager::sortInto DONE", Logger.Level.WARN);
   }
-  */
 
 }
