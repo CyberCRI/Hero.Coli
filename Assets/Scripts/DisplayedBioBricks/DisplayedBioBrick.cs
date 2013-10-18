@@ -62,7 +62,7 @@ public class DisplayedBioBrick : DisplayedElement {
       Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
       biobrickScript._biobrick = biobrick;
       biobrickScript._label.text = biobrick.getName();
-      Logger.Log("DisplayedBioBrick::Initialize ends", Logger.Level.TRACE);
+      Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
   }
 
   public static string getSpriteName(BioBrick brick) {
@@ -78,7 +78,10 @@ public class DisplayedBioBrick : DisplayedElement {
   }
 
   protected void OnHover(bool isOver) {
-      Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
+    Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
+    if(_lastHoveredInfoManager == null) {
+      _lastHoveredInfoManager = GameObject.Find ("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
+    }
     if (isOver) {
       _lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
     } else {

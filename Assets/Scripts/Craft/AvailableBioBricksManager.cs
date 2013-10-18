@@ -14,17 +14,11 @@ public class AvailableBioBricksManager : MonoBehaviour {
   //visual, clickable biobricks currently displayed
   LinkedList<AvailableDisplayedBioBrick>  _displayedBioBricks   = new LinkedList<AvailableDisplayedBioBrick>();
 
-  //biobrick arrays
-  private static PromoterBrick[]    promoters   = new PromoterBrick[]{};//{new PromoterBrick("testProm", 0.5f, "promoter1")};
-  private static RBSBrick[]         rbs         = new RBSBrick[]{new RBSBrick("testRBS", 1.0f)};
-  private static GeneBrick[]        genes       = new GeneBrick[]{new GeneBrick("testGene", "gene1"), new GeneBrick("testGene2", "gene2")};
-  private static TerminatorBrick[]  terminators = new TerminatorBrick[]{new TerminatorBrick("testTerminator", 1.0f), new TerminatorBrick("testTerminator2", 1.0f), new TerminatorBrick("testTerminator3", 1.0f)};
-
   //biobrick data catalog
-  private static LinkedList<PromoterBrick>       _availablePromoters   = new LinkedList<PromoterBrick>(promoters);
-  private static LinkedList<RBSBrick>            _availableRBS         = new LinkedList<RBSBrick>(rbs);
-  private static LinkedList<GeneBrick>           _availableGenes       = new LinkedList<GeneBrick>(genes);
-  private static LinkedList<TerminatorBrick>     _availableTerminators = new LinkedList<TerminatorBrick>(terminators);
+  private static LinkedList<PromoterBrick>       _availablePromoters   = new LinkedList<PromoterBrick>();
+  private static LinkedList<RBSBrick>            _availableRBS         = new LinkedList<RBSBrick>();
+  private static LinkedList<GeneBrick>           _availableGenes       = new LinkedList<GeneBrick>();
+  private static LinkedList<TerminatorBrick>     _availableTerminators = new LinkedList<TerminatorBrick>();
 
   //visual, clickable biobrick catalog
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
@@ -84,6 +78,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
       +" (width="+_width+")"
       +", spriteNameParam="+spriteNameParam
       +", biobrickParam="+biobrickParam
+      , Logger.Level.TRACE
       );
 
     AvailableDisplayedBioBrick resultBrick = AvailableDisplayedBioBrick.Create(
@@ -96,19 +91,19 @@ public class AvailableBioBricksManager : MonoBehaviour {
   }
 
   public void displayPromoters() {
-    Logger.Log("AvailableBioBricksManager::displayPromoters");
+    Logger.Log("AvailableBioBricksManager::displayPromoters", Logger.Level.TRACE);
     switchTo(_displayableAvailablePromoters);
   }
   public void displayRBS() {
-    Logger.Log("AvailableBioBricksManager::displayRBS");
+    Logger.Log("AvailableBioBricksManager::displayRBS", Logger.Level.TRACE);
     switchTo(_displayableAvailableRBS);
   }
   public void displayGenes() {
-    Logger.Log("AvailableBioBricksManager::displayGenes");
+    Logger.Log("AvailableBioBricksManager::displayGenes", Logger.Level.TRACE);
     switchTo(_displayableAvailableGenes);
   }
   public void displayTerminators() {
-    Logger.Log("AvailableBioBricksManager::displayTerminators");
+    Logger.Log("AvailableBioBricksManager::displayTerminators", Logger.Level.TRACE);
     switchTo(_displayableAvailableTerminators);
   }
   private void switchTo(LinkedList<AvailableDisplayedBioBrick> list) {
@@ -117,7 +112,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
       listToString += brick.ToString()+", ";
     }
     listToString += "]";
-    Logger.Log("AvailableBioBricksManager::switchTo("+listToString+")");
+    Logger.Log("AvailableBioBricksManager::switchTo("+listToString+")", Logger.Level.TRACE);
     display(_displayedBioBricks, false);
     _displayedBioBricks.Clear();
     _displayedBioBricks.AppendRange(list);
@@ -135,15 +130,10 @@ public class AvailableBioBricksManager : MonoBehaviour {
 	  updateDisplayedBioBricks();
     displayPromoters();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
   void Awake () {
+    Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.INFO);
     //load biobricks from xml
     BioBrickLoader loader = new BioBrickLoader();
     
@@ -153,14 +143,14 @@ public class AvailableBioBricksManager : MonoBehaviour {
     _availableTerminators = new LinkedList<TerminatorBrick>();
 
     foreach (string file in _bioBrickFiles) {
-      Logger.Log("AvailableBioBricksManager::Awake loads "+file, Logger.Level.WARN);
+      Logger.Log("AvailableBioBricksManager::Awake loads "+file, Logger.Level.TRACE);
       sortInto(loader.loadBioBricksFromFile(file));
     }
-    Logger.Log("AvailableBioBricksManager::Awake DONE", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::Awake loaded "+_bioBrickFiles, Logger.Level.INFO);
   }
 
   private void sortInto(LinkedList<BioBrick> bricks) {
-    Logger.Log("AvailableBioBricksManager::sortInto START with "+Logger.ToString<BioBrick>(bricks), Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::sortInto START with "+Logger.ToString<BioBrick>(bricks), Logger.Level.TRACE);
     foreach (BioBrick brick in bricks) {
       switch(brick.getType()) {
         case BioBrick.Type.PROMOTER:
@@ -180,7 +170,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
           break;
       }
     }
-    Logger.Log("AvailableBioBricksManager::sortInto DONE", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::sortInto DONE", Logger.Level.TRACE);
   }
 
 }

@@ -45,7 +45,7 @@ public class BioBrickLoader {
 
   public LinkedList<BioBrick> loadBioBricksFromFile(string filePath)
   {
-    Logger.Log("BioBrickLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.WARN);
+    Logger.Log("BioBrickLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
 
     MemoryStream ms = Tools.getEncodedFileContent(filePath);
 
@@ -66,7 +66,7 @@ public class BioBrickLoader {
         Logger.Log ("BioBrickLoader::loadBioBricksFromFile got id="+bioBrickName
           +", size="+bioBrickSize
           +", type="+bioBrickType
-          , Logger.Level.WARN);
+          , Logger.Level.TRACE);
 
         if (checkString(bioBrickName)) {
             switch(bioBrickType) {
@@ -166,7 +166,7 @@ public class BioBrickLoader {
   }
 
   private static void logCurrentBioBrick(string type){
-    Logger.Log("BioBrickLoader::loadBioBricksFromFile type="+type, Logger.Level.WARN);
+    Logger.Log("BioBrickLoader::loadBioBricksFromFile type="+type, Logger.Level.TRACE);
   }
 
   private bool checkString(string toCheck) {
