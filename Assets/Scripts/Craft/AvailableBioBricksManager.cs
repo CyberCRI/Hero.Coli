@@ -140,4 +140,30 @@ public class AvailableBioBricksManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+
+  string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
+  void Awake () {
+    //load biobricks from xml
+    BioBrickLoader loader = new BioBrickLoader();
+    
+    _availablePromoters   = new LinkedList<PromoterBrick>();
+    _availableRBS         = new LinkedList<RBSBrick>();
+    _availableGenes       = new LinkedList<GeneBrick>();
+    _availableTerminators = new LinkedList<TerminatorBrick>();
+
+    foreach (string file in _bioBrickFiles) {
+      //LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, fileLoader.loadReactionsFromFile(file));
+      loader.loadBioBricksFromFile(file);
+      Logger.Log("AvailableBioBricksManager::Awake loads "+file, Logger.Level.WARN);
+    }
+    Logger.Log("AvailableBioBricksManager::Awake DONE", Logger.Level.WARN);
+  }
+
+  /*
+  private void sortInto(LinkedList<T> bricks) where T:BioBrick {
+
+  }
+  */
+
 }

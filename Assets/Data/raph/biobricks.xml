@@ -1,0 +1,15 @@
+<BioBricks>
+  <BioBrick id="myPromoter" size="0" type="promoter">
+    <beta>1.0</beta>
+    <formula>"![0.8,2]pLac"</formula>
+  </BioBrick>
+  <BioBrick id="myRBS" size="0" type="rbs">
+    <rbsFactor>1.0</rbsFactor>
+  </BioBrick>
+  <BioBrick id="myGene" size="0" type="gene">
+    <protein>LacI</protein>
+  </BioBrick>
+  <BioBrick id="myTerminator" size="0" type="terminator">
+    <terminatorFactor>1.0</terminatorFactor>
+  </BioBrick>
+</BioBricks>

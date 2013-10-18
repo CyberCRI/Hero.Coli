@@ -13,17 +13,6 @@ public class Inventory : DeviceContainer
 
   private string            _genericDeviceNamePrefix = "device";
 
-
-  //promoter
-  private static float      testbeta = 10.0f;
-  private static string     testformula = "![0.8,2]LacI";
-  //rbs
-  private static float      testrbsFactor = 1.0f;
-  //gene
-  private static string     testproteinName = DevicesDisplayer.getRandomProteinName();
-  //terminator
-  private static float      testterminatorFactor = 1.0f;
-
   private static string[] proteinsIn = new string[]{
     "Collagen",
     "Actin",

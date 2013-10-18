@@ -7,7 +7,7 @@ public class DisplayedBioBrick : DisplayedElement {
   public static string                              prefabURI               = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
   public static UnityEngine.Object                  prefab                  = null;
   public static string                              assemblyZonePanelName   = "AssemblyZonePanel";
-  public static LastHoveredInfoManager              lastHoveredInfoManager  = null;
+
 
   public static Dictionary<BioBrick.Type, string>   spriteNamesDico = new Dictionary<BioBrick.Type, string>() {
     {BioBrick.Type.GENE,        "gene"},
@@ -17,10 +17,10 @@ public class DisplayedBioBrick : DisplayedElement {
     {BioBrick.Type.UNKNOWN,     "unknown"}
   };
 
-
-
   public UILabel                    _label;
   public BioBrick                   _biobrick;
+  public LastHoveredInfoManager     _lastHoveredInfoManager;
+
 
  public static DisplayedBioBrick Create(
    Transform parentTransform
@@ -35,8 +35,6 @@ public class DisplayedBioBrick : DisplayedElement {
 
     if(prefab == null) prefab = Resources.Load(prefabURI);
     Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
-
-    if(lastHoveredInfoManager==null) lastHoveredInfoManager = GameObject.Find("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
 
     Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
@@ -82,9 +80,9 @@ public class DisplayedBioBrick : DisplayedElement {
   protected void OnHover(bool isOver) {
       Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
     if (isOver) {
-      lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
+      _lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
     } else {
-      lastHoveredInfoManager.setHoveredDefault();
+      _lastHoveredInfoManager.setHoveredDefault();
     }
   }
 }
