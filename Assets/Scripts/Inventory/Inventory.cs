@@ -11,7 +11,7 @@ public class Inventory : DeviceContainer
     FAILURE_DEFAULT
   }
 
-  private string            _genericDeviceNamePrefix = "device";
+  private string _genericDeviceNamePrefix = "device";
 
   private static string[] proteinsIn = new string[]{
     "Collagen",
@@ -155,14 +155,9 @@ public class Inventory : DeviceContainer
   }
 
   // Use this for initialization
-  new void Start () {
-    Logger.Log("Inventory::Start()...", Logger.Level.TRACE);
-    base.Start();
-   //by default: contains a test device
-    _devices = new List<Device>();
-    List<Device> devices = getTestDevices();
-    Logger.Log("Inventory: constructing, calling UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())");
-    UpdateData(devices, new List<Device>(), new List<Device>());
-    Logger.Log("Inventory::Start()...done", Logger.Level.TRACE);
+  new void Awake () {
+    Logger.Log("Inventory::Awake()...", Logger.Level.WARN);
+    base.Awake();
+    Logger.Log("Inventory::Awake()...done", Logger.Level.TRACE);
   }
 }

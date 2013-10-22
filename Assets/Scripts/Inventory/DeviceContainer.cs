@@ -6,7 +6,7 @@ public abstract class DeviceContainer : MonoBehaviour {
   public static string _displayerName = "DevicesDisplayersPanel";
 
   protected List<Device> _devices = new List<Device>();
-  protected DevicesDisplayer _displayer;
+  public DevicesDisplayer _displayer;
 	
   public void UpdateData(List<Device> added, List<Device> removed, List<Device> edited) {
     Logger.Log("DeviceContainer::UpdateData("
@@ -32,8 +32,9 @@ public abstract class DeviceContainer : MonoBehaviour {
   abstract public void editDevice(Device device);
 
  // Use this for initialization
- protected void Start () {
-    Logger.Log("DeviceContainer::Start()");
+ protected void Awake () {
+   Logger.Log("DeviceContainer::Awake()", Logger.Level.WARN);
+   _devices = new List<Device>();
    _displayer = (DevicesDisplayer)GameObject.Find (_displayerName).GetComponent<DevicesDisplayer>();
  }
 }
