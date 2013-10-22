@@ -35,29 +35,48 @@ public class AvailableBioBricksManager : MonoBehaviour {
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
 
   private void updateDisplayedBioBricks() {
+    LinkedList<BioBrick> availablePromoters = new LinkedList<BioBrick>();
+    LinkedListExtensions.AppendRange<BioBrick>(availablePromoters, getAvailableBioBricksOfType(BioBrick.Type.PROMOTER));
+    LinkedList<BioBrick> availableRBS = new LinkedList<BioBrick>();
+    LinkedListExtensions.AppendRange<BioBrick>(availableRBS, getAvailableBioBricksOfType(BioBrick.Type.RBS));
+    LinkedList<BioBrick> availableGenes = new LinkedList<BioBrick>();
+    LinkedListExtensions.AppendRange<BioBrick>(availableGenes, getAvailableBioBricksOfType(BioBrick.Type.GENE));
+    LinkedList<BioBrick> availableTerminators = new LinkedList<BioBrick>();
+    LinkedListExtensions.AppendRange<BioBrick>(availableTerminators, getAvailableBioBricksOfType(BioBrick.Type.TERMINATOR));
+
     _displayableAvailablePromoters   = getDisplayableAvailableBioBricks(
-      //_availablePromoters
-      getAvailableBioBricksOfType(BioBrick.Type.PROMOTER)
+      availablePromoters
       , getDisplayableAvailableBioBrick
       );
     _displayableAvailableRBS         = getDisplayableAvailableBioBricks(
-      //_availableRBS
-      getAvailableBioBricksOfType(BioBrick.Type.RBS)
+      availableRBS
       , getDisplayableAvailableBioBrick
       );
     _displayableAvailableGenes       = getDisplayableAvailableBioBricks(
-      //_availableGenes
-      getAvailableBioBricksOfType(BioBrick.Type.GENE)
+      availableGenes
       , getDisplayableAvailableBioBrick
       );
     _displayableAvailableTerminators = getDisplayableAvailableBioBricks(
-      //_availableTerminators
-      getAvailableBioBricksOfType(BioBrick.Type.TERMINATOR)
+      availableTerminators
       , getDisplayableAvailableBioBrick
       );
+
+      Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
+      +"\n\navailablePromoters="+Logger.ToString<BioBrick>(availablePromoters)
+      +",\n\navailableRBS="+Logger.ToString<BioBrick>(availableRBS)
+      +",\n\navailableGenes="+Logger.ToString<BioBrick>(availableGenes)
+      +",\n\navailableTerminators="+Logger.ToString<BioBrick>(availableTerminators)
+
+      +",\n\n_displayableAvailablePromoters="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailablePromoters)
+      +",\n\n_displayableAvailableRBS="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableRBS)
+      +",\n\n_displayableAvailableGenes="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableGenes)
+      +",\n\n_displayableAvailableTerminators="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
+      , Logger.Level.TRACE);
+
   }
 
   private LinkedList<BioBrick> getAvailableBioBricksOfType(BioBrick.Type type) {
+    Logger.Log("AvailableBioBricksManager::getAvailableBioBricksOfType("+type+")", Logger.Level.TRACE);
     return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => (b.getType() == type));
   }
 
@@ -143,7 +162,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-    Logger.Log("AvailableBioBricksManager::Start() starts", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::Start() starts", Logger.Level.TRACE);
 	  updateDisplayedBioBricks();
     displayPromoters();
 
@@ -153,12 +172,12 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
     DeviceLoader dLoader = new DeviceLoader(_availableBioBricks);
     foreach (string file in _deviceFiles) {
-      Logger.Log("AvailableBioBricksManager::Start loads device file "+file, Logger.Level.WARN);
+      Logger.Log("AvailableBioBricksManager::Start loads device file "+file, Logger.Level.TRACE);
       devices.AddRange(dLoader.loadDevicesFromFile(file));
     }
-    Logger.Log("AvailableBioBricksManager: calling inventory.UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager: calling inventory.UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     inventory.UpdateData(devices, new List<Device>(), new List<Device>());
-    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.TRACE);
 	}
 
   void Awake () {
@@ -166,47 +185,13 @@ public class AvailableBioBricksManager : MonoBehaviour {
     //load biobricks from xml
     BioBrickLoader bLoader = new BioBrickLoader();
 
-    /*
-    _availablePromoters   = new LinkedList<PromoterBrick>();
-    _availableRBS         = new LinkedList<RBSBrick>();
-    _availableGenes       = new LinkedList<GeneBrick>();
-    _availableTerminators = new LinkedList<TerminatorBrick>();
-    */
-
     _availableBioBricks   = new LinkedList<BioBrick>();
 
     foreach (string file in _bioBrickFiles) {
       Logger.Log("AvailableBioBricksManager::Awake loads biobrick file "+file, Logger.Level.TRACE);
-      //sortInto(bLoader.loadBioBricksFromFile(file));
       LinkedListExtensions.AppendRange<BioBrick>(_availableBioBricks, bLoader.loadBioBricksFromFile(file));
     }
     Logger.Log("AvailableBioBricksManager::Awake loaded "+_bioBrickFiles, Logger.Level.INFO);
   }
-
-  /*
-  private void sortInto(LinkedList<BioBrick> bricks) {
-    Logger.Log("AvailableBioBricksManager::sortInto START with "+Logger.ToString<BioBrick>(bricks), Logger.Level.TRACE);
-    foreach (BioBrick brick in bricks) {
-      switch(brick.getType()) {
-        case BioBrick.Type.PROMOTER:
-          _availablePromoters.AddLast((PromoterBrick)brick);
-          break;
-        case BioBrick.Type.RBS:
-          _availableRBS.AddLast((RBSBrick)brick);
-          break;
-        case BioBrick.Type.GENE:
-          _availableGenes.AddLast((GeneBrick)brick);
-          break;
-        case BioBrick.Type.TERMINATOR:
-          _availableTerminators.AddLast((TerminatorBrick)brick);
-          break;
-        default:
-          Logger.Log("AvailableBioBricksManager::sortInto unknown type "+brick.getType(), Logger.Level.WARN);
-          break;
-      }
-    }
-    Logger.Log("AvailableBioBricksManager::sortInto DONE", Logger.Level.TRACE);
-  }
-  */
 
 }

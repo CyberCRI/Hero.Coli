@@ -33,7 +33,7 @@ public abstract class DeviceContainer : MonoBehaviour {
 
  // Use this for initialization
  protected void Awake () {
-   Logger.Log("DeviceContainer::Awake()", Logger.Level.WARN);
+   Logger.Log("DeviceContainer::Awake()", Logger.Level.TRACE);
    _devices = new List<Device>();
    _displayer = (DevicesDisplayer)GameObject.Find (_displayerName).GetComponent<DevicesDisplayer>();
  }

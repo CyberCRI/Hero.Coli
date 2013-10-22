@@ -156,8 +156,7 @@ public class Inventory : DeviceContainer
 
   // Use this for initialization
   new void Awake () {
-    Logger.Log("Inventory::Awake()...", Logger.Level.WARN);
+    Logger.Log("Inventory::Awake()", Logger.Level.TRACE);
     base.Awake();
-    Logger.Log("Inventory::Awake()...done", Logger.Level.TRACE);
   }
 }

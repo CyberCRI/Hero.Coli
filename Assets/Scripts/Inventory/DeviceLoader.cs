@@ -23,7 +23,7 @@ public class DeviceLoader {
   }
 
   public DeviceLoader(LinkedList<BioBrick> availableBioBricks) {
-    Logger.Log("DeviceLoader::DeviceLoader("+Logger.ToString<BioBrick>(availableBioBricks)+")", Logger.Level.WARN);
+    Logger.Log("DeviceLoader::DeviceLoader("+Logger.ToString<BioBrick>(availableBioBricks)+")", Logger.Level.TRACE);
     _availableBioBricks = new LinkedList<BioBrick>();
     _availableBioBricks.AppendRange(availableBioBricks);
   }
@@ -31,7 +31,7 @@ public class DeviceLoader {
 
   public LinkedList<Device> loadDevicesFromFile(string filePath)
   {
-    Logger.Log("DeviceLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.WARN);
+    Logger.Log("DeviceLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
 
     MemoryStream ms = Tools.getEncodedFileContent(filePath);
 
@@ -55,10 +55,10 @@ public class DeviceLoader {
             if (attr.Name == BrickString){
               //find brick in existing bricks
               string brickName = attr.Attributes["id"].Value;
-              Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.WARN);
+              Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
               brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => (b.getName() == brickName));
               if(brick != null) {
-                Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.WARN);
+                Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
                 deviceBricks.AddLast(brick);
               } else {
                 Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick!", Logger.Level.WARN);
