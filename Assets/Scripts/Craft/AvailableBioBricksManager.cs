@@ -21,6 +21,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
   //biobrick data catalog
   /*
+   * TODO use for optimization
   private static LinkedList<PromoterBrick>        _availablePromoters   = new LinkedList<PromoterBrick>();
   private static LinkedList<RBSBrick>             _availableRBS         = new LinkedList<RBSBrick>();
   private static LinkedList<GeneBrick>            _availableGenes       = new LinkedList<GeneBrick>();
@@ -177,7 +178,12 @@ public class AvailableBioBricksManager : MonoBehaviour {
     }
     Logger.Log("AvailableBioBricksManager: calling inventory.UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     inventory.UpdateData(devices, new List<Device>(), new List<Device>());
-    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.TRACE);
+
+    //SAVE test
+    DeviceSaver dSaver = new DeviceSaver();
+    dSaver.saveDevicesToFile(new LinkedList<Device>(), "Assets/Data/raph/userDevices.xml");
+
+    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.WARN);
 	}
 
   void Awake () {

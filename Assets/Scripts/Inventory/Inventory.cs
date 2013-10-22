@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Inventory : DeviceContainer
 {
+
   public enum AddingResult {
     SUCCESS,
     FAILURE_SAME_NAME,

@@ -39,7 +39,7 @@ public class DeviceLoader {
 
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.Load(ms);
-    XmlNodeList deviceList = xmlDoc.GetElementsByTagName("Device");
+    XmlNodeList deviceList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.DEVICE);
 
     reinitVars();
 

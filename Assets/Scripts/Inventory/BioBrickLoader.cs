@@ -7,10 +7,6 @@ using System.IO;
 
 //TODO refactor with FileLoader
 public class BioBrickLoader {
-  const string PromoterString = "promoter";
-  const string RBSString = "rbs";
-  const string GeneString = "gene";
-  const string TerminatorString = "terminator";
 
   string bioBrickName;
   string bioBrickSize;
@@ -53,7 +49,7 @@ public class BioBrickLoader {
 
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.Load(ms);
-    XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName("BioBrick");
+    XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.BIOBRICK);
 
     reinitVars();
 
@@ -70,8 +66,8 @@ public class BioBrickLoader {
 
         if (checkString(bioBrickName)) {
             switch(bioBrickType) {
-              case PromoterString:
-                logCurrentBioBrick(PromoterString);
+              case BioBricksXMLTags.PROMOTER:
+                logCurrentBioBrick(BioBricksXMLTags.PROMOTER);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
                     case "beta":
@@ -81,7 +77,7 @@ public class BioBrickLoader {
                       formula = attr.InnerText;
                       break;
                     default:
-                      logUnknownAttr(attr, PromoterString);
+                      logUnknownAttr(attr, BioBricksXMLTags.PROMOTER);
                       break;
                   }
                 }
@@ -89,15 +85,15 @@ public class BioBrickLoader {
                   bioBrick = new PromoterBrick(bioBrickName, parseFloat(beta), formula);
                 }
                 break;
-              case RBSString:
-                logCurrentBioBrick(RBSString);
+              case BioBricksXMLTags.RBS:
+                logCurrentBioBrick(BioBricksXMLTags.RBS);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
                     case "rbsFactor":
                       rbsfactor = attr.InnerText;
                       break;
                     default:
-                      logUnknownAttr(attr, RBSString);
+                      logUnknownAttr(attr, BioBricksXMLTags.RBS);
                       break;
                   }
                 }
@@ -105,15 +101,15 @@ public class BioBrickLoader {
                   bioBrick = new RBSBrick(bioBrickName, parseFloat(rbsfactor));
                 }
                 break;
-              case GeneString:
-                logCurrentBioBrick(GeneString);
+              case BioBricksXMLTags.GENE:
+                logCurrentBioBrick(BioBricksXMLTags.GENE);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
                     case "protein":
                       protein = attr.InnerText;
                       break;
                     default:
-                      logUnknownAttr(attr, GeneString);
+                      logUnknownAttr(attr, BioBricksXMLTags.GENE);
                       break;
                   }
                 }
@@ -121,15 +117,15 @@ public class BioBrickLoader {
                   bioBrick = new GeneBrick(bioBrickName, protein);
                 }
                 break;
-              case TerminatorString:
-                logCurrentBioBrick(TerminatorString);
+              case BioBricksXMLTags.TERMINATOR:
+                logCurrentBioBrick(BioBricksXMLTags.TERMINATOR);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
                     case "terminatorFactor":
                       terminatorfactor = attr.InnerText;
                       break;
                     default:
-                      logUnknownAttr(attr, TerminatorString);
+                      logUnknownAttr(attr, BioBricksXMLTags.TERMINATOR);
                       break;
                   }
                 }

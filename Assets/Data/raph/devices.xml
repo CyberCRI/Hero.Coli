@@ -1,8 +1,8 @@
-<Devices>
-  <Device id="myDevice">
+<devices>
+  <device id="myDevice">
     <brick id="myPromoter"/>
     <brick id="myRBS"/>
     <brick id="myGene"/>
     <brick id="myTerminator"/>
-  </Device>
-</Devices>
+  </device>
+</devices>
