@@ -181,9 +181,9 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
     //SAVE test
     DeviceSaver dSaver = new DeviceSaver();
-    dSaver.saveDevicesToFile(new LinkedList<Device>(), "Assets/Data/raph/userDevices.xml");
+    dSaver.saveDevicesToFile(devices, "Assets/Data/raph/userDevices.xml");
 
-    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.WARN);
+    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.TRACE);
 	}
 
   void Awake () {

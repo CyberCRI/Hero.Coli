@@ -56,9 +56,9 @@ public class BioBrickLoader {
     foreach (XmlNode bioBrickNode in bioBrickList)
       {
         //common biobrick attributes
-        bioBrickName = bioBrickNode.Attributes["id"].Value;
-        bioBrickSize = bioBrickNode.Attributes["size"].Value;
-        bioBrickType = bioBrickNode.Attributes["type"].Value;
+        bioBrickName = bioBrickNode.Attributes[BioBricksXMLTags.ID].Value;
+        bioBrickSize = bioBrickNode.Attributes[BioBricksXMLTags.SIZE].Value;
+        bioBrickType = bioBrickNode.Attributes[BioBricksXMLTags.TYPE].Value;
         Logger.Log ("BioBrickLoader::loadBioBricksFromFile got id="+bioBrickName
           +", size="+bioBrickSize
           +", type="+bioBrickType
@@ -70,10 +70,10 @@ public class BioBrickLoader {
                 logCurrentBioBrick(BioBricksXMLTags.PROMOTER);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
-                    case "beta":
+                    case BioBricksXMLTags.BETA:
                       beta = attr.InnerText;
                       break;
-                    case "formula":
+                    case BioBricksXMLTags.FORMULA:
                       formula = attr.InnerText;
                       break;
                     default:
@@ -89,7 +89,7 @@ public class BioBrickLoader {
                 logCurrentBioBrick(BioBricksXMLTags.RBS);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
-                    case "rbsFactor":
+                    case BioBricksXMLTags.RBSFACTOR:
                       rbsfactor = attr.InnerText;
                       break;
                     default:
@@ -105,7 +105,7 @@ public class BioBrickLoader {
                 logCurrentBioBrick(BioBricksXMLTags.GENE);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
-                    case "protein":
+                    case BioBricksXMLTags.PROTEIN:
                       protein = attr.InnerText;
                       break;
                     default:
@@ -121,7 +121,7 @@ public class BioBrickLoader {
                 logCurrentBioBrick(BioBricksXMLTags.TERMINATOR);
                 foreach (XmlNode attr in bioBrickNode){
                   switch (attr.Name){
-                    case "terminatorFactor":
+                    case BioBricksXMLTags.TERMINATORFACTOR:
                       terminatorfactor = attr.InnerText;
                       break;
                     default:

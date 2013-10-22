@@ -7,7 +7,6 @@ using System.IO;
 
 //TODO refactor with FileLoader
 public class DeviceLoader {
-  const string BrickString = "brick";
   private LinkedList<BioBrick> _availableBioBricks;
 
   private string deviceName;
@@ -46,15 +45,15 @@ public class DeviceLoader {
     foreach (XmlNode deviceNode in deviceList)
       {
         //common biobrick attributes
-        deviceName = deviceNode.Attributes["id"].Value;
+        deviceName = deviceNode.Attributes[BioBricksXMLTags.ID].Value;
         Logger.Log ("DeviceLoader::loadDevicesFromFile got id="+deviceName
           , Logger.Level.TRACE);
 
         if (checkString(deviceName)) {
           foreach (XmlNode attr in deviceNode) {
-            if (attr.Name == BrickString){
+            if (attr.Name == BioBricksXMLTags.BIOBRICK) {
               //find brick in existing bricks
-              string brickName = attr.Attributes["id"].Value;
+              string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
               Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
               brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => (b.getName() == brickName));
               if(brick != null) {
