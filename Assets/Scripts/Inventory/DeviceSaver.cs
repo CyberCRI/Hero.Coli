@@ -26,16 +26,16 @@ public class DeviceSaver {
       foreach (Device device in devices)
       {
         writer.WriteStartElement(BioBricksXMLTags.DEVICE);
-        writer.WriteElementString(BioBricksXMLTags.ID, device.getName());
+        writer.WriteAttributeString(BioBricksXMLTags.ID, device.getName());
         foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
         {
           writer.WriteStartElement(BioBricksXMLTags.BIOBRICK);
-          writer.WriteElementString(BioBricksXMLTags.ID, brick.getName());
+          writer.WriteAttributeString(BioBricksXMLTags.ID, brick.getName());
 
           if (exhaustive) { //saves details about biobricks
-            writer.WriteElementString(BioBricksXMLTags.SIZE, brick.getSize().ToString());
+            writer.WriteAttributeString(BioBricksXMLTags.SIZE, brick.getSize().ToString());
             BioBrick.Type bioBrickType = brick.getType();
-            writer.WriteElementString(BioBricksXMLTags.TYPE, bioBrickType.ToString().ToLower());
+            writer.WriteAttributeString(BioBricksXMLTags.TYPE, bioBrickType.ToString().ToLower());
             switch(bioBrickType) {
               case BioBrick.Type.PROMOTER:
                 writer.WriteElementString(BioBricksXMLTags.BETA, ((PromoterBrick)brick).getBeta().ToString());

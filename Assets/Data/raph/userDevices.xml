@@ -1,30 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device>
-    <id>myDevice</id>
-    <brick>
-      <id>myPromoter</id>
-      <size>1</size>
-      <type>promoter</type>
+  <device id="device0">
+    <brick id="myPromoter" size="1" type="promoter">
       <beta>1</beta>
       <formula>"![0.8,2]pLac"</formula>
     </brick>
-    <brick>
-      <id>myRBS</id>
-      <size>2</size>
-      <type>rbs</type>
+    <brick id="myRBS" size="2" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick>
-      <id>myGene</id>
-      <size>3</size>
-      <type>gene</type>
+    <brick id="myGene" size="3" type="gene">
       <protein>LacI</protein>
     </brick>
-    <brick>
-      <id>myTerminator</id>
-      <size>4</size>
-      <type>terminator</type>
+    <brick id="myTerminator" size="4" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>

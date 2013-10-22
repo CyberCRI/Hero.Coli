@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class AvailableBioBricksManager : MonoBehaviour {
 
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
-  string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml" };
+  string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
 
   //width of a displayed BioBrick
   public int _width = 12;
@@ -178,10 +178,6 @@ public class AvailableBioBricksManager : MonoBehaviour {
     }
     Logger.Log("AvailableBioBricksManager: calling inventory.UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     inventory.UpdateData(devices, new List<Device>(), new List<Device>());
-
-    //SAVE test
-    DeviceSaver dSaver = new DeviceSaver();
-    dSaver.saveDevicesToFile(devices, "Assets/Data/raph/userDevices.xml");
 
     Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.TRACE);
 	}

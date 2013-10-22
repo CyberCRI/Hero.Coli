@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class Inventory : DeviceContainer
 {
 
+  public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
+
   public enum AddingResult {
     SUCCESS,
     FAILURE_SAME_NAME,
@@ -121,6 +123,9 @@ public class Inventory : DeviceContainer
     if(addingResult == AddingResult.SUCCESS){
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device="+device,Logger.Level.INFO);
       addDevice(device);
+
+      DeviceSaver dSaver = new DeviceSaver();
+      dSaver.saveDevicesToFile(_devices, SaveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
