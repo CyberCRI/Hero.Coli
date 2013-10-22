@@ -51,101 +51,109 @@ public class BioBrickLoader {
     xmlDoc.Load(ms);
     XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.BIOBRICK);
 
-    reinitVars();
-
     foreach (XmlNode bioBrickNode in bioBrickList)
-      {
-        //common biobrick attributes
+    {
+      reinitVars();
+      //common biobrick attributes
+      try {
         bioBrickName = bioBrickNode.Attributes[BioBricksXMLTags.ID].Value;
         bioBrickSize = bioBrickNode.Attributes[BioBricksXMLTags.SIZE].Value;
         bioBrickType = bioBrickNode.Attributes[BioBricksXMLTags.TYPE].Value;
-        Logger.Log ("BioBrickLoader::loadBioBricksFromFile got id="+bioBrickName
-          +", size="+bioBrickSize
-          +", type="+bioBrickType
-          , Logger.Level.TRACE);
-
-        if (checkString(bioBrickName)) {
-            switch(bioBrickType) {
-              case BioBricksXMLTags.PROMOTER:
-                logCurrentBioBrick(BioBricksXMLTags.PROMOTER);
-                foreach (XmlNode attr in bioBrickNode){
-                  switch (attr.Name){
-                    case BioBricksXMLTags.BETA:
-                      beta = attr.InnerText;
-                      break;
-                    case BioBricksXMLTags.FORMULA:
-                      formula = attr.InnerText;
-                      break;
-                    default:
-                      logUnknownAttr(attr, BioBricksXMLTags.PROMOTER);
-                      break;
-                  }
-                }
-                if(checkString(beta) && checkString(formula)){
-                  bioBrick = new PromoterBrick(bioBrickName, parseFloat(beta), formula);
-                }
-                break;
-              case BioBricksXMLTags.RBS:
-                logCurrentBioBrick(BioBricksXMLTags.RBS);
-                foreach (XmlNode attr in bioBrickNode){
-                  switch (attr.Name){
-                    case BioBricksXMLTags.RBSFACTOR:
-                      rbsfactor = attr.InnerText;
-                      break;
-                    default:
-                      logUnknownAttr(attr, BioBricksXMLTags.RBS);
-                      break;
-                  }
-                }
-                if(checkString(rbsfactor)) {
-                  bioBrick = new RBSBrick(bioBrickName, parseFloat(rbsfactor));
-                }
-                break;
-              case BioBricksXMLTags.GENE:
-                logCurrentBioBrick(BioBricksXMLTags.GENE);
-                foreach (XmlNode attr in bioBrickNode){
-                  switch (attr.Name){
-                    case BioBricksXMLTags.PROTEIN:
-                      protein = attr.InnerText;
-                      break;
-                    default:
-                      logUnknownAttr(attr, BioBricksXMLTags.GENE);
-                      break;
-                  }
-                }
-                if(checkString(protein)) {
-                  bioBrick = new GeneBrick(bioBrickName, protein);
-                }
-                break;
-              case BioBricksXMLTags.TERMINATOR:
-                logCurrentBioBrick(BioBricksXMLTags.TERMINATOR);
-                foreach (XmlNode attr in bioBrickNode){
-                  switch (attr.Name){
-                    case BioBricksXMLTags.TERMINATORFACTOR:
-                      terminatorfactor = attr.InnerText;
-                      break;
-                    default:
-                      logUnknownAttr(attr, BioBricksXMLTags.TERMINATOR);
-                      break;
-                  }
-                }
-                if(checkString(terminatorfactor)) {
-                  bioBrick = new TerminatorBrick(bioBrickName, parseFloat(terminatorfactor));
-                }
-                break;
-              default:
-                Logger.Log ("BioBrickLoader::loadBioBricksFromFile wrong type "+bioBrickType, Logger.Level.WARN);
-                break;
-            }
-            if(bioBrick != null && checkString(bioBrickSize)){
-              bioBrick.setSize(parseInt(bioBrickSize));
-              resultBioBricks.AddLast(bioBrick);
-            }
-          } else {
-            Logger.Log("BioBrickLoader::loadBioBricksFromFile Error : missing attribute id in BioBrick node", Logger.Level.WARN);
-          }
-        reinitVars();
       }
+      catch (NullReferenceException exc) {
+        Logger.Log("BioBrickLoader::loadBioBricksFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
+        continue;
+      }
+      catch (Exception exc) {
+        Logger.Log("BioBrickLoader::loadBioBricksFromFile failed, got exc="+exc, Logger.Level.WARN);
+        continue;
+      }
+      Logger.Log ("BioBrickLoader::loadBioBricksFromFile got id="+bioBrickName
+        +", size="+bioBrickSize
+        +", type="+bioBrickType
+        , Logger.Level.TRACE);
+
+      if (checkString(bioBrickName)) {
+          switch(bioBrickType) {
+            case BioBricksXMLTags.PROMOTER:
+              logCurrentBioBrick(BioBricksXMLTags.PROMOTER);
+              foreach (XmlNode attr in bioBrickNode){
+                switch (attr.Name){
+                  case BioBricksXMLTags.BETA:
+                    beta = attr.InnerText;
+                    break;
+                  case BioBricksXMLTags.FORMULA:
+                    formula = attr.InnerText;
+                    break;
+                  default:
+                    logUnknownAttr(attr, BioBricksXMLTags.PROMOTER);
+                    break;
+                }
+              }
+              if(checkString(beta) && checkString(formula)){
+                bioBrick = new PromoterBrick(bioBrickName, parseFloat(beta), formula);
+              }
+              break;
+            case BioBricksXMLTags.RBS:
+              logCurrentBioBrick(BioBricksXMLTags.RBS);
+              foreach (XmlNode attr in bioBrickNode){
+                switch (attr.Name){
+                  case BioBricksXMLTags.RBSFACTOR:
+                    rbsfactor = attr.InnerText;
+                    break;
+                  default:
+                    logUnknownAttr(attr, BioBricksXMLTags.RBS);
+                    break;
+                }
+              }
+              if(checkString(rbsfactor)) {
+                bioBrick = new RBSBrick(bioBrickName, parseFloat(rbsfactor));
+              }
+              break;
+            case BioBricksXMLTags.GENE:
+              logCurrentBioBrick(BioBricksXMLTags.GENE);
+              foreach (XmlNode attr in bioBrickNode){
+                switch (attr.Name){
+                  case BioBricksXMLTags.PROTEIN:
+                    protein = attr.InnerText;
+                    break;
+                  default:
+                    logUnknownAttr(attr, BioBricksXMLTags.GENE);
+                    break;
+                }
+              }
+              if(checkString(protein)) {
+                bioBrick = new GeneBrick(bioBrickName, protein);
+              }
+              break;
+            case BioBricksXMLTags.TERMINATOR:
+              logCurrentBioBrick(BioBricksXMLTags.TERMINATOR);
+              foreach (XmlNode attr in bioBrickNode){
+                switch (attr.Name){
+                  case BioBricksXMLTags.TERMINATORFACTOR:
+                    terminatorfactor = attr.InnerText;
+                    break;
+                  default:
+                    logUnknownAttr(attr, BioBricksXMLTags.TERMINATOR);
+                    break;
+                }
+              }
+              if(checkString(terminatorfactor)) {
+                bioBrick = new TerminatorBrick(bioBrickName, parseFloat(terminatorfactor));
+              }
+              break;
+            default:
+              Logger.Log ("BioBrickLoader::loadBioBricksFromFile wrong type "+bioBrickType, Logger.Level.WARN);
+              break;
+          }
+          if(bioBrick != null && checkString(bioBrickSize)){
+            bioBrick.setSize(parseInt(bioBrickSize));
+            resultBioBricks.AddLast(bioBrick);
+          }
+        } else {
+          Logger.Log("BioBrickLoader::loadBioBricksFromFile Error : missing attribute id in BioBrick node", Logger.Level.WARN);
+        }
+    }
     return resultBioBricks;
   }
 

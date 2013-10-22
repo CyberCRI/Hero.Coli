@@ -44,8 +44,18 @@ public class DeviceLoader {
 
     foreach (XmlNode deviceNode in deviceList)
       {
-        //common biobrick attributes
-        deviceName = deviceNode.Attributes[BioBricksXMLTags.ID].Value;
+        try {
+          deviceName = deviceNode.Attributes[BioBricksXMLTags.ID].Value;
+        }
+        catch (NullReferenceException exc) {
+          Logger.Log("DeviceLoader::loadDevicesFromFile bad xml, missing field \"id\"\n"+exc, Logger.Level.WARN);
+          continue;
+        }
+        catch (Exception exc) {
+          Logger.Log("DeviceLoader::loadDevicesFromFile failed, got exc="+exc, Logger.Level.WARN);
+          continue;
+        }
+
         Logger.Log ("DeviceLoader::loadDevicesFromFile got id="+deviceName
           , Logger.Level.TRACE);
 
