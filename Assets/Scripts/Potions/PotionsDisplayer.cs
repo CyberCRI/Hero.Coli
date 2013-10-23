@@ -6,8 +6,11 @@ public class PotionsDisplayer : MonoBehaviour {
 	
 	private List<Potion> _potions = new List<Potion>();
 	public GameObject _potionPrefab;
-	private float _timeCounter;
-	private float _timeDelta = 0.2f;
+	
+	private float _timeAtLastFrame = 0f;
+    private float _timeAtCurrentFrame = 0f;
+    private float _deltaTime = 0f;	
+	private float _deltaTimeThreshold = 0.2f;
 	
 	//TODO use real potion width
 	static private float _width = 50.0f;
@@ -18,7 +21,7 @@ public class PotionsDisplayer : MonoBehaviour {
 		Debug.Log("addPotion("+potionID+")");
 		if(!_potions.Exists(potion => potion.getID() == potionID)) { 
 			Vector3 localPosition = _positionOffset + new Vector3(_potions.Count*_width, 0.0f, 0.0f);
-			Potion potion = Potion.Create (gameObject.transform, localPosition, potionID);
+			Potion potion = Potion.Create(gameObject.transform, localPosition, potionID);
 			_potions.Add(potion);
 		}
 	}
@@ -47,7 +50,11 @@ public class PotionsDisplayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - _timeCounter > _timeDelta) {
+		
+		_timeAtCurrentFrame = Time.realtimeSinceStartup;
+        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+		
+		if(_deltaTime > _deltaTimeThreshold) {
 			if (Input.GetKey(KeyCode.C)) {//CREATE
 				int randomID = Random.Range(0, 12000);
 	        	addPotion(randomID);
@@ -59,7 +66,7 @@ public class PotionsDisplayer : MonoBehaviour {
 		        	removePotion(randomPotion.getID());
 				}
 			}
-			_timeCounter = Time.time;
+			_timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
 }

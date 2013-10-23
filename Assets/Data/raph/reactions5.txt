@@ -5,62 +5,61 @@
       <name>Water</name>
       <EnergyCost>0.1</EnergyCost>
       <reactants>
-	<reactant>
-	  <name>O</name>
-	  <quantity>1</quantity>
-	</reactant>
-	<reactant>
-	  <name>H</name>
-	  <quantity>2</quantity>
-	</reactant>
+        <reactant>
+          <name>O</name>
+          <quantity>1</quantity>
+        </reactant>
+        <reactant>
+          <name>H</name>
+          <quantity>2</quantity>
+        </reactant>
       </reactants>
-
       <products>
-	<product>
-	  <name>H2O</name>
-	  <quantity>1</quantity>	
-	</product>
+        <product>
+          <name>H2O</name>
+          <quantity>1</quantity>	
+        </product>
       </products>
     </instantReaction>
 
   </reactions>
 
- 	 
+
   <molecules id="CelliaMolecules">
 
      <molecule type="transcription_factor">
       <name>LacI</name>
-      <description>oxygene</description>
+      <description>LacI</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>pLac</name>
-      <description>oxygene</description>
+      <description>pLac</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>GFP</name>
-      <description>oxygene</description>
+      <description>Green Fluorescence Protein</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
      <molecule type="transcription_factor">
       <name>O</name>
-      <description>oxygene</description>
+      <description>oxygen</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
-    <molecule type="transcription_factor">
+    <molecule type="other">
       <name>H</name>
-      <description>hydrogene</description>
+      <description>hydrogen</description>
       <concentration>0</concentration>
       <degradationRate>0.1386</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
-      <description>de l'eau!</description>
+      <description>water</description>
       <concentration>0</concentration>
       <degradationRate>0.13</degradationRate>
     </molecule> 

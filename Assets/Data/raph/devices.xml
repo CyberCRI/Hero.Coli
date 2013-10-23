@@ -1,0 +1,8 @@
+<devices>
+  <device id="GFPD">
+    <brick id="PT"/>
+    <brick id="RBS1"/>
+    <brick id="GFP"/>
+    <brick id="T1"/>
+  </device>
+</devices>

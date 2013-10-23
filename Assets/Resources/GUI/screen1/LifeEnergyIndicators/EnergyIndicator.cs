@@ -13,7 +13,7 @@ public class EnergyIndicator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TODO trigger this after resize
-		hero = GameObject.Find ("Hero").GetComponent<Hero>();
+		hero = GameObject.Find ("Perso").GetComponent<Hero>();
 		GameObject energyIndicator = GameObject.Find ("EnergyIndicator");
 		Transform progressBar = energyIndicator.transform.Find("ProgressBar");
 		_foreground = progressBar.transform.Find("Foreground");

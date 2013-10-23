@@ -22,7 +22,8 @@ public class Potion : MonoBehaviour {
 
 	private static float _scale = 0.6687689f;
 	private static Vector3 _scaleVector = new Vector3(_scale, _scale, _scale);
-	
+  public static Object prefab = Resources.Load("GUI/screen1/Potions/PotionPrefab");
+	private static PotionsDisplayer potionDisplayer;
 	
 	private UIImageButton _imageButton;
 	private int _potionID;	
@@ -32,11 +33,10 @@ public class Potion : MonoBehaviour {
 	public int getID() {
 		return _potionID;
 	}
-	
-	public static Object prefab = Resources.Load("GUI/screen1/Potions/PotionPrefab");
+
 	public static Potion Create(Transform parentTransform, Vector3 localPosition, int potionID)
 	{
-		Debug.Log("create potion "+potionID);
+		Logger.Log("create potion "+potionID, Logger.Level.TRACE);
 	    GameObject newPotion = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
 		newPotion.transform.parent = parentTransform;
 		newPotion.transform.localPosition = localPosition;
@@ -67,15 +67,18 @@ public class Potion : MonoBehaviour {
 		_imageButton.target.spriteName = spriteUri + _normalSuffix;
 		_imageButton.target.MakePixelPerfect();
 		
-		Debug.Log("setSprite("+spriteUri+"): normalSprite=" + _imageButton.normalSprite
+		Logger.Log("setSprite("+spriteUri+"): normalSprite=" + _imageButton.normalSprite
 			+ ", imageButton.hoverSprite=" + _imageButton.hoverSprite
-			+ ", imageButton.pressedSprite=" + _imageButton.pressedSprite);
+			+ ", imageButton.pressedSprite=" + _imageButton.pressedSprite
+      , Logger.Level.TRACE);
 	}
 	
-	void OnPress (bool pressed)
+	void OnPress (bool isPressed)
 	{
-		PotionsDisplayer displayer = transform.parent.GetComponent<PotionsDisplayer>() as PotionsDisplayer;
-		displayer.removePotion(_potionID);
+    if(isPressed) {
+      Logger.Log("Potion::OnPress", Logger.Level.INFO);
+  		potionDisplayer.removePotion(_potionID);
+    }
 	}
 	
 	private string getRandomSprite() {
@@ -85,7 +88,10 @@ public class Potion : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		Debug.Log("start potion "+_potionID);
+		Logger.Log("start potion "+_potionID, Logger.Level.TRACE);
+    if(potionDisplayer==null){
+      potionDisplayer = transform.parent.GetComponent<PotionsDisplayer>() as PotionsDisplayer;
+    }
 		_imageButton = gameObject.GetComponent<UIImageButton>() as UIImageButton;
 		_uri = getRandomSprite();
 		setSprite(_uri);

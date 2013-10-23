@@ -361,13 +361,20 @@ public class Promoter : IReaction
     foreach (Product pro in _products)
       {
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        if (enableSequential)
+        if (enableSequential) {
+          if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
+          if( pro == null) Debug.Log("pro is null");
           mol.addConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
                                * ReactionEngine.reactionsSpeed * _reactionSpeed);
-        else
+      } else
           mol.addNewConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
                                   * ReactionEngine.reactionsSpeed * _reactionSpeed);
       }
+  }
+
+  public override string ToString ()
+  {
+    return string.Format ("[Promoter: name: "+_name+", beta: "+_beta+", formula: "+_formula+"]");
   }
 
 }

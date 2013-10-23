@@ -30,7 +30,6 @@ public static class LinkedListExtensions
     foreach (T item in items)
         source.AddBefore(first, item);
   }
-
   
   /*!
     \brief Shuffle a LinkedList
@@ -55,5 +54,35 @@ public static class LinkedListExtensions
             list.First.Value = v;
           }
       }
+  }
+
+  public delegate bool Predicate<T>(T t);
+  /*!
+    \brief Filter a LinkedList using a predicate
+    \param list The list to filter
+    \param predicate The predicate to filter elements of the list
+   */
+  public static LinkedList<T> Filter<T>(LinkedList<T> list, Predicate<T> predicate) {
+    string predicateString = predicate==null?"(null)":"predicate";
+    Logger.Log("LinkedListExtensions::Filter("+Logger.ToString<T>(list)+", "+predicateString+")", Logger.Level.TRACE);
+    LinkedList<T> result = new LinkedList<T>();
+    foreach (T t in list) {
+      if (predicate(t)) {
+        result.AddLast(t);
+      }
+    }
+    return result;
+  }
+
+
+  public static T Find<T>(LinkedList<T> list, Predicate<T> predicate) {
+    Logger.Log("LinkedListExtensions::Find", Logger.Level.TRACE);
+    foreach (T t in list) {
+      if (predicate(t)) {
+        return t;
+      }
+    }
+    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!", Logger.Level.WARN);
+    return default(T);
   }
 }

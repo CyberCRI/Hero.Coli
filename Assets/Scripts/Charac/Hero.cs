@@ -3,9 +3,6 @@ using System.Collections;
 
 
 public class Hero : MonoBehaviour{
-
-	public Transform mover;
-	public Camera mainCam;
 	
 	//Getter & setter for the move speed.
 	private float _moveSpeed = 3f;
@@ -77,18 +74,6 @@ public class Hero : MonoBehaviour{
 		//When the player is idle his energy gets drained.
 		setEnergy(getEnergy() - Time.deltaTime * .01f);
 		setLife(getLife() + Time.deltaTime * .1f);
-		
-		//Keyboard controls.
-	 	transform.Translate((Input.GetAxis("Horizontal") * _moveSpeed * Time.deltaTime), 0, (Input.GetAxis("Vertical") * _moveSpeed * Time.deltaTime));
-
-		//Click to move controls.
-		//	if (Input.GetMouseButtonDown(0)){
-		//		Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
-		//		RaycastHit hit;
-		//		if (Physics.Raycast(ray, out hit)) {if (hit.transform.name == "Ground") _destination = hit.point;}
-		//	}
-		//	mover.position = Vector3.Lerp(mover.transform.position, _destination, Time.deltaTime * _moveSmooth);
-		//	Debug.DrawRay(mover.transform.position, _destination, Color.red);
 	}
 
 	//When the player collects a biobrick.
