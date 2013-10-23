@@ -1,15 +1,60 @@
 <bricks>
-  <brick id="myPromoter" size="1" type="promoter">
+  <brick id="PT" size="5" type="promoter">
+    <beta>1.0</beta>
+    <formula>"T"</formula>
+  </brick>
+  <brick id="PnoLacI" size="12" type="promoter">
+    <beta>1.0</beta>
+    <formula>"![0.8,2]pLacI"</formula>
+  </brick>
+  <brick id="PnopLac" size="12" type="promoter">
     <beta>1.0</beta>
     <formula>"![0.8,2]pLac"</formula>
   </brick>
-  <brick id="myRBS" size="2" type="rbs">
+  <brick id="PGFP" size="9" type="promoter">
+    <beta>1.0</beta>
+    <formula>"[0.8,2]GFP"</formula>
+  </brick>
+  <brick id="PH" size="7" type="promoter">
+    <beta>1.0</beta>
+    <formula>"[0.8,2]H"</formula>
+  </brick>
+  <brick id="PO" size="7" type="promoter">
+    <beta>1.0</beta>
+    <formula>"[0.8,2]O"</formula>
+  </brick>
+  <brick id="PH2O" size="7" type="promoter">
+    <beta>1.0</beta>
+    <formula>"[0.8,2]H2O"</formula>
+  </brick>
+  <brick id="RBS1" size="5" type="rbs">
     <rbsFactor>1.0</rbsFactor>
   </brick>
-  <brick id="myGene" size="3" type="gene">
+  <brick id="RBS2" size="8" type="rbs">
+    <rbsFactor>2.0</rbsFactor>
+  </brick>
+  <brick id="LacI" size="20" type="gene">
     <protein>LacI</protein>
   </brick>
-  <brick id="myTerminator" size="4" type="terminator">
+  <brick id="pLac" size="20" type="gene">
+    <protein>pLac</protein>
+  </brick>
+  <brick id="GFP" size="30" type="gene">
+    <protein>GFP</protein>
+  </brick>
+  <brick id="H" size="3" type="gene">
+    <protein>H</protein>
+  </brick>
+  <brick id="O" size="3" type="gene">
+    <protein>O</protein>
+  </brick>
+  <brick id="H2O" size="3" type="gene">
+    <protein>H2O</protein>
+  </brick>
+  <brick id="T1" size="3" type="terminator">
     <terminatorFactor>1.0</terminatorFactor>
+  </brick>
+  <brick id="T2" size="7" type="terminator">
+    <terminatorFactor>2.0</terminatorFactor>
   </brick>
 </bricks>

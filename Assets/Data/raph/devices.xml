@@ -1,8 +1,8 @@
 <devices>
-  <device id="myDevice">
-    <brick id="myPromoter"/>
-    <brick id="myRBS"/>
-    <brick id="myGene"/>
-    <brick id="myTerminator"/>
+  <device id="GFPD">
+    <brick id="PT"/>
+    <brick id="RBS1"/>
+    <brick id="GFP"/>
+    <brick id="T1"/>
   </device>
 </devices>

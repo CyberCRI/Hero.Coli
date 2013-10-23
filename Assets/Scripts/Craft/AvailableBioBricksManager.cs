@@ -9,7 +9,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
   string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
 
   //width of a displayed BioBrick
-  public int _width = 12;
+  //set in Unity editor
+  public int _width;
 
   //prefab for available biobricks
   public GameObject availableBioBrick;
@@ -82,8 +83,11 @@ public class AvailableBioBricksManager : MonoBehaviour {
   }
 
   public Vector3 getNewPosition(int index) {
-    //TODO manage rows and columns
-      return availableBioBrick.transform.localPosition + new Vector3(index*_width, 0.0f, -0.1f);
+    int bricksPerRow = 4;
+    return availableBioBrick.transform.localPosition + new Vector3(
+      (index%bricksPerRow)*_width,
+      -(index/bricksPerRow)*_width,
+      -0.1f);
   }
 
   private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator(BioBrick brick, int index);
