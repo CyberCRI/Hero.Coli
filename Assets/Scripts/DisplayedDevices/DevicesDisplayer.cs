@@ -174,8 +174,8 @@ public class DevicesDisplayer : MonoBehaviour {
 		}
 	}
 
-  public void askAddEquipedDevice(Device device) {
-    _equipment.addDevice(device);
+  public DeviceContainer.AddingResult askAddEquipedDevice(Device device) {
+    return _equipment.askAddDevice(device);
   }
 
 
@@ -355,12 +355,13 @@ public class DevicesDisplayer : MonoBehaviour {
 				 proteinName,//gene
 				 terminatorFactor//terminator
 				);
+        DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
 				if(newDevice == null) {
 					Logger.Log("failed to provide device", Logger.Level.WARN);
 				} else {
-					_equipment.addDevice(newDevice);
+					addingResult = _equipment.askAddDevice(newDevice);
 				}
-        Logger.Log("V - create equiped device... done!", Logger.Level.TRACE);
+        Logger.Log("V - create equiped device... done! addingResult="+addingResult, Logger.Level.TRACE);
 								
 			}
 			
@@ -385,12 +386,13 @@ public class DevicesDisplayer : MonoBehaviour {
 				 proteinName,//gene
 				 terminatorFactor//terminator
 				);
+       DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
        if(newDevice == null) {
           Logger.Log("failed to provide device", Logger.Level.WARN);
         } else {
-			    _inventory.addDevice(newDevice);
+			    addingResult = _inventory.askAddDevice(newDevice);
         }
-        Logger.Log("B - create inventoried device... done!", Logger.Level.TRACE);
+        Logger.Log("B - create inventoried device... done! addingResult="+addingResult, Logger.Level.TRACE);
 			}
 	        if (Input.GetKey(KeyCode.T)) {//REMOVE
 				_timeAtLastFrame = _timeAtCurrentFrame;

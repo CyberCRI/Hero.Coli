@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device id="device0">
+  <device id="myDevice">
     <brick id="myPromoter" size="1" type="promoter">
       <beta>1</beta>
       <formula>"![0.8,2]pLac"</formula>

@@ -6,14 +6,6 @@ public class Inventory : DeviceContainer
 
   public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
 
-  public enum AddingResult {
-    SUCCESS,
-    FAILURE_SAME_NAME,
-    FAILURE_SAME_BRICKS,
-    FAILURE_SAME_DEVICE,
-    FAILURE_DEFAULT
-  }
-
   private string _genericDeviceNamePrefix = "device";
 
   private static string[] proteinsIn = new string[]{
@@ -75,7 +67,7 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory() done", Logger.Level.TRACE);
   }
 
-  public override void addDevice(Device device) {
+  private void addDevice(Device device) {
     Logger.Log("Inventory::addDevice("+device+"), count before="+_devices.Count, Logger.Level.TRACE);
     Device copy = Device.buildDevice(device);
     string displayerString = _displayer!=null?"name="+_displayer.name:"null";
@@ -93,7 +85,7 @@ public class Inventory : DeviceContainer
   }
 
   public AddingResult canAddDevice(Device device) {
-    Logger.Log("Inventory::canAddDevice("+device+")", Logger.Level.TRACE);
+    Logger.Log("Inventory::canAddDevice("+device+") with _devices="+Logger.ToString<Device>(_devices), Logger.Level.TRACE);
 
     if(device == null) {
       Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
@@ -117,11 +109,11 @@ public class Inventory : DeviceContainer
     }
   }
 
-  public AddingResult askAddDevice(Device device) {
+  public override AddingResult askAddDevice(Device device) {
     Logger.Log("Inventory::askAddDevice",Logger.Level.TRACE);
     AddingResult addingResult = canAddDevice(device);
     if(addingResult == AddingResult.SUCCESS){
-      Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, added device="+device,Logger.Level.INFO);
+      Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
       DeviceSaver dSaver = new DeviceSaver();

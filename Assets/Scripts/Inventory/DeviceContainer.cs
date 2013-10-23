@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 public abstract class DeviceContainer : MonoBehaviour {
 
+  public enum AddingResult {
+    SUCCESS,
+    FAILURE_SAME_NAME,
+    FAILURE_SAME_BRICKS,
+    FAILURE_SAME_DEVICE,
+    FAILURE_DEFAULT
+  }
+
   public static string _displayerName = "DevicesDisplayersPanel";
 
   protected List<Device> _devices = new List<Device>();
@@ -15,7 +23,7 @@ public abstract class DeviceContainer : MonoBehaviour {
       +", edited="+Logger.ToString<Device>(edited)
       +")", Logger.Level.DEBUG);
     foreach (Device device in added ) {
-      addDevice(device);
+      askAddDevice(device);
     }
     Logger.Log("DeviceContainer::UpdateData added done", Logger.Level.TRACE);
     foreach (Device device in removed ) {
@@ -27,14 +35,14 @@ public abstract class DeviceContainer : MonoBehaviour {
     }
     Logger.Log("DeviceContainer::UpdateData edited done", Logger.Level.TRACE);
   }
-  abstract public void addDevice(Device device);
+  
+  abstract public AddingResult askAddDevice(Device device);
   abstract public void removeDevice(Device device);
   abstract public void editDevice(Device device);
 
  // Use this for initialization
  protected void Awake () {
    Logger.Log("DeviceContainer::Awake()", Logger.Level.TRACE);
-   _devices = new List<Device>();
    _displayer = (DevicesDisplayer)GameObject.Find (_displayerName).GetComponent<DevicesDisplayer>();
  }
 }
