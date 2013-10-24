@@ -33,8 +33,9 @@ public class cameraFollow : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		if(useScenePosition)
-			offset = transform.position - target.position;
+		if(useScenePosition){
+		  offset = transform.position - target.position;
+		}
 		fovUnzoomed = GetComponent<Camera>().fieldOfView;
 		fov = fovUnzoomed;
 	}

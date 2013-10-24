@@ -9,6 +9,9 @@ public class GUITransitioner : MonoBehaviour {
     private float _timeAtCurrentFrame = 0f;
     private float _deltaTime = 0f;
 	
+	private bool _pauseTransition = false;
+	private float _timeScale = 1.0f;
+	
 	public GameScreen _currentScreen = GameScreen.screen1;
 	public enum GameScreen {
 		screen1,
@@ -68,7 +71,8 @@ public class GUITransitioner : MonoBehaviour {
 		
 	
 	private void Pause(bool pause) {
-		Time.timeScale = pause?0:1;
+	  _pauseTransition = true;
+	  _timeScale = pause?0:1;
 	}
 
   public void GoToScreen(GameScreen destination) {
@@ -184,5 +188,21 @@ public class GUITransitioner : MonoBehaviour {
 			}
       _timeAtLastFrame = _timeAtCurrentFrame;
 		}
+	}
+	
+	void LateUpdate () {
+	  if(_pauseTransition) {
+		if ((_timeScale == 0) && (Time.timeScale < 0.01f)) {
+		  Time.timeScale = 0;
+		  _pauseTransition = false;
+		} else if ((_timeScale == 1) && (Time.timeScale > 0.99f)) {
+		  Time.timeScale = 1;
+		  _pauseTransition = false;
+		} else {
+	      Logger.Log ("GUITransitioner::LateUpdate Time.timeScale="+Time.timeScale
+			+", _timeScale="+_timeScale+", _timeDelta="+_timeDelta, Logger.Level.TRACE);
+	      Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScale, _deltaTime);
+		}
+	  }
 	}
 }
