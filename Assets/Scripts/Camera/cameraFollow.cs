@@ -13,7 +13,9 @@ public class cameraFollow : MonoBehaviour {
   	public float cameraDistanceMax = 75;
   	public float scrollSpeed = 5;
 	public float zoomSmooth = 3;
+	public float fovZoomed = 10.0f;
 	
+	private float fovUnzoomed;
 	private float fov;
 	
     private float _timeAtLastFrame = 0f;
@@ -23,9 +25,9 @@ public class cameraFollow : MonoBehaviour {
 	public void SetZoom(bool zoomIn) {
 		_zoomed = zoomIn;
 		if(zoomIn) {
-			fov = 10.0f;
+			fov = fovZoomed;
 		} else {
-			fov = 65.0f;
+			fov = fovUnzoomed;
 		}
 	}
 	
@@ -33,7 +35,8 @@ public class cameraFollow : MonoBehaviour {
 	void Start () {
 		if(useScenePosition)
 			offset = transform.position - target.position;
-		fov = GetComponent<Camera>().fieldOfView;
+		fovUnzoomed = GetComponent<Camera>().fieldOfView;
+		fov = fovUnzoomed;
 	}
 	
 	// Update is called once per frame
