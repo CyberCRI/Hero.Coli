@@ -45,4 +45,19 @@
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
+  <device id="device3">
+    <brick id="PT" size="5" type="promoter">
+      <beta>1</beta>
+      <formula>"T"</formula>
+    </brick>
+    <brick id="RBS1" size="5" type="rbs">
+      <rbsFactor>1</rbsFactor>
+    </brick>
+    <brick id="pLac" size="20" type="gene">
+      <protein>pLac</protein>
+    </brick>
+    <brick id="T1" size="3" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
 </devices>
