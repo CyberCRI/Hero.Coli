@@ -36,7 +36,15 @@ public class ReactionEngine : MonoBehaviour {
   public bool enableEnergy;                             //!< Enable energy consomation
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
   public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
-
+	
+	
+  //debug
+  public bool _debug;
+  private float _timeAtLastDebug = 0f;
+  private float _timeAtCurrentFrame = 0f;
+  private float _deltaTime = 0f;
+  private float _deltaTimeThreshold = 0.5f;
+	
   public Fick getFick() { return _fick; }
   
   /*!
@@ -158,6 +166,15 @@ public class ReactionEngine : MonoBehaviour {
         return molSet;
     return null;
   }
+	
+  public ArrayList getMoleculesFromMedium(int id) {
+    Medium medium = LinkedListExtensions.Find<Medium>(_mediums, m => m.getId() == id);
+	if (medium != null) {
+	  return medium.getMolecules();
+	} else {
+	  return null;
+	}
+  }
 
   //! This function is called at the initialisation of the simulation (like a Constructor)
   public void Awake()
@@ -192,7 +209,7 @@ public class ReactionEngine : MonoBehaviour {
 
   //! This function is called at each frame
   public void Update()
-  {
+  {		
     _fick.react();
     if (enableShufflingMediumOrder)
       LinkedListExtensions.Shuffle<Medium>(_mediums);
@@ -200,6 +217,19 @@ public class ReactionEngine : MonoBehaviour {
       medium.Update();
     if (!enableSequential)
       foreach (Medium medium in _mediums)
-        medium.updateMoleculesConcentrations();    
+        medium.updateMoleculesConcentrations(); 
+	
+		if(_debug) {
+			_timeAtCurrentFrame = Time.realtimeSinceStartup;
+		    _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
+				
+			bool debug = (_deltaTime > _deltaTimeThreshold);
+			if(debug) {
+				_timeAtLastDebug = _timeAtCurrentFrame;
+				//debug
+				foreach (Medium medium in _mediums)
+				  medium.Log();
+			}
+		}
   }
 }

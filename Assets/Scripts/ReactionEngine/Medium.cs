@@ -234,6 +234,18 @@ public class Medium
   }
 
   /*!
+    \brief Debug the concentration of each molecules of the medium
+   */
+  public void Log()
+  {
+	string debugString = "Medium::debug() #"+_id+"[";
+    foreach (Molecule m in _molecules)
+	  debugString += (m.ToString()+", ");
+					
+	Logger.Log(debugString+"]", Logger.Level.WARN);
+  }
+
+  /*!
     \brief Execute everything about simulation into the Medium
    */
   public void Update()

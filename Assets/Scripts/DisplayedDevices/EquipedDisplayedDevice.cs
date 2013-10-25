@@ -28,13 +28,13 @@ class EquipedDisplayedDevice : DisplayedDevice {
   }
 
  public void setActive() {
-   Debug.Log("setActive");
+   Logger.Log("EquipedDisplayedDevice::setActive", Logger.Level.TRACE);
    _isActive = true;
    setSprite(_currentSpriteName + _activeSuffix);
  }
  
  public void setInactive() {
-   Debug.Log("setInactive");
+   Logger.Log("EquipedDisplayedDevice::setInactive", Logger.Level.TRACE);
    _isActive = false;
    setSprite(_currentSpriteName);
  }

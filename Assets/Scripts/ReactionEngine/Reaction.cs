@@ -92,6 +92,13 @@ public class Molecule
 
   //! \brief This function set the actual concentration to it new value
   public void updateConcentration() { _concentration = _newConcentration; }
+	
+  public override string ToString() {
+    return "Molecule[name:"+_name+", cc:"+_concentration+"]";
+  }
+  public string ToShortString() {
+    return _name+":"+_concentration;
+  }
 }
 
 

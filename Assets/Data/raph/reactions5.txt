@@ -27,41 +27,41 @@
 
   <molecules id="CelliaMolecules">
 
-     <molecule type="transcription_factor">
+     <molecule type="enzyme">
       <name>LacI</name>
       <description>LacI</description>
-      <concentration>0</concentration>
-      <degradationRate>0.1386</degradationRate>
+      <concentration>1</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule>
-     <molecule type="transcription_factor">
+     <molecule type="enzyme">
       <name>pLac</name>
       <description>pLac</description>
-      <concentration>0</concentration>
-      <degradationRate>0.1386</degradationRate>
+      <concentration>2</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule>
-     <molecule type="transcription_factor">
+     <molecule type="enzyme">
       <name>GFP</name>
       <description>Green Fluorescence Protein</description>
-      <concentration>0</concentration>
-      <degradationRate>0.1386</degradationRate>
+      <concentration>3</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule>
-     <molecule type="transcription_factor">
+     <molecule type="enzyme">
       <name>O</name>
       <description>oxygen</description>
-      <concentration>0</concentration>
-      <degradationRate>0.1386</degradationRate>
+      <concentration>4</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H</name>
       <description>hydrogen</description>
-      <concentration>0</concentration>
-      <degradationRate>0.1386</degradationRate>
+      <concentration>5</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
       <description>water</description>
-      <concentration>0</concentration>
-      <degradationRate>0.13</degradationRate>
+      <concentration>6</concentration>
+      <degradationRate>0.0</degradationRate>
     </molecule> 
 </molecules>
                                   

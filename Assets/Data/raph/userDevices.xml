@@ -1,62 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device id="GFPD">
-    <brick id="PT" size="5" type="promoter">
-      <beta>1</beta>
-      <formula>"T"</formula>
+  <device id="test1">
+    <brick id="test1_promoter" size="0" type="promoter">
+      <beta>10</beta>
+      <formula>![0.8,2]LacI</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="test1_rbs" size="0" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="GFP" size="30" type="gene">
+    <brick id="test1_gene" size="0" type="gene">
       <protein>GFP</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="test1_terminator" size="0" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
-  <device id="device1">
-    <brick id="PT" size="5" type="promoter">
-      <beta>1</beta>
-      <formula>"T"</formula>
+  <device id="test3">
+    <brick id="test3_promoter" size="0" type="promoter">
+      <beta>10</beta>
+      <formula>![0.8,2]LacI</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="test3_rbs" size="0" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="H2O" size="3" type="gene">
-      <protein>H2O</protein>
+    <brick id="test3_gene" size="0" type="gene">
+      <protein>LacI</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="test3_terminator" size="0" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
-  <device id="device2">
-    <brick id="PT" size="5" type="promoter">
-      <beta>1</beta>
-      <formula>"T"</formula>
+  <device id="test5">
+    <brick id="test5_promoter" size="0" type="promoter">
+      <beta>10</beta>
+      <formula>![0.8,2]LacI</formula>
     </brick>
-    <brick id="RBS2" size="8" type="rbs">
-      <rbsFactor>2</rbsFactor>
-    </brick>
-    <brick id="H2O" size="3" type="gene">
-      <protein>H2O</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="device3">
-    <brick id="PT" size="5" type="promoter">
-      <beta>1</beta>
-      <formula>"T"</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="test5_rbs" size="0" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="pLac" size="20" type="gene">
+    <brick id="test5_gene" size="0" type="gene">
       <protein>pLac</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="test5_terminator" size="0" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
