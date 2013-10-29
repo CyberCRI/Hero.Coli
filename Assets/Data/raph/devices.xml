@@ -1,5 +1,5 @@
 <devices>
-  <device id="GFPD">
+  <device id="GFP">
     <brick id="PT"/>
     <brick id="RBS1"/>
     <brick id="GFP"/>

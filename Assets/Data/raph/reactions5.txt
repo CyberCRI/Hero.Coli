@@ -30,37 +30,37 @@
      <molecule type="enzyme">
       <name>LacI</name>
       <description>LacI</description>
-      <concentration>1</concentration>
+      <concentration>100</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
      <molecule type="enzyme">
       <name>pLac</name>
       <description>pLac</description>
-      <concentration>2</concentration>
+      <concentration>200</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
      <molecule type="enzyme">
       <name>GFP</name>
       <description>Green Fluorescence Protein</description>
-      <concentration>3</concentration>
+      <concentration>300</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
      <molecule type="enzyme">
       <name>O</name>
       <description>oxygen</description>
-      <concentration>4</concentration>
+      <concentration>400</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H</name>
       <description>hydrogen</description>
-      <concentration>5</concentration>
+      <concentration>500</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
       <description>water</description>
-      <concentration>6</concentration>
+      <concentration>600</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule> 
 </molecules>

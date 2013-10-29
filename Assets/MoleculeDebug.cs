@@ -4,16 +4,21 @@ using System.Collections.Generic;
 
 public class MoleculeDebug : MonoBehaviour {
 	
-	public ReactionEngine _engine;
-	public int _mediumId;
-	public UILabel _label;
+	public ReactionEngine    engine;
+	public int               mediumId;
+	public UILabel           label;
+	public bool              displayAll;
 	
 	// Update is called once per frame
 	void Update () {
-		ArrayList molecules = _engine.getMoleculesFromMedium(_mediumId);
+		string inter = null;
+		ArrayList molecules = engine.getMoleculesFromMedium(mediumId);
 		List<string> llMolecules = new List<string>();
 		foreach(System.Object molecule in molecules) {
-			llMolecules.Add(((Molecule)molecule).ToShortString());
+			inter = ((Molecule)molecule).ToShortString(displayAll);
+			if(!string.IsNullOrEmpty(inter)) {
+				llMolecules.Add(inter);
+			}
 		}
 		llMolecules.Sort();
 		
@@ -22,6 +27,6 @@ public class MoleculeDebug : MonoBehaviour {
 			toDisplay+=molecule+"\n";
 		}
 		toDisplay.Remove(toDisplay.Length-1, 1);
-		_label.text = toDisplay;
+		label.text = toDisplay;
 	}
 }

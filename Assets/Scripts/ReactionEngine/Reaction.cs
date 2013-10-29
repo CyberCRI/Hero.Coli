@@ -96,8 +96,12 @@ public class Molecule
   public override string ToString() {
     return "Molecule[name:"+_name+", cc:"+_concentration+"]";
   }
-  public string ToShortString() {
-    return _name+":"+_concentration;
+  public string ToShortString(bool displayAll) {
+	if (!displayAll && _concentration == 0) {
+		return null;
+	} else {
+		return _name+":"+_concentration;
+	}
   }
 }
 
