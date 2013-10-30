@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
 	
+	public ReactionEngine reactionEngine;
+	
 	private float _timeDelta = 0.2f;
 	
     private float _timeAtLastFrame = 0f;
@@ -73,17 +75,14 @@ public class GUITransitioner : MonoBehaviour {
 	}
 		
 	
-	private void Pause(bool pause) {
-		if(pause) {
-			Time.timeScale = 0;
-			_pauseTransition = false;
-			_timeScale = 0;
-		} else {
-			_pauseTransition = true;
-			_timeScale = 1;
-		}
-		
-	}
+  private void Pause(bool pause) {
+    _pauseTransition = !pause;
+	reactionEngine.Pause(pause);
+	_timeScale = pause?0:1;
+	if(pause) {
+	  Time.timeScale = 0;
+    }		
+  }
 
   public void GoToScreen(GameScreen destination) {
     Logger.Log("GUITransitioner::GoToScreen("+destination+")");

@@ -37,6 +37,8 @@ public class ReactionEngine : MonoBehaviour {
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
   public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
 	
+  private bool _paused;                                 //!< Simulation state
+	
 	
   //debug
   public bool _debug;
@@ -206,30 +208,39 @@ public class ReactionEngine : MonoBehaviour {
     _activeTransport = new ActiveTransport();
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
   }
+	
+	//TODO manage reaction speed for smooth pausing
+	public void Pause(bool pause) {
+		_paused = pause;
+	}
 
   //! This function is called at each frame
   public void Update()
   {		
-    _fick.react();
-    if (enableShufflingMediumOrder)
-      LinkedListExtensions.Shuffle<Medium>(_mediums);
-    foreach (Medium medium in _mediums)
-      medium.Update();
-    if (!enableSequential)
+	if(_paused) {
+	  Logger.Log("ReactionEngine::Update paused", Logger.Level.WARN);
+	} else {
+      _fick.react();
+      if (enableShufflingMediumOrder)
+        LinkedListExtensions.Shuffle<Medium>(_mediums);
       foreach (Medium medium in _mediums)
-        medium.updateMoleculesConcentrations(); 
-	
-		if(_debug) {
-			_timeAtCurrentFrame = Time.realtimeSinceStartup;
-		    _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
-				
-			bool debug = (_deltaTime > _deltaTimeThreshold);
-			if(debug) {
-				_timeAtLastDebug = _timeAtCurrentFrame;
-				//debug
-				foreach (Medium medium in _mediums)
-				  medium.Log();
-			}
-		}
+        medium.Update();
+      if (!enableSequential)
+        foreach (Medium medium in _mediums)
+          medium.updateMoleculesConcentrations(); 
+	  
+	  if(_debug) {
+	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
+	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
+	  		
+	  	bool debug = (_deltaTime > _deltaTimeThreshold);
+	  	if(debug) {
+	  		_timeAtLastDebug = _timeAtCurrentFrame;
+	  		//debug
+	  		foreach (Medium medium in _mediums)
+	  		  medium.Log();
+	  	}
+	  }
+	}
   }
 }
