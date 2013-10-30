@@ -16,6 +16,7 @@ public class VectrosityPanel : MonoBehaviour {
   public float padding; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
   public PanelInfos infos; //!< Will provide the panel information to all the lines drawn \sa PanelInfo
   public List<Line> line {get{return _lines;}} //!< List of the lines being drawn
+  public string identifier;
   
   private int width = 200;
   private float height = 800;
@@ -23,7 +24,7 @@ public class VectrosityPanel : MonoBehaviour {
   public ReactionEngine _reactionEngine;
   public int _mediumId;
 	
-  private List<Line> _lines; 
+  private List<Line> _lines = new List<Line>(); 
   private ArrayList _molecules;
 	
   // Use this for initialization
@@ -61,8 +62,22 @@ public class VectrosityPanel : MonoBehaviour {
 	
   // Update is called once per frame
   void Update () {
-  	bool resize = refreshInfos();
-  	drawLines(resize);
+	bool resize = refreshInfos();
+	drawLines(resize);
+  }
+	
+  void OnDisable() {
+    Logger.Log("VectrosityPanel::OnDisable "+identifier, Logger.Level.TRACE);
+	foreach(Line line in _lines) {
+	  line.vectorline.active = false;
+	}
+  }
+	
+  void OnEnable() {
+    Logger.Log("VectrosityPanel::OnEnable "+identifier, Logger.Level.TRACE);
+	foreach(Line line in _lines) {
+	  line.vectorline.active = true;
+	}
   }
   
   /*!
