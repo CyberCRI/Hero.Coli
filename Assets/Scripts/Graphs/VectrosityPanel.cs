@@ -13,9 +13,12 @@ public class VectrosityPanel : MonoBehaviour {
 	
 	public Camera GUICam; //!< The Isometric camera which will display the layer
 	public bool draw = true; //!< Toggles drawing of the lines
-	public float padding = 20f; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
+	public float padding; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
 	public PanelInfos infos; //!< Will provide the panel information to all the lines drawn \sa PanelInfo
 	public List<Line> line {get{return _lines;}} //!< List of the lines being drawn
+	
+	private int width = 200;
+	private float height = 800;
 
   public ReactionEngine _reactionEngine;
   public int _mediumId;
@@ -31,28 +34,28 @@ public class VectrosityPanel : MonoBehaviour {
 		VectorLine.SetCamera3D(GUICam);
 		
 		_lines = new List<Line>();
-
-                if (_reactionEngine == null)
-                  return ;
-
-                LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-                if (mediums == null)
-                  return ;
-
-                Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
-                if (medium == null)
-                  {
-                    Debug.Log("Can't find the given medium (" + _mediumId + ")");
-                    return ;
-                  }
-
-                _molecules = medium.getMolecules();
-                if (_molecules == null)
-                  return ;
-
-                foreach (Molecule m in _molecules)
-                  _lines.Add(new Line(200, 800, infos, m.getName()));
-
+	
+	    if (_reactionEngine == null)
+	      return ;
+	
+	    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
+	    if (mediums == null)
+	      return ;
+	
+	    Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
+	    if (medium == null)
+	      {
+	        Debug.Log("Can't find the given medium (" + _mediumId + ")");
+	        return ;
+	      }
+	
+	    _molecules = medium.getMolecules();
+	    if (_molecules == null)
+	      return ;
+	
+	    foreach (Molecule m in _molecules)
+	      _lines.Add(new Line(width, height, infos, m.getName()));
+	
 		drawLines(true);
 	}
 	
@@ -67,17 +70,17 @@ public class VectrosityPanel : MonoBehaviour {
 	 * \param resize If true will resize the lines first
  	*/
 	void drawLines(bool resize) {
-          if (_molecules == null)
-            return ;
-          foreach(Line line in _lines){
-            Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
-            if(resize) line.resize();
-            if (m != null)
-              line.addPoint(m.getConcentration());
-            else
-              line.addPoint();
-            line.redraw();
-          }
+	  if (_molecules == null)
+        return ;
+      foreach(Line line in _lines){
+        Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
+        if(resize) line.resize();
+        if (m != null)
+          line.addPoint(m.getConcentration());
+        else
+          line.addPoint();
+        line.redraw();
+      }
 	}
 	
 	/*!
@@ -99,8 +102,11 @@ public class VectrosityPanel : MonoBehaviour {
 			infos.panelDimensions = collider.bounds.size;
 			changed = true;
 		}
-		if(infos.panelPos != transform.position){
-			infos.panelPos = transform.position;
+		if(infos.panelPos != collider.bounds.center){
+			infos.panelPos = new Vector3(
+				collider.bounds.center.x - infos.panelDimensions.x/2,
+				collider.bounds.center.y - infos.panelDimensions.y/2,
+				collider.bounds.center.z);
 			changed = true;
 		}
 		
