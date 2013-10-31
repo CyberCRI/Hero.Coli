@@ -1,4 +1,16 @@
 <bricks>
+  <brick id="PromNoX" size="5" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]X</formula>
+  </brick>
+  <brick id="PromNoY" size="5" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]Y</formula>
+  </brick>
+  <brick id="PromNoZ" size="5" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]Z</formula>
+  </brick>
   <brick id="PT" size="5" type="promoter">
     <beta>1.0</beta>
     <formula>"T"</formula>
@@ -32,6 +44,15 @@
   </brick>
   <brick id="RBS2" size="8" type="rbs">
     <rbsFactor>2.0</rbsFactor>
+  </brick>
+  <brick id="X" size="1" type="gene">
+    <protein>X</protein>
+  </brick>
+  <brick id="Y" size="1" type="gene">
+    <protein>Y</protein>
+  </brick>
+  <brick id="Z" size="1" type="gene">
+    <protein>Z</protein>
   </brick>
   <brick id="LacI" size="20" type="gene">
     <protein>LacI</protein>

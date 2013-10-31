@@ -43,4 +43,9 @@ public class ReactionsSet
 {
   public string                  id;                    //!< The ReactionSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
+	
+  public override string ToString()
+	{
+		 return "ReactionsSet[id:"+id+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
+	}
 }

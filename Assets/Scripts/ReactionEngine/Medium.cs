@@ -33,6 +33,7 @@ public class Medium
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
   public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
+  public bool           _debug = false;                 //!< Enable display of debug messages
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -79,11 +80,20 @@ public class Medium
    */
   public void addReaction(IReaction reaction)
   {
+	Logger.Log("Medium::addReaction("+reaction+")", Logger.Level.WARN);
     if (reaction != null)
       {
+		Medium medium = reaction.getMedium();
+		string mediumString = medium!=null?reaction.getMedium().getId().ToString():"null";
+		Logger.Log("Medium::addReaction reaction.medium.id="+mediumString, Logger.Level.WARN);
         reaction.setMedium(this);
+		Logger.Log("Medium::addReaction reaction.medium.id="+reaction.getMedium().getId(), Logger.Level.WARN);
+		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.WARN);
         reaction.enableEnergy = _enableEnergy;
+		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.WARN);
+		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.WARN);
         _reactions.AddLast(reaction);
+		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.WARN);
       }
     else
       Debug.Log("Cannot add this reaction because null was given");
@@ -253,8 +263,12 @@ public class Medium
     if (enableShufflingReactionOrder)
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
-    foreach (IReaction reaction in _reactions)
-        reaction.react(_molecules);
+    foreach (IReaction reaction in _reactions) {
+		if(_debug) {
+		  Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction,Logger.Level.WARN);
+		  reaction.react(_molecules);
+		}
+	}
 
     if (_enableNoise)
       {
@@ -272,33 +286,52 @@ public class Medium
     //#FIXME : Delete theses this a the end
     if (_name == "Cellia")
       {
-        if (Input.GetKey(KeyCode.T))
+        if (Input.GetKey(KeyCode.P))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(100f);
           }
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.M))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(- 100f);
           }
-        if (Input.GetKey(KeyCode.G))
+        if (Input.GetKey(KeyCode.O))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(100f);
           }
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.L))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(- 100f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(- 100f);
+          }
+        if (Input.GetKey(KeyCode.I))
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(100f);
+          }
+        if (Input.GetKey(KeyCode.K))
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(- 10f);
+            else
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(- 100f);
+          }
+        if (Input.GetKey(KeyCode.J))
+          {
+			Logger.Log("Medium::Update press J _debug=="+_debug,Logger.Level.WARN);
+            _debug = !_debug;
           }
       }
   }

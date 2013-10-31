@@ -56,10 +56,13 @@ public class ReactionEngine : MonoBehaviour {
    */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
+	Logger.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")", Logger.Level.WARN);
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
-    if (med == null)
+    if (med == null) {
+	  Logger.Log("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found", Logger.Level.WARN);
       return ;
+	}
     med.addReaction(reaction);
   }
 
@@ -209,16 +212,16 @@ public class ReactionEngine : MonoBehaviour {
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
   }
 	
-	//TODO manage reaction speed for smooth pausing
-	public void Pause(bool pause) {
-		_paused = pause;
-	}
+  //TODO manage reaction speed for smooth pausing
+  public void Pause(bool pause) {
+	_paused = pause;
+  }
 
   //! This function is called at each frame
   public void Update()
   {		
 	if(_paused) {
-	  Logger.Log("ReactionEngine::Update paused", Logger.Level.WARN);
+	  //Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
 	} else {
       _fick.react();
       if (enableShufflingMediumOrder)
@@ -241,6 +244,13 @@ public class ReactionEngine : MonoBehaviour {
 	  		  medium.Log();
 	  	}
 	  }
+			
+	  if (Input.GetKey(KeyCode.U)) {
+	    //dump all reactions
+		Logger.Log("ReactionEngine::Update Press U reactions="+getReactionsSetFromId("CelliaReactions", _reactionsSets)
+					, Logger.Level.WARN
+					);	
+      }
 	}
   }
 }

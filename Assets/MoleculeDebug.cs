@@ -26,7 +26,9 @@ public class MoleculeDebug : MonoBehaviour {
 		foreach(string molecule in llMolecules) {
 			toDisplay+=molecule+"\n";
 		}
-		toDisplay.Remove(toDisplay.Length-1, 1);
-		label.text = toDisplay;
+		if(!string.IsNullOrEmpty(toDisplay)) {
+			toDisplay.Remove(toDisplay.Length-1, 1);
+		}	
+		label.text = toDisplay;	
 	}
 }

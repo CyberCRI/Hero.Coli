@@ -24,18 +24,12 @@ public class PromoterProprieties
  *  \details   ToString method, with all fields, including detailed internal products
  */
   public override string ToString() {
-	string productsString = "Products[";
-	IEnumerator<Product> enumerator = products.GetEnumerator();
-	while (enumerator.MoveNext()) {
-	  productsString = productsString + enumerator.Current.ToString()+", ";
-	}
-	productsString += "]";
     return "PromoterProprieties["+
       "name:"+name+
       ", beta:"+beta+
       ", terminatorFactor:"+terminatorFactor+
       ", formula:"+formula+
-      ", products:"+productsString+
+      ", products:"+Logger.ToString<Product>(products)+
       ", energyCost:"+energyCost+"]";
   }
 }
@@ -374,7 +368,7 @@ public class Promoter : IReaction
 
   public override string ToString ()
   {
-    return string.Format ("[Promoter: name: "+_name+", beta: "+_beta+", formula: "+_formula+"]");
+    return string.Format ("[Promoter: name: "+_name+", beta: "+_beta+", formula: "+Logger.ToString<PromoterNodeData>(_formula)+"]");
   }
 
 }

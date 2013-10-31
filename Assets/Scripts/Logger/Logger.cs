@@ -34,4 +34,16 @@ public class Logger : MonoBehaviour {
     objects.CopyTo(array, 0);
     return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
   }
+	
+  public static string ToString<T>(TreeNode<T> tree, string separator = defaultSeparator) {
+		if(tree==null) {
+			return null;	
+		} else {
+			string left = ToString<T>(tree.getLeftNode()), right = ToString<T>(tree.getRightNode());
+			string resultString = tree.getData().ToString();
+			resultString = !string.IsNullOrEmpty(left)?resultString+", "+left:resultString;
+			resultString = !string.IsNullOrEmpty(right)?resultString+", "+right:resultString;
+			return resultString;
+		}
+  }
 }
