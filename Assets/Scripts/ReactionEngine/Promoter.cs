@@ -202,7 +202,7 @@ public class Promoter : IReaction
       {
         newProd = new Product(p);
         reaction.addProduct(newProd);
-      }
+      }		
     return reaction;
   }
 
@@ -334,8 +334,12 @@ public class Promoter : IReaction
   */
   public override void react(ArrayList molecules)
   {
-    if (!_isActive)
+    if (!_isActive) {
+	  Logger.Log("Promoter::react !_isActive", Logger.Level.INTERACTIVE);
       return;
+	} else {
+	  Logger.Log("Promoter::react _isActive", Logger.Level.INTERACTIVE);
+	}
     float delta = execNode(_formula, molecules);
 
     float energyCoef;
@@ -352,23 +356,59 @@ public class Promoter : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
+	
     foreach (Product pro in _products)
       {
+	    Logger.Log("Promoter::react product="+pro, Logger.Level.INTERACTIVE);
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+			
+        if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
+        if( pro == null) Debug.Log("pro is null");
+			
+		float increase = delta * pro.getQuantityFactor() * _terminatorFactor * _beta
+                           * ReactionEngine.reactionsSpeed * _reactionSpeed;
+			
+		Logger.Log("Promoter::react increase="+increase
+					+", delta:"+delta
+					+", qFactor:"+pro.getQuantityFactor()
+					+", tFactor:"+_terminatorFactor
+					+", beta:"+_beta
+                    +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
+					+", reactionSpeed:"+_reactionSpeed
+					, Logger.Level.INTERACTIVE
+					);
+			
         if (enableSequential) {
-          if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
-          if( pro == null) Debug.Log("pro is null");
-          mol.addConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
-                               * ReactionEngine.reactionsSpeed * _reactionSpeed);
-      } else
-          mol.addNewConcentration(delta * pro.getQuantityFactor() * _terminatorFactor * _beta
-                                  * ReactionEngine.reactionsSpeed * _reactionSpeed);
+		  float oldCC = mol.getConcentration();
+		  mol.addConcentration(increase);
+		  float newCC = mol.getConcentration();
+		  Logger.Log("Promoter::react ["+mol.getName()+"]old="+oldCC
+					+" ["+mol.getName()+"]new="+newCC
+					, Logger.Level.INTERACTIVE
+					);
+        } else {
+		  mol.addNewConcentration(increase);
+		  Logger.Log("Promoter::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
+					, Logger.Level.INTERACTIVE
+					);
+	    }
+				
       }
   }
 
   public override string ToString ()
   {
-    return string.Format ("[Promoter: name: "+_name+", beta: "+_beta+", formula: "+Logger.ToString<PromoterNodeData>(_formula)+"]");
+    return string.Format ("Promoter[name:"+_name
+			+", beta:"+_beta
+			+", formula:"+Logger.ToString<PromoterNodeData>(_formula)
+			+", products:"+Logger.ToString<Product>(_products)
+			+", active:"+_isActive
+			+", medium:"+_medium
+			+", reactionSpeed:"+_reactionSpeed
+			+", energyCost:"+_energyCost
+			+", enableSequential:"+enableSequential
+			+", enableEnergy:"+enableEnergy
+			+"]");
   }
 
 }

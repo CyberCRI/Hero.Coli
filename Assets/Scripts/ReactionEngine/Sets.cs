@@ -25,7 +25,7 @@ public class MoleculesSet
 
 /*!
   \brief Represent a Reaction set
-  \details A ReactionSet is assigned to a medium and so describe
+  \details A ReactionsSet is assigned to a medium and so describe
   which reaction is present in each medium.
 
 A reaction set musth be declare in molecule's files respecting this synthax :
@@ -41,7 +41,7 @@ A reaction set musth be declare in molecule's files respecting this synthax :
  */
 public class ReactionsSet
 {
-  public string                  id;                    //!< The ReactionSet id (string id),
+  public string                  id;                    //!< The ReactionsSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
 	
   public override string ToString()

@@ -25,11 +25,11 @@ public class ReactionEngine : MonoBehaviour {
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
   private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
   private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
-  public string[]      _mediumsFiles;                 //!< all the medium files
-  public string[]      _reactionsFiles;           //!< all the reactions files
-  public string[]      _moleculesFiles;           //!< all the molecules files
-  public string[]      _fickFiles;                     //!< all the Fick diffusion files
-  public string[]      _activeTransportFiles;                     //!< all the Fick diffusion files
+  public string[]      _mediumsFiles;                   //!< all the medium files
+  public string[]      _reactionsFiles;                 //!< all the reactions files
+  public string[]      _moleculesFiles;                 //!< all the molecules files
+  public string[]      _fickFiles;                      //!< all the Fick diffusion files
+  public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
   public bool enableSequential;                         //!< Enable sequential mode (if reaction is compute one's after the others)
   public bool enableNoise;                              //!< Add Noise in each Reaction
@@ -63,7 +63,23 @@ public class ReactionEngine : MonoBehaviour {
 	  Logger.Log("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found", Logger.Level.WARN);
       return ;
 	}
-    med.addReaction(reaction);
+		
+	ReactionsSet reactionsSet = null;
+	string medName = med.getName()+"Reactions";
+	Logger.Log("ReactionEngine::addReactionToMedium search match for medName="+medName, Logger.Level.WARN);
+	foreach (ReactionsSet rs in _reactionsSets) {
+	  Logger.Log("ReactionEngine::addReactionToMedium rs.id="+rs.id, Logger.Level.WARN);
+	  if (rs.id == medName) reactionsSet = rs;
+	}
+	// = LinkedListExtensions.Find<ReactionsSet>(_reactionsSets, s => s.id == med.getName());
+	if (reactionsSet != null) {
+	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet != null", Logger.Level.WARN);
+	  reactionsSet.reactions.AddLast(IReaction.copyReaction(reaction));
+	} else {
+	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet == null", Logger.Level.WARN);
+	}
+		
+    med.addReaction(IReaction.copyReaction(reaction));
   }
 
   /*!
@@ -106,10 +122,10 @@ public class ReactionEngine : MonoBehaviour {
     return null;
   }
 
-//! Return the ReactionSet reference corresponding to the given id
+//! Return the ReactionsSet reference corresponding to the given id
   /*!
-      \param id The id of the ReactionSet
-      \param list The list of ReactionSet where to search in
+      \param id The id of the ReactionsSet
+      \param list The list of ReactionsSet where to search in
   */
   public static ReactionsSet    getReactionsSetFromId(string id, LinkedList<ReactionsSet> list)
   {
@@ -226,12 +242,27 @@ public class ReactionEngine : MonoBehaviour {
       _fick.react();
       if (enableShufflingMediumOrder)
         LinkedListExtensions.Shuffle<Medium>(_mediums);
-      foreach (Medium medium in _mediums)
-        medium.Update();
-      if (!enableSequential)
-        foreach (Medium medium in _mediums)
-          medium.updateMoleculesConcentrations(); 
+	  Medium cellia = LinkedListExtensions.Find<Medium>(_mediums, m => m.getName() == "Cellia");
+      //foreach (Medium medium in _mediums)
+      //  medium.Update();
+			cellia.Update ();
+	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.INTERACTIVE);
+	  //foreach (Medium medium in _mediums)
+	  //	foreach (Molecule mol in medium.getMolecules())
+		foreach (Molecule mol in cellia.getMolecules())
+		  Logger.Log("ReactionEngine::Update() [1] "+mol.ToShortString(true), Logger.Level.INTERACTIVE);
+      if (!enableSequential) {
+        //foreach (Medium medium in _mediums)
+        //  medium.updateMoleculesConcentrations(); 
+		cellia.updateMoleculesConcentrations(); 
+		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.INTERACTIVE);
+	    //foreach (Medium medium in _mediums)
+		//  foreach (Molecule mol in medium.getMolecules())
+		foreach (Molecule mol in cellia.getMolecules())
+		    Logger.Log("ReactionEngine::Update() [2] "+mol.ToShortString(true), Logger.Level.INTERACTIVE);
+	  }
 	  
+	  //TODO REMOVE
 	  if(_debug) {
 	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
 	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;

@@ -3,7 +3,7 @@
 
     <instantReaction>
       <name>Water</name>
-      <EnergyCost>0.1</EnergyCost>
+      <EnergyCost>0.0</EnergyCost>
       <reactants>
         <reactant>
           <name>O</name>
@@ -48,19 +48,19 @@
      <molecule type="enzyme">
       <name>O</name>
       <description>oxygen</description>
-      <concentration>400</concentration>
+      <concentration>4000</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H</name>
       <description>hydrogen</description>
-      <concentration>500</concentration>
+      <concentration>5000</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="other">
       <name>H2O</name>
       <description>water</description>
-      <concentration>600</concentration>
+      <concentration>0</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule> 
 </molecules>

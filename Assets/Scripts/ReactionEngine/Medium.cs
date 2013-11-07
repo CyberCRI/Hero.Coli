@@ -23,7 +23,7 @@ public class Medium
 
   private int           _id;                            //!< The id of the Medium
   private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionSet id affected to this Medium
+  private string        _reactionsSet;                  //!< The ReactionsSet id affected to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
@@ -33,7 +33,6 @@ public class Medium
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
   public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
-  public bool           _debug = false;                 //!< Enable display of debug messages
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -80,20 +79,20 @@ public class Medium
    */
   public void addReaction(IReaction reaction)
   {
-	Logger.Log("Medium::addReaction("+reaction+")", Logger.Level.WARN);
+	Logger.Log("Medium::addReaction("+reaction+")", Logger.Level.INTERACTIVE);
     if (reaction != null)
       {
 		Medium medium = reaction.getMedium();
 		string mediumString = medium!=null?reaction.getMedium().getId().ToString():"null";
-		Logger.Log("Medium::addReaction reaction.medium.id="+mediumString, Logger.Level.WARN);
+		Logger.Log("Medium::addReaction reaction.medium.id="+mediumString, Logger.Level.INTERACTIVE);
         reaction.setMedium(this);
-		Logger.Log("Medium::addReaction reaction.medium.id="+reaction.getMedium().getId(), Logger.Level.WARN);
-		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.WARN);
+		Logger.Log("Medium::addReaction reaction.medium.id="+reaction.getMedium().getId(), Logger.Level.INTERACTIVE);
+		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.INTERACTIVE);
         reaction.enableEnergy = _enableEnergy;
-		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.WARN);
-		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.WARN);
+		Logger.Log("Medium::addReaction reaction.enableEnergy="+reaction.enableEnergy+", _enableEnergy="+_enableEnergy, Logger.Level.INTERACTIVE);
+		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.INTERACTIVE);
         _reactions.AddLast(reaction);
-		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.WARN);
+		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.INTERACTIVE);
       }
     else
       Debug.Log("Cannot add this reaction because null was given");
@@ -175,6 +174,7 @@ public class Medium
    */
   public void initMoleculesFromMoleculesSets(MoleculesSet molSet, ArrayList allMolecules)
   {
+	Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id,Logger.Level.INTERACTIVE);
     Molecule newMol;
     Molecule startingMolStatus;
 
@@ -183,10 +183,16 @@ public class Medium
       {
         newMol = new Molecule(mol);
         startingMolStatus = ReactionEngine.getMoleculeFromName(mol.getName(), molSet.molecules);
-        if (startingMolStatus == null)
+        if (startingMolStatus == null) {
           newMol.setConcentration(0);
-        else
+		} else {
           newMol.setConcentration(startingMolStatus.getConcentration());
+		}
+		Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id
+				+" add mol "+newMol.getName()
+				+" with cc="+newMol.getConcentration()
+				,Logger.Level.INTERACTIVE
+				);
         _molecules.Add(newMol);
       }   
   }
@@ -252,7 +258,7 @@ public class Medium
     foreach (Molecule m in _molecules)
 	  debugString += (m.ToString()+", ");
 					
-	Logger.Log(debugString+"]", Logger.Level.WARN);
+	Logger.Log(debugString+"]", Logger.Level.INTERACTIVE);
   }
 
   /*!
@@ -262,13 +268,51 @@ public class Medium
   {
     if (enableShufflingReactionOrder)
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
+		
+		
+	//TODO REMOVE//////////////////////////////////////////////////////
+	Molecule molX = ReactionEngine.getMoleculeFromName("X", _molecules);
+	Molecule molY = ReactionEngine.getMoleculeFromName("Y", _molecules);
+	Molecule molZ = ReactionEngine.getMoleculeFromName("Z", _molecules);
+		
+	if(Logger.isInteractive() && molX != null && molY != null && molZ != null) {
+	  float ccx = molX.getConcentration();
+	  float ccy = molY.getConcentration();
+	  float ccz = molZ.getConcentration();
+	  Logger.Log("Medium::Update "
+				+"[X]i="+ccx
+				+"[Y]i="+ccy
+				+"[Z]i="+ccz
+				,Logger.Level.INTERACTIVE
+				);
+	}
+	//////////////////////////////////////////////////////////////////
 
     foreach (IReaction reaction in _reactions) {
-		if(_debug) {
-		  Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction,Logger.Level.WARN);
-		  reaction.react(_molecules);
+		
+		if(Logger.isInteractive()) {
+		  Promoter promoter = reaction as Promoter;
+		  if (promoter != null) {
+		    Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.INTERACTIVE);
+		  }
 		}
+		reaction.react(_molecules);
 	}
+	
+	//////////////////////////////////////////////////////////////////
+	if(Logger.isInteractive() && molX != null && molY != null && molZ != null) {
+	  float ccx = molX.getConcentration();
+	  float ccy = molY.getConcentration();
+	  float ccz = molZ.getConcentration();
+	  Logger.Log("Medium::Update "
+				+"[X]="+ccx
+				+", [Y]="+ccy
+				+", [Z]="+ccz
+				,Logger.Level.INTERACTIVE
+				);
+	}
+	//////////////////////////////////////////////////////////////////
+	
 
     if (_enableNoise)
       {
@@ -322,17 +366,25 @@ public class Medium
               ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(100f);
           }
         if (Input.GetKey(KeyCode.K))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(- 10f);
-            else
-              ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(- 100f);
-          }
-        if (Input.GetKey(KeyCode.J))
-          {
-			Logger.Log("Medium::Update press J _debug=="+_debug,Logger.Level.WARN);
-            _debug = !_debug;
-          }
-      }
+        {
+          if (_enableSequential)
+            ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(- 10f);
+          else
+            ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(- 100f);
+        }
+      }	
+		
+	if(Logger.isInteractive() && molX != null && molY != null && molZ != null) {
+	  float ccx = molX.getConcentration();
+	  float ccy = molY.getConcentration();
+	  float ccz = molZ.getConcentration();
+	  Logger.Log("Medium::Update "
+				+"[X]f="+ccx
+				+", [Y]f="+ccy
+				+", [Z]f="+ccz
+				,Logger.Level.INTERACTIVE
+				);
+	}
+		
   }
 }

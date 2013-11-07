@@ -134,16 +134,19 @@ public class Device
   }
 
   public LinkedList<IReaction> getReactions() {
-    Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
+    Logger.Log ("Device::getReactions(); device="+this, Logger.Level.WARN);
+		
     LinkedList<IReaction> reactions = new LinkedList<IReaction>();
+		
     LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
-    Logger.Log ("Device::getReactions(); [props: "+Logger.ToString(props)+"]", Logger.Level.TRACE);
+    Logger.Log ("Device::getReactions(); [props: "+Logger.ToString(props)+"]", Logger.Level.WARN);
 
     foreach (PromoterProprieties promoterProps in props) {
-      Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
+      Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.WARN);
       reactions.AddLast(Promoter.buildPromoterFromProps(promoterProps));
     }
-
+		
+	Logger.Log("Device::getReactions() returns "+Logger.ToString<IReaction>(reactions), Logger.Level.WARN);
     return reactions;
   }
 

@@ -4,9 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Logger : MonoBehaviour {
+  private static Logger _singleton = null;
+  public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
   public enum Level {
     ALL,
+	INTERACTIVE,
     TRACE,
     DEBUG,
     INFO,
@@ -14,11 +17,20 @@ public class Logger : MonoBehaviour {
     ERROR
   }
   private static Level _level = Level.INFO;
+	
+  private float _timeAtLastFrame = 0f;
+  private float _timeAtCurrentFrame = 0f;
+  private float _deltaTime = 0f;	
+  private float _deltaTimeThreshold = 0.2f;
+	
+  public static bool isInteractive() {
+	return (_singleton != null) && _singleton.interactiveDebug;
+  }	
 
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(level >= _level) {
-      string timedMsg = DateTime.Now.ToString("hh:mm:ss:ffffff") +" "+debugMsg;
+    if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+      string timedMsg = DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
       if (level == Level.WARN) {
         Debug.LogWarning(timedMsg);
       } else if (level == Level.ERROR) {
@@ -45,5 +57,24 @@ public class Logger : MonoBehaviour {
 			resultString = !string.IsNullOrEmpty(right)?resultString+", "+right:resultString;
 			return resultString;
 		}
+  }
+	
+  public void Awake() {
+	if(_singleton == null) {
+	  _singleton = this;
+	}
+  }
+	
+  public void Update() {
+	_timeAtCurrentFrame = Time.realtimeSinceStartup;
+    _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+	
+	if(_deltaTime > _deltaTimeThreshold) {
+      if (Input.GetKey(KeyCode.J)) {
+        interactiveDebug = !interactiveDebug;
+		Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
+		_timeAtLastFrame = _timeAtCurrentFrame;
+      }
+	}
   }
 }

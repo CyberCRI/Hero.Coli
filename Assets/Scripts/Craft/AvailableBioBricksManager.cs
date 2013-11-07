@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class AvailableBioBricksManager : MonoBehaviour {
 
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
-  string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
-  //string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml" };
+  //string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
+  string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml" };
 
   //width of a displayed BioBrick
   //set in Unity editor
