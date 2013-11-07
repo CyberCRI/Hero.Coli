@@ -23,6 +23,10 @@ public class Logger : MonoBehaviour {
   private float _deltaTime = 0f;	
   private float _deltaTimeThreshold = 0.2f;
 	
+  public static bool isLevel(Level level) {
+	return level == _level;
+  }	
+	
   public static bool isInteractive() {
 	return (_singleton != null) && _singleton.interactiveDebug;
   }	

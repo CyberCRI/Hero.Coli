@@ -54,7 +54,7 @@ public class Molecule
   {
     if (mol != null)
       {
-		if(_debug) Logger.Log("Molecule::Molecule("+mol+")", Logger.Level.INTERACTIVE);
+		if(_debug) Logger.Log("Molecule::Molecule("+mol+")", Logger.Level.TRACE);
         _name = mol._name;
         _type = mol._type;
         _description = mol._description;
@@ -62,9 +62,9 @@ public class Molecule
         _degradationRate = mol._degradationRate;
         _fickFactor = mol._fickFactor;
         _newConcentration = mol._newConcentration;
-		if(_debug) Logger.Log("Molecule::Molecule("+mol+") built "+this, Logger.Level.INTERACTIVE);
+		if(_debug) Logger.Log("Molecule::Molecule("+mol+") built "+this, Logger.Level.TRACE);
       } else {
-		if(_debug) Logger.Log("Molecule::Molecule(null)", Logger.Level.INTERACTIVE);
+		if(_debug) Logger.Log("Molecule::Molecule(null)", Logger.Level.TRACE);
 	  }
   }
 
@@ -72,7 +72,7 @@ public class Molecule
   public eType getType() {return _type; }
   public string getDescription() {return _description; }
   public float getConcentration() {
-		if(_debug) Logger.Log ("Molecule::getConcentration "+_name+" "+_concentration, Logger.Level.INTERACTIVE);
+		if(_debug) Logger.Log ("Molecule::getConcentration "+_name+" "+_concentration, Logger.Level.TRACE);
 		return _concentration;
   }
   public float getDegradationRate() {return _degradationRate; }
@@ -83,23 +83,23 @@ public class Molecule
   public void setConcentration(float concentration) {
 	float oldConcentration = _concentration;
 	_concentration = concentration; if (_concentration < 0) _concentration = 0;
-	if(true) Logger.Log("Molecule::setConcentration("+concentration+") "+_name+" old="+oldConcentration+", new="+_concentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::setConcentration("+concentration+") "+_name+" old="+oldConcentration+", new="+_concentration, Logger.Level.TRACE);
   }
   public void setDegradationRate(float degradationRate) { _degradationRate = degradationRate; }
   public void addNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
 	_newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0;
-	if(true) Logger.Log("Molecule::addNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::addNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void subNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
 	_newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0;
-	if(true) Logger.Log("Molecule::subNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::subNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void setNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
 	_newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0;
-	if(true) Logger.Log("Molecule::setNewConcentration("+concentration+") "+_name+" old="+oldNewCC+", new="+_newConcentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::setNewConcentration("+concentration+") "+_name+" old="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void setFickFactor(float v) { _fickFactor = v; }
 
@@ -110,7 +110,7 @@ public class Molecule
   public void addConcentration(float concentration) {
 	float oldCC = _concentration;
 	_concentration += concentration; if (_concentration < 0) _concentration = 0;
-	if(true) Logger.Log("Molecule::addConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::addConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.TRACE);
   }
 
   /*!
@@ -120,12 +120,12 @@ public class Molecule
   public void subConcentration(float concentration) {
 	float oldCC = _concentration;
 	_concentration -= concentration; if (_concentration < 0) _concentration = 0;
-	if(true) Logger.Log("Molecule::subConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::subConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.TRACE);
   }
 
   //! \brief This function set the actual concentration to it new value
   public void updateConcentration() {
-	if(true) Logger.Log("Molecule::updateConcentration() "+_name+" old="+_concentration+", new="+_newConcentration, Logger.Level.INTERACTIVE);
+	if(_debug) Logger.Log("Molecule::updateConcentration() "+_name+" old="+_concentration+", new="+_newConcentration, Logger.Level.TRACE);
 	_concentration = _newConcentration;
   }
 	
@@ -189,12 +189,12 @@ public class Product
  */
 public abstract class IReaction
 {
-  protected string _name;                       //!< The name of the reaction.
+  protected string _name;                       //!< The name of the reaction
   protected LinkedList<Product> _products;      //!< The list of products
   protected bool _isActive;                     //!< Activation booleen
-  protected Medium _medium;                     //!< The medium where the reaction will be executed.
+  protected Medium _medium;                     //!< The medium where the reaction will be executed
   protected float _reactionSpeed;               //!< Speed coefficient of the reaction
-  protected float _energyCost;                  //!< Energy cosumed for the reaction
+  protected float _energyCost;                  //!< Energy consumed by the reaction
   public bool enableSequential;
   public bool enableEnergy;
 
@@ -268,6 +268,21 @@ public abstract class IReaction
     \param prod The product to be added to the list
    */
   public void addProduct(Product prod) { if (prod != null) _products.AddLast(prod); }
+	
+  public override string ToString ()
+	{
+		return string.Format ("IReaction[name:{0}, products:{1}, isActive:{2}, medium:{3}, "
+			+"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
+		  _name,                                    //!< The name of the reaction
+          Logger.ToString<Product>(_products),      //!< The list of products
+          _isActive,                                //!< Activation booleen
+          _medium,                                  //!< The medium where the reaction will be executed
+          _reactionSpeed,                           //!< Speed coefficient of the reaction
+          _energyCost,                              //!< Energy consumed by the reaction
+          enableSequential,
+          enableEnergy
+		);
+	}
 }
 
 // ========================== DEGRADATION ================================

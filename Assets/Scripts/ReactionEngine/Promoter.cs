@@ -163,7 +163,8 @@ public class Promoter : IReaction
   public float getTerminatorFactor() { return _terminatorFactor; }
   public void setFormula(TreeNode<PromoterNodeData> tree) { _formula = tree; }
   public TreeNode<PromoterNodeData> getFormula() { return _formula; }
-
+	
+  private bool _debug = false;
 
   //! Default Constructor
   public Promoter()
@@ -339,10 +340,8 @@ public class Promoter : IReaction
   public override void react(ArrayList molecules)
   {
     if (!_isActive) {
-	  Logger.Log("Promoter::react !_isActive", Logger.Level.INTERACTIVE);
+	  if(_debug) Logger.Log("Promoter::react !_isActive", Logger.Level.TRACE);
       return;
-	} else {
-	  Logger.Log("Promoter::react _isActive", Logger.Level.INTERACTIVE);
 	}
     float delta = execNode(_formula, molecules);
 
@@ -363,7 +362,7 @@ public class Promoter : IReaction
 	
     foreach (Product pro in _products)
       {
-	    Logger.Log("Promoter::react product="+pro, Logger.Level.INTERACTIVE);
+	    if(_debug) Logger.Log("Promoter::react product="+pro, Logger.Level.TRACE);
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
 			
         if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
@@ -371,29 +370,31 @@ public class Promoter : IReaction
 			
 		float increase = delta * pro.getQuantityFactor() * _terminatorFactor * _beta
                            * ReactionEngine.reactionsSpeed * _reactionSpeed;
-			
-		Logger.Log("Promoter::react increase="+increase
+		
+		if(Logger.isLevel(Logger.Level.TRACE)) {
+		  if(_debug) Logger.Log("Promoter::react increase="+increase
 					+", delta:"+delta
 					+", qFactor:"+pro.getQuantityFactor()
 					+", tFactor:"+_terminatorFactor
 					+", beta:"+_beta
                     +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
 					+", reactionSpeed:"+_reactionSpeed
-					, Logger.Level.INTERACTIVE
+					, Logger.Level.TRACE
 					);
+		}
 			
         if (enableSequential) {
 		  float oldCC = mol.getConcentration();
 		  mol.addConcentration(increase);
 		  float newCC = mol.getConcentration();
-		  Logger.Log("Promoter::react ["+mol.getName()+"]old="+oldCC
+		  if(_debug) Logger.Log("Promoter::react ["+mol.getName()+"]old="+oldCC
 					+" ["+mol.getName()+"]new="+newCC
-					, Logger.Level.INTERACTIVE
+					, Logger.Level.TRACE
 					);
         } else {
 		  mol.addNewConcentration(increase);
-		  Logger.Log("Promoter::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
-					, Logger.Level.INTERACTIVE
+		  if(_debug) Logger.Log("Promoter::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
+					, Logger.Level.TRACE
 					);
 	    }
 				

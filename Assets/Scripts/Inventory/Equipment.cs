@@ -12,13 +12,13 @@ public class Equipment : DeviceContainer
 	}
 
   private void addToReactionEngine(Device device) {
-    Logger.Log("Equipment::addToReactionEngine reactions from device "+device.getName()+" ("+device.ToString ()+")", Logger.Level.WARN);
+    Logger.Log("Equipment::addToReactionEngine reactions from device "+device.getName()+" ("+device.ToString ()+")", Logger.Level.TRACE);
 
     LinkedList<IReaction> reactions = device.getReactions();
-    Logger.Log("Equipment::addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions), Logger.Level.WARN);
+    Logger.Log("Equipment::addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions)+" from "+device, Logger.Level.INFO);
 
     foreach (IReaction reaction in reactions) {
-      Logger.Log("Equipment::addToReactionEngine adding reaction="+reaction, Logger.Level.WARN);
+      Logger.Log("Equipment::addToReactionEngine adding reaction="+reaction, Logger.Level.TRACE);
       _reactionEngine.addReactionToMedium(_celliaMediumID, reaction);
     }
   }

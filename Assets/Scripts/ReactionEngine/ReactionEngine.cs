@@ -56,28 +56,26 @@ public class ReactionEngine : MonoBehaviour {
    */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
-	Logger.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")", Logger.Level.WARN);
+	Logger.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")", Logger.Level.INFO);
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
     if (med == null) {
 	  Logger.Log("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found", Logger.Level.WARN);
       return ;
 	}
-		
+	
+	/*TODO FIXME USEFULNESS?/////////////////////////////////////////////////////////////////////
 	ReactionsSet reactionsSet = null;
 	string medName = med.getName()+"Reactions";
-	Logger.Log("ReactionEngine::addReactionToMedium search match for medName="+medName, Logger.Level.WARN);
 	foreach (ReactionsSet rs in _reactionsSets) {
-	  Logger.Log("ReactionEngine::addReactionToMedium rs.id="+rs.id, Logger.Level.WARN);
 	  if (rs.id == medName) reactionsSet = rs;
 	}
-	// = LinkedListExtensions.Find<ReactionsSet>(_reactionsSets, s => s.id == med.getName());
 	if (reactionsSet != null) {
-	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet != null", Logger.Level.WARN);
 	  reactionsSet.reactions.AddLast(IReaction.copyReaction(reaction));
 	} else {
 	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet == null", Logger.Level.WARN);
 	}
+	//////////////////////////////////////////////////////////////////////////////////////////*/
 		
     med.addReaction(IReaction.copyReaction(reaction));
   }
@@ -237,29 +235,18 @@ public class ReactionEngine : MonoBehaviour {
   public void Update()
   {		
 	if(_paused) {
-	  //Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
+	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
 	} else {
       _fick.react();
       if (enableShufflingMediumOrder)
         LinkedListExtensions.Shuffle<Medium>(_mediums);
-	  Medium cellia = LinkedListExtensions.Find<Medium>(_mediums, m => m.getName() == "Cellia");
-      //foreach (Medium medium in _mediums)
-      //  medium.Update();
-			cellia.Update ();
-	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.INTERACTIVE);
-	  //foreach (Medium medium in _mediums)
-	  //	foreach (Molecule mol in medium.getMolecules())
-		foreach (Molecule mol in cellia.getMolecules())
-		  Logger.Log("ReactionEngine::Update() [1] "+mol.ToShortString(true), Logger.Level.INTERACTIVE);
+      foreach (Medium medium in _mediums)
+        medium.Update();
+	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
       if (!enableSequential) {
-        //foreach (Medium medium in _mediums)
-        //  medium.updateMoleculesConcentrations(); 
-		cellia.updateMoleculesConcentrations(); 
-		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.INTERACTIVE);
-	    //foreach (Medium medium in _mediums)
-		//  foreach (Molecule mol in medium.getMolecules())
-		foreach (Molecule mol in cellia.getMolecules())
-		    Logger.Log("ReactionEngine::Update() [2] "+mol.ToShortString(true), Logger.Level.INTERACTIVE);
+        foreach (Medium medium in _mediums)
+          medium.updateMoleculesConcentrations();
+		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
 	  }
 	  
 	  //TODO REMOVE

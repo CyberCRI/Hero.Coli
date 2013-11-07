@@ -317,93 +317,93 @@ public class DevicesDisplayer : MonoBehaviour {
     return proteinNames[Random.Range(0, proteinNames.Count)];
   }
 	
-	// Use this for initialization
-	void Start () {
-		inventoryPanel.gameObject.SetActive(false);
-	}
+  // Use this for initialization
+  void Start () {
+	inventoryPanel.gameObject.SetActive(false);
+  }
 
 	
-	// Update is called once per frame
-	void Update () {
-		
-		_timeAtCurrentFrame = Time.realtimeSinceStartup;
+  // Update is called once per frame
+  void Update () {
+	
+	_timeAtCurrentFrame = Time.realtimeSinceStartup;
     _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
-		
-		bool update = (_deltaTime > _deltaTimeThreshold);
-		
-		if(update) {
-      //TODO remove this debug code
-			if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
-				_timeAtLastFrame = _timeAtCurrentFrame;
-				
-				Logger.Log("V - create equiped device starting...", Logger.Level.INFO);
-				
-				//promoter
-				float beta = 10.0f;
-				string formula = "![0.8,2]LacI";
-				//rbs
-				float rbsFactor = 1.0f;
-				//gene
-				string proteinName = getRandomProteinName();
-				//terminator
-				float terminatorFactor = 1.0f;
-
-				Device newDevice = Device.buildDevice(null,
-				 beta,//promoter
-				 formula,//promoter
-				 rbsFactor,//rbs
-				 proteinName,//gene
-				 terminatorFactor//terminator
-				);
-        DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
-				if(newDevice == null) {
-					Logger.Log("failed to provide device", Logger.Level.WARN);
-				} else {
-					addingResult = _equipment.askAddDevice(newDevice);
-				}
-        Logger.Log("V - create equiped device... done! addingResult="+addingResult, Logger.Level.TRACE);
-								
-			}
+	
+	bool update = (_deltaTime > _deltaTimeThreshold);
+	
+	if(update) {
+    //TODO remove this debug code
+	  if (Input.GetKey(KeyCode.V)) {//CREATE equiped device	
+		_timeAtLastFrame = _timeAtCurrentFrame;
 			
-			if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
-				_timeAtLastFrame = _timeAtCurrentFrame;
-				
-				Logger.Log("B - create inventory device starting...", Logger.Level.INFO);
-				
-				//promoter
-				float beta = 10.0f;
-				string formula = "![0.8,2]LacI";
-				//rbs
-				float rbsFactor = 1.0f;
-				//gene
-				string proteinName = getRandomProteinName();
-				//terminator
-				float terminatorFactor = 1.0f;
-				Device newDevice = Device.buildDevice(null,
-				 beta,//promoter
-				 formula,//promoter
-				 rbsFactor,//rbs
-				 proteinName,//gene
-				 terminatorFactor//terminator
-				);
-       DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
-       if(newDevice == null) {
-          Logger.Log("failed to provide device", Logger.Level.WARN);
-        } else {
-			    addingResult = _inventory.askAddDevice(newDevice);
-        }
-        Logger.Log("B - create inventoried device... done! addingResult="+addingResult, Logger.Level.TRACE);
-			}
-	        if (Input.GetKey(KeyCode.T)) {//REMOVE
-				_timeAtLastFrame = _timeAtCurrentFrame;
-				
-				Logger.Log("T - remove random device", Logger.Level.TRACE);
-				if( _equipedDevices.Count > 0) {
-					int randomIdx = Random.Range(0, _equipedDevices.Count);
-					DisplayedDevice randomDevice = _equipedDevices[randomIdx];
-		      _equipment.removeDevice(randomDevice._device);
-        }
-			}
+		Logger.Log("V - create equiped device starting...", Logger.Level.INFO);
+			
+		//promoter
+		float beta = 10.0f;
+		string formula = "![0.8,2]LacI";
+		//rbs
+		float rbsFactor = 1.0f;
+		//gene
+		string proteinName = getRandomProteinName();
+		//terminator
+		float terminatorFactor = 1.0f;
+
+		Device newDevice = Device.buildDevice(null,
+		 beta,//promoter
+		 formula,//promoter
+		 rbsFactor,//rbs
+		 proteinName,//gene
+		 terminatorFactor//terminator
+		);
+        DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
+		if(newDevice == null) {
+		  Logger.Log("DevicesDisplayer::Update failed to provide device", Logger.Level.WARN);
+		} else {
+		  addingResult = _equipment.askAddDevice(newDevice);
+		}
+        Logger.Log("V - create equiped device... done! addingResult="+addingResult, Logger.Level.TRACE);
+							
+		}
+		
+		if (Input.GetKey(KeyCode.B)) {//CREATE inventory device
+		  _timeAtLastFrame = _timeAtCurrentFrame;
+			
+		  Logger.Log("B - create inventory device starting...", Logger.Level.INFO);
+			
+		  //promoter
+		  float beta = 10.0f;
+		  string formula = "![0.8,2]LacI";
+		  //rbs
+		  float rbsFactor = 1.0f;
+		  //gene
+		  string proteinName = getRandomProteinName();
+		  //terminator
+		  float terminatorFactor = 1.0f;
+		  Device newDevice = Device.buildDevice(null,
+			 beta,//promoter
+			 formula,//promoter
+			 rbsFactor,//rbs
+			 proteinName,//gene
+			 terminatorFactor//terminator
+			);
+          DeviceContainer.AddingResult addingResult = DeviceContainer.AddingResult.FAILURE_DEFAULT;
+          if(newDevice == null) {
+            Logger.Log("DevicesDisplayer::Update failed to provide device", Logger.Level.WARN);
+          } else {
+		    addingResult = _inventory.askAddDevice(newDevice);
+          }
+          Logger.Log("B - create inventoried device... done! addingResult="+addingResult, Logger.Level.TRACE);
+		}
+        if (Input.GetKey(KeyCode.T)) {//REMOVE
+		  _timeAtLastFrame = _timeAtCurrentFrame;
+			
+		  Logger.Log("T - remove random device", Logger.Level.TRACE);
+		  if( _equipedDevices.Count > 0) {
+			int randomIdx = Random.Range(0, _equipedDevices.Count);
+			DisplayedDevice randomDevice = _equipedDevices[randomIdx];
+	        _equipment.removeDevice(randomDevice._device);
+          }
 		}
 	}
+  }
 }
