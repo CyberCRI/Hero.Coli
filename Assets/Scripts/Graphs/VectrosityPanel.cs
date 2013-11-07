@@ -26,6 +26,11 @@ public class VectrosityPanel : MonoBehaviour {
 	
   private List<Line> _lines = new List<Line>(); 
   private ArrayList _molecules;
+  private bool _paused = false;
+	
+  public void setPause(bool paused) {
+	_paused = paused;
+  }
 	
   // Use this for initialization
   void Start () {
@@ -90,10 +95,12 @@ public class VectrosityPanel : MonoBehaviour {
     foreach(Line line in _lines){
       Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
       if(resize) line.resize();
-      if (m != null)
-        line.addPoint(m.getConcentration());
-      else
-        line.addPoint();
+	  if(!_paused) {
+        if (m != null)
+          line.addPoint(m.getConcentration());
+        else
+          line.addPoint();
+	  }
       line.redraw();
     }
   }
