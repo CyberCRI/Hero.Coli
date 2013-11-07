@@ -202,7 +202,11 @@ public class Promoter : IReaction
       {
         newProd = new Product(p);
         reaction.addProduct(newProd);
-      }		
+      }
+		
+	//TODO CHECK THIS
+	reaction.enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
+		
     return reaction;
   }
 
