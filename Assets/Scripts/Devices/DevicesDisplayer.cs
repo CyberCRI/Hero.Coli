@@ -41,20 +41,20 @@ public class DevicesDisplayer : MonoBehaviour {
   private static string defaultSpriteName = spriteNames[4];
 
 
-	public enum DeviceType {
-		Equiped,
-		Inventoried,
+  public enum DeviceType {
+	Equiped,
+	Inventoried,
     Listed
-	}
+  }
 	
-	private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
-	private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
+  private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
+  private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
   private List<DisplayedDevice> _listedInventoriedDevices = new List<DisplayedDevice>();
 	
-	private float _timeAtLastFrame = 0f;
+  private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;
-	private float _deltaTimeThreshold = 0.5f;
+  private float _deltaTimeThreshold = 0.5f;
 	
 	//TODO use game object texture dimensions
   static private float _equipedHeight = 54.0f;
@@ -67,17 +67,17 @@ public class DevicesDisplayer : MonoBehaviour {
   //public GameObject listed;
 
   public UIPanel equipPanel;
-	public UIPanel inventoryPanel;
+  public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
 
-	public GameObject equipedDevice;
+  public GameObject equipedDevice;
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
 
   public Equipment _equipment;
-  public Inventory _inventory;
+  public Inventory inventory;
 	
-	public GUITransitioner transitioner;
+  public GUITransitioner transitioner;
   public CraftZoneManager craftZoneManager;
 	
 	//FOR DEBUG
@@ -316,9 +316,9 @@ public class DevicesDisplayer : MonoBehaviour {
   public static string getRandomProteinName() {
     return proteinNames[Random.Range(0, proteinNames.Count)];
   }
-	
-  // Use this for initialization
+  
   void Start () {
+	Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
 	inventoryPanel.gameObject.SetActive(false);
   }
 
@@ -390,7 +390,7 @@ public class DevicesDisplayer : MonoBehaviour {
           if(newDevice == null) {
             Logger.Log("DevicesDisplayer::Update failed to provide device", Logger.Level.WARN);
           } else {
-		    addingResult = _inventory.askAddDevice(newDevice);
+		    addingResult = inventory.askAddDevice(newDevice);
           }
           Logger.Log("B - create inventoried device... done! addingResult="+addingResult, Logger.Level.TRACE);
 		}

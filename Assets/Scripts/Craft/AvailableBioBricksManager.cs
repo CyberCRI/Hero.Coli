@@ -6,8 +6,6 @@ using System.Collections.Generic;
 public class AvailableBioBricksManager : MonoBehaviour {
 
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
-  //string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
-  string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml" };
 
   //width of a displayed BioBrick
   //set in Unity editor
@@ -15,8 +13,6 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
   //prefab for available biobricks
   public GameObject availableBioBrick;
-
-  public Inventory inventory;
 
   //visual, clickable biobricks currently displayed
   LinkedList<AvailableDisplayedBioBrick>  _displayedBioBricks   = new LinkedList<AvailableDisplayedBioBrick>();
@@ -165,40 +161,39 @@ public class AvailableBioBricksManager : MonoBehaviour {
       brick.display(enabled);
     }
   }
-
-	// Use this for initialization
-	void Start () {
-    Logger.Log("AvailableBioBricksManager::Start() starts", Logger.Level.TRACE);
-	  updateDisplayedBioBricks();
-    displayPromoters();
-
-    //Loads devices
-    //Assumes that referenced biobricks have already been loaded
-    List<Device> devices = new List<Device>();
-
-    DeviceLoader dLoader = new DeviceLoader(_availableBioBricks);
-    foreach (string file in _deviceFiles) {
-      Logger.Log("AvailableBioBricksManager::Start loads device file "+file, Logger.Level.TRACE);
-      devices.AddRange(dLoader.loadDevicesFromFile(file));
-    }
-    Logger.Log("AvailableBioBricksManager: calling inventory.UpdateData(List("+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
-    inventory.UpdateData(devices, new List<Device>(), new List<Device>());
-
-    Logger.Log("AvailableBioBricksManager::Start() ends", Logger.Level.TRACE);
+		
+  public LinkedList<BioBrick> getAvailableBioBricks() {
+	Logger.Log("AvailableBioBricksManager::getAvailableBioBricks", Logger.Level.DEBUG);
+	if(_availableBioBricks == null || _availableBioBricks.Count == 0) {
+	  loadAvailableBioBricks();
 	}
-
-  void Awake () {
-    Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.INFO);
+	return _availableBioBricks;
+  }
+	
+  private void loadAvailableBioBricks() {
+	Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.DEBUG);
     //load biobricks from xml
     BioBrickLoader bLoader = new BioBrickLoader();
 
     _availableBioBricks   = new LinkedList<BioBrick>();
+	string files = "";
 
     foreach (string file in _bioBrickFiles) {
-      Logger.Log("AvailableBioBricksManager::Awake loads biobrick file "+file, Logger.Level.TRACE);
+      Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks loads biobrick file "+file, Logger.Level.TRACE);
       LinkedListExtensions.AppendRange<BioBrick>(_availableBioBricks, bLoader.loadBioBricksFromFile(file));
+	  if(!string.IsNullOrEmpty(files)) {
+		files += ", ";
+	  }
+	  files += file;
     }
-    Logger.Log("AvailableBioBricksManager::Awake loaded "+_bioBrickFiles, Logger.Level.INFO);
+    Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks loaded "+files, Logger.Level.DEBUG);
+  }
+
+  // Use this for initialization
+  void Start () {
+    Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
+	updateDisplayedBioBricks();
+    displayPromoters();
   }
 
 }

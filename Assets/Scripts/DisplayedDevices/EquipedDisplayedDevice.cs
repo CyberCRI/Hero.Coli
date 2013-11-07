@@ -7,16 +7,20 @@ class EquipedDisplayedDevice : DisplayedDevice {
   private static string               _activeSuffix = "Active";
 
   public bool                         _isActive;
+	
+	
+  void OnEnable() {
+	Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
+  }
 
-
-	protected override void OnPress(bool isPressed) {
-		if(isPressed) {
-			Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
-			if (_devicesDisplayer.IsEquipScreen()) {
-				_devicesDisplayer.askRemoveEquipedDevice(_device);
-			}
-		}
+  protected override void OnPress(bool isPressed) {
+	if(isPressed) {
+	  Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
+	  if (_devicesDisplayer.IsEquipScreen()) {
+	    _devicesDisplayer.askRemoveEquipedDevice(_device);
+	  }
 	}
+  }
 
   public void setActivity(bool activity) {
     _isActive = activity;

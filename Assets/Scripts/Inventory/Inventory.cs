@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 public class Inventory : DeviceContainer
 {
-
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
+  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml" };
+	
+  public AvailableBioBricksManager availableBioBricksManager;
   public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
 
   private string _genericDeviceNamePrefix = "device";
@@ -151,10 +154,28 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.TRACE);
     return currentName;
   }
+	
+  void loadDevices() {
+	LinkedList<BioBrick> availableBioBricks = availableBioBricksManager.getAvailableBioBricks();
+    List<Device> devices = new List<Device>();
 
-  // Use this for initialization
+    DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+    foreach (string file in _deviceFiles) {
+      Logger.Log("DevicesDisplayer::loadDevices loads device file "+file, Logger.Level.TRACE);
+      devices.AddRange(dLoader.loadDevicesFromFile(file));
+    }
+    Logger.Log("DevicesDisplayer::loadDevices calls inventory.UpdateData(List("
+			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
+    UpdateData(devices, new List<Device>(), new List<Device>());
+  }
+	
   new void Awake () {
     Logger.Log("Inventory::Awake()", Logger.Level.TRACE);
     base.Awake();
+  }
+	
+  void Start() {
+	Logger.Log("Inventory::Awake()", Logger.Level.DEBUG);
+	loadDevices();
   }
 }

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 class InventoriedDisplayedDevice : DisplayedDevice {
 	
+	void OnEnable() {
+		Logger.Log("InventoriedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
+	}
+	
 	protected override void OnPress(bool isPressed) {
 		if(isPressed) {
 			Logger.Log("InventoriedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);

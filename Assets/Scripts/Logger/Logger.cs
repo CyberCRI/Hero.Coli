@@ -16,7 +16,8 @@ public class Logger : MonoBehaviour {
     WARN,
     ERROR
   }
-  private static Level _level = Level.INFO;
+  private static Level _level = Level.DEBUG;
+  private static Level _previousLevel = Level.DEBUG;
 	
   private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
@@ -34,13 +35,13 @@ public class Logger : MonoBehaviour {
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
     if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
-      string timedMsg = DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
+      string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
       if (level == Level.WARN) {
         Debug.LogWarning(timedMsg);
       } else if (level == Level.ERROR) {
         Debug.LogError(timedMsg);
       } else {
-        Debug.Log(level.ToString()+" "+ timedMsg);
+        Debug.Log(timedMsg);
       }
     }
   }
@@ -77,6 +78,16 @@ public class Logger : MonoBehaviour {
       if (Input.GetKey(KeyCode.J)) {
         interactiveDebug = !interactiveDebug;
 		Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
+		_timeAtLastFrame = _timeAtCurrentFrame;
+      }
+      if (Input.GetKey(KeyCode.H)) {
+		if(_level == Level.TRACE) {
+		  _level = _previousLevel;
+		} else {
+		  _previousLevel = _level;
+		  _level = Level.TRACE;
+		}        
+		Logger.Log("Logger::Update press H _level="+_level, Logger.Level.WARN);
 		_timeAtLastFrame = _timeAtCurrentFrame;
       }
 	}

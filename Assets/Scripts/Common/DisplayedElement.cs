@@ -30,6 +30,7 @@ public abstract class DisplayedElement : MonoBehaviour {
     + ", localPosition="+localPosition
     + ", spriteName="+spriteName+nullSpriteName
     + ", prefab="+prefab
+	+ ")"
     , Logger.Level.DEBUG
     );
 
