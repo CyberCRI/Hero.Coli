@@ -9,6 +9,7 @@ public class Logger : MonoBehaviour {
   public const string defaultSeparator = ", ";
   public enum Level {
     ALL,
+	ONSCREEN,
 	INTERACTIVE,
     TRACE,
     DEBUG,
@@ -24,6 +25,8 @@ public class Logger : MonoBehaviour {
   private float _deltaTime = 0f;	
   private float _deltaTimeThreshold = 0.2f;
 	
+  private List<string> _messages = new List<string>();
+	
   public static bool isLevel(Level level) {
 	return level == _level;
   }	
@@ -34,7 +37,9 @@ public class Logger : MonoBehaviour {
 
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+	if(level == Level.ONSCREEN) {
+	  pushMessage(debugMsg);
+	} else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
       string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
       if (level == Level.WARN) {
         Debug.LogWarning(timedMsg);
@@ -62,6 +67,16 @@ public class Logger : MonoBehaviour {
 			resultString = !string.IsNullOrEmpty(right)?resultString+", "+right:resultString;
 			return resultString;
 		}
+  }
+	
+  private static void pushMessage(string msg) {
+	_singleton._messages.Add(msg);
+  }
+	
+  public static List<string> popAllMessages() {
+	List<string> copy = new List<string>(_singleton._messages);
+	_singleton._messages.Clear();
+	return copy;
   }
 	
   public void Awake() {

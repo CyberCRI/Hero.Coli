@@ -124,7 +124,12 @@ public class VectrosityPanel : MonoBehaviour {
   		infos.panelDimensions = collider.bounds.size;
   		changed = true;
   	}
-  	if(infos.panelPos != collider.bounds.center){
+		
+  	if(
+		infos.panelPos.x != collider.bounds.center.x - infos.panelDimensions.x/2 
+	 || infos.panelPos.y != collider.bounds.center.y - infos.panelDimensions.y/2 
+	 || infos.panelPos.z != collider.bounds.center.z
+	  ){
   		infos.panelPos = new Vector3(
   			collider.bounds.center.x - infos.panelDimensions.x/2,
   			collider.bounds.center.y - infos.panelDimensions.y/2,
