@@ -4,8 +4,8 @@ using System.Collections;
 public class PhenoSpeed : Phenotype
 {
 
-	public float minSpeed = 15f;
-	public float maxSpeed = 45f;
+	public float minSpeed;
+	public float maxSpeed;
 	
 	
 	//! Called at the begening
