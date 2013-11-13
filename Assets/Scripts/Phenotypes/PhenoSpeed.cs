@@ -22,7 +22,7 @@ public class PhenoSpeed : Phenotype
    */
 	public override void UpdatePhenotype ()
 	{
-		Molecule mol = ReactionEngine.getMoleculeFromName ("H2O", _molecules);
+		Molecule mol = ReactionEngine.getMoleculeFromName ("X", _molecules);
 		if (mol == null)
 			return ;
 		float intensity = Phenotype.hill (mol.getConcentration(), 50f, 1f, minSpeed, maxSpeed);

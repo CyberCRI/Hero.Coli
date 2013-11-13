@@ -45,19 +45,4 @@
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
-  <device id="device3">
-    <brick id="PromNoX" size="5" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]X</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
-      <rbsFactor>1</rbsFactor>
-    </brick>
-    <brick id="GFP" size="30" type="gene">
-      <protein>GFP</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
 </devices>
