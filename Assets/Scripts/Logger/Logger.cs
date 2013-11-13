@@ -3,19 +3,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*!
+ \brief a Logger class that manages all logs
+ \details Press J to log everything at 'Interactive' level; press J again to switch off
+  Press H to log everything above 'Trace' level; press H again to switch off
+ \author Raphael GOUJET
+ \mail raphael.goujet@gmail.com 
+ */
 public class Logger : MonoBehaviour {
   private static Logger _singleton = null;
   public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
+
+/*!
+ \brief log levels
+ \details
+    ALL gets everything logged
+	ONSCREEN gets printed in the Logger window
+	INTERACTIVE gets logged when Interactive mode is on - press J
+    TRACE for step by step follow up on computation
+    DEBUG for functions calls
+    INFO for events that help finding out the sequence of events leading to a bug
+    WARN for unhandled, unexpected events that don't stop the program
+    ERROR only for crashes or events threatening the program flow
+ 
+ */
   public enum Level {
-    ALL,
-	ONSCREEN,
-	INTERACTIVE,
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR
+    ALL,          // gets everything logged
+	ONSCREEN,     // gets printed in the Logger window
+	INTERACTIVE,  // gets logged when Interactive mode is on - press J
+    TRACE,        // for step by step follow up on computation
+    DEBUG,        // for functions calls
+    INFO,         // for events that help finding out the sequence of events leading to a bug
+    WARN,         // for unhandled, unexpected events that don't stop the program
+    ERROR         // only for crashes or events threatening the program flow
   }
   private static Level _level = Level.DEBUG;
   private static Level _previousLevel = Level.DEBUG;
