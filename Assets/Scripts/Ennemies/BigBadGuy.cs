@@ -13,7 +13,7 @@ public class BigBadGuy : MonoBehaviour {
 	}
 	
 	void OnParticleCollision(GameObject obj){
-		obj.GetComponent<AmpicilineCollider>();
+		obj.GetComponent<AmpicillinCollider>();
 		if(obj){
 			
 			Vector3 newScale = transform.localScale - new Vector3(step, step, step);

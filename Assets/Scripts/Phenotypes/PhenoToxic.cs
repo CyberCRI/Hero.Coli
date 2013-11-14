@@ -11,11 +11,13 @@ using System;
  */
 public class PhenoToxic : Phenotype {
 
-
+  private Molecule _mol;
+  public Hero hero;
 
   //! Called at the beginning
   public override void StartPhenotype()
   {
+	_mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
   }
 
   /*!
@@ -27,18 +29,24 @@ public class PhenoToxic : Phenotype {
   public override void UpdatePhenotype()
   {
 		//the molecule considered toxic is the Y molecule
-		Molecule mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
-		if (mol == null)
+		if(_mol == null)
+		{
+		  _mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
+		  if (_mol == null)
 			return ;
-		float intensity = Phenotype.hill (mol.getConcentration(), 50f, 1f, 0.0f, 0.01f);
-		gameObject.GetComponent<Hero>().subLife(intensity);
+		}
+		float intensity = Phenotype.hill (_mol.getConcentration(), 50f, 1f, 0.0f, 0.01f);
+		hero.subLife(intensity);
   }
-
-  public void OnTriggerStay(Collider collisionInfo)
-  {
-//     foreach (ContactPoint contact in collisionInfo.contacts)
-//       {
-//         Debug.DrawRay(contact.point, contact.normal * 10, Color.white);
-//       }
+	
+  //DEBUG
+  /*
+  public void OnCollisionEnter(Collision collision) {
+    foreach (ContactPoint contact in collision.contacts) {
+      //Debug.Log(contact.point);
+			Debug.Log ("contact "+contact);
+	  Debug.DrawRay(contact.point, new Vector3(contact.normal.x, 0.0f, contact.normal.z) * 10, Color.white, 5.0f);
+	}
   }
+  */
 }
