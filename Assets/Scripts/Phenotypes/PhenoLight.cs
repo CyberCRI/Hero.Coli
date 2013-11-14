@@ -16,7 +16,7 @@ public class PhenoLight : Phenotype {
 	private bool colliderActivated = false;
 	private Molecule _mol = null;
 
-  	//! Called at the begening
+  	//! Called at the beginning
   	public override void StartPhenotype()
   	{
     	//affectedLight.color = color;

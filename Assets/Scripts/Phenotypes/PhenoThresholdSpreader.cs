@@ -15,7 +15,7 @@ public class PhenoThresholdSpreader : Phenotype {
   public float         Threshold;       //!< The threshold
   public Component     component;       //!< Component to create
 
-  //! Called at the begening
+  //! Called at the beginning
   public override void StartPhenotype()
   {
   }

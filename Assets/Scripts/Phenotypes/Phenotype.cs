@@ -4,17 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class represent the interface between the Reaction Engine and the game.
-  \details Each class that use molecules concentration to perform a graphical effect
-  should inherit from this class. This abstract class implement the basics stuff that a phenotype needs.
-  It ask to the reaction engine the concentration of each protein that of the medium that it represent.
+  \brief This class represents the interface between the Reaction Engine and the game.
+  \details Each class that uses molecular concentration to perform a graphical effect
+  should inherit from this class. This abstract class implements the basic stuff that a phenotype needs.
+  It asks the reaction engine the concentration of each protein of the medium it represents.
 
-  Some attribute have to be define before runing it :
+  Some attributes have to be define before runing it :
 
                 - A reference to the reaction engine
                 - A mediumId
 
- This class also implement so usefull functions like a hill function.
+ This class also implements useful functions like a hill function.
  \author Pierre COLLET
  \mail pierre.collet91@gmail.com
  \sa ReactionEngine
@@ -52,7 +52,7 @@ public abstract class Phenotype : MonoBehaviour
   }
 
   /*!
-    \brief This class update all the molecules concentration
+    \brief This class updates all molecular concentrations
     \sa Molecule
     \sa Molecule.getConcentration()
    */
@@ -68,7 +68,7 @@ public abstract class Phenotype : MonoBehaviour
   }
 
   /*!
-    \brief Called at the begening.
+    \brief Called at the beginning.
    */
   public void Start () {
     _isIdChanged = true;

@@ -13,7 +13,7 @@ public class PhenoFickContact : Phenotype {
 
 
 
-  //! Called at the begening
+  //! Called at the beginning
   public override void StartPhenotype()
   {
   }

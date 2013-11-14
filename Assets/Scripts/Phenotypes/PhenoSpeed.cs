@@ -6,12 +6,17 @@ public class PhenoSpeed : Phenotype
 
 	public float minSpeed;
 	public float maxSpeed;
+	public float addFlagellumThresholdPerc;
+	public float removeFlagellumThresholdPerc;
+	public GameObject additionalFlagellum;
 	
+	private bool additionalFlagellumOn = false;
+	private Molecule _mol = null;	
 	
-	//! Called at the begening
+	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
-		
+		_mol = ReactionEngine.getMoleculeFromName ("X", _molecules);
 	}
 
 	/*!
@@ -22,10 +27,42 @@ public class PhenoSpeed : Phenotype
    */
 	public override void UpdatePhenotype ()
 	{
-		Molecule mol = ReactionEngine.getMoleculeFromName ("X", _molecules);
-		if (mol == null)
-			return ;
-		float intensity = Phenotype.hill (mol.getConcentration(), 50f, 1f, minSpeed, maxSpeed);
+		if (_mol == null)
+		{
+			_mol = ReactionEngine.getMoleculeFromName ("X", _molecules);
+			if (_mol == null)
+				return ;
+		}
+		float intensity = Phenotype.hill (_mol.getConcentration(), 50f, 1f, minSpeed, maxSpeed);
 		gameObject.GetComponent<CellControl>().moveSpeed = intensity;
+		
+		if (!additionalFlagellumOn && (intensity > addFlagellumThresholdPerc*maxSpeed))
+		{
+			AddFlagellum();
+		} else if (additionalFlagellumOn && (intensity < removeFlagellumThresholdPerc*maxSpeed))
+		{
+			RemoveFlagellum();
+		}
+	}
+	
+	private void AddFlagellum()
+	{
+		Logger.Log("PhenoSpeed::AddFlagellum add flagellum", Logger.Level.INFO);
+		if (additionalFlagellum != null)
+		{
+			additionalFlagellum.SetActive(true);
+		}
+		
+		additionalFlagellumOn = true;
+	}
+	
+	private void RemoveFlagellum()
+	{
+		Logger.Log("PhenoSpeed::RemoveFlagellum", Logger.Level.INFO);
+		if(additionalFlagellum != null)
+		{
+			additionalFlagellum.SetActive(false);
+		}
+		additionalFlagellumOn = false;
 	}
 }
