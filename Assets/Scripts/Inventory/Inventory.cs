@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Inventory : DeviceContainer
 {
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
-  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml" };
+  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	
   public AvailableBioBricksManager availableBioBricksManager;
   public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
