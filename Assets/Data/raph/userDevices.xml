@@ -75,4 +75,19 @@
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
+  <device id="device5">
+    <brick id="PromY" size="5" type="promoter">
+      <beta>75</beta>
+      <formula>[0.01,2]Y</formula>
+    </brick>
+    <brick id="RBS1" size="5" type="rbs">
+      <rbsFactor>1</rbsFactor>
+    </brick>
+    <brick id="X" size="1" type="gene">
+      <protein>X</protein>
+    </brick>
+    <brick id="T1" size="3" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
 </devices>
