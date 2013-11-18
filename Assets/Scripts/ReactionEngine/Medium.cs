@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class represent a Medium
+  \brief This class represents a Medium
   \details
   A Medium is an area closed by a something that is permeable or not.
-  Each Medium contain a list of molecules wich contains the concentration of
+  Each Medium contains a list of molecules wich contains the concentration of
   each kind of molecules.
-  Each Medium also have a list of reactions.
-  You can define molecules diffusion of molecules between mediums with Fick of ActiveTransport.
+  Each Medium also has a list of reactions.
+  You can define molecule diffusion between mediums with Fick or ActiveTransport.
   \sa Fick
   \sa ActiveTransport
   \author Pierre COLLET
@@ -263,6 +263,7 @@ public class Medium
    */
   public void Update()
   {
+		
     if (enableShufflingReactionOrder)
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
@@ -290,7 +291,7 @@ public class Medium
               m.addNewConcentration(noise);
           }
       }
-    //#FIXME : Delete theses this a the end
+    //#FIXME : remove
     if (_name == "Cellia")
       {
         if (Input.GetKey(KeyCode.P))

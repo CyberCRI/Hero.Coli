@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System;
 
 /*!
- \brief A phenotype class that represent a light reaction in function of the concentration in Water (H2O)
- in the Midium
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ \brief A phenotype class that represents the effects of the toxicity of a molecule
+ \author Raphael GOUJET
+ \mail raphael.goujet@gmail.com
  */
 public class PhenoToxic : Phenotype {
 

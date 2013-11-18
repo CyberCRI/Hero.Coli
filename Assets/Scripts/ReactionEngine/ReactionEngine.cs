@@ -237,7 +237,7 @@ public class ReactionEngine : MonoBehaviour {
 	if(_paused) {
 	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
 	} else {
-      _fick.react();
+	  _fick.react();
       if (enableShufflingMediumOrder)
         LinkedListExtensions.Shuffle<Medium>(_mediums);
       foreach (Medium medium in _mediums)

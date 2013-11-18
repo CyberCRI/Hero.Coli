@@ -14,6 +14,7 @@ public class Logger : MonoBehaviour {
   private static Logger _singleton = null;
   public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
+  public int logLevelIdx;
 
 /*!
  \brief log levels
@@ -29,17 +30,17 @@ public class Logger : MonoBehaviour {
  
  */
   public enum Level {
-    ALL,          // gets everything logged
-	ONSCREEN,     // gets printed in the Logger window
-	INTERACTIVE,  // gets logged when Interactive mode is on - press J
-    TRACE,        // for step by step follow up on computation
-    DEBUG,        // for functions calls
-    INFO,         // for events that help finding out the sequence of events leading to a bug
-    WARN,         // for unhandled, unexpected events that don't stop the program
-    ERROR         // only for crashes or events threatening the program flow
+    ALL,          // 0 gets everything logged
+	ONSCREEN,     // 1 gets printed in the Logger window
+	INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
+    TRACE,        // 3 for step by step follow up on computation
+    DEBUG,        // 4 for functions calls
+    INFO,         // 5 for events that help finding out the sequence of events leading to a bug
+    WARN,         // 6 for unhandled, unexpected events that don't stop the program
+    ERROR         // 7 only for crashes or events threatening the program flow
   }
-  private static Level _level = Level.DEBUG;
-  private static Level _previousLevel = Level.DEBUG;
+  private static Level _level = Level.INFO; // initialized in Awake()
+  private static Level _previousLevel;
 	
   private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
@@ -103,6 +104,25 @@ public class Logger : MonoBehaviour {
   public void Awake() {
 	if(_singleton == null) {
 	  _singleton = this;
+	  switch(logLevelIdx) {
+		case 0: _level = Level.ALL;
+			break;
+		case 1: _level = Level.ONSCREEN;
+			break;
+		case 2: _level = Level.INTERACTIVE;
+			break;
+		case 3: _level = Level.TRACE;
+			break;
+		case 4: _level = Level.DEBUG;
+			break;
+		case 5: _level = Level.INFO;
+			break;
+		case 6: _level = Level.WARN;
+			break;
+		case 7: _level = Level.ERROR;
+			break;
+	  }
+	  _previousLevel = _level;
 	}
   }
 	

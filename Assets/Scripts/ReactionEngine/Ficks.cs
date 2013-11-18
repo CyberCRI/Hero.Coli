@@ -156,6 +156,9 @@ public class FickReaction : IReaction
     _P = 0;
     _medium1 = null;
     _medium2 = null;
+		
+	//TODO CHECK THIS
+	enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
   }
 
   public FickReaction(FickReaction r) : base(r)
@@ -191,7 +194,10 @@ public class FickReaction : IReaction
     reaction.setMedium1(med1);
     reaction.setMedium2(med2);
     reaction.setEnergyCost(props.energyCost);
-
+		
+	//TODO CHECK THIS
+	reaction.enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
+		
     return reaction;
   }
 
@@ -243,6 +249,7 @@ Where:
   */
   public override void react(ArrayList molecules)
   {
+		
     ArrayList molMed1 = _medium1.getMolecules();
     ArrayList molMed2 = _medium2.getMolecules();
     Molecule mol2;
@@ -253,13 +260,14 @@ Where:
     if (_P == 0f || _surface == 0f)
       return;
     foreach (Molecule mol1 in molMed1)
-      {
+      {			
         c1 = mol1.getConcentration();
         mol2 = ReactionEngine.getMoleculeFromName(mol1.getName(), molMed2);
         if (mol2 != null && mol2.getFickFactor() > 0f)
           {
             c2 = mol2.getConcentration();
             result = (c2 - c1) * _P * _surface * mol2.getFickFactor() * _reactionSpeed * ReactionEngine.reactionsSpeed;
+			
             if (enableSequential)
               {
                 mol2.addConcentration(- result);
@@ -273,4 +281,10 @@ Where:
           }
       }
   }
+	
+  public override string ToString ()
+	{
+		return string.Format ("[FickReaction m1="+_medium1.getName()+" m2="+_medium2.getName()+"]");
+	}
+	
 }
