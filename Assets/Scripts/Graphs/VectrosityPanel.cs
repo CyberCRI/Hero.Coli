@@ -11,99 +11,132 @@ using Vectrosity;
 */
 public class VectrosityPanel : MonoBehaviour {
 	
-	public Camera GUICam; //!< The Isometric camera which will display the layer
-	public bool draw = true; //!< Toggles drawing of the lines
-	public float padding = 20f; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
-	public PanelInfos infos; //!< Will provide the panel information to all the lines drawn \sa PanelInfo
-	public List<Line> line {get{return _lines;}} //!< List of the lines being drawn
+  public Camera GUICam; //!< The Isometric camera which will display the layer
+  public bool draw = true; //!< Toggles drawing of the lines
+  public float padding; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
+  public PanelInfos infos; //!< Will provide the panel information to all the lines drawn \sa PanelInfo
+  public List<Line> line {get{return _lines;}} //!< List of the lines being drawn
+  public string identifier;
+  
+  private int width = 200;
+  private float height = 800;
 
   public ReactionEngine _reactionEngine;
   public int _mediumId;
 	
-  private List<Line> _lines; 
+  private List<Line> _lines = new List<Line>(); 
   private ArrayList _molecules;
+  private bool _paused = false;
 	
-	// Use this for initialization
-	void Start () {
-		infos = new PanelInfos();
-		refreshInfos();
+  public void setPause(bool paused) {
+	_paused = paused;
+  }
+	
+  // Use this for initialization
+  void Start () {
+	infos = new PanelInfos();
+	refreshInfos();
+	
+	VectorLine.SetCamera3D(GUICam);
+	
+	_lines = new List<Line>();
+
+    if (_reactionEngine == null)
+      return ;
+
+    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
+    if (mediums == null)
+      return ;
+
+    Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
+    if (medium == null)
+      {
+        Debug.Log("Can't find the given medium (" + _mediumId + ")");
+        return ;
+      }
+
+    _molecules = medium.getMolecules();
+    if (_molecules == null)
+      return ;
+
+    foreach (Molecule m in _molecules)
+      _lines.Add(new Line(width, height, infos, m.getName()));
+
+	drawLines(true);
+  }
+	
+  // Update is called once per frame
+  void Update () {
+	bool resize = refreshInfos();
+	drawLines(resize);
+  }
+	
+  void OnDisable() {
+    Logger.Log("VectrosityPanel::OnDisable "+identifier, Logger.Level.TRACE);
+	foreach(Line line in _lines) {
+	  line.vectorline.active = false;
+	}
+  }
+	
+  void OnEnable() {
+    Logger.Log("VectrosityPanel::OnEnable "+identifier, Logger.Level.TRACE);
+	foreach(Line line in _lines) {
+	  line.vectorline.active = true;
+	}
+  }
+  
+  /*!
+   * \brief Will draw the lines in the list
+   * \param resize If true will resize the lines first
+  */
+  void drawLines(bool resize) {
+    if (_molecules == null)
+      return ;
+    foreach(Line line in _lines){
+      Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
+      if(resize) line.resize();
+	  if(!_paused) {
+        if (m != null)
+          line.addPoint(m.getConcentration());
+        else
+          line.addPoint();
+	  }
+      line.redraw();
+    }
+  }
+  
+  /*!
+   * \brief Refreshes the infos of the panel 
+   * \return True if the panel information were modified
+   * \sa PanelInfo
+  */
+  public bool refreshInfos(){
+  	bool changed = false;
+  	if(infos.layer != gameObject.layer){
+  		infos.layer = gameObject.layer;
+  		changed = true;
+  	}
+  	if(infos.padding != padding){
+  		infos.padding = padding;
+  		changed = true;
+  	}
+  	if(infos.panelDimensions != collider.bounds.size){
+  		infos.panelDimensions = collider.bounds.size;
+  		changed = true;
+  	}
 		
-		VectorLine.SetCamera3D(GUICam);
-		
-		_lines = new List<Line>();
-
-                if (_reactionEngine == null)
-                  return ;
-
-                LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-                if (mediums == null)
-                  return ;
-
-                Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
-                if (medium == null)
-                  {
-                    Debug.Log("Can't find the given medium (" + _mediumId + ")");
-                    return ;
-                  }
-
-                _molecules = medium.getMolecules();
-                if (_molecules == null)
-                  return ;
-
-                foreach (Molecule m in _molecules)
-                  _lines.Add(new Line(200, 800, infos, m.getName()));
-
-		drawLines(true);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		bool resize = refreshInfos();
-		drawLines(resize);
-	}
-	
-	/*!
-	 * \brief Will draw the lines in the list
-	 * \param resize If true will resize the lines first
- 	*/
-	void drawLines(bool resize) {
-          if (_molecules == null)
-            return ;
-          foreach(Line line in _lines){
-            Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
-            if(resize) line.resize();
-            if (m != null)
-              line.addPoint(m.getConcentration());
-            else
-              line.addPoint();
-            line.redraw();
-          }
-	}
-	
-	/*!
-	 * \brief Refreshes the infos of the panel 
-	 * \return True if the panel information were modified
-	 * \sa PanelInfo
- 	*/
-	public bool refreshInfos(){
-		bool changed = false;
-		if(infos.layer != gameObject.layer){
-			infos.layer = gameObject.layer;
-			changed = true;
-		}
-		if(infos.padding != padding){
-			infos.padding = padding;
-			changed = true;
-		}
-		if(infos.panelDimensions != collider.bounds.size){
-			infos.panelDimensions = collider.bounds.size;
-			changed = true;
-		}
-		if(infos.panelPos != transform.position){
-			infos.panelPos = transform.position;
-			changed = true;
-		}
-		
-		return changed;
-	}
+  	if(
+		infos.panelPos.x != collider.bounds.center.x - infos.panelDimensions.x/2 
+	 || infos.panelPos.y != collider.bounds.center.y - infos.panelDimensions.y/2 
+	 || infos.panelPos.z != collider.bounds.center.z
+	  ){
+  		infos.panelPos = new Vector3(
+  			collider.bounds.center.x - infos.panelDimensions.x/2,
+  			collider.bounds.center.y - infos.panelDimensions.y/2,
+  			collider.bounds.center.z);
+  		changed = true;
+  	}
+  	
+  	return changed;
+  }
 }

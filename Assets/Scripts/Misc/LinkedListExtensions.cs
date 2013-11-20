@@ -76,7 +76,6 @@ public static class LinkedListExtensions
 
 
   public static T Find<T>(LinkedList<T> list, Predicate<T> predicate) {
-    Logger.Log("LinkedListExtensions::Find", Logger.Level.TRACE);
     foreach (T t in list) {
       if (predicate(t)) {
         return t;

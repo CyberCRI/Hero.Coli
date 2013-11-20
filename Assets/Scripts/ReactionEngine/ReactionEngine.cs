@@ -25,18 +25,28 @@ public class ReactionEngine : MonoBehaviour {
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
   private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
   private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
-  public string[]      _mediumsFiles;                 //!< all the medium files
-  public string[]      _reactionsFiles;           //!< all the reactions files
-  public string[]      _moleculesFiles;           //!< all the molecules files
-  public string[]      _fickFiles;                     //!< all the Fick diffusion files
-  public string[]      _activeTransportFiles;                     //!< all the Fick diffusion files
+  public string[]      _mediumsFiles;                   //!< all the medium files
+  public string[]      _reactionsFiles;                 //!< all the reactions files
+  public string[]      _moleculesFiles;                 //!< all the molecules files
+  public string[]      _fickFiles;                      //!< all the Fick diffusion files
+  public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
   public bool enableSequential;                         //!< Enable sequential mode (if reaction is compute one's after the others)
   public bool enableNoise;                              //!< Add Noise in each Reaction
   public bool enableEnergy;                             //!< Enable energy consomation
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
   public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
-
+	
+  private bool _paused;                                 //!< Simulation state
+	
+	
+  //debug
+  public bool _debug;
+  private float _timeAtLastDebug = 0f;
+  private float _timeAtCurrentFrame = 0f;
+  private float _deltaTime = 0f;
+  private float _deltaTimeThreshold = 0.5f;
+	
   public Fick getFick() { return _fick; }
   
   /*!
@@ -46,11 +56,28 @@ public class ReactionEngine : MonoBehaviour {
    */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
+	Logger.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")", Logger.Level.INFO);
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
-    if (med == null)
+    if (med == null) {
+	  Logger.Log("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found", Logger.Level.WARN);
       return ;
-    med.addReaction(reaction);
+	}
+	
+	/*TODO FIXME USEFULNESS?/////////////////////////////////////////////////////////////////////
+	ReactionsSet reactionsSet = null;
+	string medName = med.getName()+"Reactions";
+	foreach (ReactionsSet rs in _reactionsSets) {
+	  if (rs.id == medName) reactionsSet = rs;
+	}
+	if (reactionsSet != null) {
+	  reactionsSet.reactions.AddLast(IReaction.copyReaction(reaction));
+	} else {
+	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet == null", Logger.Level.WARN);
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////*/
+		
+    med.addReaction(IReaction.copyReaction(reaction));
   }
 
   /*!
@@ -93,10 +120,10 @@ public class ReactionEngine : MonoBehaviour {
     return null;
   }
 
-//! Return the ReactionSet reference corresponding to the given id
+//! Return the ReactionsSet reference corresponding to the given id
   /*!
-      \param id The id of the ReactionSet
-      \param list The list of ReactionSet where to search in
+      \param id The id of the ReactionsSet
+      \param list The list of ReactionsSet where to search in
   */
   public static ReactionsSet    getReactionsSetFromId(string id, LinkedList<ReactionsSet> list)
   {
@@ -158,6 +185,15 @@ public class ReactionEngine : MonoBehaviour {
         return molSet;
     return null;
   }
+	
+  public ArrayList getMoleculesFromMedium(int id) {
+    Medium medium = LinkedListExtensions.Find<Medium>(_mediums, m => m.getId() == id);
+	if (medium != null) {
+	  return medium.getMolecules();
+	} else {
+	  return null;
+	}
+  }
 
   //! This function is called at the initialisation of the simulation (like a Constructor)
   public void Awake()
@@ -189,17 +225,50 @@ public class ReactionEngine : MonoBehaviour {
     _activeTransport = new ActiveTransport();
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
   }
+	
+  //TODO manage reaction speed for smooth pausing
+  public void Pause(bool pause) {
+	_paused = pause;
+  }
 
   //! This function is called at each frame
   public void Update()
-  {
-    _fick.react();
-    if (enableShufflingMediumOrder)
-      LinkedListExtensions.Shuffle<Medium>(_mediums);
-    foreach (Medium medium in _mediums)
-      medium.Update();
-    if (!enableSequential)
+  {		
+	if(_paused) {
+	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
+	} else {
+	  _fick.react();
+      if (enableShufflingMediumOrder)
+        LinkedListExtensions.Shuffle<Medium>(_mediums);
       foreach (Medium medium in _mediums)
-        medium.updateMoleculesConcentrations();    
+        medium.Update();
+	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
+      if (!enableSequential) {
+        foreach (Medium medium in _mediums)
+          medium.updateMoleculesConcentrations();
+		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
+	  }
+	  
+	  //TODO REMOVE
+	  if(_debug) {
+	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
+	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
+	  		
+	  	bool debug = (_deltaTime > _deltaTimeThreshold);
+	  	if(debug) {
+	  		_timeAtLastDebug = _timeAtCurrentFrame;
+	  		//debug
+	  		foreach (Medium medium in _mediums)
+	  		  medium.Log();
+	  	}
+	  }
+			
+	  if (Input.GetKey(KeyCode.U)) {
+	    //dump all reactions
+		Logger.Log("ReactionEngine::Update Press U reactions="+getReactionsSetFromId("CelliaReactions", _reactionsSets)
+					, Logger.Level.WARN
+					);	
+      }
+	}
   }
 }

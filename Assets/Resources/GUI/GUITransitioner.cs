@@ -3,11 +3,19 @@ using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
 	
+	public ReactionEngine reactionEngine;
+	
 	private float _timeDelta = 0.2f;
 	
     private float _timeAtLastFrame = 0f;
     private float _timeAtCurrentFrame = 0f;
     private float _deltaTime = 0f;
+	
+	private bool _pauseTransition = false;
+	private float _timeScale = 1.0f;
+	
+	//regulates at which speed the game will get back to its original speed when pause is switched off
+	private float _unpauseAcceleration = 0.25f;
 	
 	public GameScreen _currentScreen = GameScreen.screen1;
 	public enum GameScreen {
@@ -23,6 +31,10 @@ public class GUITransitioner : MonoBehaviour {
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
 	public DevicesDisplayer _devicesDisplayer;
+	public VectrosityPanel _celliaGraph;
+	public VectrosityPanel _roomGraph;
+	
+	
 	// Use this for initialization
 	void Start () {
 		SetScreen2(false);
@@ -67,9 +79,14 @@ public class GUITransitioner : MonoBehaviour {
 	}
 		
 	
-	private void Pause(bool pause) {
-		Time.timeScale = pause?0:1;
-	}
+  private void Pause(bool pause) {
+    _pauseTransition = !pause;
+	reactionEngine.Pause(pause);
+	_timeScale = pause?0:1;
+	if(pause) {
+	  Time.timeScale = 0;
+    }		
+  }
 
   public void GoToScreen(GameScreen destination) {
     Logger.Log("GUITransitioner::GoToScreen("+destination+")");
@@ -99,6 +116,8 @@ public class GUITransitioner : MonoBehaviour {
        ZoomOut();
        _currentScreen = GameScreen.screen1;
        _devicesDisplayer.UpdateScreen();
+	   _celliaGraph.setPause(false);
+	   _roomGraph.setPause(false);
 
     } else if (destination == GameScreen.screen2) {
       if(_currentScreen == GameScreen.screen1) {
@@ -126,6 +145,8 @@ public class GUITransitioner : MonoBehaviour {
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
        _devicesDisplayer.UpdateScreen();
+	   _celliaGraph.setPause(true);
+	   _roomGraph.setPause(true);
 
     } else if (destination == GameScreen.screen3) {
       if(_currentScreen == GameScreen.screen1) {
@@ -151,6 +172,8 @@ public class GUITransitioner : MonoBehaviour {
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
        _devicesDisplayer.UpdateScreen();
+	   _celliaGraph.setPause(true);
+	   _roomGraph.setPause(true);
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
@@ -184,5 +207,18 @@ public class GUITransitioner : MonoBehaviour {
 			}
       _timeAtLastFrame = _timeAtCurrentFrame;
 		}
+	}
+	
+	void LateUpdate () {
+	  if(_pauseTransition) {
+		if ((Time.timeScale > 0.99f)) {
+		  Time.timeScale = 1;
+		  _pauseTransition = false;
+		} else {
+	      Logger.Log ("GUITransitioner::LateUpdate Time.timeScale="+Time.timeScale
+			+", _timeScale="+_timeScale+", _timeDelta="+_timeDelta, Logger.Level.TRACE);
+	      Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScale, _deltaTime*_unpauseAcceleration);
+		}
+	  }
 	}
 }

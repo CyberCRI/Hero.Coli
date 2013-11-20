@@ -5,7 +5,7 @@ using System;
 
 /*!
  \brief A phenotype class that represent a light reaction in function of the concentration in Water (H2O)
- in the Midium
+ in the Medium
  \author Pierre COLLET
  \mail pierre.collet91@gmail.com
  */
@@ -14,8 +14,9 @@ public class PhenoLight : Phenotype {
   	public GameObject phenoLight;   //!< The light that will be affected by the phenotype
   	
 	private bool colliderActivated = false;
+	private Molecule _mol = null;
 
-  	//! Called at the begening
+  	//! Called at the beginning
   	public override void StartPhenotype()
   	{
     	//affectedLight.color = color;
@@ -29,11 +30,11 @@ public class PhenoLight : Phenotype {
    */
   	public override void UpdatePhenotype()
   	{
-    	Molecule mol = ReactionEngine.getMoleculeFromName("H2O", _molecules);
-    	if (mol == null)
+    	_mol = ReactionEngine.getMoleculeFromName("GFP", _molecules);
+    	if (_mol == null)
       		return ;
-    	float intensity = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
-		float colRadius = Phenotype.hill(mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+    	float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+		float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
 		phenoLight.light.intensity = intensity;
 		if(colliderActivated)
@@ -41,6 +42,8 @@ public class PhenoLight : Phenotype {
   	}
 	
 	void OnTriggerEnter(Collider col){
+		if(_mol == null)
+			return;
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
 		if(lm){
 			phenoLight.light.enabled = true;

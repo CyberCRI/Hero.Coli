@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device id="GFPD">
+  <device id="GFP">
     <brick id="PT"/>
     <brick id="RBS1"/>
     <brick id="GFP"/>

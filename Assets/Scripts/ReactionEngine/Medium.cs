@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class represent a Medium
+  \brief This class represents a Medium
   \details
   A Medium is an area closed by a something that is permeable or not.
-  Each Medium contain a list of molecules wich contains the concentration of
+  Each Medium contains a list of molecules wich contains the concentration of
   each kind of molecules.
-  Each Medium also have a list of reactions.
-  You can define molecules diffusion of molecules between mediums with Fick of ActiveTransport.
+  Each Medium also has a list of reactions.
+  You can define molecule diffusion between mediums with Fick or ActiveTransport.
   \sa Fick
   \sa ActiveTransport
   \author Pierre COLLET
@@ -23,7 +23,7 @@ public class Medium
 
   private int           _id;                            //!< The id of the Medium
   private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionSet id affected to this Medium
+  private string        _reactionsSet;                  //!< The ReactionsSet id affected to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
@@ -79,14 +79,16 @@ public class Medium
    */
   public void addReaction(IReaction reaction)
   {
+	Logger.Log("Medium::addReaction("+reaction+") medium#"+_id, Logger.Level.DEBUG);
     if (reaction != null)
       {
         reaction.setMedium(this);
         reaction.enableEnergy = _enableEnergy;
         _reactions.AddLast(reaction);
+		Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.DEBUG);
       }
     else
-      Debug.Log("Cannot add this reaction because null was given");
+      Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
   }
 
   /*!
@@ -165,6 +167,7 @@ public class Medium
    */
   public void initMoleculesFromMoleculesSets(MoleculesSet molSet, ArrayList allMolecules)
   {
+	Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id,Logger.Level.TRACE);
     Molecule newMol;
     Molecule startingMolStatus;
 
@@ -173,10 +176,16 @@ public class Medium
       {
         newMol = new Molecule(mol);
         startingMolStatus = ReactionEngine.getMoleculeFromName(mol.getName(), molSet.molecules);
-        if (startingMolStatus == null)
+        if (startingMolStatus == null) {
           newMol.setConcentration(0);
-        else
+		} else {
           newMol.setConcentration(startingMolStatus.getConcentration());
+		}
+		Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id
+				+" add mol "+newMol.getName()
+				+" with cc="+newMol.getConcentration()
+				,Logger.Level.TRACE
+				);
         _molecules.Add(newMol);
       }   
   }
@@ -209,9 +218,9 @@ public class Medium
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
 
     if (reactSet == null)
-      Debug.Log("Cannot find group of reactions named " + _reactionsSet);
+      Logger.Log("Medium::Init Cannot find group of reactions named " + _reactionsSet, Logger.Level.WARN);
     if (molSet == null)
-      Debug.Log("Cannot find group of molecules named" + _moleculesSet);
+      Logger.Log("Medium::Init Cannot find group of molecules named" + _moleculesSet, Logger.Level.WARN);
 
     initATPProduction();
     initReactionsFromReactionsSet(reactSet);
@@ -234,15 +243,40 @@ public class Medium
   }
 
   /*!
+    \brief Debug the concentration of each molecules of the medium
+   */
+  public void Log(Logger.Level level = Logger.Level.TRACE)
+  {
+	string content = "";
+    foreach (Molecule m in _molecules) {
+	  if(!string.IsNullOrEmpty(content)) {
+		content += ", ";
+	  }
+	  content += m.ToString();
+	}
+					
+	Logger.Log("Medium::debug() #"+_id+"["+content+"]", level);
+  }
+
+  /*!
     \brief Execute everything about simulation into the Medium
    */
   public void Update()
   {
+		
     if (enableShufflingReactionOrder)
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
-    foreach (IReaction reaction in _reactions)
-        reaction.react(_molecules);
+    foreach (IReaction reaction in _reactions) {
+		
+		if(Logger.isLevel(Logger.Level.TRACE)) {
+		  Promoter promoter = reaction as Promoter;
+		  if (promoter != null) {
+		    Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
+		  }
+		}
+		reaction.react(_molecules);
+	}	
 
     if (_enableNoise)
       {
@@ -257,37 +291,51 @@ public class Medium
               m.addNewConcentration(noise);
           }
       }
-    //#FIXME : Delete theses this a the end
+    //#FIXME : remove
     if (_name == "Cellia")
       {
-        if (Input.GetKey(KeyCode.T))
+        if (Input.GetKey(KeyCode.P))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(100f);
           }
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.M))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("H", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("H", _molecules).addNewConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(- 100f);
           }
-        if (Input.GetKey(KeyCode.G))
+        if (Input.GetKey(KeyCode.O))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(100f);
           }
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.L))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("O", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("O", _molecules).addNewConcentration(- 100f);
+              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(- 100f);
           }
-      }
+        if (Input.GetKey(KeyCode.I))
+          {
+            if (_enableSequential)
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(10f);
+            else
+              ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(100f);
+          }
+        if (Input.GetKey(KeyCode.K))
+        {
+          if (_enableSequential)
+            ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(- 10f);
+          else
+            ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(- 100f);
+        }
+      }		
   }
 }

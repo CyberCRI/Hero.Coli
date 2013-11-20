@@ -13,7 +13,7 @@ public class PhenoFickContact : Phenotype {
 
 
 
-  //! Called at the begening
+  //! Called at the beginning
   public override void StartPhenotype()
   {
   }
@@ -29,9 +29,12 @@ public class PhenoFickContact : Phenotype {
 
   void OnTriggerEnter(Collider collider)
   {
+	Logger.Log("PhenoFickContact::OnTriggerEnter collider="+collider, Logger.Level.DEBUG);
     PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-    if (PMext == null)
+    if (PMext == null) {
+	  Logger.Log("PhenoFickContact::OnTriggerEnter collider.PMext == null", Logger.Level.TRACE);
       return;
+	}
     int colliderMediumIdExt = PMext.MediumId;
     Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _RE.getMediumList());
     if (colliderMediumExt == null)
@@ -41,8 +44,10 @@ public class PhenoFickContact : Phenotype {
       }
 
     PhysicalMedium PM = GetComponent<PhysicalMedium>();
-    if (PMext == null)
+    if (PMext == null) {
+	  Logger.Log("PhenoFickContact::OnTriggerEnter this.PMext == null", Logger.Level.TRACE);
       return;
+	}
     int mediumId = PM.MediumId;
     Medium medium = ReactionEngine.getMediumFromId(mediumId, _RE.getMediumList());
     if (medium == null)
@@ -55,18 +60,20 @@ public class PhenoFickContact : Phenotype {
     Fick fick = _RE.getFick();
     FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
     if (reaction == null)
-      {
+    {
         Debug.Log("This FickReaction does not exist.");
-        
-      }
+    }
     reaction.setSurface(surface);
   }
 
   public void OnTriggerExit(Collider collider)
   {
+	Logger.Log("PhenoFickContact::OnTriggerExit collider="+collider, Logger.Level.DEBUG);
     PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-    if (PMext == null)
+    if (PMext == null) {
+	  Logger.Log("PhenoFickContact::OnTriggerExit collider.PMext == null", Logger.Level.TRACE);
       return;
+	}
     int colliderMediumIdExt = PMext.MediumId;
     Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _RE.getMediumList());
     if (colliderMediumExt == null)
@@ -76,8 +83,10 @@ public class PhenoFickContact : Phenotype {
       }
 
     PhysicalMedium PM = GetComponent<PhysicalMedium>();
-    if (PMext == null)
+    if (PMext == null) {
+	  Logger.Log("PhenoFickContact::OnTriggerExit this.PMext == null", Logger.Level.TRACE);
       return;
+	}
     int mediumId = PM.MediumId;
     Medium medium = ReactionEngine.getMediumFromId(mediumId, _RE.getMediumList());
     if (medium == null)

@@ -23,6 +23,7 @@ public class Line{
 	private int _graphWidth; //!< The line max X value (final)
 	private float _ratioW, _ratioH;
 	private float _lastVal = 0f;
+	private float _paddingRatio = 0.001f;
 	
 	/*!
 	 * \brief Constructor
@@ -44,9 +45,6 @@ public class Line{
 		this._vectorline = new VectorLine("Graph", _pointsArray, this.color, null, 1.0f, LineType.Continuous, Joins.Weld);
 		this._vectorline.layer = _panelInfos.layer;
 		
-		for(int i = 0; i < _graphWidth; i++)
-			_pointsList.Add(0);
-		
 		resize();
 		redraw();
 	}
@@ -60,26 +58,24 @@ public class Line{
 			_pointsList.RemoveAt(0);
 		_pointsList.Add(point);
 		
-		for(int i = 0 ; i < _pointsList.Count - 1; i++){
+		shiftLeftArray();
+	}
+	
+	public void shiftLeftArray() {
+		
+		for(int i = 0 ; i < _graphWidth - 1; i++){
 			_pointsArray[i] = _pointsArray[i+1];
-			_pointsArray[i].x = i * _ratioW + _panelInfos.panelPos.x + 0.001f*_panelInfos.padding;
+			_pointsArray[i].x = getX(i);
 		}
-		_pointsArray[_pointsList.Count - 1] = newPoint(_pointsList.Count - 1, point);
+		
+		_pointsArray[_graphWidth - 1] = newPoint(_graphWidth - 1, _pointsList[_pointsList.Count-1]);
 	}
 	
 	/*!
 	 * \brief Adds a hidden point based on the previous value
  	*/
 	public void addPoint(){
-		if(_pointsList.Count == _graphWidth)
-			_pointsList.RemoveAt(0);
-		_pointsList.Add(_lastVal);
-		
-		for(int i = 0 ; i < _pointsList.Count - 1; i++){
-			_pointsArray[i] = _pointsArray[i+1];
-			_pointsArray[i].x = i * _ratioW + _panelInfos.panelPos.x + 0.001f*_panelInfos.padding;
-		}
-		_pointsArray[_pointsList.Count - 1] = newPoint(_pointsList.Count - 1);
+		addPoint(_lastVal);
 	}
 	
 	/*!
@@ -94,19 +90,21 @@ public class Line{
 	 * \sa PanelInfos
  	*/
 	public void resize(){
-		_ratioW = 1f / _graphWidth * (_panelInfos.panelDimensions.x - 0.002f*_panelInfos.padding);
-		_ratioH = 1f / graphHeight * (_panelInfos.panelDimensions.y - 0.002f*_panelInfos.padding);
+		_ratioW = (_panelInfos.panelDimensions.x - 2 * _paddingRatio * _panelInfos.padding) / _graphWidth;
+		_ratioH = (_panelInfos.panelDimensions.y - 2 * _paddingRatio * _panelInfos.padding) / graphHeight;
+		
+		//Unknown values
+		int i = 0;
+		int firstRange = _graphWidth - _pointsList.Count;
+		for(; i < firstRange ; i++){
+			_pointsArray[i] = newPoint(i, false);
+		}
 		
 		//Known values
-		int i = 0;
+		i = _graphWidth - _pointsList.Count;
 		foreach(float val in _pointsList){
 			_pointsArray[i] = newPoint(i, val);
 			i++;
-		}
-		
-		//Unknown values
-		for(; i < _graphWidth; i++){
-			_pointsArray[i] = newPoint(i);
 		}
 	}
 	
@@ -115,22 +113,43 @@ public class Line{
  	*/
 	private Vector3 newPoint(int x, float y){
 		_lastVal = Mathf.Clamp(y, 0, graphHeight);
-		return new Vector3(
-			x * _ratioW + _panelInfos.panelPos.x + 0.001f*_panelInfos.padding,
-			_lastVal * _ratioH + _panelInfos.panelPos.y + 0.001f*_panelInfos.padding,
-			_panelInfos.panelPos.z + (y > graphHeight || y < 0 ? 0.01f : -0.01f)
-		);
+		return newPoint(x, true);
 	}
 	
 	/*!
 	 * \brief Generates the Vector3 hidden point based on the previous value
  	*/
-	private Vector3 newPoint(int x){
-		return new Vector3(
-			x * _ratioW + _panelInfos.panelPos.x + 0.001f*_panelInfos.padding,
-			_lastVal * _ratioH + _panelInfos.panelPos.y + 0.001f*_panelInfos.padding,
-			_panelInfos.panelPos.z + 0.01f		
-		);
+	private Vector3 newPoint(int x, bool visible){
+		if(visible) {
+			return new Vector3(
+				getX(x),
+				getY(),
+				_panelInfos.panelPos.z - 0.01f
+			);
+		} else {
+			return new Vector3(
+				getMaxX(),
+				getMinY (),
+				_panelInfos.panelPos.z + 1.0f
+			);
+		}
+		
 	}
+	
+	private float getX(int x){
+		return x * _ratioW + _panelInfos.panelPos.x + _paddingRatio *_panelInfos.padding;
+	}
+	private float getY(){
+		return _lastVal * _ratioH + getMinY();
+	}
+	
+	private float getMaxX() {
+		return _panelInfos.panelDimensions.x - _paddingRatio * _panelInfos.padding + _panelInfos.panelPos.x;
+	}
+	
+	private float getMinY() {
+		return _panelInfos.panelPos.y + _paddingRatio *_panelInfos.padding;
+	}
+	
 }
 

@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System;
 
 /*!
- \brief A phenotype class that represent a light reaction in function of the concentration in Water (H2O)
- in the Midium
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ \brief A phenotype class that represents the effects of the toxicity of a molecule
+ \author Raphael GOUJET
+ \mail raphael.goujet@gmail.com
  */
 public class PhenoToxic : Phenotype {
 
+  private Molecule _mol;
+  public Hero hero;
 
-
-  //! Called at the begening
+  //! Called at the beginning
   public override void StartPhenotype()
   {
+	_mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
   }
 
   /*!
@@ -26,13 +27,25 @@ public class PhenoToxic : Phenotype {
    */
   public override void UpdatePhenotype()
   {
+		//the molecule considered toxic is the Y molecule
+		if(_mol == null)
+		{
+		  _mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
+		  if (_mol == null)
+			return ;
+		}
+		float intensity = Phenotype.hill (_mol.getConcentration(), 50f, 1f, 0.0f, 0.01f);
+		hero.subLife(intensity);
   }
-
-  public void OnTriggerStay(Collider collisionInfo)
-  {
-//     foreach (ContactPoint contact in collisionInfo.contacts)
-//       {
-//         Debug.DrawRay(contact.point, contact.normal * 10, Color.white);
-//       }
+	
+  //DEBUG
+  /*
+  public void OnCollisionEnter(Collision collision) {
+    foreach (ContactPoint contact in collision.contacts) {
+      //Debug.Log(contact.point);
+			Debug.Log ("contact "+contact);
+	  Debug.DrawRay(contact.point, new Vector3(contact.normal.x, 0.0f, contact.normal.z) * 10, Color.white, 5.0f);
+	}
   }
+  */
 }

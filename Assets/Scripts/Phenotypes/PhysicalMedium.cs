@@ -11,6 +11,7 @@ public class PhysicalMedium : MonoBehaviour
 	private ReactionEngine _RE;
 	
 	void Start(){
+		Logger.Log("PhysicalMedium::Start "+MediumId, Logger.Level.TRACE);
 		GameObject obj = GameObject.Find("ReactionEngine");
 		if(obj){
 			_RE = obj.GetComponent<ReactionEngine>();
@@ -23,6 +24,7 @@ public class PhysicalMedium : MonoBehaviour
 	
 	void OnTriggerEnter (Collider collider)
 	{
+		Logger.Log("PhysicalMedium::OnTriggerEnter "+MediumId+" collider="+collider, Logger.Level.TRACE);
 		if(triggerFick){
 			PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium> ();
 			if (PMext == null)
@@ -55,6 +57,7 @@ public class PhysicalMedium : MonoBehaviour
 
 	public void OnTriggerExit (Collider collider)
 	{
+		Logger.Log("PhysicalMedium::OnTriggerExit "+MediumId+" collider="+collider, Logger.Level.TRACE);
 		if(triggerFick){
 			PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium> ();
 			if (PMext == null)

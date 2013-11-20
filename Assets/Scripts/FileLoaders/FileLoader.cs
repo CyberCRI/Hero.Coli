@@ -126,7 +126,7 @@ public class FileLoader
   /*!
     \brief Load reactions from a file
     \param filePath the path of the file that contains reactions
-    \return Return a list of ReactionSet
+    \return Return a list of ReactionsSet
     \sa ReactionsSet
    */
   public LinkedList<ReactionsSet> loadReactionsFromFile(string filePath)

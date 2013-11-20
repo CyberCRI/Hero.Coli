@@ -4,8 +4,8 @@ using System.Collections;
 public class Life : MonoBehaviour {
 
 	void OnParticleCollision(GameObject obj){
-		obj.GetComponent<AmpicilineCollider>();
+		obj.GetComponent<AmpicillinCollider>();
 		if(obj)
-			Debug.Log("Loosing Life");
+			Debug.Log("Losing Life");
 	}
 }

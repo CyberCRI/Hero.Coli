@@ -32,15 +32,13 @@ public class Device
   }
 	
   public override string ToString ()
-  {
-		string modulesString = "[ExpressionModules: "+Logger.ToString(_modules)+"]";
-		
-		return string.Format ("[Device: name: {0}, expression modules: {1}]", _name, modulesString);
+  {		
+		return string.Format ("[Device: name: {0}, [ExpressionModules: {1}]", _name, Logger.ToString(_modules));
   }
 
   private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
   {
-    Debug.Log("getProductsFromBioBricks([list: "+Logger.ToString(list)+"])");
+    Logger.Log("Device::getProductsFromBioBricks([list: "+Logger.ToString(list)+"])", Logger.Level.DEBUG);
     LinkedList<Product> products = new LinkedList<Product>();
     Product prod;
     RBSBrick rbs;
@@ -51,15 +49,15 @@ public class Device
 
     foreach (BioBrick b in list)
       {
-        Debug.Log("getProductsFromBioBricks: starting treatment of "+b.ToString());
+        Logger.Log("Device::getProductsFromBioBricks: starting treatment of "+b.ToString(), Logger.Level.TRACE);
         rbs = b as RBSBrick;
         if (rbs != null) {
-          Debug.Log("getProductsFromBioBricks: rbs spotted");
+          Logger.Log("Device::getProductsFromBioBricks: rbs spotted", Logger.Level.TRACE);
           RBSf = rbs.getRBSFactor();
       }
         else
           {
-            Debug.Log("getProductsFromBioBricks: not an rbs");
+            Logger.Log("Device::getProductsFromBioBricks: not an rbs", Logger.Level.TRACE);
             gene = b as GeneBrick;
             if (gene != null)
               {
@@ -72,7 +70,7 @@ public class Device
             else
               {
                 if (b as TerminatorBrick == null)
-                  Debug.Log("This case should never arrive. Bad Biobrick in operon.");
+                  Logger.Log("Device::getProductsFromBioBricks This case should never happen. Bad Biobrick in operon.", Logger.Level.WARN);
                 else {
                  break;
                 }
@@ -135,15 +133,15 @@ public class Device
 
   public LinkedList<IReaction> getReactions() {
     Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
-    LinkedList<IReaction> reactions = new LinkedList<IReaction>();
+		
+    LinkedList<IReaction> reactions = new LinkedList<IReaction>();		
     LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
-    Logger.Log ("Device::getReactions(); [props: "+Logger.ToString(props)+"]", Logger.Level.TRACE);
-
     foreach (PromoterProprieties promoterProps in props) {
       Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
       reactions.AddLast(Promoter.buildPromoterFromProps(promoterProps));
     }
-
+		
+	Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions), Logger.Level.INFO);
     return reactions;
   }
 
@@ -198,27 +196,27 @@ public class Device
   {
     Logger.Log("Device::checkModuleValidity("+module.ToString()+")", Logger.Level.TRACE);
     if (module == null) {
-      Logger.Log("Device::checkModuleValidity (module == null)");
+      Logger.Log("Device::checkModuleValidity failed (module == null)", Logger.Level.WARN);
       return false;
     }
 
     LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(module.getBioBricks());
     if (bricks == null) {
-      Logger.Log("Device::checkModuleValidity (bricks == null)", Logger.Level.TRACE);
+      Logger.Log("Device::checkModuleValidity failed (bricks == null)", Logger.Level.WARN);
       return false;
     }
     if (bricks.Count == 0 || bricks.First.Value == null) {
-      Logger.Log("Device::checkModuleValidity (bricks.Count == 0 || bricks.First.Value == null)", Logger.Level.TRACE);
+      Logger.Log("Device::checkModuleValidity failed (bricks.Count == 0 || bricks.First.Value == null)", Logger.Level.WARN);
       return false;
     }
     if (checkPromoter(bricks.First.Value) == false) {
-      Logger.Log("Device::checkModuleValidity (checkPromoter(bricks.First.Value) == false)", Logger.Level.TRACE);
+      Logger.Log("Device::checkModuleValidity failed (checkPromoter(bricks.First.Value) == false)", Logger.Level.WARN);
       return false;
     }
     bricks.RemoveFirst();
 
     if (checkOperon(bricks) == false) {
-      Logger.Log("Device::checkModuleValidity (checkOperon(bricks) == false)", Logger.Level.TRACE);
+      Logger.Log("Device::checkModuleValidity failed (checkOperon(bricks) == false)", Logger.Level.WARN);
       return false;
     }
 
@@ -226,14 +224,14 @@ public class Device
     bool b2 = (bricks.First.Value == null);
     bool b3 = (checkTerminator(bricks.First.Value) == false);
     if (b1 || b2 || b3) {
-      if (b1) Logger.Log("Device::checkModuleValidity (bricks.Count == 0) = true", Logger.Level.TRACE);
-      if (b2) Logger.Log("Device::checkModuleValidity (bricks.First.Value != null) = true", Logger.Level.TRACE);
-      if (b3) Logger.Log("Device::checkModuleValidity (checkTerminator(bricks.First.Value) == false) = true", Logger.Level.TRACE);
+      if (b1) Logger.Log("Device::checkModuleValidity failed (bricks.Count == 0) = true", Logger.Level.WARN);
+      if (b2) Logger.Log("Device::checkModuleValidity failed (bricks.First.Value != null) = true", Logger.Level.WARN);
+      if (b3) Logger.Log("Device::checkModuleValidity failed (checkTerminator(bricks.First.Value) == false) = true", Logger.Level.WARN);
       return false;
     }
     bricks.RemoveFirst();
     if (bricks.Count != 0) {
-      Logger.Log("Device::checkModuleValidity (bricks.Count != 0)", Logger.Level.TRACE);
+      Logger.Log("Device::checkModuleValidity failed (bricks.Count != 0)", Logger.Level.WARN);
       return false;
     }
     return true;

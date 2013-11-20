@@ -157,6 +157,10 @@ public class PromoterNodeData
   }
   public PromoterParser.eNodeType   token  {get; set;}
   public string         value  {get; set;}
+  public override string ToString ()
+	{
+		return value;
+	}
 }
 
 /*!
