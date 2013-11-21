@@ -57,7 +57,7 @@ public class DevicesDisplayer : MonoBehaviour {
   private float _deltaTimeThreshold = 0.5f;
 	
 	//TODO use game object texture dimensions
-  static private float _equipedHeight = 54.0f;
+  static private float _equipedHeight = 0.0f;
   static private float _inventoriedWidth = 54.0f;
   static private float _inventoriedHeight = 54.0f;
   static private float _listedInventoriedHeight = 20.0f;
@@ -71,6 +71,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public UIPanel listedInventoryPanel;
 
   public GameObject equipedDevice;
+  public GameObject equipedDevice2;
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
 
@@ -158,7 +159,7 @@ public class DevicesDisplayer : MonoBehaviour {
 		if(alreadyEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
 			UnityEngine.Transform parent = equipPanel.transform;
-			
+
 			DisplayedDevice newDevice = 
 				EquipedDisplayedDevice.Create(
           parent,
@@ -318,8 +319,19 @@ public class DevicesDisplayer : MonoBehaviour {
   }
   
   void Start () {
-	Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
-	inventoryPanel.gameObject.SetActive(false);
+	  Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
+	  inventoryPanel.gameObject.SetActive(false);
+
+    if(equipedDevice == null) {
+      equipedDevice = GameObject.Find ("EquipedDeviceButtonPrefabPos");
+      equipedDevice2 = GameObject.Find ("EquipedDeviceButtonPrefabPos2");
+    }
+    if(_equipedHeight == 0.0f)
+    {
+      _equipedHeight = equipedDevice.transform.localPosition.y - equipedDevice2.transform.localPosition.y;
+    }
+    equipedDevice.SetActive(false);
+    equipedDevice2.SetActive(false);
   }
 
 	
