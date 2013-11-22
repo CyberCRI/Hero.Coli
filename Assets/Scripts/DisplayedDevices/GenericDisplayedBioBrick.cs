@@ -2,6 +2,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+/*!
+\brief This class enables the generic display of BioBricks
+\details The texture used is by default set according to the BioBrick type
+
+\author Raphael GOUJET
+*/
+
 public class GenericDisplayedBioBrick : DisplayedElement {
 
   public static string                              prefabURI               = "GUI/screen1/Devices/TinyBioBrickIconPrefab";
