@@ -69,6 +69,14 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
     setActive();
 
+    initIfNecessary();
+
+    tinyBioBrickIcon.SetActive(false);
+    tinyBioBrickIcon2.SetActive(false);
+    displayBioBricks();
+  }
+
+  void initIfNecessary() {
     if(equipedDevice == null) {
       equipedDevice = GameObject.Find(_equipedDeviceButtonPrefabPosString);
       tinyBioBrickIcon = GameObject.Find (_tinyBioBrickPosString);
@@ -79,13 +87,11 @@ public class EquipedDisplayedDevice : DisplayedDevice {
       _tinyIconVerticalShift = (transform.localPosition - equipedDevice.transform.localPosition).y;
       _width = tinyBioBrickIcon2.transform.localPosition.x - tinyBioBrickIcon.transform.localPosition.x;
     }
-    tinyBioBrickIcon.SetActive(false);
-    tinyBioBrickIcon2.SetActive(false);
-    displayBioBricks();
   }
 
   void displayBioBricks() {
     Logger.Log("EquipedDisplayedDevice::displayBioBricks", Logger.Level.DEBUG);
+    initIfNecessary();
     if(_device != null)
     {
       //add biobricks
@@ -104,8 +110,8 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     }
   }
 
+  //needs tinyBioBrickIcon to be initialized, e.g. using initIfNecessary()
   private Vector3 getNewPosition(int index ) {
-    //Vector3 defaultPos = new Vector3(index*_width, -95.0f, -0.1f);
     Vector3 shiftPos = new Vector3(index*_width, _tinyIconVerticalShift, -1.0f);
     if(tinyBioBrickIcon == null) {
       Logger.Log("EquipedDisplayedDevice::getNewPosition tinyBioBrickIcon == null", Logger.Level.WARN);
