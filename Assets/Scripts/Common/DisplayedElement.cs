@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class DisplayedElement : MonoBehaviour {
+public class DisplayedElement : MonoBehaviour {
 
 
   protected static int  _idCounter = 0;
@@ -56,14 +56,17 @@ public abstract class DisplayedElement : MonoBehaviour {
    Destroy(gameObject);
  }
 
- public void Redraw(Vector3 newLocalPosition) {
-   gameObject.transform.localPosition = newLocalPosition;
- }
+  public void Redraw(Vector3 newLocalPosition) {
+    gameObject.transform.localPosition = newLocalPosition;
+  }
 
- protected void setSprite(string spriteName) {
-   Logger.Log("DisplayedElement::setSprite("+spriteName+")", Logger.Level.TRACE);
-   _sprite.spriteName = spriteName;
- }
- 
- protected abstract void OnPress(bool isPressed);
+  protected void setSprite(string spriteName) {
+    Logger.Log("DisplayedElement::setSprite("+spriteName+")", Logger.Level.TRACE);
+    _sprite.spriteName = spriteName;
+  }
+
+  protected virtual void OnPress(bool isPressed)
+  {
+   Logger.Log("DisplayedElement::OnPress "+_id, Logger.Level.INFO);
+  }
 }

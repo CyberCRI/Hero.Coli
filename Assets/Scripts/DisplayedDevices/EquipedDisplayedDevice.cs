@@ -14,6 +14,10 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   private float                       _tinyIconVerticalShift = 0.0f;
   private static float                _width = 0.0f;
 
+  private static string               _equipedDeviceButtonPrefabPosString = "EquipedDeviceButtonPrefabPos";
+  private static string               _tinyBioBrickPosString              = "TinyBioBrickIconPrefabPos";
+  private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
+
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
     foreach(GenericDisplayedBioBrick brick in _currentDisplayedBricks)
@@ -66,9 +70,9 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     setActive();
 
     if(equipedDevice == null) {
-      equipedDevice = GameObject.Find("EquipedDeviceButtonPrefabPos");
-      tinyBioBrickIcon = GameObject.Find ("TinyBioBrickIconPrefabPos");
-      tinyBioBrickIcon2 = GameObject.Find ("TinyBioBrickIconPrefabPos2");
+      equipedDevice = GameObject.Find(_equipedDeviceButtonPrefabPosString);
+      tinyBioBrickIcon = GameObject.Find (_tinyBioBrickPosString);
+      tinyBioBrickIcon2 = GameObject.Find (_tinyBioBrickPosString2);
     }
     if(_tinyIconVerticalShift == 0.0f)
     {
@@ -102,7 +106,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
   private Vector3 getNewPosition(int index ) {
     //Vector3 defaultPos = new Vector3(index*_width, -95.0f, -0.1f);
-    Vector3 shiftPos = new Vector3(index*_width, _tinyIconVerticalShift, -0.1f);
+    Vector3 shiftPos = new Vector3(index*_width, _tinyIconVerticalShift, -1.0f);
     if(tinyBioBrickIcon == null) {
       Logger.Log("EquipedDisplayedDevice::getNewPosition tinyBioBrickIcon == null", Logger.Level.WARN);
       return new Vector3(index*_width, -95.0f, -0.1f) + shiftPos ;

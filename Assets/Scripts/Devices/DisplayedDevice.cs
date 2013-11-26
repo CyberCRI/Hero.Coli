@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class DisplayedDevice : DisplayedElement {
+public class DisplayedDevice : DisplayedElement {
 
 	public Device                       _device;
 	public DevicesDisplayer             _devicesDisplayer;
@@ -77,5 +77,8 @@ public abstract class DisplayedDevice : DisplayedElement {
 		return "device id="+_id+", inner device="+_device+", device type="+_deviceType+", time="+Time.realtimeSinceStartup;
 	}
 	
-	protected override abstract void OnPress(bool isPressed);
+	protected override void OnPress(bool isPressed)
+  {
+    Logger.Log("DisplayedDevice::OnPress "+_id+" device="+_device, Logger.Level.INFO);
+  }
 }
