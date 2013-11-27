@@ -13,14 +13,6 @@ public class PhysicalMedium : MonoBehaviour
 	void Start(){
 		Logger.Log("PhysicalMedium::Start "+MediumId, Logger.Level.TRACE);
     _reactionEngine = ReactionEngine.get ();
-		GameObject obj = GameObject.Find("ReactionEngine");
-		if(obj){
-			_reactionEngine = obj.GetComponent<ReactionEngine>();
-			if(!_reactionEngine)
-				Debug.LogError("Could not find Reaction Engine");
-		}
-		else
-			Debug.LogError("Could not find Reaction Engine");
 	}
 	
 	void OnTriggerEnter (Collider collider)
