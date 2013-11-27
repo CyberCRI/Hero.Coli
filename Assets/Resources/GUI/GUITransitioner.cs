@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
 	
-	public ReactionEngine reactionEngine;
+	private ReactionEngine _reactionEngine;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -37,6 +37,9 @@ public class GUITransitioner : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
+    _reactionEngine = ReactionEngine.get();
+
 		SetScreen2(false);
 		SetScreen3(false);
 		SetScreen1(true);
@@ -73,6 +76,7 @@ public class GUITransitioner : MonoBehaviour {
 		checkCamera();
 		_mainCameraFollow.SetZoom(true);
 	}
+
 	private void ZoomOut() {
 		checkCamera();
 		_mainCameraFollow.SetZoom(false);
@@ -81,10 +85,14 @@ public class GUITransitioner : MonoBehaviour {
 	
   private void Pause(bool pause) {
     _pauseTransition = !pause;
-	reactionEngine.Pause(pause);
-	_timeScale = pause?0:1;
-	if(pause) {
-	  Time.timeScale = 0;
+    if(_reactionEngine == null)
+    {
+	    _reactionEngine = ReactionEngine.get();
+    }
+    _reactionEngine.Pause(pause);
+	  _timeScale = pause?0:1;
+	  if(pause) {
+	    Time.timeScale = 0;
     }		
   }
 

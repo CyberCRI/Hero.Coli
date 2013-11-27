@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Equipment : DeviceContainer
 {
-  public ReactionEngine _reactionEngine;
+  private ReactionEngine _reactionEngine;
   public int _celliaMediumID = 1;
 
 	public Equipment() {
@@ -53,6 +53,11 @@ public class Equipment : DeviceContainer
   public override void editDevice(Device device) {
     //TODO
     Debug.Log("Equipment::editeDevice NOT IMPLEMENTED");
+  }
+
+  void Start()
+  {
+    _reactionEngine = ReactionEngine.get();
   }
 }
 

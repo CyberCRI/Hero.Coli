@@ -21,7 +21,7 @@ public class VectrosityPanel : MonoBehaviour {
   private int width = 200;
   private float height = 800;
 
-  public ReactionEngine _reactionEngine;
+  private ReactionEngine _reactionEngine;
   public int _mediumId;
 	
   private List<Line> _lines = new List<Line>(); 
@@ -29,60 +29,59 @@ public class VectrosityPanel : MonoBehaviour {
   private bool _paused = false;
 	
   public void setPause(bool paused) {
-	_paused = paused;
+	  _paused = paused;
   }
 	
   // Use this for initialization
   void Start () {
-	infos = new PanelInfos();
-	refreshInfos();
-	
-	VectorLine.SetCamera3D(GUICam);
-	
-	_lines = new List<Line>();
-
-    if (_reactionEngine == null)
-      return ;
-
+  	infos = new PanelInfos();
+  	refreshInfos();
+  	
+  	VectorLine.SetCamera3D(GUICam);
+  	
+  	_lines = new List<Line>();
+  
+    _reactionEngine = ReactionEngine.get();
+  
     LinkedList<Medium> mediums = _reactionEngine.getMediumList();
     if (mediums == null)
       return ;
-
+  
     Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
     if (medium == null)
-      {
-        Debug.Log("Can't find the given medium (" + _mediumId + ")");
-        return ;
-      }
-
+    {
+      Debug.Log("Can't find the given medium (" + _mediumId + ")");
+      return ;
+    }
+  
     _molecules = medium.getMolecules();
     if (_molecules == null)
       return ;
-
+  
     foreach (Molecule m in _molecules)
       _lines.Add(new Line(width, height, infos, m.getName()));
-
-	drawLines(true);
+  
+  	drawLines(true);
   }
 	
   // Update is called once per frame
   void Update () {
-	bool resize = refreshInfos();
-	drawLines(resize);
+	  bool resize = refreshInfos();
+	  drawLines(resize);
   }
 	
   void OnDisable() {
     Logger.Log("VectrosityPanel::OnDisable "+identifier, Logger.Level.TRACE);
-	foreach(Line line in _lines) {
-	  line.vectorline.active = false;
-	}
+	  foreach(Line line in _lines) {
+	    line.vectorline.active = false;
+	  }
   }
 	
   void OnEnable() {
     Logger.Log("VectrosityPanel::OnEnable "+identifier, Logger.Level.TRACE);
-	foreach(Line line in _lines) {
-	  line.vectorline.active = true;
-	}
+	  foreach(Line line in _lines) {
+	    line.vectorline.active = true;
+	  }
   }
   
   /*!
