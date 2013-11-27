@@ -36,7 +36,7 @@ public class PhenoFickContact : Phenotype {
       return;
 	}
     int colliderMediumIdExt = PMext.MediumId;
-    Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _RE.getMediumList());
+    Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
     if (colliderMediumExt == null)
       {
         Debug.Log("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
@@ -49,7 +49,7 @@ public class PhenoFickContact : Phenotype {
       return;
 	}
     int mediumId = PM.MediumId;
-    Medium medium = ReactionEngine.getMediumFromId(mediumId, _RE.getMediumList());
+    Medium medium = ReactionEngine.getMediumFromId(mediumId, _reactionEngine.getMediumList());
     if (medium == null)
       {
         Debug.Log("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
@@ -57,7 +57,7 @@ public class PhenoFickContact : Phenotype {
       }
     
     float surface = Math.Min(PM.Size, PMext.Size);
-    Fick fick = _RE.getFick();
+    Fick fick = _reactionEngine.getFick();
     FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
     if (reaction == null)
     {
@@ -75,7 +75,7 @@ public class PhenoFickContact : Phenotype {
       return;
 	}
     int colliderMediumIdExt = PMext.MediumId;
-    Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _RE.getMediumList());
+    Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
     if (colliderMediumExt == null)
       {
         Debug.Log("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
@@ -88,14 +88,14 @@ public class PhenoFickContact : Phenotype {
       return;
 	}
     int mediumId = PM.MediumId;
-    Medium medium = ReactionEngine.getMediumFromId(mediumId, _RE.getMediumList());
+    Medium medium = ReactionEngine.getMediumFromId(mediumId, _reactionEngine.getMediumList());
     if (medium == null)
       {
         Debug.Log("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
         return ;
       }
     
-    Fick fick = _RE.getFick();
+    Fick fick = _reactionEngine.getFick();
     FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
     if (reaction == null)
       {

@@ -22,8 +22,8 @@ using System.Collections.Generic;
  */
 public abstract class Phenotype : MonoBehaviour
 {
-  public ReactionEngine _RE;                    //!< The ReactionEngine (ReactionEngine)
-  public int            _mediumId;              //!< The medium id
+  protected ReactionEngine _reactionEngine;                    //!< The ReactionEngine (ReactionEngine)
+  public int               _mediumId;              //!< The medium id
 
   protected ArrayList             _molecules;
   protected Medium                _mediumRef;
@@ -59,18 +59,22 @@ public abstract class Phenotype : MonoBehaviour
   public void updateMolecules()
   {
     if (_isIdChanged)
-      {
-        LinkedList<Medium>    mediums = _RE.getMediumList();
-        _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
-        _isIdChanged = false;
-      }
-    _molecules = _mediumRef.getMolecules();    
+    {
+      LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
+      _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
+      _isIdChanged = false;
+    }
+    if(_mediumRef != null)
+    {
+      _molecules = _mediumRef.getMolecules();
+    }
   }
 
   /*!
     \brief Called at the beginning.
    */
   public void Start () {
+    _reactionEngine = ReactionEngine.get();
     _isIdChanged = true;
     StartPhenotype();
   }

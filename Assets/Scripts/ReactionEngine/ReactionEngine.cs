@@ -36,6 +36,9 @@ public class ReactionEngine : MonoBehaviour {
   public bool enableEnergy;                             //!< Enable energy consomation
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
   public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
+
+  private static string gameObjectName = "ReactionEngine";
+  private static ReactionEngine _reactionEngine;
 	
   private bool _paused;                                 //!< Simulation state
 	
@@ -46,7 +49,15 @@ public class ReactionEngine : MonoBehaviour {
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;
   private float _deltaTimeThreshold = 0.5f;
-	
+
+
+  public static ReactionEngine get() {
+    if(_reactionEngine == null) {
+      _reactionEngine = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
+    }
+    return _reactionEngine;
+  }
+
   public Fick getFick() { return _fick; }
   
   /*!
@@ -198,6 +209,8 @@ public class ReactionEngine : MonoBehaviour {
   //! This function is called at the initialisation of the simulation (like a Constructor)
   public void Awake()
   {
+    _reactionEngine = this;
+
     FileLoader fileLoader = new FileLoader();
     _reactionsSets = new LinkedList<ReactionsSet>();
     _moleculesSets = new LinkedList<MoleculesSet>();

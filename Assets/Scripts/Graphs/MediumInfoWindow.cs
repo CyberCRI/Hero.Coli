@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MediumInfoWindow : MonoBehaviour {
 
-  public ReactionEngine _RE;
+  private ReactionEngine _reactionEngine;
   public int _mediumId;
 
   private GraphWindow _graphWindow;
@@ -37,8 +37,9 @@ public class MediumInfoWindow : MonoBehaviour {
   }
 
   void Start () {
+    _reactionEngine = ReactionEngine.get ();
     _graphWindow = gameObject.GetComponentInChildren<GraphWindow>();
-    if (setMedium(ReactionEngine.getMediumFromId(_mediumId, _RE.getMediumList())) == false)
+    if (setMedium(ReactionEngine.getMediumFromId(_mediumId, _reactionEngine.getMediumList())) == false)
       Debug.Log("Failed to load medium curves");
   }
 

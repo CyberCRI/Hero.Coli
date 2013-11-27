@@ -8,14 +8,15 @@ public class PhysicalMedium : MonoBehaviour
 	public int MediumId;
 	public float Size;
 	
-	private ReactionEngine _RE;
+	private ReactionEngine _reactionEngine;
 	
 	void Start(){
 		Logger.Log("PhysicalMedium::Start "+MediumId, Logger.Level.TRACE);
+    _reactionEngine = ReactionEngine.get ();
 		GameObject obj = GameObject.Find("ReactionEngine");
 		if(obj){
-			_RE = obj.GetComponent<ReactionEngine>();
-			if(!_RE)
+			_reactionEngine = obj.GetComponent<ReactionEngine>();
+			if(!_reactionEngine)
 				Debug.LogError("Could not find Reaction Engine");
 		}
 		else
@@ -30,7 +31,7 @@ public class PhysicalMedium : MonoBehaviour
 			if (PMext == null)
 				return;
 			int colliderMediumIdExt = PMext.MediumId;
-			Medium colliderMediumExt = ReactionEngine.getMediumFromId (colliderMediumIdExt, _RE.getMediumList ());
+			Medium colliderMediumExt = ReactionEngine.getMediumFromId (colliderMediumIdExt, _reactionEngine.getMediumList ());
 			if (colliderMediumExt == null) {
 				Debug.Log ("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
 				return ;
@@ -38,14 +39,14 @@ public class PhysicalMedium : MonoBehaviour
 	
 			if (PMext == null)
 				return;
-			Medium medium = ReactionEngine.getMediumFromId (MediumId, _RE.getMediumList ());
+			Medium medium = ReactionEngine.getMediumFromId (MediumId, _reactionEngine.getMediumList ());
 			if (medium == null) {
 				Debug.Log ("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
 				return ;
 			}
 	    
 			float surface = Math.Min (Size, PMext.Size);
-			Fick fick = _RE.getFick ();
+			Fick fick = _reactionEngine.getFick ();
 			FickReaction reaction = Fick.getFickReactionFromIds (colliderMediumIdExt, MediumId, fick.getFickReactions ());
 			if (reaction == null) {
 				Debug.Log ("This FickReaction does not exist.");
@@ -63,7 +64,7 @@ public class PhysicalMedium : MonoBehaviour
 			if (PMext == null)
 				return;
 			int colliderMediumIdExt = PMext.MediumId;
-			Medium colliderMediumExt = ReactionEngine.getMediumFromId (colliderMediumIdExt, _RE.getMediumList ());
+			Medium colliderMediumExt = ReactionEngine.getMediumFromId (colliderMediumIdExt, _reactionEngine.getMediumList ());
 			if (colliderMediumExt == null) {
 				Debug.Log ("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
 				return ;
@@ -71,13 +72,13 @@ public class PhysicalMedium : MonoBehaviour
 	
 			if (PMext == null)
 				return;
-			Medium medium = ReactionEngine.getMediumFromId (MediumId, _RE.getMediumList ());
+			Medium medium = ReactionEngine.getMediumFromId (MediumId, _reactionEngine.getMediumList ());
 			if (medium == null) {
 				Debug.Log ("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
 				return ;
 			}
 	    
-			Fick fick = _RE.getFick ();
+			Fick fick = _reactionEngine.getFick ();
 			FickReaction reaction = Fick.getFickReactionFromIds (colliderMediumIdExt, MediumId, fick.getFickReactions ());
 			if (reaction == null) {
 				Debug.Log ("This FickReaction does not exist.");

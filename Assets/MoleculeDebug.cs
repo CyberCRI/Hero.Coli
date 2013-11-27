@@ -4,15 +4,19 @@ using System.Collections.Generic;
 
 public class MoleculeDebug : MonoBehaviour {
 	
-	public ReactionEngine    engine;
+	private ReactionEngine   _reactionEngine;
 	public int               mediumId;
 	public UILabel           label;
 	public bool              displayAll;
-	
+
+  void Start () {
+    _reactionEngine = ReactionEngine.get();
+  }
+
 	// Update is called once per frame
 	void Update () {
 		string inter = null;
-		ArrayList molecules = engine.getMoleculesFromMedium(mediumId);
+		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
 		List<string> llMolecules = new List<string>();
 		foreach(System.Object molecule in molecules) {
 			inter = ((Molecule)molecule).ToShortString(displayAll);
