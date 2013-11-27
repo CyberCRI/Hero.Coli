@@ -2,7 +2,7 @@
   <reactions id="CelliaReactions">
     <instantReaction>
       <name>AntiY</name>
-      <EnergyCost>0.1</EnergyCost>
+      <EnergyCost>1</EnergyCost>
       <reactants>
 	<reactant>
 	  <name>X</name>

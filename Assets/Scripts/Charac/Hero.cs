@@ -1,8 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class Hero : MonoBehaviour{
+
+  Medium _medium;
+  float _maxEnergy;
 	
 	//Getter & setter for the move speed.
 	private float _moveSpeed = 3f;
@@ -64,15 +68,19 @@ public class Hero : MonoBehaviour{
 		//Click to move variable.
       	//	_destination = mover.position;
       	gameObject.SetActive(true);
-      	
+
+    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+    _medium = ReactionEngine.getMediumFromId(1, mediums);
+    _maxEnergy = _medium.getMaxEnergy();
+
 		//FIXME light is undefined
       	//light.enabled = false;
 	}
   
 	void Update(){
 
-		//When the player is idle his energy gets drained.
-		setEnergy(getEnergy() - Time.deltaTime * .01f);
+    setEnergy(_medium.getEnergy()/_maxEnergy);
+
 		setLife(getLife() + Time.deltaTime * .1f);
 	}
 
