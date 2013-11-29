@@ -35,12 +35,12 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   }
 
   protected override void OnPress(bool isPressed) {
-	if(isPressed) {
-	  Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
-	  if (_devicesDisplayer.IsEquipScreen()) {
-	    _devicesDisplayer.askRemoveEquipedDevice(_device);
+    if(isPressed) {
+	    Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
+	    if (_devicesDisplayer.IsEquipScreen()) {
+	      _devicesDisplayer.askRemoveEquipedDevice(_device);
+	    }
 	  }
-	}
   }
 
   public void setActivity(bool activity) {
@@ -63,18 +63,6 @@ public class EquipedDisplayedDevice : DisplayedDevice {
    _isActive = false;
    setSprite(_currentSpriteName);
  }
-
-  // Use this for initialization
-  void Start () {
-    Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
-    setActive();
-
-    initIfNecessary();
-
-    tinyBioBrickIcon.SetActive(false);
-    tinyBioBrickIcon2.SetActive(false);
-    displayBioBricks();
-  }
 
   void initIfNecessary() {
     if(equipedDevice == null) {
@@ -121,4 +109,15 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     }
   }
 
+  // Use this for initialization
+  void Start () {
+    Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
+    setActive();
+
+    initIfNecessary();
+
+    tinyBioBrickIcon.SetActive(false);
+    tinyBioBrickIcon2.SetActive(false);
+    displayBioBricks();
+  }
 }

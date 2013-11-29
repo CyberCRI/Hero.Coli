@@ -84,4 +84,23 @@ public static class LinkedListExtensions
     Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!", Logger.Level.WARN);
     return default(T);
   }
+
+  public static bool Equals<T>(LinkedList<T> list1, LinkedList<T> list2)
+  {
+    LinkedListNode<T> it1 = list1.First;
+    LinkedListNode<T> it2 = list2.First;
+
+    bool equal = true;
+
+    while(equal && (it1 != null) && (it2 != null))
+    {
+
+      equal = (it1.Value.Equals(it2.Value));
+
+      it1 = it1.Next;
+      it2 = it2.Next;
+    }
+
+    return (equal && (it1 == null) && (it2 == null));
+  }
 }

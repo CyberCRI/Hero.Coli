@@ -30,6 +30,17 @@ public class ATPProducer : IReaction
     _production = r._production;
   }
 
+  /* !
+    \brief Checks that two reactions have the same ATPProducer field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    ATPProducer producer = reaction as ATPProducer;
+    return (producer != null)
+    && (_production == producer._production);
+  }
+
   /*!
     \brief This function is called at each step of time.
     \param molecules The list of molecules in the medium (useless here)

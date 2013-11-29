@@ -91,8 +91,8 @@ public class Medium
       Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
   }
 
-  /*!
-    \brief Remove the reaction that correspond to the given name
+  /* !
+    \brief Remove the reaction that has the given name
     \param name The name of the reaction to remove.
    */
   public void removeReactionByName(string name)
@@ -109,6 +109,31 @@ public class Medium
           }
         node = node.Next;
       }
+  }
+
+  /* !
+    \brief Remove the reaction that has the same characteristics as the one given as parameter
+    \param reaction The model of reaction to remove.
+    \param checkNameAndMedium Whether the name  and medium must be taken into account or not.
+   */
+  public void removeReaction(IReaction reaction, bool checkNameAndMedium)
+  {
+    LinkedListNode<IReaction> node = _reactions.First;
+    bool b = true;
+
+    while (node != null && b)
+    {
+      if (node.Value.Equals(reaction, checkNameAndMedium))
+      {
+        _reactions.Remove(node);
+        b = false;
+      }
+      node = node.Next;
+    }
+    if(b)
+      Logger.Log("ReactionEngine::removeReaction failed to find matching reaction", Logger.Level.WARN);
+    else
+      Logger.Log("ReactionEngine::removeReaction successfully removed matching reaction", Logger.Level.DEBUG);
   }
 
   /*!

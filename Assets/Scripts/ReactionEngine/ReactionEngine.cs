@@ -31,7 +31,7 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
   public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
-  public bool enableSequential;                         //!< Enable sequential mode (if reaction is compute one's after the others)
+  public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
   public bool enableNoise;                              //!< Add Noise in each Reaction
   public bool enableEnergy;                             //!< Enable energy consomation
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
@@ -103,6 +103,25 @@ public class ReactionEngine : MonoBehaviour {
     if (med == null)
       return ;
     med.removeReactionByName(name);    
+  }
+
+  /* !
+    \brief Remove from the specified medium the reaction that has the same characteristics as the one given as parameter
+    \param mediumId The Id of the medium to remove from.
+    \param reaction The model of reaction to remove.
+    \param checkNameAndMedium Whether the name and medium must be taken into account or not.
+   */
+  public void removeReaction(int mediumId, IReaction reaction, bool checkNameAndMedium = false)
+  {
+    Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
+
+    if (med == null)
+    {
+      Logger.Log("ReactionEngine::removeReaction could not find medium with id "+mediumId, Logger.Level.WARN);
+      return ;
+    }
+
+    med.removeReaction(reaction, checkNameAndMedium);
   }
 
   //! Return the Medium reference corresponding to the given id

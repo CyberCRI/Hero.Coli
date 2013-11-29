@@ -85,6 +85,24 @@ public class EnzymeReaction : IReaction
     _Ki = r._Ki;
   }
 
+  /* !
+    \brief Checks that two reactions have the same EnzymeReaction field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    EnzymeReaction enzyme = reaction as EnzymeReaction;
+    return (enzyme != null)
+    && (_substrate == enzyme._substrate)
+    && (_enzyme    == enzyme._enzyme)
+    && (_Kcat      == enzyme._Kcat)
+    && (_effector  == enzyme._effector)
+    && (_alpha     == enzyme._alpha)
+    && (_beta      == enzyme._beta)
+    && (_Km        == enzyme._Km)
+    && (_Ki        == enzyme._Ki);
+  }
+
 
   /*!
     \brief This function build a new EnzymeReaction based on the given EnzymeReactionProprieties

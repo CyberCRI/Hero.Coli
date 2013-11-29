@@ -174,7 +174,15 @@ public class Product
   public string getName() { return _name; }
   public void setQuantityFactor(float quantity) { _quantityFactor = quantity; }
   public float getQuantityFactor() { return _quantityFactor; }
-	
+
+  public override bool Equals (object obj)
+  {
+    Product product = obj as Product;
+    return (product != null)
+      && _name           == product._name
+      && _quantityFactor == product._quantityFactor;
+  }
+
   public override string ToString() {
     return "Product[name:"+_name+", quantityFactor:"+_quantityFactor+"]";
   }
@@ -205,8 +213,12 @@ public abstract class IReaction
     _isActive = true;
     _reactionSpeed = 1f;
     _energyCost = 0f;
-    enableSequential = true;
-    enableEnergy = false;
+
+    //TODO CHECK THIS
+    //enableSequential = true;
+    //enableEnergy = false;
+    enableSequential = ReactionEngine.get ().enableSequential;
+    enableEnergy = ReactionEngine.get ().enableEnergy;
   }
 
   //! Copy Constructor
@@ -283,6 +295,68 @@ public abstract class IReaction
           enableEnergy
 		);
 	}
+
+
+  /* !
+    \brief Checks that two reactions are equal.
+    \param reaction The reaction that will be compared to 'this'.
+    \param nameMustMatch Whether the name must be taken into account or not.
+   */
+  public bool Equals(IReaction reaction, bool checkNameAndMedium)
+  {
+    if(checkNameAndMedium)
+    {
+      return Equals (reaction);
+    }
+    return BaseCharacEquals(reaction) && CharacEquals(reaction);
+  }
+
+
+  /* !
+    \brief Checks that two reactions have the same IReaction field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  public bool BaseCharacEquals(IReaction reaction)
+  {
+    bool res =
+         //_products.Equals(reaction._products)
+         LinkedListExtensions.Equals(_products,reaction._products)
+      && (_isActive        == reaction._isActive)
+      //&& _medium.Equals(reaction._medium)
+      && (_reactionSpeed   == reaction._reactionSpeed)
+      && (_energyCost      == reaction._energyCost)
+      && (enableSequential == reaction.enableSequential)
+      && (enableEnergy     == reaction.enableEnergy)
+      ;
+
+    /*
+      //bool productivity =   _products.Equals(reaction._products);
+      bool productivity = LinkedListExtensions.Equals<Product>(_products,reaction._products);
+      bool activity = (_isActive        == reaction._isActive);
+      //&& _medium.Equals(reaction._medium)
+      bool reactivity = (_reactionSpeed   == reaction._reactionSpeed);
+      bool costity = (_energyCost      == reaction._energyCost);
+      bool sequentiality = (enableSequential == reaction.enableSequential);
+      bool energetity = (enableEnergy     == reaction.enableEnergy);
+
+    Logger.Log ("IReaction::BaseCharacEquals "
+      +", productivity ="+productivity
+      +", activity ="+activity
+      +", reactivity ="+reactivity
+      +", costity ="+costity
+      +", sequentiality ="+sequentiality
+      +", energetity ="+energetity
+      , Logger.Level.TRACE);
+    */
+
+    return res;
+  }
+
+  /* !
+    \brief Checks that two reactions have the same child class field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected abstract bool CharacEquals(IReaction reaction);
 }
 
 // ========================== DEGRADATION ================================
@@ -312,6 +386,18 @@ public class Degradation : IReaction
   {
     _degradationRate = r._degradationRate;
     _molName = r._molName;
+  }
+
+  /* !
+    \brief Checks that two reactions have the same Degradation field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    Degradation degradation = reaction as Degradation;
+    return (degradation != null)
+    && (_degradationRate == degradation._degradationRate)
+    && (_molName == degradation._molName);
   }
 
   /*!

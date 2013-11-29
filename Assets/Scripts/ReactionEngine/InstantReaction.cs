@@ -42,6 +42,17 @@ public class InstantReaction : IReaction
     _reactants = r._reactants;
   }
 
+  /* !
+    \brief Checks that two reactions have the same InstantReaction field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    InstantReaction instant = reaction as InstantReaction;
+    return (instant != null)
+    && _reactants.Equals(instant._reactants);
+  }
+
   /*!
     \brief Build an Instant reaction with a InstantReactionProprieties class
     \param props The proprieties

@@ -95,6 +95,34 @@ public class Allostery : IReaction
     _product = r._product;
   }
 
+  /* !
+    \brief Checks that two reactions have the same Allostery field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    Allostery allostery = reaction as Allostery;
+    return (allostery != null)
+    && (_effector   == allostery._effector)
+    && (_K          == allostery._K)
+    && (_n          == allostery._n)
+    && (_protein    == allostery._protein)
+    && (_product    == allostery._product);
+  }
+  /*
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    Allostery allostery = reaction as Allostery;
+    if (allostery != null)
+    {
+      Allostery copy = new Allostery(allostery);
+      copy.setName(_name);
+      return Equals(copy);
+    }
+    return false;
+  }
+  */
+
 
   //FIXME : Create fonction that create prop with this reaction
 

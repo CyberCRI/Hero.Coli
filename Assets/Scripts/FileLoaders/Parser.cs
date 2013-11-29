@@ -434,7 +434,7 @@ public class PromoterParser
     if (tokenList.First().token != PromoterLexer.eToken.CHAR)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log("Syntax error : A word need to begin with a Character.");
+        Debug.Log("Syntax error : A word needs to begin with a Character.");
         return null;
       }
     value += tokenList.First().c;

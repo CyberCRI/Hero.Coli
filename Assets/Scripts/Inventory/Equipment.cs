@@ -36,12 +36,23 @@ public class Equipment : DeviceContainer
     Logger.Log("Equipment::removeFromReactionEngine reactions from device "+device, Logger.Level.INFO);
 
     LinkedList<IReaction> reactions = device.getReactions();
-    Logger.Log("Equipment::removeFromReactionEngine reactions="+reactions, Logger.Level.TRACE);
+    //Logger.Log("Equipment::removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions), Logger.Level.TRACE);
+
+    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
+    Medium celliaMedium = ReactionEngine.getMediumFromId(_celliaMediumID, mediums);
+
+    //LinkedList<IReaction> celliaReactions = celliaMedium.getReactions();
+    //Logger.Log("Equipment::removeFromReactionEngine initialCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+    //  , Logger.Level.TRACE);
 
     foreach (IReaction reaction in reactions) {
-      Logger.Log("Equipment::removeFromReactionEngine removing reactions="+reaction, Logger.Level.TRACE);
-      _reactionEngine.removeReactionFromMediumByName(_celliaMediumID, reaction.getName());
+      //Logger.Log("Equipment::removeFromReactionEngine removing reaction="+reaction, Logger.Level.TRACE);
+      _reactionEngine.removeReaction(_celliaMediumID, reaction, false);
     }
+
+    //celliaReactions = celliaMedium.getReactions();
+    //Logger.Log("Equipment::removeFromReactionEngine finalCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+    //  , Logger.Level.TRACE);
   }
 
   public override void removeDevice(Device device) {

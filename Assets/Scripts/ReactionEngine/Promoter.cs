@@ -179,6 +179,59 @@ public class Promoter : IReaction
     _beta = r._beta;
   }
 
+  //TODO improve this
+  private bool formulaEquals(TreeNode<PromoterNodeData> formula1, TreeNode<PromoterNodeData> formula2)
+  {
+    string f1 = Logger.ToString<PromoterNodeData>(formula1);
+    string f2 = Logger.ToString<PromoterNodeData>(formula2);
+    Logger.Log("Promoter::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2, Logger.Level.DEBUG);
+    return f1 == f2;
+  }
+
+  /* !
+    \brief Checks that two reactions have the same Promoter field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    Promoter promoter = reaction as Promoter;
+
+    bool bnullProm = (promoter != null);
+    bool btermFac = (_terminatorFactor == promoter._terminatorFactor);
+    bool bformula = formulaEquals(_formula, promoter._formula);
+    bool bbeta = (_beta == promoter._beta);
+
+    Logger.Log("Promoter::CharacEquals"
+      +", bnullProm="+bnullProm
+      +", btermFac="+btermFac
+      +", bformula="+bformula
+      +", bbeta="+bbeta
+      , Logger.Level.DEBUG);
+
+    return (promoter != null)
+    && (_terminatorFactor == promoter._terminatorFactor)
+    //&& _formula.Equals(promoter._formula)
+    && formulaEquals(_formula, promoter._formula)
+    && (_beta == promoter._beta);
+  }
+  /*
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    Promoter promoter = reaction as Promoter;
+    if (promoter != null)
+    {
+      Promoter copy = new Promoter(promoter);
+      copy.setName(_name);
+      copy.setMedium(_medium);
+      
+      bool res = Equals(copy);
+      return res;
+    }
+    return false;
+
+  }
+  */
+
   /*!
     \brief This reaction build a Promoter reaction from a PromoterProprieties class
     \param props The PromoterProprieties wich will serve to create the reaction
@@ -204,9 +257,6 @@ public class Promoter : IReaction
         newProd = new Product(p);
         reaction.addProduct(newProd);
       }
-		
-	//TODO CHECK THIS
-	reaction.enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
 		
     return reaction;
   }

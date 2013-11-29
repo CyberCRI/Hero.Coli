@@ -156,9 +156,6 @@ public class FickReaction : IReaction
     _P = 0;
     _medium1 = null;
     _medium2 = null;
-		
-	//TODO CHECK THIS
-	enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
   }
 
   public FickReaction(FickReaction r) : base(r)
@@ -178,6 +175,21 @@ public class FickReaction : IReaction
   public void setMedium2(Medium medium) { _medium2 = medium;}
   public Medium getMedium2() { return _medium2;}
 
+  /* !
+    \brief Checks that two reactions have the same FickReaction field values.
+    \param reaction The reaction that will be compared to 'this'.
+   */
+  protected override bool CharacEquals(IReaction reaction)
+  {
+    FickReaction fick = reaction as FickReaction;
+    return (fick != null)
+    && (_surface == fick._surface)
+    && (_P       == fick._P)
+    && _medium1.Equals(fick._medium1)
+    && _medium2.Equals(fick._medium2);
+    //TODO check Medium equality
+  }
+
   public static IReaction        buildFickReactionFromProps(FickProprieties props, LinkedList<Medium> mediums)
   {
     FickReaction reaction = new FickReaction();
@@ -194,9 +206,6 @@ public class FickReaction : IReaction
     reaction.setMedium1(med1);
     reaction.setMedium2(med2);
     reaction.setEnergyCost(props.energyCost);
-		
-	//TODO CHECK THIS
-	reaction.enableSequential = (GameObject.FindObjectOfType(typeof(ReactionEngine)) as ReactionEngine).enableSequential;
 		
     return reaction;
   }
