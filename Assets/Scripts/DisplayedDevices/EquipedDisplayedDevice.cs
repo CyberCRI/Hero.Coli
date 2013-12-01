@@ -37,6 +37,11 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   protected override void OnPress(bool isPressed) {
     if(isPressed) {
 	    Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
+      if(_device == null)
+      {
+        Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
+        return;
+      }
 	    if (_devicesDisplayer.IsEquipScreen()) {
 	      _devicesDisplayer.askRemoveEquipedDevice(_device);
 	    }

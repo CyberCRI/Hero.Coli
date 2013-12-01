@@ -5,7 +5,7 @@
       <EnergyCost>1</EnergyCost>
       <reactants>
 	<reactant>
-	  <name>X</name>
+	  <name>Z</name>
 	  <quantity>1</quantity>
 	</reactant>
 	<reactant>
@@ -15,7 +15,7 @@
       </reactants>
       <products>
 	<product>
-	  <name>Z</name>
+	  <name>X</name>
 	  <quantity>1</quantity>	
 	</product>
       </products>

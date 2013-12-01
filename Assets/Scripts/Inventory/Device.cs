@@ -30,7 +30,22 @@ public class Device
     foreach (ExpressionModule em in modules)
       _modules.AddLast(new ExpressionModule(em));
   }
-	
+
+  public string getFirstGeneName()
+  {
+    foreach (ExpressionModule module in _modules)
+    {
+      foreach (BioBrick brick in module.getBioBricks())
+      {
+        if(brick.getType() == BioBrick.Type.GENE)
+        {
+          return brick.getName();
+        }
+      }
+    }
+    return null;
+  }
+
   public override string ToString ()
   {		
 		return string.Format ("[Device: name: {0}, [ExpressionModules: {1}]", _name, Logger.ToString(_modules));
@@ -256,6 +271,11 @@ public class Device
 
   public static Device buildDevice(Device device)
   {
+    if (device == null)
+    {
+      Logger.Log("Device::buildDevice device == null", Logger.Level.WARN);
+      return null;
+    }
     return buildDevice(device.getName(), device._modules);
   }
 	

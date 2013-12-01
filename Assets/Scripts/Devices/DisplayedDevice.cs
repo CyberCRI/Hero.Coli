@@ -45,10 +45,28 @@ public class DisplayedDevice : DisplayedElement {
     , Logger.Level.DEBUG
     );
 
+    string usedSpriteName = "device_80x80_";
+
+    switch(device.getFirstGeneName())
+    {
+      case "X": usedSpriteName += "speed";
+        break;
+      case "Y": usedSpriteName += "default";
+        break;
+      case "Z": usedSpriteName += "resist";
+        break;
+      case "GFP": usedSpriteName += "fluo";
+        break;
+      default: usedSpriteName += "default";
+        break;
+    }
+
+    Logger.Log("usedSpriteName="+usedSpriteName, Logger.Level.TEMP);
+
     DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
       parentTransform
       ,localPosition
-      ,spriteName
+      ,usedSpriteName
       ,prefab
       );
 
