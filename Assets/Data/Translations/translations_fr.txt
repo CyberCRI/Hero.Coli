@@ -1,0 +1,20 @@
+<translations>
+  <item c="AMPI1" t="AMPI1" />
+  <item c="ANTIBIO1" t="ANTIBIO1" />
+  <item c="AVAILABLEDEVICES" t="Cassettes existantes" />
+  <item c="BASEPAIRS" t="pb" />
+  <item c="CELLIA" t="Cellia" />
+  <item c="CRAFT" t="Fabriquer" />
+  <item c="DEVICE" t="Cassette" />
+  <item c="DEVICES" t="Cassettes" />
+  <item c="ENERGYCOST" t="Coût énergétique" />
+  <item c="EQUIP" t="Equiper" />
+  <item c="EXTRACELLINFO" t="Milieu extérieur" />
+  <item c="FLUO1" t="FLUO1" />
+  <item c="GENES" t="Gènes" />
+  <item c="LENGTH" t="Longueur" />
+  <item c="MOV4" t="MOV4" />  
+  <item c="PROMOTERS" t="Promoteurs" />
+  <item c="RBS" t="RBS" />
+  <item c="TERMINATORS" t="Terminateurs" />
+</translations>

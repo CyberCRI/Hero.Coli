@@ -31,13 +31,14 @@ public class Logger : MonoBehaviour {
  */
   public enum Level {
     ALL,          // 0 gets everything logged
-	ONSCREEN,     // 1 gets printed in the Logger window
-	INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
+	  ONSCREEN,     // 1 gets printed in the Logger window
+	  INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
     TRACE,        // 3 for step by step follow up on computation
     DEBUG,        // 4 for functions calls
     INFO,         // 5 for events that help finding out the sequence of events leading to a bug
-    WARN,         // 6 for unhandled, unexpected events that don't stop the program
-    ERROR         // 7 only for crashes or events threatening the program flow
+    TEMP,         // 6 temporary development logs, printed out as warning logs
+    WARN,         // 7 for unhandled, unexpected events that don't stop the program
+    ERROR         // 8 only for crashes or events threatening the program flow
   }
   private static Level _level = Level.INFO; // initialized in Awake()
   private static Level _previousLevel;
@@ -63,7 +64,7 @@ public class Logger : MonoBehaviour {
 	  pushMessage(debugMsg);
 	} else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
       string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
-      if (level == Level.WARN) {
+      if (level == Level.WARN || level == Level.TEMP) {
         Debug.LogWarning(timedMsg);
       } else if (level == Level.ERROR) {
         Debug.LogError(timedMsg);
@@ -81,7 +82,7 @@ public class Logger : MonoBehaviour {
 	
   public static string ToString<T>(TreeNode<T> tree, string separator = defaultSeparator) {
 		if(tree==null) {
-			return null;	
+			return "";
 		} else {
 			string left = ToString<T>(tree.getLeftNode()), right = ToString<T>(tree.getRightNode());
 			string resultString = tree.getData().ToString();
@@ -89,6 +90,25 @@ public class Logger : MonoBehaviour {
 			resultString = !string.IsNullOrEmpty(right)?resultString+", "+right:resultString;
 			return resultString;
 		}
+  }
+
+  public static string ToString<TKey,TValue>(IEnumerable<KeyValuePair<TKey, TValue>> enumerable, string separator = defaultSeparator)
+  {
+    string beginString = enumerable.GetType().ToString()+"[";
+    string middleString = "";
+    string endString = "]";
+
+    if(enumerable != null)
+    {
+      foreach (KeyValuePair<TKey, TValue> element in enumerable)
+      {
+        if(middleString != "")
+          middleString += separator;
+
+        middleString += (element.Key + ": "+ element.Value);
+      }
+    }
+    return beginString + middleString + endString;
   }
 	
   private static void pushMessage(string msg) {
@@ -117,9 +137,11 @@ public class Logger : MonoBehaviour {
 			break;
 		case 5: _level = Level.INFO;
 			break;
-		case 6: _level = Level.WARN;
-			break;
-		case 7: _level = Level.ERROR;
+    case 6: _level = Level.TEMP;
+      break;
+    case 7: _level = Level.WARN;
+      break;
+		case 8: _level = Level.ERROR;
 			break;
 	  }
 	  _previousLevel = _level;
