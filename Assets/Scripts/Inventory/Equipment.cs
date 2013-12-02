@@ -24,11 +24,19 @@ public class Equipment : DeviceContainer
   }
 
   public override AddingResult askAddDevice(Device device) {
-      Device copy = Device.buildDevice(device);
-      _devices.Add(copy);
-      _displayer.addEquipedDevice(copy);
-      addToReactionEngine(copy);
-      return AddingResult.SUCCESS;
+    if(device == null)
+    {
+     Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+    }
+    Device copy = Device.buildDevice(device);
+    if(copy == null)
+    {
+     Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+    }
+    _devices.Add(copy);
+    _displayer.addEquipedDevice(copy);
+    addToReactionEngine(copy);
+    return AddingResult.SUCCESS;
   }
 
   //TODO

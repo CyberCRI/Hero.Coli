@@ -107,6 +107,13 @@ public class DevicesDisplayer : MonoBehaviour {
 		Logger.Log("DevicesDisplayer::addInventoriedDevice("+device+")"
       +" starts with _listedInventoriedDevices="+Logger.ToString<DisplayedDevice>(_listedInventoriedDevices),
       Logger.Level.TRACE);
+
+    if(device==null)
+    {
+      Logger.Log("DevicesDisplayer::addInventoriedDevice device==null", Logger.Level.WARN);
+      return;
+    }
+
     //TODO replace hashing
 		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
 		if(!alreadyInventoried) {
@@ -155,6 +162,10 @@ public class DevicesDisplayer : MonoBehaviour {
 	
 	public void addEquipedDevice(Device device) {
 		Logger.Log("addEquipedDevice("+device.ToString()+")", Logger.Level.TRACE);
+    if(device == null)
+    {
+      Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+    }
 		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
 		if(alreadyEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
@@ -176,6 +187,11 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
   public DeviceContainer.AddingResult askAddEquipedDevice(Device device) {
+    if(device == null)
+    {
+      Logger.Log("DevicesDisplayer::askAddEquipedDevice device==null", Logger.Level.WARN);
+      return DeviceContainer.AddingResult.FAILURE_DEFAULT;
+    }
     return _equipment.askAddDevice(device);
   }
 

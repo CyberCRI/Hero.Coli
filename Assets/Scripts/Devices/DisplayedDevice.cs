@@ -23,6 +23,11 @@ public class DisplayedDevice : DisplayedElement {
 		)
 	{
 
+    if(device == null)
+    {
+      Logger.Log ("DisplayedDevice::Create device==null", Logger.Level.WARN);
+    }
+
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
@@ -61,7 +66,7 @@ public class DisplayedDevice : DisplayedElement {
         break;
     }
 
-    Logger.Log("usedSpriteName="+usedSpriteName, Logger.Level.TEMP);
+    Logger.Log("usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
 
     DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
       parentTransform
@@ -82,8 +87,16 @@ public class DisplayedDevice : DisplayedElement {
     , DevicesDisplayer.DeviceType deviceType
     ) {
 
-    Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.TRACE);
+    if(device == null)
+    {
+      Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
+    }
+    Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
     displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    if(displayedDeviceScript._device==null)
+    {
+      Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);
+    }
     Logger.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device, Logger.Level.TRACE);
     displayedDeviceScript._devicesDisplayer = devicesDisplayer;
     displayedDeviceScript._deviceType = deviceType;

@@ -73,6 +73,11 @@ public class Inventory : DeviceContainer
   private void addDevice(Device device) {
     Logger.Log("Inventory::addDevice("+device+"), count before="+_devices.Count, Logger.Level.TRACE);
     Device copy = Device.buildDevice(device);
+    if(device==null)
+    {
+      Logger.Log("Inventory::addDevice device==null", Logger.Level.WARN);
+      return;
+    }
     string displayerString = _displayer!=null?"name="+_displayer.name:"null";
     Logger.Log("Inventory::addDevice("+device+")"
       +", copy="+copy

@@ -11,6 +11,11 @@ class InventoriedDisplayedDevice : DisplayedDevice {
 	protected override void OnPress(bool isPressed) {
 		if(isPressed) {
 			Logger.Log("InventoriedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
+      if(_device==null)
+      {
+        Logger.Log("InventoriedDisplayedDevice::OnPress _device==null", Logger.Level.WARN);
+        return;
+      }
 			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
       Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.INFO);
 		}

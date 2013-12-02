@@ -60,7 +60,7 @@ public class CraftFinalizer : MonoBehaviour {
       craftZoneManager.setDevice(newDevice);
     } else {
       Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
-        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.TRACE);
+        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
     }
   }
 }
