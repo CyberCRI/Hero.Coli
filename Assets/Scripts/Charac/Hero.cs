@@ -54,8 +54,9 @@ public class Hero : MonoBehaviour{
 			life = 1;
 		if (life < 0) {
 			life = 0;
-			gameObject.SetActive(false);
-			Debug.Log("Game Over!");
+			//gameObject.SetActive(false);
+			Debug.Log("You died");
+			reSpawn();
 		}
 		_life = life;
 	}
@@ -108,6 +109,11 @@ public class Hero : MonoBehaviour{
 	public void changeColor(Color color) {
 		//FIXME light is undefined
 		//light.color = color;
+	}
+
+	public void reSpawn() {
+		GameObject respawnPoint = GameObject.Find("SpawnOne");
+		gameObject.transform.position = respawnPoint.transform.position;
 	}
 
 }

@@ -8,4 +8,6 @@ public class Life : MonoBehaviour {
 		if(obj)
 			Debug.Log("Losing Life");
 	}
+
+
 }
