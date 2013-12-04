@@ -111,9 +111,29 @@ public class Hero : MonoBehaviour{
 		//light.color = color;
 	}
 
+
+	private bool _spawnOne = false;
+	private bool _spawnTwo = false;
+
+ 	void OnTriggerExit(Collider col) {
+ 		if (col.name == "CheckpointOne") {
+	 		_spawnOne = true;
+	 	}
+	 	if (col.name == "CheckpointTwo") {
+	 		_spawnOne = false;
+	 		_spawnTwo = true;
+	 	}
+ 	}
+
 	public void reSpawn() {
-		GameObject respawnPoint = GameObject.Find("SpawnOne");
-		gameObject.transform.position = respawnPoint.transform.position;
+		if (_spawnOne == true) {
+			GameObject respawnPointOne = GameObject.Find("SpawnOne");
+			gameObject.transform.position = respawnPointOne.transform.position;	
+		}
+		else if (_spawnTwo == true) {
+			GameObject respawnPointTwo = GameObject.Find("SpawnTwo");
+			gameObject.transform.position = respawnPointTwo.transform.position;
+		}
 	}
 
 }
