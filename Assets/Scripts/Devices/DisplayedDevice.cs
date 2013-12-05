@@ -50,7 +50,10 @@ public class DisplayedDevice : DisplayedElement {
     , Logger.Level.DEBUG
     );
 
-    string usedSpriteName = "device_80x80_";
+    string usedSpriteName = "device_";
+    string quality = "256x256_";
+
+    usedSpriteName += quality;
 
     switch(device.getFirstGeneName())
     {
