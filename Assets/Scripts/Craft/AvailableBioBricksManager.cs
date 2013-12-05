@@ -93,10 +93,11 @@ public class AvailableBioBricksManager : MonoBehaviour {
   public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
   {
     Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.DEBUG);
-    if (null != brick)
-    // TODO safety check
-    // if(!_availableBioBricks.Contains(brick)
-    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b.Equals(brick)))
+    string bbName = brick.getName();
+    if ((null != brick)
+     && (null == LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b.getName() == bbName)))
+    // TODO deeper safety check
+    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick))
     {
       _availableBioBricks.AddLast(brick);
       if(updateView)
