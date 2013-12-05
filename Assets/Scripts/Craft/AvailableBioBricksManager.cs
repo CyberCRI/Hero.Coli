@@ -64,17 +64,19 @@ public class AvailableBioBricksManager : MonoBehaviour {
       , getDisplayableAvailableBioBrick
       );
 
-      Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
+    Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
       +"\n\navailablePromoters="+Logger.ToString<BioBrick>(availablePromoters)
       +",\n\navailableRBS="+Logger.ToString<BioBrick>(availableRBS)
       +",\n\navailableGenes="+Logger.ToString<BioBrick>(availableGenes)
       +",\n\navailableTerminators="+Logger.ToString<BioBrick>(availableTerminators)
-
+    
       +",\n\n_displayableAvailablePromoters="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailablePromoters)
       +",\n\n_displayableAvailableRBS="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableRBS)
       +",\n\n_displayableAvailableGenes="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableGenes)
       +",\n\n_displayableAvailableTerminators="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
       , Logger.Level.TRACE);
+
+    switchTo(_displayableAvailablePromoters);
 
   }
 
