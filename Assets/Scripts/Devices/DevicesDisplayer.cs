@@ -4,7 +4,19 @@ using System.Collections.Generic;
 
 
 public class DevicesDisplayer : MonoBehaviour {
-	
+
+  public enum TextureQuality {
+    HIGH,
+    NORMAL
+  }
+
+  private static TextureQuality textureQuality = TextureQuality.HIGH;
+
+  public static TextureQuality getTextureQuality()
+  {
+    return textureQuality;
+  }
+
   //FOR DEBUG
   private static List<string> spriteNames = new List<string>( new string [] {
    "Backdrop"

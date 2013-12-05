@@ -4,14 +4,37 @@ using System.Collections.Generic;
 
 public class DisplayedDevice : DisplayedElement {
 
-	public Device                       _device;
-	public DevicesDisplayer             _devicesDisplayer;
-  public DevicesDisplayer.DeviceType  _deviceType;
-
+  // static stuff
   private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
   private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
   private static string listedPrefabURI = "GUI/screen3/Devices/ListedDeviceButtonPrefab";
 
+  private static string baseDeviceTextureString = "device_";
+  private static string quality256 = "256x256_";
+  private static string quality80 = "80x80_";
+  private static string defaultTexture = "default";
+
+  private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
+  {
+    {"X", "speed"},
+    //{"Y", "default"},
+    {"Z", "resist"},
+    {"GFP", "fluo"}
+  };
+
+  private static string getGeneTexture(string gene)
+  {
+    string texture = null;
+    if(!geneTextureDico.TryGetValue(gene, out texture))
+    {
+      texture = defaultTexture;
+    }
+    return texture;
+  }
+
+  public Device                       _device;
+  public DevicesDisplayer             _devicesDisplayer;
+  public DevicesDisplayer.DeviceType  _deviceType;
 
 	public static DisplayedDevice Create(
 		Transform parentTransform
@@ -50,31 +73,10 @@ public class DisplayedDevice : DisplayedElement {
     , Logger.Level.DEBUG
     );
 
-    string usedSpriteName = "device_";
-    string quality = "256x256_";
-
-    usedSpriteName += quality;
-
-    switch(device.getFirstGeneName())
-    {
-      case "X": usedSpriteName += "speed";
-        break;
-      case "Y": usedSpriteName += "default";
-        break;
-      case "Z": usedSpriteName += "resist";
-        break;
-      case "GFP": usedSpriteName += "fluo";
-        break;
-      default: usedSpriteName += "default";
-        break;
-    }
-
-    Logger.Log("usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
-
     DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
       parentTransform
       ,localPosition
-      ,usedSpriteName
+      ,getTextureName(device)
       ,prefab
       );
 
@@ -82,6 +84,26 @@ public class DisplayedDevice : DisplayedElement {
 
     return result;
 	}
+
+  public static string getTextureName(Device device)
+  {
+    string usedSpriteName = baseDeviceTextureString;
+    switch (DevicesDisplayer.getTextureQuality())
+    {
+      case DevicesDisplayer.TextureQuality.HIGH:
+        usedSpriteName += quality256;
+        break;
+      case DevicesDisplayer.TextureQuality.NORMAL:
+        usedSpriteName += quality80;
+        break;
+      default:
+        usedSpriteName += quality80;
+        break;
+    }
+    usedSpriteName += getGeneTexture(device.getFirstGeneName());
+    Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
+    return usedSpriteName;
+  }
 
   public static void Initialize(
     DisplayedDevice displayedDeviceScript
