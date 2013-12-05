@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class PickableDevice : PickableItem {
-  public DevicesDisplayer _devicesDisplayer;
+  public Inventory _inventory;
   public AvailableBioBricksManager _availableBioBricksManager;
   protected new Device _dnaBit;
 
@@ -26,7 +26,7 @@ public abstract class PickableDevice : PickableItem {
     }
 
     Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.TEMP);
-    _devicesDisplayer.addInventoriedDevice(_dnaBit);
-    //DevicesDisplayer.get().addInventoriedDevice(_dnaBit);
+    _inventory.askAddDevice(_dnaBit);
+    //Inventory.get().askAddDevice(_dnaBit);
   }
 }
