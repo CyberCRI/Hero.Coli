@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 public class Hero : MonoBehaviour{
 
-  Medium _medium;
-  float _maxEnergy;
+	Medium _medium;
+	float _maxEnergy;
 	
+	/*
 	//Getter & setter for the move speed.
 	private float _moveSpeed = 3f;
 	public float getMoveSpeed() {
@@ -18,11 +19,13 @@ public class Hero : MonoBehaviour{
 			moveSpeed = 0; 
 			_moveSpeed = moveSpeed;
 	}
+	*/
 	
 	//References for the click to move controler.
 	//	private float _moveSmooth = .5f;
 	//	private Vector3 _destination = Vector3.zero;
 
+	/*
 	//Getter & setter for the inventory.
 	private int _collected;
 	public int getCollected() {
@@ -30,7 +33,7 @@ public class Hero : MonoBehaviour{
 	}
 	public void setCollected(int collected) {
 		_collected = collected;
-	}
+	}*/
 	
 	//Getter & setter for the energy.
 	private float _energy = 1f;
@@ -70,21 +73,20 @@ public class Hero : MonoBehaviour{
       	//	_destination = mover.position;
       	gameObject.SetActive(true);
 
-    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-    _medium = ReactionEngine.getMediumFromId(1, mediums);
-    _maxEnergy = _medium.getMaxEnergy();
+	    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+	    _medium = ReactionEngine.getMediumFromId(1, mediums);
+	    _maxEnergy = _medium.getMaxEnergy();
 
 		//FIXME light is undefined
       	//light.enabled = false;
 	}
   
-	void Update(){
-
-    setEnergy(_medium.getEnergy()/_maxEnergy);
-
+	void Update() {
+    	//setEnergy(_medium.getEnergy()/_maxEnergy);
 		setLife(getLife() + Time.deltaTime * .1f);
 	}
 
+	/*
 	//When the player collects a biobrick.
 	public void Collect() {
 		setCollected(getCollected() + 1);
@@ -110,6 +112,7 @@ public class Hero : MonoBehaviour{
 		//FIXME light is undefined
 		//light.color = color;
 	}
+	*/
 
 
 	private bool _spawnOne = false;
@@ -128,11 +131,13 @@ public class Hero : MonoBehaviour{
 	public void reSpawn() {
 		if (_spawnOne == true) {
 			GameObject respawnPointOne = GameObject.Find("SpawnOne");
-			gameObject.transform.position = respawnPointOne.transform.position;	
+			gameObject.transform.position = respawnPointOne.transform.position;
+			setLife(1f);
 		}
 		else if (_spawnTwo == true) {
 			GameObject respawnPointTwo = GameObject.Find("SpawnTwo");
 			gameObject.transform.position = respawnPointTwo.transform.position;
+			setLife(1f);
 		}
 	}
 
