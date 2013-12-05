@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public abstract class BioBrick
+public abstract class BioBrick: DNABit
 {
   public enum Type
   {
