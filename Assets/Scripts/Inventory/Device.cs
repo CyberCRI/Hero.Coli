@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Device
+public class Device: DNABit
 {
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;

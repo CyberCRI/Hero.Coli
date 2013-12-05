@@ -119,14 +119,26 @@ public class Hero : MonoBehaviour{
 	private bool _spawnTwo = false;
 
  	void OnTriggerExit(Collider col) {
- 		if (col.name == "CheckpointOne") {
-	 		_spawnOne = true;
-	 	}
-	 	if (col.name == "CheckpointTwo") {
-	 		_spawnOne = false;
-	 		_spawnTwo = true;
+ 		switch(col.name)
+    {
+      case "CheckpointOne":
+        _spawnOne = true;
+        break;
+      case "CheckpointTwo":
+        _spawnOne = false;
+        _spawnTwo = true;
+        break;
 	 	}
  	}
+
+  void OnTriggerEnter(Collider collision){
+    PickableItem item = collision.GetComponent<PickableItem>();
+    if(null != item)
+    {
+      Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
+      item.pickUp();
+    }
+  }
 
 	public void reSpawn() {
 		if (_spawnOne == true) {

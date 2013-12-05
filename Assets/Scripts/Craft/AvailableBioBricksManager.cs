@@ -5,6 +5,8 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class AvailableBioBricksManager : MonoBehaviour {
 
+  private static AvailableBioBricksManager _singleton;
+
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
 
   //width of a displayed BioBrick
@@ -34,6 +36,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
 
   private void updateDisplayedBioBricks() {
+    Logger.Log ("AvailableBioBricksManager::updateDisplayedBioBricks", Logger.Level.DEBUG);
+
     LinkedList<BioBrick> availablePromoters = new LinkedList<BioBrick>();
     LinkedListExtensions.AppendRange<BioBrick>(availablePromoters, getAvailableBioBricksOfType(BioBrick.Type.PROMOTER));
     LinkedList<BioBrick> availableRBS = new LinkedList<BioBrick>();
@@ -60,23 +64,54 @@ public class AvailableBioBricksManager : MonoBehaviour {
       , getDisplayableAvailableBioBrick
       );
 
-      Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
+    Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
       +"\n\navailablePromoters="+Logger.ToString<BioBrick>(availablePromoters)
       +",\n\navailableRBS="+Logger.ToString<BioBrick>(availableRBS)
       +",\n\navailableGenes="+Logger.ToString<BioBrick>(availableGenes)
       +",\n\navailableTerminators="+Logger.ToString<BioBrick>(availableTerminators)
-
+    
       +",\n\n_displayableAvailablePromoters="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailablePromoters)
       +",\n\n_displayableAvailableRBS="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableRBS)
       +",\n\n_displayableAvailableGenes="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableGenes)
       +",\n\n_displayableAvailableTerminators="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
       , Logger.Level.TRACE);
 
+    switchTo(_displayableAvailablePromoters);
+
   }
 
   private LinkedList<BioBrick> getAvailableBioBricksOfType(BioBrick.Type type) {
     Logger.Log("AvailableBioBricksManager::getAvailableBioBricksOfType("+type+")", Logger.Level.TRACE);
     return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => (b.getType() == type));
+  }
+
+  public static AvailableBioBricksManager get()
+  {
+    return _singleton;
+  }
+
+  public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
+  {
+    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.DEBUG);
+    if (null != brick)
+    // TODO safety check
+    // if(!_availableBioBricks.Contains(brick)
+    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b.Equals(brick)))
+    {
+      _availableBioBricks.AddLast(brick);
+      if(updateView)
+      {
+        updateDisplayedBioBricks();
+      }
+      return true;
+    }
+    return false;
+  }
+
+  void OnEnable()
+  {
+    Logger.Log("AvailableBioBricksManager::OnEnable", Logger.Level.DEBUG);
+    updateDisplayedBioBricks();
   }
 
   public Vector3 getNewPosition(int index) {
@@ -192,8 +227,12 @@ public class AvailableBioBricksManager : MonoBehaviour {
   // Use this for initialization
   void Start () {
     Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
-	updateDisplayedBioBricks();
     displayPromoters();
   }
 
+  void Awake()
+  {
+    Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.DEBUG);
+    _singleton = this;
+  }
 }

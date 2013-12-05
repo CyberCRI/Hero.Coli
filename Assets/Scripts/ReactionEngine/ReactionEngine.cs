@@ -53,6 +53,7 @@ public class ReactionEngine : MonoBehaviour {
 
   public static ReactionEngine get() {
     if(_reactionEngine == null) {
+      Logger.Log("ReactionEngine::get was badly initiated", Logger.Level.WARN);
       _reactionEngine = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
     }
     return _reactionEngine;
@@ -226,7 +227,7 @@ public class ReactionEngine : MonoBehaviour {
   }
 
   //! This function is called at the initialisation of the simulation (like a Constructor)
-  public void Awake()
+  void Awake()
   {
     _reactionEngine = this;
 
