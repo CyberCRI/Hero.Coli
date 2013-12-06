@@ -11,6 +11,7 @@ public abstract class DeviceContainer : MonoBehaviour {
     FAILURE_DEFAULT
   }
 
+  //TODO DeviceDisplayer
   public static string _displayerName = "DevicesDisplayersPanel";
 
   protected List<Device> _devices = new List<Device>();

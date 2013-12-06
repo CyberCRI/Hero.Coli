@@ -26,7 +26,6 @@ public class CraftZoneManager : MonoBehaviour {
   public GameObject                         displayedBioBrick;
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
-  public Inventory                          inventory;
 
   //width of a displayed BioBrick
   public int _width = 200;
@@ -146,7 +145,7 @@ public class CraftZoneManager : MonoBehaviour {
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);
-    Device device = Device.buildDevice(inventory.getAvailableDeviceName(), modules);
+    Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
     if(device != null)
     {
       Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);

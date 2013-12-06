@@ -27,20 +27,11 @@ public class DevicesDisplayer : MonoBehaviour {
   private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
   private List<DisplayedDevice> _listedInventoriedDevices = new List<DisplayedDevice>();
 	
-  private float _timeAtLastFrame = 0f;
-  private float _timeAtCurrentFrame = 0f;
-  private float _deltaTime = 0f;
-  private float _deltaTimeThreshold = 0.5f;
-	
 	//TODO use game object texture dimensions
   static private float _equipedHeight = 0.0f;
   static private float _inventoriedWidth = 54.0f;
   static private float _inventoriedHeight = 54.0f;
   static private float _listedInventoriedHeight = 20.0f;
-
-	//public GameObject equipment;
-	//public GameObject inventory;
-  //public GameObject listed;
 
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
@@ -50,9 +41,6 @@ public class DevicesDisplayer : MonoBehaviour {
   public GameObject equipedDevice2;
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
-
-  public Equipment _equipment;
-  public Inventory inventory;
 	
   public GUITransitioner transitioner;
   public CraftZoneManager craftZoneManager;
@@ -155,7 +143,7 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::askAddEquipedDevice device==null", Logger.Level.WARN);
       return DeviceContainer.AddingResult.FAILURE_DEFAULT;
     }
-    return _equipment.askAddDevice(device);
+    return Equipment.get().askAddDevice(device);
   }
 
 
@@ -226,7 +214,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
 
   public void askRemoveEquipedDevice(Device device) {
-    _equipment.removeDevice(device);
+    Equipment.get().removeDevice(device);
   }
 	
 	public void removeDevice(int deviceID) {

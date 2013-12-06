@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
-  public Inventory                      inventory;
   public CraftZoneManager               craftZoneManager;
 
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
@@ -23,7 +22,7 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.TRACE);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
-      Inventory.AddingResult addingResult = inventory.askAddDevice(currentDevice);
+      Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
         craftZoneManager.displayDevice();
         Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
@@ -38,7 +37,7 @@ public class CraftFinalizer : MonoBehaviour {
   public void setDisplayedDevice(Device device){
     Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);
 
-    Inventory.AddingResult addingResult = inventory.canAddDevice(device);
+    Inventory.AddingResult addingResult = Inventory.get().canAddDevice(device);
     Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult, Logger.Level.TRACE);
     string status = statusMessagesDictionary[addingResult];
     Logger.Log("CraftFinalizer::setDisplayedDevice(): status="+status, Logger.Level.TRACE);
@@ -53,7 +52,7 @@ public class CraftFinalizer : MonoBehaviour {
   public void randomRename() {
     Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
     Device currentDevice = craftZoneManager.getCurrentDevice();
-    string newName = inventory.getAvailableDeviceName();
+    string newName = Inventory.get().getAvailableDeviceName();
     Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
     if(newDevice != null){
       Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);

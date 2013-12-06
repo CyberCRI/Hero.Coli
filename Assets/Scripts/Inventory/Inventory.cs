@@ -3,6 +3,25 @@ using System.Collections.Generic;
 
 public class Inventory : DeviceContainer
 {
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "DeviceInventory";
+  private static Inventory _instance;
+  public static Inventory get() {
+    if(_instance == null) {
+      Logger.Log("Inventory::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<Inventory>();
+    }
+    return _instance;
+  }
+  new void Awake()
+  {
+    Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
+    base.Awake();
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
   private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	
@@ -171,11 +190,6 @@ public class Inventory : DeviceContainer
     Logger.Log("DevicesDisplayer::loadDevices calls inventory.UpdateData(List("
 			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     UpdateData(devices, new List<Device>(), new List<Device>());
-  }
-	
-  new void Awake () {
-    Logger.Log("Inventory::Awake()", Logger.Level.TRACE);
-    base.Awake();
   }
 	
   void Start() {

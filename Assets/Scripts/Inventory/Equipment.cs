@@ -3,6 +3,24 @@ using System.Collections.Generic;
 
 public class Equipment : DeviceContainer
 {
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "DeviceEquipment";
+  private static Equipment _instance;
+  public static Equipment get() {
+    if(_instance == null) {
+      Logger.Log("Equipment::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<Equipment>();
+    }
+    return _instance;
+  }
+  new void Awake()
+  {
+    Logger.Log("Equipment::Awake", Logger.Level.DEBUG);
+    base.Awake();
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   private ReactionEngine _reactionEngine;
   public int _celliaMediumID = 1;
 
