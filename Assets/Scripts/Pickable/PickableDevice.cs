@@ -9,7 +9,6 @@ public abstract class PickableDevice : PickableItem {
 
   void Awake()
   {
-    Logger.Log("PickableDevice::Start", Logger.Level.TEMP);
     _dnaBit = produceDevice();
   }
 
@@ -17,15 +16,15 @@ public abstract class PickableDevice : PickableItem {
 
   protected override void addTo()
   {
-    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.TEMP);
+    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.DEBUG);
     foreach(BioBrick brick in _dnaBit.getExpressionModules().First.Value.getBioBricks())
     {
-      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.TEMP);
+      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.TRACE);
       _availableBioBricksManager.addAvailableBioBrick(brick, false);
       //AvailableBioBricksManager.get().addAvailableBioBrick((BioBrick) _dnaBit, false);
     }
 
-    Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.TEMP);
+    Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.DEBUG);
     _inventory.askAddDevice(_dnaBit);
     //Inventory.get().askAddDevice(_dnaBit);
   }

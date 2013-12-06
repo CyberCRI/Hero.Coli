@@ -9,8 +9,7 @@ public abstract class PickableBioBrick : PickableItem {
 
   void Awake()
   {
-    Logger.Log("PickableBioBrick::Start", Logger.Level.TEMP);
-    _dnaBit = produceBioBrick();//new TerminatorBrick("TEST", 12.12f);
+    _dnaBit = produceBioBrick();
   }
 
   protected override void addTo()
