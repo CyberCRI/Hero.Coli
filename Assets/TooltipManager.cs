@@ -57,9 +57,14 @@ public class TooltipManager : MonoBehaviour {
     {"Hyperflagellation (med)", "speed_m"}
   };
 
-  public static void tooltip(Device device, Vector3 pos)
+  public static void tooltip(bool isOver, Device device, Vector3 pos)
   {
     Logger.Log("TooltipManager::tooltip device", Logger.Level.TEMP);
+    if(!isOver)
+    {
+      tooltip();
+      return;
+    }
     string spriteName;
     if(DeviceTextureNames.TryGetValue(device.getName(), out spriteName))
     {
@@ -77,9 +82,14 @@ public class TooltipManager : MonoBehaviour {
     _instance.tooltipSprite.gameObject.SetActive(false);
   }
 
-  public static void tooltip(BioBrick brick, Vector3 pos)
+  public static void tooltip(bool isOver, BioBrick brick, Vector3 pos)
   {
     Logger.Log("TooltipManager::tooltip brick", Logger.Level.TEMP);
+    if(!isOver)
+    {
+      tooltip();
+      return;
+    }
     IDictionary<string, string> dico;
     string spriteName;
     if(BioBrickTextureNames.TryGetValue(brick.getType(), out dico))
