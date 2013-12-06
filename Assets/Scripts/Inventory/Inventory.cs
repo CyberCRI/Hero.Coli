@@ -22,8 +22,9 @@ public class Inventory : DeviceContainer
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
+  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices_tooltips.xml"};
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
-  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	
   public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
 
@@ -142,8 +143,8 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
-      DeviceSaver dSaver = new DeviceSaver();
-      dSaver.saveDevicesToFile(_devices, SaveFilePath);
+      //DeviceSaver dSaver = new DeviceSaver();
+      //dSaver.saveDevicesToFile(_devices, SaveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
