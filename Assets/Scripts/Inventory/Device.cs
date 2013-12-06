@@ -59,7 +59,7 @@ public class Device: DNABit
 
   public override string ToString ()
   {		
-		return string.Format ("[Device: name: {0}, [ExpressionModules: {1}]", _name, Logger.ToString(_modules));
+		return string.Format ("[Device: id : {0}, name: {1}, [ExpressionModules: {2}]", _id, _name, Logger.ToString(_modules));
   }
 
   private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
@@ -164,7 +164,7 @@ public class Device: DNABit
     LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
     foreach (PromoterProprieties promoterProps in props) {
       Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
-      reactions.AddLast(Promoter.buildPromoterFromProps(promoterProps));
+      reactions.AddLast(PromoterReaction.buildPromoterFromProps(promoterProps));
     }
 		
 	Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions), Logger.Level.INFO);

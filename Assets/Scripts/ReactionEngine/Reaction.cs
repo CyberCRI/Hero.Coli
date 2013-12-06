@@ -246,14 +246,15 @@ public abstract class IReaction
 
 
   /*!
-    \brief This function copy a reaction by calling it's real copy constructor (not IReaction constructor but for example Promoter constructor)
+    \brief This function copies a reaction by calling its real copy constructor
+    (not IReaction constructor but for example PromoterReaction constructor)
     \param r Reaction to copy
-    \return Return a reference on the new reaction or null if the give reaction is not a well know one.
+    \return Return a reference on the new reaction or null if the given reaction is unknown.
    */
   public static IReaction       copyReaction(IReaction r)
   {
-    if (r as Promoter != null)
-      return new Promoter(r as Promoter);
+    if (r as PromoterReaction != null)
+      return new PromoterReaction(r as PromoterReaction);
     if (r as Allostery != null)
       return new Allostery(r as Allostery);
     if (r as InstantReaction != null)

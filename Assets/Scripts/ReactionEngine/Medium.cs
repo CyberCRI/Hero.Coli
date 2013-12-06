@@ -295,7 +295,7 @@ public class Medium
     foreach (IReaction reaction in _reactions) {
 		
 		if(Logger.isLevel(Logger.Level.TRACE)) {
-		  Promoter promoter = reaction as Promoter;
+		  PromoterReaction promoter = reaction as PromoterReaction;
 		  if (promoter != null) {
 		    Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
 		  }

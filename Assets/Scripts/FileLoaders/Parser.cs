@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 
 /*!
-  \brief This class create token from Promoter reaction formula
+  \brief This class create token from PromoterReaction formula
   \details The tokens list should be given to the PromoterParser in order to parse the string
   \author Pierre COLLET
   \sa PromoterParser
@@ -165,8 +165,8 @@ public class PromoterNodeData
 
 /*!
   \brief This class parse a promoter formula
-  \details For more information about the grammar, see Promoter class
-  \sa Promoter
+  \details For more information about the grammar, see PromoterReaction class
+  \sa PromoterReaction
   \author Pierre COLLET
  */
 public class PromoterParser

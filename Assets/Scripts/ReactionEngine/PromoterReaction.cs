@@ -5,9 +5,9 @@ using UnityEngine;
 
 
 /*!
-  \brief This class represent a Promoter reaction and can be loaded by the simulator.
+  \brief This class represent a PromoterReaction and can be loaded by the simulator.
   \author Pierre COLLET
-  \sa Promoter
+  \sa PromoterReaction
  */
 public class PromoterProprieties
 {
@@ -151,7 +151,7 @@ To see how the calculus is done, refer you to the react() function of this class
 \author    Pierre COLLET
 \mail pierre.collet91@gmail.com
  */
-public class Promoter : IReaction
+public class PromoterReaction : IReaction
 {
   private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 wich correspond to 0% to 100%)
   private TreeNode<PromoterNodeData> _formula;          //! The formula describe in the detailled description
@@ -167,12 +167,12 @@ public class Promoter : IReaction
   private bool _debug = false;
 
   //! Default Constructor
-  public Promoter()
+  public PromoterReaction()
   {
   }
 
   //! Copy constructor
-  public Promoter(Promoter r) : base(r)
+  public PromoterReaction(PromoterReaction r) : base(r)
   {
     _terminatorFactor = r._terminatorFactor;
     _formula = r._formula;
@@ -184,24 +184,24 @@ public class Promoter : IReaction
   {
     string f1 = Logger.ToString<PromoterNodeData>(formula1);
     string f2 = Logger.ToString<PromoterNodeData>(formula2);
-    Logger.Log("Promoter::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2, Logger.Level.DEBUG);
+    Logger.Log("PromoterReaction::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2, Logger.Level.DEBUG);
     return f1 == f2;
   }
 
   /* !
-    \brief Checks that two reactions have the same Promoter field values.
+    \brief Checks that two reactions have the same PromoterReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
   protected override bool CharacEquals(IReaction reaction)
   {
-    Promoter promoter = reaction as Promoter;
+    PromoterReaction promoter = reaction as PromoterReaction;
 
     bool bnullProm = (promoter != null);
     bool btermFac = (_terminatorFactor == promoter._terminatorFactor);
     bool bformula = formulaEquals(_formula, promoter._formula);
     bool bbeta = (_beta == promoter._beta);
 
-    Logger.Log("Promoter::CharacEquals"
+    Logger.Log("PromoterReaction::CharacEquals"
       +", bnullProm="+bnullProm
       +", btermFac="+btermFac
       +", bformula="+bformula
@@ -217,10 +217,10 @@ public class Promoter : IReaction
   /*
   protected override bool CharacEquals(IReaction reaction)
   {
-    Promoter promoter = reaction as Promoter;
+    PromoterReaction promoter = reaction as PromoterReaction;
     if (promoter != null)
     {
-      Promoter copy = new Promoter(promoter);
+      PromoterReaction copy = new PromoterReaction(promoter);
       copy.setName(_name);
       copy.setMedium(_medium);
       
@@ -233,7 +233,7 @@ public class Promoter : IReaction
   */
 
   /*!
-    \brief This reaction build a Promoter reaction from a PromoterProprieties class
+    \brief This reaction build a PromoterReaction reaction from a PromoterProprieties class
     \param props The PromoterProprieties wich will serve to create the reaction
     \return Return the new reaction or null if it fail.
    */
@@ -243,7 +243,7 @@ public class Promoter : IReaction
       return null;
 
     PromoterParser parser = new PromoterParser();
-    Promoter reaction = new Promoter();
+    PromoterReaction reaction = new PromoterReaction();
 
     reaction.setName(props.name);
     reaction.setBeta(props.beta);
@@ -390,7 +390,7 @@ public class Promoter : IReaction
   public override void react(ArrayList molecules)
   {
     if (!_isActive) {
-	  if(_debug) Logger.Log("Promoter::react !_isActive", Logger.Level.TRACE);
+	  if(_debug) Logger.Log("PromoterReaction::react !_isActive", Logger.Level.TRACE);
       return;
 	}
     float delta = execNode(_formula, molecules);
@@ -412,7 +412,7 @@ public class Promoter : IReaction
 	
     foreach (Product pro in _products)
       {
-	    if(_debug) Logger.Log("Promoter::react product="+pro, Logger.Level.TRACE);
+	    if(_debug) Logger.Log("PromoterReaction::react product="+pro, Logger.Level.TRACE);
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
 			
         if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
@@ -422,7 +422,7 @@ public class Promoter : IReaction
                            * ReactionEngine.reactionsSpeed * _reactionSpeed;
 		
 		if(Logger.isLevel(Logger.Level.TRACE)) {
-		  if(_debug) Logger.Log("Promoter::react increase="+increase
+		  if(_debug) Logger.Log("PromoterReaction::react increase="+increase
 					+", delta:"+delta
 					+", qFactor:"+pro.getQuantityFactor()
 					+", tFactor:"+_terminatorFactor
@@ -437,13 +437,13 @@ public class Promoter : IReaction
 		  float oldCC = mol.getConcentration();
 		  mol.addConcentration(increase);
 		  float newCC = mol.getConcentration();
-		  if(_debug) Logger.Log("Promoter::react ["+mol.getName()+"]old="+oldCC
+		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]old="+oldCC
 					+" ["+mol.getName()+"]new="+newCC
 					, Logger.Level.TRACE
 					);
         } else {
 		  mol.addNewConcentration(increase);
-		  if(_debug) Logger.Log("Promoter::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
+		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
 					, Logger.Level.TRACE
 					);
 	    }

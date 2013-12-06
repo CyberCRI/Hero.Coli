@@ -19,7 +19,7 @@ public class FileLoader
   private delegate void  FloatSetter(float dst);
 
 
-  private PromoterLoader _promoterLoader;                       //!< The loader that will load everything about Promoter reactions
+  private PromoterLoader _promoterLoader;                       //!< The loader that will load everything about PromoterReactions
   private EnzymeReactionLoader _enzymeReactionLoader;           //!< The loader that will load everything about Enzymes reactions
   private AllosteryLoader _allosteryLoader;                     //!< The loader that will load everything about allostery reactions
   private InstantReactionLoader _instantReactionLoader;         //!< The loader that will load everything about instant reactions

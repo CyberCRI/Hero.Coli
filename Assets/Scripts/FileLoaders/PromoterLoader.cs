@@ -7,13 +7,13 @@ using System.Collections.Generic;
   \brief This class load promoters reactions from xml files
   \details
 
-A Promoter reaction should respect this synthax:
+A PromoterReaction should respect this synthax:
 
         <promoter>
           <name>ptet</name>                           -> The name of the reaction
           <productionMax>100</productionMax>          -> The maximal production speed of the promoter
           <terminatorFactor>1</terminatorFactor>      -> between 0 and 1, represent the Terminator
-          <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see Promoter class for more infos)
+          <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see PromoterReaction class for more infos)
           <EnergyCost>0.1</EnergyCost>                -> The cost in energy
           <operon>
             <gene>
@@ -27,7 +27,7 @@ A Promoter reaction should respect this synthax:
           </operon>
         </promoter>
 
-  \sa Promoter
+  \sa PromoterReaction
   \author Pierre COLLET
  */
 public class PromoterLoader
@@ -43,10 +43,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter name by checking the validity of the given string
     \param value The given name
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction reaction
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadPromoterName(string value, Promoter prom)
+  private bool loadPromoterName(string value, PromoterReaction prom)
   {
     if (String.IsNullOrEmpty(value))
       {
@@ -60,10 +60,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter maximal production speed by checking the validity of the given string
     \param value The given maximal production
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadPromoterProductionMax(string value, Promoter prom)
+  private bool loadPromoterProductionMax(string value, PromoterReaction prom)
   {
     if (String.IsNullOrEmpty(value))
       {
@@ -77,10 +77,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter terminator factor by checking the validity of the given string
     \param value The given terminator factor
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadPromoterTerminatorFactor(string value, Promoter prom)
+  private bool loadPromoterTerminatorFactor(string value, PromoterReaction prom)
   {
     if (String.IsNullOrEmpty(value))
       {
@@ -94,10 +94,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter energy cost by checking the validity of the given string
     \param value The given energy cost
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadEnergyCost(string value, Promoter prom)
+  private bool loadEnergyCost(string value, PromoterReaction prom)
   {
     if (String.IsNullOrEmpty(value))
       {
@@ -111,12 +111,12 @@ public class PromoterLoader
 
   /*!
     \brief Load promoter gene by checking the validity of the given strings
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction
     \param name The name of the molecule that the gene will produce
     \param RBSf The Ribosome Binding Site factor string
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadGene(Promoter prom, string name, string RBSf)
+  private bool loadGene(PromoterReaction prom, string name, string RBSf)
   {
     Product gene = new Product();
 
@@ -134,10 +134,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter operon
     \param node the xml node
-    \param prom The Promoter reaction
+    \param prom The PromoterReaction
     \return Return true if succed and false if value parameter is invalid.
    */
-  private bool loadPromoterOperon(XmlNode node, Promoter prom)
+  private bool loadPromoterOperon(XmlNode node, PromoterReaction prom)
   {
     string name = null;
     string RBSf = null;
@@ -176,10 +176,10 @@ public class PromoterLoader
   /*!
     \brief Load promoter formula by checking the validity of the given string
     \param formula The given formula
-    \param p The Promoter reaction
+    \param p The PromoterReaction
     \return Return true if succed and false if value parameter is invalid.
   */
-  private bool loadPromoterFormula(string formula, Promoter p)
+  private bool loadPromoterFormula(string formula, PromoterReaction p)
   {
     TreeNode<PromoterNodeData> tree = _parser.Parse(formula);
     
@@ -205,7 +205,7 @@ public class PromoterLoader
 
     foreach (XmlNode promoter in promotersList)
       {
-        Promoter p = new Promoter();
+        PromoterReaction p = new PromoterReaction();
         foreach (XmlNode attr in promoter)
           {
             switch (attr.Name)

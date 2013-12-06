@@ -64,8 +64,8 @@ public class Equipment : DeviceContainer
     LinkedList<IReaction> reactions = device.getReactions();
     //Logger.Log("Equipment::removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions), Logger.Level.TRACE);
 
-    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-    Medium celliaMedium = ReactionEngine.getMediumFromId(_celliaMediumID, mediums);
+    //LinkedList<Medium> mediums = _reactionEngine.getMediumList();
+    //Medium celliaMedium = ReactionEngine.getMediumFromId(_celliaMediumID, mediums);
 
     //LinkedList<IReaction> celliaReactions = celliaMedium.getReactions();
     //Logger.Log("Equipment::removeFromReactionEngine initialCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
