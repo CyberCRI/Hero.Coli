@@ -22,10 +22,10 @@ public class DisplayedDevice : DisplayedElement {
     {"GFP", "fluo"}
   };
 
-  private static string getGeneTexture(string gene)
+  private static string getTextureName(string proteinName)
   {
     string texture = null;
-    if(!geneTextureDico.TryGetValue(gene, out texture))
+    if(!geneTextureDico.TryGetValue(proteinName, out texture))
     {
       texture = defaultTexture;
     }
@@ -100,7 +100,7 @@ public class DisplayedDevice : DisplayedElement {
         usedSpriteName += quality80;
         break;
     }
-    usedSpriteName += getGeneTexture(device.getFirstGeneName());
+    usedSpriteName += getTextureName(device.getFirstGeneProteinName());
     Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
     return usedSpriteName;
   }

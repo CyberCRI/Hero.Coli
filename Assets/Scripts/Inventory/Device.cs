@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Device: DNABit
 {
+  private static int                    _idCounter;
+  private int                           _id;
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;
   
@@ -19,19 +21,28 @@ public class Device: DNABit
       sum += em.getSize();
     return sum;
   }
+
+  private void idInit()
+  {
+    _id = _idCounter;
+    _idCounter += 1;
+  }
   
   private Device()
-  {}
+  {
+    idInit();
+  }
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
+    idInit();
     _name = name;
     _modules = new LinkedList<ExpressionModule>();
     foreach (ExpressionModule em in modules)
       _modules.AddLast(new ExpressionModule(em));
   }
 
-  public string getFirstGeneName()
+  public string getFirstGeneProteinName()
   {
     foreach (ExpressionModule module in _modules)
     {
@@ -39,7 +50,7 @@ public class Device: DNABit
       {
         if(brick.getType() == BioBrick.Type.GENE)
         {
-          return brick.getName();
+          return ((GeneBrick)brick).getProteinName();
         }
       }
     }
@@ -299,8 +310,7 @@ public class Device: DNABit
 
     string notNullName = name;
     if(notNullName==null) {
-      int idx = UnityEngine.Random.Range (0, DevicesDisplayer.devicesNames.Count);
-      notNullName = DevicesDisplayer.devicesNames[idx];
+      notNullName = "device"+_idCounter;
     }
 		
 		BioBrick[] bioBrickArray = {
