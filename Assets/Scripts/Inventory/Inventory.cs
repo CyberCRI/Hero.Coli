@@ -6,7 +6,6 @@ public class Inventory : DeviceContainer
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
   private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	
-  public AvailableBioBricksManager availableBioBricksManager;
   public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
 
   private string _genericDeviceNamePrefix = "device";
@@ -161,7 +160,7 @@ public class Inventory : DeviceContainer
   }
 	
   void loadDevices() {
-	LinkedList<BioBrick> availableBioBricks = availableBioBricksManager.getAvailableBioBricks();
+	LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
     List<Device> devices = new List<Device>();
 
     DeviceLoader dLoader = new DeviceLoader(availableBioBricks);

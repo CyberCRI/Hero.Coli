@@ -20,6 +20,17 @@ using System.Collections.Generic;
  */
 public class ReactionEngine : MonoBehaviour {
 
+  // singleton fields & methods
+  public static string gameObjectName = "ReactionEngine";
+  private static ReactionEngine _instance;
+  public static ReactionEngine get() {
+    if(_instance == null) {
+      Logger.Log("ReactionEngine::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
+    }
+    return _instance;
+  }
+
   private Fick _fick;                                   //!< The Fick class that manage molecules diffusions between medium
   private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
@@ -36,9 +47,6 @@ public class ReactionEngine : MonoBehaviour {
   public bool enableEnergy;                             //!< Enable energy consomation
   public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
   public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
-
-  private static string gameObjectName = "ReactionEngine";
-  private static ReactionEngine _reactionEngine;
 	
   private bool _paused;                                 //!< Simulation state
 	
@@ -49,15 +57,6 @@ public class ReactionEngine : MonoBehaviour {
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;
   private float _deltaTimeThreshold = 0.5f;
-
-
-  public static ReactionEngine get() {
-    if(_reactionEngine == null) {
-      Logger.Log("ReactionEngine::get was badly initiated", Logger.Level.WARN);
-      _reactionEngine = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
-    }
-    return _reactionEngine;
-  }
 
   public Fick getFick() { return _fick; }
   
@@ -229,7 +228,7 @@ public class ReactionEngine : MonoBehaviour {
   //! This function is called at the initialisation of the simulation (like a Constructor)
   void Awake()
   {
-    _reactionEngine = this;
+    _instance = this;
 
     FileLoader fileLoader = new FileLoader();
     _reactionsSets = new LinkedList<ReactionsSet>();

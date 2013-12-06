@@ -5,13 +5,33 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class AvailableBioBricksManager : MonoBehaviour {
 
-  private static AvailableBioBricksManager _singleton;
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "BioBrickInventory";
+  private static AvailableBioBricksManager _instance;
+  public static AvailableBioBricksManager get() {
+    if(_instance == null) {
+      Logger.Log("AvailableBioBricksManager::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<AvailableBioBricksManager>();
+    }
+    return _instance;
+  }
+  void Awake()
+  {
+    Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.DEBUG);
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
 
   string[] _bioBrickFiles = new string[]{ "Assets/Data/raph/biobricks.xml" };
 
   //width of a displayed BioBrick
   //set in Unity editor
   public int _width;
+
+  // the panel on which the BioBricks will be drawn
+  public GameObject bioBricksPanel;
 
   //prefab for available biobricks
   public GameObject availableBioBrick;
@@ -76,18 +96,13 @@ public class AvailableBioBricksManager : MonoBehaviour {
       +",\n\n_displayableAvailableTerminators="+Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
       , Logger.Level.TRACE);
 
-    switchTo(_displayableAvailablePromoters);
+    displayPromoters();
 
   }
 
   private LinkedList<BioBrick> getAvailableBioBricksOfType(BioBrick.Type type) {
     Logger.Log("AvailableBioBricksManager::getAvailableBioBricksOfType("+type+")", Logger.Level.TRACE);
     return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => (b.getType() == type));
-  }
-
-  public static AvailableBioBricksManager get()
-  {
-    return _singleton;
   }
 
   public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
@@ -109,7 +124,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
     return false;
   }
 
-  void OnEnable()
+  public void OnPanelEnabled()
   {
     Logger.Log("AvailableBioBricksManager::OnEnable", Logger.Level.DEBUG);
     updateDisplayedBioBricks();
@@ -140,7 +155,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
   private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick(BioBrick brick, int index) {
 
-    Transform parentTransformParam = transform;
+    Transform parentTransformParam = bioBricksPanel.transform;
     Vector3 localPositionParam = getNewPosition(index);
     string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
     BioBrick biobrickParam = brick;
@@ -229,11 +244,5 @@ public class AvailableBioBricksManager : MonoBehaviour {
   void Start () {
     Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
     displayPromoters();
-  }
-
-  void Awake()
-  {
-    Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.DEBUG);
-    _singleton = this;
   }
 }
