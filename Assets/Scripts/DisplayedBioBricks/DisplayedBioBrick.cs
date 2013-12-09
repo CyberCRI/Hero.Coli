@@ -87,5 +87,6 @@ public class DisplayedBioBrick : DisplayedElement {
     } else {
       _lastHoveredInfoManager.setHoveredDefault();
     }
+    TooltipManager.tooltip(isOver, _biobrick, transform.position);
   }
 }

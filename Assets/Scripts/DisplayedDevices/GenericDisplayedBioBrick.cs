@@ -91,6 +91,5 @@ public class GenericDisplayedBioBrick : DisplayedElement {
   {
     Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
     TooltipManager.tooltip(isOver, _biobrick, transform.position);
-
   }
 }
