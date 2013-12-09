@@ -21,6 +21,14 @@ public class TooltipManager : MonoBehaviour {
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
+  public enum Quadrant {
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
+  }
+
+  public Camera uiCamera;
   public UISprite tooltipSprite;
   private static IDictionary<BioBrick.Type, IDictionary<string, string>> BioBrickTextureNames = new Dictionary<BioBrick.Type, IDictionary<string, string>>()
   {
@@ -59,7 +67,7 @@ public class TooltipManager : MonoBehaviour {
 
   public static void tooltip(bool isOver, Device device, Vector3 pos)
   {
-    Logger.Log("TooltipManager::tooltip device", Logger.Level.TEMP);
+    Logger.Log("TooltipManager::tooltip device", Logger.Level.DEBUG);
     if(!isOver)
     {
       tooltip();
@@ -81,13 +89,13 @@ public class TooltipManager : MonoBehaviour {
 
   public static void tooltip()
   {
-    Logger.Log("TooltipManager::tooltip()", Logger.Level.TEMP);
+    Logger.Log("TooltipManager::tooltip()", Logger.Level.DEBUG);
     _instance.tooltipSprite.gameObject.SetActive(false);
   }
 
   public static void tooltip(bool isOver, BioBrick brick, Vector3 pos)
   {
-    Logger.Log("TooltipManager::tooltip brick", Logger.Level.TEMP);
+    Logger.Log("TooltipManager::tooltip brick", Logger.Level.DEBUG);
     if(!isOver)
     {
       tooltip();
@@ -124,9 +132,44 @@ public class TooltipManager : MonoBehaviour {
 
   private static void setPosition(Vector3 pos)
   {
+    Quadrant quadrant = getQuadrant(pos);
+    switch(quadrant)
+    {
+      case Quadrant.TOP_LEFT:
+        _instance.tooltipSprite.pivot = UIWidget.Pivot.TopLeft;
+        break;
+      case Quadrant.TOP_RIGHT:
+        _instance.tooltipSprite.pivot = UIWidget.Pivot.TopRight;
+        break;
+      case Quadrant.BOTTOM_LEFT:
+        _instance.tooltipSprite.pivot = UIWidget.Pivot.BottomLeft;
+        break;
+      case Quadrant.BOTTOM_RIGHT:
+        _instance.tooltipSprite.pivot = UIWidget.Pivot.BottomRight;
+        break;
+    }
     _instance.tooltipSprite.transform.position = new Vector3(pos.x, pos.y, _instance.tooltipSprite.transform.position.z);
   }
 
+  private static Quadrant getQuadrant(Vector3 pos)
+  {
+    Vector3 screenPos = _instance.uiCamera.WorldToScreenPoint(pos);
+    bool top = screenPos.y > _instance.uiCamera.pixelHeight/2;
+    bool left = screenPos.x < _instance.uiCamera.pixelWidth/2;
 
-
+    if (top)
+    {
+      if (left)
+        return Quadrant.TOP_LEFT;
+      else
+        return Quadrant.TOP_RIGHT;
+    }
+    else
+    {
+      if (left)
+        return Quadrant.BOTTOM_LEFT;
+      else
+        return Quadrant.BOTTOM_RIGHT;
+    }
+  }
 }
