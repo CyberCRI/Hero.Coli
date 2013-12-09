@@ -87,17 +87,9 @@ public class GenericDisplayedBioBrick : DisplayedElement {
     Logger.Log("GenericDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
   }
 
-  /*
-  protected void OnHover(bool isOver) {
-    Logger.Log("GenericDisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
-    if(_lastHoveredInfoManager == null) {
-      _lastHoveredInfoManager = GameObject.Find ("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
-    }
-    if (isOver) {
-      _lastHoveredInfoManager.setHoveredBioBrick<BioBrick>(_biobrick);
-    } else {
-      _lastHoveredInfoManager.setHoveredDefault();
-    }
+  void OnHover(bool isOver)
+  {
+    Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
+    TooltipManager.tooltip(isOver, _biobrick, transform.position);
   }
-  */
 }

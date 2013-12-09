@@ -137,4 +137,10 @@ public class DisplayedDevice : DisplayedElement {
   {
     Logger.Log("DisplayedDevice::OnPress "+_id+" device="+_device, Logger.Level.INFO);
   }
+
+  void OnHover(bool isOver)
+  {
+    Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
+    TooltipManager.tooltip(isOver, _device, transform.position);
+  }
 }

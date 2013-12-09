@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EquipedDisplayedDevice : DisplayedDevice {
-
-  private static string                _activeSuffix = "Active";
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
 
   public bool                         _isActive;
