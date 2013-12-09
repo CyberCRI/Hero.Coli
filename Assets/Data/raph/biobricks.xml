@@ -1,13 +1,13 @@
 <bricks>
-  <brick id="PromNoX" size="5" type="promoter">
+  <brick id="pCons" size="5" type="promoter">
     <beta>75</beta>
     <formula>![0.01,2]X</formula>
   </brick>
-  <brick id="PromNoY" size="5" type="promoter">
+  <brick id="pLac" size="5" type="promoter">
     <beta>75</beta>
     <formula>![0.01,2]Y</formula>
   </brick>
-  <brick id="PromNoZ" size="5" type="promoter">
+  <brick id="pTet" size="5" type="promoter">
     <beta>75</beta>
     <formula>![0.01,2]Z</formula>
   </brick>
@@ -51,10 +51,10 @@
     <beta>1.0</beta>
     <formula>"[0.8,2]H2O"</formula>
   </brick>
-  <brick id="RBS1" size="5" type="rbs">
+  <brick id="RBS very low" size="5" type="rbs">
     <rbsFactor>1.0</rbsFactor>
   </brick>
-  <brick id="RBS2" size="8" type="rbs">
+  <brick id="RBS low" size="8" type="rbs">
     <rbsFactor>2.0</rbsFactor>
   </brick>
   <brick id="X" size="1" type="gene">
@@ -84,7 +84,7 @@
   <brick id="H2O" size="3" type="gene">
     <protein>H2O</protein>
   </brick>
-  <brick id="T1" size="3" type="terminator">
+  <brick id="Terminator" size="3" type="terminator">
     <terminatorFactor>1.0</terminatorFactor>
   </brick>
   <brick id="T2" size="7" type="terminator">

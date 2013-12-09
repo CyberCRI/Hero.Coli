@@ -63,16 +63,19 @@ public class TooltipManager : MonoBehaviour {
     if(!isOver)
     {
       tooltip();
-      return;
-    }
-    string spriteName;
-    if(DeviceTextureNames.TryGetValue(device.getName(), out spriteName))
-    {
-      setSpriteNameAndSetActive(spriteName);
     }
     else
     {
-      Logger.Log("TooltipManager::tooltip couldn't find texture for device name "+device.getName(), Logger.Level.WARN);
+      string spriteName;
+      if(DeviceTextureNames.TryGetValue(device.getName(), out spriteName))
+      {
+        setSpriteNameAndSetActive(spriteName);
+      }
+      else
+      {
+        Logger.Log("TooltipManager::tooltip couldn't find texture for device name "+device.getName(), Logger.Level.WARN);
+      }
+      setPosition(pos);
     }
   }
 
@@ -88,26 +91,28 @@ public class TooltipManager : MonoBehaviour {
     if(!isOver)
     {
       tooltip();
-      return;
-    }
-    IDictionary<string, string> dico;
-    string spriteName;
-    if(BioBrickTextureNames.TryGetValue(brick.getType(), out dico))
-    {
-      if(dico.TryGetValue(brick.getName(), out spriteName))
-      {
-        setSpriteNameAndSetActive(spriteName);
-      }
-      else
-      {
-        Logger.Log("TooltipManager::tooltip couldn't find texture for brick name "+brick.getName(), Logger.Level.WARN);
-      }
     }
     else
     {
-      Logger.Log("TooltipManager::tooltip couldn't find dico for brick type "+brick.getType(), Logger.Level.WARN);
+      IDictionary<string, string> dico;
+      string spriteName;
+      if(BioBrickTextureNames.TryGetValue(brick.getType(), out dico))
+      {
+        if(dico.TryGetValue(brick.getName(), out spriteName))
+        {
+          setSpriteNameAndSetActive(spriteName);
+        }
+        else
+        {
+          Logger.Log("TooltipManager::tooltip couldn't find texture for brick name "+brick.getName(), Logger.Level.WARN);
+        }
+      }
+      else
+      {
+        Logger.Log("TooltipManager::tooltip couldn't find dico for brick type "+brick.getType(), Logger.Level.WARN);
+      }
+      setPosition(pos);
     }
-
   }
 
   private static void setSpriteNameAndSetActive(string spriteName)
@@ -116,5 +121,12 @@ public class TooltipManager : MonoBehaviour {
     _instance.tooltipSprite.spriteName = spriteName;
     _instance.tooltipSprite.gameObject.SetActive(true);
   }
+
+  private static void setPosition(Vector3 pos)
+  {
+    _instance.tooltipSprite.transform.position = new Vector3(pos.x, pos.y, _instance.tooltipSprite.transform.position.z);
+  }
+
+
 
 }

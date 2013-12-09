@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <devices>
   <device id="Ampicillin resistance (med)">
-    <brick id="PromNoX" size="5" type="promoter">
+    <brick id="pCons" size="5" type="promoter">
       <beta>75</beta>
       <formula>![0.01,2]X</formula>
 	</brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="Y" size="30" type="gene">
       <protein>Y</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
   <device id="Green fluorescence (med)">
-    <brick id="PromNoZ" size="5" type="promoter">
+    <brick id="pLac" size="5" type="promoter">
       <beta>75</beta>
       <formula>![0.01,2]Z</formula>
 	</brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS very low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="X" size="30" type="gene">
       <protein>X</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
   <device id="Hyperflagellation (low)">
-    <brick id="PromNoY" size="5" type="promoter">
+    <brick id="pTet" size="5" type="promoter">
       <beta>75</beta>
       <formula>![0.01,2]Y</formula>
 	</brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS very low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="Z" size="30" type="gene">
       <protein>Z</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
@@ -50,13 +50,13 @@
       <beta>75</beta>
       <formula>[0.01,2]Y</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS very low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="GFP" size="30" type="gene">
       <protein>GFP</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
@@ -65,13 +65,13 @@
       <beta>75</beta>
       <formula>[0.01,2]X</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS very low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="GFP" size="30" type="gene">
       <protein>GFP</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
@@ -80,13 +80,13 @@
       <beta>75</beta>
       <formula>[0.01,2]Y</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS low" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
     <brick id="X" size="1" type="gene">
       <protein>X</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="Terminator" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
