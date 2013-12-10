@@ -13,7 +13,7 @@
   <item c="FLUO1" t="FLUO1" />
   <item c="GENES" t="Gènes" />
   <item c="LENGTH" t="Longueur" />
-  <item c="MOV4" t="MOV4" />  
+  <item c="MOV" t="MOV" />  
   <item c="PROMOTERS" t="Promoteurs" />
   <item c="RBS" t="RBS" />
   <item c="TERMINATORS" t="Terminateurs" />

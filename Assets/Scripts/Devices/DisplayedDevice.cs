@@ -16,7 +16,7 @@ public class DisplayedDevice : DisplayedElement {
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
   {
-    {"MOV4", "speed"},
+    {"MOV", "speed"},
     //{"Y", "default"},
     {"Z", "resist"},
     {"GFP", "fluo"}

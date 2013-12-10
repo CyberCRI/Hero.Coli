@@ -16,7 +16,7 @@ public class PhenoSpeed : Phenotype
 	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
-		_mol = ReactionEngine.getMoleculeFromName ("MOV4", _molecules);
+		_mol = ReactionEngine.getMoleculeFromName ("MOV", _molecules);
 	}
 
 	/*!
@@ -29,7 +29,7 @@ public class PhenoSpeed : Phenotype
 	{
 		if (_mol == null)
 		{
-			_mol = ReactionEngine.getMoleculeFromName ("MOV4", _molecules);
+			_mol = ReactionEngine.getMoleculeFromName ("MOV", _molecules);
 			if (_mol == null)
 				return ;
 		}

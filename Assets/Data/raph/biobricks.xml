@@ -57,8 +57,8 @@
   <brick id="RBS low" size="8" type="rbs">
     <rbsFactor>2.0</rbsFactor>
   </brick>
-  <brick id="MOV4" size="1" type="gene">
-    <protein>MOV4</protein>
+  <brick id="MOV" size="1" type="gene">
+    <protein>MOV</protein>
   </brick>
   <brick id="Y" size="1" type="gene">
     <protein>Y</protein>
