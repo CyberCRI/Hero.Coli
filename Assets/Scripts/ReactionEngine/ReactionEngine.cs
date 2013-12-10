@@ -260,7 +260,12 @@ public class ReactionEngine : MonoBehaviour {
 	
   //TODO manage reaction speed for smooth pausing
   public void Pause(bool pause) {
-	_paused = pause;
+    _paused = pause;
+  }
+
+  public static bool isPaused()
+  {
+    return _instance._paused;
   }
 
   //! This function is called at each frame
