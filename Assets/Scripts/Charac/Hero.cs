@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour{
 
 	Medium _medium;
-	float _maxEnergy;
 	
 	/*
 	//Getter & setter for the move speed.
@@ -37,6 +36,8 @@ public class Hero : MonoBehaviour{
 	
 	//Getter & setter for the energy.
 	private float _energy = 1f;
+  private float _maxEnergy = 1f;
+
 	public float getEnergy() {
 		return _energy;
 	}
@@ -76,14 +77,16 @@ public class Hero : MonoBehaviour{
 	    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
 	    _medium = ReactionEngine.getMediumFromId(1, mediums);
 	    _maxEnergy = _medium.getMaxEnergy();
+    _energy = _medium.getEnergy()/_maxEnergy;
 
 		//FIXME light is undefined
       	//light.enabled = false;
 	}
   
 	void Update() {
-    	//setEnergy(_medium.getEnergy()/_maxEnergy);
 		setLife(getLife() + Time.deltaTime * .1f);
+    _energy = _medium.getEnergy()/_maxEnergy;
+    Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
 
 	/*
