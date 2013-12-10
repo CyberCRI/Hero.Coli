@@ -25,10 +25,10 @@ public class PickableDeviceRef4Bricks : PickableDevice {
     {
       BioBrick brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks, b => (b.getName() == brickName));
       if(brick != null) {
-        Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
+        Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.TRACE);
         deviceBricks.AddLast(brick);
       } else {
-        Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick!", Logger.Level.WARN);
+        Logger.Log("PickableDeviceRef4Bricks::produceDevice failed to add brick with name "+brickName+"!", Logger.Level.WARN);
       }
     }
     ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);

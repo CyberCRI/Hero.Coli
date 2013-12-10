@@ -8,18 +8,18 @@ public class GameplayNames
   {
     //PROMOTERS
     {"PRCONS", "Constitutive promoter"},
-    {"PRLACI", "pLac"},//"placI repressible"},
-    {"PRTETR", "pTet"},//"p(tetR) multi"},
+    {"PRLACI", "pLac"},
+    {"PRTETR", "pTet"},
     //RBS
     {"RBS1", "Medium RBS"},
     {"RBS2", "Low RBS"},
     //GENES
     {"FLUO1", "Green - GFP"},
-    {"FLUO2", "Red - mCherry"},
+    //{"FLUO2", "Red - mCherry"},
     {"MOV", "Flagella master regulator"},// FlhDC master operon
-    {"ANTIBIO1", "Ampicillin resistance cassette"},
-    {"REPR1", "lacI gene"},
-    {"REPR2", "tetR gene"},
+    {"ANTIBIO", "Ampicillin resistance cassette"},
+    //{"REPR1", "lacI gene"},
+    //{"REPR2", "tetR gene"},
     //TERMINATORS
     {"DTER", "Double terminator"}
   };

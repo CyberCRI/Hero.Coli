@@ -33,26 +33,27 @@ public class TooltipManager : MonoBehaviour {
   private static IDictionary<BioBrick.Type, IDictionary<string, string>> BioBrickTextureNames = new Dictionary<BioBrick.Type, IDictionary<string, string>>()
   {
     {BioBrick.Type.PROMOTER, new Dictionary<string, string>(){
-        {"pCons", "pCons"},
-        {"pLac", "pLac"},
-        {"pTet", "pTet"}
+        {"PRCONS", "pCons"},
+        {"PRLACI", "pLac"},
+        {"PRTETR", "pTet"}
       }
     },
     {BioBrick.Type.RBS, new Dictionary<string, string>(){
-        {"RBS low", "rbs_l"},
-        {"RBS very low", "rbs_vl"}
+        {"RBS1", "rbs_l"},
+        {"RBS2", "rbs_vl"}
       }
     },
     {BioBrick.Type.GENE, new Dictionary<string, string>(){
-        {"Z", "ampR"},
-        //{"ampR", "ampR"},
-        {"GFP", "gfp"},
-        {"MOV", "hyperflagellation"}
-        //{"FLhDC", "hyperflagellation"},
+        {"FLUO1", "gfp"},
+        //{"FLUO2", "gfp"},
+        {"MOV", "hyperflagellation"},
+        {"ANTIBIO", "ampR"}
+        //{"REPR1", "repr1"},
+        //{"REPR2", "repr2"}
       }
     },
     {BioBrick.Type.TERMINATOR, new Dictionary<string, string>(){
-        {"Terminator", "terminator"}
+        {"DTER", "terminator"}
       }
     }
   };

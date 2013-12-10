@@ -1,6 +1,6 @@
 <translations>
   <item c="AMPI1" t="AMPI1" />
-  <item c="ANTIBIO1" t="ANTIBIO1" />
+  <item c="ANTIBIO" t="ANTIBIO" />
   <item c="AVAILABLEDEVICES" t="Cassettes existantes" />
   <item c="BASEPAIRS" t="pb" />
   <item c="CELLIA" t="Cellia" />
