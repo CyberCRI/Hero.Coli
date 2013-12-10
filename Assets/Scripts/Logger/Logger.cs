@@ -55,7 +55,7 @@ public class Logger : MonoBehaviour {
   }	
 	
   public static bool isInteractive() {
-	return (_singleton != null) && _singleton.interactiveDebug;
+    return (_singleton != null) && _singleton.interactiveDebug;
   }	
 
   //TODO "inline" this

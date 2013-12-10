@@ -8,6 +8,8 @@ public class Device: DNABit
   private int                           _id;
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;
+
+  private static float                  _energyPerBasePair = 3f;
   
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
@@ -115,6 +117,11 @@ public class Device: DNABit
   {
     Logger.Log("Device::getPromoterReaction("+em.ToString()+", "+id+")", Logger.Level.TRACE);
     PromoterProprieties prom = new PromoterProprieties();
+
+    prom.energyCost = _energyPerBasePair*em.getSize();
+    //promoter only
+    //prom.energyCost = _energyPerBasePair*em.getBioBricks().First.Value.getSize();
+
     LinkedList<BioBrick> bricks = em.getBioBricks();
 
     prom.name = _name + id;
@@ -132,8 +139,6 @@ public class Device: DNABit
     if(bricks.Count != 0) {
       Logger.Log("Device::getPromoterReaction Warning: bricks.Count ="+bricks.Count, Logger.Level.TRACE);
     }
-
-    prom.energyCost = getSize();
     return prom;
   }
 
@@ -146,11 +151,11 @@ public class Device: DNABit
     Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
 
     foreach (ExpressionModule em in modules)
-      {
-        Logger.Log("Device::getPromoterReactions() analyzing em="+em, Logger.Level.TRACE);
-        reaction = getPromoterReaction(em, em.GetHashCode());
-        if (reaction != null)
-          reactions.AddLast(reaction);
+    {
+      Logger.Log("Device::getPromoterReactions() analyzing em="+em, Logger.Level.TRACE);
+      reaction = getPromoterReaction(em, em.GetHashCode());
+      if (reaction != null)
+        reactions.AddLast(reaction);
       }
     if (reactions.Count == 0)
       return null;
