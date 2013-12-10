@@ -23,8 +23,8 @@
     <brick id="RBS1" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="X" size="30" type="gene">
-      <protein>X</protein>
+    <brick id="MOV4" size="30" type="gene">
+      <protein>MOV4</protein>
     </brick>
     <brick id="T1" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>

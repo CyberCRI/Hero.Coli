@@ -47,7 +47,7 @@ public class TooltipManager : MonoBehaviour {
         {"Z", "ampR"},
         //{"ampR", "ampR"},
         {"GFP", "gfp"},
-        {"X", "hyperflagellation"}
+        {"MOV4", "hyperflagellation"}
         //{"FLhDC", "hyperflagellation"},
       }
     },
