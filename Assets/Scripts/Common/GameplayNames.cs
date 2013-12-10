@@ -8,27 +8,35 @@ public class GameplayNames
   {
     //PROMOTERS
     {"PRCONS", "Constitutive promoter"},
-    {"PRLACI1", "placI repressible"},
-    {"PRTETR1", "p(tetR) multi"},
+    {"PRLACI", "pLac"},//"placI repressible"},
+    {"PRTETR", "pTet"},//"p(tetR) multi"},
+    //RBS
+    {"RBS1", "Medium RBS"},
+    {"RBS2", "Low RBS"},
     //GENES
     {"FLUO1", "Green - GFP"},
     {"FLUO2", "Red - mCherry"},
-    {"MOV", "Flagella master regulator"},
+    {"MOV", "Flagella master regulator"},// FlhDC master operon
     {"ANTIBIO1", "Ampicillin resistance cassette"},
-    {"REPR1", "lacI"},
-    {"REPR2", "tetR"},
+    {"REPR1", "lacI gene"},
+    {"REPR2", "tetR gene"},
     //TERMINATORS
     {"DTER", "Double terminator"}
   };
 
   private static Dictionary<string, string> proteinNames = new Dictionary<string, string>()
   {
-    {"FLUO1", "Green - GFP"},
+    //PROMOTER ACTIVATORS (ANTI-REPRESSORS)
+    {"IPTG", "GFP"},             //inhibits lacI => activates PRLACI
+    {"aTc", "aTc tetracycline"}, //inhibits tetR => activates PRTETR
+
+    //PRODUCED BY GENES
+    {"FLUO1", "GFP"},
     {"FLUO2", "Red - mCherry"},
-    {"MOV", "Flagella master regulator"},
-    {"ANTIBIO1", "Ampicillin resistance cassette"},
-    {"REPR1", "lacI (IPTG)"},
-    {"REPR2", "tetR (aTc)"}
+    {"MOV", "FlhDC"},
+    {"ANTIBIO", "ß-lactamase"},
+    {"REPR1", "lacI"},
+    {"REPR2", "tetR"}
   };
 
   private static Dictionary<string, string> deviceNames = new Dictionary<string, string>()
@@ -36,7 +44,11 @@ public class GameplayNames
     {"FLUO1", "Green fluorescence"},
     {"FLUO2", "Red fluorescence"},
     {"MOV", "Hyperflagellation"},
-    {"ANTIBIO", "Ampicillin resistance"}
+    {"ANTIBIO", "Ampicillin resistance"},
+
+    //MISSING
+    {"REPR1", "LacI inhibition"},
+    {"REPR2", "TetR inhibition"}
   };
 
   public static string getStringFromDico(string code, Dictionary<string, string> dico)
@@ -103,7 +115,6 @@ public class GameplayNames
       }
     }
     if(!string.IsNullOrEmpty(prefix))
-    //if(prefix == "")
     {
       deviceName = Char.ToLowerInvariant(deviceName[0]) + deviceName.Substring(1);
     }

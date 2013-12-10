@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<devices>
+  <device id="hyperfl_l">
+    <brick id="PRCONS"/>
+    <brick id="RBS2"/>
+    <brick id="MOV"/>
+    <brick id="T1"/>
+  </device>
+  <device id="gfp_m">
+    <brick id="PRLACI"/>
+    <brick id="RBS1"/>
+    <brick id="FLUO1"/>
+    <brick id="T1"/>
+  </device>
+  <device id="ampiR_m">
+    <brick id="PRTETR"/>
+    <brick id="RBS1"/>
+    <brick id="ANTIBIO"/>
+    <brick id="T1"/>
+  </device>
+  <device id="hyperfl_m">
+    <brick id="PRCONS"/>
+    <brick id="RBS1"/>
+    <brick id="MOV"/>
+    <brick id="T1"/>
+  </device>
+</devices>
