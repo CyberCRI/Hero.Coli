@@ -83,11 +83,15 @@ public class GameplayNames
 
   public static string generateRealNameFromBricks(Device device)
   {
+    LinkedList<BioBrick> bricks = device.getExpressionModules().First.Value.getBioBricks();
+    return generateRealNameFromBricks(bricks);
+  }
+
+  public static string generateRealNameFromBricks(LinkedList<BioBrick> bricks)
+  {
     string prefix = "";
     string suffix = "";
     string deviceName = "";
-
-    LinkedList<BioBrick> bricks = device.getExpressionModules().First.Value.getBioBricks();
 
     foreach (BioBrick brick in bricks)
     {
@@ -100,11 +104,11 @@ public class GameplayNames
           }
           break;
         case BioBrick.Type.RBS:
-          if(brick.getName() == "")
+          if(brick.getName() == "RBS1")
           {
             suffix = " (med)";
           }
-          else if(brick.getName() == "")
+          else if(brick.getName() == "RBS2")
           {
             suffix = " (low)";
           }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class PickableItem : MonoBehaviour {
   protected DNABit _dnaBit;
+  public GameObject toDestroy;
 
   public DNABit getDNABit()
   {
@@ -14,6 +15,13 @@ public abstract class PickableItem : MonoBehaviour {
   public void pickUp()
   {
     addTo ();
-    Destroy(gameObject);
+    if(toDestroy)
+    {
+      Destroy(toDestroy);
+    }
+    else
+    {
+      Destroy(gameObject);
+    }
   }
 }

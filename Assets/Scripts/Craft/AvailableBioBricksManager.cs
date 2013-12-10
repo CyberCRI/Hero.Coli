@@ -223,6 +223,22 @@ public class AvailableBioBricksManager : MonoBehaviour {
     }
     return _allBioBricks;
   }
+
+  public BioBrick getBioBrickFromAll(string brickName)
+  {
+    Logger.Log("AvailableBioBricksManager::getBioBrickFromAll", Logger.Level.DEBUG);
+    if(_allBioBricks == null || _allBioBricks.Count == 0) {
+      _instance.loadAllBioBricks();
+    }
+    BioBrick brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks, b => (b.getName() == brickName));
+    if(brick != null) {
+      Logger.Log("AvailableBioBricksManager::getBioBrickFromAll found "+brick, Logger.Level.TRACE);
+      return brick;
+    } else {
+      Logger.Log("AvailableBioBricksManager::getBioBrickFromAll failed to find brick with name "+brickName+"!", Logger.Level.WARN);
+      return null;
+    }
+  }
  
   private void loadAllBioBricks() {
     Logger.Log("AvailableBioBricksManager::loadAllBioBricks", Logger.Level.DEBUG);

@@ -17,13 +17,12 @@ public class PickableDeviceRef4Bricks : PickableDevice {
 
   protected override Device produceDevice()
   {
-    _allBioBricks = AvailableBioBricksManager.get ().getAllBioBricks();
     LinkedList<BioBrick> deviceBricks = new LinkedList<BioBrick>();
     string[] bricks = new string[]{promoterName, rbsName, geneName, terminatorName};
 
     foreach(string brickName in bricks)
     {
-      BioBrick brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks, b => (b.getName() == brickName));
+      BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(brickName);
       if(brick != null) {
         Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.TRACE);
         deviceBricks.AddLast(brick);
