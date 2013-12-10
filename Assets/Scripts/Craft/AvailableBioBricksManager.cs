@@ -25,8 +25,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
 
   string[] _allBioBrickFiles = new string[]{ "Assets/Data/allbiobricks.txt" };
-  string[] _availableBioBrickFiles = new string[]{ "Assets/Data/allbiobricks.txt" };
-  //string[] _availableBioBrickFiles = new string[]{ "Assets/Data/availablebiobricks.txt" };
+  //string[] _availableBioBrickFiles = new string[]{ "Assets/Data/allbiobricks.txt" };
+  string[] _availableBioBrickFiles = new string[]{ "Assets/Data/availablebiobricks.txt" };
 
   //width of a displayed BioBrick
   //set in Unity editor
