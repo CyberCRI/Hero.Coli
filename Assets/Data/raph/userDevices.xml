@@ -15,78 +15,18 @@
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
-  <device id="deviceXNoZ">
-    <brick id="PromNoZ" size="5" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]Z</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
-      <rbsFactor>1</rbsFactor>
-    </brick>
-    <brick id="X" size="1" type="gene">
-      <protein>X</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="deviceZNoY">
-    <brick id="PromNoY" size="5" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]Y</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
-      <rbsFactor>1</rbsFactor>
-    </brick>
-    <brick id="Z" size="1" type="gene">
-      <protein>Z</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="device3">
-    <brick id="PromY" size="5" type="promoter">
+  <device id="DEV12">
+    <brick id="P12" size="0" type="promoter">
       <beta>75</beta>
       <formula>[0.01,2]Y</formula>
     </brick>
-    <brick id="RBS1" size="5" type="rbs">
+    <brick id="RBS12" size="0" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="GFP" size="30" type="gene">
-      <protein>GFP</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="device4">
-    <brick id="PromX" size="5" type="promoter">
-      <beta>75</beta>
-      <formula>[0.01,2]X</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
-      <rbsFactor>1</rbsFactor>
-    </brick>
-    <brick id="GFP" size="30" type="gene">
-      <protein>GFP</protein>
-    </brick>
-    <brick id="T1" size="3" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="device5">
-    <brick id="PromY" size="5" type="promoter">
-      <beta>75</beta>
-      <formula>[0.01,2]Y</formula>
-    </brick>
-    <brick id="RBS1" size="5" type="rbs">
-      <rbsFactor>1</rbsFactor>
-    </brick>
-    <brick id="X" size="1" type="gene">
+    <brick id="PROUT" size="0" type="gene">
       <protein>X</protein>
     </brick>
-    <brick id="T1" size="3" type="terminator">
+    <brick id="T12" size="0" type="terminator">
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
