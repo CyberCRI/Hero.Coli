@@ -29,8 +29,7 @@
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
-    </molecule>
-    
+    </molecule>    
     <molecule type="other">
       <name>AMPI</name>
       <description></description>
