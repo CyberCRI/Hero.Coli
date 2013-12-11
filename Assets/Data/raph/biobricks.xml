@@ -1,15 +1,15 @@
 <bricks>
   <brick id="pCons" size="5" type="promoter">
     <beta>75</beta>
-    <formula>T</formula>
+    <formula>![0.01,2]X</formula>
   </brick>
   <brick id="pLac" size="5" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR1</formula>
+    <formula>![0.01,2]Y</formula>
   </brick>
   <brick id="pTet" size="5" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR2</formula>
+    <formula>![0.01,2]Z</formula>
   </brick>
   <brick id="PromX" size="5" type="promoter">
     <beta>75</beta>
