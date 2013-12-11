@@ -44,6 +44,7 @@ public class CraftZoneManager : MonoBehaviour {
   public GameObject                         displayedBioBrick;
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
+  public GameObject                         assemblyZonePanel;
 
   //width of a displayed BioBrick
   public int _width = 200;
@@ -87,7 +88,7 @@ public class CraftZoneManager : MonoBehaviour {
     int index = 0;
     foreach (BioBrick brick in _currentBioBricks) {
       Logger.Log("CraftZoneManager::displayBioBricks brick="+brick, Logger.Level.TRACE);
-      _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(transform, getNewPosition(index), null, brick));
+      _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(assemblyZonePanel.transform, getNewPosition(index), null, brick));
       index++;
     }
 
