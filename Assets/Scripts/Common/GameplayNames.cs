@@ -42,7 +42,8 @@ public class GameplayNames
     {"REPR2", "tetR"},
 
     //OTHER
-    {"AMPI", "Ampicillin"}
+    {"AMPI", "Ampicillin"},
+    {"AMPI*", "Penicilloic acid"}
   };
 
   private static Dictionary<string, string> deviceNames = new Dictionary<string, string>()

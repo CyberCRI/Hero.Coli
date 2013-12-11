@@ -5,11 +5,11 @@
   </brick>
   <brick id="PRLACI" size="200" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]lacI</formula>
+    <formula>![0.01,2]REPR1</formula>
   </brick>
   <brick id="PRTETR" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]tetR</formula>
+    <formula>![0.01,2]REPR2</formula>
   </brick>
   
   <brick id="RBS1" size="13" type="rbs">

@@ -350,16 +350,16 @@ public class Medium
         if (Input.GetKey(KeyCode.I))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addNewConcentration(100f);
           }
         if (Input.GetKey(KeyCode.K))
         {
           if (_enableSequential)
-            ReactionEngine.getMoleculeFromName("Z", _molecules).addConcentration(- 10f);
+            ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addConcentration(- 10f);
           else
-            ReactionEngine.getMoleculeFromName("Z", _molecules).addNewConcentration(- 100f);
+            ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addNewConcentration(- 100f);
         }
       }		
   }
