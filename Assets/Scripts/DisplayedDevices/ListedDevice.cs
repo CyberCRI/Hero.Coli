@@ -29,7 +29,7 @@ class ListedDevice : DisplayedDevice {
           , DevicesDisplayer.DeviceType.Listed
       );
 
-    result.setNameLabel(device.getName());
+    result.setNameLabel(GameplayNames.generateRealNameFromBricks(device));
 
     return result;
  }

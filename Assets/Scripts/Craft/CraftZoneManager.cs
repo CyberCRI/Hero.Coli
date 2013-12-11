@@ -145,7 +145,8 @@ public class CraftZoneManager : MonoBehaviour {
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);
-    Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
+    //Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
+    Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
     if(device != null)
     {
       Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);

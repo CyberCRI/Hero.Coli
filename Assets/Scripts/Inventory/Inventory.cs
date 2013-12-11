@@ -22,7 +22,8 @@ public class Inventory : DeviceContainer
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices_tooltips.xml"};
+  private string[] _deviceFiles = new string[]{};
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/devices.txt"};
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	

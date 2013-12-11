@@ -322,30 +322,30 @@ public class Medium
         if (Input.GetKey(KeyCode.P))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("MOV", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("MOV", _molecules).addNewConcentration(100f);
           }
         if (Input.GetKey(KeyCode.M))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("X", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("MOV", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("X", _molecules).addNewConcentration(- 100f);
+              ReactionEngine.getMoleculeFromName("MOV", _molecules).addNewConcentration(- 100f);
           }
         if (Input.GetKey(KeyCode.O))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(10f);
+              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addConcentration(10f);
             else
-              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(100f);
+              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addNewConcentration(100f);
           }
         if (Input.GetKey(KeyCode.L))
           {
             if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("Y", _molecules).addConcentration(- 10f);
+              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addConcentration(- 10f);
             else
-              ReactionEngine.getMoleculeFromName("Y", _molecules).addNewConcentration(- 100f);
+              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addNewConcentration(- 100f);
           }
         if (Input.GetKey(KeyCode.I))
           {

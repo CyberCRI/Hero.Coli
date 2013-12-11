@@ -16,7 +16,7 @@ public class PhenoToxic : Phenotype {
   //! Called at the beginning
   public override void StartPhenotype()
   {
-	_mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
+	_mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
   }
 
   /*!
@@ -27,10 +27,10 @@ public class PhenoToxic : Phenotype {
    */
   public override void UpdatePhenotype()
   {
-		//the molecule considered toxic is the Y molecule
+		//the molecule considered toxic is the "AMPI" molecule
 		if(_mol == null)
 		{
-		  _mol = ReactionEngine.getMoleculeFromName ("Y", _molecules);
+		  _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
 		  if (_mol == null)
 			return ;
 		}

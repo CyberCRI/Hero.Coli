@@ -16,10 +16,12 @@ public class DisplayedDevice : DisplayedElement {
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
   {
-    {"X", "speed"},
-    //{"Y", "default"},
-    {"Z", "resist"},
-    {"GFP", "fluo"}
+    {"FLUO1", "fluo"},
+    //{"FLUO2", "fluo"},
+    {"MOV", "speed"},
+    {"ANTIBIO", "resist"}
+    //{"REPR1", ?},
+    //{"REPR2", ?},
   };
 
   private static string getTextureName(string proteinName)
