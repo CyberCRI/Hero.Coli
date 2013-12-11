@@ -83,7 +83,7 @@ public class GUITransitioner : MonoBehaviour {
 	}
 		
 	
-  private void Pause(bool pause) {
+  public void Pause(bool pause) {
     _pauseTransition = !pause;
     if(_reactionEngine == null)
     {
@@ -93,7 +93,10 @@ public class GUITransitioner : MonoBehaviour {
 	  _timeScale = pause?0:1;
 	  if(pause) {
 	    Time.timeScale = 0;
-    }		
+    }
+		
+	_celliaGraph.setPause(pause);
+	_roomGraph.setPause(pause);
   }
 
   public void GoToScreen(GameScreen destination) {
@@ -124,8 +127,7 @@ public class GUITransitioner : MonoBehaviour {
        ZoomOut();
        _currentScreen = GameScreen.screen1;
        _devicesDisplayer.UpdateScreen();
-	   _celliaGraph.setPause(false);
-	   _roomGraph.setPause(false);
+
 
     } else if (destination == GameScreen.screen2) {
       if(_currentScreen == GameScreen.screen1) {
@@ -153,8 +155,7 @@ public class GUITransitioner : MonoBehaviour {
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
        _devicesDisplayer.UpdateScreen();
-	   _celliaGraph.setPause(true);
-	   _roomGraph.setPause(true);
+
 
     } else if (destination == GameScreen.screen3) {
       if(_currentScreen == GameScreen.screen1) {
@@ -180,8 +181,7 @@ public class GUITransitioner : MonoBehaviour {
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
        _devicesDisplayer.UpdateScreen();
-	   _celliaGraph.setPause(true);
-	   _roomGraph.setPause(true);
+
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
