@@ -8,8 +8,8 @@
     <brick id="RBS1" size="5" type="rbs">
       <rbsFactor>1</rbsFactor>
     </brick>
-    <brick id="Y" size="30" type="gene">
-      <protein>Y</protein>
+    <brick id="AMPI" size="30" type="gene">
+      <protein>AMPI</protein>
     </brick>
     <brick id="T1" size="3" type="terminator">
       <terminatorFactor>1</terminatorFactor>

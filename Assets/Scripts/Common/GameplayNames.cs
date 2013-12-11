@@ -27,8 +27,11 @@ public class GameplayNames
   private static Dictionary<string, string> proteinNames = new Dictionary<string, string>()
   {
     //PROMOTER ACTIVATORS (ANTI-REPRESSORS)
-    {"IPTG", "GFP"},             //inhibits lacI => activates PRLACI
-    {"aTc", "aTc tetracycline"}, //inhibits tetR => activates PRTETR
+      //inhibits lacI => activates PRLACI
+    {"IPTG", "GFP"},
+      //inhibits tetR => activates PRTETR
+    {"aTc", "aTc tetracycline"},
+
 
     //PRODUCED BY GENES
     {"FLUO1", "GFP"},
@@ -36,7 +39,10 @@ public class GameplayNames
     {"MOV", "FlhDC"},
     {"ANTIBIO", "ß-lactamase"},
     {"REPR1", "lacI"},
-    {"REPR2", "tetR"}
+    {"REPR2", "tetR"},
+
+    //OTHER
+    {"AMPI", "Ampicillin"}
   };
 
   private static Dictionary<string, string> deviceNames = new Dictionary<string, string>()
