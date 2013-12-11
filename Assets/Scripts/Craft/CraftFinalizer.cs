@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
-  public CraftZoneManager               craftZoneManager;
+  private CraftZoneManager               craftZoneManager;
 
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
   public CraftFinalizationButton        craftFinalizationButton;
@@ -61,5 +61,10 @@ public class CraftFinalizer : MonoBehaviour {
       Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
         +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
     }
+  }
+
+  void Start()
+  {
+    craftZoneManager = CraftZoneManager.get();
   }
 }

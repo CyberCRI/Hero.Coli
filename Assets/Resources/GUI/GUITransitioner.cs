@@ -2,6 +2,24 @@ using UnityEngine;
 using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
+
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "GUITransitioner";
+  private static GUITransitioner _instance;
+  public static GUITransitioner get() {
+    if(_instance == null) {
+      Logger.Log("GUITransitioner::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<GUITransitioner>();
+    }
+    return _instance;
+  }
+  void Awake()
+  {
+    Logger.Log("GUITransitioner::Awake", Logger.Level.DEBUG);
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
 	
@@ -30,7 +48,7 @@ public class GUITransitioner : MonoBehaviour {
 	
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
-	public DevicesDisplayer _devicesDisplayer;
+	private DevicesDisplayer _devicesDisplayer;
 	public VectrosityPanel _celliaGraph;
 	public VectrosityPanel _roomGraph;
 	
@@ -39,6 +57,7 @@ public class GUITransitioner : MonoBehaviour {
 	void Start () {
 
     _reactionEngine = ReactionEngine.get();
+    _devicesDisplayer = DevicesDisplayer.get();
 
 		SetScreen2(false);
 		SetScreen3(false);

@@ -13,10 +13,9 @@ public class Equipment : DeviceContainer
     }
     return _instance;
   }
-  new void Awake()
+  void Awake()
   {
     Logger.Log("Equipment::Awake", Logger.Level.DEBUG);
-    base.Awake();
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +51,7 @@ public class Equipment : DeviceContainer
      Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
     }
     _devices.Add(copy);
-    _displayer.addEquipedDevice(copy);
+    safeGetDisplayer().addEquipedDevice(copy);
     addToReactionEngine(copy);
     return AddingResult.SUCCESS;
   }
@@ -83,7 +82,7 @@ public class Equipment : DeviceContainer
 
   public override void removeDevice(Device device) {
     _devices.Remove(device);
-    _displayer.removeEquipedDevice(device);
+    safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
   }
 
@@ -94,6 +93,8 @@ public class Equipment : DeviceContainer
 
   void Start()
   {
+    base.Start();
+    Logger.Log("Equipment::Start()", Logger.Level.DEBUG);
     _reactionEngine = ReactionEngine.get();
   }
 }

@@ -14,10 +14,9 @@ public class Inventory : DeviceContainer
     }
     return _instance;
   }
-  new void Awake()
+  void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
-    base.Awake();
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +97,7 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::addDevice device==null", Logger.Level.WARN);
       return;
     }
+
     string displayerString = _displayer!=null?"name="+_displayer.name:"null";
     Logger.Log("Inventory::addDevice("+device+")"
       +", copy="+copy
@@ -154,7 +154,7 @@ public class Inventory : DeviceContainer
 
   public override void removeDevice(Device device) {
     _devices.Remove(device);
-    _displayer.removeInventoriedDevice(device);
+    safeGetDisplayer().removeInventoriedDevice(device);
   }
 
   public override void editDevice(Device device) {
@@ -186,16 +186,17 @@ public class Inventory : DeviceContainer
 
     DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
     foreach (string file in _deviceFiles) {
-      Logger.Log("DevicesDisplayer::loadDevices loads device file "+file, Logger.Level.TRACE);
+      Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
       devices.AddRange(dLoader.loadDevicesFromFile(file));
     }
-    Logger.Log("DevicesDisplayer::loadDevices calls inventory.UpdateData(List("
+    Logger.Log("Inventory::loadDevices calls inventory.UpdateData(List("
 			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     UpdateData(devices, new List<Device>(), new List<Device>());
   }
 	
   void Start() {
-	Logger.Log("Inventory::Awake()", Logger.Level.DEBUG);
-	loadDevices();
+    base.Start();
+    Logger.Log("Inventory::Start()", Logger.Level.DEBUG);
+    loadDevices();
   }
 }

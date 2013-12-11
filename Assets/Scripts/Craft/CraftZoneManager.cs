@@ -14,6 +14,24 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour {
 
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "CraftZoneManager";
+  private static CraftZoneManager _instance;
+  public static CraftZoneManager get() {
+    if(_instance == null) {
+      Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
+    }
+    return _instance;
+  }
+  void Awake()
+  {
+    Logger.Log("CraftZoneManager::Awake", Logger.Level.DEBUG);
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   private LinkedList<BioBrick>              _currentBioBricks = new LinkedList<BioBrick>();
   private LinkedList<DisplayedBioBrick>     _currentDisplayedBricks = new LinkedList<DisplayedBioBrick>();
   private Device                            _currentDevice = null;

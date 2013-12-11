@@ -5,6 +5,24 @@ using System.Collections.Generic;
 
 public class DevicesDisplayer : MonoBehaviour {
 
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "DeviceDisplayer";
+  private static DevicesDisplayer _instance;
+  public static DevicesDisplayer get() {
+    if(_instance == null) {
+      Logger.Log("DevicesDisplayer::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<DevicesDisplayer>();
+    }
+    return _instance;
+  }
+  void Awake()
+  {
+    Logger.Log("DevicesDisplayer::Awake", Logger.Level.DEBUG);
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   public enum TextureQuality {
     HIGH,
     NORMAL
@@ -41,9 +59,9 @@ public class DevicesDisplayer : MonoBehaviour {
   public GameObject equipedDevice2;
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
-	
-  public GUITransitioner transitioner;
-  public CraftZoneManager craftZoneManager;
+
+  private GUITransitioner transitioner;
+  private CraftZoneManager craftZoneManager;
 
 
 
@@ -101,7 +119,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
       if(_listedInventoriedDevices.Count == 1) {
         Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TRACE);
-        craftZoneManager.askSetDevice(device);
+        CraftZoneManager.get().askSetDevice(device);
       }
 		} else {
 			Logger.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried, Logger.Level.WARN);
@@ -283,6 +301,8 @@ public class DevicesDisplayer : MonoBehaviour {
   
   void Start () {
 	  Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
+
+    transitioner = GUITransitioner.get();
 	  inventoryPanel.gameObject.SetActive(false);
 
     if(equipedDevice == null) {

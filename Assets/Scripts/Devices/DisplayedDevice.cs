@@ -35,7 +35,7 @@ public class DisplayedDevice : DisplayedElement {
   }
 
   public Device                       _device;
-  public DevicesDisplayer             _devicesDisplayer;
+  protected static DevicesDisplayer   _devicesDisplayer;
   public DevicesDisplayer.DeviceType  _deviceType;
 
 	public static DisplayedDevice Create(
@@ -125,7 +125,10 @@ public class DisplayedDevice : DisplayedElement {
       Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);
     }
     Logger.Log("DisplayedDevice::Create built device "+displayedDeviceScript._device+" from "+device, Logger.Level.TRACE);
-    displayedDeviceScript._devicesDisplayer = devicesDisplayer;
+    if(_devicesDisplayer == null)
+    {
+      _devicesDisplayer = DevicesDisplayer.get();
+    }
     displayedDeviceScript._deviceType = deviceType;
     Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
 
