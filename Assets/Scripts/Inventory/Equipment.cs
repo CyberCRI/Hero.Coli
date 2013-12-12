@@ -88,7 +88,7 @@ public class Equipment : DeviceContainer
   }
 
   public override void removeDevice(Device device) {
-    _devices.Remove(device);
+    _devices.RemoveAll(d => d.getName() == device.getName());
     safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
   }
@@ -98,7 +98,7 @@ public class Equipment : DeviceContainer
     Debug.Log("Equipment::editeDevice NOT IMPLEMENTED");
   }
 
-  void Start()
+  new void Start()
   {
     base.Start();
     Logger.Log("Equipment::Start()", Logger.Level.DEBUG);
