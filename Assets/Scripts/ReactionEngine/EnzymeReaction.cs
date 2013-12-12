@@ -178,25 +178,24 @@ public class EnzymeReaction : IReaction
         if (effector != null)
           effectorConcentration = effector.getConcentration();
       }
+    if (_alpha == 0)
+    {
+      _alpha = 0.0000000001f;
+      Logger.Log("_alpha == 0", Logger.Level.WARN);
+    }
     if (_Ki == 0)
+    {
       _Ki = 0.0000000001f;
+      Logger.Log("_Ki == 0", Logger.Level.WARN);
+    }
     if (_Km == 0)
+    {
       _Km = 0.0000000001f;
-    Debug.Log (
-      "Vmax="+Vmax
-      +"\ncc="+substrate.getConcentration()
-      +"\n_Km="+_Km
-      +"\n_beta="+_beta
-      +"\ncc2="+effectorConcentration
-      +"\n_alpha="+_alpha
-      +"\n_Ki="+_Ki
-      );
+      Logger.Log("_Km == 0", Logger.Level.WARN);
+    }
 
     float denominator = _alpha * _Km * _Ki;
-    if(denominator == 0) {
-      Logger.Log("denominator == 0", Logger.Level.WARN);
-      return 0;
-    }
+
 
     float bigDenominator = 1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / denominator);
     if(bigDenominator == 0)
@@ -207,7 +206,6 @@ public class EnzymeReaction : IReaction
 
     float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / denominator))
       / bigDenominator;
-    Debug.Log("v="+v);
     return v;
   }
 
@@ -226,7 +224,6 @@ public class EnzymeReaction : IReaction
     if (substrate == null)
       return ;
     float delta = execEnzymeReaction(molecules) * 1f;
-    Debug.Log("delta0=execEnzymeReaction="+delta);
 
     float energyCoef;
     float energyCostTot;    
@@ -242,7 +239,6 @@ public class EnzymeReaction : IReaction
       energyCoef = 1f;
 
     delta *= energyCoef;
-    Debug.Log("delta0*energyCoef=delta1="+delta);
 
     if (enableSequential)
       substrate.subConcentration(delta);

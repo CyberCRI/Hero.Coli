@@ -10,13 +10,13 @@
       <name>MOV</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0.0</degradationRate>
+      <degradationRate>0.1</degradationRate>
     </molecule>
     <molecule type="enzyme">
       <name>ANTIBIO</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0.0</degradationRate>
+      <degradationRate>0.1</degradationRate>
     </molecule>
     <molecule type="other">
       <name>REPR1</name>
@@ -34,14 +34,14 @@
       <name>AMPI</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0</degradationRate>
+      <degradationRate>0.05</degradationRate>
       <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>AMPI*</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0.2</degradationRate>
+      <degradationRate>0.01</degradationRate>
     </molecule>
   </molecules>
 </Document>
