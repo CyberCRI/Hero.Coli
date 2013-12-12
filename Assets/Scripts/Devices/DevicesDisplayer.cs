@@ -49,7 +49,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	//TODO use game object texture dimensions
   static private float _equipedHeight = 0.0f;
   static private float _inventoriedWidth = 54.0f;
-  static private float _inventoriedHeight = 54.0f;
+  static private float _inventoriedHeight = 70.0f;
   static private float _listedInventoriedHeight = 20.0f;
 
   public UIPanel equipPanel;
@@ -204,7 +204,7 @@ public class DevicesDisplayer : MonoBehaviour {
       res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
     } else if(deviceType == DeviceType.Inventoried) {
       if(idx == -1) idx = _inventoriedDevices.Count;
-      res = inventoryDevice.transform.localPosition + new Vector3((idx%3)*_inventoriedWidth, -(idx/3)*_inventoriedHeight, -0.1f);
+      res = inventoryDevice.transform.localPosition + new Vector3((idx%1)*_inventoriedWidth, -(idx/1)*_inventoriedHeight, -0.1f);
     } else if(deviceType == DeviceType.Listed) {
       if(idx == -1) idx = _listedInventoriedDevices.Count;
       res = listedInventoryDevice.transform.localPosition + new Vector3(0.0f, -idx*_listedInventoriedHeight, -0.1f);

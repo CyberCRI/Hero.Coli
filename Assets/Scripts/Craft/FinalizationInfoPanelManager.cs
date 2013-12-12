@@ -12,8 +12,8 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
   private const string            _defaultStatus = "invalid device!";
 
   public UISprite   finalizationIconSprite;
-  public UILabel    finalizationInfoLabel;
-  public UILabel    finalizationNameLabel;
+  //public UILabel    finalizationInfoLabel;
+  //public UILabel    finalizationNameLabel;
   //public UILabel    finalizationStatusLabel;
 
   private Device    _device;
@@ -34,12 +34,12 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
 
     _device = device;
     string displayedInfo = _device!=null?_lengthPrefix+_device.getSize().ToString()+_lengthPostfix:infos;
-    finalizationInfoLabel.text = displayedInfo;
-    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationInfoLabel.text="+finalizationInfoLabel.text, Logger.Level.TRACE);
+    //finalizationInfoLabel.text = displayedInfo;
+    //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationInfoLabel.text="+finalizationInfoLabel.text, Logger.Level.TRACE);
 
     string displayedName = _device!=null?_device.getName():name;
-    finalizationNameLabel.text = displayedName;
-    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
+    //finalizationNameLabel.text = displayedName;
+    //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
 
     //finalizationStatusLabel.text = status;
     //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
