@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class CellControl : MonoBehaviour{
 
-	public float moveSpeed = 9f;
+	public float baseMoveSpeed;
 	public float rotationSpeed = 6f;
 	public List<Animation> anims;
   public Hero hero;
   public float moveEnergyCost;
+
+  public float currentMoveSpeed;
 	
 	//Getter & setter for the move speed.
 	
@@ -18,6 +20,7 @@ public class CellControl : MonoBehaviour{
 
 	//Getter & setter for the inventory
 	void Start (){
+    gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 	}
   
 	void Update(){
@@ -30,12 +33,12 @@ public class CellControl : MonoBehaviour{
 			//Translate
 			Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
       if(inputMovement.sqrMagnitude > 1) inputMovement /= Mathf.Sqrt(2);
-      Vector3 moveAmount = inputMovement * moveSpeed;
+      Vector3 moveAmount = inputMovement * currentMoveSpeed;
 
 			this.collider.attachedRigidbody.AddForce(moveAmount);
 
       float cost = moveAmount.sqrMagnitude*moveEnergyCost;
-      Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+      //Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
       hero.subEnergy(cost);
 
 			//SetSpeed
