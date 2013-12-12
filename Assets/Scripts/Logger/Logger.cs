@@ -147,16 +147,17 @@ public class Logger : MonoBehaviour {
 	  _previousLevel = _level;
 	}
   }
-	
+
+  /*
   public void Update() {
-	_timeAtCurrentFrame = Time.realtimeSinceStartup;
+    _timeAtCurrentFrame = Time.realtimeSinceStartup;
     _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 	
-	if(_deltaTime > _deltaTimeThreshold) {
+    if(_deltaTime > _deltaTimeThreshold) {
       if (Input.GetKey(KeyCode.J)) {
         interactiveDebug = !interactiveDebug;
-		Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
-		_timeAtLastFrame = _timeAtCurrentFrame;
+        Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
+        _timeAtLastFrame = _timeAtCurrentFrame;
       }
       if (Input.GetKey(KeyCode.H)) {
 		if(_level == Level.TRACE) {
@@ -168,6 +169,7 @@ public class Logger : MonoBehaviour {
 		Logger.Log("Logger::Update press H _level="+_level, Logger.Level.WARN);
 		_timeAtLastFrame = _timeAtCurrentFrame;
       }
-	}
+    }
   }
+  */
 }

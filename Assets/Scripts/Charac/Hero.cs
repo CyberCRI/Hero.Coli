@@ -53,6 +53,9 @@ public class Hero : MonoBehaviour{
 			energy = 0; 
 			_energy = energy;
 	}
+  public void subEnergy(float energy) {
+    _medium.subEnergy(energy);
+  }
 
 	//Getter & setter for the life.
 	private float _life = 1f;
