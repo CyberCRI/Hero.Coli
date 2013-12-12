@@ -182,8 +182,32 @@ public class EnzymeReaction : IReaction
       _Ki = 0.0000000001f;
     if (_Km == 0)
       _Km = 0.0000000001f;
-    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)))
-      / (1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)));
+    Debug.Log (
+      "Vmax="+Vmax
+      +"\ncc="+substrate.getConcentration()
+      +"\n_Km="+_Km
+      +"\n_beta="+_beta
+      +"\ncc2="+effectorConcentration
+      +"\n_alpha="+_alpha
+      +"\n_Ki="+_Ki
+      );
+
+    float denominator = _alpha * _Km * _Ki;
+    if(denominator == 0) {
+      Logger.Log("denominator == 0", Logger.Level.WARN);
+      return 0;
+    }
+
+    float bigDenominator = 1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / denominator);
+    if(bigDenominator == 0)
+    {
+      Logger.Log("big denominator == 0", Logger.Level.WARN);
+      return 0;
+    }
+
+    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / denominator))
+      / bigDenominator;
+    Debug.Log("v="+v);
     return v;
   }
 
@@ -202,33 +226,35 @@ public class EnzymeReaction : IReaction
     if (substrate == null)
       return ;
     float delta = execEnzymeReaction(molecules) * 1f;
+    Debug.Log("delta0=execEnzymeReaction="+delta);
 
     float energyCoef;
     float energyCostTot;    
     if (delta > 0f && _energyCost > 0f && enableEnergy)
-      {
-        energyCostTot = _energyCost * delta;
-        energyCoef = _medium.getEnergy() / energyCostTot;
-        if (energyCoef > 1f)
-          energyCoef = 1f;
-        _medium.subEnergy(energyCostTot);
-      }
+    {
+      energyCostTot = _energyCost * delta;
+      energyCoef = _medium.getEnergy() / energyCostTot;
+      if (energyCoef > 1f)
+        energyCoef = 1f;
+      _medium.subEnergy(energyCostTot);
+    }
     else
       energyCoef = 1f;
 
     delta *= energyCoef;
+    Debug.Log("delta0*energyCoef=delta1="+delta);
 
     if (enableSequential)
       substrate.subConcentration(delta);
     else
       substrate.subNewConcentration(delta);
     foreach (Product pro in _products)
-      {
-        Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        if (enableSequential)
-          mol.addConcentration(delta);
-        else
-          mol.addNewConcentration(delta);
-      }
+    {
+      Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+      if (enableSequential)
+        mol.addConcentration(delta);
+      else
+        mol.addNewConcentration(delta);
+    }
   }
 }

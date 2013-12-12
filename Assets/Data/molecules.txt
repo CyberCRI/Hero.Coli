@@ -34,7 +34,7 @@
       <name>AMPI</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0.2</degradationRate>
+      <degradationRate>0</degradationRate>
       <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
