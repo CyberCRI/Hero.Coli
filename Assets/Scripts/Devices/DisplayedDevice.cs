@@ -12,6 +12,7 @@ public class DisplayedDevice : DisplayedElement {
   private static string baseDeviceTextureString = "device_";
   private static string quality256 = "256x256_";
   private static string quality80 = "80x80_";
+  private static string qualityDefault = "";
   private static string defaultTexture = "default";
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
@@ -99,7 +100,7 @@ public class DisplayedDevice : DisplayedElement {
         usedSpriteName += quality80;
         break;
       default:
-        usedSpriteName += quality80;
+        usedSpriteName += qualityDefault;
         break;
     }
     usedSpriteName += getTextureName(device.getFirstGeneProteinName());

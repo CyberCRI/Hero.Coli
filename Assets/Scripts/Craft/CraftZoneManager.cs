@@ -47,7 +47,7 @@ public class CraftZoneManager : MonoBehaviour {
   public GameObject                         assemblyZonePanel;
 
   //width of a displayed BioBrick
-  public int _width = 200;
+  private int _width = 118;
 
 
   public LinkedList<DisplayedBioBrick> getCurrentDisplayedBricks() {

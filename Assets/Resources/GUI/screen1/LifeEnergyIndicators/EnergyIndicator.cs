@@ -4,17 +4,24 @@ using System.Collections;
 public class EnergyIndicator : MonoBehaviour {
 	
 	public Hero hero;
-	private Vector3 _initialScale;
-	private float maxXScale = 200.0f;
-  public Transform foregroundTransform;
+	public int maxEnergy = 100;
+	public float startEnergy = 1.0f;
+	
+	private UILabel _energyValueLabel;
+	private int _energyValue;
 
 	// Use this for initialization
 	void Start () {
-		_initialScale = foregroundTransform.localScale;
+		//TODO trigger this after resize
+		hero = GameObject.Find ("Perso").GetComponent<Hero>();
+		_energyValueLabel = GameObject.Find("EnergyValue").GetComponent<UILabel>();
+		_energyValue = maxEnergy;
+		hero.setEnergy(startEnergy);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		foregroundTransform.localScale = new Vector3(hero.getEnergy ()*maxXScale, _initialScale.y, _initialScale.z);
+		_energyValue = (int)(hero.getEnergy()*maxEnergy);
+		_energyValueLabel.text = _energyValue.ToString();
 	}
 }

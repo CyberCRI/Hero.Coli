@@ -66,7 +66,8 @@ public class DisplayedBioBrick : DisplayedElement {
   }
 
   public static string getSpriteName(BioBrick brick) {
-    return spriteNamesDico[brick.getType()];
+    //return spriteNamesDico[brick.getType()];
+		return brick.getName();
   }
  
   protected string getDebugInfos() {
