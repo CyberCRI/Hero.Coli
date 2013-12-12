@@ -14,7 +14,7 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
   public UISprite   finalizationIconSprite;
   public UILabel    finalizationInfoLabel;
   public UILabel    finalizationNameLabel;
-  public UILabel    finalizationStatusLabel;
+  //public UILabel    finalizationStatusLabel;
 
   private Device    _device;
 
@@ -41,8 +41,8 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
     finalizationNameLabel.text = displayedName;
     Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
 
-    finalizationStatusLabel.text = status;
-    Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
+    //finalizationStatusLabel.text = status;
+    //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
   }
 }
 

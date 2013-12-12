@@ -63,7 +63,7 @@ public class GUITransitioner : MonoBehaviour {
 		SetScreen3(false);
 		SetScreen1(true);
 		
-		Pause(false);
+		
 		_devicesDisplayer.UpdateScreen();
 		_currentScreen = GameScreen.screen1;
 		
