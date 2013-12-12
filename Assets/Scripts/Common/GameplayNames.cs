@@ -24,7 +24,7 @@ public class GameplayNames
     {"DTER", "Double terminator"}
   };
 
-  private static Dictionary<string, string> proteinNames = new Dictionary<string, string>()
+  private static Dictionary<string, string> moleculeNames = new Dictionary<string, string>()
   {
     //PROMOTER ACTIVATORS (ANTI-REPRESSORS)
       //inhibits lacI => activates PRLACI
@@ -37,7 +37,7 @@ public class GameplayNames
     {"FLUO1", "GFP"},
     {"FLUO2", "Red - mCherry"},
     {"MOV", "FlhDC"},
-    {"ANTIBIO", "ß-lactamase"},
+    {"ANTIBIO", "Beta-lactamase"},
     {"REPR1", "lacI"},
     {"REPR2", "tetR"},
 
@@ -78,9 +78,9 @@ public class GameplayNames
     return getStringFromDico(code, brickNames);
   }
 
-  public static string getProteinRealName(string code)
+  public static string getMoleculeRealName(string code)
   {
-    return getStringFromDico(code, proteinNames);
+    return getStringFromDico(code, moleculeNames);
   }
 
   public static string getDeviceRealName(string code)

@@ -39,7 +39,8 @@ public class Molecule
     OTHER
   }
 
-  private string _name;                           //!< The name of the molecule
+  private string _name;                           //!< The use name of the molecule
+  private string _realName = null;                //!< The real name of the molecule
   private eType _type;                            //!< The type of the molecule
   private string _description;                    //!< The description of the molecule (optionnal)
   private float _concentration;                   //!< The concentration of the molecule
@@ -57,6 +58,7 @@ public class Molecule
       {
 		if(_debug) Logger.Log("Molecule::Molecule("+mol+")", Logger.Level.TRACE);
         _name = mol._name;
+        _realName = GameplayNames.getMoleculeRealName(_name);
         _type = mol._type;
         _description = mol._description;
         _concentration = mol._concentration;
@@ -70,6 +72,7 @@ public class Molecule
   }
 
   public string getName() {return _name; }
+  public string getRealName() {return _realName; }
   public eType getType() {return _type; }
   public string getDescription() {return _description; }
   public float getConcentration() {
@@ -144,7 +147,7 @@ public class Molecule
 	if (!displayAll && _concentration == 0) {
 	  return null;
 	} else {
-	  return _name+":"+_concentration;
+	  return _realName+":"+_concentration;
 	}
   }
 }
