@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class PushableBox : MonoBehaviour {
 	
-	public float minSpeed = 20;
+	public float minSpeed;
 	
     void OnCollisionEnter(Collision col) {
 		if (col.collider){
