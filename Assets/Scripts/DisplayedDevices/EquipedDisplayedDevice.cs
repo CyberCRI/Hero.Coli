@@ -84,7 +84,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     }
     if(_tinyIconVerticalShift == 0.0f)
     {
-      _tinyIconVerticalShift = (transform.localPosition - equipedDevice.transform.localPosition).y;
+      _tinyIconVerticalShift = (tinyBioBrickIcon.transform.localPosition - equipedDevice.transform.localPosition).y;
       _width = tinyBioBrickIcon2.transform.localPosition.x - tinyBioBrickIcon.transform.localPosition.x;
     }
   }
@@ -117,7 +117,8 @@ public class EquipedDisplayedDevice : DisplayedDevice {
       Logger.Log("EquipedDisplayedDevice::getNewPosition tinyBioBrickIcon == null", Logger.Level.WARN);
       return new Vector3(index*_width, -95.0f, -0.1f) + shiftPos ;
     } else {
-      return tinyBioBrickIcon.transform.localPosition + shiftPos;
+      //return tinyBioBrickIcon.transform.localPosition + shiftPos;
+			return shiftPos;
     }
   }
 
