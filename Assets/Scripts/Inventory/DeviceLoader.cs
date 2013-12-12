@@ -70,7 +70,7 @@ public class DeviceLoader {
                 Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
                 deviceBricks.AddLast(brick);
               } else {
-                Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick!", Logger.Level.WARN);
+                Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name "+brickName+"!", Logger.Level.WARN);
               }
             } else {
               Logger.Log("DeviceLoader::loadDevicesFromFile unknown attr "+attr.Name, Logger.Level.WARN);

@@ -14,6 +14,24 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour {
 
+
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "CraftZoneManager";
+  private static CraftZoneManager _instance;
+  public static CraftZoneManager get() {
+    if(_instance == null) {
+      Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);
+      _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
+    }
+    return _instance;
+  }
+  void Awake()
+  {
+    Logger.Log("CraftZoneManager::Awake", Logger.Level.DEBUG);
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   private LinkedList<BioBrick>              _currentBioBricks = new LinkedList<BioBrick>();
   private LinkedList<DisplayedBioBrick>     _currentDisplayedBricks = new LinkedList<DisplayedBioBrick>();
   private Device                            _currentDevice = null;
@@ -26,6 +44,7 @@ public class CraftZoneManager : MonoBehaviour {
   public GameObject                         displayedBioBrick;
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
+  public GameObject                         assemblyZonePanel;
 
   //width of a displayed BioBrick
   public int _width = 200;
@@ -69,7 +88,7 @@ public class CraftZoneManager : MonoBehaviour {
     int index = 0;
     foreach (BioBrick brick in _currentBioBricks) {
       Logger.Log("CraftZoneManager::displayBioBricks brick="+brick, Logger.Level.TRACE);
-      _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(transform, getNewPosition(index), null, brick));
+      _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(assemblyZonePanel.transform, getNewPosition(index), null, brick));
       index++;
     }
 
@@ -145,7 +164,8 @@ public class CraftZoneManager : MonoBehaviour {
     ExpressionModule module = new ExpressionModule("test", bricks);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
     modules.AddLast(module);
-    Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
+    //Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
+    Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
     if(device != null)
     {
       Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);

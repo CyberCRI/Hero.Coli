@@ -1,52 +1,32 @@
 <Document>
   <reactions id="CelliaReactions">
-    <promoter>
-      <name>PromZ</name>
-      <productionMax>0,9</productionMax>
-      <terminatorFactor>0.9</terminatorFactor>
-      <formula>[0.5]X*![2]Y</formula>
-      <operon>
-	<gene>
-	  <name>Z</name>
-	  <RBSFactor>1</RBSFactor>
-	</gene>
-      </operon>
-    </promoter>
-
-    <promoter>
-      <name>PromY</name>
-      <productionMax>0.5</productionMax>
-      <terminatorFactor>1</terminatorFactor>
-      <formula>[2]X*</formula>
-      <operon>
-	<gene>
-	  <name>Y</name>
-	  <RBSFactor>1</RBSFactor>
-	</gene>
-      </operon>
-    </promoter>
-
-    
+    <!--enzyme>
+      <name>ANTIAMPI</name>
+      <substrate>AMPI</substrate>
+      <enzyme>ANTIBIO</enzyme>
+      <Kcat>1</Kcat>
+      <effector>False</effector>
+      <alpha>0</alpha>
+      <beta>0</beta>
+      <Km>0.000893</Km>
+      <Ki>0.00</Ki>
+      <Products>
+	<name>AMPI*</name>
+      </Products>
+    </enzyme-->
   </reactions>
-  
-  <molecules id="CelliaMolecules">
-    <molecule type="transcription_factor">
-      <name>Z</name>
-      <description></description>
-      <concentration>0</concentration>
-      <degradationRate>0.2</degradationRate>
-    </molecule>
-    <molecule type="transcription_factor">
-      <name>X</name>
-      <description></description>
-      <concentration>2</concentration>
-      <degradationRate>0.0</degradationRate>
-    </molecule>
-    <molecule type="transcription_factor">
-      <name>Y</name>
-      <description></description>
-      <concentration>0</concentration>
-      <degradationRate>0.2</degradationRate>
-    </molecule>
-  </molecules>
+  <reactions id="ToxicReactions">
+    <promoter>
+      <name>AMPIPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+	<gene>
+	  <name>AMPI</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>    
+  </reactions>
 </Document>

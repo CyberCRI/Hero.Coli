@@ -269,26 +269,26 @@ Where:
     if (_P == 0f || _surface == 0f)
       return;
     foreach (Molecule mol1 in molMed1)
-      {			
-        c1 = mol1.getConcentration();
-        mol2 = ReactionEngine.getMoleculeFromName(mol1.getName(), molMed2);
-        if (mol2 != null && mol2.getFickFactor() > 0f)
-          {
-            c2 = mol2.getConcentration();
-            result = (c2 - c1) * _P * _surface * mol2.getFickFactor() * _reactionSpeed * ReactionEngine.reactionsSpeed;
-			
-            if (enableSequential)
-              {
-                mol2.addConcentration(- result);
-                mol1.addConcentration(result);
-              }
-            else
-              {
-                mol2.subNewConcentration(result);
-                mol1.addNewConcentration(result);
-              }
-          }
+    {
+      c1 = mol1.getConcentration();
+      mol2 = ReactionEngine.getMoleculeFromName(mol1.getName(), molMed2);
+      if (mol2 != null && mol2.getFickFactor() > 0f)
+      {
+        c2 = mol2.getConcentration();
+        result = (c2 - c1) * _P * _surface * mol2.getFickFactor() * _reactionSpeed * ReactionEngine.reactionsSpeed;
+
+        if (enableSequential)
+        {
+          mol2.addConcentration(- result);
+          mol1.addConcentration(result);
+        }
+        else
+        {
+          mol2.subNewConcentration(result);
+          mol1.addNewConcentration(result);
+        }
       }
+    }
   }
 	
   public override string ToString ()

@@ -30,7 +30,7 @@ public class PhenoLight : Phenotype {
    */
   	public override void UpdatePhenotype()
   	{
-    	_mol = ReactionEngine.getMoleculeFromName("GFP", _molecules);
+    	_mol = ReactionEngine.getMoleculeFromName("FLUO1", _molecules);
     	if (_mol == null)
       		return ;
     	float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);

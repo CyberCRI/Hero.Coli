@@ -61,7 +61,7 @@ public class DisplayedBioBrick : DisplayedElement {
   ) {
       Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
       biobrickScript._biobrick = biobrick;
-      biobrickScript._label.text = biobrick.getName();
+      biobrickScript._label.text = GameplayNames.getBrickRealName(biobrick.getName());
       Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
   }
 
@@ -87,5 +87,6 @@ public class DisplayedBioBrick : DisplayedElement {
     } else {
       _lastHoveredInfoManager.setHoveredDefault();
     }
+    TooltipManager.tooltip(isOver, _biobrick, transform.position);
   }
 }

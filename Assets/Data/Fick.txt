@@ -1,2 +1,8 @@
 <ficks>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>3</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
 </ficks>

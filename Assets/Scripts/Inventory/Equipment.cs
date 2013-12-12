@@ -13,10 +13,9 @@ public class Equipment : DeviceContainer
     }
     return _instance;
   }
-  new void Awake()
+  void Awake()
   {
     Logger.Log("Equipment::Awake", Logger.Level.DEBUG);
-    base.Awake();
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,15 +43,22 @@ public class Equipment : DeviceContainer
   public override AddingResult askAddDevice(Device device) {
     if(device == null)
     {
-     Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+      Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+      return AddingResult.FAILURE_DEFAULT;
     }
     Device copy = Device.buildDevice(device);
     if(copy == null)
     {
-     Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+      Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+      return AddingResult.FAILURE_DEFAULT;
+    }
+    if(_devices.Exists(d => d.getName() == copy.getName()))
+    {
+      Logger.Log("Equipment::askAddDevice device already present", Logger.Level.INFO);
+      return AddingResult.FAILURE_SAME_DEVICE;
     }
     _devices.Add(copy);
-    _displayer.addEquipedDevice(copy);
+    safeGetDisplayer().addEquipedDevice(copy);
     addToReactionEngine(copy);
     return AddingResult.SUCCESS;
   }
@@ -83,7 +89,7 @@ public class Equipment : DeviceContainer
 
   public override void removeDevice(Device device) {
     _devices.Remove(device);
-    _displayer.removeEquipedDevice(device);
+    safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
   }
 
@@ -94,6 +100,8 @@ public class Equipment : DeviceContainer
 
   void Start()
   {
+    base.Start();
+    Logger.Log("Equipment::Start()", Logger.Level.DEBUG);
     _reactionEngine = ReactionEngine.get();
   }
 }

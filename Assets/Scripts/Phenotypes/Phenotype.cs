@@ -83,8 +83,11 @@ public abstract class Phenotype : MonoBehaviour
     \brief Called at each tick of the game.
    */
   public void Update () {
-    updateMolecules();
-    UpdatePhenotype();
+    if(!ReactionEngine.isPaused())
+    {
+      updateMolecules();
+      UpdatePhenotype();
+    }
   }
 
   public abstract void StartPhenotype();

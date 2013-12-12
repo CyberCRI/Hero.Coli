@@ -29,7 +29,7 @@ class ListedDevice : DisplayedDevice {
           , DevicesDisplayer.DeviceType.Listed
       );
 
-    result.setNameLabel(device.getName());
+    result.setNameLabel(GameplayNames.generateRealNameFromBricks(device));
 
     return result;
  }
@@ -43,6 +43,10 @@ class ListedDevice : DisplayedDevice {
     setPressed(isPressed);
     if(isPressed) {
       //ask craft zone to display biobricks associated to this device
+      if(craftZoneManager == null)
+      {
+        craftZoneManager = CraftZoneManager.get();
+      }
       craftZoneManager.setDevice(_device);
     }
   }
@@ -78,6 +82,6 @@ class ListedDevice : DisplayedDevice {
     if(_nameLabel == null) {
       _nameLabel = gameObject.GetComponentInChildren<UILabel>();
     }
-    craftZoneManager = (CraftZoneManager)GameObject.Find(craftZoneManagerObjectName).GetComponent<CraftZoneManager>();
+    craftZoneManager = CraftZoneManager.get();
   }
 }
