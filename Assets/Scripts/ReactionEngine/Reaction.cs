@@ -39,13 +39,14 @@ public class Molecule
     OTHER
   }
 
-  private string _name;                 //!< The name of the molecule
-  private eType _type;                  //!< The type of the molecule
-  private string _description;          //!< The description of the molecule (optionnal)
-  private float _concentration;         //!< The concentration of the molecule
-  private float _newConcentration;      //!< The concentration of the molecule for the next stage
-  private float _degradationRate;       //!< The degradation rate of the molecule
-  private float _fickFactor;            //!< The FickFactor is a coefficient for FickReaction
+  private string _name;                           //!< The name of the molecule
+  private eType _type;                            //!< The type of the molecule
+  private string _description;                    //!< The description of the molecule (optionnal)
+  private float _concentration;                   //!< The concentration of the molecule
+  private float _newConcentration;                //!< The concentration of the molecule for the next stage
+  private float _degradationRate;                 //!< The degradation rate of the molecule
+  private float _fickFactor;                      //!< The FickFactor is a coefficient for FickReaction
+  private float _negligibilityThreshold = 1E-10f; //!< The threshold below which the concentration is rounded down to 0.
 	
   private bool _debug = false;
 	
@@ -82,23 +83,23 @@ public class Molecule
   public void setDescription(string description) { _description = description; }
   public void setConcentration(float concentration) {
 	float oldConcentration = _concentration;
-	_concentration = concentration; if (_concentration < 0) _concentration = 0;
+	_concentration = concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
 	if(_debug) Logger.Log("Molecule::setConcentration("+concentration+") "+_name+" old="+oldConcentration+", new="+_concentration, Logger.Level.TRACE);
   }
   public void setDegradationRate(float degradationRate) { _degradationRate = degradationRate; }
   public void addNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
-	_newConcentration += concentration; if (_newConcentration < 0) _newConcentration = 0;
+	_newConcentration += concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
 	if(_debug) Logger.Log("Molecule::addNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void subNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
-	_newConcentration -= concentration; if (_newConcentration < 0) _newConcentration = 0;
+	_newConcentration -= concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
 	if(_debug) Logger.Log("Molecule::subNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void setNewConcentration(float concentration) {
 	float oldNewCC = _newConcentration;
-	_newConcentration = concentration; if (_newConcentration < 0) _newConcentration = 0;
+	_newConcentration = concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
 	if(_debug) Logger.Log("Molecule::setNewConcentration("+concentration+") "+_name+" old="+oldNewCC+", new="+_newConcentration, Logger.Level.TRACE);
   }
   public void setFickFactor(float v) { _fickFactor = v; }
@@ -109,7 +110,7 @@ public class Molecule
    */
   public void addConcentration(float concentration) {
 	float oldCC = _concentration;
-	_concentration += concentration; if (_concentration < 0) _concentration = 0;
+	_concentration += concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
 	if(_debug) Logger.Log("Molecule::addConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.TRACE);
   }
 
@@ -119,7 +120,7 @@ public class Molecule
    */
   public void subConcentration(float concentration) {
 	float oldCC = _concentration;
-	_concentration -= concentration; if (_concentration < 0) _concentration = 0;
+	_concentration -= concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
 	if(_debug) Logger.Log("Molecule::subConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration, Logger.Level.TRACE);
   }
 
