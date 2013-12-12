@@ -96,7 +96,7 @@ public class Hero : MonoBehaviour{
     {
       subLife(Time.deltaTime * _lowEnergyDmg);
     }
-    Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
+    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
 
 	/*

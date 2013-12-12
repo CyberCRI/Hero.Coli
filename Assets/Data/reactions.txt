@@ -17,7 +17,7 @@
   </reactions>
   <reactions id="ToxicReactions">
     <promoter>
-      <name>PromY</name>
+      <name>AMPIPROD</name>
       <productionMax>75</productionMax>
       <terminatorFactor>1</terminatorFactor>
       <formula>T</formula>

@@ -9,7 +9,7 @@
     <molecule type="other">
       <name>MOV</name>
       <description></description>
-      <concentration>2</concentration>
+      <concentration>0</concentration>
       <degradationRate>0.0</degradationRate>
     </molecule>
     <molecule type="enzyme">
@@ -35,6 +35,7 @@
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>AMPI*</name>
