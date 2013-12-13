@@ -51,6 +51,7 @@ public class DevicesDisplayer : MonoBehaviour {
   static private float _inventoriedWidth = 54.0f;
   static private float _inventoriedHeight = 70.0f;
   static private float _listedInventoriedHeight = 20.0f;
+  static private float _listedInventoriedWidth = 70.0f;
 
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
@@ -114,8 +115,8 @@ public class DevicesDisplayer : MonoBehaviour {
           , localPosition
           , null
           , device
-          , this,
-          DevicesDisplayer.DeviceType.Listed
+          , this
+          , DevicesDisplayer.DeviceType.Listed
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
@@ -209,7 +210,7 @@ public class DevicesDisplayer : MonoBehaviour {
       res = inventoryDevice.transform.localPosition + new Vector3((idx%1)*_inventoriedWidth, -(idx/1)*_inventoriedHeight, -0.1f);
     } else if(deviceType == DeviceType.Listed) {
       if(idx == -1) idx = _listedInventoriedDevices.Count;
-      res = listedInventoryDevice.transform.localPosition + new Vector3(0.0f, -idx*_listedInventoriedHeight, -0.1f);
+      res = listedInventoryDevice.transform.localPosition + new Vector3(idx*_listedInventoriedWidth, 0.0f, -0.1f);
       Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
         +", idx="+idx
         +", localPosition="+listedInventoryDevice.transform.localPosition

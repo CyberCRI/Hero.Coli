@@ -7,7 +7,7 @@ public class DisplayedDevice : DisplayedElement {
   // static stuff
   private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
   private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
-  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDeviceButtonPrefab";
+  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
   private static string baseDeviceTextureString = "device_";
   private static string quality256 = "256x256_";
