@@ -10,16 +10,16 @@ public class CraftFinalizer : MonoBehaviour {
 
   public static Dictionary<Inventory.AddingResult, string>   statusMessagesDictionary =
     new Dictionary<Inventory.AddingResult, string>() {
-      {Inventory.AddingResult.SUCCESS,                "New device"},
-      {Inventory.AddingResult.FAILURE_SAME_NAME,      "Device with same name already exists!"},
-      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "Device with same bricks already exists!"},
-      {Inventory.AddingResult.FAILURE_SAME_DEVICE,    ""},//a device with same name and same bricks already exists
+      {Inventory.AddingResult.SUCCESS,                "You found the recipe of a new device!"},
+      {Inventory.AddingResult.FAILURE_SAME_NAME,      "There already is a device with the same name."},
+      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "This recipe is already known."},
+      {Inventory.AddingResult.FAILURE_SAME_DEVICE,    "You already know this recipe. There's nothing new to craft!"},
       {Inventory.AddingResult.FAILURE_DEFAULT,        "You will find here the result of the crafting operation."}
     };
 
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
-    Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.TRACE);
+    Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.TEMP);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice);
@@ -30,7 +30,7 @@ public class CraftFinalizer : MonoBehaviour {
         Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
       }
     } else {
-      Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.TRACE);
+      Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.TEMP);
     }
   }
 
@@ -38,9 +38,9 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);
 
     Inventory.AddingResult addingResult = Inventory.get().canAddDevice(device);
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult, Logger.Level.TRACE);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult, Logger.Level.TEMP);
     string status = statusMessagesDictionary[addingResult];
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): status="+status, Logger.Level.TRACE);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): status="+status, Logger.Level.TEMP);
 
     bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
     craftFinalizationButton.setEnabled(enabled);
