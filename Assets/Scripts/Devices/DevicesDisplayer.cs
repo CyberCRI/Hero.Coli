@@ -37,8 +37,8 @@ public class DevicesDisplayer : MonoBehaviour {
   }
 
   public enum DeviceType {
-	Equiped,
-	Inventoried,
+    Equiped,
+    Inventoried,
     Listed
   }
 	
@@ -108,18 +108,20 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
       parent = listedInventoryPanel.transform;
       Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
-      ListedDevice newListedDevice =
+      DisplayedDevice newListedDevice =
         ListedDevice.Create(
           parent
           , localPosition
+          , null
           , device
-          , this
+          , this,
+          DevicesDisplayer.DeviceType.Listed
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
 
       if(_listedInventoriedDevices.Count == 1) {
-        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TRACE);
+        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TEMP);
         CraftZoneManager.get().askSetDevice(device);
       }
 		} else {

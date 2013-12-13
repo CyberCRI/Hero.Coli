@@ -10,11 +10,11 @@ public class CraftFinalizer : MonoBehaviour {
 
   public static Dictionary<Inventory.AddingResult, string>   statusMessagesDictionary =
     new Dictionary<Inventory.AddingResult, string>() {
-      {Inventory.AddingResult.SUCCESS,                "new device"},
-      {Inventory.AddingResult.FAILURE_SAME_NAME,      "device with same name already exists!"},
-      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "device with same bricks already exists!"},
+      {Inventory.AddingResult.SUCCESS,                "New device"},
+      {Inventory.AddingResult.FAILURE_SAME_NAME,      "Device with same name already exists!"},
+      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "Device with same bricks already exists!"},
       {Inventory.AddingResult.FAILURE_SAME_DEVICE,    ""},//a device with same name and same bricks already exists
-      {Inventory.AddingResult.FAILURE_DEFAULT,        "invalid device!"}
+      {Inventory.AddingResult.FAILURE_DEFAULT,        "You will find here the result of the crafting operation."}
     };
 
   public void finalizeCraft() {

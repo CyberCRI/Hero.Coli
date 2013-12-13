@@ -147,7 +147,10 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
 
     _currentBioBricks.Clear();
-    _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+    if(device != null)
+    {
+      _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+    }
     displayBioBricks();
   }
 
@@ -180,5 +183,11 @@ public class CraftZoneManager : MonoBehaviour {
 
   public Device getCurrentDevice() {
     return _currentDevice;
+  }
+
+  void OnEnable()
+  {
+    Logger.Log("CraftZoneManager::OnEnable", Logger.Level.TEMP);
+    displayDevice();
   }
 }

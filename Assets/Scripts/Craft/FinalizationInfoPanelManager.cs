@@ -9,12 +9,14 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
   private string                  _lengthPostfix = " bp";
   private const string            _defaultInfo = "";
   private const string            _defaultName = "no name";
-  private const string            _defaultStatus = "invalid device!";
+  //private const string            _defaultStatus = "invalid device!";
+  private const string            _defaultStatus = "You will find here the result of the crafting operation.";
 
-  public UISprite   finalizationIconSprite;
+  public UISprite finalizationIconSprite;
+  public CraftResultDevice craftResultDevice;
   //public UILabel    finalizationInfoLabel;
   //public UILabel    finalizationNameLabel;
-  //public UILabel    finalizationStatusLabel;
+  public UILabel    finalizationStatusLabel;
 
   private Device    _device;
 
@@ -33,15 +35,21 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
       );
 
     _device = device;
-    string displayedInfo = _device!=null?_lengthPrefix+_device.getSize().ToString()+_lengthPostfix:infos;
+    craftResultDevice._device = device;
+
+    finalizationIconSprite.spriteName = DisplayedDevice.getTextureName(device);
+    finalizationIconSprite.gameObject.SetActive(null != device);
+
+    //string displayedInfo = _device!=null?_lengthPrefix+_device.getSize().ToString()+_lengthPostfix:infos;
     //finalizationInfoLabel.text = displayedInfo;
     //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationInfoLabel.text="+finalizationInfoLabel.text, Logger.Level.TRACE);
 
-    string displayedName = _device!=null?_device.getName():name;
+    //string displayedName = _device!=null?_device.getName():name;
     //finalizationNameLabel.text = displayedName;
     //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
 
-    //finalizationStatusLabel.text = status;
+    if(null != finalizationStatusLabel)
+     finalizationStatusLabel.text = status;
     //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
   }
 }

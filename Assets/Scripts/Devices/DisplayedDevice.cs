@@ -103,7 +103,14 @@ public class DisplayedDevice : DisplayedElement {
         usedSpriteName += qualityDefault;
         break;
     }
-    usedSpriteName += getTextureName(device.getFirstGeneProteinName());
+    if(null == device)
+    {
+      usedSpriteName += getTextureName("");
+    }
+    else
+    {
+      usedSpriteName += getTextureName(device.getFirstGeneProteinName());
+    }
     Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
     return usedSpriteName;
   }
@@ -144,7 +151,7 @@ public class DisplayedDevice : DisplayedElement {
     Logger.Log("DisplayedDevice::OnPress "+_id+" device="+_device, Logger.Level.INFO);
   }
 
-  void OnHover(bool isOver)
+  protected virtual void OnHover(bool isOver)
   {
     Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
     TooltipManager.tooltip(isOver, _device, transform.position);

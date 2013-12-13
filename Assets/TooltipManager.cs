@@ -71,7 +71,7 @@ public class TooltipManager : MonoBehaviour {
   public static void tooltip(bool isOver, Device device, Vector3 pos)
   {
     Logger.Log("TooltipManager::tooltip device", Logger.Level.DEBUG);
-    if(!isOver)
+    if(!isOver || (null == device))
     {
       tooltip();
     }
