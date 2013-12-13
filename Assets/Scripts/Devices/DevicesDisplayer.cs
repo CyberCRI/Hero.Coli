@@ -121,10 +121,13 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
 
+      /*
       if(_listedInventoriedDevices.Count == 1) {
         Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TEMP);
         CraftZoneManager.get().askSetDevice(device);
       }
+      */
+      
 		} else {
 			Logger.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried, Logger.Level.WARN);
 		}

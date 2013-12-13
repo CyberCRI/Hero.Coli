@@ -134,12 +134,14 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /*
   public void askSetDevice(Device device) {
     Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.TRACE);
     if(_currentDevice == null) {
       setDevice(device);
     }
   }
+  */
 
   public void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
