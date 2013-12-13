@@ -99,6 +99,10 @@ public class Hero : MonoBehaviour{
     {
       subLife(Time.deltaTime * _lowEnergyDmg);
     }
+    if (Input.GetKey(KeyCode.A))
+    {
+      setLife(1f);
+    }
     //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
 

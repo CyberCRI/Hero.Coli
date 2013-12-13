@@ -9,7 +9,7 @@ public class Device: DNABit
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;
 
-  private static float                  _energyPerBasePair = 0.001f;
+  private static float                  _energyPerBasePair = 0.005f;
   
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }

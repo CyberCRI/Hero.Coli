@@ -1,6 +1,6 @@
 <bricks>
   <brick id="PRCONS" size="48" type="promoter">
-    <beta>75</beta>
+    <beta>100</beta>
     <formula>T</formula>
   </brick>
   <brick id="PRLACI" size="200" type="promoter">
