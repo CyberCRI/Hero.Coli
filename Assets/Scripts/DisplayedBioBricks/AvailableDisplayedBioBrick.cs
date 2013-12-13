@@ -3,8 +3,6 @@ using System.Collections;
 
 public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
-  public static new string              prefabURI = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
-  public static new UnityEngine.Object  prefab    = null;
   private static CraftZoneManager       craftZoneManager;
 
   /*TODO
@@ -16,6 +14,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    *    select this already existing device
    */
 
+  protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -25,7 +24,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    )
   {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
-    if(prefab == null) prefab = Resources.Load(prefabURI);
+    Object prefab = Resources.Load(_prefabURIAvailable);
     if(craftZoneManager == null) {
       craftZoneManager = CraftZoneManager.get();
     }
