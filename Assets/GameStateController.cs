@@ -17,10 +17,10 @@ public bool dePauseForbidden;
 
 	// Use this for initialization
 	void Start () {
-		 _gameState = GameState.Start;
-		 dePauseForbidden = true;
-		 //dePauseForbidden = false;
-		//StateChange(GameState.Game);
+		 //_gameState = GameState.Start;
+		 //dePauseForbidden = true;
+		 dePauseForbidden = false;
+		StateChange(GameState.Game);
 	}
 	
 	// Update is called once per frame

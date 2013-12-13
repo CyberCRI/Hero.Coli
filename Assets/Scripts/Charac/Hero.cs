@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 public class Hero : MonoBehaviour{
-
+	public LifeLogoAnimation lifeAnimation;
 	Medium _medium;
 	
 	/*
@@ -87,7 +87,14 @@ public class Hero : MonoBehaviour{
 	}
 
 	public void subLife(float life) {
-		_life -= life;
+		if(life >0.01){
+			if(lifeAnimation.isPlaying == false){
+				lifeAnimation.Play();
+			}
+		}
+			
+			_life -= life;
+
 	}
   
 	void Start (){
