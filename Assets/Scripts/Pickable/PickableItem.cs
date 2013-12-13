@@ -14,6 +14,16 @@ public abstract class PickableItem : MonoBehaviour {
 
   public void pickUp()
   {
+	ActivePickingDeviceInfoPanel ActivateDeviceInfoPanelScript = gameObject.GetComponent<ActivePickingDeviceInfoPanel>();
+	if(ActivateDeviceInfoPanelScript != null){
+		ActivateDeviceInfoPanelScript.activate();
+	}
+		
+	ActivePickingBioBrickInfoPanel ActivateBioBrickInfoPanelScript = gameObject.GetComponent<ActivePickingBioBrickInfoPanel>();
+	if(ActivateBioBrickInfoPanelScript != null){
+		ActivateBioBrickInfoPanelScript.activate();
+	}
+		
     addTo ();
     if(toDestroy)
     {
