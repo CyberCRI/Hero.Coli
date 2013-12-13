@@ -80,6 +80,7 @@ public class DisplayedBioBrick : DisplayedElement {
 
   protected void OnHover(bool isOver) {
     Logger.Log("DisplayedBioBrick::OnHover("+isOver+")", Logger.Level.TRACE);
+    /*
     if(_lastHoveredInfoManager == null) {
       _lastHoveredInfoManager = GameObject.Find ("LastHoveredInfo").GetComponent<LastHoveredInfoManager>();
     }
@@ -88,6 +89,7 @@ public class DisplayedBioBrick : DisplayedElement {
     } else {
       _lastHoveredInfoManager.setHoveredDefault();
     }
+    */
     TooltipManager.tooltip(isOver, _biobrick, transform.position);
   }
 }
