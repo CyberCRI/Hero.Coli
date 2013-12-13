@@ -18,6 +18,10 @@ public class CraftFinalizationButton : MonoBehaviour {
     }
     Logger.Log("CraftFinalizationButton::setEnabled("+enabled+") starts with _button.isEnabled="+_button.enabled, Logger.Level.TEMP);
     _button.enabled = enabled;
+    if(enabled)
+      gameObject.GetComponentInChildren<UISprite>().alpha = 1f;
+    else
+      gameObject.GetComponentInChildren<UISprite>().alpha = 0.5f;
     Logger.Log("CraftFinalizationButton::setEnabled("+enabled+") ends with _button.isEnabled="+_button.enabled, Logger.Level.TEMP);
   }
 
