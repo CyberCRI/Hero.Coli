@@ -18,7 +18,7 @@ public abstract class PickableItem : MonoBehaviour {
 	if(ActivateDeviceInfoPanelScript != null){
 		ActivateDeviceInfoPanelScript.activate();
 	}
-		
+	Logger.Log("PickableItem::pickUp", Logger.Level.INFO);
 	ActivePickingBioBrickInfoPanel ActivateBioBrickInfoPanelScript = gameObject.GetComponent<ActivePickingBioBrickInfoPanel>();
 	if(ActivateBioBrickInfoPanelScript != null){
 		ActivateBioBrickInfoPanelScript.activate();

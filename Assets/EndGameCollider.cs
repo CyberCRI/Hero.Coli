@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActiveRFPInfoPanel : MonoBehaviour {
-
+public class EndGameCollider : MonoBehaviour {
+	
 	public GameObject infoPanel, hero;
 	public GameStateController gameStateController;
 	private bool alreadyDisplayed;
@@ -17,16 +17,26 @@ public class ActiveRFPInfoPanel : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		Logger.Log("ActiveRFPInfoPanel::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString());
+		Logger.Log("EndGameCollider::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString());
 		if(alreadyDisplayed == false) {
 			if(other == hero.GetComponent<Collider>()) {
-		        infoPanel.SetActive(true);
-				gameStateController.StateChange(GameState.Pause);
+		        
+				gameStateController.StateChange(GameState.End);
 				gameStateController.dePauseForbidden = true;
 				alreadyDisplayed = true;
+				StartCoroutine(WaitFade(2000f));
+				
 			}
 		}
-    }
+	}
+	
+	IEnumerator WaitFade(float waitTime)
+	{
+	    // do stuff before waitTime
+	 	
+	    yield return new WaitForSeconds(waitTime);
 		
-
+	 	infoPanel.SetActive(true);
+	    // do stuff after waitTime
+	}
 }

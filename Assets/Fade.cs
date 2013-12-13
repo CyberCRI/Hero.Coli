@@ -18,7 +18,7 @@ public class Fade : MonoBehaviour {
 	}
 	
 	public void FadeIn(){
-			TweenColor.Begin(blackSprite,7,new Color(0,0,0,1));
+			TweenColor.Begin(blackSprite,0.5f,new Color(0,0,0,1));
 	}
 
 }

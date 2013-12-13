@@ -19,7 +19,8 @@ public bool dePauseForbidden;
 	void Start () {
 		 _gameState = GameState.Start;
 		 dePauseForbidden = true;
-	
+		 //dePauseForbidden = false;
+		//StateChange(GameState.Game);
 	}
 	
 	// Update is called once per frame
@@ -27,7 +28,7 @@ public bool dePauseForbidden;
 		switch(_gameState){
 		
 			case GameState.Start:
-				Debug.Log("start");
+				
         		fadeSprite.gameObject.SetActive(true);
 			    introPanel.gameObject.SetActive(true);
 				gUITransitioner.Pause(true);
@@ -44,6 +45,8 @@ public bool dePauseForbidden;
 			break;
 			
 			case GameState.End:
+				gUITransitioner.TerminateGraphs();
+				fadeSprite.gameObject.SetActive(true);
 				fadeSprite.FadeIn();
 				gUITransitioner.Pause(true);
 				dePauseForbidden = true;

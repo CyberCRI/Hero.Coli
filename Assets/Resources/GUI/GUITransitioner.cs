@@ -103,7 +103,10 @@ public class GUITransitioner : MonoBehaviour {
 		_mainCameraFollow.SetZoom(false);
 	}
 		
-	
+  public void TerminateGraphs() {
+  	_roomGraph.gameObject.SetActive(false);
+    _celliaGraph.gameObject.SetActive(false);
+  }
   public void Pause(bool pause) {
     _pauseTransition = !pause;
     if(_reactionEngine == null)
@@ -115,9 +118,9 @@ public class GUITransitioner : MonoBehaviour {
 	  if(pause) {
 	    Time.timeScale = 0;
     }
-		
+	_roomGraph.setPause(pause);
     _celliaGraph.setPause(pause);
-    _roomGraph.setPause(pause);
+  
     hero.Pause(pause);
     control.Pause(pause);
   }
