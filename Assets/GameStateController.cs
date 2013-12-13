@@ -25,6 +25,7 @@ public Fade fadeSprite;
 		
 			case GameState.Start:
 				Debug.Log("start");
+        fadeSprite.gameObject.SetActive(true);
 				fadeSprite.FadeOut();
 				StateChange(GameState.Game);
 			break;
@@ -46,23 +47,21 @@ public Fade fadeSprite;
 	
 public void StateChange(GameState newState){
 		_gameState = newState;
+    Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);
 		
 		switch(_gameState){
 			case GameState.Start:
 			break;
 			
 			case GameState.Game:
-				Debug.Log("game");
 				gUITransitioner.Pause(false);
 			break;
 			
 			case GameState.Pause:
-				Debug.Log("pause");
 				gUITransitioner.Pause(true);
 			break;
 			
 			case GameState.End:
-				Debug.Log("end");
 				gUITransitioner.Pause(true);
 			break;
 			
