@@ -35,37 +35,43 @@ public class TooltipManager : MonoBehaviour {
   private static IDictionary<BioBrick.Type, IDictionary<string, string>> BioBrickTextureNames = new Dictionary<BioBrick.Type, IDictionary<string, string>>()
   {
     {BioBrick.Type.PROMOTER, new Dictionary<string, string>(){
-        {"PRCONS", "pCons"},
-        {"PRLACI", "pLac"},
-        {"PRTETR", "pTet"}
+        {"PRCONS", "b_PRCONS"},
+        {"PRLACI", "b_PRLACI"},
+        {"PRTETR", "b_PRTETR"}
       }
     },
     {BioBrick.Type.RBS, new Dictionary<string, string>(){
-        {"RBS1", "rbs_l"},
-        {"RBS2", "rbs_vl"}
+        {"RBS1", "b_RBS1"},
+        {"RBS2", "b_RBS2"}
       }
     },
     {BioBrick.Type.GENE, new Dictionary<string, string>(){
-        {"FLUO1", "gfp"},
+        {"FLUO1", "b_FLUO1"},
         //{"FLUO2", "gfp"},
-        {"MOV", "hyperflagellation"},
-        {"ANTIBIO", "ampR"}
+        {"MOV", "b_MOV"},
+        {"ANTIBIO", "b_ANTIBIO"}
         //{"REPR1", "repr1"},
         //{"REPR2", "repr2"}
       }
     },
     {BioBrick.Type.TERMINATOR, new Dictionary<string, string>(){
-        {"DTER", "terminator"}
+        {"DTER", "b_DTER"}
       }
     }
   };
 
   private static IDictionary<string, string> DeviceTextureNames = new Dictionary<string, string>()
   {
-    {"Ampicillin resistance (med)", "ampR_m"},
-    {"Green fluorescence (med)", "gfp_m"},
-    {"Hyperflagellation (low)", "speed_l"},
-    {"Hyperflagellation (med)", "speed_m"}
+    //{"Ampicillin resistance (med)", "ampR_m"},
+    {"Green fluorescence (low)", "d_cons-gfp-low"},
+    {"Green fluorescence (med)", "d_cons-gfp-med"},
+    {"Hyperflagellation (low)", "d_cons-speed-low"},
+    {"Hyperflagellation (med)", "d_cons-speed-med"},
+    //{"Regulated ampicillin resistance (med)", "ampR_m"},
+    {"Regulated green fluorescence (low)", "d_plac-gfp-low"},
+    {"Regulated green fluorescence (med)", "d_plac-gfp-med"},
+    {"Regulated hyperflagellation (low)", "d_plac-speed-low"},
+    {"Regulated hyperflagellation (med)", "d_plac-speed-low"}
   };
 
   public static void tooltip(bool isOver, Device device, Vector3 pos)
