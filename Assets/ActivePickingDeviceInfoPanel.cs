@@ -18,5 +18,6 @@ public class ActivePickingDeviceInfoPanel : MonoBehaviour {
 	public void activate () {
 		infoPanel.SetActive(true);
 		gameStateController.StateChange(GameState.Pause);
+		gameStateController.dePauseForbidden = true;
 	}
 }

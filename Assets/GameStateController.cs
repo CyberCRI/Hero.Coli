@@ -12,10 +12,13 @@ public class GameStateController : MonoBehaviour {
 private GameState _gameState;
 public GUITransitioner gUITransitioner;
 public Fade fadeSprite;
-	
+public UIPanel	introPanel, endPanel;
+public bool dePauseForbidden;
+
 	// Use this for initialization
 	void Start () {
 		 _gameState = GameState.Start;
+		 dePauseForbidden = true;
 	
 	}
 	
@@ -25,9 +28,9 @@ public Fade fadeSprite;
 		
 			case GameState.Start:
 				Debug.Log("start");
-        fadeSprite.gameObject.SetActive(true);
-				fadeSprite.FadeOut();
-				StateChange(GameState.Game);
+        		fadeSprite.gameObject.SetActive(true);
+			    introPanel.gameObject.SetActive(true);
+				gUITransitioner.Pause(true);
 			break;
 			
 			case GameState.Game:
@@ -35,17 +38,22 @@ public Fade fadeSprite;
 			break;
 			
 			case GameState.Pause:
-				if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Game);
+				if (dePauseForbidden == false){
+					if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Game);
+				}
 			break;
 			
 			case GameState.End:
 				fadeSprite.FadeIn();
+				gUITransitioner.Pause(true);
+				dePauseForbidden = true;
+				endPanel.gameObject.SetActive(true);
 			break;
 		
 		}
 	}
 	
-public void StateChange(GameState newState){
+	public void StateChange(GameState newState){
 		_gameState = newState;
     Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);
 		
@@ -55,6 +63,7 @@ public void StateChange(GameState newState){
 			
 			case GameState.Game:
 				gUITransitioner.Pause(false);
+				dePauseForbidden = false;
 			break;
 			
 			case GameState.Pause:
@@ -67,4 +76,5 @@ public void StateChange(GameState newState){
 			
 		}
 	}
+	
 }
