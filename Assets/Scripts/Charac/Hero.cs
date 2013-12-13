@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour{
 
 	Medium _medium;
-	public Fade fadeSprite;
 	
 	/*
 	//Getter & setter for the move speed.
@@ -35,10 +34,10 @@ public class Hero : MonoBehaviour{
 		_collected = collected;
 	}*/
 
-  //Life
-  private static float _lifeRegen = 0.1f;
-  //private float _lowEnergyDmg = 0.15f;
-  private static float _lowEnergyDmg = 3*_lifeRegen;
+  	//Life
+  	private static float _lifeRegen = 0.1f;
+  	//private float _lowEnergyDmg = 0.15f;
+  	private static float _lowEnergyDmg = 3*_lifeRegen;
 
 	//Getter & setter for the energy.
 	private float _energy = 1f;
@@ -59,6 +58,7 @@ public class Hero : MonoBehaviour{
 	public float getEnergy() {
 		return _energy;
 	}
+
 	public void setEnergy(float energy) {
 		if (energy > 1f) {energy = 1f;}
 		if(energy < 0) 
@@ -78,10 +78,10 @@ public class Hero : MonoBehaviour{
 		return _life;
 	}
 	public void setLife(float life) {
-		if (life > 1f)
-			life = 1;
-		if (life < 0) {
-			life = 0;
+		if (life >= 1f)
+			life = 1f;
+		if (life <= 0f) {
+			life = 0f;
 		}
 		_life = life;
 	}
@@ -123,9 +123,10 @@ public class Hero : MonoBehaviour{
   
       if (_life <= 0)
       {
-  		reSpawn();
-      }
-      //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
+	    	_life = 0f;
+			StartCoroutine(RespawnCoroutine());
+	    }
+	    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
     }
 	}
 
@@ -165,6 +166,7 @@ public class Hero : MonoBehaviour{
   		Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
   		item.pickUp();
     }
+	
   }
 
 
@@ -233,14 +235,6 @@ public class Hero : MonoBehaviour{
 		        break;
 	 	}
  	}
-
-	public void reSpawn() {
-
-		//Doesn't work:
-		gameObject.GetComponent<PhenoToxic>().CancelPhenotype();
-		StartCoroutine(RespawnCoroutine());
-
-	}
 
 	IEnumerator RespawnCoroutine() {
 

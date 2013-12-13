@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivePickingBioBrickInfoPanel : MonoBehaviour {
-	
+public class ActiveRFPInfoPanel : MonoBehaviour {
+
 	public GameObject infoPanel;
 	public GameStateController gameStateController;
 	// Use this for initialization
