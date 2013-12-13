@@ -21,7 +21,7 @@ public class EnergyIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		_energyValue = (int)(hero.getEnergy()*maxEnergy);
+		_energyValue = Mathf.CeilToInt(hero.getEnergy()*maxEnergy);
 		_energyValueLabel.text = _energyValue.ToString();
 	}
 }

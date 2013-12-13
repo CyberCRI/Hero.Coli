@@ -22,7 +22,7 @@ public class LifeIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		_lifeValue = (int)(hero.getLife()*maxLife);
+		_lifeValue = Mathf.CeilToInt(hero.getLife()*maxLife);
 		_lifeValueLabel.text = _lifeValue.ToString();
 	}
 }

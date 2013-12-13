@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour{
 
 	Medium _medium;
+	public Fade fadeSprite;
 	
 	/*
 	//Getter & setter for the move speed.
@@ -103,7 +104,7 @@ public class Hero : MonoBehaviour{
 
     if (_life <= 0)
     {
-			reSpawn();
+		reSpawn();
     }
     //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
@@ -217,9 +218,6 @@ public class Hero : MonoBehaviour{
 
 		//Doesn't work:
 		gameObject.GetComponent<PhenoToxic>().CancelPhenotype();
-
-		//GameObject deathPoint = GameObject.Find("DeathPoint");
-		//gameObject.transform.position = deathPoint.transform.position;
 		StartCoroutine(RespawnCoroutine());
 
 	}
@@ -229,7 +227,7 @@ public class Hero : MonoBehaviour{
 	    CellControl cc = GetComponent<CellControl>();
 	    cc.enabled = false;
 
-	    yield return new WaitForSeconds(1F);
+	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
 		    setLife(1f);
