@@ -44,6 +44,17 @@ public class Hero : MonoBehaviour{
 	private float _energy = 1f;
   private float _maxMediumEnergy = 1f;
   private float _lowEnergyThreshold = 0.05f;
+  private bool _pause;
+
+  public void Pause(bool pause)
+  {
+    _pause = pause;
+  }
+
+  public bool isPaused()
+  {
+    return _pause;
+  }
 
 	public float getEnergy() {
 		return _energy;
@@ -94,25 +105,28 @@ public class Hero : MonoBehaviour{
 	}
   
 	void Update() {
-		setLife(getLife() + Time.deltaTime * _lifeRegen);
-    _energy = _medium.getEnergy()/_maxMediumEnergy;
-    if(_energy < _lowEnergyThreshold)
+    if(!_pause)
     {
-      subLife(Time.deltaTime * _lowEnergyDmg);
+  		setLife(getLife() + Time.deltaTime * _lifeRegen);
+      _energy = _medium.getEnergy()/_maxMediumEnergy;
+      if(_energy < _lowEnergyThreshold)
+      {
+        subLife(Time.deltaTime * _lowEnergyDmg);
+      }
+      if (Input.GetKey(KeyCode.R))
+      {
+        setLife(1f);
+      }
+      if (Input.GetKey(KeyCode.F)) {
+        setEnergy(1f);
+      }
+  
+      if (_life <= 0)
+      {
+  		reSpawn();
+      }
+      //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
     }
-    if (Input.GetKey(KeyCode.R))
-    {
-      setLife(1f);
-    }
-    if (Input.GetKey(KeyCode.F)) {
-      setEnergy(1f);
-    }
-
-    if (_life <= 0)
-    {
-		reSpawn();
-    }
-    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
 
 	/*
