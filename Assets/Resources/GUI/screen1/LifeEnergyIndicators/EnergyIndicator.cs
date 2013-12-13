@@ -16,7 +16,6 @@ public class EnergyIndicator : MonoBehaviour {
 		hero = GameObject.Find ("Perso").GetComponent<Hero>();
 		_energyValueLabel = GameObject.Find("EnergyValue").GetComponent<UILabel>();
 		_energyValue = maxEnergy;
-		hero.setEnergy(startEnergy);
 	}
 	
 	// Update is called once per frame

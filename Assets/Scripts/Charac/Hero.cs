@@ -41,7 +41,7 @@ public class Hero : MonoBehaviour{
 
 	//Getter & setter for the energy.
 	private float _energy = 1f;
-  private float _maxEnergy = 1f;
+  private float _maxMediumEnergy = 1f;
   private float _lowEnergyThreshold = 0.05f;
 
 	public float getEnergy() {
@@ -50,9 +50,12 @@ public class Hero : MonoBehaviour{
 	public void setEnergy(float energy) {
 		if (energy > 1f) {energy = 1f;}
 		if(energy < 0) 
-			energy = 0; 
-			_energy = energy;
+			energy = 0;
+    _medium.setEnergy(energy*_maxMediumEnergy);
+    _energy = energy;
 	}
+
+  //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
     _medium.subEnergy(energy);
   }
@@ -78,12 +81,12 @@ public class Hero : MonoBehaviour{
 	void Start (){
 		//Click to move variable.
       	//	_destination = mover.position;
-      	gameObject.SetActive(true);
+    gameObject.SetActive(true);
 
-	    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-	    _medium = ReactionEngine.getMediumFromId(1, mediums);
-	    _maxEnergy = _medium.getMaxEnergy();
-    _energy = _medium.getEnergy()/_maxEnergy;
+    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+    _medium = ReactionEngine.getMediumFromId(1, mediums);
+    _maxMediumEnergy = _medium.getMaxEnergy();
+    _energy = _medium.getEnergy()/_maxMediumEnergy;
 
 		//FIXME light is undefined
       	//light.enabled = false;
@@ -91,14 +94,17 @@ public class Hero : MonoBehaviour{
   
 	void Update() {
 		setLife(getLife() + Time.deltaTime * _lifeRegen);
-    _energy = _medium.getEnergy()/_maxEnergy;
+    _energy = _medium.getEnergy()/_maxMediumEnergy;
     if(_energy < _lowEnergyThreshold)
     {
       subLife(Time.deltaTime * _lowEnergyDmg);
     }
-    if (Input.GetKey(KeyCode.A))
+    if (Input.GetKey(KeyCode.R))
     {
       setLife(1f);
+    }
+    if (Input.GetKey(KeyCode.F)) {
+      setEnergy(1f);
     }
 
     if (_life <= 0)
