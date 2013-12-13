@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class CellControl : MonoBehaviour{
 
-	public float moveSpeed = 9f;
+	public float baseMoveSpeed;
 	public float rotationSpeed = 6f;
 	public List<Animation> anims;
+  public Hero hero;
+  public float moveEnergyCost;
+
+  public float currentMoveSpeed;
 	
 	//Getter & setter for the move speed.
 	
@@ -16,6 +20,7 @@ public class CellControl : MonoBehaviour{
 
 	//Getter & setter for the inventory
 	void Start (){
+    gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 	}
   
 	void Update(){
@@ -27,16 +32,22 @@ public class CellControl : MonoBehaviour{
 			
 			//Translate
 			Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-			this.collider.attachedRigidbody.AddForce(inputMovement * moveSpeed);
-			
+      if(inputMovement.sqrMagnitude > 1) inputMovement /= Mathf.Sqrt(2);
+      Vector3 moveAmount = inputMovement * currentMoveSpeed;
+
+			this.collider.attachedRigidbody.AddForce(moveAmount);
+
+      float cost = moveAmount.sqrMagnitude*moveEnergyCost;
+      //Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+      hero.subEnergy(cost);
+
 			//SetSpeed
 			float speed = Mathf.Abs(Vector2.Distance(Vector2.zero, new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")))) + 0.3f;
 			Animation[] anims = GetComponentsInChildren<Animation>();
 			foreach(Animation anim in anims)
-				foreach (AnimationState state in anim) {
-        			state.speed = speed;
+        foreach (AnimationState state in anim) {
+          state.speed = speed;
         }
-		}
-	}
-
+	  	}
+    }
 }

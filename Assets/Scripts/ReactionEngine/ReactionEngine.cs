@@ -299,13 +299,6 @@ public class ReactionEngine : MonoBehaviour {
 	  		  medium.Log();
 	  	}
 	  }
-			
-	  if (Input.GetKey(KeyCode.U)) {
-	    //dump all reactions
-		Logger.Log("ReactionEngine::Update Press U reactions="+getReactionsSetFromId("CelliaReactions", _reactionsSets)
-					, Logger.Level.WARN
-					);	
-      }
 	}
   }
 }

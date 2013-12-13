@@ -53,6 +53,9 @@ public class Hero : MonoBehaviour{
 			energy = 0; 
 			_energy = energy;
 	}
+  public void subEnergy(float energy) {
+    _medium.subEnergy(energy);
+  }
 
 	//Getter & setter for the life.
 	private float _life = 1f;
@@ -95,6 +98,10 @@ public class Hero : MonoBehaviour{
     if(_energy < _lowEnergyThreshold)
     {
       subLife(Time.deltaTime * _lowEnergyDmg);
+    }
+    if (Input.GetKey(KeyCode.A))
+    {
+      setLife(1f);
     }
     //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}

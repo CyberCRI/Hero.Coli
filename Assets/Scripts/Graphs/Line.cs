@@ -24,7 +24,31 @@ public class Line{
 	private float _ratioW, _ratioH;
 	private float _lastVal = 0f;
 	private float _paddingRatio = 0.001f;
-	
+
+  private Color generateColor()
+  {
+    return new Color(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), Random.Range(0.0f, 1f));
+  }
+
+  private bool isAppropriate(Color color)
+  {
+    float max = 0.8f;
+    float min = 0.1f;
+    return (!((color.r > max) && (color.g > max) && (color.b > max)))
+      && (!((color.r < min) && (color.g < min) && (color.b < min)));
+  }
+
+  private Color generateAppropriateColor()
+  {
+    Color color;
+    do
+    {
+      color = generateColor();
+    } while (!isAppropriate(color));
+
+    return color;
+  }
+
 	/*!
 	 * \brief Constructor
 	 * \param graphHeight Max Y value
@@ -40,7 +64,7 @@ public class Line{
 		this._pointsList = new List<float>();
 		this._pointsArray = new Vector3[_graphWidth];
 		
-		this.color = new Color(Random.Range(0.2f, 1f), Random.Range(0.2f, 1f), Random.Range(0.2f, 1f));
+		this.color = generateAppropriateColor();
 		
 		this._vectorline = new VectorLine("Graph", _pointsArray, this.color, null, 1.0f, LineType.Continuous, Joins.Weld);
 		this._vectorline.layer = _panelInfos.layer;

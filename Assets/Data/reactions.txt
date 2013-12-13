@@ -1,19 +1,19 @@
 <Document>
   <reactions id="CelliaReactions">
-    <!--enzyme>
+    <enzyme>
       <name>ANTIAMPI</name>
       <substrate>AMPI</substrate>
       <enzyme>ANTIBIO</enzyme>
       <Kcat>1</Kcat>
       <effector>False</effector>
-      <alpha>0</alpha>
+      <alpha>1000</alpha>
       <beta>0</beta>
       <Km>0.000893</Km>
       <Ki>0.00</Ki>
       <Products>
 	<name>AMPI*</name>
       </Products>
-    </enzyme-->
+    </enzyme>
   </reactions>
   <reactions id="ToxicReactions">
     <promoter>

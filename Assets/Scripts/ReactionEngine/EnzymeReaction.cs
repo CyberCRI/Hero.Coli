@@ -178,12 +178,34 @@ public class EnzymeReaction : IReaction
         if (effector != null)
           effectorConcentration = effector.getConcentration();
       }
+    if (_alpha == 0)
+    {
+      _alpha = 0.0000000001f;
+      Logger.Log("_alpha == 0", Logger.Level.WARN);
+    }
     if (_Ki == 0)
+    {
       _Ki = 0.0000000001f;
+      Logger.Log("_Ki == 0", Logger.Level.WARN);
+    }
     if (_Km == 0)
+    {
       _Km = 0.0000000001f;
-    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)))
-      / (1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)));
+      Logger.Log("_Km == 0", Logger.Level.WARN);
+    }
+
+    float denominator = _alpha * _Km * _Ki;
+
+
+    float bigDenominator = 1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / denominator);
+    if(bigDenominator == 0)
+    {
+      Logger.Log("big denominator == 0", Logger.Level.WARN);
+      return 0;
+    }
+
+    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / denominator))
+      / bigDenominator;
     return v;
   }
 
@@ -206,13 +228,13 @@ public class EnzymeReaction : IReaction
     float energyCoef;
     float energyCostTot;    
     if (delta > 0f && _energyCost > 0f && enableEnergy)
-      {
-        energyCostTot = _energyCost * delta;
-        energyCoef = _medium.getEnergy() / energyCostTot;
-        if (energyCoef > 1f)
-          energyCoef = 1f;
-        _medium.subEnergy(energyCostTot);
-      }
+    {
+      energyCostTot = _energyCost * delta;
+      energyCoef = _medium.getEnergy() / energyCostTot;
+      if (energyCoef > 1f)
+        energyCoef = 1f;
+      _medium.subEnergy(energyCostTot);
+    }
     else
       energyCoef = 1f;
 
@@ -223,12 +245,12 @@ public class EnzymeReaction : IReaction
     else
       substrate.subNewConcentration(delta);
     foreach (Product pro in _products)
-      {
-        Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        if (enableSequential)
-          mol.addConcentration(delta);
-        else
-          mol.addNewConcentration(delta);
-      }
+    {
+      Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+      if (enableSequential)
+        mol.addConcentration(delta);
+      else
+        mol.addNewConcentration(delta);
+    }
   }
 }

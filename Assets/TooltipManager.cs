@@ -30,6 +30,8 @@ public class TooltipManager : MonoBehaviour {
 
   public Camera uiCamera;
   public UISprite tooltipSprite;
+  public float scale;
+
   private static IDictionary<BioBrick.Type, IDictionary<string, string>> BioBrickTextureNames = new Dictionary<BioBrick.Type, IDictionary<string, string>>()
   {
     {BioBrick.Type.PROMOTER, new Dictionary<string, string>(){
@@ -129,6 +131,8 @@ public class TooltipManager : MonoBehaviour {
     if(null == spriteName) return;
     _instance.tooltipSprite.spriteName = spriteName;
     _instance.tooltipSprite.gameObject.SetActive(true);
+    Rect rectout = _instance.tooltipSprite.GetAtlasSprite().outer;
+    _instance.tooltipSprite.gameObject.transform.localScale = new Vector3(_instance.scale*rectout.width, _instance.scale*rectout.height, 1f);
   }
 
   private static void setPosition(Vector3 pos)
