@@ -11,6 +11,18 @@ public class CellControl : MonoBehaviour{
   public float moveEnergyCost;
 
   public float currentMoveSpeed;
+
+  private bool _pause;
+
+  public void Pause(bool pause)
+  {
+    _pause = pause;
+  }
+
+  public bool isPaused()
+  {
+    return _pause;
+  }
 	
 	//Getter & setter for the move speed.
 	
@@ -25,7 +37,7 @@ public class CellControl : MonoBehaviour{
   
 	void Update(){
 		//Keyboard controls
-		if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0){
+		if(!_pause && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)){
 			//Rotation
 			float rotation = Mathf.Atan2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Mathf.Rad2Deg;
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);

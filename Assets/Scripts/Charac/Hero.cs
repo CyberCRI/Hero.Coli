@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour{
 
 	Medium _medium;
+	public Fade fadeSprite;
 	
 	/*
 	//Getter & setter for the move speed.
@@ -41,8 +42,19 @@ public class Hero : MonoBehaviour{
 
 	//Getter & setter for the energy.
 	private float _energy = 1f;
-  private float _maxEnergy = 1f;
+  private float _maxMediumEnergy = 1f;
   private float _lowEnergyThreshold = 0.05f;
+  private bool _pause;
+
+  public void Pause(bool pause)
+  {
+    _pause = pause;
+  }
+
+  public bool isPaused()
+  {
+    return _pause;
+  }
 
 	public float getEnergy() {
 		return _energy;
@@ -50,9 +62,12 @@ public class Hero : MonoBehaviour{
 	public void setEnergy(float energy) {
 		if (energy > 1f) {energy = 1f;}
 		if(energy < 0) 
-			energy = 0; 
-			_energy = energy;
+			energy = 0;
+    _medium.setEnergy(energy*_maxMediumEnergy);
+    _energy = energy;
 	}
+
+  //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
     _medium.subEnergy(energy);
   }
@@ -67,9 +82,6 @@ public class Hero : MonoBehaviour{
 			life = 1;
 		if (life < 0) {
 			life = 0;
-			//gameObject.SetActive(false);
-			Debug.Log("You died");
-			reSpawn();
 		}
 		_life = life;
 	}
@@ -81,29 +93,40 @@ public class Hero : MonoBehaviour{
 	void Start (){
 		//Click to move variable.
       	//	_destination = mover.position;
-      	gameObject.SetActive(true);
+    gameObject.SetActive(true);
 
-	    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-	    _medium = ReactionEngine.getMediumFromId(1, mediums);
-	    _maxEnergy = _medium.getMaxEnergy();
-    _energy = _medium.getEnergy()/_maxEnergy;
+    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+    _medium = ReactionEngine.getMediumFromId(1, mediums);
+    _maxMediumEnergy = _medium.getMaxEnergy();
+    _energy = _medium.getEnergy()/_maxMediumEnergy;
 
 		//FIXME light is undefined
       	//light.enabled = false;
 	}
   
 	void Update() {
-		setLife(getLife() + Time.deltaTime * _lifeRegen);
-    _energy = _medium.getEnergy()/_maxEnergy;
-    if(_energy < _lowEnergyThreshold)
+    if(!_pause)
     {
-      subLife(Time.deltaTime * _lowEnergyDmg);
+  		setLife(getLife() + Time.deltaTime * _lifeRegen);
+      _energy = _medium.getEnergy()/_maxMediumEnergy;
+      if(_energy < _lowEnergyThreshold)
+      {
+        subLife(Time.deltaTime * _lowEnergyDmg);
+      }
+      if (Input.GetKey(KeyCode.R))
+      {
+        setLife(1f);
+      }
+      if (Input.GetKey(KeyCode.F)) {
+        setEnergy(1f);
+      }
+  
+      if (_life <= 0)
+      {
+  		reSpawn();
+      }
+      //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
     }
-    if (Input.GetKey(KeyCode.A))
-    {
-      setLife(1f);
-    }
-    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
 	}
 
 	/*
@@ -212,47 +235,55 @@ public class Hero : MonoBehaviour{
  	}
 
 	public void reSpawn() {
-		if (_spawn01 == true) {
-			GameObject respawn01 = GameObject.Find("Checkpoint01");
-			gameObject.transform.position = respawn01.transform.position;
-			setLife(1f);
-			//gameObject.SetActive(true);
-		}
-		else if (_spawn02 == true) {
-			GameObject respawn02 = GameObject.Find("Checkpoint02");
-			gameObject.transform.position = respawn02.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn03 == true) {
-			GameObject respawn03 = GameObject.Find("Checkpoint03");
-			gameObject.transform.position = respawn03.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn04 == true) {
-			GameObject respawn04 = GameObject.Find("Checkpoint04");
-			gameObject.transform.position = respawn04.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn05 == true) {
-			GameObject respawn05 = GameObject.Find("Checkpoint05");
-			gameObject.transform.position = respawn05.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn06 == true) {
-			GameObject respawn06 = GameObject.Find("Checkpoint06");
-			gameObject.transform.position = respawn06.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn07 == true) {
-			GameObject respawn07 = GameObject.Find("Checkpoint07");
-			gameObject.transform.position = respawn07.transform.position;
-			setLife(1f);
-		}
-		else if (_spawn08 == true) {
-			GameObject respawn08 = GameObject.Find("Checkpoint08");
-			gameObject.transform.position = respawn08.transform.position;
-			setLife(1f);
-		}
+
+		//Doesn't work:
+		gameObject.GetComponent<PhenoToxic>().CancelPhenotype();
+		StartCoroutine(RespawnCoroutine());
+
 	}
+
+	IEnumerator RespawnCoroutine() {
+
+	    CellControl cc = GetComponent<CellControl>();
+	    cc.enabled = false;
+
+	    yield return new WaitForSeconds(2F);
+
+		    cc.enabled = true;
+		    setLife(1f);
+		    
+		    if (_spawn01 == true) {
+				GameObject respawn01 = GameObject.Find("Checkpoint01");
+				gameObject.transform.position = respawn01.transform.position;
+			}
+			else if (_spawn02 == true) {
+				GameObject respawn02 = GameObject.Find("Checkpoint02");
+				gameObject.transform.position = respawn02.transform.position;
+			}
+			else if (_spawn03 == true) {
+				GameObject respawn03 = GameObject.Find("Checkpoint03");
+				gameObject.transform.position = respawn03.transform.position;
+			}
+			else if (_spawn04 == true) {
+				GameObject respawn04 = GameObject.Find("Checkpoint04");
+				gameObject.transform.position = respawn04.transform.position;
+			}
+			else if (_spawn05 == true) {
+				GameObject respawn05 = GameObject.Find("Checkpoint05");
+				gameObject.transform.position = respawn05.transform.position;
+			}
+			else if (_spawn06 == true) {
+				GameObject respawn06 = GameObject.Find("Checkpoint06");
+				gameObject.transform.position = respawn06.transform.position;
+			}
+			else if (_spawn07 == true) {
+				GameObject respawn07 = GameObject.Find("Checkpoint07");
+				gameObject.transform.position = respawn07.transform.position;
+			}
+			else if (_spawn08 == true) {
+				GameObject respawn08 = GameObject.Find("Checkpoint08");
+				gameObject.transform.position = respawn08.transform.position;
+			}
+	}	
 
 }

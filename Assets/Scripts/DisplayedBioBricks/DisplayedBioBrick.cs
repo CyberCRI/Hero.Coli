@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class DisplayedBioBrick : DisplayedElement {
 
-  public static string                              prefabURI               = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
   public static UnityEngine.Object                  prefab                  = null;
   //public static string                              assemblyZonePanelName   = "AssemblyZonePanel";
 
@@ -21,6 +20,8 @@ public class DisplayedBioBrick : DisplayedElement {
   public BioBrick                   _biobrick;
   public LastHoveredInfoManager     _lastHoveredInfoManager;
 
+  protected static string _prefabURI = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
+
 
  public static DisplayedBioBrick Create(
    Transform parentTransform
@@ -33,7 +34,7 @@ public class DisplayedBioBrick : DisplayedElement {
     string usedSpriteName = ((spriteName!=null)&&(spriteName!=""))?spriteName:getSpriteName(biobrick);
     string nullSpriteName = ((spriteName!=null)&&(spriteName!=""))?"":"(null)=>"+usedSpriteName;
 
-    if(prefab == null) prefab = Resources.Load(prefabURI);
+    Object prefab = Resources.Load(_prefabURI);
     Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
 
     Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform

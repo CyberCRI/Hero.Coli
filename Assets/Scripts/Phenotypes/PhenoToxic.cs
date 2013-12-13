@@ -39,6 +39,15 @@ public class PhenoToxic : Phenotype {
 		float intensity = K0*(Mathf.Exp(_mol.getConcentration()/cc0)-1);
 		hero.subLife(intensity);
   }
+
+
+
+  public void CancelPhenotype() {
+    _mol.setConcentration(0f);
+  }
+
+
+  
 	
   //DEBUG
   /*

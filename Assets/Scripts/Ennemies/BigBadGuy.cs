@@ -5,6 +5,7 @@ public class BigBadGuy : MonoBehaviour {
 	
 	public int life = 50;
 	public float shrinkSpeed = 3;
+	public Hero hero;
 	
 	private float step;
 	
@@ -25,4 +26,12 @@ public class BigBadGuy : MonoBehaviour {
 				
 		}
 	}
+
+	void OnCollisionEnter(Collision col) {
+		if (col.collider){
+			Hero hero = col.gameObject.GetComponent<Hero>();
+			hero.subLife(0.5f);
+		}
+	}
+	
 }

@@ -51,7 +51,9 @@ public class GUITransitioner : MonoBehaviour {
 	private DevicesDisplayer _devicesDisplayer;
 	public VectrosityPanel _celliaGraph;
 	public VectrosityPanel _roomGraph;
-	
+
+  public Hero hero;
+  public CellControl control;
 	
 	// Use this for initialization
 	void Start () {
@@ -114,8 +116,10 @@ public class GUITransitioner : MonoBehaviour {
 	    Time.timeScale = 0;
     }
 		
-	_celliaGraph.setPause(pause);
-	_roomGraph.setPause(pause);
+    _celliaGraph.setPause(pause);
+    _roomGraph.setPause(pause);
+    hero.Pause(pause);
+    control.Pause(pause);
   }
 
   public void GoToScreen(GameScreen destination) {
