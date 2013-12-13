@@ -11,13 +11,26 @@ public class PhenoSpeed : Phenotype
   public float lowCC;
   public float medCC;
 
-	public float addFlagellumThresholdPerc;
-	public float removeFlagellumThresholdPerc;
+  /*
+  public float add2ndFlagellumThresholdPerc;
+  public float rem2ndFlagellumThresholdPerc;
+  public float add3rdFlagellumThresholdPerc;
+  public float rem3rdFlagellumThresholdPerc;
+  */
+
+  public float add2ndFlagellumThreshold;
+  public float rem2ndFlagellumThreshold;
+  public float add3rdFlagellumThreshold;
+  public float rem3rdFlagellumThreshold;
+
+
   //public float threshold = 50f;
   //public float steepness = 1f;
-	public GameObject additionalFlagellum;
+	public GameObject centralFlagellum;
+  public GameObject leftFlagellum;
+  public GameObject rightFlagellum;
 	
-	private bool additionalFlagellumOn = false;
+	private int flagellaCount = 1;
 	private Molecule _mol = null;
 
   private float _steepness1;
@@ -27,6 +40,7 @@ public class PhenoSpeed : Phenotype
 	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
+    set1Flagella();
 		_mol = ReactionEngine.getMoleculeFromName ("MOV", _molecules);
 	}
 
@@ -45,6 +59,58 @@ public class PhenoSpeed : Phenotype
   public void setBaseSpeed(float speed)
   {
     _baseSpeed = speed;
+  }
+
+  private void updateFlagellaCount(float speed)
+  {
+    switch(flagellaCount)
+    {
+      case 1:
+        if(speed > add2ndFlagellumThreshold)
+          //if(speed > add2ndFlagellumThresholdPerc*lowSpeed)
+          set2Flagella();
+        break;
+      case 2:
+        if(speed > add3rdFlagellumThreshold)
+          //if(speed > add3rdFlagellumThresholdPerc*medSpeed)
+          set3Flagella();
+        else if(speed < rem2ndFlagellumThreshold)
+          //else if(speed < rem2ndFlagellumThresholdPerc*lowSpeed)
+          set1Flagella();
+        break;
+      case 3:
+        if(speed < rem3rdFlagellumThreshold)
+          //if(speed < rem3rdFlagellumThresholdPerc*medSpeed)
+          set2Flagella();
+        break;
+      default:
+        Logger.Log("PhenoSpeed::updateFlagellaCount bad flagellaCount="+flagellaCount, Logger.Level.WARN);
+        break;
+    }
+  }
+
+  private void set1Flagella()
+  {
+    flagellaCount = 1;
+    leftFlagellum.SetActive(false);
+    centralFlagellum.SetActive(true);
+    rightFlagellum.SetActive(false);
+  }
+
+  private void set2Flagella()
+  {
+    flagellaCount = 2;
+    leftFlagellum.SetActive(true);
+    centralFlagellum.SetActive(false);
+    rightFlagellum.SetActive(true);
+  }
+
+  private void set3Flagella()
+  {
+    flagellaCount = 3;
+    leftFlagellum.SetActive(true);
+    centralFlagellum.SetActive(true);
+    rightFlagellum.SetActive(true);
   }
 
 	/*!
@@ -75,39 +141,12 @@ public class PhenoSpeed : Phenotype
 		gameObject.GetComponent<CellControl>().currentMoveSpeed = intensity;
 
     Logger.Log("PhenoSpeed intensity="+intensity
-      +"\n_base="+_baseSpeed
-      +"\n_steepness1="+_steepness1
-      +"\n_steepness2="+_steepness2
+      //+"\n_base="+_baseSpeed
+      //+"\n_steepness1="+_steepness1
+      //+"\n_steepness2="+_steepness2
       , Logger.Level.ONSCREEN);
 
 		
-		if (!additionalFlagellumOn && (intensity > addFlagellumThresholdPerc*medSpeed))
-		{
-			AddFlagellum();
-		} else if (additionalFlagellumOn && (intensity < removeFlagellumThresholdPerc*medSpeed))
-		{
-			RemoveFlagellum();
-		}
-	}
-	
-	private void AddFlagellum()
-	{
-		Logger.Log("PhenoSpeed::AddFlagellum add flagellum", Logger.Level.INFO);
-		if (additionalFlagellum != null)
-		{
-			additionalFlagellum.SetActive(true);
-		}
-		
-		additionalFlagellumOn = true;
-	}
-	
-	private void RemoveFlagellum()
-	{
-		Logger.Log("PhenoSpeed::RemoveFlagellum", Logger.Level.INFO);
-		if(additionalFlagellum != null)
-		{
-			additionalFlagellum.SetActive(false);
-		}
-		additionalFlagellumOn = false;
+		updateFlagellaCount(intensity);
 	}
 }
