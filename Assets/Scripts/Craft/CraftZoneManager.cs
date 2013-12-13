@@ -155,14 +155,29 @@ public class CraftZoneManager : MonoBehaviour {
 
   public void replaceWithBioBrick(BioBrick brick) {
     Logger.Log("CraftZoneManager::replaceWithBioBrick("+brick+")", Logger.Level.TRACE);
-    BioBrick toReplace = findFirstBioBrick(brick.getType());
-    LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(toReplace);
-    if(null != toReplaceNode)
-    {
-      _currentBioBricks.Remove(toReplace);
-    }
-    _currentBioBricks.AddLast(brick);
+    insertOrdered(brick);
     OnBioBricksChanged();
+  }
+
+  private void insertOrdered(BioBrick toInsert)
+  {
+    foreach(BioBrick brick in _currentBioBricks)
+    {
+      if(brick.getType() > toInsert.getType())
+      {
+        LinkedListNode<BioBrick> afterNode = _currentBioBricks.Find(brick);
+        _currentBioBricks.AddBefore(afterNode, toInsert);
+        return;
+      }
+      else if(brick.getType() == toInsert.getType())
+      {
+        LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
+        _currentBioBricks.AddAfter(toReplaceNode, toInsert);
+        _currentBioBricks.Remove(brick);
+        return;
+      }
+    }
+    _currentBioBricks.AddLast(toInsert);
   }
 
   public void removeBioBrick(BioBrick brick) {
