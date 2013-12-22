@@ -144,9 +144,12 @@ public class ReactionEngine : MonoBehaviour {
   */
   public static Molecule        getMoleculeFromName(string name, ArrayList molecules)
   {
-    foreach (Molecule mol in molecules)
-      if (mol.getName() == name)
-        return mol;
+    if(null != molecules)
+    {
+      foreach (Molecule mol in molecules)
+        if (mol.getName() == name)
+          return mol;
+    }
     return null;
   }
 

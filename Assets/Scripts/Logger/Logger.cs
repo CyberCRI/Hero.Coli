@@ -12,7 +12,8 @@ using System.Collections.Generic;
  */
 public class Logger : MonoBehaviour {
   private static Logger _singleton = null;
-  public bool interactiveDebug = true;
+  //TODO fix interactive mode by making this field static
+  //public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
   public int logLevelIdx;
 
@@ -41,28 +42,32 @@ public class Logger : MonoBehaviour {
     ERROR         // 8 only for crashes or events threatening the program flow
   }
   private static Level _level = Level.INFO; // initialized in Awake()
+
+  /*
   private static Level _previousLevel;
 	
   private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;	
   private float _deltaTimeThreshold = 0.2f;
+  */
 	
   private List<string> _messages = new List<string>();
 	
   public static bool isLevel(Level level) {
-	return level == _level;
+    return level == _level;
   }	
-	
+
   public static bool isInteractive() {
-    return (_singleton != null) && _singleton.interactiveDebug;
-  }	
+    //return (_singleton != null) && _singleton.interactiveDebug;
+    return false;
+  }
 
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-	if(level == Level.ONSCREEN) {
-	  pushMessage(debugMsg);
-	} else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+    if(level == Level.ONSCREEN) {
+      pushMessage(debugMsg);
+    } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
       string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
       if (level == Level.WARN || level == Level.TEMP) {
         Debug.LogWarning(timedMsg);
@@ -112,40 +117,40 @@ public class Logger : MonoBehaviour {
   }
 	
   private static void pushMessage(string msg) {
-	_singleton._messages.Add(msg);
+    _singleton._messages.Add(msg);
   }
 	
   public static List<string> popAllMessages() {
-	List<string> copy = new List<string>(_singleton._messages);
-	_singleton._messages.Clear();
-	return copy;
+    List<string> copy = new List<string>(_singleton._messages);
+    _singleton._messages.Clear();
+    return copy;
   }
 	
   public void Awake() {
-	if(_singleton == null) {
-	  _singleton = this;
-	  switch(logLevelIdx) {
-		case 0: _level = Level.ALL;
-			break;
-		case 1: _level = Level.ONSCREEN;
-			break;
-		case 2: _level = Level.INTERACTIVE;
-			break;
-		case 3: _level = Level.TRACE;
-			break;
-		case 4: _level = Level.DEBUG;
-			break;
-		case 5: _level = Level.INFO;
-			break;
-    case 6: _level = Level.TEMP;
-      break;
-    case 7: _level = Level.WARN;
-      break;
-		case 8: _level = Level.ERROR;
-			break;
-	  }
-	  _previousLevel = _level;
-	}
+  	if(_singleton == null) {
+  	  _singleton = this;
+  	  switch(logLevelIdx) {
+  		case 0: _level = Level.ALL;
+  			break;
+  		case 1: _level = Level.ONSCREEN;
+  			break;
+  		case 2: _level = Level.INTERACTIVE;
+  			break;
+  		case 3: _level = Level.TRACE;
+  			break;
+  		case 4: _level = Level.DEBUG;
+  			break;
+  		case 5: _level = Level.INFO;
+  			break;
+      case 6: _level = Level.TEMP;
+        break;
+      case 7: _level = Level.WARN;
+        break;
+  		case 8: _level = Level.ERROR;
+  			break;
+  	  }
+  	  //_previousLevel = _level;
+  	}
   }
 
   /*

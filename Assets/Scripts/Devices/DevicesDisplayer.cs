@@ -177,17 +177,18 @@ public class DevicesDisplayer : MonoBehaviour {
 
 
 	public bool IsScreen(int screen) {
+    SafeGetTransitioner();
 		return (((transitioner._currentScreen == GUITransitioner.GameScreen.screen1) && (screen == 1))
 			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen2) && (screen == 2))
 			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen3) && (screen == 3)));
 	}
 	
 	public bool IsEquipScreen() {
-		return (transitioner._currentScreen == GUITransitioner.GameScreen.screen2);
+		return (SafeGetTransitioner()._currentScreen == GUITransitioner.GameScreen.screen2);
 	}
 	
 	public void UpdateScreen(){
-		Logger.Log("DevicesDisplayer::UpdateScreen " + transitioner._currentScreen, Logger.Level.TRACE);
+		Logger.Log("DevicesDisplayer::UpdateScreen " + SafeGetTransitioner()._currentScreen, Logger.Level.TRACE);
 		if(IsScreen(1)) {
 			inventoryPanel.gameObject.SetActive(false);
       listedInventoryPanel.gameObject.SetActive(false);
@@ -305,11 +306,20 @@ public class DevicesDisplayer : MonoBehaviour {
      }
    }
   }
-  
+
+  private GUITransitioner SafeGetTransitioner()
+  {
+    if(null == transitioner)
+    {
+      transitioner = GUITransitioner.get();
+    }
+    return transitioner;
+  }
+
   void Start () {
 	  Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
 
-    transitioner = GUITransitioner.get();
+    SafeGetTransitioner();
 	  inventoryPanel.gameObject.SetActive(false);
 
     if(equipedDevice == null) {
