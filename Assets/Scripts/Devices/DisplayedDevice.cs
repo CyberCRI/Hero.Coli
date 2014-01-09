@@ -12,7 +12,16 @@ public class DisplayedDevice : DisplayedElement {
   private static string baseDeviceTextureString = "device_";
   private static string quality256 = "256x256_";
   private static string quality80 = "80x80_";
-  private static string qualityDefault = "";
+  private static string quality64 = "64x64_";
+  private static string qualityDefault = "64x64_";
+  private const float levelLow = .126f;
+  private const float levelMed = .23f;
+  private const float levelLThreshold = levelLow * 0.75f;
+  private const float levelLMThreshold = ( levelLow + levelMed ) / 2;
+  private const float levelMThreshold = levelMed * 1.25f;
+  private static string levelDefaultPostfix = "";
+  private static string levelLowPostfix = "_low";
+  private static string levelMedPostfix = "_med";
   private static string defaultTexture = "default";
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
@@ -25,6 +34,7 @@ public class DisplayedDevice : DisplayedElement {
     //{"REPR2", ?},
   };
 
+
   private static string getTextureName(string proteinName)
   {
     string texture = null;
@@ -33,6 +43,28 @@ public class DisplayedDevice : DisplayedElement {
       texture = defaultTexture;
     }
     return texture;
+  }
+
+  private static string getLevelPostfix(Device device)
+  {
+    float expressionLevel = device.getExpressionLevel();
+
+    if(expressionLevel < levelLThreshold)
+    {
+      return levelDefaultPostfix;
+    }
+    else if (expressionLevel < levelLMThreshold)
+    {
+      return levelLowPostfix;
+    }
+    else if (expressionLevel < levelMThreshold)
+    {
+      return levelMedPostfix;
+    }
+    else
+    {
+      return levelDefaultPostfix;
+    }
   }
 
   public Device                       _device;
@@ -91,7 +123,10 @@ public class DisplayedDevice : DisplayedElement {
   public static string getTextureName(Device device)
   {
     string usedSpriteName = baseDeviceTextureString;
-    switch (DevicesDisplayer.getTextureQuality())
+
+    DevicesDisplayer.TextureQuality quality = DevicesDisplayer.getTextureQuality();
+
+    switch (quality)
     {
       case DevicesDisplayer.TextureQuality.HIGH:
         usedSpriteName += quality256;
@@ -99,10 +134,14 @@ public class DisplayedDevice : DisplayedElement {
       case DevicesDisplayer.TextureQuality.NORMAL:
         usedSpriteName += quality80;
         break;
+      case DevicesDisplayer.TextureQuality.LOW:
+        usedSpriteName += quality64;
+        break;
       default:
         usedSpriteName += qualityDefault;
         break;
     }
+
     if(null == device)
     {
       usedSpriteName += getTextureName("");
@@ -111,6 +150,10 @@ public class DisplayedDevice : DisplayedElement {
     {
       usedSpriteName += getTextureName(device.getFirstGeneProteinName());
     }
+
+    if(quality == DevicesDisplayer.TextureQuality.LOW)
+      usedSpriteName += getLevelPostfix(device);
+
     Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
     return usedSpriteName;
   }

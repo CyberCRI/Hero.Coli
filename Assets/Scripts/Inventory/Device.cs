@@ -59,6 +59,21 @@ public class Device: DNABit
     return null;
   }
 
+  public float getExpressionLevel()
+  {
+    foreach (ExpressionModule module in _modules)
+    {
+      foreach (BioBrick brick in module.getBioBricks())
+      {
+        if(brick.getType() == BioBrick.Type.RBS)
+        {
+          return ((RBSBrick)brick).getRBSFactor();
+        }
+      }
+    }
+    return 0f;
+  }
+
   public override string ToString ()
   {		
 		return string.Format ("[Device: id : {0}, name: {1}, [ExpressionModules: {2}]", _id, _name, Logger.ToString(_modules));

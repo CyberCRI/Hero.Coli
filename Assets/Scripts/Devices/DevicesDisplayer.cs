@@ -26,10 +26,11 @@ public class DevicesDisplayer : MonoBehaviour {
   public enum TextureQuality {
     HIGH,
     NORMAL,
-	DEFAULT
+    LOW,
+    DEFAULT
   }
 
-  private static TextureQuality textureQuality = TextureQuality.DEFAULT;
+  private static TextureQuality textureQuality = TextureQuality.LOW;
 
   public static TextureQuality getTextureQuality()
   {
