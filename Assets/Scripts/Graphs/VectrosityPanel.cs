@@ -31,18 +31,18 @@ public class VectrosityPanel : MonoBehaviour {
   public void setPause(bool paused) {
 	  _paused = paused;
   }
-	
-  // Use this for initialization
-  void Start () {
-  	infos = new PanelInfos();
-  	refreshInfos();
-  	
-  	VectorLine.SetCamera3D(GUICam);
-  	
-  	_lines = new List<Line>();
-  
-    _reactionEngine = ReactionEngine.get();
-  
+
+  public int getMediumId()
+  {
+    return _mediumId;
+  }
+
+  public void setMedium(int mediumId)
+  {
+    _mediumId = mediumId;
+
+    _lines = new List<Line>();
+
     LinkedList<Medium> mediums = _reactionEngine.getMediumList();
     if (mediums == null)
       return ;
@@ -61,7 +61,19 @@ public class VectrosityPanel : MonoBehaviour {
     foreach (Molecule m in _molecules)
       _lines.Add(new Line(width, height, infos, m.getName()));
   
-  	drawLines(true);
+    drawLines(true);
+  }
+	
+  // Use this for initialization
+  void Start () {
+  	infos = new PanelInfos();
+  	refreshInfos();
+  	
+  	VectorLine.SetCamera3D(GUICam);
+  
+    _reactionEngine = ReactionEngine.get();
+
+    setMedium(_mediumId);
   }
 	
   // Update is called once per frame
