@@ -47,24 +47,33 @@ public class DisplayedDevice : DisplayedElement {
 
   private static string getLevelPostfix(Device device)
   {
-    float expressionLevel = device.getExpressionLevel();
-
-    if(expressionLevel < levelLThreshold)
+    string postfix;
+    if(device == null)
     {
-      return levelDefaultPostfix;
-    }
-    else if (expressionLevel < levelLMThreshold)
-    {
-      return levelLowPostfix;
-    }
-    else if (expressionLevel < levelMThreshold)
-    {
-      return levelMedPostfix;
+      postfix = levelDefaultPostfix;
     }
     else
     {
-      return levelDefaultPostfix;
+      float expressionLevel = device.getExpressionLevel();
+  
+      if(expressionLevel < levelLThreshold)
+      {
+        postfix = levelDefaultPostfix;
+      }
+      else if (expressionLevel < levelLMThreshold)
+      {
+        postfix = levelLowPostfix;
+      }
+      else if (expressionLevel < levelMThreshold)
+      {
+        postfix = levelMedPostfix;
+      }
+      else
+      {
+        postfix = levelDefaultPostfix;
+      }
     }
+    return postfix;
   }
 
   public Device                       _device;
