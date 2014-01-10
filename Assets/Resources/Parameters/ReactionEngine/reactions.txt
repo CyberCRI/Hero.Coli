@@ -1,0 +1,32 @@
+<Document>
+  <reactions id="CelliaReactions">
+    <enzyme>
+      <name>ANTIAMPI</name>
+      <substrate>AMPI</substrate>
+      <enzyme>ANTIBIO</enzyme>
+      <Kcat>1</Kcat>
+      <effector>False</effector>
+      <alpha>1000</alpha>
+      <beta>0</beta>
+      <Km>0.000893</Km>
+      <Ki>0.00</Ki>
+      <Products>
+	<name>AMPI*</name>
+      </Products>
+    </enzyme>
+  </reactions>
+  <reactions id="ToxicReactions">
+    <promoter>
+      <name>AMPIPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+	<gene>
+	  <name>AMPI</name>
+	  <RBSFactor>1</RBSFactor>
+	</gene>
+      </operon>
+    </promoter>    
+  </reactions>
+</Document>
