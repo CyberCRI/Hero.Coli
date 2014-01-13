@@ -62,7 +62,6 @@ public class PhenoFickContact : Phenotype {
     reaction.setSurface(surface);
 
     // set medium as medium of collider
-    _vectroPanelInitMediumId = vectroPanel.getMediumId();
     vectroPanel.setMedium(colliderMediumIdExt);
   }
 

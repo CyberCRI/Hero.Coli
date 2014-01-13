@@ -82,9 +82,16 @@ public class VectrosityPanel : MonoBehaviour {
     _molecules = medium.getMolecules();
     if (_molecules == null)
       return ;
-  
+
+    Line line;
     foreach (Molecule m in _molecules)
-      _lines.Add(new Line(width, height, infos, m.getName()));
+    {
+      line = _lines.Find(l => l.name == m.getName());
+      if(null == line)
+      {
+        _lines.Add(new Line(width, height, infos, m.getName()));
+      }
+    }
   
     drawLines(true);
   }
@@ -130,15 +137,17 @@ public class VectrosityPanel : MonoBehaviour {
   void drawLines(bool resize) {
     if (_molecules == null)
       return ;
-    foreach(Line line in _lines){
+    foreach(Line line in _lines)
+    {
       Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
-      if(resize) line.resize();
-	  if(!_paused) {
+      if(resize)
+        line.resize();
+      if(!_paused) {
         if (m != null)
           line.addPoint(m.getConcentration());
         else
-          line.addPoint();
-	  }
+          line.addPoint(0f);
+      }
       line.redraw();
     }
   }
