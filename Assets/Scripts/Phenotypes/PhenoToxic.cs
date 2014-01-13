@@ -16,7 +16,7 @@ public class PhenoToxic : Phenotype {
   //! Called at the beginning
   public override void StartPhenotype()
   {
-	_mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
+    _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
   }
 
   /*!
@@ -32,17 +32,22 @@ public class PhenoToxic : Phenotype {
 		{
 		  _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
 		  if (_mol == null)
-			return ;
+      {
+        Logger.Log("_mol == null", Logger.Level.ONSCREEN);
+        return ;
+      }
 		}
     float K0 = 0.01f;
     float cc0 = 170f;
 		float intensity = K0*(Mathf.Exp(_mol.getConcentration()/cc0)-1);
 		hero.subLife(intensity);
+    Logger.Log("toxic life -= "+intensity, Logger.Level.ONSCREEN);
   }
 
 
 
   public void CancelPhenotype() {
+    Logger.Log("PhenoToxic::CancelPhenotype", Logger.Level.WARN);
     _mol.setConcentration(0f);
   }
 
