@@ -22,6 +22,7 @@ public class VectrosityPanel : MonoBehaviour {
   private float height = 800;
 
   private ReactionEngine _reactionEngine;
+  private LinkedList<Medium> _mediums;
   public int _mediumId;
 	
   private List<Line> _lines = new List<Line>(); 
@@ -37,17 +38,41 @@ public class VectrosityPanel : MonoBehaviour {
     return _mediumId;
   }
 
+  private bool safeLazyInit()
+  {
+    if(null==_reactionEngine)
+      _reactionEngine = ReactionEngine.get();
+
+    if(_reactionEngine != null)
+    {
+      if(null==_mediums)
+      {
+        _mediums = _reactionEngine.getMediumList();
+      }
+      if(null==_mediums)
+      {
+        Logger.Log ("VectrosityPanel::safeLazyInit failed to get mediums", Logger.Level.WARN);
+        return false;
+      }
+    }
+    else
+    {
+      Logger.Log ("VectrosityPanel::safeLazyInit failed to get ReactionEngine", Logger.Level.WARN);
+      return false;
+    }
+
+    return true;
+  }
+
   public void setMedium(int mediumId)
   {
+
+    if(!safeLazyInit())
+      return;
+
     _mediumId = mediumId;
 
-    _lines = new List<Line>();
-
-    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-    if (mediums == null)
-      return ;
-  
-    Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
+    Medium medium = ReactionEngine.getMediumFromId(_mediumId, _mediums);
     if (medium == null)
     {
       Debug.Log("Can't find the given medium (" + _mediumId + ")");
@@ -71,7 +96,9 @@ public class VectrosityPanel : MonoBehaviour {
   	
   	VectorLine.SetCamera3D(GUICam);
   
-    _reactionEngine = ReactionEngine.get();
+    safeLazyInit();
+
+    _lines = new List<Line>();
 
     setMedium(_mediumId);
   }
