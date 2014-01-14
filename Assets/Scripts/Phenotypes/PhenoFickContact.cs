@@ -22,8 +22,15 @@ public class PhenoFickContact : Phenotype {
   }
 
   public VectrosityPanel vectroPanel;
+  public MoleculeDebug moleculeDebug;
   private int _vectroPanelInitMediumId = 2;
   private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
+
+  private void configureExternalDisplays(int mediumId)
+  {
+    vectroPanel.setMedium(mediumId);
+    moleculeDebug.setMediumId(mediumId);
+  }
 
   void OnTriggerEnter(Collider collider)
   {
@@ -62,17 +69,19 @@ public class PhenoFickContact : Phenotype {
       Logger.Log("PhenoFickContact::OnTriggerEnter This FickReaction does not exist.", Logger.Level.WARN);
       return;
     }
-    Logger.Log("PhenoFickContact::OnTriggerEnter reaction.setSurface("+surface+");", Logger.Level.TEMP);
     reaction.setSurface(surface);
 
     // set medium as medium of collider
-    vectroPanel.setMedium(colliderMediumIdExt);
+    configureExternalDisplays(colliderMediumIdExt);
     _collidedMediumIds.AddLast(colliderMediumIdExt);
+
+    /*
     Logger.Log("PhenoFickContact::OnTriggerEnter"
       +" reaction.setSurface("+surface+")"
       +" _collidedMediumIds.Count="+_collidedMediumIds.Count
       +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
-      ,Logger.Level.TEMP);
+      ,Logger.Level.);
+    */
   }
 
   public void OnTriggerExit(Collider collider)
@@ -108,24 +117,26 @@ public class PhenoFickContact : Phenotype {
 
     // un-set medium as medium of collider
     _collidedMediumIds.Remove(colliderMediumIdExt);
-    string nullLast = (null != _collidedMediumIds.Last)?_collidedMediumIds.Last.Value.ToString():"null";
+
+    //string nullLast = (null != _collidedMediumIds.Last)?_collidedMediumIds.Last.Value.ToString():"null";
+    /*
     Logger.Log("PhenoFickContact::OnTriggerExit"
       +" _collidedMediumIds.Count="+_collidedMediumIds.Count
       +" _collidedMediumIds.Last.Value="+nullLast
-      ,Logger.Level.TEMP);
-
-    //Logger.Log("PhenoFickContact::OnTriggerExit _collidedMediumIds.Last.Value="+nullLast, Logger.Level.TEMP);
+      ,Logger.Level.);
+    */
+    //Logger.Log("PhenoFickContact::OnTriggerExit _collidedMediumIds.Last.Value="+nullLast, Logger.Level.);
 
     if(null != _collidedMediumIds.Last)
     {
       // TODO consider the current medium as superposition of mediums the ids of which are _collidedMediumIds
-      vectroPanel.setMedium(_collidedMediumIds.Last.Value);
+      configureExternalDisplays(_collidedMediumIds.Last.Value);
       Logger.Log("PhenoFickContact::OnTriggerExit setting medium to previous value "+vectroPanel._mediumId, Logger.Level.WARN);
     }
     else
     {
       //not in any Fick contact anymore
-      vectroPanel.setMedium(_vectroPanelInitMediumId);
+      configureExternalDisplays(_vectroPanelInitMediumId);
     
       Fick fick = _reactionEngine.getFick();
       FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());

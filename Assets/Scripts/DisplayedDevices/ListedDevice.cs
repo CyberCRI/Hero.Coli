@@ -25,6 +25,5 @@ class ListedDevice : DisplayedDevice {
   protected override void OnHover(bool isOver)
   {
     base.OnHover(isOver);
-    Logger.Log("ListedDevice::OnHover", Logger.Level.TEMP);
   }
 }

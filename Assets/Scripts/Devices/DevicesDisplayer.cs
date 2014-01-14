@@ -124,7 +124,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
       /*
       if(_listedInventoriedDevices.Count == 1) {
-        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TEMP);
+        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.);
         CraftZoneManager.get().askSetDevice(device);
       }
       */

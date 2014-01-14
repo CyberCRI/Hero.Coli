@@ -9,6 +9,11 @@ public class MoleculeDebug : MonoBehaviour {
 	public UILabel           label;
 	public bool              displayAll;
 
+  public void setMediumId(int newMediumId)
+  {
+    mediumId = newMediumId;
+  }
+
   void Start () {
     _reactionEngine = ReactionEngine.get();
   }

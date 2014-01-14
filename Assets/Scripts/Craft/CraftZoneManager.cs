@@ -252,7 +252,6 @@ public class CraftZoneManager : MonoBehaviour {
 
   void OnEnable()
   {
-    Logger.Log("CraftZoneManager::OnEnable", Logger.Level.TEMP);
     displayDevice();
   }
 }
