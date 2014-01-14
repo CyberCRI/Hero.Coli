@@ -139,10 +139,7 @@ public class MediumLoader
     LinkedList<Medium> mediums = new LinkedList<Medium>();
     Medium medium;
 
-
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
     XmlNodeList mediumsLists = xmlDoc.GetElementsByTagName("Mediums");
     foreach (XmlNode mediumNodes in mediumsLists)

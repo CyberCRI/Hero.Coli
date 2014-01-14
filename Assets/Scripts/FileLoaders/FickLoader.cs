@@ -60,9 +60,7 @@ public class FickLoader
     LinkedList<FickProprieties> ficksProps = new LinkedList<FickProprieties>();
     FickProprieties prop;
 
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
     XmlNodeList ficksLists = xmlDoc.GetElementsByTagName("ficks");
     foreach (XmlNode ficksNodes in ficksLists)

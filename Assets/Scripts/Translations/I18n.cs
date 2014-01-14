@@ -7,7 +7,11 @@ public class I18n : MonoBehaviour {
   private static string txtformat = ".txt";
   private static string english = "_en";
   private static string french = "_fr";
+
+  // TODO move to Resources folder
+  // cf http://answers.unity3d.com/questions/417397/build-settings-how-to-export-files-into-the-build.html
   private static string translationsFolder = "Assets/Data/Translations/";
+
   private static string main = "translations";
   private static string mainEnglish = translationsFolder+main+english+txtformat;
   private static string mainFrench = translationsFolder+main+french+txtformat;
@@ -26,6 +30,7 @@ public class I18n : MonoBehaviour {
 
   //load translations
   void Start() {
+    /*
     _translationFiles = new Dictionary<string, Language>();
     _translationFiles.Add(mainEnglish, Language.ENGLISH);
     _translationFiles.Add(mainFrench, Language.FRENCH);
@@ -45,6 +50,7 @@ public class I18n : MonoBehaviour {
       Logger.Log("I18n::loadFromFile file "+file.Key+" for language "+file.Value+" contains "
         +Logger.ToString<string, string>(_dicos[file.Value]), Logger.Level.DEBUG);
     }
+    */
   }
 
   public string translate(string code, Language lang = Language.ENGLISH)

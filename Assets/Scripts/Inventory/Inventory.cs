@@ -26,7 +26,7 @@ public class Inventory : DeviceContainer
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
 	
-  public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
+  //public string SaveFilePath;
 
   private string _genericDeviceNamePrefix = "device";
 

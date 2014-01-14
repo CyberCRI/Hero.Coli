@@ -131,14 +131,13 @@ public class FileLoader
    */
   public LinkedList<ReactionsSet> loadReactionsFromFile(string filePath)
   {
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
     bool b = true;
     ReactionsSet reactionSet;
     string setId;
     LinkedList<ReactionsSet> reactionSets = new LinkedList<ReactionsSet>();
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+
     XmlNodeList reactionsLists = xmlDoc.GetElementsByTagName("reactions");
     foreach (XmlNode reactionsNode in reactionsLists)
       {
@@ -169,14 +168,13 @@ public class FileLoader
    */
   public LinkedList<MoleculesSet> loadMoleculesFromFile(string filePath)
   {
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
     bool b = true;
     MoleculesSet moleculeSet;
     string setId;
     LinkedList<MoleculesSet> moleculesSets = new LinkedList<MoleculesSet>();
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+
     XmlNodeList moleculesLists = xmlDoc.GetElementsByTagName("molecules");
     foreach (XmlNode moleculesNode in moleculesLists)
       {

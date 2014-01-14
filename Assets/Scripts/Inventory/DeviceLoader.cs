@@ -32,12 +32,10 @@ public class DeviceLoader {
   {
     Logger.Log("DeviceLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
 
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-
     LinkedList<Device> resultDevices = new LinkedList<Device>();
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+    
     XmlNodeList deviceList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.DEVICE);
 
     reinitVars();

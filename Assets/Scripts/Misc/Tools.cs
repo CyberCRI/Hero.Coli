@@ -1,9 +1,11 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Xml;
+using UnityEngine;
 
 /*!
-  \brief This class contains some usefull functions
+  \brief This class contains some useful functions
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
@@ -24,7 +26,7 @@ class Tools
   /*!
     \brief Get content of a file and encode it in UTF-8
     \param path The path of the file
-   */
+   * /
   static public MemoryStream getEncodedFileContent(string path)
   {
     StreamReader fileStream = new StreamReader(@path);
@@ -36,5 +38,22 @@ class Tools
     ms.Position = 0;
 
     return ms;
+  }
+  //*/
+
+
+  /*!
+    \brief Get content of a file in a Unity-export-compatible way
+    \param filePath The path of the file
+   */
+  static public XmlDocument getXmlDocument(string filePath)
+  {
+    Logger.Log ("Tools::getXmlDocument("+filePath+")", Logger.Level.TEMP);
+    TextAsset temp = Resources.Load(filePath) as TextAsset;
+    string tempStr = (temp==null)?"(null)":temp.ToString();
+    Logger.Log ("Tools::getXmlDocument "+tempStr, Logger.Level.TEMP);
+    XmlDocument xmlDoc = new XmlDocument();
+    xmlDoc.LoadXml(temp.text);
+    return xmlDoc;
   }
 }

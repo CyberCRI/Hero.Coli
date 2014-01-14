@@ -47,9 +47,7 @@ public class ActiveTransportLoader
     LinkedList<ActiveTransportProprieties>      propsList = new LinkedList<ActiveTransportProprieties>();
     ActiveTransportProprieties                  prop;
 
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
     XmlNodeList ATsLists = xmlDoc.GetElementsByTagName("activeTransports");
     foreach (XmlNode ATsNodes in ATsLists)
