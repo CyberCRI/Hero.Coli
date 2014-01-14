@@ -140,11 +140,13 @@ public class PhenoSpeed : Phenotype
     float intensity = getIntensity(_mol.getConcentration());
 		gameObject.GetComponent<CellControl>().currentMoveSpeed = intensity;
 
+    /*
     Logger.Log("PhenoSpeed intensity="+intensity
       //+"\n_base="+_baseSpeed
       //+"\n_steepness1="+_steepness1
       //+"\n_steepness2="+_steepness2
       , Logger.Level.ONSCREEN);
+      */
 
 		
 		updateFlagellaCount(intensity);

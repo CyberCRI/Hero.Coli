@@ -19,18 +19,16 @@ public class CraftFinalizer : MonoBehaviour {
 
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
-    Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.TEMP);
+    Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
     Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
         craftZoneManager.displayDevice();
-        Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
-      } else {
-        Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
       }
+      Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
     } else {
-      Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.TEMP);
+      Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.WARN);
     }
   }
 
@@ -38,9 +36,8 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);
 
     Inventory.AddingResult addingResult = Inventory.get().canAddDevice(device);
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult, Logger.Level.TEMP);
     string status = statusMessagesDictionary[addingResult];
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): status="+status, Logger.Level.TEMP);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
 
     bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
     craftFinalizationButton.setEnabled(enabled);

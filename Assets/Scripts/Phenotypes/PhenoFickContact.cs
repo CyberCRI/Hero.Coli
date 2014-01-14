@@ -11,8 +11,6 @@ using System;
  */
 public class PhenoFickContact : Phenotype {
 
-
-
   //! Called at the beginning
   public override void StartPhenotype()
   {
@@ -20,26 +18,33 @@ public class PhenoFickContact : Phenotype {
 
   public override void UpdatePhenotype()
   {
+    Logger.Log("PhenoFickContact", Logger.Level.ONSCREEN);
   }
 
-  private void ModifyColliderFickSurface(float surface, Collider collider)
+  public VectrosityPanel vectroPanel;
+  public MoleculeDebug moleculeDebug;
+  private int _vectroPanelInitMediumId = 2;
+  private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
+
+  private void configureExternalDisplays(int mediumId)
   {
-    
+    vectroPanel.setMedium(mediumId);
+    moleculeDebug.setMediumId(mediumId);
   }
 
   void OnTriggerEnter(Collider collider)
   {
-	Logger.Log("PhenoFickContact::OnTriggerEnter collider="+collider, Logger.Level.DEBUG);
-    PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-    if (PMext == null) {
-	  Logger.Log("PhenoFickContact::OnTriggerEnter collider.PMext == null", Logger.Level.TRACE);
-      return;
-	}
+  	Logger.Log("PhenoFickContact::OnTriggerEnter collider="+collider, Logger.Level.DEBUG);
+      PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
+      if (PMext == null) {
+  	  Logger.Log("PhenoFickContact::OnTriggerEnter collider.PMext == null", Logger.Level.TRACE);
+        return;
+  	}
     int colliderMediumIdExt = PMext.MediumId;
     Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
     if (colliderMediumExt == null)
       {
-        Debug.Log("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
+        Logger.Log("PhenoFickContact::OnTriggerEnter The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
         return ;
       }
 
@@ -47,12 +52,12 @@ public class PhenoFickContact : Phenotype {
     if (PMext == null) {
 	  Logger.Log("PhenoFickContact::OnTriggerEnter this.PMext == null", Logger.Level.TRACE);
       return;
-	}
+    }
     int mediumId = PM.MediumId;
     Medium medium = ReactionEngine.getMediumFromId(mediumId, _reactionEngine.getMediumList());
     if (medium == null)
       {
-        Debug.Log("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
+        Logger.Log("PhenoFickContact::OnTriggerEnter The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
         return ;
       }
     
@@ -61,48 +66,86 @@ public class PhenoFickContact : Phenotype {
     FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
     if (reaction == null)
     {
-        Debug.Log("This FickReaction does not exist.");
+      Logger.Log("PhenoFickContact::OnTriggerEnter This FickReaction does not exist.", Logger.Level.WARN);
+      return;
     }
     reaction.setSurface(surface);
+
+    // set medium as medium of collider
+    configureExternalDisplays(colliderMediumIdExt);
+    _collidedMediumIds.AddLast(colliderMediumIdExt);
+
+    /*
+    Logger.Log("PhenoFickContact::OnTriggerEnter"
+      +" reaction.setSurface("+surface+")"
+      +" _collidedMediumIds.Count="+_collidedMediumIds.Count
+      +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
+      ,Logger.Level.);
+    */
   }
 
   public void OnTriggerExit(Collider collider)
   {
-	Logger.Log("PhenoFickContact::OnTriggerExit collider="+collider, Logger.Level.DEBUG);
+  	Logger.Log("PhenoFickContact::OnTriggerExit collider="+collider, Logger.Level.DEBUG);
     PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-    if (PMext == null) {
-	  Logger.Log("PhenoFickContact::OnTriggerExit collider.PMext == null", Logger.Level.TRACE);
+    if (PMext == null)
+    {
+      Logger.Log("PhenoFickContact::OnTriggerExit collider.PMext == null", Logger.Level.TRACE);
       return;
-	}
+  	}
     int colliderMediumIdExt = PMext.MediumId;
     Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
     if (colliderMediumExt == null)
-      {
-        Debug.Log("The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
-        return ;
-      }
+    {
+      Logger.Log("PhenoFickContact::OnTriggerExit The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
+      return ;
+    }
 
     PhysicalMedium PM = GetComponent<PhysicalMedium>();
-    if (PMext == null) {
-	  Logger.Log("PhenoFickContact::OnTriggerExit this.PMext == null", Logger.Level.TRACE);
+    if (PMext == null)
+    {
+      Logger.Log("PhenoFickContact::OnTriggerExit this.PMext == null", Logger.Level.TRACE);
       return;
-	}
+    }
     int mediumId = PM.MediumId;
     Medium medium = ReactionEngine.getMediumFromId(mediumId, _reactionEngine.getMediumList());
     if (medium == null)
-      {
-        Debug.Log("The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
-        return ;
-      }
+    {
+      Logger.Log("PhenoFickContact::OnTriggerExit The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
+      return ;
+    }
+
+    // un-set medium as medium of collider
+    _collidedMediumIds.Remove(colliderMediumIdExt);
+
+    //string nullLast = (null != _collidedMediumIds.Last)?_collidedMediumIds.Last.Value.ToString():"null";
+    /*
+    Logger.Log("PhenoFickContact::OnTriggerExit"
+      +" _collidedMediumIds.Count="+_collidedMediumIds.Count
+      +" _collidedMediumIds.Last.Value="+nullLast
+      ,Logger.Level.);
+    */
+    //Logger.Log("PhenoFickContact::OnTriggerExit _collidedMediumIds.Last.Value="+nullLast, Logger.Level.);
+
+    if(null != _collidedMediumIds.Last)
+    {
+      // TODO consider the current medium as superposition of mediums the ids of which are _collidedMediumIds
+      configureExternalDisplays(_collidedMediumIds.Last.Value);
+    }
+    else
+    {
+      //not in any Fick contact anymore
+      configureExternalDisplays(_vectroPanelInitMediumId);
     
-    Fick fick = _reactionEngine.getFick();
-    FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
-    if (reaction == null)
+      Fick fick = _reactionEngine.getFick();
+      FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, mediumId, fick.getFickReactions());
+      if (reaction == null)
       {
-        Debug.Log("This FickReaction does not exist.");
-        
+        Logger.Log("PhenoFickContact::OnTriggerExit This FickReaction does not exist.", Logger.Level.WARN);
       }
-    reaction.setSurface(0);
+      reaction.setSurface(0);
+    }
+
   }
 
 }
