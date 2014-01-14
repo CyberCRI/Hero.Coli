@@ -7,6 +7,12 @@
       <degradationRate>0.085</degradationRate>
     </molecule>
     <molecule type="other">
+      <name>FLUO2</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.085</degradationRate>
+    </molecule>
+    <molecule type="other">
       <name>MOV</name>
       <description></description>
       <concentration>0</concentration>

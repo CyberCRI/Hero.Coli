@@ -318,63 +318,30 @@ public class Medium
       }
     //#FIXME : remove
     if (_name == "Cellia")
-      {
-        if (Input.GetKey(KeyCode.P))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("MOV", _molecules).addConcentration(10f);
-            else
-              ReactionEngine.getMoleculeFromName("MOV", _molecules).addNewConcentration(100f);
-          }
-        if (Input.GetKey(KeyCode.M))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("MOV", _molecules).addConcentration(- 10f);
-            else
-              ReactionEngine.getMoleculeFromName("MOV", _molecules).addNewConcentration(- 100f);
-          }
-        if (Input.GetKey(KeyCode.O))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addConcentration(10f);
-            else
-              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addNewConcentration(100f);
-          }
-        if (Input.GetKey(KeyCode.L))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addConcentration(- 10f);
-            else
-              ReactionEngine.getMoleculeFromName("AMPI", _molecules).addNewConcentration(- 100f);
-          }
-        if (Input.GetKey(KeyCode.I))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addConcentration(10f);
-            else
-              ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addNewConcentration(100f);
-          }
-        if (Input.GetKey(KeyCode.K))
-        {
-          if (_enableSequential)
-            ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addConcentration(- 10f);
-          else
-            ReactionEngine.getMoleculeFromName("FLUO1", _molecules).addNewConcentration(- 100f);
-        }
-        if (Input.GetKey(KeyCode.U))
-          {
-            if (_enableSequential)
-              ReactionEngine.getMoleculeFromName("ANTIBIO", _molecules).addConcentration(10f);
-            else
-              ReactionEngine.getMoleculeFromName("ANTIBIO", _molecules).addNewConcentration(100f);
-          }
-        if (Input.GetKey(KeyCode.J))
-        {
-          if (_enableSequential)
-            ReactionEngine.getMoleculeFromName("ANTIBIO", _molecules).addConcentration(- 10f);
-          else
-            ReactionEngine.getMoleculeFromName("ANTIBIO", _molecules).addNewConcentration(- 100f);
-        }
-      }
+    {
+      manageMoleculeConcentrationWithKey(KeyCode.P, KeyCode.M, "MOV");
+      manageMoleculeConcentrationWithKey(KeyCode.O, KeyCode.L, "AMPI");
+      manageMoleculeConcentrationWithKey(KeyCode.I, KeyCode.K, "FLUO1");
+      manageMoleculeConcentrationWithKey(KeyCode.U, KeyCode.J, "ANTIBIO");
+      manageMoleculeConcentrationWithKey(KeyCode.Y, KeyCode.H, "FLUO2");
+    }
+  }
+
+  private void manageMoleculeConcentrationWithKey(KeyCode plusCode, KeyCode minusCode, String molecule)
+  {
+    if (Input.GetKey(plusCode))
+    {
+      if (_enableSequential)
+        ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
+      else
+        ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
+    }
+    if (Input.GetKey(minusCode))
+    {
+      if (_enableSequential)
+        ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(- 10f);
+      else
+        ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(- 100f);
+    }
   }
 }
