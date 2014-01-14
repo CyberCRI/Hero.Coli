@@ -22,9 +22,9 @@
   <brick id="FLUO1" size="716" type="gene">
     <protein>FLUO1</protein>
   </brick>
-  <!--brick id="FLUO2" size="714" type="gene">
+  <brick id="FLUO2" size="714" type="gene">
     <protein>FLUO2</protein>
-  </brick-->
+  </brick>
   <brick id="MOV" size="932" type="gene">
     <protein>MOV</protein>
   </brick>

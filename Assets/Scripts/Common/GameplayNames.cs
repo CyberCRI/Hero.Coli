@@ -15,7 +15,7 @@ public class GameplayNames
     {"RBS2", "Low RBS"},
     //GENES
     {"FLUO1", "Green - GFP"},
-    //{"FLUO2", "Red - mCherry"},
+    {"FLUO2", "Red - mCherry"},
     {"MOV", "Flagella master regulator"},// FlhDC master operon
     {"ANTIBIO", "Ampicillin resistance cassette"},
     //{"REPR1", "lacI gene"},
