@@ -17,12 +17,11 @@ public class ActiveRFPInfoPanel : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		Logger.Log("ActiveRFPInfoPanel::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString());
+		Logger.Log("ActiveRFPInfoPanel::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString(), Logger.Level.TEMP);
 		if(alreadyDisplayed == false) {
 			if(other == hero.GetComponent<Collider>()) {
-		        infoPanel.SetActive(true);
-				gameStateController.StateChange(GameState.Pause);
-				gameStateController.dePauseForbidden = true;
+        Logger.Log("call to InfoWindowManager", Logger.Level.TEMP);
+        InfoWindowManager.displayInfoWindow();
 				alreadyDisplayed = true;
 			}
 		}
