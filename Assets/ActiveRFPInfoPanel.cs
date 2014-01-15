@@ -17,7 +17,7 @@ public class ActiveRFPInfoPanel : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		Logger.Log("ActiveRFPInfoPanel::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString(), Logger.Level.TEMP);
+		Logger.Log("ActiveRFPInfoPanel::OnTriggerEnter("+other.ToString()+") alreadyDisplayed="+alreadyDisplayed.ToString(), Logger.Level.TEMP);
 		if(alreadyDisplayed == false) {
 			if(other == hero.GetComponent<Collider>()) {
         Logger.Log("call to InfoWindowManager", Logger.Level.TEMP);
