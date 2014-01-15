@@ -28,8 +28,8 @@
   <brick id="MOV" size="932" type="gene">
     <protein>MOV</protein>
   </brick>
-  <brick id="ANTIBIO" size="943" type="gene">
-    <protein>ANTIBIO</protein>
+  <brick id="AMPR" size="943" type="gene">
+    <protein>AMPR</protein>
   </brick>
   <!--brick id="REPR1" size="1153" type="gene">
     <protein>REPR1</protein>

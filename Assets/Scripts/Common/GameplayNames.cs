@@ -17,7 +17,7 @@ public class GameplayNames
     {"FLUO1", "Green - GFP"},
     {"FLUO2", "Red - mCherry"},
     {"MOV", "Flagella master regulator"},// FlhDC master operon
-    {"ANTIBIO", "Ampicillin resistance cassette"},
+    {"AMPR", "Ampicillin resistance cassette"},
     //{"REPR1", "lacI gene"},
     //{"REPR2", "tetR gene"},
     //TERMINATORS
@@ -37,7 +37,7 @@ public class GameplayNames
     {"FLUO1", "GFP"},
     {"FLUO2", "Red - mCherry"},
     {"MOV", "FlhDC"},
-    {"ANTIBIO", "Beta-lactamase"},
+    {"AMPR", "Beta-lactamase"},
     {"REPR1", "lacI"},
     {"REPR2", "tetR"},
 
@@ -51,7 +51,7 @@ public class GameplayNames
     {"FLUO1", "Green fluorescence"},
     {"FLUO2", "Red fluorescence"},
     {"MOV", "Hyperflagellation"},
-    {"ANTIBIO", "Ampicillin resistance"},
+    {"AMPR", "Ampicillin resistance"},
 
     //MISSING
     {"REPR1", "LacI inhibition"},

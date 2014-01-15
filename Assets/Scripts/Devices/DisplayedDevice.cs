@@ -30,7 +30,7 @@ public class DisplayedDevice : DisplayedElement {
     // TODO fix this to have specific red fluorescence icon
     {"FLUO2", "fluo"},
     {"MOV", "speed"},
-    {"ANTIBIO", "resist"}
+    {"AMPR", "resist"}
     //{"REPR1", ?},
     //{"REPR2", ?},
   };

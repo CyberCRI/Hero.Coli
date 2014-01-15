@@ -3,7 +3,7 @@
     <enzyme>
       <name>ANTIAMPI</name>
       <substrate>AMPI</substrate>
-      <enzyme>ANTIBIO</enzyme>
+      <enzyme>AMPR</enzyme>
       <Kcat>1</Kcat>
       <effector>False</effector>
       <alpha>1000</alpha>
