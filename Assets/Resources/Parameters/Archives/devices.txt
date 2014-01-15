@@ -20,7 +20,7 @@
     <!--brick id="PRTETR"/-->
     <brick id="PRCONS"/>
     <brick id="RBS1"/>
-    <brick id="ANTIBIO"/>
+    <brick id="AMPR"/>
     <brick id="DTER"/>
   </device>
   <!--device id="hyperfl_m"-->

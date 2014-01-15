@@ -322,7 +322,7 @@ public class Medium
       manageMoleculeConcentrationWithKey(KeyCode.P, KeyCode.M, "MOV");
       manageMoleculeConcentrationWithKey(KeyCode.O, KeyCode.L, "AMPI");
       manageMoleculeConcentrationWithKey(KeyCode.I, KeyCode.K, "FLUO1");
-      manageMoleculeConcentrationWithKey(KeyCode.U, KeyCode.J, "ANTIBIO");
+      manageMoleculeConcentrationWithKey(KeyCode.U, KeyCode.J, "AMPR");
       manageMoleculeConcentrationWithKey(KeyCode.Y, KeyCode.H, "FLUO2");
     }
   }

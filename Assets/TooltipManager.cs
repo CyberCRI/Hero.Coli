@@ -49,7 +49,7 @@ public class TooltipManager : MonoBehaviour {
         {"FLUO1", "b_FLUO1"},
         //{"FLUO2", "gfp"},
         {"MOV", "b_MOV"},
-        {"ANTIBIO", "b_ANTIBIO"}
+        {"AMPR", "b_AMPR"}
         //{"REPR1", "repr1"},
         //{"REPR2", "repr2"}
       }

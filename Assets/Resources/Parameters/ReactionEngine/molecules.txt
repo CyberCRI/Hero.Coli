@@ -19,7 +19,7 @@
       <degradationRate>0.33</degradationRate>
     </molecule>
     <molecule type="enzyme">
-      <name>ANTIBIO</name>
+      <name>AMPR</name>
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.1</degradationRate>
