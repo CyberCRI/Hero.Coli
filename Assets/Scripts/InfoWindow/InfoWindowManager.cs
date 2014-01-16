@@ -21,13 +21,6 @@ public class InfoWindowManager : MonoBehaviour {
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  string title;
-  string subtitle;
-  string texture;
-  string explanation;
-  string bottom;
-  //TODO onNext;
-
   public UILabel titleLabel;
   public UILabel subtitleLabel;
   public UILabel explanationLabel;
@@ -64,36 +57,16 @@ public class InfoWindowManager : MonoBehaviour {
   private static bool fillInFieldsFromCode(string code)
   {
     Logger.Log("InfoWindowManager::fillInFieldsFromCode("+code+") starts", Logger.Level.TEMP);
-    if(getStuffFromCode(code))
-    {
-      _instance.titleLabel.text       = _instance.title;
-      _instance.subtitleLabel.text    = _instance.subtitle;
-      _instance.infoSprite.spriteName = _instance.texture;
-      _instance.explanationLabel.text = _instance.explanation;
-      _instance.bottomLabel.text      = _instance.bottom;
-  
-      // TODO manage onNext
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  private static bool getStuffFromCode(string code)
-  {
-    Logger.Log("InfoWindowManager::getStuffFromCode("+code+") starts", Logger.Level.TEMP);
 
     StandardInfoWindowInfo info = retrieveFromDico(code);
 
     if(null != info)
     {
-      _instance.title       = info._title;
-      _instance.subtitle    = info._subtitle;
-      _instance.texture     = info._texture;
-      _instance.explanation = info._explanation;
-      _instance.bottom      = info._bottom;
+      _instance.titleLabel.text       = info._title;
+      _instance.subtitleLabel.text    = info._subtitle;
+      _instance.infoSprite.spriteName = info._texture;
+      _instance.explanationLabel.text = info._explanation;
+      _instance.bottomLabel.text      = info._bottom;
 
       return true;
     }
