@@ -26,7 +26,7 @@ public class InfoWindowManager : MonoBehaviour {
   string texture;
   string explanation;
   string bottom;
-  string onNext;
+  //TODO onNext;
 
   public UILabel titleLabel;
   public UILabel subtitleLabel;
@@ -39,6 +39,14 @@ public class InfoWindowManager : MonoBehaviour {
   public UISprite infoSprite;
 
   public GameStateController gameStateController;
+
+  private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
+
+  private static StandardInfoWindowInfo retrieveFromDico(string code)
+  {
+    Logger.Log("InfoWindowManager::retrieveFromDico("+code+") starts", Logger.Level.TEMP);
+    return new StandardInfoWindowInfo("title", "subtitle", "tuto_intro-01", "explanation", "bottom");
+  }
 
   public static void displayInfoWindow()
   {
@@ -63,15 +71,26 @@ public class InfoWindowManager : MonoBehaviour {
     // TODO manage onNext
   }
 
-  private static void getStuffFromCode(string code)
+  private static bool getStuffFromCode(string code)
   {
     Logger.Log("InfoWindowManager::getStuffFromCode("+code+") starts", Logger.Level.TEMP);
 
-    _instance.title = "title";
-    _instance.subtitle = "subtitle";
-    _instance.texture = "tuto_intro-01";
-    _instance.explanation = "explanation";
-    _instance.bottom = "bottom";
+    StandardInfoWindowInfo info = retrieveFromDico(code);
+
+    if(null != info)
+    {
+      _instance.title       = info._title;
+      _instance.subtitle    = info._subtitle;
+      _instance.texture     = info._texture;
+      _instance.explanation = info._explanation;
+      _instance.bottom      = info._bottom;
+
+      return true;
+    }
+    else
+    {
+      return false;
+    }
 
     // TODO manage onNext
   }
