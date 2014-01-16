@@ -10,9 +10,9 @@ public class StandardInfoWindowInfo
   public string _texture;
   public string _explanation;
   public string _bottom;
-  //TODO onNext;
+  public string _next;
 
-  public StandardInfoWindowInfo(string code, string title, string subtitle, string texture, string explanation, string bottom)
+  public StandardInfoWindowInfo(string code, string title, string subtitle, string texture, string explanation, string bottom, string next)
   {
     _code        = code;
     _title       = title;
@@ -20,7 +20,7 @@ public class StandardInfoWindowInfo
     _texture     = texture;
     _explanation = explanation;
     _bottom      = bottom;
-    //TODO onNext;
+    _next        = next;
   }
 
   public override string ToString ()
@@ -32,6 +32,7 @@ public class StandardInfoWindowInfo
       ", _texture:"+_texture+
       ", _explanation:"+_explanation+
       ", _bottom:"+_bottom+
+      ", _next:"+_next+
       "]");
   }
 }

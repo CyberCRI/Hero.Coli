@@ -14,6 +14,7 @@ public class InfoWindowLoader {
   private string _texture;
   private string _explanation;
   private string _bottom;
+  private string _next;
 
   private StandardInfoWindowInfo _info;
 
@@ -84,7 +85,11 @@ public class InfoWindowLoader {
               break;
             case InfoWindowXMLTags.BOTTOM:
               _bottom = attr.InnerText;
-              Logger.Log("InfoWindowLoader::loadInfoFromFile got _explanation="+_explanation, Logger.Level.TEMP);
+              Logger.Log("InfoWindowLoader::loadInfoFromFile got _bottom="+_bottom, Logger.Level.TEMP);
+              break;
+            case InfoWindowXMLTags.NEXT:
+              _next = attr.InnerText;
+              Logger.Log("InfoWindowLoader::loadInfoFromFile got _next="+_next, Logger.Level.TEMP);
               break;
             default:
                 Logger.Log("InfoWindowLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
@@ -97,10 +102,11 @@ public class InfoWindowLoader {
           && checkString(_texture)
           && checkString(_explanation)
           && checkString(_bottom)
+          && checkString(_next)
           )
         {
           Logger.Log("InfoWindowLoader::loadInfoFromFile instanciating new _info", Logger.Level.TEMP);
-          _info = new StandardInfoWindowInfo(_code, _title, _subtitle, _texture, _explanation, _bottom);
+          _info = new StandardInfoWindowInfo(_code, _title, _subtitle, _texture, _explanation, _bottom, _next);
         }
         if(null != _info)
         {

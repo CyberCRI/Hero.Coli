@@ -46,6 +46,11 @@ public class InfoWindowManager : MonoBehaviour {
     GOTOCRAFT
   }
 
+  private Dictionary<string, NextAction> _actions = new Dictionary<string, NextAction>(){
+    {InfoWindowXMLTags.WORLD, NextAction.GOTOWORLD},
+    {InfoWindowXMLTags.EQUIP, NextAction.GOTOEQUIP},
+    {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT}
+  };
 
   public static bool displayInfoWindow(string code)
   {
@@ -77,7 +82,7 @@ public class InfoWindowManager : MonoBehaviour {
       _instance.infoSprite.spriteName = info._texture;
       _instance.explanationLabel.text = info._explanation;
       _instance.bottomLabel.text      = info._bottom;
-      _instance.nextAction            = NextAction.GOTOEQUIP;
+      _instance.nextAction            = getFromString(info._next);
 
       return true;
     }
@@ -153,6 +158,14 @@ public class InfoWindowManager : MonoBehaviour {
         _instance.gameStateController.StateChange(GameState.Game);
         break;
     }
+  }
+
+  public static NextAction getFromString(string next)
+  {
+    Logger.Log("InfoWindowManager::getFromString("+next+")", Logger.Level.TEMP);
+    NextAction action;
+    _instance._actions.TryGetValue(next, out action);
+    return action;
   }
 }
 

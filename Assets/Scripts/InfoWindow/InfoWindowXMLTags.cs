@@ -8,5 +8,9 @@ public static class InfoWindowXMLTags {
     SUBTITLE = "subtitle",
     TEXTURE = "texture",
     EXPLANATION = "explanation",
-    BOTTOM = "bottom";
+    BOTTOM = "bottom",
+    NEXT = "next",
+    WORLD = "world",
+    EQUIP = "equip",
+    CRAFT = "craft";
 }
