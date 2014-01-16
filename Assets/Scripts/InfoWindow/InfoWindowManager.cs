@@ -28,6 +28,7 @@ public class InfoWindowManager : MonoBehaviour {
   public UILabel subtitleLabel;
   public UILabel explanationLabel;
   public UILabel bottomLabel;
+  public NextAction nextAction;
 
   public GameObject nextButton;
 
@@ -37,6 +38,14 @@ public class InfoWindowManager : MonoBehaviour {
   public GameStateController gameStateController;
 
   private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
+
+  public enum NextAction
+  {
+    GOTOWORLD,
+    GOTOEQUIP,
+    GOTOCRAFT
+  }
+
 
   public static bool displayInfoWindow(string code)
   {
@@ -68,6 +77,7 @@ public class InfoWindowManager : MonoBehaviour {
       _instance.infoSprite.spriteName = info._texture;
       _instance.explanationLabel.text = info._explanation;
       _instance.bottomLabel.text      = info._bottom;
+      _instance.nextAction            = NextAction.GOTOEQUIP;
 
       return true;
     }
@@ -124,7 +134,25 @@ public class InfoWindowManager : MonoBehaviour {
   public static void next()
   {
     _instance.infoPanel.SetActive(false);
-    _instance.gameStateController.StateChange(GameState.Game);
+    switch(_instance.nextAction)
+    {
+      case NextAction.GOTOWORLD:
+        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.TEMP);
+        _instance.gameStateController.StateChange(GameState.Game);
+        break;
+      case NextAction.GOTOEQUIP:
+        Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.TEMP);
+        GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
+        break;
+      case NextAction.GOTOCRAFT:
+        Logger.Log("InfoWindowManager::next GOTOCRAFT", Logger.Level.TEMP);
+        GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
+        break;
+      default:
+        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.TEMP);
+        _instance.gameStateController.StateChange(GameState.Game);
+        break;
+    }
   }
 }
 
