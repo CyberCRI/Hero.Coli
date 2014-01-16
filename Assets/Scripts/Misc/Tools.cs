@@ -50,10 +50,10 @@ class Tools
    */
   static public XmlDocument getXmlDocument(string filePath)
   {
-    Logger.Log ("Tools::getXmlDocument("+filePath+")", Logger.Level.TEMP);
+    Logger.Log ("Tools::getXmlDocument("+filePath+")", Logger.Level.TRACE);
     TextAsset temp = Resources.Load(filePath) as TextAsset;
-    string tempStr = (temp==null)?"(null)":temp.ToString();
-    Logger.Log ("Tools::getXmlDocument "+tempStr, Logger.Level.TEMP);
+    //string tempStr = (temp==null)?"(null)":temp.ToString();
+    //Logger.Log ("Tools::getXmlDocument "+tempStr, Logger.Level.TRACE);
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.LoadXml(temp.text);
     return xmlDoc;

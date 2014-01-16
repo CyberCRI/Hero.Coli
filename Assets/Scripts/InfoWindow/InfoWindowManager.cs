@@ -54,7 +54,6 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static bool displayInfoWindow(string code)
   {
-    Logger.Log("InfoWindowManager::displayInfoWindow starts", Logger.Level.TEMP);
     if(fillInFieldsFromCode(code))
     {
       _instance.infoPanel.SetActive(true);
@@ -64,14 +63,13 @@ public class InfoWindowManager : MonoBehaviour {
     }
     else
     {
-      Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.TEMP);
+      Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.WARN);
       return false;
     }
   }
 
   private static bool fillInFieldsFromCode(string code)
   {
-    Logger.Log("InfoWindowManager::fillInFieldsFromCode("+code+") starts", Logger.Level.TEMP);
 
     StandardInfoWindowInfo info = retrieveFromDico(code);
 
@@ -96,7 +94,6 @@ public class InfoWindowManager : MonoBehaviour {
 
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {
-    Logger.Log("InfoWindowManager::retrieveFromDico("+code+") starts", Logger.Level.TEMP);
     StandardInfoWindowInfo info;
     if(!_instance._loadedInfoWindows.TryGetValue(code, out info))
     {
@@ -112,20 +109,14 @@ public class InfoWindowManager : MonoBehaviour {
 
   private void loadDataIntoDico(string[] inputFiles, Dictionary<string, StandardInfoWindowInfo> dico)
   {
-    Logger.Log("InfoWindowManager::loadDataIntoDico() starts", Logger.Level.TEMP);
 
     InfoWindowLoader iwLoader = new InfoWindowLoader();
 
     string loadedFiles = "";
 
     foreach (string file in inputFiles) {
-      Logger.Log("InfoWindowManager::loadDataIntoDico loads file "+file, Logger.Level.TEMP);
       foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
-        Logger.Log("InfoWindowManager::loadDataIntoDico adds info "+info, Logger.Level.TEMP);
         dico.Add(info._code, info);
-        Logger.Log("InfoWindowManager::loadDataIntoDico added info to "
-          +Logger.ToString<string, StandardInfoWindowInfo>(dico)
-          , Logger.Level.TEMP);
       }
       if(!string.IsNullOrEmpty(loadedFiles)) {
         loadedFiles += ", ";
@@ -142,19 +133,19 @@ public class InfoWindowManager : MonoBehaviour {
     switch(_instance.nextAction)
     {
       case NextAction.GOTOWORLD:
-        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.TEMP);
+        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
         _instance.gameStateController.StateChange(GameState.Game);
         break;
       case NextAction.GOTOEQUIP:
-        Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.TEMP);
+        Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
         GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
         break;
       case NextAction.GOTOCRAFT:
-        Logger.Log("InfoWindowManager::next GOTOCRAFT", Logger.Level.TEMP);
+        Logger.Log("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
         GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
         break;
       default:
-        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.TEMP);
+        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
         _instance.gameStateController.StateChange(GameState.Game);
         break;
     }
@@ -162,7 +153,6 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static NextAction getFromString(string next)
   {
-    Logger.Log("InfoWindowManager::getFromString("+next+")", Logger.Level.TEMP);
     NextAction action;
     _instance._actions.TryGetValue(next, out action);
     return action;
