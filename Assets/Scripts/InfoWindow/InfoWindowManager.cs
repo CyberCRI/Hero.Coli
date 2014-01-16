@@ -36,9 +36,7 @@ public class InfoWindowManager : MonoBehaviour {
 
   public GameStateController gameStateController;
 
-  private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>() {
-    {"test", new StandardInfoWindowInfo("test", "title", "subtitle", "tuto_intro-01", "explanation", "bottom")}
-  };
+  private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
 
   public static bool displayInfoWindow(string code)
   {
@@ -105,10 +103,19 @@ public class InfoWindowManager : MonoBehaviour {
 
     string loadedFiles = "";
 
-    string file = "";
-    foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
-      Logger.Log("InfoWindowManager::loadDataIntoDico adds info "+info, Logger.Level.TEMP);
-      dico.Add(info._code, info);
+    foreach (string file in inputFiles) {
+      Logger.Log("InfoWindowManager::loadDataIntoDico loads file "+file, Logger.Level.TEMP);
+      foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
+        Logger.Log("InfoWindowManager::loadDataIntoDico adds info "+info, Logger.Level.TEMP);
+        dico.Add(info._code, info);
+        Logger.Log("InfoWindowManager::loadDataIntoDico added info to "
+          +Logger.ToString<string, StandardInfoWindowInfo>(dico)
+          , Logger.Level.TEMP);
+      }
+      if(!string.IsNullOrEmpty(loadedFiles)) {
+        loadedFiles += ", ";
+      }
+      loadedFiles += file;
     }
 
     Logger.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
