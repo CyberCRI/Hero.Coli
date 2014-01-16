@@ -1,9 +1,23 @@
 <infoList>
-  <info code="redDoor1">
-    <title>title3</title>
-    <subtitle>subtitle3</subtitle>
+  <info code="PickUpDevice">
+    <title>YAY!</title>
+    <subtitle>You picked up a genetic device!</subtitle>
     <texture>tuto_intro-01</texture>
-    <explanation>explanation3</explanation>
-    <bottom>bottom3</bottom>
+    <explanation>Quick, equip it!</explanation>
+    <bottom>Go to your inventory.</bottom>
+  </info>
+  <info code="PickUpBioBrick">
+    <title>YAY!</title>
+    <subtitle>You picked up a BioBrick!</subtitle>
+    <texture>tuto_intro-01</texture>
+    <explanation>Quick, craft something with it!</explanation>
+    <bottom>Go to your crafting interface.</bottom>
+  </info>
+  <info code="RFP">
+    <title>OH NO!</title>
+    <subtitle>You need red fluorescence!</subtitle>
+    <texture>tuto_intro-01</texture>
+    <explanation>Go back when you find the gene coding for the red fluorescence protein (RFP).</explanation>
+    <bottom>Yup, this line is useless.</bottom>
   </info>
 </infoList>

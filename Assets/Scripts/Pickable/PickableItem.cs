@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class PickableItem : MonoBehaviour {
   protected DNABit _dnaBit;
@@ -14,17 +15,14 @@ public abstract class PickableItem : MonoBehaviour {
 
   public void pickUp()
   {
-	ActivePickingDeviceInfoPanel ActivateDeviceInfoPanelScript = gameObject.GetComponent<ActivePickingDeviceInfoPanel>();
-	if(ActivateDeviceInfoPanelScript != null){
-		ActivateDeviceInfoPanelScript.activate();
-	}
-	Logger.Log("PickableItem::pickUp", Logger.Level.INFO);
-	ActivePickingBioBrickInfoPanel ActivateBioBrickInfoPanelScript = gameObject.GetComponent<ActivePickingBioBrickInfoPanel>();
-	if(ActivateBioBrickInfoPanelScript != null){
-		ActivateBioBrickInfoPanelScript.activate();
-	}
+    List<IPickable> pickables;
+    Tools.GetInterfaces<IPickable>(out pickables, gameObject);
+    foreach(IPickable pickable in pickables)
+    {
+      pickable.OnPickedUp();
+    }
 		
-    addTo ();
+    addTo();
     if(toDestroy)
     {
       Destroy(toDestroy);
