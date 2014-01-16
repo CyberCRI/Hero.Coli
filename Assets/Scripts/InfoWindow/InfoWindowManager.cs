@@ -29,7 +29,7 @@ public class InfoWindowManager : MonoBehaviour {
   public UILabel explanationLabel;
   public UILabel bottomLabel;
 
-  // TODO manage onNext
+  public GameObject nextButton;
 
   public GameObject infoPanel;
   public UISprite infoSprite;
@@ -119,6 +119,12 @@ public class InfoWindowManager : MonoBehaviour {
     }
 
     Logger.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
+  }
+
+  public static void next()
+  {
+    _instance.infoPanel.SetActive(false);
+    _instance.gameStateController.StateChange(GameState.Game);
   }
 }
 
