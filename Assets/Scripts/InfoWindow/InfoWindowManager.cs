@@ -40,35 +40,45 @@ public class InfoWindowManager : MonoBehaviour {
 
   public GameStateController gameStateController;
 
-  private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
+  private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>() {
+    {"test", new StandardInfoWindowInfo("title", "subtitle", "tuto_intro-01", "explanation", "bottom")}
+  };
 
-  private static StandardInfoWindowInfo retrieveFromDico(string code)
-  {
-    Logger.Log("InfoWindowManager::retrieveFromDico("+code+") starts", Logger.Level.TEMP);
-    return new StandardInfoWindowInfo("title", "subtitle", "tuto_intro-01", "explanation", "bottom");
-  }
-
-  public static void displayInfoWindow()
+  public static bool displayInfoWindow(string code)
   {
     Logger.Log("InfoWindowManager::displayInfoWindow starts", Logger.Level.TEMP);
-    fillInFieldsFromCode("any_string");
-    _instance.infoPanel.SetActive(true);
-    _instance.gameStateController.StateChange(GameState.Pause);
-    _instance.gameStateController.dePauseForbidden = true;
+    if(fillInFieldsFromCode(code))
+    {
+      _instance.infoPanel.SetActive(true);
+      _instance.gameStateController.StateChange(GameState.Pause);
+      _instance.gameStateController.dePauseForbidden = true;
+      return true;
+    }
+    else
+    {
+      Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.TEMP);
+      return false;
+    }
   }
 
-  private static void fillInFieldsFromCode(string code)
+  private static bool fillInFieldsFromCode(string code)
   {
     Logger.Log("InfoWindowManager::fillInFieldsFromCode("+code+") starts", Logger.Level.TEMP);
-    getStuffFromCode(code);
-
-    _instance.titleLabel.text       = _instance.title;
-    _instance.subtitleLabel.text    = _instance.subtitle;
-    _instance.infoSprite.spriteName = _instance.texture;
-    _instance.explanationLabel.text = _instance.explanation;
-    _instance.bottomLabel.text      = _instance.bottom;
-
-    // TODO manage onNext
+    if(getStuffFromCode(code))
+    {
+      _instance.titleLabel.text       = _instance.title;
+      _instance.subtitleLabel.text    = _instance.subtitle;
+      _instance.infoSprite.spriteName = _instance.texture;
+      _instance.explanationLabel.text = _instance.explanation;
+      _instance.bottomLabel.text      = _instance.bottom;
+  
+      // TODO manage onNext
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   private static bool getStuffFromCode(string code)
@@ -93,6 +103,18 @@ public class InfoWindowManager : MonoBehaviour {
     }
 
     // TODO manage onNext
+  }
+
+  private static StandardInfoWindowInfo retrieveFromDico(string code)
+  {
+    Logger.Log("InfoWindowManager::retrieveFromDico("+code+") starts", Logger.Level.TEMP);
+    StandardInfoWindowInfo info;
+    if(!_instance._loadedInfoWindows.TryGetValue(code, out info))
+    {
+      Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
+      info = null;
+    }
+    return info;
   }
 }
 
