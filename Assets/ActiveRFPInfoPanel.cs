@@ -21,7 +21,7 @@ public class ActiveRFPInfoPanel : MonoBehaviour {
 		if(alreadyDisplayed == false) {
 			if(other == hero.GetComponent<Collider>()) {
         Logger.Log("call to InfoWindowManager", Logger.Level.TEMP);
-        InfoWindowManager.displayInfoWindow("test");
+        InfoWindowManager.displayInfoWindow("test2");
 				alreadyDisplayed = true;
 			}
 		}

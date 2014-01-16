@@ -18,8 +18,11 @@ public class InfoWindowManager : MonoBehaviour {
   {
     Logger.Log("InfoWindowManager::Awake", Logger.Level.DEBUG);
     _instance = this;
+    loadDataIntoDico(inputFiles, _loadedInfoWindows);
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
+
+  public string[] inputFiles;
 
   public UILabel titleLabel;
   public UILabel subtitleLabel;
@@ -34,7 +37,7 @@ public class InfoWindowManager : MonoBehaviour {
   public GameStateController gameStateController;
 
   private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>() {
-    {"test", new StandardInfoWindowInfo("title", "subtitle", "tuto_intro-01", "explanation", "bottom")}
+    {"test", new StandardInfoWindowInfo("test", "title", "subtitle", "tuto_intro-01", "explanation", "bottom")}
   };
 
   public static bool displayInfoWindow(string code)
@@ -87,7 +90,28 @@ public class InfoWindowManager : MonoBehaviour {
       Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
       info = null;
     }
+    else
+    {
+      Logger.Log("InfoWindowManager::retrieveFromDico("+code+") found "+info, Logger.Level.WARN);
+    }
     return info;
+  }
+
+  private void loadDataIntoDico(string[] inputFiles, Dictionary<string, StandardInfoWindowInfo> dico)
+  {
+    Logger.Log("InfoWindowManager::loadDataIntoDico() starts", Logger.Level.TEMP);
+
+    InfoWindowLoader iwLoader = new InfoWindowLoader();
+
+    string loadedFiles = "";
+
+    string file = "";
+    foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
+      Logger.Log("InfoWindowManager::loadDataIntoDico adds info "+info, Logger.Level.TEMP);
+      dico.Add(info._code, info);
+    }
+
+    Logger.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
   }
 }
 
