@@ -5,6 +5,11 @@ using System.Collections;
 public class PushableBox : MonoBehaviour {
 	
 	public float minSpeed;
+	private Vector3 _initPos;
+	
+	void Start(){
+		_initPos = transform.position;
+	}
 	
     void OnCollisionEnter(Collision col) {
 		if (col.collider){
@@ -22,6 +27,11 @@ public class PushableBox : MonoBehaviour {
 				rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		}
 		
+	}
+	
+	public void resetPos(){
+		Debug.Log("WTF");
+		transform.position = _initPos;
 	}
 	
 }

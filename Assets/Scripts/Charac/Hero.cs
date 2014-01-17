@@ -44,6 +44,7 @@ public class Hero : MonoBehaviour{
   private float _maxMediumEnergy = 1f;
   private float _lowEnergyThreshold = 0.05f;
   private bool _pause;
+	private bool _isLiving;
 
   public void Pause(bool pause)
   {
@@ -101,6 +102,7 @@ public class Hero : MonoBehaviour{
 		//Click to move variable.
       	//	_destination = mover.position;
     gameObject.SetActive(true);
+		_isLiving = true;
 
     LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
     _medium = ReactionEngine.getMediumFromId(1, mediums);
@@ -128,9 +130,10 @@ public class Hero : MonoBehaviour{
         setEnergy(1f);
       }
   
-      if (_life <= 0)
+      if ((_life <= 0) && (_isLiving))
       {
 	    	_life = 0f;
+			_isLiving = false;
 			StartCoroutine(RespawnCoroutine());
 	    }
 	    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
@@ -247,11 +250,18 @@ public class Hero : MonoBehaviour{
 
 	    CellControl cc = GetComponent<CellControl>();
 	    cc.enabled = false;
+		
+		//GameObject sr = GameObject.Find("StrongRock1");
+		//PushableBox pb = sr.GetComponent<PushableBox>();
 
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
 		    setLife(1f);
+			
+			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
+				box.resetPos();
+			}
 		    
 		    if (_spawn01 == true) {
 				GameObject respawn01 = GameObject.Find("Checkpoint01");
@@ -285,6 +295,8 @@ public class Hero : MonoBehaviour{
 				GameObject respawn08 = GameObject.Find("Checkpoint08");
 				gameObject.transform.position = respawn08.transform.position;
 			}
+		
+			_isLiving = true;
 	}	
 
 }
