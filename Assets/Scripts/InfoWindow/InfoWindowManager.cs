@@ -30,8 +30,6 @@ public class InfoWindowManager : MonoBehaviour {
   public UILabel bottomLabel;
   public NextAction nextAction;
 
-  public GameObject nextButton;
-
   public GameObject infoPanel;
   public UISprite infoSprite;
 
@@ -99,10 +97,6 @@ public class InfoWindowManager : MonoBehaviour {
     {
       Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
       info = null;
-    }
-    else
-    {
-      Logger.Log("InfoWindowManager::retrieveFromDico("+code+") found "+info, Logger.Level.WARN);
     }
     return info;
   }
