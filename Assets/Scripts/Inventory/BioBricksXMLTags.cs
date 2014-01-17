@@ -1,4 +1,3 @@
-using System;
 
 public static class BioBricksXMLTags {
   public const string

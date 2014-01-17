@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 /*!
   \brief This class contains some useful functions
@@ -48,12 +50,23 @@ class Tools
    */
   static public XmlDocument getXmlDocument(string filePath)
   {
-    Logger.Log ("Tools::getXmlDocument("+filePath+")", Logger.Level.TEMP);
+    Logger.Log ("Tools::getXmlDocument("+filePath+")", Logger.Level.TRACE);
     TextAsset temp = Resources.Load(filePath) as TextAsset;
-    string tempStr = (temp==null)?"(null)":temp.ToString();
-    Logger.Log ("Tools::getXmlDocument "+tempStr, Logger.Level.TEMP);
+    //string tempStr = (temp==null)?"(null)":temp.ToString();
+    //Logger.Log ("Tools::getXmlDocument "+tempStr, Logger.Level.TRACE);
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.LoadXml(temp.text);
     return xmlDoc;
+  }
+
+  public static void GetInterfaces<T>(out List<T> resultList, GameObject objectToSearch) where T: class {
+    MonoBehaviour[] list = objectToSearch.GetComponents<MonoBehaviour>();
+    resultList = new List<T>();
+    foreach(MonoBehaviour mb in list){
+      if(mb is T){
+        //found one
+        resultList.Add((T)((System.Object)mb));
+      }
+    }
   }
 }
