@@ -25,11 +25,14 @@ public class TooltipManager : MonoBehaviour {
   public string[] inputFiles;
 
   public UILabel titleLabel;
+  public UILabel typeLabel;
   public UILabel subtitleLabel;
+  public UILabel lengthValue;
+  public UILabel referenceValue;
   public UILabel explanationLabel;
-  public UILabel bottomLabel;
 
-  public GameObject tooltipPanel;
+  //public GameObject tooltipPanel;
+  public UIPanel tooltipPanel;
   public UISprite tooltipSprite;
 
   public GameStateController gameStateController;
@@ -127,7 +130,6 @@ public class TooltipManager : MonoBehaviour {
       if(fillInFieldsFromCode(code))
       {
         Logger.Log("TooltipManager::displayTooltip("+code+") fillInFieldsFromCode worked", Logger.Level.TEMP);
-        _instance.tooltipPanel.SetActive(true);
         _instance.tooltipPanel.gameObject.SetActive(true);
 
         //Rect rectout = _instance.tooltipPanel.GetAtlasSprite().outer;
@@ -151,11 +153,13 @@ public class TooltipManager : MonoBehaviour {
 
     if(null != info)
     {
-      _instance.titleLabel.text       = info._title;
-      _instance.subtitleLabel.text    = info._subtitle;
+      _instance.titleLabel.text          = info._title;
+      _instance.typeLabel.text           = info._type;
+      _instance.subtitleLabel.text       = info._subtitle;
       _instance.tooltipSprite.spriteName = info._texture;
-      _instance.explanationLabel.text = info._explanation;
-      _instance.bottomLabel.text      = info._bottom;
+      _instance.lengthValue.text         = info._length;
+      _instance.referenceValue.text      = info._reference;
+      _instance.explanationLabel.text    = info._explanation;
 
       return true;
     }
@@ -202,16 +206,18 @@ public class TooltipManager : MonoBehaviour {
     switch(quadrant)
     {
       case Quadrant.TOP_LEFT:
-        _instance.tooltipPanel.pivot = UIWidget.Pivot.TopLeft;
+        //TODO
+      //_instance.tooltipPanel.
+        //_instance.tooltipPanel.pivot = UIWidget.Pivot.TopLeft;
         break;
       case Quadrant.TOP_RIGHT:
-        _instance.tooltipPanel.pivot = UIWidget.Pivot.TopRight;
+        //_instance.tooltipPanel.pivot = UIWidget.Pivot.TopRight;
         break;
       case Quadrant.BOTTOM_LEFT:
-        _instance.tooltipPanel.pivot = UIWidget.Pivot.BottomLeft;
+        //_instance.tooltipPanel.pivot = UIWidget.Pivot.BottomLeft;
         break;
       case Quadrant.BOTTOM_RIGHT:
-        _instance.tooltipPanel.pivot = UIWidget.Pivot.BottomRight;
+        //_instance.tooltipPanel.pivot = UIWidget.Pivot.BottomRight;
         break;
     }
     _instance.tooltipPanel.transform.position = new Vector3(pos.x, pos.y, _instance.tooltipPanel.transform.position.z);

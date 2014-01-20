@@ -5,8 +5,10 @@ public static class TooltipXMLTags {
     TOOLTIP = "tooltip",
     CODE = "code",
     TITLE = "title",
+    TYPE = "type",
     SUBTITLE = "subtitle",
     TEXTURE = "texture",
-    EXPLANATION = "explanation",
-    BOTTOM = "bottom";
+    LENGTH = "length",
+    REFERENCE = "reference",
+    EXPLANATION = "explanation";
 }

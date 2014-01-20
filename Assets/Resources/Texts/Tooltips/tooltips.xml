@@ -1,0 +1,11 @@
+<tooltipList>
+  <tooltip code="b_PRCONS">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <texture>tuto_intro-01</texture>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+</tooltipList>

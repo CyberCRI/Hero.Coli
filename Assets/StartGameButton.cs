@@ -16,11 +16,11 @@ public class StartGameButton : MonoBehaviour {
 	}
 		
 	void OnPress(bool isPressed) {
-	    if(isPressed) {
-	      Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
-	      fadeSprite.FadeOut();
-		  gameStateController.StateChange(GameState.Game);
-		  gameStateController.dePauseForbidden = false;
+    if(isPressed) {
+      Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
+      fadeSprite.FadeOut();
+      gameStateController.StateChange(GameState.Game);
+      gameStateController.dePauseForbidden = false;
 	    }
   	}
 				
