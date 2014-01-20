@@ -36,7 +36,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
   protected override void OnPress(bool isPressed) {
     Logger.Log("CraftZoneDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
     CraftZoneManager.get ().removeBioBrick(_biobrick);
-    TooltipManager.tooltip();
+    TooltipManager.displayTooltip();
   }
 
 }

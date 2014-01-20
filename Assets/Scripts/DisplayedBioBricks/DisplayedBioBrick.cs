@@ -91,6 +91,6 @@ public class DisplayedBioBrick : DisplayedElement {
       _lastHoveredInfoManager.setHoveredDefault();
     }
     */
-    TooltipManager.tooltip(isOver, _biobrick, transform.position);
+    TooltipManager.displayTooltip(isOver, _biobrick, transform.position);
   }
 }

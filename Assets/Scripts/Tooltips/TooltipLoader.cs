@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 
 //TODO refactor with FileLoader
-public class InfoWindowLoader {
+public class TooltipLoader {
 
   private string _code;
   private string _title;
@@ -14,9 +14,8 @@ public class InfoWindowLoader {
   private string _texture;
   private string _explanation;
   private string _bottom;
-  private string _next;
 
-  private StandardInfoWindowInfo _info;
+  private TooltipInfo _info;
 
   private void reinitVars() {
     _code = null;
@@ -28,55 +27,52 @@ public class InfoWindowLoader {
     _info = null;
   }
 
-  public LinkedList<StandardInfoWindowInfo> loadInfoFromFile(string filePath)
+  public LinkedList<TooltipInfo> loadInfoFromFile(string filePath)
   {
-    Logger.Log("InfoWindowLoader::loadInfoFromFile("+filePath+")", Logger.Level.INFO);
+    Logger.Log("::loadInfoFromFile("+filePath+")", Logger.Level.INFO);
 
-    LinkedList<StandardInfoWindowInfo> resultInfo = new LinkedList<StandardInfoWindowInfo>();
+    LinkedList<TooltipInfo> resultInfo = new LinkedList<TooltipInfo>();
 
     XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
-    XmlNodeList infoList = xmlDoc.GetElementsByTagName(InfoWindowXMLTags.INFO);
+    XmlNodeList infoList = xmlDoc.GetElementsByTagName(TooltipXMLTags.TOOLTIP);
 
     foreach (XmlNode infoNode in infoList)
     {
       reinitVars();
       //common info attributes
       try {
-        _code = infoNode.Attributes[InfoWindowXMLTags.CODE].Value;
+        _code = infoNode.Attributes[TooltipXMLTags.CODE].Value;
       }
       catch (NullReferenceException exc) {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
+        Logger.Log("TooltipLoader::loadInfoFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
         continue;
       }
       catch (Exception exc) {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile failed, got exc="+exc, Logger.Level.WARN);
+        Logger.Log("TooltipLoader::loadInfoFromFile failed, got exc="+exc, Logger.Level.WARN);
         continue;
       }
 
       if (checkString(_code)) {
         foreach (XmlNode attr in infoNode){
           switch (attr.Name){
-            case InfoWindowXMLTags.TITLE:
+            case TooltipXMLTags.TITLE:
               _title = attr.InnerText;
               break;
-            case InfoWindowXMLTags.SUBTITLE:
+            case TooltipXMLTags.SUBTITLE:
               _subtitle = attr.InnerText;
               break;
-            case InfoWindowXMLTags.TEXTURE:
+            case TooltipXMLTags.TEXTURE:
               _texture = attr.InnerText;
               break;
-            case InfoWindowXMLTags.EXPLANATION:
+            case TooltipXMLTags.EXPLANATION:
               _explanation = attr.InnerText;
               break;
-            case InfoWindowXMLTags.BOTTOM:
+            case TooltipXMLTags.BOTTOM:
               _bottom = attr.InnerText;
               break;
-            case InfoWindowXMLTags.NEXT:
-              _next = attr.InnerText;
-              break;
             default:
-                Logger.Log("InfoWindowLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
+                Logger.Log("TooltipLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
               break;
           }
         }
@@ -86,10 +82,9 @@ public class InfoWindowLoader {
           && checkString(_texture)
           && checkString(_explanation)
           && checkString(_bottom)
-          && checkString(_next)
           )
         {
-          _info = new StandardInfoWindowInfo(_code, _title, _subtitle, _texture, _explanation, _bottom, _next);
+          _info = new TooltipInfo(_code, _title, _subtitle, _texture, _explanation, _bottom);
         }
         if(null != _info)
         {
@@ -98,7 +93,7 @@ public class InfoWindowLoader {
       }
       else
       {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile Error : missing attribute code in info node", Logger.Level.WARN);
+        Logger.Log("TooltipLoader::loadInfoFromFile Error : missing attribute code in info node", Logger.Level.WARN);
       }
     }
     return resultInfo;

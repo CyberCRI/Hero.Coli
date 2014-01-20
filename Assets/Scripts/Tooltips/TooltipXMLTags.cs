@@ -1,16 +1,12 @@
 
-public static class InfoWindowXMLTags {
+public static class TooltipXMLTags {
   public const string
-    INFOLIST = "infoList",
-    INFO = "info",
+    TOOLTIPLIST = "tooltipList",
+    TOOLTIP = "tooltip",
     CODE = "code",
     TITLE = "title",
     SUBTITLE = "subtitle",
     TEXTURE = "texture",
     EXPLANATION = "explanation",
-    BOTTOM = "bottom",
-    NEXT = "next",
-    WORLD = "world",
-    EQUIP = "equip",
-    CRAFT = "craft";
+    BOTTOM = "bottom";
 }
