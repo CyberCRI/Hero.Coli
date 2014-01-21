@@ -35,4 +35,13 @@
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
   </tooltip>
+  <tooltip code="d_Hyperflagellation (low)">
+    <title>Constitutive promoter</title>
+    <type>Device</type>
+    <subtitle>subtitle</subtitle>
+    <texture>tuto_intro-01</texture>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
 </tooltipList>

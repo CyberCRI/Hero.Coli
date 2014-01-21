@@ -242,7 +242,7 @@ public class TooltipManager : MonoBehaviour {
     Vector3 localPos2 = _instance.tooltipPanel.transform.localPosition;
     Logger.Log("TooltipManager::setPosition inter position="+_instance.tooltipPanel.transform.position, Logger.Level.TEMP);
     Logger.Log("TooltipManager::setPosition inter localPosition="+_instance.tooltipPanel.transform.localPosition, Logger.Level.TEMP);
-    _instance.tooltipPanel.transform.localPosition = new Vector3(localPos2.x + xShift, localPos2.y + yShift, localPos2.z);
+    _instance.tooltipPanel.transform.localPosition = new Vector3(localPos2.x + xShift, localPos2.y + yShift, -0.9f);
     Logger.Log("TooltipManager::setPosition final position="+_instance.tooltipPanel.transform.position, Logger.Level.TEMP);
     Logger.Log("TooltipManager::setPosition final localPosition="+_instance.tooltipPanel.transform.localPosition, Logger.Level.TEMP);
   }
