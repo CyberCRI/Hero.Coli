@@ -8,4 +8,31 @@
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
   </tooltip>
+  <tooltip code="b_RBS2">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <texture>tuto_intro-01</texture>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+  <tooltip code="b_MOV">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <texture>tuto_intro-01</texture>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+  <tooltip code="b_DTER">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <texture>tuto_intro-01</texture>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
 </tooltipList>

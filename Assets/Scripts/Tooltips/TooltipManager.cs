@@ -34,6 +34,7 @@ public class TooltipManager : MonoBehaviour {
   //public GameObject tooltipPanel;
   public UIPanel tooltipPanel;
   public UISprite tooltipSprite;
+  public UISprite backgroundSprite;
 
   public GameStateController gameStateController;
 
@@ -203,24 +204,47 @@ public class TooltipManager : MonoBehaviour {
   private static void setPosition(Vector3 pos)
   {
     Quadrant quadrant = getQuadrant(pos);
+    float xShift, yShift;
+
+    float xScale = _instance.backgroundSprite.transform.localScale.x
+      , yScale = _instance.backgroundSprite.transform.localScale.y;
+    Logger.Log("TooltipManager::setPosition pos.x="+pos.x+", pos.y="+pos.y, Logger.Level.TEMP);
+    Logger.Log("TooltipManager::setPosition xScale="+xScale+", yScale="+yScale, Logger.Level.TEMP);
+    Logger.Log("TooltipManager::setPosition initial position="+_instance.tooltipPanel.transform.position, Logger.Level.TEMP);
+    Logger.Log("TooltipManager::setPosition initial localPosition="+_instance.tooltipPanel.transform.localPosition, Logger.Level.TEMP);
+
+    xShift = xScale/2;
+    yShift = yScale/2;
+
     switch(quadrant)
     {
       case Quadrant.TOP_LEFT:
-        //TODO
-      //_instance.tooltipPanel.
-        //_instance.tooltipPanel.pivot = UIWidget.Pivot.TopLeft;
+        Logger.Log("TooltipManager::setPosition TOP_LEFT", Logger.Level.TEMP);
+        yShift = -yShift;
         break;
       case Quadrant.TOP_RIGHT:
-        //_instance.tooltipPanel.pivot = UIWidget.Pivot.TopRight;
+        Logger.Log("TooltipManager::setPosition TOP_RIGHT", Logger.Level.TEMP);
+        xShift = -xShift;
+        yShift = -yShift;
         break;
       case Quadrant.BOTTOM_LEFT:
-        //_instance.tooltipPanel.pivot = UIWidget.Pivot.BottomLeft;
+        Logger.Log("TooltipManager::setPosition BOTTOM_LEFT", Logger.Level.TEMP);
         break;
       case Quadrant.BOTTOM_RIGHT:
-        //_instance.tooltipPanel.pivot = UIWidget.Pivot.BottomRight;
+        Logger.Log("TooltipManager::setPosition BOTTOM_RIGHT", Logger.Level.TEMP);
+        xShift = -xShift;
+        break;
+      default:
+        Logger.Log("TooltipManager::setPosition default case", Logger.Level.WARN);
         break;
     }
-    _instance.tooltipPanel.transform.position = new Vector3(pos.x, pos.y, _instance.tooltipPanel.transform.position.z);
+    _instance.tooltipPanel.transform.position = new Vector3(pos.x, pos.y, pos.z);
+    Vector3 localPos2 = _instance.tooltipPanel.transform.localPosition;
+    Logger.Log("TooltipManager::setPosition inter position="+_instance.tooltipPanel.transform.position, Logger.Level.TEMP);
+    Logger.Log("TooltipManager::setPosition inter localPosition="+_instance.tooltipPanel.transform.localPosition, Logger.Level.TEMP);
+    _instance.tooltipPanel.transform.localPosition = new Vector3(localPos2.x + xShift, localPos2.y + yShift, localPos2.z);
+    Logger.Log("TooltipManager::setPosition final position="+_instance.tooltipPanel.transform.position, Logger.Level.TEMP);
+    Logger.Log("TooltipManager::setPosition final localPosition="+_instance.tooltipPanel.transform.localPosition, Logger.Level.TEMP);
   }
 
   private static Quadrant getQuadrant(Vector3 pos)
