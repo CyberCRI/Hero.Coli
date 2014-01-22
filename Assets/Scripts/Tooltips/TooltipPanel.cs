@@ -7,9 +7,11 @@ public class TooltipPanel : MonoBehaviour
   public UILabel typeLabel;
   public UILabel subtitleLabel;
   public UISprite illustrationSprite;
-  public UILabel lengthValue;
-  public UILabel energyConsumptionValue;
-  public UILabel referenceValue;
+  public UILabel customFieldLabel;
+  public UILabel customValueLabel;
+  public UILabel lengthValueLabel;
+  public UILabel energyConsumptionValueLabel;
+  public UILabel referenceValueLabel;
   public UILabel explanationLabel;
 
   public override string ToString ()
@@ -20,9 +22,11 @@ public class TooltipPanel : MonoBehaviour
       +", typeLabel="+typeLabel
       +", subtitleLabel="+subtitleLabel
       +", illustrationSprite="+illustrationSprite
-      +", lengthValue="+lengthValue
-      +", energyConsumptionValue="+energyConsumptionValue
-      +", referenceValue="+referenceValue
+      +", customFieldLabel="+customFieldLabel
+      +", customValueLabel="+customValueLabel
+      +", lengthValueLabel="+lengthValueLabel
+      +", energyConsumptionValueLabel="+energyConsumptionValueLabel
+      +", referenceValueLabel="+referenceValueLabel
       +", explanationLabel="+explanationLabel
       +"]");
   }

@@ -18,13 +18,15 @@
     <explanation>Quick, equip it!</explanation>
   </tooltip>
   <tooltip code="b_MOV">
-    <title>Constitutive promoter</title>
+    <title>Hyperflagellation gene</title>
     <type>BioBrick</type>
     <subtitle>subtitle</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <length>Quick, equip it!</length>
-    <reference>Quick, equip it!</reference>
-    <explanation>Quick, equip it!</explanation>
+    <customField>Custom:</customField>
+    <customValue>custom value</customValue>
+    <length>1234 bp</length>
+    <reference>Some reference</reference>
+    <explanation>Some explanation</explanation>
   </tooltip>
   <tooltip code="b_DTER">
     <title>Constitutive promoter</title>

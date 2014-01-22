@@ -8,6 +8,8 @@ public static class TooltipXMLTags {
     TYPE = "type",
     SUBTITLE = "subtitle",
     ILLUSTRATION = "illustration",
+    CUSTOMFIELD = "customField",
+    CUSTOMVALUE = "customValue",
     LENGTH = "length",
     REFERENCE = "reference",
     ENERGYCONSUMPTION = "energyConsumption",

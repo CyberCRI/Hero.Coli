@@ -28,11 +28,13 @@ public class TooltipManager : MonoBehaviour {
   private UILabel _titleLabel;
   private UILabel _typeLabel;
   private UILabel _subtitleLabel;
-  private UILabel _lengthValue;
-  private UILabel _referenceValue;
-  private UILabel _energyConsumptionValue;
-  private UILabel _explanationLabel;
   private UISprite _illustrationSprite;
+  private UILabel _customFieldLabel;
+  private UILabel _customValueLabel;
+  private UILabel _lengthValueLabel;
+  private UILabel _referenceValueLabel;
+  private UILabel _energyConsumptionValueLabel;
+  private UILabel _explanationLabel;
 
   //public GameObject _tooltipPanel;
   private UIPanel _tooltipPanel;
@@ -94,11 +96,13 @@ public class TooltipManager : MonoBehaviour {
     _instance._titleLabel = panel.titleLabel;
     _instance._typeLabel = panel.typeLabel;
     _instance._subtitleLabel = panel.subtitleLabel;
-    _instance._lengthValue = panel.lengthValue;
-    _instance._referenceValue = panel.referenceValue;
-    _instance._energyConsumptionValue = panel.energyConsumptionValue;
-    _instance._explanationLabel = panel.explanationLabel;
     _instance._illustrationSprite = panel.illustrationSprite;
+    _instance._customFieldLabel = panel.customFieldLabel;
+    _instance._customValueLabel = panel.customValueLabel;
+    _instance._lengthValueLabel = panel.lengthValueLabel;
+    _instance._referenceValueLabel = panel.referenceValueLabel;
+    _instance._energyConsumptionValueLabel = panel.energyConsumptionValueLabel;
+    _instance._explanationLabel = panel.explanationLabel;
     _instance._backgroundSprite = panel.backgroundSprite;
   }
   //public float scale;
@@ -211,10 +215,22 @@ public class TooltipManager : MonoBehaviour {
       _instance._titleLabel.text               = info._title;
       _instance._typeLabel.text                = info._type;
       _instance._subtitleLabel.text            = info._subtitle;
-      _instance._illustrationSprite.spriteName = info._illustration;
-      _instance._lengthValue.text              = info._length;
-      _instance._referenceValue.text           = info._reference;
-      _instance._energyConsumptionValue.text   = info._energyConsumption;
+
+      if(null != _instance._illustrationSprite)
+        _instance._illustrationSprite.spriteName = info._illustration;
+
+      if((null != _instance._customFieldLabel) && (null != _instance._customValueLabel))
+      {
+        _instance._customFieldLabel.text = info._customField;
+        _instance._customValueLabel.text = info._customValue;
+      }
+
+      _instance._lengthValueLabel.text              = info._length;
+      _instance._referenceValueLabel.text           = info._reference;
+
+      if(null != _instance._energyConsumptionValueLabel)
+        _instance._energyConsumptionValueLabel.text   = info._energyConsumption;
+
       _instance._explanationLabel.text         = info._explanation;
 
       return true;

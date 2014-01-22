@@ -13,6 +13,8 @@ public class TooltipLoader {
   private string _type;
   private string _subtitle;
   private string _illustration;
+  private string _customField;
+  private string _customValue;
   private string _length;
   private string _reference;
   private string _energyConsumption;
@@ -26,6 +28,8 @@ public class TooltipLoader {
     _type = null;
     _subtitle = null;
     _illustration = null;
+    _customField = null;
+    _customValue = null;
     _length = null;
     _reference = null;
     _energyConsumption = null;
@@ -76,6 +80,12 @@ public class TooltipLoader {
             case TooltipXMLTags.ILLUSTRATION:
               _illustration = attr.InnerText;
               break;
+            case TooltipXMLTags.CUSTOMFIELD:
+              _customField = attr.InnerText;
+              break;
+            case TooltipXMLTags.CUSTOMVALUE:
+              _customValue = attr.InnerText;
+              break;
             case TooltipXMLTags.LENGTH:
               _length = attr.InnerText;
               break;
@@ -98,6 +108,8 @@ public class TooltipLoader {
           && checkString(_type)
           && checkString(_subtitle)
           //&& checkString(_illustration)
+          //&& checkString(_customField)
+          //&& checkString(_customValue)
           && checkString(_length)
           && checkString(_reference)
           //&& checkString(_energyConsumption)
@@ -110,6 +122,8 @@ public class TooltipLoader {
             _type,
             _subtitle,
             _illustration,
+            _customField,
+            _customValue,
             _length,
             _reference,
             _energyConsumption,
