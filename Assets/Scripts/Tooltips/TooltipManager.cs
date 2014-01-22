@@ -75,7 +75,6 @@ public class TooltipManager : MonoBehaviour {
 
   private static void setVarsFromTooltipPanel(TooltipType type)
   {
-    Logger.Log("TooltipManager::setVarsFromTooltipPanel()", Logger.Level.TEMP);
     TooltipPanel panel;
 
     switch(type)
@@ -90,7 +89,6 @@ public class TooltipManager : MonoBehaviour {
         panel = _instance.bioBrickTooltipPanel;
         break;
     }
-    Logger.Log("TooltipManager::setVarsFromTooltipPanel() panel="+panel, Logger.Level.TEMP);
     _instance._tooltipPanel = panel.gameObject.GetComponent<UIPanel>();
 
     _instance._titleLabel = panel.titleLabel;
@@ -153,39 +151,32 @@ public class TooltipManager : MonoBehaviour {
 
   public static bool displayTooltip()
   {
-    Logger.Log("TooltipManager::displayTooltip()", Logger.Level.TEMP);
     _instance._tooltipPanel.gameObject.SetActive(false);
     return true;
   }
 
   public static bool displayTooltip(bool isOver, Device device, Vector3 pos)
   {
-    Logger.Log("TooltipManager::displayTooltip("+device+")", Logger.Level.TEMP);
     string code = (null == device)?null:_devicePrefix+device.getName();
     return displayTooltip(isOver, code, pos);
   }
 
   public static bool displayTooltip(bool isOver, BioBrick brick, Vector3 pos)
   {
-    Logger.Log("TooltipManager::displayTooltip("+brick+")", Logger.Level.TEMP);
     string code = (null == brick)?null:_bioBrickPrefix+brick.getName();
     return displayTooltip(isOver, code, pos);
   }
 
   private static bool displayTooltip(bool isOver, string code, Vector3 pos)
   {
-    Logger.Log("TooltipManager::displayTooltip("+code+")", Logger.Level.TEMP);
     if(!isOver || (null == code))
     {
-      Logger.Log("TooltipManager::displayTooltip("+code+") (!isOver || (null == code))", Logger.Level.TEMP);
       return displayTooltip();
     }
     else
     {
-      Logger.Log("TooltipManager::displayTooltip("+code+") !(!isOver || (null == code))", Logger.Level.TEMP);
       if(fillInFieldsFromCode(code))
       {
-        Logger.Log("TooltipManager::displayTooltip("+code+") fillInFieldsFromCode worked", Logger.Level.TEMP);
         _instance._tooltipPanel.gameObject.SetActive(true);
 
         //Rect rectout = _instance._tooltipPanel.GetAtlasSprite().outer;
@@ -279,10 +270,6 @@ public class TooltipManager : MonoBehaviour {
 
     float xScale = _instance._backgroundSprite.transform.localScale.x
       , yScale = _instance._backgroundSprite.transform.localScale.y;
-    Logger.Log("TooltipManager::setPosition pos.x="+pos.x+", pos.y="+pos.y, Logger.Level.TEMP);
-    Logger.Log("TooltipManager::setPosition xScale="+xScale+", yScale="+yScale, Logger.Level.TEMP);
-    Logger.Log("TooltipManager::setPosition initial position="+_instance._backgroundSprite.transform.position, Logger.Level.TEMP);
-    Logger.Log("TooltipManager::setPosition initial localPosition="+_instance._tooltipPanel.transform.localPosition, Logger.Level.TEMP);
 
     xShift = xScale/2;
     yShift = yScale/2;
@@ -290,19 +277,15 @@ public class TooltipManager : MonoBehaviour {
     switch(quadrant)
     {
       case Quadrant.TOP_LEFT:
-        Logger.Log("TooltipManager::setPosition TOP_LEFT", Logger.Level.TEMP);
         yShift = -yShift;
         break;
       case Quadrant.TOP_RIGHT:
-        Logger.Log("TooltipManager::setPosition TOP_RIGHT", Logger.Level.TEMP);
         xShift = -xShift;
         yShift = -yShift;
         break;
       case Quadrant.BOTTOM_LEFT:
-        Logger.Log("TooltipManager::setPosition BOTTOM_LEFT", Logger.Level.TEMP);
         break;
       case Quadrant.BOTTOM_RIGHT:
-        Logger.Log("TooltipManager::setPosition BOTTOM_RIGHT", Logger.Level.TEMP);
         xShift = -xShift;
         break;
       default:
@@ -311,11 +294,7 @@ public class TooltipManager : MonoBehaviour {
     }
     _instance._tooltipPanel.transform.position = new Vector3(pos.x, pos.y, pos.z);
     Vector3 localPos2 = _instance._tooltipPanel.transform.localPosition;
-    Logger.Log("TooltipManager::setPosition inter position="+_instance._tooltipPanel.transform.position, Logger.Level.TEMP);
-    Logger.Log("TooltipManager::setPosition inter localPosition="+_instance._tooltipPanel.transform.localPosition, Logger.Level.TEMP);
     _instance._tooltipPanel.transform.localPosition = new Vector3(localPos2.x + xShift, localPos2.y + yShift, -0.9f);
-    Logger.Log("TooltipManager::setPosition final position="+_instance._tooltipPanel.transform.position, Logger.Level.TEMP);
-    Logger.Log("TooltipManager::setPosition final localPosition="+_instance._tooltipPanel.transform.localPosition, Logger.Level.TEMP);
   }
 
   private static Quadrant getQuadrant(Vector3 pos)
@@ -338,5 +317,11 @@ public class TooltipManager : MonoBehaviour {
       else
         return Quadrant.BOTTOM_RIGHT;
     }
+  }
+
+  void Start()
+  {
+    bioBrickTooltipPanel.gameObject.SetActive(false);
+    deviceTooltipPanel.gameObject.SetActive(false);
   }
 }

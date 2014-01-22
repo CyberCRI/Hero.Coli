@@ -39,7 +39,7 @@ public class TooltipLoader {
 
   public LinkedList<TooltipInfo> loadInfoFromFile(string filePath)
   {
-    Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+")", Logger.Level.TEMP);
+    Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+")", Logger.Level.DEBUG);
 
     LinkedList<TooltipInfo> resultInfo = new LinkedList<TooltipInfo>();
 
@@ -49,12 +49,10 @@ public class TooltipLoader {
 
     foreach (XmlNode infoNode in infoList)
     {
-      Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+") infoNode="+infoNode, Logger.Level.TEMP);
       reinitVars();
       //common info attributes
       try {
         _code = infoNode.Attributes[TooltipXMLTags.CODE].Value;
-        Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+") _code="+_code, Logger.Level.TEMP);
       }
       catch (NullReferenceException exc) {
         Logger.Log("TooltipLoader::loadInfoFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
@@ -132,7 +130,6 @@ public class TooltipLoader {
         }
         if(null != _info)
         {
-          Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+") AddLast(_info)="+_info, Logger.Level.TEMP);
           resultInfo.AddLast(_info);
         }
       }
