@@ -7,8 +7,9 @@ public static class TooltipXMLTags {
     TITLE = "title",
     TYPE = "type",
     SUBTITLE = "subtitle",
-    TEXTURE = "texture",
+    ILLUSTRATION = "illustration",
     LENGTH = "length",
     REFERENCE = "reference",
+    ENERGYCONSUMPTION = "energyConsumption",
     EXPLANATION = "explanation";
 }

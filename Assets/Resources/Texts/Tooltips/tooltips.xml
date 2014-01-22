@@ -3,7 +3,7 @@
     <title>Constitutive promoter</title>
     <type>BioBrick</type>
     <subtitle>subtitle</subtitle>
-    <texture>tuto_intro-01</texture>
+    <illustration>tuto_intro-01</illustration>
     <length>Quick, equip it!</length>
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
@@ -12,7 +12,7 @@
     <title>Constitutive promoter</title>
     <type>BioBrick</type>
     <subtitle>subtitle</subtitle>
-    <texture>tuto_intro-01</texture>
+    <illustration>tuto_intro-01</illustration>
     <length>Quick, equip it!</length>
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
@@ -21,7 +21,7 @@
     <title>Constitutive promoter</title>
     <type>BioBrick</type>
     <subtitle>subtitle</subtitle>
-    <texture>tuto_intro-01</texture>
+    <illustration>tuto_intro-01</illustration>
     <length>Quick, equip it!</length>
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
@@ -30,7 +30,7 @@
     <title>Constitutive promoter</title>
     <type>BioBrick</type>
     <subtitle>subtitle</subtitle>
-    <texture>tuto_intro-01</texture>
+    <illustration>tuto_intro-01</illustration>
     <length>Quick, equip it!</length>
     <reference>Quick, equip it!</reference>
     <explanation>Quick, equip it!</explanation>
@@ -39,9 +39,10 @@
     <title>Constitutive promoter</title>
     <type>Device</type>
     <subtitle>subtitle</subtitle>
-    <texture>tuto_intro-01</texture>
+    <illustration>tuto_intro-01</illustration>
     <length>Quick, equip it!</length>
     <reference>Quick, equip it!</reference>
+    <energyConsumption>4.492</energyConsumption>
     <explanation>Quick, equip it!</explanation>
   </tooltip>
 </tooltipList>

@@ -12,9 +12,10 @@ public class TooltipLoader {
   private string _title;
   private string _type;
   private string _subtitle;
-  private string _texture;
+  private string _illustration;
   private string _length;
   private string _reference;
+  private string _energyConsumption;
   private string _explanation;
 
   private TooltipInfo _info;
@@ -24,9 +25,10 @@ public class TooltipLoader {
     _title = null;
     _type = null;
     _subtitle = null;
-    _texture = null;
+    _illustration = null;
     _length = null;
     _reference = null;
+    _energyConsumption = null;
     _explanation = null;
     _info = null;
   }
@@ -71,14 +73,17 @@ public class TooltipLoader {
             case TooltipXMLTags.SUBTITLE:
               _subtitle = attr.InnerText;
               break;
-            case TooltipXMLTags.TEXTURE:
-              _texture = attr.InnerText;
+            case TooltipXMLTags.ILLUSTRATION:
+              _illustration = attr.InnerText;
               break;
             case TooltipXMLTags.LENGTH:
               _length = attr.InnerText;
               break;
             case TooltipXMLTags.REFERENCE:
               _reference = attr.InnerText;
+              break;
+            case TooltipXMLTags.ENERGYCONSUMPTION:
+              _energyConsumption = attr.InnerText;
               break;
             case TooltipXMLTags.EXPLANATION:
               _explanation = attr.InnerText;
@@ -92,13 +97,24 @@ public class TooltipLoader {
           checkString(_title)
           && checkString(_type)
           && checkString(_subtitle)
-          && checkString(_texture)
+          //&& checkString(_illustration)
           && checkString(_length)
           && checkString(_reference)
+          //&& checkString(_energyConsumption)
           && checkString(_explanation)
           )
         {
-          _info = new TooltipInfo(_code, _title, _type, _subtitle, _texture, _length, _reference, _explanation);
+          _info = new TooltipInfo(
+            _code,
+            _title,
+            _type,
+            _subtitle,
+            _illustration,
+            _length,
+            _reference,
+            _energyConsumption,
+            _explanation
+            );
         }
         if(null != _info)
         {
