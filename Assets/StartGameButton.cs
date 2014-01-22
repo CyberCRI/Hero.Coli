@@ -5,6 +5,7 @@ public class StartGameButton : MonoBehaviour {
 	
 	public GameStateController gameStateController;
 	public Fade fadeSprite;
+  public GameObject panel;
 	// Use this for initialization
 	void Start () {
 	
@@ -16,11 +17,12 @@ public class StartGameButton : MonoBehaviour {
 	}
 		
 	void OnPress(bool isPressed) {
-	    if(isPressed) {
-	      Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
-	      fadeSprite.FadeOut();
-		  gameStateController.StateChange(GameState.Game);
-		  gameStateController.dePauseForbidden = false;
+    if(isPressed) {
+      Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
+      fadeSprite.FadeOut();
+      panel.SetActive(false);
+      gameStateController.StateChange(GameState.Game);
+      gameStateController.dePauseForbidden = false;
 	    }
   	}
 				

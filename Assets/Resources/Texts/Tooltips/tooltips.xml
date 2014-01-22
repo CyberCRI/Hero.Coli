@@ -1,0 +1,50 @@
+<tooltipList>
+  <tooltip code="b_PRCONS">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+  <tooltip code="b_RBS2">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+  <tooltip code="b_MOV">
+    <title>Hyperflagellation gene</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <customField>Custom:</customField>
+    <customValue>custom value</customValue>
+    <length>1234 bp</length>
+    <reference>Some reference</reference>
+    <explanation>Some explanation</explanation>
+  </tooltip>
+  <tooltip code="b_DTER">
+    <title>Constitutive promoter</title>
+    <type>BioBrick</type>
+    <subtitle>subtitle</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+  <tooltip code="d_Hyperflagellation (low)">
+    <title>Constitutive promoter</title>
+    <type>Device</type>
+    <subtitle>subtitle</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>Quick, equip it!</length>
+    <reference>Quick, equip it!</reference>
+    <energyConsumption>4.492</energyConsumption>
+    <explanation>Quick, equip it!</explanation>
+  </tooltip>
+</tooltipList>

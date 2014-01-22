@@ -44,7 +44,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         return;
       }
 	    if (_devicesDisplayer.IsEquipScreen()) {
-        TooltipManager.tooltip();
+        TooltipManager.displayTooltip();
 	      _devicesDisplayer.askRemoveEquipedDevice(_device);
 	    }
 	  }
