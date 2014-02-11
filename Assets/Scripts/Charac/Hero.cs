@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Hero : MonoBehaviour{
 	public LifeLogoAnimation lifeAnimation;
+	public EnergyLogoAnimation EnergyAnimation;
 	Medium _medium;
 	
 	/*
@@ -70,6 +71,11 @@ public class Hero : MonoBehaviour{
 
   //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
+	if(energy >_medium.getEnergyProductionRate()) {
+		if(EnergyAnimation.isPlaying == false){
+			EnergyAnimation.Play();
+		}
+	}
     _medium.subEnergy(energy);
   }
 

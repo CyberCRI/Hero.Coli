@@ -14,6 +14,11 @@ public class Inventory : DeviceContainer
     }
     return _instance;
   }
+	
+		public int GetDeviceCount()
+	{
+		return _devices.Count;
+	}
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
