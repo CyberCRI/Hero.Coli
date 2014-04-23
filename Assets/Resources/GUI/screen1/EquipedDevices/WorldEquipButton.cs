@@ -4,7 +4,7 @@ using System.Collections;
 public class WorldEquipButton : MonoBehaviour {
 	
 	private Inventory _inventory;
-	public UpdateInventoryAnimation updateAnim;
+	//public InventoryAnimator scriptAnimator;
 
   private void OnPress(bool isPressed) {
     if(isPressed && _inventory.GetDeviceCount() != 0) {
@@ -12,10 +12,10 @@ public class WorldEquipButton : MonoBehaviour {
       GUITransitioner.get().SwitchScreen(GUITransitioner.GameScreen.screen1, GUITransitioner.GameScreen.screen2);
     }
 
-		if(updateAnim.isPlaying == true)
+		/*if(scriptAnimator.isPlaying == true)
 		{
-			updateAnim.reset();
-		}
+			scriptAnimator.reset();
+		}*/
   }
 
   void Start()
