@@ -5,9 +5,10 @@ public class Inventory : DeviceContainer
 {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
-  public static string gameObjectName = "DeviceInventory";
-  private static Inventory _instance;
-  public static Inventory get() {
+  	public static string gameObjectName = "DeviceInventory";
+	public UpdateInventoryAnimation updateAnim;
+  	private static Inventory _instance;
+  	public static Inventory get() {
     if(_instance == null) {
       Logger.Log("Inventory::get was badly initialized", Logger.Level.WARN);
       _instance = GameObject.Find(gameObjectName).GetComponent<Inventory>();
@@ -115,6 +116,11 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
     _displayer.addInventoriedDevice(copy);
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count, Logger.Level.TRACE);
+
+		if (updateAnim.isPlaying ==false)
+		{
+			updateAnim.Play();
+		}
   }
 
   public AddingResult canAddDevice(Device device) {
