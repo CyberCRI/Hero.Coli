@@ -82,12 +82,12 @@ public class Hero : MonoBehaviour{
 
 	public void DisplayEnergyAnimation()
 	{
-		if (_energy <= _energyBefore*0.995)
-	{
-		if(EnergyAnimation.isPlaying == false){
-			EnergyAnimation.Play();
-		}
-	}
+    if (_energyBefore - _energy > 0)
+    {
+		  if(EnergyAnimation.isPlaying == false) {
+			  EnergyAnimation.Play();
+		  }
+	  }
 		_energyBefore = _energy;
 
 		/*float totalEnergy= 0f;
