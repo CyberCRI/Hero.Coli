@@ -47,6 +47,8 @@ public class Hero : MonoBehaviour{
   private bool _pause;
 	private bool _isLiving;
 
+	private float _energyBefore = 1f;
+
   public void Pause(bool pause)
   {
     _pause = pause;
@@ -71,13 +73,40 @@ public class Hero : MonoBehaviour{
 
   //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
-	if(energy >_medium.getEnergyProductionRate()) {
+
+
+
+    _medium.subEnergy(energy);
+		//_energyBefore = _energy;
+  }
+
+	public void DisplayEnergyAnimation()
+	{
+		if (_energy <= _energyBefore*0.995)
+	{
 		if(EnergyAnimation.isPlaying == false){
 			EnergyAnimation.Play();
 		}
 	}
-    _medium.subEnergy(energy);
-  }
+		_energyBefore = _energy;
+
+		/*float totalEnergy= 0f;
+		LinkedList<IReaction> Buffreac = _medium.getReactions();
+
+		foreach(IReaction react in Buffreac)
+		{
+			totalEnergy += react.getEnergyCost();
+		}
+		Logger.Log ("energie totale :"+totalEnergy,Logger.Level.INFO);
+		if(totalEnergy > _medium.getEnergyProductionRate() )
+		{
+			if(EnergyAnimation.isPlaying == false){
+				EnergyAnimation.Play();
+			}
+		}*/
+	}
+
+
 
 	//Getter & setter for the life.
 	private float _life = 1f;
@@ -144,6 +173,8 @@ public class Hero : MonoBehaviour{
 	    }
 	    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
     }
+
+		DisplayEnergyAnimation();
 	}
 
 	/*
