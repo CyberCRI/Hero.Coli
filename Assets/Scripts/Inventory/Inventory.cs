@@ -6,7 +6,7 @@ public class Inventory : DeviceContainer
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   	public static string gameObjectName = "DeviceInventory";
-	public UpdateInventoryAnimation updateAnim;
+	public InventoryAnimator scriptAnimator;
   	private static Inventory _instance;
   	public static Inventory get() {
     if(_instance == null) {
@@ -117,9 +117,9 @@ public class Inventory : DeviceContainer
     _displayer.addInventoriedDevice(copy);
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count, Logger.Level.TRACE);
 
-		if (updateAnim.isPlaying ==false)
+		if (scriptAnimator.isPlaying ==false)
 		{
-			updateAnim.Play();
+			scriptAnimator.Play();
 		}
   }
 

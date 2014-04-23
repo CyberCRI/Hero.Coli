@@ -6,6 +6,7 @@ public class GUITransitioner : MonoBehaviour {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   public static string gameObjectName = "GUITransitioner";
+	public InventoryAnimator scriptAnimator;
   private static GUITransitioner _instance;
   public static GUITransitioner get() {
     if(_instance == null) {
@@ -156,6 +157,10 @@ public class GUITransitioner : MonoBehaviour {
 
 
     } else if (destination == GameScreen.screen2) {
+			if(scriptAnimator.isPlaying == true)
+			{
+				scriptAnimator.reset();
+			}
       if(_currentScreen == GameScreen.screen1) {
          Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
          //1 -> 2
@@ -224,6 +229,8 @@ public class GUITransitioner : MonoBehaviour {
       Logger.Log ("GuiTransitioner::SwitchScreen("+alternate1+","+alternate2+"): error: unmanaged alternate", Logger.Level.WARN);
     }
   }
+
+
 	
 	// Update is called once per frame
 	void Update () {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UpdateInventoryAnimation : MonoBehaviour {
+public class InventoryAnimator : MonoBehaviour {
 	
 	
 	public bool isPlaying;
