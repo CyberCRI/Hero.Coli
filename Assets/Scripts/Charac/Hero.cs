@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Hero : MonoBehaviour{
 	public LifeLogoAnimation lifeAnimation;
-	public EnergyLogoAnimation EnergyAnimation;
+	public EnergyLogoAnimation energyAnimation;
 	Medium _medium;
 	
 	/*
@@ -85,8 +85,8 @@ public class Hero : MonoBehaviour{
 
     if (_energyBefore - _energy > 0)
     {
-		  if(EnergyAnimation.isPlaying == false) {
-			  EnergyAnimation.Play();
+		  if(energyAnimation.isPlaying == false) {
+			  energyAnimation.Play();
 		  }
 	  }
 
@@ -145,8 +145,23 @@ public class Hero : MonoBehaviour{
 	void Start (){
 		//Click to move variable.
       	//	_destination = mover.position;
+
+		//GameObject.Find("LifeEnergyIndicators").SetActive(true);
+		//GameObject.Find("LifeIndicator").SetActive(true);
+		//GameObject.Find("EnergyIndicator").SetActive(true);
+
+
+		lifeAnimation=GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
+		energyAnimation=GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+
+		GameObject.Find ("LifeIndicator").GetComponent<LifeIndicator>().hero = this;
+		GameObject.Find ("EnergyIndicator").GetComponent<EnergyIndicator>().hero = this;
+		GameObject.Find ("GUITransitioner").GetComponent<GUITransitioner>().hero = this;
+
     gameObject.SetActive(true);
 		_isLiving = true;
+
+
 
     LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
     _medium = ReactionEngine.getMediumFromId(1, mediums);
@@ -155,6 +170,9 @@ public class Hero : MonoBehaviour{
 
 		//FIXME light is undefined
       	//light.enabled = false;
+
+
+
 	}
   
 	void Update() {
