@@ -14,6 +14,8 @@ public class PhenoFickContact : Phenotype {
   //! Called at the beginning
   public override void StartPhenotype()
   {
+		vectroPanel =GameObject.Find("MediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
+		moleculeDebug = GameObject.Find("MediumInfoPanelRoom").GetComponent<MoleculeDebug>();
   }
 
   public override void UpdatePhenotype()
@@ -28,7 +30,8 @@ public class PhenoFickContact : Phenotype {
 
   private void configureExternalDisplays(int mediumId)
   {
-    vectroPanel.setMedium(mediumId);
+	
+	vectroPanel.setMedium(mediumId);
     moleculeDebug.setMediumId(mediumId);
   }
 
@@ -72,6 +75,7 @@ public class PhenoFickContact : Phenotype {
     reaction.setSurface(surface);
 
     // set medium as medium of collider
+		Logger.Log ("colliderMediumIdExt : "+colliderMediumIdExt,Logger.Level.INFO); 
     configureExternalDisplays(colliderMediumIdExt);
     _collidedMediumIds.AddLast(colliderMediumIdExt);
 

@@ -13,14 +13,20 @@ public class EnergyIndicator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TODO trigger this after resize
-		hero = GameObject.Find ("Perso").GetComponent<Hero>();
+		if (GameObject.Find ("Perso") != null)
+		{
+			hero = GameObject.Find ("Perso").GetComponent<Hero>();
+		}
 		_energyValueLabel = GameObject.Find("EnergyValue").GetComponent<UILabel>();
 		_energyValue = maxEnergy;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		_energyValue = Mathf.CeilToInt(hero.getEnergy()*maxEnergy);
-		_energyValueLabel.text = _energyValue.ToString();
+		if(hero != null)
+		{
+			_energyValue = Mathf.CeilToInt(hero.getEnergy()*maxEnergy);
+			_energyValueLabel.text = _energyValue.ToString();
+		}
 	}
 }
