@@ -33,7 +33,6 @@ public class CellControl : MonoBehaviour{
 	//Getter & setter for the inventory
 	void Start (){
     gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
-		GameObject.Find ("GUITransitioner").GetComponent<GUITransitioner>().control = this;
 	}
   
 	void Update(){
