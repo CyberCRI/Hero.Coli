@@ -50,6 +50,8 @@ public class GUITransitioner : MonoBehaviour {
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
 	private DevicesDisplayer _devicesDisplayer;
+
+
 	public VectrosityPanel _celliaGraph;
 	public VectrosityPanel _roomGraph;
 
@@ -97,6 +99,7 @@ public class GUITransitioner : MonoBehaviour {
 	private void ZoomIn() {
 		checkCamera();
 		_mainCameraFollow.SetZoom(true);
+		//Logger.Log("main camera"+_mainCameraFollow, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {

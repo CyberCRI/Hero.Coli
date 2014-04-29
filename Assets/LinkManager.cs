@@ -10,6 +10,8 @@ public class LinkManager : MonoBehaviour {
 
 		 Hero _hero = GameObject.Find("Perso").GetComponent<Hero>();
 		PhenoFickContact _pheno = GameObject.Find ("Perso").GetComponent<PhenoFickContact>();
+
+
 		//Cellcontrol connection
 		GUITransitioner.get ().control = GameObject.Find("Perso").GetComponent<CellControl>();
 
@@ -20,7 +22,7 @@ public class LinkManager : MonoBehaviour {
 		
 		GameObject.Find ("LifeIndicator").GetComponent<LifeIndicator>().hero = _hero;
 		GameObject.Find ("EnergyIndicator").GetComponent<EnergyIndicator>().hero = _hero;
-		GameObject.Find ("GUITransitioner").GetComponent<GUITransitioner>().hero = _hero;
+		GUITransitioner.get ().hero = _hero;
 
 
 		//PhenoFickcontact connections

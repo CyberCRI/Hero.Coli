@@ -16,11 +16,14 @@ public class CraftFinalizationButton : MonoBehaviour {
     if(_button == null) {
       _button = GetComponent<UIImageButton>();
     }
+		//Logger.Log ("bool enabled ====>"+enabled,Logger.Level.WARN);
     _button.enabled = enabled;
     if(enabled)
       gameObject.GetComponentInChildren<UISprite>().alpha = 1f;
-    else
-      gameObject.GetComponentInChildren<UISprite>().alpha = 0.5f;
+    else{
+			transform.Find("Background").GetComponent<UISprite>().alpha = 0.5f;
+      //gameObject.GetComponentInChildren<UISprite>().alpha = 0.5f;
+		}
   }
 
   // Use this for initialization

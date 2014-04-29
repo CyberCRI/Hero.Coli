@@ -5,6 +5,14 @@ using System.Collections.Generic;
 public class CraftFinalizer : MonoBehaviour {
   private CraftZoneManager               craftZoneManager;
 
+	public CraftZoneManager TOCraftZoneManager {
+			get {
+				return this.craftZoneManager;
+			}
+			set {
+				craftZoneManager = value;
+			}
+		}
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
   public CraftFinalizationButton        craftFinalizationButton;
 
@@ -40,6 +48,7 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
 
     bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
+
     craftFinalizationButton.setEnabled(enabled);
     Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     finalizationInfoPanelManager.setDisplayedDevice(device, status);
@@ -64,4 +73,6 @@ public class CraftFinalizer : MonoBehaviour {
   {
     craftZoneManager = CraftZoneManager.get();
   }
+
+
 }

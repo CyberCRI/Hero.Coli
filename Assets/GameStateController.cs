@@ -18,6 +18,7 @@ public bool dePauseForbidden;
 	// Use this for initialization
 	void Start () {
 		Application.LoadLevelAdditive("Bacterium1.0");
+		Application.LoadLevelAdditive("Interface1.0");
 		 _gameState = GameState.Start;
 		 dePauseForbidden = true;
 	   //dePauseForbidden = false;
@@ -29,10 +30,10 @@ public bool dePauseForbidden;
 		switch(_gameState){
 		
 			case GameState.Start:
-				
         		fadeSprite.gameObject.SetActive(true);
 			    introPanel.gameObject.SetActive(true);
 				gUITransitioner.Pause(true);
+
 			break;
 			
 			case GameState.Game:
