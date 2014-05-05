@@ -6,7 +6,7 @@ using System.Collections;
 public class LinkManager : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		 Hero _hero = GameObject.Find("Perso").GetComponent<Hero>();
 		PhenoFickContact _pheno = GameObject.Find ("Perso").GetComponent<PhenoFickContact>();

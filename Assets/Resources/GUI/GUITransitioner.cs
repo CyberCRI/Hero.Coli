@@ -79,6 +79,7 @@ public class GUITransitioner : MonoBehaviour {
 	private void SetScreen1(bool active) {
 		if(active) ZoomOut();
 		_worldScreen.SetActive(active);
+		//_craftScreen.SetActive(!active);
 	}
 	
 	private void SetScreen2(bool active) {

@@ -17,8 +17,9 @@ public bool dePauseForbidden;
 
 	// Use this for initialization
 	void Start () {
-		Application.LoadLevelAdditive("Bacterium1.0");
 		Application.LoadLevelAdditive("Interface1.0");
+		Application.LoadLevelAdditive("Bacterium1.0");
+
 		 _gameState = GameState.Start;
 		 dePauseForbidden = true;
 	   //dePauseForbidden = false;
@@ -67,6 +68,7 @@ public bool dePauseForbidden;
 			break;
 			
 			case GameState.Game:
+			//gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
 				gUITransitioner.Pause(false);
 				dePauseForbidden = false;
 			break;

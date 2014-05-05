@@ -75,7 +75,6 @@ public class TooltipManager : MonoBehaviour {
 
   private static void setVarsFromTooltipPanel(TooltipType type)
   {
-		Logger.Log ("HH",Logger.Level.WARN);
     TooltipPanel panel;
 
     switch(type)
@@ -173,12 +172,11 @@ public class TooltipManager : MonoBehaviour {
   {
     if(!isOver || (null == code))
     {
-			Logger.Log("DisplayTooltip function code=====>"+code, Logger.Level.WARN);
+			//Logger.Log("DisplayTooltip function code=====>"+code, Logger.Level.WARN);
       return displayTooltip();
     }
     else
     {
-			Logger.Log("displaytooltip 1ere fois",Logger.Level.WARN);
       if(fillInFieldsFromCode(code))
       {
         _instance._tooltipPanel.gameObject.SetActive(true);

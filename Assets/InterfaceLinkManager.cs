@@ -11,17 +11,22 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public GameObject craftZoneDisplayedBioBrickPrefab;
 	public GameObject lastHoveredInfo;
 	public GameObject genericInfoWindow;
+	public GameObject craftScreenPanel;
+	public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
+	public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
+	public CraftFinalizer craftFinalizer;
+	public UIPanel inventoryDevicesSlotsPanel;
 	public UIPanel end;
 
 	//public Camera _uicamera;
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		//shortcut
 		CraftZoneManager _craftManager = CraftZoneManager.get();
 		GameStateController _game = GameObject.Find ("GameStateController").GetComponent<GameStateController>();
-		CraftFinalizer _craftfinalizer = GameObject.Find("FinalizationZonePanel").GetComponent<CraftFinalizer>();
+		//CraftFinalizer _craftfinalizer = craftFinalizer;
 		GUITransitioner _GUITransitioner = GUITransitioner.get ();
 
 		//GUITransitioner
@@ -31,7 +36,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 			.GetComponent<VectrosityPanel>();
 		_GUITransitioner.scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
 		_GUITransitioner._worldScreen = GameObject.Find ("WorldScreensPanel");
-		_GUITransitioner._craftScreen = GameObject.Find ("CraftScreenPanel");
+		_GUITransitioner._craftScreen = craftScreenPanel;
 
 
 
@@ -49,37 +54,33 @@ public class InterfaceLinkManager : MonoBehaviour {
 		GameObject.Find ("Introduction2").SetActive(false);
 
 
-		//TooltipManager
-		TooltipManager.get().bioBrickTooltipPanel = biobrickTooltipPanel;
-		TooltipManager.get().deviceTooltipPanel = deviceTooltipPanel;
-		TooltipManager.get ().uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
+
 
 
 		//CraftFinalizer
-		GameObject.Find("FinalizationZonePanel").GetComponent<CraftFinalizer>().TOCraftZoneManager = _craftManager;
+		craftFinalizer.TOCraftZoneManager = _craftManager;
 
 		//CraftZoneManager
-		_craftManager.GetComponent<CraftZoneManager>().craftFinalizer = _craftfinalizer;
+		_craftManager.GetComponent<CraftZoneManager>().craftFinalizer = craftFinalizer;
 
 		//CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
-		_craftfinalizer.craftFinalizationButton = GameObject.Find("FinalizationZonePanel").transform.Find("CraftButton").gameObject
+		craftFinalizer.craftFinalizationButton = craftFinalizer.transform.Find("CraftButton").gameObject
 			.GetComponent<CraftFinalizationButton>();
 
 		_craftManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
 		_craftManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
-		_craftManager.assemblyZonePanel = GameObject.Find ("AssemblyZonePanel");
+		_craftManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild("AssemblyZonePanel").gameObject;
 
 
 		//DevicesDisplayer
 
 		DevicesDisplayer.get().inventoryDevice = inventoryButtonprefab;
-		Logger.Log("ListedDevice ==>"+listedDevicePrefab,Logger.Level.WARN);
 		DevicesDisplayer.get().listedInventoryDevice =listedDevicePrefab;
-		DevicesDisplayer.get().equipedDevice = GameObject.Find("EquipedDeviceButtonPrefabPos");
-		DevicesDisplayer.get().equipedDevice2 = GameObject.Find("EquipedDeviceButtonPrefabPos2");
+		DevicesDisplayer.get().equipedDevice = equipedDeviceButtonPrefabPos;
+		DevicesDisplayer.get().equipedDevice2 = equipedDeviceButtonPrefabPos2;
 		DevicesDisplayer.get ().equipPanel = GameObject.Find ("EquipedDevicesSlotsPanel").GetComponent<UIPanel>();
-		DevicesDisplayer.get ().inventoryPanel = GameObject.Find ("InventoryDevicesSlotsPanel").GetComponent<UIPanel>();
-		DevicesDisplayer.get().listedInventoryPanel = GameObject.Find ("DevicesPanel").GetComponent<UIPanel>();
+		DevicesDisplayer.get ().inventoryPanel = inventoryDevicesSlotsPanel;
+		DevicesDisplayer.get().listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
 
 
 		//InfoWindowManager
@@ -94,22 +95,36 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 		//DeviceInventory
 		Inventory.get().scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-
-
+		
 		//BiobrickInventory
+		
+		//AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
+		AvailableBioBricksManager.get().bioBricksPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
+		AvailableBioBricksManager.get ().availableBioBrick = AvailableBioBricksManager.get().bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
+		//AvailableBioBricksManager.get ().availableBioBrick = GameObject.Find ("AvailableDisplayedBioBrickPrefab");
+		
+		//TooltipManager
+		TooltipManager.get().bioBrickTooltipPanel = biobrickTooltipPanel;
+		TooltipManager.get().deviceTooltipPanel = deviceTooltipPanel;
+		TooltipManager.get ().uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
 
-		AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
-		AvailableBioBricksManager.get ().availableBioBrick = GameObject.Find ("AvailableDisplayedBioBrickPrefab");
 
 
+
+		//EquipedDisplayedDevice
+
+		//EquipedDisplayedDevice.tinyBioBrickIcon = tinyBioBrickIcon;
+		//EquipedDisplayedDevice.tinyBioBrickIcon2 = tinyBioBrickIcon2;
 
 		//Hero
 
-		GameObject.Find ("Perso").GetComponent<Hero>().energyAnimation = GameObject.Find ("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+		//GameObject.Find ("Perso").GetComponent<Hero>().energyAnimation = GameObject.Find ("EnergyLogo").GetComponent<EnergyLogoAnimation>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Start () {
+
+
 	
 	}
 }
