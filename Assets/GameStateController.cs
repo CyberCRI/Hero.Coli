@@ -19,6 +19,7 @@ public bool dePauseForbidden;
 	void Start () {
 		Application.LoadLevelAdditive("Interface1.0");
 		Application.LoadLevelAdditive("Bacterium1.0");
+		Application.LoadLevelAdditive("Field1.0");
 
 		 _gameState = GameState.Start;
 		 dePauseForbidden = true;
