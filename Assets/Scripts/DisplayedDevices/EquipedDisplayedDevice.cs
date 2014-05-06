@@ -50,14 +50,14 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 	  }
   }
 
-  public void setActivity(bool activity) {
+  /*public void setActivity(bool activity) {
    // _isActive = activity;
     if(activity) {
       setActive();
     } else {
       setInactive();
     }
-  }
+  }*/
 
  public void setActive() {
    Logger.Log("EquipedDisplayedDevice::setActive", Logger.Level.TRACE);

@@ -215,7 +215,8 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public void displayDevice() {
-    Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.TRACE);
+    Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.WARN);
+		Logger.Log ("craftFinalizer ==>"+craftFinalizer,Logger.Level.WARN);
     craftFinalizer.setDisplayedDevice(_currentDevice);
   }
 
@@ -250,7 +251,7 @@ public class CraftZoneManager : MonoBehaviour {
     return _currentDevice;
   }
 
-  void OnEnable()
+  void Start()
   {
     displayDevice();
   }

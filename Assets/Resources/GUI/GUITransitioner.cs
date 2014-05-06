@@ -44,8 +44,8 @@ public class GUITransitioner : MonoBehaviour {
 	};
 	
 	
-	public GameObject _mainCameraObject;
-	private cameraFollow _mainCameraFollow;
+	//public GameObject _mainCameraObject;
+	public cameraFollow _mainCameraFollow;
 	
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
@@ -93,18 +93,18 @@ public class GUITransitioner : MonoBehaviour {
 	
 	private void checkCamera() {
 		if(_mainCameraFollow == null) {
-			_mainCameraFollow = _mainCameraObject.GetComponent<cameraFollow>() as cameraFollow;
+			_mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>() as cameraFollow;
 		}
 	}
 	
 	private void ZoomIn() {
-		checkCamera();
+		//checkCamera();
 		_mainCameraFollow.SetZoom(true);
 		//Logger.Log("main camera"+_mainCameraFollow, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {
-		checkCamera();
+		//checkCamera();
 		_mainCameraFollow.SetZoom(false);
 	}
 		

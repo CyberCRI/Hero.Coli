@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*DESCRIPTION
+ * This class create the links between the Interface's Scene, classes and GameObject and the others
+ * */
+
 public class InterfaceLinkManager : MonoBehaviour {
 
 	public Fade fade;
@@ -25,7 +29,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 	void Awake () {
 		//shortcut
 		CraftZoneManager _craftManager = CraftZoneManager.get();
-		GameStateController _game = GameObject.Find ("GameStateController").GetComponent<GameStateController>();
+		GameStateController _game = GameStateController.get();
 		//CraftFinalizer _craftfinalizer = craftFinalizer;
 		GUITransitioner _GUITransitioner = GUITransitioner.get ();
 
@@ -109,16 +113,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 		TooltipManager.get ().uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
 
 
-
-
-		//EquipedDisplayedDevice
-
-		//EquipedDisplayedDevice.tinyBioBrickIcon = tinyBioBrickIcon;
-		//EquipedDisplayedDevice.tinyBioBrickIcon2 = tinyBioBrickIcon2;
-
-		//Hero
-
-		//GameObject.Find ("Perso").GetComponent<Hero>().energyAnimation = GameObject.Find ("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+	
 	}
 	
 	// Update is called once per frame

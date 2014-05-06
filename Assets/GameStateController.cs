@@ -9,17 +9,33 @@ public enum GameState{
 
 public class GameStateController : MonoBehaviour {
 
+	public static string gameObjectName = "GameStateController";
 private GameState _gameState;
 public GUITransitioner gUITransitioner;
 public Fade fadeSprite;
 public UIPanel	introPanel, endPanel;
 public bool dePauseForbidden;
 
-	// Use this for initialization
-	void Start () {
+	private static GameStateController _instance;
+	public static GameStateController get() {
+		if (_instance == null)
+		{
+			Logger.Log("GameStateController::get was badly initialized", Logger.Level.WARN);
+			_instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
+		}
+
+		return _instance;
+	}
+
+	void Awake() {
+
 		Application.LoadLevelAdditive("Interface1.0");
 		Application.LoadLevelAdditive("Bacterium1.0");
-		Application.LoadLevelAdditive("Field1.0");
+		Application.LoadLevelAdditive("World1.0");
+	}
+	// Use this for initialization
+	void Start () {
+
 
 		 _gameState = GameState.Start;
 		 dePauseForbidden = true;
