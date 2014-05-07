@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
-  private CraftZoneManager               craftZoneManager;
-
-	public CraftZoneManager TOCraftZoneManager {
+	public CraftZoneManager ToCraftZoneManager {
 			get {
-				return this.craftZoneManager;
+				return this._craftZoneManager;
 			}
 			set {
-				craftZoneManager = value;
+				_craftZoneManager = value;
 			}
 		}
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
@@ -28,11 +26,11 @@ public class CraftFinalizer : MonoBehaviour {
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
-    Device currentDevice = craftZoneManager.getCurrentDevice();
+    Device currentDevice = _craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
-        craftZoneManager.displayDevice();
+        _craftZoneManager.displayDevice();
       }
       Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
     } else {
@@ -57,12 +55,12 @@ public class CraftFinalizer : MonoBehaviour {
 
   public void randomRename() {
     Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
-    Device currentDevice = craftZoneManager.getCurrentDevice();
+    Device currentDevice = _craftZoneManager.getCurrentDevice();
     string newName = Inventory.get().getAvailableDeviceName();
     Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
     if(newDevice != null){
-      Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
-      craftZoneManager.setDevice(newDevice);
+      Logger.Log("CraftFinalizer::randomRename _craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
+      _craftZoneManager.setDevice(newDevice);
     } else {
       Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
         +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
@@ -71,7 +69,7 @@ public class CraftFinalizer : MonoBehaviour {
 
   void Start()
   {
-    craftZoneManager = CraftZoneManager.get();
+    _craftZoneManager = CraftZoneManager.get();
   }
 
 

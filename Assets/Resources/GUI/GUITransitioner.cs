@@ -6,7 +6,6 @@ public class GUITransitioner : MonoBehaviour {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   public static string gameObjectName = "GUITransitioner";
-	public InventoryAnimator scriptAnimator;
   private static GUITransitioner _instance;
   public static GUITransitioner get() {
     if(_instance == null) {
@@ -23,6 +22,7 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
+  public InventoryAnimator scriptAnimator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -91,11 +91,15 @@ public class GUITransitioner : MonoBehaviour {
 		_craftScreen.SetActive(active);
 	}
 	
+  /*
+   * "Defensive programming" method
+   * Cannot work during Awake
 	private void checkCamera() {
 		if(_mainCameraFollow == null) {
 			_mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>() as cameraFollow;
 		}
 	}
+ */ 
 	
 	private void ZoomIn() {
 		//checkCamera();
