@@ -26,13 +26,13 @@ public class Medium
   private string        _reactionsSet;                  //!< The ReactionsSet id affected to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
   private bool          _enableSequential;
-  private bool          _enableNoise;
+ // private bool          _enableNoise;
   private NumberGenerator _numberGenerator;           //!< Random number generator
   private bool          _enableEnergy;
   private float         _energy;                        //!< Represent the quantity of ATP
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
-  public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
+ // public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -68,10 +68,10 @@ public class Medium
       r.enableSequential = b;
   }
 
-  public void enableNoise(bool b)
+ /* public void enableNoise(bool b)
   {
     _enableNoise = b;
-  }
+  }*/
 
   /*!
     \brief Add a new reaction to the medium
@@ -289,8 +289,8 @@ public class Medium
   public void Update()
   {
 		
-    if (enableShufflingReactionOrder)
-      LinkedListExtensions.Shuffle<IReaction>(_reactions);
+   /* if (enableShufflingReactionOrder)
+      LinkedListExtensions.Shuffle<IReaction>(_reactions);*/
 
     foreach (IReaction reaction in _reactions) {
 		
@@ -303,7 +303,7 @@ public class Medium
 		reaction.react(_molecules);
 	}	
 
-    if (_enableNoise)
+   /* if (_enableNoise)
       {
         float noise;
 
@@ -315,7 +315,7 @@ public class Medium
             else
               m.addNewConcentration(noise);
           }
-      }
+      }*/
     //#FIXME : remove
     if (_name == "Cellia")
     {

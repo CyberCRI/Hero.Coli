@@ -43,20 +43,20 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
-  public bool enableNoise;                              //!< Add Noise in each Reaction
+ // public bool enableNoise;                              //!< Add Noise in each Reaction
   public bool enableEnergy;                             //!< Enable energy consomation
-  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
-  public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
+ // public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
+  //public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
 	
   private bool _paused;                                 //!< Simulation state
 	
 	
   //debug
-  public bool _debug;
+  /*public bool _debug;
   private float _timeAtLastDebug = 0f;
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;
-  private float _deltaTimeThreshold = 0.5f;
+  private float _deltaTimeThreshold = 0.5f;*/
 
   public Fick getFick() { return _fick; }
   
@@ -250,9 +250,9 @@ public class ReactionEngine : MonoBehaviour {
       {
         medium.Init(_reactionsSets, _moleculesSets);
         medium.enableSequential(enableSequential);
-        medium.enableNoise(enableNoise);
+        //medium.enableNoise(enableNoise);
         medium.enableEnergy(enableEnergy);
-        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+       // medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
       }
 
     _fick = new Fick();
@@ -278,8 +278,8 @@ public class ReactionEngine : MonoBehaviour {
 	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
 	} else {
 	  _fick.react();
-      if (enableShufflingMediumOrder)
-        LinkedListExtensions.Shuffle<Medium>(_mediums);
+     /* if (enableShufflingMediumOrder)
+        LinkedListExtensions.Shuffle<Medium>(_mediums);*/
       foreach (Medium medium in _mediums)
         medium.Update();
 	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
@@ -290,7 +290,7 @@ public class ReactionEngine : MonoBehaviour {
 	  }
 	  
 	  //TODO REMOVE
-	  if(_debug) {
+	/*  if(_debug) {
 	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
 	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
 	  		
@@ -301,7 +301,7 @@ public class ReactionEngine : MonoBehaviour {
 	  		foreach (Medium medium in _mediums)
 	  		  medium.Log();
 	  	}
-	  }
+	  }*/
 	}
   }
 }
