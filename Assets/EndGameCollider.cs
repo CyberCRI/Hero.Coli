@@ -13,9 +13,8 @@ public class EndGameCollider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
-	
+
 	void OnTriggerEnter(Collider other) {
 		Logger.Log("EndGameCollider::OnTriggerEnter("+other.ToString()+")"+alreadyDisplayed.ToString());
 		if(alreadyDisplayed == false) {

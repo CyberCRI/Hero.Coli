@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class EquipedDisplayedDevice : DisplayedDevice {
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
 
-  public bool                         _isActive;
+ // public bool                         _isActive;
   private static GameObject           equipedDevice = null;
-  private static GameObject           tinyBioBrickIcon = null;
-  private static GameObject           tinyBioBrickIcon2 = null;
+  private static GameObject           tinyBioBrickIcon;
+  private static GameObject           tinyBioBrickIcon2;
   private float                       _tinyIconVerticalShift = 0.0f;
   private static float                _width = 0.0f;
 
@@ -50,37 +50,39 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 	  }
   }
 
-  public void setActivity(bool activity) {
-    _isActive = activity;
+  /*public void setActivity(bool activity) {
+   // _isActive = activity;
     if(activity) {
       setActive();
     } else {
       setInactive();
     }
-  }
+  }*/
 
  public void setActive() {
    Logger.Log("EquipedDisplayedDevice::setActive", Logger.Level.TRACE);
-   _isActive = true;
+  // _isActive = true;
     //TODO FIXME
    //setSprite(_currentSpriteName + _activeSuffix);
  }
  
  public void setInactive() {
    Logger.Log("EquipedDisplayedDevice::setInactive", Logger.Level.TRACE);
-   _isActive = false;
+ //  _isActive = false;
     //TODO FIXME
    //setSprite(_currentSpriteName);
  }
 
   void initIfNecessary() {
     if(equipedDevice == null) {
-      equipedDevice = GameObject.Find(_equipedDeviceButtonPrefabPosString);
-      tinyBioBrickIcon = GameObject.Find (_tinyBioBrickPosString);
-      tinyBioBrickIcon2 = GameObject.Find (_tinyBioBrickPosString2);
+      //equipedDevice = GameObject.Find(_equipedDeviceButtonPrefabPosString);
+			equipedDevice = DevicesDisplayer.get().equipedDevice;
+    //  tinyBioBrickIcon = GameObject.Find (_tinyBioBrickPosString);
+			tinyBioBrickIcon = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos;
+			tinyBioBrickIcon2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos2;
 
-      tinyBioBrickIcon.SetActive(false);
-      tinyBioBrickIcon2.SetActive(false);
+			//tinyBioBrickIcon.SetActive(false);
+      		//tinyBioBrickIcon2.SetActive(false);
     }
     if(_tinyIconVerticalShift == 0.0f)
     {

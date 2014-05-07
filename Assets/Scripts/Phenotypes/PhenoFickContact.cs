@@ -14,8 +14,6 @@ public class PhenoFickContact : Phenotype {
   //! Called at the beginning
   public override void StartPhenotype()
   {
-		vectroPanel =GameObject.Find("MediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
-		moleculeDebug = GameObject.Find("MediumInfoPanelRoom").GetComponent<MoleculeDebug>();
   }
 
   public override void UpdatePhenotype()

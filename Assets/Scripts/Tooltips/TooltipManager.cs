@@ -89,6 +89,7 @@ public class TooltipManager : MonoBehaviour {
         panel = _instance.bioBrickTooltipPanel;
         break;
     }
+		//Logger.Log("PANEL ===>"+panel,Logger.Level.WARN);
     _instance._tooltipPanel = panel.gameObject.GetComponent<UIPanel>();
 
     _instance._titleLabel = panel.titleLabel;
@@ -171,6 +172,7 @@ public class TooltipManager : MonoBehaviour {
   {
     if(!isOver || (null == code))
     {
+			//Logger.Log("DisplayTooltip function code=====>"+code, Logger.Level.WARN);
       return displayTooltip();
     }
     else

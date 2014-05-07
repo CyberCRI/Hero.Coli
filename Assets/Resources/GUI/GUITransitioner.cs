@@ -6,7 +6,6 @@ public class GUITransitioner : MonoBehaviour {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   public static string gameObjectName = "GUITransitioner";
-	public InventoryAnimator scriptAnimator;
   private static GUITransitioner _instance;
   public static GUITransitioner get() {
     if(_instance == null) {
@@ -23,6 +22,7 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
+  public InventoryAnimator scriptAnimator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -44,12 +44,14 @@ public class GUITransitioner : MonoBehaviour {
 	};
 	
 	
-	public GameObject _mainCameraObject;
-	private cameraFollow _mainCameraFollow;
+	//public GameObject _mainCameraObject;
+	public cameraFollow _mainCameraFollow;
 	
 	public GameObject _worldScreen;
 	public GameObject _craftScreen;
 	private DevicesDisplayer _devicesDisplayer;
+
+
 	public VectrosityPanel _celliaGraph;
 	public VectrosityPanel _roomGraph;
 
@@ -77,6 +79,7 @@ public class GUITransitioner : MonoBehaviour {
 	private void SetScreen1(bool active) {
 		if(active) ZoomOut();
 		_worldScreen.SetActive(active);
+		//_craftScreen.SetActive(!active);
 	}
 	
 	private void SetScreen2(bool active) {
@@ -88,19 +91,24 @@ public class GUITransitioner : MonoBehaviour {
 		_craftScreen.SetActive(active);
 	}
 	
+  /*
+   * "Defensive programming" method
+   * Cannot work during Awake
 	private void checkCamera() {
 		if(_mainCameraFollow == null) {
-			_mainCameraFollow = _mainCameraObject.GetComponent<cameraFollow>() as cameraFollow;
+			_mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>() as cameraFollow;
 		}
 	}
+ */ 
 	
 	private void ZoomIn() {
-		checkCamera();
+		//checkCamera();
 		_mainCameraFollow.SetZoom(true);
+		//Logger.Log("main camera"+_mainCameraFollow, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {
-		checkCamera();
+		//checkCamera();
 		_mainCameraFollow.SetZoom(false);
 	}
 		

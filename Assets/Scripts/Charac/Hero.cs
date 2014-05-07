@@ -146,17 +146,6 @@ public class Hero : MonoBehaviour{
 		//Click to move variable.
       	//	_destination = mover.position;
 
-		//GameObject.Find("LifeEnergyIndicators").SetActive(true);
-		//GameObject.Find("LifeIndicator").SetActive(true);
-		//GameObject.Find("EnergyIndicator").SetActive(true);
-
-
-		lifeAnimation=GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
-		energyAnimation=GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
-
-		GameObject.Find ("LifeIndicator").GetComponent<LifeIndicator>().hero = this;
-		GameObject.Find ("EnergyIndicator").GetComponent<EnergyIndicator>().hero = this;
-		GameObject.Find ("GUITransitioner").GetComponent<GUITransitioner>().hero = this;
 
     gameObject.SetActive(true);
 		_isLiving = true;
