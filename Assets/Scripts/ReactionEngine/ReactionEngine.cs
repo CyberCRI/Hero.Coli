@@ -32,7 +32,7 @@ public class ReactionEngine : MonoBehaviour {
   }
 
   private Fick _fick;                                   //!< The Fick class that manage molecules diffusions between medium
-  private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
+  //private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
   private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
   private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
@@ -40,7 +40,7 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _reactionsFiles;                 //!< all the reactions files
   public string[]      _moleculesFiles;                 //!< all the molecules files
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
-  public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
+ // public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
  // public bool enableNoise;                              //!< Add Noise in each Reaction
@@ -257,8 +257,8 @@ public class ReactionEngine : MonoBehaviour {
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
-    _activeTransport = new ActiveTransport();
-    _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
+   // _activeTransport = new ActiveTransport();
+   // _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
   }
 	
   //TODO manage reaction speed for smooth pausing

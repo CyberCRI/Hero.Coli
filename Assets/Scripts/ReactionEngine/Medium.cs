@@ -236,10 +236,16 @@ public class Medium
    */
   public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
   {
+
+		//Recieve a linkedlist of Sets
     _reactions = new LinkedList<IReaction>();
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
+
+		//Try to find the good set in the LinkedList
     ReactionsSet reactSet = ReactionEngine.getReactionsSetFromId(_reactionsSet, reactionsSets);
     MoleculesSet molSet = ReactionEngine.getMoleculesSetFromId(_moleculesSet, moleculesSets);
+
+		//Put all the different molecules from the linkedList in an arrayList
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
 
     if (reactSet == null)
