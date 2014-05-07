@@ -9,13 +9,8 @@ public enum GameState{
 
 public class GameStateController : MonoBehaviour {
 
-	public static string gameObjectName = "GameStateController";
-private GameState _gameState;
-public GUITransitioner gUITransitioner;
-public Fade fadeSprite;
-public UIPanel	introPanel, endPanel;
-public bool dePauseForbidden;
-
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  public static string gameObjectName = "GameStateController";
 	private static GameStateController _instance;
 	public static GameStateController get() {
 		if (_instance == null)
@@ -26,9 +21,16 @@ public bool dePauseForbidden;
 
 		return _instance;
 	}
+  ////////////////////////////////////////////////////////////////////////////////////////////
+    
+  private GameState _gameState;
+  public GUITransitioner gUITransitioner;
+  public Fade fadeSprite;
+  public UIPanel  introPanel, endPanel;
+  public bool dePauseForbidden;
 
 	void Awake() {
-
+    _instance = this;
 		Application.LoadLevelAdditive("Interface1.0");
 		Application.LoadLevelAdditive("Bacterium1.0");
 		Application.LoadLevelAdditive("World1.0");
@@ -48,21 +50,20 @@ public bool dePauseForbidden;
 		switch(_gameState){
 		
 			case GameState.Start:
-        		fadeSprite.gameObject.SetActive(true);
-			    introPanel.gameObject.SetActive(true);
+        fadeSprite.gameObject.SetActive(true);
+			  introPanel.gameObject.SetActive(true);
 				gUITransitioner.Pause(true);
-
-			break;
+        break;
 			
 			case GameState.Game:
 				if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Pause);
-			break;
+			  break;
 			
 			case GameState.Pause:
 				if (dePauseForbidden == false){
 					if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Game);
 				}
-			break;
+			  break;
 			
 			case GameState.End:
 				gUITransitioner.TerminateGraphs();
@@ -71,8 +72,7 @@ public bool dePauseForbidden;
 				gUITransitioner.Pause(true);
 				dePauseForbidden = true;
 				endPanel.gameObject.SetActive(true);
-			break;
-		
+        break;		
 		}
 	}
 	
@@ -82,21 +82,21 @@ public bool dePauseForbidden;
 		
 		switch(_gameState){
 			case GameState.Start:
-			break;
+			  break;
 			
 			case GameState.Game:
 			//gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
 				gUITransitioner.Pause(false);
 				dePauseForbidden = false;
-			break;
+			  break;
 			
 			case GameState.Pause:
 				gUITransitioner.Pause(true);
-			break;
+			  break;
 			
 			case GameState.End:
 				gUITransitioner.Pause(true);
-			break;
+			  break;
 			
 		}
 	}
