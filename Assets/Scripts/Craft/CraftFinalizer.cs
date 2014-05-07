@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
+  private CraftZoneManager _craftZoneManager;
+
 	public CraftZoneManager ToCraftZoneManager {
 			get {
-				return this._craftZoneManager;
+				return _craftZoneManager;
 			}
 			set {
 				_craftZoneManager = value;
