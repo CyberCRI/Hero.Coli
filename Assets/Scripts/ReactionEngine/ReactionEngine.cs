@@ -32,7 +32,7 @@ public class ReactionEngine : MonoBehaviour {
   }
 
   private Fick _fick;                                   //!< The Fick class that manage molecules diffusions between medium
-  //private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
+  private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
   private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
   private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
   private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
@@ -40,13 +40,13 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _reactionsFiles;                 //!< all the reactions files
   public string[]      _moleculesFiles;                 //!< all the molecules files
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
- // public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
+  public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
   public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
  // public bool enableNoise;                              //!< Add Noise in each Reaction
   public bool enableEnergy;                             //!< Enable energy consomation
- // public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
-  //public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
+  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
+  public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
 	
   private bool _paused;                                 //!< Simulation state
 	
@@ -238,10 +238,12 @@ public class ReactionEngine : MonoBehaviour {
     _moleculesSets = new LinkedList<MoleculesSet>();
     _mediums = new LinkedList<Medium>();
     
+
+		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
     foreach (string file in _reactionsFiles)
       LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, fileLoader.loadReactionsFromFile(file));
     foreach (string file in _moleculesFiles)
-      LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, fileLoader.loadMoleculesFromFile(file));
+			LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, fileLoader.loadMoleculesFromFile(file));
 
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)
@@ -252,13 +254,13 @@ public class ReactionEngine : MonoBehaviour {
         medium.enableSequential(enableSequential);
         //medium.enableNoise(enableNoise);
         medium.enableEnergy(enableEnergy);
-       // medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
       }
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
-   // _activeTransport = new ActiveTransport();
-   // _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
+    _activeTransport = new ActiveTransport();
+    _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
   }
 	
   //TODO manage reaction speed for smooth pausing
@@ -278,8 +280,8 @@ public class ReactionEngine : MonoBehaviour {
 	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
 	} else {
 	  _fick.react();
-     /* if (enableShufflingMediumOrder)
-        LinkedListExtensions.Shuffle<Medium>(_mediums);*/
+     if (enableShufflingMediumOrder)
+        LinkedListExtensions.Shuffle<Medium>(_mediums);
       foreach (Medium medium in _mediums)
         medium.Update();
 	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
