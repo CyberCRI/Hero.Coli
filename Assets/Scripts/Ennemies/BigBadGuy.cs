@@ -30,7 +30,7 @@ public class BigBadGuy : MonoBehaviour {
 	void OnCollisionEnter(Collision col) {
 		if (col.collider){
 			Hero hero = col.gameObject.GetComponent<Hero>();
-			hero.subLife(0.5f);
+			hero.lifeManager.AddVariation(0.5f,false);
 		}
 	}
 	

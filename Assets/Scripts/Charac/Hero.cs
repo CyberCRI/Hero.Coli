@@ -13,12 +13,11 @@ public class Hero : MonoBehaviour{
   	//Life
 	private float _life = 1f;
   	private static float _lifeRegen = 0.1f;
-  	private static float _lowEnergyDmg = 3*_lifeRegen;
+	public Life lifeManager;
 
 	//Energy.
 	private float _energy = 1f;
     private float _maxMediumEnergy = 1f;
-    private float _lowEnergyThreshold = 0.05f;
 	private float _energyBefore = 1f;
 
     private bool _pause;
@@ -98,6 +97,7 @@ public class Hero : MonoBehaviour{
     	gameObject.SetActive(true);
 		_isLiving = true;
 
+		lifeManager = new Life(getLife(),0.1f);
 
     	//LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
 		_medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
@@ -109,26 +109,24 @@ public class Hero : MonoBehaviour{
 	void Update() {
 	    if(!_pause)
 	    {
+			lifeManager.AddVariation(Time.deltaTime * _lifeRegen,true);
 	  		setLife(getLife() + Time.deltaTime * _lifeRegen);
 	      _energy = _medium.getEnergy()/_maxMediumEnergy;
-	      if(_energy < _lowEnergyThreshold)
-	      {
-	        subLife(Time.deltaTime * _lowEnergyDmg);
-	      }
+
 	      if (Input.GetKey(KeyCode.R))
 	      {
-	        setLife(1f);
+			lifeManager.AddVariation(1f,true);
 	      }
 	      if (Input.GetKey(KeyCode.F)) {
 	        setEnergy(1f);
 	      }
-	  
-	      if ((_life <= 0) && (_isLiving))
-	      {
-		    	_life = 0f;
+
+			lifeManager.ApplyVariation(_energy);
+			if(lifeManager.getLife() == 0f && (_isLiving))
+			{
 				_isLiving = false;
 				StartCoroutine(RespawnCoroutine());
-		  }
+			}
 	    }
 		DisplayEnergyAnimation();
 	}
@@ -220,6 +218,7 @@ public class Hero : MonoBehaviour{
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
+		lifeManager.AddVariation(1f,true);
 		    setLife(1f);
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
