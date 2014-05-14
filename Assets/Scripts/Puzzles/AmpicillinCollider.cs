@@ -6,7 +6,7 @@ public class AmpicillinCollider : MonoBehaviour {
 	void OnParticleCollision(GameObject obj){
 		Hero cellia = obj.GetComponent<Hero>();
 		if(cellia){
-			cellia.lifeManager.AddVariation(0.1f,false);
+			cellia.lifeManager.addVariation(0.1f,false);
 			//Debug.Log("HITPlayer");
 		}
 		BigBadGuy badGuy = obj.GetComponent<BigBadGuy>();	

@@ -21,11 +21,8 @@ public class Life : MonoBehaviour {
 	private float _lifeMax;
 	private float _life;
 	private float _lifeRegen;
-	private float _lowEnergyDmg;
 	private float _variation;
 
-
-	public LifeLogoAnimation lifeAnimation;
 
 
 	//Constructor
@@ -34,14 +31,11 @@ public class Life : MonoBehaviour {
 		_lifeMax = life;
 		_life = _lifeMax;
 		_lifeRegen = lifeRegen;
-		_lowEnergyDmg = 3*_lifeRegen;
-
-		lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
 	}
 	
 
 	//Add a variation for the next update, the bool positif determine if the vaiation will be positive or negative
-	public void AddVariation (float variation, bool positif)
+	public void addVariation (float variation, bool positif)
 	{
 		_variation += (positif == true)? variation : - variation;
 	}
@@ -56,25 +50,12 @@ public class Life : MonoBehaviour {
 		return _variation;
 	}
 
-	public void ApplyVariation(float energy)
+	public void applyVariation()
 	{
-		if (energy <= 0.05f)   AddVariation(Time.deltaTime * _lowEnergyDmg, false);
+		_life += _variation;
+		if(_life  <= 0f) _life = 0f;
+		else if(_life  >= _lifeMax) _life = _lifeMax;
 
-
-
-
-		if(_life + _variation  <= 0f) _life = 0f;
-		else if(_life + _variation >= _lifeMax) _life = _lifeMax;
-		else
-		{_life += _variation;
-
-			if (_variation <= 0)
-			{
-				if(lifeAnimation.isPlaying == false){
-					lifeAnimation.Play();
-				}
-			}
-		}
 		ResetVariation();
 	}
 

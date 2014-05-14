@@ -15,10 +15,13 @@ public class Hero : MonoBehaviour{
   	private static float _lifeRegen = 0.1f;
 	public Life lifeManager;
 
+
 	//Energy.
 	private float _energy = 1f;
     private float _maxMediumEnergy = 1f;
 	private float _energyBefore = 1f;
+	private float _lowEnergyDmg = 3*_lifeRegen;
+	
 
     private bool _pause;
 	private bool _isLiving;
@@ -40,6 +43,7 @@ public class Hero : MonoBehaviour{
 	public float getEnergy() {
 		return _energy;
 	}
+	
 
 	public void setEnergy(float energy) {
 		if (energy > 1f) {energy = 1f;}
@@ -49,6 +53,7 @@ public class Hero : MonoBehaviour{
     _energy = energy;
 	}
 
+
   //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
     _medium.subEnergy(energy);
@@ -56,14 +61,9 @@ public class Hero : MonoBehaviour{
 
 	public void DisplayEnergyAnimation()  {
 
-    	if (_energyBefore - _energy > 0)
-    	{
-		 	 if(energyAnimation.isPlaying == false) {
-			 	 energyAnimation.Play();
-		  	}
-	  	}
-		_energyBefore = _energy;
-
+		if(energyAnimation.isPlaying == false) {
+			 energyAnimation.Play();
+		}
 	}
 
 
@@ -72,6 +72,8 @@ public class Hero : MonoBehaviour{
 	public float getLife() {
 		return _life;
 	}
+
+
 	public void setLife(float life) {
 		if (life >= 1f)
 			life = 1f;
@@ -109,28 +111,47 @@ public class Hero : MonoBehaviour{
 	void Update() {
 	    if(!_pause)
 	    {
-			lifeManager.AddVariation(Time.deltaTime * _lifeRegen,true);
+			lifeManager.addVariation(Time.deltaTime * _lifeRegen,true);
 	  		setLife(getLife() + Time.deltaTime * _lifeRegen);
 	      _energy = _medium.getEnergy()/_maxMediumEnergy;
 
 	      if (Input.GetKey(KeyCode.R))
 	      {
-			lifeManager.AddVariation(1f,true);
+			lifeManager.addVariation(1f,true);
 	      }
 	      if (Input.GetKey(KeyCode.F)) {
 	        setEnergy(1f);
 	      }
 
-			lifeManager.ApplyVariation(_energy);
+			// dammage in case of low energy
+			if (_energy <= 0.05f)   lifeManager.addVariation(Time.deltaTime * _lowEnergyDmg, false);
+
+
+			// Life animation when life is reducing
+			if (lifeManager.getVariation() < 0)	{
+
+				if(lifeAnimation.isPlaying == false){
+					lifeAnimation.Play();
+				}
+
+			}
+
+			// Energy animation when energy is reducing
+			if (_energy < _energyBefore) {
+				DisplayEnergyAnimation();
+			}
+			_energyBefore = _energy;
+
+
+			lifeManager.applyVariation();
 			if(lifeManager.getLife() == 0f && (_isLiving))
 			{
 				_isLiving = false;
 				StartCoroutine(RespawnCoroutine());
 			}
 	    }
-		DisplayEnergyAnimation();
 	}
-	
+
 
  	void OnTriggerEnter(Collider collision)
  	{
@@ -218,7 +239,7 @@ public class Hero : MonoBehaviour{
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
-		lifeManager.AddVariation(1f,true);
+		lifeManager.addVariation(1f,true);
 		    setLife(1f);
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {

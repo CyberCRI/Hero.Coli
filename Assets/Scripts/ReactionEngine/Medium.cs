@@ -30,6 +30,7 @@ public class Medium
   private NumberGenerator _numberGenerator;           //!< Random number generator
   private bool          _enableEnergy;
   private float         _energy;                        //!< Represent the quantity of ATP
+	private float 		_energyVariation;				//!< The variation of energy during one frame
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
  // public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
@@ -47,12 +48,41 @@ public class Medium
   public ArrayList getMolecules() { return _molecules; }
   public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f;}
   public float getEnergy() { return _energy; }
-  public void addEnergy(float v) { _energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
-  public void subEnergy(float v) { _energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
+  public void addEnergy(float v) {
+		addVariation(v,true);
+		//_energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
+	}
+  public void subEnergy(float v) {
+		addVariation(v,false);
+		//_energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
+	}
   public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
   public float getMaxEnergy() { return _maxEnergy; }
   public void setEnergyProductionRate(float v) { _energyProductionRate = v;}
   public float getEnergyProductionRate() { return _energyProductionRate;}
+
+	public float getEnergyVariation() { return _energyVariation;}
+
+	public void addVariation(float variation, bool positif)
+	{
+		_energyVariation += (positif == true)? variation : - variation;
+	}
+
+	public void applyVariation()
+	{
+		_energy += _energyVariation;
+		if(_energy <= 0f) _energy = 0f;
+		else if(_energy >= _maxEnergy) _energy = _maxEnergy;
+
+		ResetVariation();
+				
+	}
+	
+	// Reset the variation value : called at the end of the update
+	public void ResetVariation()
+	{
+		_energyVariation = 0f;
+	}
 
   public void enableEnergy(bool b)
   {
@@ -308,7 +338,8 @@ public class Medium
 		}
 		reaction.react(_molecules);
 	}	
-
+		
+		applyVariation();
    /* if (_enableNoise)
       {
         float noise;
