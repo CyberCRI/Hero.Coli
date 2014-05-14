@@ -12,12 +12,18 @@ public class PhenoToxic : Phenotype {
 
   private Molecule _mol;
   public Hero hero;
+	private string _toxicName = "AMPI";
 
   //! Called at the beginning
   public override void StartPhenotype()
   {
-    _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
+		initMoleculePhenotype();
   }
+
+	public void initMoleculePhenotype()
+	{
+		_mol = ReactionEngine.getMoleculeFromName (_toxicName, _molecules);
+	}
 
   /*!
     \brief This function is called as Update in Monobehaviour.
@@ -30,7 +36,7 @@ public class PhenoToxic : Phenotype {
 		//the molecule considered toxic is the "AMPI" molecule
 		if(_mol == null)
 		{
-		  _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
+			initMoleculePhenotype();
 		  if (_mol == null)
       {
         Logger.Log("_mol == null", Logger.Level.ONSCREEN);

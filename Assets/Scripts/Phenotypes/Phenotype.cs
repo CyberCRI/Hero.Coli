@@ -25,16 +25,15 @@ public abstract class Phenotype : MonoBehaviour
   protected ReactionEngine _reactionEngine;                    //!< The ReactionEngine (ReactionEngine)
   public int               _mediumId;              //!< The medium id
 
-  protected ArrayList             _molecules;
+  protected static ArrayList             _molecules;
   protected Medium                _mediumRef;
-  protected bool                  _isIdChanged;
+
 
   //! \brief Set the medium id.
   //! \param id The id.
   public void   setMediumId(int id)
   {
     _mediumId = id;
-    _isIdChanged = true;
   }
 
   /*!
@@ -56,16 +55,14 @@ public abstract class Phenotype : MonoBehaviour
     \sa Molecule
     \sa Molecule.getConcentration()
    */
-  public void updateMolecules()
+  public void initMolecules()
   {
-    if (_isIdChanged)
+    LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
+    _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
+
+    if(_mediumRef != null && _molecules == null)
     {
-      LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
-      _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
-      _isIdChanged = false;
-    }
-    if(_mediumRef != null)
-    {
+			Logger.Log("INITMOLECULES",Logger.Level.WARN);
       _molecules = _mediumRef.getMolecules();
     }
   }
@@ -75,8 +72,8 @@ public abstract class Phenotype : MonoBehaviour
    */
   public void Start () {
     _reactionEngine = ReactionEngine.get();
-    _isIdChanged = true;
     StartPhenotype();
+	initMolecules();
   }
   
   /*!
@@ -85,7 +82,6 @@ public abstract class Phenotype : MonoBehaviour
   public void Update () {
     if(!ReactionEngine.isPaused())
     {
-      updateMolecules();
       UpdatePhenotype();
     }
   }

@@ -40,6 +40,7 @@ public class PhenoLight : Phenotype {
         return ;
       float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
       float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+			Logger.Log("Phenolight :: mol "+_mol.ToString(),Logger.Level.DEBUG);
     
       phenoLight.light.intensity = intensity;
       if(colliderActivated)

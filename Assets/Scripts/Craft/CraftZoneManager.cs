@@ -215,8 +215,6 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public void displayDevice() {
-    Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.WARN);
-		Logger.Log ("craftFinalizer ==>"+craftFinalizer,Logger.Level.WARN);
     craftFinalizer.setDisplayedDevice(_currentDevice);
   }
 
