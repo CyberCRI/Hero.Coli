@@ -46,14 +46,16 @@ public class Medium
   public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
   public string getMoleculesSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
+
+  //TODO extract energy methods and fields and make class out of it
   public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f;}
   public float getEnergy() { return _energy; }
   public void addEnergy(float v) {
-		addVariation(v,true);
+		addVariation(v);
 		//_energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
 	}
   public void subEnergy(float v) {
-		addVariation(v,false);
+		addVariation(-v);
 		//_energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
 	}
   public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
@@ -65,7 +67,7 @@ public class Medium
 
 	public void addVariation(float variation, bool positif)
 	{
-		_energyVariation += (positif == true)? variation : - variation;
+		_energyVariation += variation;
 	}
 
 	public void applyVariation()
