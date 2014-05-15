@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 /*!
   \brief This class represents the interface between the Reaction Engine and the game.
-  \details Each class that uses molecular concentration to perform a graphical effect
+  \details Each class that uses molecular concentrations to perform a graphical effect
   should inherit from this class. This abstract class implements the basic stuff that a phenotype needs.
   It asks the reaction engine the concentration of each protein of the medium it represents.
 
-  Some attributes have to be define before runing it :
+  Some attributes have to be defined before runing it :
 
                 - A reference to the reaction engine
                 - A mediumId
@@ -22,19 +22,19 @@ using System.Collections.Generic;
  */
 public abstract class Phenotype : MonoBehaviour
 {
-  protected ReactionEngine _reactionEngine;                    //!< The ReactionEngine (ReactionEngine)
-  public int               _mediumId;              //!< The medium id
+  protected ReactionEngine _reactionEngine;           //!< The ReactionEngine (ReactionEngine)
+  private int              _heroMediumID = 1;         //!< The medium id of the hero
+  private int              _mediumId = _heroMediumID; //!< The medium id
 
-  protected ArrayList             _molecules;
-  protected Medium                _mediumRef;
-  protected bool                  _isIdChanged;
+  protected static ArrayList _molecules;
+  protected Medium           _mediumRef;
+
 
   //! \brief Set the medium id.
   //! \param id The id.
   public void   setMediumId(int id)
   {
     _mediumId = id;
-    _isIdChanged = true;
   }
 
   /*!
@@ -52,19 +52,16 @@ public abstract class Phenotype : MonoBehaviour
   }
 
   /*!
-    \brief This class updates all molecular concentrations
+    \brief This method gets all molecular concentrations
     \sa Molecule
     \sa Molecule.getConcentration()
    */
-  public void updateMolecules()
+  public void initMolecules()
   {
-    if (_isIdChanged)
-    {
-      LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
-      _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
-      _isIdChanged = false;
-    }
-    if(_mediumRef != null)
+    LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
+    _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
+
+    if(_mediumRef != null && _molecules == null)
     {
       _molecules = _mediumRef.getMolecules();
     }
@@ -75,8 +72,8 @@ public abstract class Phenotype : MonoBehaviour
    */
   public void Start () {
     _reactionEngine = ReactionEngine.get();
-    _isIdChanged = true;
     StartPhenotype();
+	  initMolecules();
   }
   
   /*!
@@ -85,7 +82,6 @@ public abstract class Phenotype : MonoBehaviour
   public void Update () {
     if(!ReactionEngine.isPaused())
     {
-      updateMolecules();
       UpdatePhenotype();
     }
   }
