@@ -65,7 +65,7 @@ public class Medium
 
 	public float getEnergyVariation() { return _energyVariation;}
 
-	public void addVariation(float variation, bool positif)
+	public void addVariation(float variation)
 	{
 		_energyVariation += variation;
 	}
