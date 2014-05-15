@@ -12,10 +12,9 @@ public class Hero : MonoBehaviour {
 
 	//Life
 
-  //TODO remove _life and _lifeRegen and use the ones inside lifeManager
 	private float _life = 1f;
   private static float _lifeRegen = 0.1f;
-	public Life lifeManager;
+	private Life _lifeManager;
 
 	//Energy.
 	private float _energy = 1f;
@@ -25,7 +24,7 @@ public class Hero : MonoBehaviour {
 	
 
   private bool _pause;
-	private bool _isLiving;
+	private bool _isAlive;
 
 
 
@@ -72,50 +71,32 @@ public class Hero : MonoBehaviour {
 	}
 
 
-
 	//Getter & setter for the life.
 	public float getLife() {
-		return _life;
-    //TODO
-    //return lifeManager.getLife();
+    return _lifeManager.getLife();
 	}
-
 
 	public void setLife(float life) {
-		if (life >= 1f)
-			life = 1f;
-		if (life <= 0f) {
-			life = 0f;
-		}
-		_life = life;
-	}
+    _lifeManager.setLife(life);
+  }
+    
+  public void addLife(float life) {
+    _lifeManager.addVariation(life);
+  }
+    
+  public void subLife(float life) {
+    _lifeManager.addVariation(-life);
+  }
 
-  /*
-	public void subLife(float life) {
-		if(life >0.01){
-			if(lifeAnimation.isPlaying == false){
-				lifeAnimation.Play();
-			}
-		}
-			
-		_life -= life;
-	}
-  */
-    
-    public void addLife(float life) {
-        lifeManager.addVariation(life);
-    }
-    
-    public void subLife(float life) {
-        lifeManager.addVariation(-life);
-    }
+  void Awake ()
+  {
+    _lifeManager = new Life(_life, _lifeRegen);
+  }
   
 	void Start (){
 
     gameObject.SetActive(true);
-		_isLiving = true;
-
-		lifeManager = new Life(getLife(),0.1f);
+		_isAlive = true;
 
     //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
 		_medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
@@ -127,24 +108,23 @@ public class Hero : MonoBehaviour {
 	void Update() {
     if(!_pause)
     {
-      lifeManager.addVariation(Time.deltaTime * _lifeRegen);
-  		setLife(getLife() + Time.deltaTime * _lifeRegen);
+      _lifeManager.regen(Time.deltaTime);
       _energy = _medium.getEnergy()/_maxMediumEnergy;
 
       if (Input.GetKey(KeyCode.R))
       {
-		    lifeManager.addVariation(1f);
+		    _lifeManager.addVariation(1f);
       }
       if (Input.GetKey(KeyCode.F)) {
         setEnergy(1f);
       }
 
       // dammage in case of low energy
-      if (_energy <= 0.05f)   lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
+      if (_energy <= 0.05f)   _lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
 
 
 		  // Life animation when life is reducing
-		  if (lifeManager.getVariation() < 0)
+		  if (_lifeManager.getVariation() < 0)
       {
         if(lifeAnimation.isPlaying == false){
 				  lifeAnimation.Play();
@@ -158,10 +138,10 @@ public class Hero : MonoBehaviour {
 		  _energyBefore = _energy;
 
 
-		  lifeManager.applyVariation();
- 		  if(lifeManager.getLife() == 0f && (_isLiving))
+		  _lifeManager.applyVariation();
+ 		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
-			  _isLiving = false;
+			  _isAlive = false;
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
@@ -170,14 +150,13 @@ public class Hero : MonoBehaviour {
 
  	void OnTriggerEnter(Collider collision)
  	{
-	    PickableItem item = collision.GetComponent<PickableItem>();
-	    if(null != item)
-    	{
-  			Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
-  			item.pickUp();
-    	}
-	
-  	}
+	  PickableItem item = collision.GetComponent<PickableItem>();
+	  if(null != item)
+    {
+  	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
+      item.pickUp();
+    }
+  }
 
 
 	private bool _spawn01 = false;
@@ -255,7 +234,7 @@ public class Hero : MonoBehaviour {
 
 		    cc.enabled = true;
 		    addLife(1f);
-		    setLife(1f);
+
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
 				box.resetPos();
@@ -294,7 +273,7 @@ public class Hero : MonoBehaviour {
 				gameObject.transform.position = respawn08.transform.position;
 			}
 		
-			_isLiving = true;
+			_isAlive = true;
 	}	
 
 }

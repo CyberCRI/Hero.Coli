@@ -41,7 +41,19 @@ public class Life : MonoBehaviour {
 	public float getLife()
 	{
 		return _life;
-	}
+  }
+
+  public void setLife(float life) {
+    if (life >= 1f)
+    {
+      life = 1f;
+    }
+    else if (life <= 0f)
+    {
+      life = 0f;
+    }
+    _life = life;
+  }
 
 	public float getVariation()
 	{
@@ -62,4 +74,9 @@ public class Life : MonoBehaviour {
 	{
 		_variation = 0f;
 	}
+
+  public void regen(float deltaTime)
+  {
+    addVariation(deltaTime * _lifeRegen);
+  }
 }
