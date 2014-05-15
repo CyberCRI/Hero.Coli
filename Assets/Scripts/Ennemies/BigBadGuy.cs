@@ -8,6 +8,8 @@ public class BigBadGuy : MonoBehaviour {
 	public Hero hero;
 	
 	private float step;
+  //TODO extract to config file
+  private float _dpt = 0.5f;
 	
 	void Start(){
 		step = transform.localScale.x / life;
@@ -30,7 +32,7 @@ public class BigBadGuy : MonoBehaviour {
 	void OnCollisionEnter(Collision col) {
 		if (col.collider){
 			Hero hero = col.gameObject.GetComponent<Hero>();
-			hero.subLife(0.5f);
+      hero.subLife(_dpt);
 		}
 	}
 	

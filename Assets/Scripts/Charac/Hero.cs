@@ -3,233 +3,159 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class Hero : MonoBehaviour{
+public class Hero : MonoBehaviour {
+
+
 	public LifeLogoAnimation lifeAnimation;
 	public EnergyLogoAnimation energyAnimation;
 	Medium _medium;
-	
-	/*
-	//Getter & setter for the move speed.
-	private float _moveSpeed = 3f;
-	public float getMoveSpeed() {
-		return _moveSpeed;
-	}
-	public void setMoveSpeed(float moveSpeed) {
-		if (moveSpeed < 0)
-			moveSpeed = 0; 
-			_moveSpeed = moveSpeed;
-	}
-	*/
-	
-	//References for the click to move controler.
-	//	private float _moveSmooth = .5f;
-	//	private Vector3 _destination = Vector3.zero;
 
-	/*
-	//Getter & setter for the inventory.
-	private int _collected;
-	public int getCollected() {
-		return _collected;
-	}
-	public void setCollected(int collected) {
-		_collected = collected;
-	}*/
+	//Life
 
-  	//Life
-  	private static float _lifeRegen = 0.1f;
-  	//private float _lowEnergyDmg = 0.15f;
-  	private static float _lowEnergyDmg = 3*_lifeRegen;
+	private float _life = 1f;
+  private static float _lifeRegen = 0.1f;
+	private Life _lifeManager;
 
-	//Getter & setter for the energy.
+	//Energy.
 	private float _energy = 1f;
   private float _maxMediumEnergy = 1f;
-  private float _lowEnergyThreshold = 0.05f;
-  private bool _pause;
-	private bool _isLiving;
-
 	private float _energyBefore = 1f;
+	private float _lowEnergyDpt = 3*_lifeRegen;
+	
 
-  public void Pause(bool pause)
-  {
-    _pause = pause;
-  }
+  private bool _pause;
+	private bool _isAlive;
 
-  public bool isPaused()
-  {
-    return _pause;
-  }
 
+
+	public void Pause(bool pause)
+	{
+	  _pause = pause;
+ 	}	
+
+	public bool isPaused()
+	{
+	  return _pause;
+	}
+
+
+	//getter and setter for energy
 	public float getEnergy() {
 		return _energy;
 	}
+	
 
 	public void setEnergy(float energy) {
-		if (energy > 1f) {energy = 1f;}
-		if(energy < 0) 
+		if (energy > 1f)
+    {
+      energy = 1f;
+    }
+    else if(energy < 0)
+    {
 			energy = 0;
+    }
     _medium.setEnergy(energy*_maxMediumEnergy);
     _energy = energy;
 	}
 
+
   //energy in ReactionEngine scale (not in percent or ratio)
   public void subEnergy(float energy) {
-
-
-
     _medium.subEnergy(energy);
-		//_energyBefore = _energy;
   }
 
-	public void DisplayEnergyAnimation()
-	{
-
-    if (_energyBefore - _energy > 0)
-    {
-		  if(energyAnimation.isPlaying == false) {
-			  energyAnimation.Play();
-		  }
-	  }
-
-		/*if (_energy < _energyBefore)
-		{
-			if(EnergyAnimation.isPlaying == false){
-				EnergyAnimation.Play();
-			}
-		}*/
-
-		_energyBefore = _energy;
-
-		/*float totalEnergy= 0f;
-		LinkedList<IReaction> Buffreac = _medium.getReactions();
-
-		foreach(IReaction react in Buffreac)
-		{
-			totalEnergy += react.getEnergyCost();
+	public void DisplayEnergyAnimation()  {
+		if(energyAnimation.isPlaying == false) {
+			 energyAnimation.Play();
 		}
-		Logger.Log ("energie totale :"+totalEnergy,Logger.Level.INFO);
-		if(totalEnergy > _medium.getEnergyProductionRate() )
-		{
-			if(EnergyAnimation.isPlaying == false){
-				EnergyAnimation.Play();
-			}
-		}*/
 	}
-
 
 
 	//Getter & setter for the life.
-	private float _life = 1f;
 	public float getLife() {
-		return _life;
+    return _lifeManager.getLife();
 	}
+
 	public void setLife(float life) {
-		if (life >= 1f)
-			life = 1f;
-		if (life <= 0f) {
-			life = 0f;
-		}
-		_life = life;
-	}
+    _lifeManager.setLife(life);
+  }
+    
+  public void addLife(float life) {
+    _lifeManager.addVariation(life);
+  }
+    
+  public void subLife(float life) {
+    _lifeManager.addVariation(-life);
+  }
 
-	public void subLife(float life) {
-		if(life >0.01){
-			if(lifeAnimation.isPlaying == false){
-				lifeAnimation.Play();
-			}
-		}
-			
-			_life -= life;
-
-	}
+  void Awake ()
+  {
+    _lifeManager = new Life(_life, _lifeRegen);
+  }
   
 	void Start (){
-		//Click to move variable.
-      	//	_destination = mover.position;
-
 
     gameObject.SetActive(true);
-		_isLiving = true;
+		_isAlive = true;
 
-
-
-    LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-    _medium = ReactionEngine.getMediumFromId(1, mediums);
+    //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+		_medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
     _maxMediumEnergy = _medium.getMaxEnergy();
     _energy = _medium.getEnergy()/_maxMediumEnergy;
-
-		//FIXME light is undefined
-      	//light.enabled = false;
-
-
 
 	}
   
 	void Update() {
     if(!_pause)
     {
-  		setLife(getLife() + Time.deltaTime * _lifeRegen);
+      _lifeManager.regen(Time.deltaTime);
       _energy = _medium.getEnergy()/_maxMediumEnergy;
-      if(_energy < _lowEnergyThreshold)
-      {
-        subLife(Time.deltaTime * _lowEnergyDmg);
-      }
+
       if (Input.GetKey(KeyCode.R))
       {
-        setLife(1f);
+		    _lifeManager.addVariation(1f);
       }
       if (Input.GetKey(KeyCode.F)) {
         setEnergy(1f);
       }
-  
-      if ((_life <= 0) && (_isLiving))
+
+      // dammage in case of low energy
+      if (_energy <= 0.05f)   _lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
+
+
+		  // Life animation when life is reducing
+		  if (_lifeManager.getVariation() < 0)
       {
-	    	_life = 0f;
-			_isLiving = false;
-			StartCoroutine(RespawnCoroutine());
-	    }
-	    //Logger.Log ("Hero::_medium.getEnergy()="+_medium.getEnergy()+", getEnergy()="+getEnergy(), Logger.Level.ONSCREEN);
+        if(lifeAnimation.isPlaying == false){
+				  lifeAnimation.Play();
+			  }
+		  }
+
+		  // Energy animation when energy is reducing
+		  if (_energy < _energyBefore) {
+		    DisplayEnergyAnimation();
+		  }
+		  _energyBefore = _energy;
+
+
+		  _lifeManager.applyVariation();
+ 		  if(_lifeManager.getLife() == 0f && (_isAlive))
+		  {
+			  _isAlive = false;
+			  StartCoroutine(RespawnCoroutine());
+		  }
     }
-
-		DisplayEnergyAnimation();
 	}
 
-	/*
-	//When the player collects a biobrick.
-	public void Collect() {
-		setCollected(getCollected() + 1);
-	}
-
-	//When the player collects glucose.
-	public void winEnergy() {
-		setEnergy(getEnergy() + .2f);
-	}
-
-	//When the player equiped the improved motility device.
-	public void equipImpMoti() {
-		setMoveSpeed(getMoveSpeed() + 3f);
-	}
-
-	//When the player reacts to the light and emits colors.
-	public void emitLight(bool boolean) {
-		//FIXME light is undefined
-		//light.enabled = boolean;
-	}
-
-	public void changeColor(Color color) {
-		//FIXME light is undefined
-		//light.color = color;
-	}
-	*/
 
  	void OnTriggerEnter(Collider collision)
  	{
-	    PickableItem item = collision.GetComponent<PickableItem>();
-	    if(null != item)
+	  PickableItem item = collision.GetComponent<PickableItem>();
+	  if(null != item)
     {
-  		Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
-  		item.pickUp();
+  	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
+      item.pickUp();
     }
-	
   }
 
 
@@ -298,19 +224,17 @@ public class Hero : MonoBehaviour{
 		        break;
 	 	}
  	}
-
+	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
 
 	    CellControl cc = GetComponent<CellControl>();
 	    cc.enabled = false;
-		
-		//GameObject sr = GameObject.Find("StrongRock1");
-		//PushableBox pb = sr.GetComponent<PushableBox>();
 
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
 		    setLife(1f);
+
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
 				box.resetPos();
@@ -349,7 +273,7 @@ public class Hero : MonoBehaviour{
 				gameObject.transform.position = respawn08.transform.position;
 			}
 		
-			_isLiving = true;
+			_isAlive = true;
 	}	
 
 }
