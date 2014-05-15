@@ -32,6 +32,7 @@ public class PhenoSpeed : Phenotype
 	
 	private int flagellaCount = 1;
 	private Molecule _mol = null;
+	private string _speedName = "MOV";
 
   private float _steepness1;
   private float _steepness2;
@@ -41,7 +42,12 @@ public class PhenoSpeed : Phenotype
 	public override void StartPhenotype ()
 	{
     set1Flagella();
-		_mol = ReactionEngine.getMoleculeFromName ("MOV", _molecules);
+		initMoleculePhenotype();
+	}
+
+	public void initMoleculePhenotype()
+	{
+		_mol = ReactionEngine.getMoleculeFromName (_speedName, _molecules);
 	}
 
   public float getIntensity(float cc)
@@ -123,7 +129,7 @@ public class PhenoSpeed : Phenotype
 	{
 		if (_mol == null)
 		{
-			_mol = ReactionEngine.getMoleculeFromName ("MOV", _molecules);
+			initMoleculePhenotype();
 			if (_mol == null)
 				return ;
 		}

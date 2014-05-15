@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EquipedDisplayedDevice : DisplayedDevice {
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
 
- // public bool                         _isActive;
+	
   private static GameObject           equipedDevice = null;
   private static GameObject           tinyBioBrickIcon;
   private static GameObject           tinyBioBrickIcon2;
@@ -50,28 +50,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 	  }
   }
 
-  /*public void setActivity(bool activity) {
-   // _isActive = activity;
-    if(activity) {
-      setActive();
-    } else {
-      setInactive();
-    }
-  }*/
 
- public void setActive() {
-   Logger.Log("EquipedDisplayedDevice::setActive", Logger.Level.TRACE);
-  // _isActive = true;
-    //TODO FIXME
-   //setSprite(_currentSpriteName + _activeSuffix);
- }
- 
- public void setInactive() {
-   Logger.Log("EquipedDisplayedDevice::setInactive", Logger.Level.TRACE);
- //  _isActive = false;
-    //TODO FIXME
-   //setSprite(_currentSpriteName);
- }
 
   void initIfNecessary() {
     if(equipedDevice == null) {
@@ -81,8 +60,6 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 			tinyBioBrickIcon = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos;
 			tinyBioBrickIcon2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos2;
 
-			//tinyBioBrickIcon.SetActive(false);
-      		//tinyBioBrickIcon2.SetActive(false);
     }
     if(_tinyIconVerticalShift == 0.0f)
     {
@@ -127,7 +104,6 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
-    setActive();
 
     initIfNecessary();
 

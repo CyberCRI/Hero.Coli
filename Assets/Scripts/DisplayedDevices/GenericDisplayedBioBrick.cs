@@ -13,8 +13,7 @@ using System.Collections.Generic;
 public class GenericDisplayedBioBrick : DisplayedElement {
 
   public static string                              prefabURI               = "GUI/screen1/Devices/TinyBioBrickIconPrefab";
-  public static UnityEngine.Object                  prefab                  = null;
-  //public static string                              assemblyZonePanelName   = "AssemblyZonePanel";
+  public static UnityEngine.Object                  genericPrefab           = null;
 
 
   public static Dictionary<BioBrick.Type, string>   spriteNamesDico = new Dictionary<BioBrick.Type, string>() {
@@ -25,10 +24,7 @@ public class GenericDisplayedBioBrick : DisplayedElement {
     {BioBrick.Type.UNKNOWN,     "unknown"}
   };
 
-  //public UILabel                    _label;
   public BioBrick                   _biobrick;
-  //public LastHoveredInfoManager     _lastHoveredInfoManager;
-
 
  public static GenericDisplayedBioBrick Create(
    Transform parentTransform
@@ -42,8 +38,8 @@ public class GenericDisplayedBioBrick : DisplayedElement {
     string usedSpriteName = ((spriteName!=null)&&(spriteName!=""))?spriteName:getSpriteName(biobrick);
     string nullSpriteName = ((spriteName!=null)&&(spriteName!=""))?"":"(null)=>"+usedSpriteName;
 
-    if(prefab == null) prefab = Resources.Load(prefabURI);
-    Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
+    if(genericPrefab == null) genericPrefab = Resources.Load(prefabURI);
+    Object prefabToUse = (externalPrefab==null)?genericPrefab:externalPrefab;
 
     Logger.Log("GenericDisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
@@ -68,10 +64,10 @@ public class GenericDisplayedBioBrick : DisplayedElement {
     GenericDisplayedBioBrick biobrickScript
     ,BioBrick biobrick
   ) {
-      Logger.Log("GenericDisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
-      biobrickScript._biobrick = biobrick;
-      //biobrickScript._label.text = biobrick.getName();
-      //Logger.Log("GenericDisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
+
+    Logger.Log("GenericDisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
+    biobrickScript._biobrick = biobrick;
+
   }
 
   public static string getSpriteName(BioBrick brick) {
@@ -79,7 +75,6 @@ public class GenericDisplayedBioBrick : DisplayedElement {
   }
 
   protected string getDebugInfos() {
-    //return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", label="+_label.text+" time="+Time.realtimeSinceStartup;
     return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+" time="+Time.realtimeSinceStartup;
   }
 

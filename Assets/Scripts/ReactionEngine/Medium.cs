@@ -18,21 +18,22 @@ using System.Collections.Generic;
 */
 public class Medium
 {
-  private LinkedList<IReaction> _reactions;             //!< The list of reaction
+  private LinkedList<IReaction> _reactions;             //!< The list of reactions
   private ArrayList             _molecules;             //!< The list of molecules (Molecule)
 
   private int           _id;                            //!< The id of the Medium
   private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionsSet id affected to this Medium
-  private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
+  private string        _reactionsSet;                  //!< The ReactionsSet id assigned to this Medium
+  private string        _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
-  private NumberGenerator _numberGenerator;           //!< Random number generator
+  private NumberGenerator _numberGenerator;             //!< Random number generator
   private bool          _enableEnergy;
-  private float         _energy;                        //!< Represent the quantity of ATP
+  private float         _energy;                        //!< Represents the quantity of ATP
+  private float 		_energyVariation;				//!< The variation of energy during one frame
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
-  public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
+  public bool           enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -45,14 +46,45 @@ public class Medium
   public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
   public string getMoleculesSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
+
+  //TODO extract energy methods and fields and make class out of it
   public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f;}
   public float getEnergy() { return _energy; }
-  public void addEnergy(float v) { _energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
-  public void subEnergy(float v) { _energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;}
+  public void addEnergy(float v) {
+		addVariation(v);
+		//_energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
+	}
+  public void subEnergy(float v) {
+		addVariation(-v);
+		//_energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
+	}
   public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
   public float getMaxEnergy() { return _maxEnergy; }
   public void setEnergyProductionRate(float v) { _energyProductionRate = v;}
   public float getEnergyProductionRate() { return _energyProductionRate;}
+
+	public float getEnergyVariation() { return _energyVariation;}
+
+	public void addVariation(float variation)
+	{
+		_energyVariation += variation;
+	}
+
+	public void applyVariation()
+	{
+		_energy += _energyVariation;
+		if(_energy <= 0f) _energy = 0f;
+		else if(_energy >= _maxEnergy) _energy = _maxEnergy;
+
+		ResetVariation();
+				
+	}
+	
+	// Reset the variation value : called at the end of the update
+	public void ResetVariation()
+	{
+		_energyVariation = 0f;
+	}
 
   public void enableEnergy(bool b)
   {
@@ -236,10 +268,16 @@ public class Medium
    */
   public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
   {
+
+		//Receive a linkedlist of Sets
     _reactions = new LinkedList<IReaction>();
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
+
+		//Try to find the good set in the LinkedList
     ReactionsSet reactSet = ReactionEngine.getReactionsSetFromId(_reactionsSet, reactionsSets);
     MoleculesSet molSet = ReactionEngine.getMoleculesSetFromId(_moleculesSet, moleculesSets);
+
+		//Put all the different molecules from the linkedList in an arrayList
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
 
     if (reactSet == null)
@@ -294,29 +332,32 @@ public class Medium
 
     foreach (IReaction reaction in _reactions) {
 		
-		if(Logger.isLevel(Logger.Level.TRACE)) {
-		  PromoterReaction promoter = reaction as PromoterReaction;
-		  if (promoter != null) {
-		    Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
-		  }
-		}
-		reaction.react(_molecules);
+  	  if(Logger.isLevel(Logger.Level.TRACE)) {
+  	    PromoterReaction promoter = reaction as PromoterReaction;
+  	    if (promoter != null) {
+	      Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
+	    }
+	  }
+	  reaction.react(_molecules);
 	}	
-
+		
+	applyVariation();
+	
     if (_enableNoise)
+    {
+      float noise;
+ 
+      foreach (Molecule m in _molecules)
       {
-        float noise;
-
-        foreach (Molecule m in _molecules)
-          {
-            noise = _numberGenerator.getNumber();
-            if (_enableSequential)
-              m.addConcentration(noise);
-            else
-              m.addNewConcentration(noise);
-          }
+        noise = _numberGenerator.getNumber();
+        if (_enableSequential)
+          m.addConcentration(noise);
+        else
+          m.addNewConcentration(noise);
       }
-    //#FIXME : remove
+    }
+
+    //TODO improve check that it's the medium of the hero bacterium Cellia
     if (_name == "Cellia")
     {
       manageMoleculeConcentrationWithKey(KeyCode.P, KeyCode.M, "MOV");
