@@ -10,8 +10,12 @@ using System;
  */
 public class PhenoToxic : Phenotype {
 
-  private Molecule _mol;
   public Hero hero;
+
+    private Molecule _mol;  
+    //TODO extract to config file
+    private float _K0 = 0.01f;
+    private float _cc0 = 170f;
 
   //! Called at the beginning
   public override void StartPhenotype()
@@ -36,11 +40,9 @@ public class PhenoToxic : Phenotype {
         Logger.Log("_mol == null", Logger.Level.ONSCREEN);
         return ;
       }
-		}
-    float K0 = 0.01f;
-    float cc0 = 170f;
-		float intensity = K0*(Mathf.Exp(_mol.getConcentration()/cc0)-1);
-		hero.lifeManager.addVariation(intensity,false);
+     		}
+		float intensity = _K0*(Mathf.Exp(_mol.getConcentration()/_cc0)-1);
+		hero.subLife(intensity);
     Logger.Log("toxic life -= "+intensity, Logger.Level.ONSCREEN);
   }
 

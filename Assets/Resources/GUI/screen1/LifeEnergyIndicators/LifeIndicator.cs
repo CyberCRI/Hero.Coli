@@ -29,7 +29,7 @@ public class LifeIndicator : MonoBehaviour {
 	void Update () {
 		if(hero != null)
 		{
-			_lifeValue = Mathf.CeilToInt(hero.lifeManager.getLife()*maxLife);
+			_lifeValue = Mathf.CeilToInt(hero.getLife()*maxLife);
 			_lifeValueLabel.text = _lifeValue.ToString();
 		}
 	}

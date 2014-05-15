@@ -1,20 +1,20 @@
 using UnityEngine;
 using System.Collections;
 
-//This class manage the Life script
+//This class manages the Life
 
 /*How to Manage Life of a character
  * 
- * Life Object must be instanciate in a character 
- * 	The constructor need to 2 parameters :
- * 		param life : the life max and initial of the character
+ * Life Object must be instanciated in a character 
+ * 	The constructor needs to 2 parameters :
+ * 		param life : the max and initial life of the character
  * 		param lifeRegen : the initial life regen of the character
  * 
  * What does alter the life of a character, call his Life Object and use AddVariation(float,bool)
  *		param float : the positive value of the change.
- *		param bool  : if the alter is positive (true) or negative (false)
+ *		param bool  : if the variation is positive (true) or negative (false)
  *
- * ApplyVariation is called in the Update()of the Character
+ * ApplyVariation is called in the Update() of the Character
  * */
 public class Life : MonoBehaviour {
 
@@ -22,8 +22,6 @@ public class Life : MonoBehaviour {
 	private float _life;
 	private float _lifeRegen;
 	private float _variation;
-
-
 
 	//Constructor
 	public Life(float life, float lifeRegen)
@@ -34,10 +32,10 @@ public class Life : MonoBehaviour {
 	}
 	
 
-	//Add a variation for the next update, the bool positif determine if the vaiation will be positive or negative
-	public void addVariation (float variation, bool positif)
+	//Add a variation for the next update, the bool positive determines if the variation will be positive or negative
+	public void addVariation (float variation)
 	{
-		_variation += (positif == true)? variation : - variation;
+		_variation += variation;
 	}
 
 	public float getLife()

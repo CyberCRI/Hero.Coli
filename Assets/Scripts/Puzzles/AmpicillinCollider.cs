@@ -2,16 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class AmpicillinCollider : MonoBehaviour {
-
+  //TODO extract to config file
+  private static float _dpt = 0.1f;
+  
 	void OnParticleCollision(GameObject obj){
-		Hero cellia = obj.GetComponent<Hero>();
-		if(cellia){
-			cellia.lifeManager.addVariation(0.1f,false);
-			//Debug.Log("HITPlayer");
-		}
-		BigBadGuy badGuy = obj.GetComponent<BigBadGuy>();	
-		if(badGuy){
-			//Debug.Log ("HITPeni");
+    Hero hero = obj.GetComponent<Hero>();
+		if(hero){      
+      hero.subLife(_dpt);
 		}
 	}
 }

@@ -3,39 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class Hero : MonoBehaviour{
+public class Hero : MonoBehaviour {
 
 
 	public LifeLogoAnimation lifeAnimation;
 	public EnergyLogoAnimation energyAnimation;
 	Medium _medium;
 
-  	//Life
-	private float _life = 1f;
-  	private static float _lifeRegen = 0.1f;
-	public Life lifeManager;
+	//Life
 
+  //TODO remove _life and _lifeRegen and use the ones inside lifeManager
+	private float _life = 1f;
+  private static float _lifeRegen = 0.1f;
+	public Life lifeManager;
 
 	//Energy.
 	private float _energy = 1f;
-    private float _maxMediumEnergy = 1f;
+  private float _maxMediumEnergy = 1f;
 	private float _energyBefore = 1f;
-	private float _lowEnergyDmg = 3*_lifeRegen;
+	private float _lowEnergyDpt = 3*_lifeRegen;
 	
 
-    private bool _pause;
+  private bool _pause;
 	private bool _isLiving;
 
 
 
 	public void Pause(bool pause)
 	{
-	  	_pause = pause;
+	  _pause = pause;
  	}	
 
 	public bool isPaused()
 	{
-	  	return _pause;
+	  return _pause;
 	}
 
 
@@ -46,9 +47,14 @@ public class Hero : MonoBehaviour{
 	
 
 	public void setEnergy(float energy) {
-		if (energy > 1f) {energy = 1f;}
-		if(energy < 0) 
+		if (energy > 1f)
+    {
+      energy = 1f;
+    }
+    else if(energy < 0)
+    {
 			energy = 0;
+    }
     _medium.setEnergy(energy*_maxMediumEnergy);
     _energy = energy;
 	}
@@ -60,7 +66,6 @@ public class Hero : MonoBehaviour{
   }
 
 	public void DisplayEnergyAnimation()  {
-
 		if(energyAnimation.isPlaying == false) {
 			 energyAnimation.Play();
 		}
@@ -71,6 +76,8 @@ public class Hero : MonoBehaviour{
 	//Getter & setter for the life.
 	public float getLife() {
 		return _life;
+    //TODO
+    //return lifeManager.getLife();
 	}
 
 
@@ -83,6 +90,7 @@ public class Hero : MonoBehaviour{
 		_life = life;
 	}
 
+  /*
 	public void subLife(float life) {
 		if(life >0.01){
 			if(lifeAnimation.isPlaying == false){
@@ -90,66 +98,73 @@ public class Hero : MonoBehaviour{
 			}
 		}
 			
-			_life -= life;
-
+		_life -= life;
 	}
+  */
+    
+    public void addLife(float life) {
+        lifeManager.addVariation(life);
+    }
+    
+    public void subLife(float life) {
+        lifeManager.addVariation(-life);
+    }
   
 	void Start (){
 
-    	gameObject.SetActive(true);
+    gameObject.SetActive(true);
 		_isLiving = true;
 
 		lifeManager = new Life(getLife(),0.1f);
 
-    	//LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+    //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
 		_medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
-    	_maxMediumEnergy = _medium.getMaxEnergy();
-    	_energy = _medium.getEnergy()/_maxMediumEnergy;
+    _maxMediumEnergy = _medium.getMaxEnergy();
+    _energy = _medium.getEnergy()/_maxMediumEnergy;
 
 	}
   
 	void Update() {
-	    if(!_pause)
-	    {
-			lifeManager.addVariation(Time.deltaTime * _lifeRegen,true);
-	  		setLife(getLife() + Time.deltaTime * _lifeRegen);
-	      _energy = _medium.getEnergy()/_maxMediumEnergy;
+    if(!_pause)
+    {
+      lifeManager.addVariation(Time.deltaTime * _lifeRegen);
+  		setLife(getLife() + Time.deltaTime * _lifeRegen);
+      _energy = _medium.getEnergy()/_maxMediumEnergy;
 
-	      if (Input.GetKey(KeyCode.R))
-	      {
-			lifeManager.addVariation(1f,true);
-	      }
-	      if (Input.GetKey(KeyCode.F)) {
-	        setEnergy(1f);
-	      }
+      if (Input.GetKey(KeyCode.R))
+      {
+		    lifeManager.addVariation(1f);
+      }
+      if (Input.GetKey(KeyCode.F)) {
+        setEnergy(1f);
+      }
 
-			// dammage in case of low energy
-			if (_energy <= 0.05f)   lifeManager.addVariation(Time.deltaTime * _lowEnergyDmg, false);
-
-
-			// Life animation when life is reducing
-			if (lifeManager.getVariation() < 0)	{
-
-				if(lifeAnimation.isPlaying == false){
-					lifeAnimation.Play();
-				}
-
-			}
-
-			// Energy animation when energy is reducing
-			if (_energy < _energyBefore) {
-				DisplayEnergyAnimation();
-			}
-			_energyBefore = _energy;
+      // dammage in case of low energy
+      if (_energy <= 0.05f)   lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
 
 
-			lifeManager.applyVariation();
-			if(lifeManager.getLife() == 0f && (_isLiving))
-			{
-				_isLiving = false;
-				StartCoroutine(RespawnCoroutine());
-			}
-	    }
+		  // Life animation when life is reducing
+		  if (lifeManager.getVariation() < 0)
+      {
+        if(lifeAnimation.isPlaying == false){
+				  lifeAnimation.Play();
+			  }
+		  }
+
+		  // Energy animation when energy is reducing
+		  if (_energy < _energyBefore) {
+		    DisplayEnergyAnimation();
+		  }
+		  _energyBefore = _energy;
+
+
+		  lifeManager.applyVariation();
+ 		  if(lifeManager.getLife() == 0f && (_isLiving))
+		  {
+			  _isLiving = false;
+			  StartCoroutine(RespawnCoroutine());
+		  }
+    }
 	}
 
 
@@ -239,7 +254,7 @@ public class Hero : MonoBehaviour{
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
-		lifeManager.addVariation(1f,true);
+		    addLife(1f);
 		    setLife(1f);
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
