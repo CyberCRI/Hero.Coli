@@ -31,37 +31,29 @@ public class ReactionEngine : MonoBehaviour {
     return _instance;
   }
 
-  private Fick _fick;                                   //!< The Fick class that manage molecules diffusions between medium
-  private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
-  private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
-  private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
-  private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
+  private Fick _fick;                                   //!< The Fick class that manages molecules diffusions between medium
+  private ActiveTransport       _activeTransport;       //!< The class that manages Active transport reactions.
+  private LinkedList<Medium>    _mediums;               //!< The list that contains all the mediums
+  private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contains the reactions sets
+  private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contains the molecules sets
   public string[]      _mediumsFiles;                   //!< all the medium files
-  public string[]      _reactionsFiles;                 //!< all the reactions files
-  public string[]      _moleculesFiles;                 //!< all the molecules files
+  public string[]      _reactionsFiles;                 //!< all the reaction files
+  public string[]      _moleculesFiles;                 //!< all the molecule files
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
   public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
-  public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
+  public static float  reactionsSpeed = 0.9f;           //!< Global reaction speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
- // public bool enableNoise;                              //!< Add Noise in each Reaction
-  public bool enableEnergy;                             //!< Enable energy consomation
-  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
-  public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
+  public bool enableNoise;                              //!< Add Noise in each Reaction
+  public bool enableEnergy;                             //!< Enable energy consumption
+  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in mediums
+  public bool enableShufflingMediumOrder;               //!< Randomize medium computation order
 	
   private bool _paused;                                 //!< Simulation state
-	
-	
-  //debug
-  /*public bool _debug;
-  private float _timeAtLastDebug = 0f;
-  private float _timeAtCurrentFrame = 0f;
-  private float _deltaTime = 0f;
-  private float _deltaTimeThreshold = 0.5f;*/
 
   public Fick getFick() { return _fick; }
   
   /*!
-    \brief Add an IReaction to a medium
+    \brief Adds an IReaction to a medium
     \param mediumId The medium ID.
     \param reaction The reaction to add.
    */
@@ -252,7 +244,7 @@ public class ReactionEngine : MonoBehaviour {
       {
         medium.Init(_reactionsSets, _moleculesSets);
         medium.enableSequential(enableSequential);
-        //medium.enableNoise(enableNoise);
+        medium.enableNoise(enableNoise);
         medium.enableEnergy(enableEnergy);
         medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
       }
@@ -276,34 +268,22 @@ public class ReactionEngine : MonoBehaviour {
   //! This function is called at each frame
   public void Update()
   {		
-	if(_paused) {
-	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
-	} else {
-	  _fick.react();
-     if (enableShufflingMediumOrder)
+	  if(_paused) {
+	    Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
+	  } else {
+	    _fick.react();
+      if (enableShufflingMediumOrder)
         LinkedListExtensions.Shuffle<Medium>(_mediums);
+
       foreach (Medium medium in _mediums)
         medium.Update();
-	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
+
+	    Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
       if (!enableSequential) {
         foreach (Medium medium in _mediums)
           medium.updateMoleculesConcentrations();
-		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
+		    Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
+      }
 	  }
-	  
-	  //TODO REMOVE
-	/*  if(_debug) {
-	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
-	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
-	  		
-	  	bool debug = (_deltaTime > _deltaTimeThreshold);
-	  	if(debug) {
-	  		_timeAtLastDebug = _timeAtCurrentFrame;
-	  		//debug
-	  		foreach (Medium medium in _mediums)
-	  		  medium.Log();
-	  	}
-	  }*/
-	}
   }
 }

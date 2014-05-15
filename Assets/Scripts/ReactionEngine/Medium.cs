@@ -18,21 +18,21 @@ using System.Collections.Generic;
 */
 public class Medium
 {
-  private LinkedList<IReaction> _reactions;             //!< The list of reaction
+  private LinkedList<IReaction> _reactions;             //!< The list of reactions
   private ArrayList             _molecules;             //!< The list of molecules (Molecule)
 
   private int           _id;                            //!< The id of the Medium
   private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionsSet id affected to this Medium
-  private string        _moleculesSet;                  //!< The MoleculeSet id affected to this Medium
+  private string        _reactionsSet;                  //!< The ReactionsSet id assigned to this Medium
+  private string        _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
   private bool          _enableSequential;
- // private bool          _enableNoise;
-  private NumberGenerator _numberGenerator;           //!< Random number generator
+  private bool          _enableNoise;
+  private NumberGenerator _numberGenerator;             //!< Random number generator
   private bool          _enableEnergy;
-  private float         _energy;                        //!< Represent the quantity of ATP
+  private float         _energy;                        //!< Represents the quantity of ATP
   private float         _maxEnergy;                     //!< The maximum quantity of ATP
   private float         _energyProductionRate;          //!< The energy production speed
- // public bool           enableShufflingReactionOrder;   //!< Enable shuffling of reactions
+  public bool           enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
   public void setId(int id) { _id = id;}
   public int getId() { return _id;}
@@ -68,10 +68,10 @@ public class Medium
       r.enableSequential = b;
   }
 
- /* public void enableNoise(bool b)
+  public void enableNoise(bool b)
   {
     _enableNoise = b;
-  }*/
+  }
 
   /*!
     \brief Add a new reaction to the medium
@@ -237,7 +237,7 @@ public class Medium
   public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
   {
 
-		//Recieve a linkedlist of Sets
+		//Receive a linkedlist of Sets
     _reactions = new LinkedList<IReaction>();
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
 
@@ -295,34 +295,34 @@ public class Medium
   public void Update()
   {
 		
-   /* if (enableShufflingReactionOrder)
-      LinkedListExtensions.Shuffle<IReaction>(_reactions);*/
+    if (enableShufflingReactionOrder)
+      LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
     foreach (IReaction reaction in _reactions) {
 		
-		if(Logger.isLevel(Logger.Level.TRACE)) {
-		  PromoterReaction promoter = reaction as PromoterReaction;
-		  if (promoter != null) {
-		    Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
+  		if(Logger.isLevel(Logger.Level.TRACE)) {
+  		  PromoterReaction promoter = reaction as PromoterReaction;
+  		  if (promoter != null) {
+		      Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
+		    }
 		  }
-		}
-		reaction.react(_molecules);
-	}	
+		  reaction.react(_molecules);
+	  }	
 
-   /* if (_enableNoise)
+    if (_enableNoise)
+    {
+      float noise;
+ 
+      foreach (Molecule m in _molecules)
       {
-        float noise;
-
-        foreach (Molecule m in _molecules)
-          {
-            noise = _numberGenerator.getNumber();
-            if (_enableSequential)
-              m.addConcentration(noise);
-            else
-              m.addNewConcentration(noise);
-          }
-      }*/
-    //#FIXME : remove
+        noise = _numberGenerator.getNumber();
+        if (_enableSequential)
+          m.addConcentration(noise);
+        else
+          m.addNewConcentration(noise);
+      }
+    }
+    
     if (_name == "Cellia")
     {
       manageMoleculeConcentrationWithKey(KeyCode.P, KeyCode.M, "MOV");
