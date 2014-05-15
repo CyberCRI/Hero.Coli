@@ -23,7 +23,7 @@ using System.Collections.Generic;
 public abstract class Phenotype : MonoBehaviour
 {
   protected ReactionEngine _reactionEngine;                    //!< The ReactionEngine (ReactionEngine)
-  public int               _mediumId;              //!< The medium id
+  private int               _mediumId;              //!< The medium id
 
   protected static ArrayList             _molecules;
   protected Medium                _mediumRef;
@@ -57,12 +57,16 @@ public abstract class Phenotype : MonoBehaviour
    */
   public void initMolecules()
   {
+		//Set the medium ID
+    if(_mediumId == 0)
+	  if(gameObject.name == "Perso")
+	    setMediumId(1);
+
     LinkedList<Medium>    mediums = _reactionEngine.getMediumList();
     _mediumRef = ReactionEngine.getMediumFromId(_mediumId, mediums);
 
     if(_mediumRef != null && _molecules == null)
     {
-			Logger.Log("INITMOLECULES",Logger.Level.WARN);
       _molecules = _mediumRef.getMolecules();
     }
   }
