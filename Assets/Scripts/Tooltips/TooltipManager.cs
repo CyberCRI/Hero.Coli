@@ -89,7 +89,7 @@ public class TooltipManager : MonoBehaviour {
         panel = _instance.bioBrickTooltipPanel;
         break;
     }
-		//Logger.Log("PANEL ===>"+panel,Logger.Level.WARN);
+		
     _instance._tooltipPanel = panel.gameObject.GetComponent<UIPanel>();
 
     _instance._titleLabel = panel.titleLabel;
@@ -104,51 +104,6 @@ public class TooltipManager : MonoBehaviour {
     _instance._explanationLabel = panel.explanationLabel;
     _instance._backgroundSprite = panel.backgroundSprite;
   }
-  //public float scale;
-
-  /*
-  private static IDictionary<BioBrick.Type, IDictionary<string, string>> BioBrickTextureNames = new Dictionary<BioBrick.Type, IDictionary<string, string>>()
-  {
-    {BioBrick.Type.PROMOTER, new Dictionary<string, string>(){
-        {"PRCONS", "b_PRCONS"},
-        {"PRLACI", "b_PRLACI"},
-        {"PRTETR", "b_PRTETR"}
-      }
-    },
-    {BioBrick.Type.RBS, new Dictionary<string, string>(){
-        {"RBS1", "b_RBS1"},
-        {"RBS2", "b_RBS2"}
-      }
-    },
-    {BioBrick.Type.GENE, new Dictionary<string, string>(){
-        {"FLUO1", "b_FLUO1"},
-        //{"FLUO2", "gfp"},
-        {"MOV", "b_MOV"},
-        {"AMPR", "b_AMPR"}
-        //{"REPR1", "repr1"},
-        //{"REPR2", "repr2"}
-      }
-    },
-    {BioBrick.Type.TERMINATOR, new Dictionary<string, string>(){
-        {"DTER", "b_DTER"}
-      }
-    }
-  };
-
-  private static IDictionary<string, string> DeviceTextureNames = new Dictionary<string, string>()
-  {
-    //{"Ampicillin resistance (med)", "ampR_m"},
-    {"Green fluorescence (low)", "d_cons-gfp-low"},
-    {"Green fluorescence (med)", "d_cons-gfp-med"},
-    {"Hyperflagellation (low)", "d_cons-speed-low"},
-    {"Hyperflagellation (med)", "d_cons-speed-med"},
-    //{"Regulated ampicillin resistance (med)", "ampR_m"},
-    {"Regulated green fluorescence (low)", "d_plac-gfp-low"},
-    {"Regulated green fluorescence (med)", "d_plac-gfp-med"},
-    {"Regulated hyperflagellation (low)", "d_plac-speed-low"},
-    {"Regulated hyperflagellation (med)", "d_plac-speed-low"}
-  };
-  */
 
   public static bool displayTooltip()
   {
@@ -172,7 +127,6 @@ public class TooltipManager : MonoBehaviour {
   {
     if(!isOver || (null == code))
     {
-			//Logger.Log("DisplayTooltip function code=====>"+code, Logger.Level.WARN);
       return displayTooltip();
     }
     else
@@ -180,9 +134,6 @@ public class TooltipManager : MonoBehaviour {
       if(fillInFieldsFromCode(code))
       {
         _instance._tooltipPanel.gameObject.SetActive(true);
-
-        //Rect rectout = _instance._tooltipPanel.GetAtlasSprite().outer;
-        //_instance._tooltipPanel.gameObject.transform.localScale = new Vector3(_instance.scale*rectout.width, _instance.scale*rectout.height, 1f);
 
         setPosition(pos);
         return true;
