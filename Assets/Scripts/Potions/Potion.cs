@@ -7,20 +7,20 @@ public class Potion : MonoBehaviour {
 	private static string _hoverSuffix = "Hover";
 	private static string _pressedSuffix = "Pressed";
 	private static List<string> _spriteNames = new List<string>( new string[] {
-		"greaterhealing"
-		,"healing"
-		,"lesserclaritypotion"
-		,"lesserinvulneralbility"
-		,"lesserrejuvpotion"
-		,"mana"
-		,"minorrejuvpotion"
-		,"potionofclarity"
-		,"potionofdivinity"
-		,"potionofrestoration"
-		,"rejuvpotion"
-		});
-
-	private static float _scale = 0.6687689f;
+		"promoter",
+    "PRCONS",
+    "PRLACI",
+    "PRTETR",
+    "RBS1",
+    "RBS2",
+    "FLUO1",
+    "FLUO2",
+    "MOV",
+    "AMPR",
+    "DTER"
+    });
+    
+    private static float _scale = 0.6687689f;
 	private static Vector3 _scaleVector = new Vector3(_scale, _scale, _scale);
   public static Object prefab = Resources.Load("GUI/screen1/Potions/PotionPrefab");
 	private static PotionsDisplayer potionDisplayer;
