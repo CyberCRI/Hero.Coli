@@ -1,2 +1,32 @@
 <bricks>
+  <brick id="PRCONS" size="48" type="promoter">
+    <beta>100</beta>
+    <formula>T</formula>
+  </brick>
+  <brick id="PRLACI" size="200" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]REPR1</formula>
+  </brick>
+  <brick id="PRTETR" size="54" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]REPR2</formula>
+  </brick>
+  
+  <brick id="RBS1" size="13" type="rbs">
+    <rbsFactor>0.23</rbsFactor>
+  </brick>
+  <brick id="RBS2" size="14" type="rbs">
+    <rbsFactor>0.126</rbsFactor>
+  </brick>
+  
+  <brick id="FLUO1" size="716" type="gene">
+    <protein>FLUO1</protein>
+  </brick>
+  <brick id="MOV" size="932" type="gene">
+    <protein>MOV</protein>
+  </brick>
+  
+  <brick id="DTER" size="129" type="terminator">
+    <terminatorFactor>1.0</terminatorFactor>
+  </brick>
 </bricks>
