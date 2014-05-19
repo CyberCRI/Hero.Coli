@@ -30,7 +30,7 @@ public class DeviceLoader {
 
   public LinkedList<Device> loadDevicesFromFile(string filePath)
   {
-    Logger.Log("DeviceLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
+    Logger.Log("DeviceLoader::loadDevicesFromFile("+filePath+")", Logger.Level.INFO);
 
     LinkedList<Device> resultDevices = new LinkedList<Device>();
 
@@ -102,7 +102,7 @@ public class DeviceLoader {
   }
 
   private static void logCurrentBioBrick(string type){
-    Logger.Log("DeviceLoader::loadBioBricksFromFile type="+type, Logger.Level.TRACE);
+    Logger.Log("DeviceLoader::logCurrentBioBrick type="+type, Logger.Level.TRACE);
   }
 
   private bool checkString(string toCheck) {
