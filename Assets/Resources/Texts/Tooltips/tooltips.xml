@@ -96,7 +96,7 @@
     <title>Green fluorescence (low)</title>
     <type>Device</type>
     <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_cons-gfp-low</illustration>
     <length>1101bp</length>
     <reference>Stanford University</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -106,7 +106,7 @@
     <title>Green fluorescence (med)</title>
     <type>Device</type>
     <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_cons-gfp-med</illustration>
     <length>1101bp</length>
     <reference>Stanford University</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -116,7 +116,7 @@
     <title>Hyperflagellation (low)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_cons-speed-low</illustration>
     <length>1122bp</length>
     <reference>SDU-Denmark 2010 iGEM</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -126,7 +126,7 @@
     <title>Hyperflagellation (med)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_cons-speed-med</illustration>
     <length>1122bp</length>
     <reference>SDU-Denmark 2010 iGEM</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -136,7 +136,7 @@
     <title>Regulated green fluorescence (low)</title>
     <type>Device</type>
     <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_plac-gfp-low</illustration>
     <length>1101bp</length>
     <reference>Stanford University</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -146,7 +146,7 @@
     <title>Regulated green fluorescence (med)</title>
     <type>Device</type>
     <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_plac-gfp-med</illustration>
     <length>1101bp</length>
     <reference>Stanford University</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -156,7 +156,7 @@
     <title>Regulated hyperflagellation (low)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_plac-speed-low</illustration>
     <length>1122bp</length>
     <reference>SDU-Denmark 2010 iGEM</reference>
     <energyConsumption>XXX</energyConsumption>
@@ -166,7 +166,7 @@
     <title>Regulated hyperflagellation (med)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
-    <illustration>tuto_intro-01</illustration>
+    <illustration>pic_d_plac-speed-med</illustration>
     <length>1122bp</length>
     <reference>SDU-Denmark 2010 iGEM</reference>
     <energyConsumption>XXX</energyConsumption>
