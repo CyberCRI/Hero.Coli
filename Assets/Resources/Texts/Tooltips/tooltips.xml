@@ -103,7 +103,7 @@
     <explanation>Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Green fluorescence (med)">
-    <title>Green fluorescence (low)</title>
+    <title>Green fluorescence (med)</title>
     <type>Device</type>
     <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
     <illustration>tuto_intro-01</illustration>
@@ -113,7 +113,7 @@
     <explanation>Constant level of expression at 23% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Hyperflagellation (low)">
-    <title>Hyperflagellation</title>
+    <title>Hyperflagellation (low)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>tuto_intro-01</illustration>
@@ -123,7 +123,47 @@
     <explanation>Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
   </tooltip>
   <tooltip code="d_Hyperflagellation (med)">
-    <title>Hyperflagellation</title>
+    <title>Hyperflagellation (med)</title>
+    <type>Device</type>
+    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>1122bp</length>
+    <reference>SDU-Denmark 2010 iGEM</reference>
+    <energyConsumption>XXX</energyConsumption>
+    <explanation>Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
+  </tooltip>
+  <tooltip code="d_Regulated green fluorescence (low)">
+    <title>Regulated green fluorescence (low)</title>
+    <type>Device</type>
+    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>1101bp</length>
+    <reference>Stanford University</reference>
+    <energyConsumption>XXX</energyConsumption>
+    <explanation>Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.</explanation>
+  </tooltip>
+  <tooltip code="d_Regulated green fluorescence (med)">
+    <title>Regulated green fluorescence (med)</title>
+    <type>Device</type>
+    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>1101bp</length>
+    <reference>Stanford University</reference>
+    <energyConsumption>XXX</energyConsumption>
+    <explanation>Constant level of expression at 23% of the 'Green fluorescent protein' gene.</explanation>
+  </tooltip>
+  <tooltip code="d_Regulated hyperflagellation (low)">
+    <title>Regulated hyperflagellation (low)</title>
+    <type>Device</type>
+    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
+    <illustration>tuto_intro-01</illustration>
+    <length>1122bp</length>
+    <reference>SDU-Denmark 2010 iGEM</reference>
+    <energyConsumption>XXX</energyConsumption>
+    <explanation>Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
+  </tooltip>
+  <tooltip code="d_Regulated hyperflagellation (med)">
+    <title>Regulated hyperflagellation (med)</title>
     <type>Device</type>
     <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>tuto_intro-01</illustration>
