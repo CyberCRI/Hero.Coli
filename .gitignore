@@ -33,6 +33,11 @@ ehthumbs.db
 Thumbs.db
 /Build/
 
+# ============== #
+# game generated #
+# ============== #
+Assets/Resources/Parameters/Devices/exported.txt
+
 # ================ #
 # Proprietary code #
 # ================ #
