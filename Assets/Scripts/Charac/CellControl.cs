@@ -53,8 +53,17 @@ public class CellControl : MonoBehaviour{
             transform.rotation = Quaternion.LookRotation(_targetPosition - transform.position);
         }
     }
-    _inputMovement = (_targetPosition - transform.position).normalized;
+    _inputMovement = (_targetPosition - transform.position);    
     _inputMovement = new Vector3(_inputMovement.x, 0, _inputMovement.z);
+        Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement+"; "+_inputMovement+".sqrMagnitude="+_inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+    if(_inputMovement.sqrMagnitude <= 5f) {
+      _inputMovement = Vector3.zero;
+      _targetPosition = transform.position;
+    } else {
+      _inputMovement = _inputMovement.normalized;
+    }
+    Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement, Logger.Level.ONSCREEN);
+
   }
     
   private void AbsoluteWASDUpdate() {
