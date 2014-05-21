@@ -57,8 +57,7 @@ public class CellControl : MonoBehaviour{
     _inputMovement = new Vector3(_inputMovement.x, 0, _inputMovement.z);
         Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement+"; "+_inputMovement+".sqrMagnitude="+_inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
     if(_inputMovement.sqrMagnitude <= 5f) {
-      _inputMovement = Vector3.zero;
-      _targetPosition = transform.position;
+      stopMovement();
     } else {
       _inputMovement = _inputMovement.normalized;
     }
@@ -76,7 +75,15 @@ public class CellControl : MonoBehaviour{
       //Translate
       _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
       if(_inputMovement.sqrMagnitude > 1) _inputMovement /= Mathf.Sqrt(2);
+    } else if (Vector3.zero != _inputMovement) {
+      stopMovement();
     }
+  }
+
+  private void stopMovement() {        
+    _inputMovement = Vector3.zero;
+    _targetPosition = transform.position;
+    setSpeed();
   }
 
   private void commonUpdate() {
@@ -86,21 +93,25 @@ public class CellControl : MonoBehaviour{
       this.collider.attachedRigidbody.AddForce(moveAmount);
       
       updateEnergy(moveAmount);
-      
-      //SetSpeed
-      float speed = Mathf.Abs(Vector2.Distance(Vector2.zero, new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")))) + 0.3f;
-      Animation[] anims = GetComponentsInChildren<Animation>();
-      foreach(Animation anim in anims) {
-          foreach (AnimationState state in anim) {
-              state.speed = speed;
-          }
+
+      setSpeed();
+    }
+  }
+
+  private void setSpeed() {   
+    //SetSpeed
+    float speed = _inputMovement.sqrMagnitude + 0.3f;
+    Logger.Log("commonUpdate: speed="+speed, Logger.Level.ONSCREEN);
+    Animation[] anims = GetComponentsInChildren<Animation>();
+    foreach(Animation anim in anims) {
+      foreach (AnimationState state in anim) {
+        state.speed = speed;
       }
     }
   }
 
   private void updateEnergy(Vector3 moveAmount) {
     float cost = moveAmount.sqrMagnitude*moveEnergyCost;
-    //Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
     hero.subEnergy(cost);
     Logger.Log("control="+_currentControlType
     +"\nupdateEnergy("+moveAmount+")"
@@ -109,6 +120,8 @@ public class CellControl : MonoBehaviour{
 	
 	void Start (){
     gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
+
+    _targetPosition = transform.position;
 	}
   
 	void Update(){
