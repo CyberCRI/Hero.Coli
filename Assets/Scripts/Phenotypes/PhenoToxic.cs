@@ -49,7 +49,6 @@ public class PhenoToxic : Phenotype {
      		}
 		float intensity = _K0*(Mathf.Exp(_mol.getConcentration()/_cc0)-1);
 		hero.subLife(intensity);
-    Logger.Log("toxic life -= "+intensity, Logger.Level.ONSCREEN);
   }
 
 

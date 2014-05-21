@@ -13,7 +13,9 @@ public class CellControl : MonoBehaviour{
 
   private bool _pause;
 
-  //Click to move variables    
+  /* 
+   * Click to move variables
+   */
   private int _smooth; // Determines how quickly object moves towards position
   private float _hitdist = 0.0f;
   private Vector3 _targetPosition;
@@ -24,7 +26,7 @@ public class CellControl : MonoBehaviour{
       AbsoluteWASD,
       RelativeWASD
   };
-  private ControlType _currentControlType = ControlType.LeftClickToMove;
+  private ControlType _currentControlType = ControlType.RightClickToMove;
 
 
   public void Pause(bool pause)
@@ -35,9 +37,10 @@ public class CellControl : MonoBehaviour{
   public bool isPaused()
   {
     return _pause;
-    }
+  }
 
   private void ClickToMoveUpdate(KeyCode mouseButtonCode) {
+    Vector3 lastTickPosition = transform.position;
     if(Input.GetKeyDown(mouseButtonCode))            
     {
         _smooth = 1;
@@ -51,10 +54,15 @@ public class CellControl : MonoBehaviour{
         }
     }
     transform.position = Vector3.Slerp (transform.position, _targetPosition, Time.deltaTime * _smooth);    
+    Vector3 moveAmount = transform.position - lastTickPosition; //to compute displacement during current tick
+        
+    Logger.Log("ClickToMoveUpdate updateEnergy", Logger.Level.ONSCREEN);
+    updateEnergy(moveAmount);
   }
     
   private void AbsoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+      Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]", Logger.Level.ONSCREEN);
       //Rotation
       float rotation = Mathf.Atan2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Mathf.Rad2Deg;
       transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
@@ -66,9 +74,7 @@ public class CellControl : MonoBehaviour{
             
       this.collider.attachedRigidbody.AddForce(moveAmount);
             
-      float cost = moveAmount.sqrMagnitude*moveEnergyCost;
-      //Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
-      hero.subEnergy(cost);
+      updateEnergy(moveAmount);
             
       //SetSpeed
       float speed = Mathf.Abs(Vector2.Distance(Vector2.zero, new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")))) + 0.3f;
@@ -79,6 +85,15 @@ public class CellControl : MonoBehaviour{
         }
       }  
     }
+  }
+
+  private void updateEnergy(Vector3 moveAmount) {
+    float cost = moveAmount.sqrMagnitude*moveEnergyCost;
+    //Logger.Log ("sqrInputMovementMagnitude="+inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+    hero.subEnergy(cost);
+    Logger.Log("control="+_currentControlType
+    +"\nupdateEnergy("+moveAmount+")"
+    +"\n=> -"+cost, Logger.Level.ONSCREEN);
   }
 	
 	void Start (){
@@ -104,6 +119,13 @@ public class CellControl : MonoBehaviour{
         default:
           AbsoluteWASDUpdate();
           break;
+      }
+    }
+    if(Input.GetKeyDown(KeyCode.Space)) {
+      if (_currentControlType == ControlType.RightClickToMove) {
+          _currentControlType = ControlType.AbsoluteWASD;
+      } else {
+          _currentControlType = ControlType.RightClickToMove;
       }
     }
   }

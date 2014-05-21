@@ -18,7 +18,7 @@ public class PhenoFickContact : Phenotype {
 
   public override void UpdatePhenotype()
   {
-    Logger.Log("PhenoFickContact", Logger.Level.ONSCREEN);
+    //Logger.Log("PhenoFickContact", Logger.Level.ONSCREEN);
   }
 
   public VectrosityPanel vectroPanel;
