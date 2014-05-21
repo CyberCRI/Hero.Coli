@@ -12,7 +12,7 @@ public class CellControl : MonoBehaviour{
   public float currentMoveSpeed;
 
   private bool _pause;
-
+  private Vector3 _inputMovement;
   /* 
    * Click to move variables
    */
@@ -53,11 +53,8 @@ public class CellControl : MonoBehaviour{
             transform.rotation = Quaternion.LookRotation(_targetPosition - transform.position);
         }
     }
-    transform.position = Vector3.Slerp (transform.position, _targetPosition, Time.deltaTime * _smooth);    
-    Vector3 moveAmount = transform.position - lastTickPosition; //to compute displacement during current tick
-        
-    Logger.Log("ClickToMoveUpdate updateEnergy", Logger.Level.ONSCREEN);
-    updateEnergy(moveAmount);
+    _inputMovement = (_targetPosition - transform.position).normalized;
+    _inputMovement = new Vector3(_inputMovement.x, 0, _inputMovement.z);
   }
     
   private void AbsoluteWASDUpdate() {
@@ -68,22 +65,27 @@ public class CellControl : MonoBehaviour{
       transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
             
       //Translate
-      Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-      if(inputMovement.sqrMagnitude > 1) inputMovement /= Mathf.Sqrt(2);
-      Vector3 moveAmount = inputMovement * currentMoveSpeed;
-            
+      _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+      if(_inputMovement.sqrMagnitude > 1) _inputMovement /= Mathf.Sqrt(2);
+    }
+  }
+
+  private void commonUpdate() {
+    if(Vector3.zero != _inputMovement) {
+      Vector3 moveAmount = _inputMovement * currentMoveSpeed;
+      
       this.collider.attachedRigidbody.AddForce(moveAmount);
-            
+      
       updateEnergy(moveAmount);
-            
+      
       //SetSpeed
       float speed = Mathf.Abs(Vector2.Distance(Vector2.zero, new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")))) + 0.3f;
       Animation[] anims = GetComponentsInChildren<Animation>();
       foreach(Animation anim in anims) {
-        foreach (AnimationState state in anim) {
-          state.speed = speed;
-        }
-      }  
+          foreach (AnimationState state in anim) {
+              state.speed = speed;
+          }
+      }
     }
   }
 
@@ -103,6 +105,9 @@ public class CellControl : MonoBehaviour{
 	void Update(){
 		//Keyboard controls
 		if(!_pause) {
+
+      _inputMovement = Vector3.zero;
+
       switch(_currentControlType) {
         case ControlType.LeftClickToMove:
           ClickToMoveUpdate(KeyCode.Mouse0);
@@ -120,6 +125,7 @@ public class CellControl : MonoBehaviour{
           AbsoluteWASDUpdate();
           break;
       }
+      commonUpdate();
     }
     if(Input.GetKeyDown(KeyCode.Space)) {
       if (_currentControlType == ControlType.RightClickToMove) {
