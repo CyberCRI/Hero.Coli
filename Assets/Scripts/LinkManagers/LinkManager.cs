@@ -12,13 +12,14 @@ public class LinkManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 
-		Hero hero = GameObject.Find("Perso").GetComponent<Hero>();
-		PhenoFickContact pheno = GameObject.Find ("Perso").GetComponent<PhenoFickContact>();
+    GameObject perso = GameObject.Find("Perso");
+		Hero hero = perso.GetComponent<Hero>();
+		PhenoFickContact pheno = perso.GetComponent<PhenoFickContact>();
     GUITransitioner guiTransitioner = GUITransitioner.get ();
 
 
 		//Cellcontrol connection
-    guiTransitioner.control = GameObject.Find("Perso").GetComponent<CellControl>();
+    guiTransitioner.control = perso.GetComponent<CellControl>();
 
 
 		//Hero connections

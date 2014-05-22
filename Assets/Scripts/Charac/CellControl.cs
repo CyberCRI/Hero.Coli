@@ -13,6 +13,12 @@ public class CellControl : MonoBehaviour{
   public float currentMoveSpeed;
   public string wallname;
 
+  public CellControlButton absoluteWASDButton;
+  public CellControlButton leftClickToMoveButton;
+  public CellControlButton relativeWASDButton;
+  public CellControlButton rightClickToMoveButton;
+  public UISprite selectedControlTypeSprite;
+
   private bool _pause;
   private Vector3 _inputMovement;
   /* 
@@ -69,8 +75,6 @@ public class CellControl : MonoBehaviour{
     
   private void AbsoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
-
-      Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]", Logger.Level.ONSCREEN);
             
       //Translate
       _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -96,13 +100,6 @@ public class CellControl : MonoBehaviour{
 
       float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
       _inputMovement = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * norm;
-            
-      Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]"
-        +"\nnorm="+norm
-        +"\ndeltaAngle="+deltaAngle
-        +"\nangle="+angle
-        +"\n_inputMovement="+_inputMovement
-        , Logger.Level.ONSCREEN);
     }
   }
 
@@ -153,6 +150,19 @@ public class CellControl : MonoBehaviour{
     gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
     _targetPosition = transform.position;
+
+    absoluteWASDButton = GameObject.Find("AbsoluteWASDButton").GetComponent<AbsoluteWASDButton>();
+    leftClickToMoveButton = GameObject.Find("LeftClickToMoveButton").GetComponent<LeftClickToMoveButton>();
+    relativeWASDButton = GameObject.Find("RelativeWASDButton").GetComponent<RelativeWASDButton>();
+    rightClickToMoveButton = GameObject.Find("RightClickToMoveButton").GetComponent<RightClickToMoveButton>();
+    selectedControlTypeSprite = GameObject.Find ("SelectedControlTypeSprite").GetComponent<UISprite>();
+
+    absoluteWASDButton.cellControl = this;
+    leftClickToMoveButton.cellControl = this;
+    relativeWASDButton.cellControl = this;
+    rightClickToMoveButton.cellControl = this;
+
+    switchControlTypeToAbsoluteWASD();
 	}
   
 	void Update(){
@@ -160,8 +170,6 @@ public class CellControl : MonoBehaviour{
 		if(!_pause) {
 
       _inputMovement = Vector3.zero;
-
-      Logger.Log(_currentControlType.ToString(), Logger.Level.ONSCREEN);
 
       switch(_currentControlType) {
         case ControlType.LeftClickToMove:
@@ -181,20 +189,36 @@ public class CellControl : MonoBehaviour{
           break;
       }
       commonUpdate();
-
-      float angle = transform.rotation.eulerAngles.y;
-      Logger.Log("transform.rotation.eulerAngles="+transform.rotation.eulerAngles
-             +"\ntransform.rotation="+transform.rotation
-             +"\n_inputMovement="+_inputMovement
-             +"\nvec="+new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle))
-             , Logger.Level.ONSCREEN);
     }
     if(Input.GetKeyDown(KeyCode.Space)) {
       _currentControlType = (ControlType)(((int)_currentControlType + 1) % 4);
       _targetPosition = transform.position;
     }
-  }
+    }
     
+  public void switchControlTypeToRightClickToMove() {
+    switchControlTypeTo(ControlType.RightClickToMove, rightClickToMoveButton.transform.position);
+  }
+
+  public void switchControlTypeToLeftClickToMove() {
+    switchControlTypeTo(ControlType.LeftClickToMove, leftClickToMoveButton.transform.position);
+  }
+
+  public void switchControlTypeToAbsoluteWASD() {
+    switchControlTypeTo(ControlType.AbsoluteWASD, absoluteWASDButton.transform.position);
+  }
+
+  public void switchControlTypeToRelativeWASD() {
+    switchControlTypeTo(ControlType.RelativeWASD, relativeWASDButton.transform.position);
+  }
+  
+  private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
+    Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
+    selectedControlTypeSprite.transform.position = position;
+    _targetPosition = transform.position;
+    _currentControlType = newControlType;
+  }
+
   void OnCollisionStay(Collision col) {
     if ((Vector3.zero != _inputMovement) && col.collider && (wallname == col.collider.name)){
       stopMovement();
