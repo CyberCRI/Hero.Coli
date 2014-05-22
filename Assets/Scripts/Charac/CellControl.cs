@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class CellControl : MonoBehaviour{
 
 	public float baseMoveSpeed;
-	public float rotationSpeed = 6f;
+	public float rotationSpeed;
+  public float relativeRotationSpeed;
 	public List<Animation> anims;
   public Hero hero;
   public float moveEnergyCost;
@@ -22,10 +23,10 @@ public class CellControl : MonoBehaviour{
   private Vector3 _targetPosition;
     
   private enum ControlType {
-      RightClickToMove,
-      LeftClickToMove,
-      AbsoluteWASD,
-      RelativeWASD
+      RightClickToMove = 0,
+      LeftClickToMove = 1,
+      AbsoluteWASD = 2,
+      RelativeWASD = 3
   };
   private ControlType _currentControlType = ControlType.RightClickToMove;
 
@@ -53,27 +54,55 @@ public class CellControl : MonoBehaviour{
         _targetPosition = ray.GetPoint(_hitdist);
       }
     }
+
     Vector3 aim = _targetPosition - transform.position;    
     _inputMovement = new Vector3(aim.x, 0, aim.z);
-    Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement+"; "+_inputMovement+".sqrMagnitude="+_inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+
     if(_inputMovement.sqrMagnitude <= 5f) {
       stopMovement();
     } else {
       _inputMovement = _inputMovement.normalized;
     }
-    Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement, Logger.Level.ONSCREEN);
 
+    rotationUpdate();
   }
     
   private void AbsoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+
       Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]", Logger.Level.ONSCREEN);
             
       //Translate
       _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
       if(_inputMovement.sqrMagnitude > 1) _inputMovement /= Mathf.Sqrt(2);
+
+      rotationUpdate();
+
     } else if (Vector3.zero != _inputMovement) {
       stopMovement();
+    }
+  }
+
+  private void RelativeWASDUpdate() {
+
+    if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+
+      float norm = Input.GetAxis("Vertical");
+      if(norm < 0) norm = 0;
+      
+      float deltaAngle = Input.GetAxis("Horizontal");
+
+      transform.RotateAround(transform.position, Vector3.up, deltaAngle * relativeRotationSpeed);
+
+      float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+      _inputMovement = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * norm;
+            
+      Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]"
+        +"\nnorm="+norm
+        +"\ndeltaAngle="+deltaAngle
+        +"\nangle="+angle
+        +"\n_inputMovement="+_inputMovement
+        , Logger.Level.ONSCREEN);
     }
   }
 
@@ -83,12 +112,16 @@ public class CellControl : MonoBehaviour{
     setSpeed();
   }
 
-  private void commonUpdate() {
+  private void rotationUpdate() {
     if(Vector3.zero != _inputMovement) {
-
       //Rotation
       float rotation = Mathf.Atan2(_inputMovement.x, _inputMovement.z) * Mathf.Rad2Deg;
       transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
+    }
+  }
+
+  private void commonUpdate() {
+    if(Vector3.zero != _inputMovement) {
 
       Vector3 moveAmount = _inputMovement * currentMoveSpeed;
       
@@ -103,7 +136,6 @@ public class CellControl : MonoBehaviour{
   private void setSpeed() {   
     //SetSpeed
     float speed = _inputMovement.sqrMagnitude + 0.3f;
-    Logger.Log("commonUpdate: speed="+speed, Logger.Level.ONSCREEN);
     Animation[] anims = GetComponentsInChildren<Animation>();
     foreach(Animation anim in anims) {
       foreach (AnimationState state in anim) {
@@ -115,9 +147,6 @@ public class CellControl : MonoBehaviour{
   private void updateEnergy(Vector3 moveAmount) {
     float cost = moveAmount.sqrMagnitude*moveEnergyCost;
     hero.subEnergy(cost);
-    Logger.Log("control="+_currentControlType
-    +"\nupdateEnergy("+moveAmount+")"
-    +"\n=> -"+cost, Logger.Level.ONSCREEN);
   }
 	
 	void Start (){
@@ -132,6 +161,8 @@ public class CellControl : MonoBehaviour{
 
       _inputMovement = Vector3.zero;
 
+      Logger.Log(_currentControlType.ToString(), Logger.Level.ONSCREEN);
+
       switch(_currentControlType) {
         case ControlType.LeftClickToMove:
           ClickToMoveUpdate(KeyCode.Mouse0);
@@ -143,21 +174,24 @@ public class CellControl : MonoBehaviour{
           AbsoluteWASDUpdate();
           break;
         case ControlType.RelativeWASD:
-          AbsoluteWASDUpdate();
+          RelativeWASDUpdate();
           break;
         default:
           AbsoluteWASDUpdate();
           break;
       }
       commonUpdate();
+
+      float angle = transform.rotation.eulerAngles.y;
+      Logger.Log("transform.rotation.eulerAngles="+transform.rotation.eulerAngles
+             +"\ntransform.rotation="+transform.rotation
+             +"\n_inputMovement="+_inputMovement
+             +"\nvec="+new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle))
+             , Logger.Level.ONSCREEN);
     }
     if(Input.GetKeyDown(KeyCode.Space)) {
-      if (_currentControlType == ControlType.RightClickToMove) {
-        _currentControlType = ControlType.AbsoluteWASD;
-      } else {
-        _currentControlType = ControlType.RightClickToMove;
-        _targetPosition = transform.position;
-      }
+      _currentControlType = (ControlType)(((int)_currentControlType + 1) % 4);
+      _targetPosition = transform.position;
     }
   }
     
