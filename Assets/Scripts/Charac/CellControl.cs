@@ -43,19 +43,18 @@ public class CellControl : MonoBehaviour{
     Vector3 lastTickPosition = transform.position;
     if(Input.GetKeyDown(mouseButtonCode))            
     {
-        _smooth = 1;
-        
-        Plane playerPlane = new Plane(Vector3.up, transform.position);            
-        Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
-        
-        if (playerPlane.Raycast (ray, out _hitdist)) {                
-            _targetPosition = ray.GetPoint(_hitdist);     
-            transform.rotation = Quaternion.LookRotation(_targetPosition - transform.position);
-        }
+      _smooth = 1;
+    
+      Plane playerPlane = new Plane(Vector3.up, transform.position);            
+      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
+      
+      if (playerPlane.Raycast (ray, out _hitdist)) {                
+        _targetPosition = ray.GetPoint(_hitdist);
+      }
     }
-    _inputMovement = (_targetPosition - transform.position);    
-    _inputMovement = new Vector3(_inputMovement.x, 0, _inputMovement.z);
-        Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement+"; "+_inputMovement+".sqrMagnitude="+_inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
+    Vector3 aim = _targetPosition - transform.position;    
+    _inputMovement = new Vector3(aim.x, 0, aim.z);
+    Logger.Log("ClickToMoveUpdate: _inputMovement="+_inputMovement+"; "+_inputMovement+".sqrMagnitude="+_inputMovement.sqrMagnitude, Logger.Level.ONSCREEN);
     if(_inputMovement.sqrMagnitude <= 5f) {
       stopMovement();
     } else {
@@ -68,9 +67,6 @@ public class CellControl : MonoBehaviour{
   private void AbsoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
       Logger.Log("key input=["+Input.GetAxis("Horizontal")+";"+Input.GetAxis("Vertical")+"]", Logger.Level.ONSCREEN);
-      //Rotation
-      float rotation = Mathf.Atan2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Mathf.Rad2Deg;
-      transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
             
       //Translate
       _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -88,6 +84,11 @@ public class CellControl : MonoBehaviour{
 
   private void commonUpdate() {
     if(Vector3.zero != _inputMovement) {
+
+      //Rotation
+      float rotation = Mathf.Atan2(_inputMovement.x, _inputMovement.z) * Mathf.Rad2Deg;
+      transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
+
       Vector3 moveAmount = _inputMovement * currentMoveSpeed;
       
       this.collider.attachedRigidbody.AddForce(moveAmount);
@@ -151,9 +152,10 @@ public class CellControl : MonoBehaviour{
     }
     if(Input.GetKeyDown(KeyCode.Space)) {
       if (_currentControlType == ControlType.RightClickToMove) {
-          _currentControlType = ControlType.AbsoluteWASD;
+        _currentControlType = ControlType.AbsoluteWASD;
       } else {
-          _currentControlType = ControlType.RightClickToMove;
+        _currentControlType = ControlType.RightClickToMove;
+        _targetPosition = transform.position;
       }
     }
   }
