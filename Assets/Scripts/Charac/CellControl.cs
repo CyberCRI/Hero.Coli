@@ -10,6 +10,7 @@ public class CellControl : MonoBehaviour{
   public Hero hero;
   public float moveEnergyCost;
   public float currentMoveSpeed;
+  public string wallname;
 
   private bool _pause;
   private Vector3 _inputMovement;
@@ -157,6 +158,12 @@ public class CellControl : MonoBehaviour{
         _currentControlType = ControlType.RightClickToMove;
         _targetPosition = transform.position;
       }
+    }
+  }
+    
+  void OnCollisionStay(Collision col) {
+    if ((Vector3.zero != _inputMovement) && col.collider && (wallname == col.collider.name)){
+      stopMovement();
     }
   }
 }
