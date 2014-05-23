@@ -193,18 +193,35 @@ public class CellControl : MonoBehaviour{
       }
       commonUpdate();
     }
+    
     if(Input.GetKeyDown(KeyCode.Space)) {
-      _currentControlType = (ControlType)(((int)_currentControlType + 1) % 4);
-      _targetPosition = transform.position;
+      switchControlTypeTo((ControlType)(((int)_currentControlType + 1) % 4));
     }
+    
+  }
+
+  private void switchControlTypeTo(ControlType newControlType) {
+    switch(newControlType) {
+      case ControlType.AbsoluteWASD:
+        switchControlTypeToAbsoluteWASD();
+        break;
+      case ControlType.LeftClickToMove:
+        switchControlTypeToLeftClickToMove();
+            break;
+      case ControlType.RelativeWASD:
+        switchControlTypeToRelativeWASD();
+        break;
+      case ControlType.RightClickToMove:
+        switchControlTypeToRightClickToMove();
+        break;
     }
+  }
     
   public void switchControlTypeToRightClickToMove() {
     switchControlTypeTo(ControlType.RightClickToMove, rightClickToMoveButton.transform.position);
   }
 
   public void switchControlTypeToLeftClickToMove() {
-    _isFirstUpdate = true;
     switchControlTypeTo(ControlType.LeftClickToMove, leftClickToMoveButton.transform.position);
   }
 
@@ -218,6 +235,11 @@ public class CellControl : MonoBehaviour{
   
   private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
     Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
+
+    if(ControlType.LeftClickToMove == newControlType) {
+      _isFirstUpdate = true;
+    }
+
     selectedControlTypeSprite.transform.position = position;
     _targetPosition = transform.position;
     _currentControlType = newControlType;
