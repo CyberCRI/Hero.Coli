@@ -1,96 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device id="Green fluorescence (low)">
-    <brick id="PRCONS" size="48" type="promoter">
-      <beta>100</beta>
-      <formula>T</formula>
-    </brick>
-    <brick id="RBS2" size="14" type="rbs">
-      <rbsFactor>0.126</rbsFactor>
-    </brick>
-    <brick id="FLUO1" size="716" type="gene">
-      <protein>FLUO1</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Green fluorescence (med)">
-    <brick id="PRCONS" size="48" type="promoter">
-      <beta>100</beta>
-      <formula>T</formula>
-    </brick>
-    <brick id="RBS1" size="13" type="rbs">
-      <rbsFactor>0.23</rbsFactor>
-    </brick>
-    <brick id="FLUO1" size="716" type="gene">
-      <protein>FLUO1</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Hyperflagellation (low)">
-    <brick id="PRCONS" size="48" type="promoter">
-      <beta>100</beta>
-      <formula>T</formula>
-    </brick>
-    <brick id="RBS2" size="14" type="rbs">
-      <rbsFactor>0.126</rbsFactor>
-    </brick>
-    <brick id="MOV" size="932" type="gene">
-      <protein>MOV</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Hyperflagellation (med)">
-    <brick id="PRCONS" size="48" type="promoter">
-      <beta>100</beta>
-      <formula>T</formula>
-    </brick>
-    <brick id="RBS1" size="13" type="rbs">
-      <rbsFactor>0.23</rbsFactor>
-    </brick>
-    <brick id="MOV" size="932" type="gene">
-      <protein>MOV</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Regulated green fluorescence (low)">
-    <brick id="PRLACI" size="200" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]REPR1</formula>
-    </brick>
-    <brick id="RBS2" size="14" type="rbs">
-      <rbsFactor>0.126</rbsFactor>
-    </brick>
-    <brick id="FLUO1" size="716" type="gene">
-      <protein>FLUO1</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
   <device id="Regulated green fluorescence (med)">
-    <brick id="PRTETR" size="54" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]REPR2</formula>
-    </brick>
-    <brick id="RBS1" size="13" type="rbs">
-      <rbsFactor>0.23</rbsFactor>
-    </brick>
-    <brick id="FLUO1" size="716" type="gene">
-      <protein>FLUO1</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Regulated hyperflagellation (med)">
     <brick id="PRLACI" size="200" type="promoter">
       <beta>75</beta>
       <formula>![0.01,2]REPR1</formula>
@@ -98,23 +8,8 @@
     <brick id="RBS1" size="13" type="rbs">
       <rbsFactor>0.23</rbsFactor>
     </brick>
-    <brick id="MOV" size="932" type="gene">
-      <protein>MOV</protein>
-    </brick>
-    <brick id="DTER" size="129" type="terminator">
-      <terminatorFactor>1</terminatorFactor>
-    </brick>
-  </device>
-  <device id="Regulated hyperflagellation (low)">
-    <brick id="PRTETR" size="54" type="promoter">
-      <beta>75</beta>
-      <formula>![0.01,2]REPR2</formula>
-    </brick>
-    <brick id="RBS2" size="14" type="rbs">
-      <rbsFactor>0.126</rbsFactor>
-    </brick>
-    <brick id="MOV" size="932" type="gene">
-      <protein>MOV</protein>
+    <brick id="FLUO1" size="716" type="gene">
+      <protein>FLUO1</protein>
     </brick>
     <brick id="DTER" size="129" type="terminator">
       <terminatorFactor>1</terminatorFactor>
