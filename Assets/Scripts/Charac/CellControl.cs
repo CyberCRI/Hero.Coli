@@ -27,6 +27,7 @@ public class CellControl : MonoBehaviour{
   private int _smooth; // Determines how quickly object moves towards position
   private float _hitdist = 0.0f;
   private Vector3 _targetPosition;
+  private bool _isFirstUpdate = false;
     
   private enum ControlType {
       RightClickToMove = 0,
@@ -173,7 +174,9 @@ public class CellControl : MonoBehaviour{
 
       switch(_currentControlType) {
         case ControlType.LeftClickToMove:
-          ClickToMoveUpdate(KeyCode.Mouse0);
+          if(!_isFirstUpdate) {
+            ClickToMoveUpdate(KeyCode.Mouse0);
+          } else { _isFirstUpdate = false; }
           break;
         case ControlType.RightClickToMove:
           ClickToMoveUpdate(KeyCode.Mouse1);
@@ -201,6 +204,7 @@ public class CellControl : MonoBehaviour{
   }
 
   public void switchControlTypeToLeftClickToMove() {
+    _isFirstUpdate = true;
     switchControlTypeTo(ControlType.LeftClickToMove, leftClickToMoveButton.transform.position);
   }
 
