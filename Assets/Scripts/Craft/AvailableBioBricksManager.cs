@@ -20,6 +20,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
   {
     Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.DEBUG);
     _instance = this;
+    initialize();
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +57,15 @@ public class AvailableBioBricksManager : MonoBehaviour {
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableRBS         = new LinkedList<AvailableDisplayedBioBrick>();
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableGenes       = new LinkedList<AvailableDisplayedBioBrick>();
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
+
+  private void initialize() {
+    _availableBioBricks = new LinkedList<BioBrick>();
+
+    _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
+    _displayableAvailableRBS         = new LinkedList<AvailableDisplayedBioBrick>();
+    _displayableAvailableGenes       = new LinkedList<AvailableDisplayedBioBrick>();
+    _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
+  }
 
   private void updateDisplayedBioBricks() {
     Logger.Log ("AvailableBioBricksManager::updateDisplayedBioBricks", Logger.Level.DEBUG);
