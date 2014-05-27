@@ -30,6 +30,12 @@ public abstract class Phenotype : MonoBehaviour
   protected Medium           _mediumRef;
 
 
+  public void initialize() {
+    _reactionEngine = null;
+    _mediumRef = null;
+    _molecules = null;
+  }
+
   //! \brief Set the medium id.
   //! \param id The id.
   public void   setMediumId(int id)
@@ -71,6 +77,7 @@ public abstract class Phenotype : MonoBehaviour
     \brief Called at the beginning.
    */
   public void Start () {
+    initialize();
     _reactionEngine = ReactionEngine.get();
     StartPhenotype();
 	  initMolecules();
