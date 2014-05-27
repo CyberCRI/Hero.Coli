@@ -104,6 +104,10 @@ public class CellControl : MonoBehaviour{
     }
   }
 
+  public void reset() {
+    stopMovement();
+  }
+
   private void stopMovement() {        
     _inputMovement = Vector3.zero;
     _targetPosition = transform.position;

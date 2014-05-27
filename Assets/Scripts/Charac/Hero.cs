@@ -233,8 +233,6 @@ public class Hero : MonoBehaviour {
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;
-		    setLife(1f);
-
 			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
 				box.resetPos();
@@ -273,7 +271,9 @@ public class Hero : MonoBehaviour {
 				gameObject.transform.position = respawn08.transform.position;
 			}
 		
-			_isAlive = true;
+        _isAlive = true;
+        cc.reset();
+        setLife(1f);
 	}	
 
 }

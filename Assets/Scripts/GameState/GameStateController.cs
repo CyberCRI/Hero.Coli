@@ -100,5 +100,10 @@ public class GameStateController : MonoBehaviour {
 			
 		}
 	}
+
+  public static void restart()
+  {
+    Application.LoadLevel("Master-Demo-0.1");
+  }
 	
 }
