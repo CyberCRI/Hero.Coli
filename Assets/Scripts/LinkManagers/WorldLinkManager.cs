@@ -11,13 +11,19 @@ public class WorldLinkManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+    GameObject perso = GameObject.Find ("Perso");
+
 		//tuto End
 		EndGameCollider endGameCollider = GameObject.Find("TutoEnd").GetComponent<EndGameCollider>();
-		endGameCollider.hero = GameObject.Find ("Perso");
+    endGameCollider.hero = perso;
 		endGameCollider.gameStateController = GameStateController.get ();
-		endGameCollider.infoPanel = GameStateController.get().endPanel.gameObject;
+    endGameCollider.infoPanel = GameStateController.get().endPanel.gameObject;
 
-		Logger.Log ("EndGameCollider.infoPanel"+endGameCollider.infoPanel,Logger.Level.WARN);
+    //tuto End
+    InfoWindowCollisionTrigger tutoRFP = GameObject.Find("TutoRFP").GetComponent<InfoWindowCollisionTrigger>();
+    tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider>();
+
+		Logger.Log ("EndGameCollider.infoPanel"+endGameCollider.infoPanel,Logger.Level.INFO);
 	
 	}
 

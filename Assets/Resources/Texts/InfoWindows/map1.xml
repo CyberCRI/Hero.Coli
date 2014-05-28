@@ -26,7 +26,7 @@
   <info code="RFP">
     <title>OOPS! NO RED FLUORESCENCE!</title>
     <subtitle>This door requires red light to be opened.</subtitle>
-    <texture>i_rfp_needed</texture>
+    <texture>t_rfp_needed</texture>
     <explanation>Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.</explanation>
     <bottom>Keep playing and come back once you have found the RFP gene BioBrick!</bottom>
     <next>world</next>
