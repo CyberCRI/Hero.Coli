@@ -51,6 +51,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 		gameStateController.introPanel = GameObject.Find ("Introduction1").GetComponent<UIPanel>();
 		gameStateController.fadeSprite = fade;
 		gameStateController.endPanel = end;
+    gameStateController.gameTimeCounter = GameObject.Find ("TimeCounter").GetComponent<TimeCounter>();
+    gameStateController.endPanelMessage = end.gameObject.GetComponent<EndMessage>();
 
 		//Object with GameStateController 
 		GameObject.Find ("OK1Button").GetComponent<ContinueButton>().gameStateController = gameStateController;
