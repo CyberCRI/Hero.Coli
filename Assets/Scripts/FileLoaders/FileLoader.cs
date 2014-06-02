@@ -13,7 +13,7 @@ using System.IO;
   \sa InstantReactionLoader
   \author Pierre COLLET
  */
-public class FileLoader
+public class FileLoader : GenericLoader
 {
   private delegate void  StrSetter(string dst);
   private delegate void  FloatSetter(float dst);
@@ -40,7 +40,7 @@ public class FileLoader
     \param molecules The array of molecules where to add new molecules
     \return Return always true
    */
-  private bool storeMolecule(XmlNode node, Molecule.eType type, ArrayList molecules)
+  public static bool storeMolecule(XmlNode node, Molecule.eType type, ArrayList molecules)
   {
     Molecule mol = new Molecule();
 
@@ -76,7 +76,7 @@ public class FileLoader
     \param molecules The array where to add the new molecule
     \return always true
    */
-  private bool loadMolecule(XmlNode node, ArrayList molecules)
+  public static bool loadMolecule(XmlNode node, ArrayList molecules)
   {
     if (node.Attributes["type"] == null)
       return false;
@@ -196,5 +196,26 @@ public class FileLoader
       }
     return moleculesSets;
   }
+
+
+
+	public override void specificLoader<T, R> (R objectList, XmlNodeList objectNodeList, string tag)
+	{
+		string setId;
+
+		foreach (XmlNode objectNode in objectNodeList)
+		{
+			setId = objectNode.Attributes["id"].Value;
+			if(setId != "" && setId != null)
+			{
+				T.GLoad<T,R>(objectNode, setId, objectList);
+			}
+			else{
+				Debug.Log("Error : missing attribute id in reactions node");
+			}
+
+
+		}
+	}
 
 }
