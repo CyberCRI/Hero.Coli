@@ -158,8 +158,8 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
-      DeviceSaver dSaver = new DeviceSaver();
-      dSaver.saveDevicesToFile(_devices, _saveFilePath);
+      //DeviceSaver dSaver = new DeviceSaver();
+      //dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
