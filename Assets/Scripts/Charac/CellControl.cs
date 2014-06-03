@@ -58,7 +58,7 @@ public class CellControl : MonoBehaviour{
       Plane playerPlane = new Plane(Vector3.up, transform.position);            
       Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
       
-      if (playerPlane.Raycast (ray, out _hitdist)) {                
+			if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
         _targetPosition = ray.GetPoint(_hitdist);
       }
     }
