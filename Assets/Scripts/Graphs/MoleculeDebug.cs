@@ -102,6 +102,7 @@ public class MoleculeDebug : MonoBehaviour {
     resetMoleculeList();
 
 		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
+		Logger.Log("MoleculeDebug::Update::molcules::"+molecules,Logger.Level.WARN);
 		foreach(System.Object molecule in molecules) {
       Molecule castMolecule = (Molecule)molecule;
       string name = castMolecule.getRealName();

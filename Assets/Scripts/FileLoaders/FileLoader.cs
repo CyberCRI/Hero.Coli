@@ -67,6 +67,7 @@ public class FileLoader : GenericLoader
           }
      }
     molecules.Add(mol);
+		Logger.Log ("StoreMolecule+1::"+molecules.Count,Logger.Level.WARN);
     return true;
   }
 
@@ -199,16 +200,18 @@ public class FileLoader : GenericLoader
 
 
 
-	public override void specificLoader<T, R> (R objectList, XmlNodeList objectNodeList, string tag)
+	public override void specificLoader<T> (LinkedList<T> objectList, XmlNodeList objectNodeList)
 	{
-		string setId;
+		string setId ="";
 
 		foreach (XmlNode objectNode in objectNodeList)
 		{
 			setId = objectNode.Attributes["id"].Value;
 			if(setId != "" && setId != null)
 			{
-				T.GLoad<T,R>(objectNode, setId, objectList);
+				T t = (T)Activator.CreateInstance(typeof(T),objectNode,setId);
+				objectList.AddLast(t);
+				//T.GLoad<T>(objectNode, setId, objectList);
 			}
 			else{
 				Debug.Log("Error : missing attribute id in reactions node");
@@ -216,6 +219,9 @@ public class FileLoader : GenericLoader
 
 
 		}
+
+		Logger.Log ("SpecificLoader::objectlist Size"+objectList.Count,Logger.Level.WARN);
 	}
+
 
 }
