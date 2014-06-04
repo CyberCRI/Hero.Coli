@@ -216,9 +216,9 @@ public class CellControl : MonoBehaviour{
       commonUpdate();
     }
     
-    if(Input.GetKeyDown(KeyCode.Space)) {
-      switchControlTypeTo((ControlType)(((int)_currentControlType + 1) % 5));
-    }
+    //if(Input.GetKeyDown(KeyCode.Space)) {
+    //  switchControlTypeTo((ControlType)(((int)_currentControlType + 1) % 5));
+    //}
     
   }
 
