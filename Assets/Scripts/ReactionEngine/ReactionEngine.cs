@@ -191,7 +191,6 @@ public class ReactionEngine : MonoBehaviour {
     
     foreach (MoleculesSet molSet in list)
       {
-			Logger.Log ("GetAllmolecules::molset::"+molSet.molecules,Logger.Level.WARN);
         foreach (Molecule mol in molSet.molecules)
           if (!isMoleculeIsDuplicated(mol, molecules))
             molecules.Add(mol);
@@ -215,7 +214,6 @@ public class ReactionEngine : MonoBehaviour {
   public ArrayList getMoleculesFromMedium(int id) {
     Medium medium = LinkedListExtensions.Find<Medium>(_mediums, m => m.getId() == id);
 		if (medium != null) {
-			Logger.Log("hello::"+medium.getMolecules(),Logger.Level.WARN);
 	  return medium.getMolecules();
 	} else {
 	  return null;
@@ -235,14 +233,16 @@ public class ReactionEngine : MonoBehaviour {
 
 		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
     foreach (string file in _reactionsFiles)
-      LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, fileLoader.loadReactionsFromFile(file));
+		{
+			LinkedList<ReactionsSet> lr = fileLoader.loadObjectFromFiles<ReactionsSet>(file,"reactions");
+      		LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, lr);
+		}
     foreach (string file in _moleculesFiles)
 		{
-			LinkedList<MoleculesSet> lm = fileLoader.loadObjectFromFiles<MoleculesSet>(file,"molecules");
 			//LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, fileLoader.loadMoleculesFromFile(file));
+			LinkedList<MoleculesSet> lm = fileLoader.loadObjectFromFiles<MoleculesSet>(file,"molecules");
 			LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, lm);
 		}
-
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)
       LinkedListExtensions.AppendRange<Medium>(_mediums, mediumLoader.loadMediumsFromFile(file));

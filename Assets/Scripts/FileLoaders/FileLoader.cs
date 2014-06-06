@@ -13,6 +13,9 @@ using System.IO;
   \sa InstantReactionLoader
   \author Pierre COLLET
  */
+using System.Reflection;
+
+
 public class FileLoader : GenericLoader
 {
   private delegate void  StrSetter(string dst);
@@ -67,7 +70,6 @@ public class FileLoader : GenericLoader
           }
      }
     molecules.Add(mol);
-		Logger.Log ("StoreMolecule+1::"+molecules.Count,Logger.Level.WARN);
     return true;
   }
 
@@ -79,6 +81,7 @@ public class FileLoader : GenericLoader
    */
   public static bool loadMolecule(XmlNode node, ArrayList molecules)
   {
+
     if (node.Attributes["type"] == null)
       return false;
     switch (node.Attributes["type"].Value)
@@ -115,7 +118,7 @@ public class FileLoader : GenericLoader
     \param reaction The list of reaction where to add new reactions
     \return Return Always true
    */
-  private bool loadReactions(XmlNode node, LinkedList<IReaction> reactions)
+  public bool loadReactions(XmlNode node, LinkedList<IReaction> reactions)
   {
     _promoterLoader.loadPromoters(node, reactions);
     _enzymeReactionLoader.loadEnzymeReactions(node, reactions);
@@ -200,18 +203,24 @@ public class FileLoader : GenericLoader
 
 
 
-	public override void specificLoader<T> (LinkedList<T> objectList, XmlNodeList objectNodeList)
+	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeList)
 	{
-		string setId ="";
-
+		string setId;
+		LinkedList<T> objectList = new LinkedList<T>();
 		foreach (XmlNode objectNode in objectNodeList)
 		{
 			setId = objectNode.Attributes["id"].Value;
 			if(setId != "" && setId != null)
 			{
-				T t = (T)Activator.CreateInstance(typeof(T),objectNode,setId);
+
+				T t= new T();
+				// Reflection Call
+				MethodInfo method = typeof(T).GetMethod("init");
+				object[] mParam = new object[] {objectNode,setId};
+				method.Invoke(t,mParam);
+
 				objectList.AddLast(t);
-				//T.GLoad<T>(objectNode, setId, objectList);
+
 			}
 			else{
 				Debug.Log("Error : missing attribute id in reactions node");
@@ -219,8 +228,7 @@ public class FileLoader : GenericLoader
 
 
 		}
-
-		Logger.Log ("SpecificLoader::objectlist Size"+objectList.Count,Logger.Level.WARN);
+		return objectList;
 	}
 
 

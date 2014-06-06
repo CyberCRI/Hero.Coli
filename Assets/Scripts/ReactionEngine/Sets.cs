@@ -30,9 +30,9 @@ public class MoleculesSet : Loadable
 	}
 	public MoleculesSet (XmlNode node, string id)
 	{
-		ArrayList molecules = new ArrayList();
-		MoleculesSet set = new MoleculesSet();
-		
+		molecules = new ArrayList();
+		//MoleculesSet set = new MoleculesSet();
+
 		foreach (XmlNode mol in node)
 		{
 
@@ -42,10 +42,22 @@ public class MoleculesSet : Loadable
 			}
 		}
 		
-		set.id = id;
-		set.molecules = molecules;
-		Logger.Log ("At the end : "+set.molecules.Count,Logger.Level.WARN);
+		id = id;
 	}
+	public new void init (XmlNode node, string id2)
+	{
+		molecules = new ArrayList();
+		id = id2;
+		foreach (XmlNode mol in node)
+		{
+			
+			if (mol.Name == "molecule")
+			{
+				FileLoader.loadMolecule(mol, molecules);
+			}
+		}
+	}
+	
 	/*public static new void GLoad (XmlNode node, string id, LinkedList<MoleculesSet> AllSets)
 	{
 		Logger.Log ("MoleculesSet::GLoad",Logger.Level.DEBUG);
@@ -85,13 +97,19 @@ public class ReactionsSet : Loadable
 {
   public string                  id;                    //!< The ReactionsSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
+
+
+	public new void init (XmlNode node, string id2)
+	{
+		reactions = new LinkedList<IReaction>();
+		id = id2;
+		FileLoader loader = new FileLoader();
+		loader.loadReactions(node, reactions);
+		
+	}
 	
   public override string ToString()
 	{
 		 return "ReactionsSet[id:"+id+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
-	}
-
-	public static new void Gload (string path)
-	{
 	}
 }

@@ -6,14 +6,20 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 
-public class Loadable {
-	
+public  class Loadable {
+
+	public string id;
 	/*private string _tag;
 	public static string getTag(){return _tag;}
 	public static void setTag(string tag) {_tag = tag;}*/
 	
-	public static  void GLoad<T> (XmlNode node,string id, LinkedList<T> collection)
-		where T : Loadable,  new()
+	public static  Loadable GLoad (XmlNode node, string id)
+
+	{
+		return new Loadable(node, id);
+	}
+
+	public  void init(XmlNode node, string id)
 	{
 	}
 
@@ -41,23 +47,20 @@ public abstract class GenericLoader  {
 			
 	{
 		//  Generics
-		LinkedList<T> objectList = new LinkedList<T>();
+		LinkedList<T> objectList;
 
 		XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
 		
 		
-		specificLoader <T>(objectList, objectNodeLists);
-		
-		/*var converter = TypeDescriptor.GetConverter(oftype);
-		var result = converter.ConvertFrom(objectList);*/
-		Logger.Log ("GenericLoader::objectlist Size::"+objectList.Count,Logger.Level.WARN);
+		objectList = specificLoader <T>(objectNodeLists);
+
 		return objectList;
 
 	}
 	
-	public abstract void specificLoader<T> (LinkedList<T> objectList, XmlNodeList objectNodeLists)
+	public abstract LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
 		where T : Loadable, new();
 	
 	
