@@ -35,37 +35,45 @@ using System.Collections.Generic;
   \sa EnzymeReaction
   \author Pierre COLLET
  */
-public class ActiveTransportLoader
+using System.Reflection;
+
+
+public class ActiveTransportLoader : GenericLoader
 {
   /*!
     \brief Load all the proprieties from a file
     \param The path of the file
     \return The list of ActiveTranportProprieties. If the list is empty this function return null
    */
-  public LinkedList<ActiveTransportProprieties> loadActiveTransportProprietiesFromFile(string filePath)
-  {
-    LinkedList<ActiveTransportProprieties>      propsList = new LinkedList<ActiveTransportProprieties>();
-    ActiveTransportProprieties                  prop;
 
-    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
-
-    XmlNodeList ATsLists = xmlDoc.GetElementsByTagName("activeTransports");
-    foreach (XmlNode ATsNodes in ATsLists)
-      {
-        foreach (XmlNode ATNode in ATsNodes)
-          {
-            if (ATNode.Name == "ATProp")
-              {
-                prop = loadActiveTransportProprieties(ATNode);
-                propsList.AddLast(prop);
-              }
-          }
-      }
-
-    if (propsList.Count == 0)
-      return null;
-    return propsList;
-  }
+	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
+	{
+		LinkedList<T> objectList = new LinkedList<T>();
+		T t = new T();
+		ActiveTransportLoader loader = new ActiveTransportLoader();
+		
+		
+		// Reflection Call
+		MethodInfo method = typeof(T).GetMethod("initFromLoad");
+		object[] mParam;
+		
+		foreach (XmlNode ATsNodes in objectNodeLists)
+		{
+			foreach (XmlNode ATNode in ATsNodes)
+			{
+				if (ATNode.Name == "ATProp")
+				{
+					mParam = new object[] {ATNode, loader};
+					t =(T) method.Invoke (t,mParam);
+					objectList.AddLast(t);
+				}
+			}
+		}
+		
+		if (objectList.Count == 0)
+			return null;
+		return objectList;
+	}
 
   /*!
     \brief Load all the proprieties from multiple files
@@ -79,7 +87,8 @@ public class ActiveTransportLoader
 
     foreach (string file in files)
       {
-        newPropList = loadActiveTransportProprietiesFromFile(file);
+			newPropList = loadObjectFromFiles<ActiveTransportProprieties>(file,"activeTransports");
+       // newPropList = loadActiveTransportProprietiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<ActiveTransportProprieties>(propsList, newPropList);
       }
@@ -159,7 +168,7 @@ public class ActiveTransportLoader
     \return The ActiveTransportProprieties object corresponding to the reaction describe in the node.
     \param node The XmlNode corresponding to the <ATProp> </ATProp> node.
    */
-  private ActiveTransportProprieties loadActiveTransportProprieties(XmlNode node)
+  public ActiveTransportProprieties loadActiveTransportProprieties(XmlNode node)
   {
     ActiveTransportProprieties prop = new ActiveTransportProprieties();
 

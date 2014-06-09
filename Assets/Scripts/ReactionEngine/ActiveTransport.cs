@@ -12,7 +12,7 @@ using System.Collections.Generic;
  \sa ActiveTransport
  \sa ActiveTransportReaction
  */
-public class ActiveTransportProprieties
+public class ActiveTransportProprieties : Loadable
 {
   public string name;
   public int mediumId;                    //!< The Medium where the reaction will be executed
@@ -106,4 +106,9 @@ public class ActiveTransport {
     LinkedList<ActiveTransportProprieties> proprieties = _loader.getActiveTransportProprietiesFromFiles(filesPaths);
     loadActiveTransportReactionsFromProprieties(proprieties, mediums);
   }
+
+	public ActiveTransportProprieties initFromLoad(XmlNode node, ActiveTransportLoader loader)
+	{
+		return loader.loadActiveTransportProprieties(node);
+	}
 }
