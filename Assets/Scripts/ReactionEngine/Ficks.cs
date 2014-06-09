@@ -9,13 +9,21 @@ using System.Collections;
   \author    Pierre COLLET
   \mail      pierre.collet91@gmail.com
  */
-public class FickProprieties
+using System.Xml;
+
+
+public class FickProprieties : Loadable
 {
   public int MediumId1 {get; set;}
   public int MediumId2  {get; set;}
   public float P  {get; set;}
   public float surface  {get; set;}
   public float energyCost {get; set;}
+
+	public FickProprieties initFromLoad(XmlNode node, FickLoader loader)
+	{
+		return loader.loadFickProprieties(node);
+	}
 }
 
 /*!
@@ -102,7 +110,8 @@ public class Fick
 
     foreach (string file in files)
       {
-        newPropList = _loader.loadFickProprietiesFromFile(file);
+			newPropList = _loader.loadObjectFromFiles<FickProprieties>(file,"ficks");
+        //newPropList = _loader.loadFickProprietiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<FickProprieties>(propsList, newPropList);
       }

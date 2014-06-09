@@ -9,28 +9,11 @@ using System.IO;
 public  class Loadable {
 
 	public string id;
-	/*private string _tag;
-	public static string getTag(){return _tag;}
-	public static void setTag(string tag) {_tag = tag;}*/
 	
-	public static  Loadable GLoad (XmlNode node, string id)
-
-	{
-		return new Loadable(node, id);
-	}
-
 	public  void init(XmlNode node, string id)
 	{
 	}
 
-	public Loadable()
-	{
-	}
-	public Loadable (XmlNode node, string id)
-	{
-	}
-	
-	
 }
 
 public abstract class GenericLoader  {

@@ -22,7 +22,10 @@ using System.IO;
  *  \author    Pierre COLLET
  *  \mail      pierre.collet91@gmail.com
  */
-public class FickLoader
+using System.Reflection;
+
+
+public class FickLoader : GenericLoader
 {
   //! Create from an XML node a FickProprieties.
   //! \param node The XML node
@@ -52,31 +55,32 @@ public class FickLoader
     return props;
   }
 
-  //! Create a LinkedList of FickProprieties from a file path.
-  //! \param filePath the path to the file
-  //! \return A list of all FickReaction descriptor (FickProprieties) present in a file
-  public LinkedList<FickProprieties>     loadFickProprietiesFromFile(string filePath)
-  {
-    LinkedList<FickProprieties> ficksProps = new LinkedList<FickProprieties>();
-    FickProprieties prop;
+	public override LinkedList<T> specificLoader<T> (XmlNodeList ficksLists)
+	{
+		LinkedList<T> objectList = new LinkedList<T>();
+		T t = new T();
+		FickLoader loader = new FickLoader();
 
-    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
-    XmlNodeList ficksLists = xmlDoc.GetElementsByTagName("ficks");
-    foreach (XmlNode ficksNodes in ficksLists)
-      {
-        foreach (XmlNode fickNode in ficksNodes)
-          {
-            if (fickNode.Name == "fickProp")
-              {
-                prop = loadFickProprieties(fickNode);
-                ficksProps.AddLast(prop);
-              }
-          }
-      }
+		// Reflection Call
+		MethodInfo method = typeof(T).GetMethod("initFromLoad");
+		object[] mParam;
 
-    if (ficksProps.Count == 0)
-      return null;
-    return ficksProps;
-  }
+		foreach (XmlNode ficksNodes in ficksLists)
+		{
+			foreach (XmlNode fickNode in ficksNodes)
+			{
+				if (fickNode.Name == "fickProp")
+				{
+					mParam = new object[] {fickNode, loader};
+					t =(T) method.Invoke (t,mParam);
+					objectList.AddLast(t);
+				}
+			}
+		}
+		
+		if (objectList.Count == 0)
+			return null;
+		return objectList;
+	}
 }

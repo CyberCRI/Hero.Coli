@@ -131,35 +131,6 @@ public class MediumLoader : GenericLoader
     return medium;
   }
 
-  /*!
-    \brief Create a list of Medium declared in the given file
-    \param filePath The path of the file to load
-    \return Return a LinkedList of Medium or null if no medium are declared in the given file
-   */
-  public LinkedList<Medium>     loadMediumsFromFile(string filePath)
-  {
-
-    LinkedList<Medium> mediums = new LinkedList<Medium>();
-    Medium medium;
-
-    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
-
-    XmlNodeList mediumsLists = xmlDoc.GetElementsByTagName("Mediums");
-    foreach (XmlNode mediumNodes in mediumsLists)
-      {
-        foreach (XmlNode mediumNode in mediumNodes)
-          {
-            medium = loadMedium(mediumNode);
-            mediums.AddLast(medium);
-          }
-      }
-
-    if (mediums.Count == 0)
-      return null;
-    return mediums;
-  }
-
-
 	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
