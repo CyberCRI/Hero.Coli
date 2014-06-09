@@ -239,13 +239,15 @@ public class ReactionEngine : MonoBehaviour {
 		}
     foreach (string file in _moleculesFiles)
 		{
-			//LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, fileLoader.loadMoleculesFromFile(file));
 			LinkedList<MoleculesSet> lm = fileLoader.loadObjectFromFiles<MoleculesSet>(file,"molecules");
 			LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, lm);
 		}
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)
-      LinkedListExtensions.AppendRange<Medium>(_mediums, mediumLoader.loadMediumsFromFile(file));
+		{
+			LinkedList<Medium> lmed = mediumLoader.loadObjectFromFiles<Medium>(file,"Mediums");
+			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
+		}
     foreach (Medium medium in _mediums)
       {
         medium.Init(_reactionsSets, _moleculesSets);

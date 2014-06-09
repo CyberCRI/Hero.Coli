@@ -25,25 +25,7 @@ public class MoleculesSet : Loadable
   public string                 id;                     //!< The MoleculeSet id (string id).
   public ArrayList              molecules;              //!< The list of Molecule present in the set.
 
-	public MoleculesSet()
-	{
-	}
-	public MoleculesSet (XmlNode node, string id)
-	{
-		molecules = new ArrayList();
-		//MoleculesSet set = new MoleculesSet();
 
-		foreach (XmlNode mol in node)
-		{
-
-			if (mol.Name == "molecule")
-			{
-				FileLoader.loadMolecule(mol, molecules);
-			}
-		}
-		
-		id = id;
-	}
 	public new void init (XmlNode node, string id2)
 	{
 		molecules = new ArrayList();
@@ -57,24 +39,6 @@ public class MoleculesSet : Loadable
 			}
 		}
 	}
-	
-	/*public static new void GLoad (XmlNode node, string id, LinkedList<MoleculesSet> AllSets)
-	{
-		Logger.Log ("MoleculesSet::GLoad",Logger.Level.DEBUG);
-		ArrayList molecules = new ArrayList();
-		MoleculesSet set = new MoleculesSet();
-
-		foreach (XmlNode mol in node)
-		{
-			Logger.Log ("GLoad test ::"+GenericLoader.attributesName.molecules.ToString(),Logger.Level.WARN);
-			if (mol.Name == "molecules")
-				FileLoader.loadMolecule(mol, molecules);
-		}
-
-		set.id = id;
-		set.molecules = molecules;
-		AllSets.AddLast(set);
-	}*/
 }
 
 /*!

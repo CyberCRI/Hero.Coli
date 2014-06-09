@@ -26,7 +26,10 @@ using UnityEngine;
  *  \sa MoleculesSet
  *  \sa Medium
  */
-public class MediumLoader
+using System.Reflection;
+
+
+public class MediumLoader : GenericLoader
 {
 
   /*!
@@ -94,7 +97,7 @@ public class MediumLoader
     \param node The XmlNode to load.
     \return Return the new Medium
   */
-  public Medium   loadMedium(XmlNode node)
+  public Medium loadMedium(XmlNode node)
   {
     Medium medium = new Medium();
 
@@ -155,4 +158,29 @@ public class MediumLoader
       return null;
     return mediums;
   }
+
+
+	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
+	{
+		LinkedList<T> objectList = new LinkedList<T>();
+		T t = new T();
+		MediumLoader loader = new MediumLoader();
+
+		// Reflection Call
+		MethodInfo method = typeof(T).GetMethod("initFromLoad");
+		object[] mParam;
+
+
+
+		foreach (XmlNode mediumNodes in objectNodeLists)
+		{
+			foreach (XmlNode mediumNode in mediumNodes)
+			{
+				mParam = new object[] {mediumNode,loader};
+				t =(T) method.Invoke(t,mParam);
+				objectList.AddLast(t);
+			}
+		}
+		return objectList;
+	}
 }

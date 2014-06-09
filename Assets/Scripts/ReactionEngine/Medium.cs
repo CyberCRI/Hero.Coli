@@ -16,7 +16,10 @@ using System.Collections.Generic;
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
 */
-public class Medium
+using System.Xml;
+
+
+public class Medium : Loadable
 {
   private LinkedList<IReaction> _reactions;             //!< The list of reactions
   private ArrayList             _molecules;             //!< The list of molecules (Molecule)
@@ -385,4 +388,10 @@ public class Medium
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(- 100f);
     }
   }
+
+	public Medium initFromLoad(XmlNode node, MediumLoader loader)
+	{
+		return loader.loadMedium(node);
+	}
+
 }
