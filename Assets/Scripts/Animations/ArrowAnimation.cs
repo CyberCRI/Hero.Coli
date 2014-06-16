@@ -5,16 +5,19 @@ public class ArrowAnimation : MonoBehaviour {
 
 	bool playing = false;
 	bool toswitch = false; // say if the animation have to be launch  next update()
-	GameObject clone;
+	GameObject clone1;
+	GameObject clone2;
 
 	float time =0;
 	float duration = 10;
 	bool direction = true;
 
+	bool InInventory = false;
+
 	// Use this for initialization
 	void Start () {
 
-	
+		//iTween.MoveTo(gameObject,iTween.Hash("y",10f,"time",3f,"islocal",true,"looptype",iTween.LoopType.loop));
 		//iTween.MoveTo(gameObject,iTween.Hash("x",30,"time",4,"delay",1,"looptype",iTween.LoopType.pingPong));
 		//iTween.MoveTo (gameObject, new Vector3(0,1f,0),4f);
 	}
@@ -24,58 +27,94 @@ public class ArrowAnimation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		//Logger.Log ("pointer::y::"+gameObject.transform.localPosition.y,Logger.Level.WARN);
 			movement ();
 
-		//iTween.MoveTo(gameObject,iTween.Hash("y",10,"time",3,"looptype",iTween.LoopType.pingPong));
+		//iTween.MoveUpdate(gameObject,iTween.Hash("y",10f,"time",3f,"islocal",true));
 		//iTween.MoveTo(gameObject,iTween.Hash("x",3,"time",4,"delay",1,"looptype",iTween.LoopType.pingPong));
 	}
 
 
-	public void Play() {
-		if (playing == false)
+	public void Play(GUITransitioner.GameScreen screen) {
+		GameObject g;
+		Vector3 targetVector;
+		Vector3 rotateVector;
+		if( screen == GUITransitioner.GameScreen.screen1)
 		{
-			if(GUITransitioner.get()._worldScreen.activeInHierarchy)
+			if (playing == false)
 			{
-				Create();
-				toswitch = false;
-				playing = true;
+				if(GUITransitioner.get()._worldScreen.activeInHierarchy)
+				{
+					
+					g = GameObject.Find("WorldEquipButtonPanel");
+
+					targetVector = g.transform.FindChild("WorldEquipButton").localPosition;
+					targetVector.Set(targetVector.x,targetVector.y+50,targetVector.z);
+					Create(targetVector,new Vector3(0,0,0),g);
+					toswitch = false;
+					playing = true;
+				}
+				else
+				{
+
+					GUITransitioner.get().arrowManager.worldScreenAnim +=1;
+					toswitch = true;
+					//playing = true;
+
+				}
 			}
-			else
+			else 
 			{
-
-				GUITransitioner.get().arrowManager.waitingAnim +=1;
-				toswitch = true;
-				//playing = true;
-
+				Destroy(clone1);
+				playing = false;
 			}
+
 		}
-		else 
+		if ( screen == GUITransitioner.GameScreen.screen2)
 		{
-			Destroy(clone);
-			playing = false;
+			if (playing)
+			{
+				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
+				g = parent.transform.GetChild(parent.transform.childCount -3).gameObject;
+
+				targetVector = new Vector3(0,-80,0);
+				rotateVector = new Vector3(180,0,0);
+
+
+				Create(targetVector,rotateVector,g);
+				playing = true;
+				Inventory.get().setDeviceAdded(false);
+			}
+			else 
+			{
+				Destroy(clone1);
+				playing = false;
+			}
 		}
 
 	}
 
-	private void Create() {
+	public void PointerInInventory()
+	{
+		if (Inventory.get().getDeviceAdded())
+		{
+			//Create ();
+		}
+	}
 
-		Vector3 targetVector;
-
-		GameObject g = GameObject.Find("WorldEquipButtonPanel");
+	private void Create(Vector3 vec, Vector3 rot, GameObject g) {
 
 
-
-
-		targetVector = g.transform.FindChild("WorldEquipButton").localPosition;
 
 		//Clone the arrow
-		clone = NGUITools.AddChild(g,this.gameObject);
-		clone.SetActive(true);
+		clone1 = NGUITools.AddChild(g,this.gameObject);
+		clone1.SetActive(true);
 
 		//GUITransitioner.get().arrowManager.arrowList.AddLast(clone.GetComponent<ArrowAnimation>());
 
 		//Bounds sizeOfChild = g.transform.FindChild("Background").renderer.bounds;
-		clone.transform.localPosition = new Vector3(targetVector.x,targetVector.y+50,targetVector.z);
+		clone1.transform.localPosition = new Vector3(vec.x,vec.y,vec.z);
+		clone1.transform.Rotate (new Vector3(rot.x,rot.y,rot.z));
 
 
 	}

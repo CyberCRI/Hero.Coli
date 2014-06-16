@@ -42,13 +42,13 @@ public class InventoryAnimator : MonoBehaviour {
 	
 	
 		public void Play() {
-		arrowTuto.Play();
+		arrowTuto.Play(GUITransitioner.GameScreen.screen1);
 		isPlaying = true;
 		time =0f;
 	}
 	
 		public void reset() {
-		arrowTuto.Play();
+		arrowTuto.Play(GUITransitioner.GameScreen.screen1);
 		sprite.transform.localScale = originalScale;
 		isPlaying = false;
 		

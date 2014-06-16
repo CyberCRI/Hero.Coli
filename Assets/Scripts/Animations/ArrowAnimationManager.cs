@@ -6,7 +6,8 @@ public class ArrowAnimationManager : MonoBehaviour {
 
 	public  LinkedList<ArrowAnimation> arrowList;
 
-	public int waitingAnim = 0;
+	public int worldScreenAnim = 0;
+	//public int inventoryAnim = 0;
 	
 	// Use this for initialization
 	void Start () {
@@ -21,13 +22,17 @@ public class ArrowAnimationManager : MonoBehaviour {
 
 	public void launchAnim ()
 	{
-		if ( waitingAnim > 0 && GUITransitioner.get()._worldScreen.activeInHierarchy)
+		if ( worldScreenAnim > 0 && GUITransitioner.get()._worldScreen.activeInHierarchy)
 		{
-			for(int i=0 ; i< waitingAnim ; i++)
+			for(int i=0 ; i< worldScreenAnim ; i++)
 			{
-				Inventory.get().scriptAnimator.arrowTuto.Play();
-				waitingAnim-=1;
+				Inventory.get().scriptAnimator.arrowTuto.Play(GUITransitioner.GameScreen.screen1);
+				worldScreenAnim-=1;
 			}
+		}
+		else if (Inventory.get().getDeviceAdded() && GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen2)
+		{
+			Inventory.get ().scriptAnimator.arrowTuto.Play (GUITransitioner.GameScreen.screen2);
 		}
 	}
 }
