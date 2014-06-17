@@ -20,9 +20,9 @@ class InventoriedDisplayedDevice : DisplayedDevice {
       Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.INFO);
 
 			//pointer Animation
-			if(gameObject.transform.FindChild("TutoArrow(Clone)"))
+			if(gameObject.transform.FindChild("tutorialArrow(Clone)"))
 			{
-				gameObject.transform.FindChild("TutoArrow(Clone)").GetComponent<ArrowAnimation>().Delete();
+				gameObject.transform.FindChild("tutorialArrow(Clone)").GetComponent<ArrowAnimation>().Delete();
 				GUITransitioner.get ().arrowManager.inventoryAnim = false;
 			}
 		}

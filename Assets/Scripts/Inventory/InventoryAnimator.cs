@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InventoryAnimator : MonoBehaviour {
 	
-	public ArrowAnimation arrowTuto;
+	public ArrowAnimation tutorialArrowAnimation;
 
 	public bool isPlaying;
 	private float time, dum;
@@ -42,13 +42,13 @@ public class InventoryAnimator : MonoBehaviour {
 	
 	
 		public void Play() {
-		arrowTuto.Play(GUITransitioner.GameScreen.screen1);
+		tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
 		isPlaying = true;
 		time =0f;
 	}
 	
 		public void reset() {
-		arrowTuto.Play(GUITransitioner.GameScreen.screen1);
+		tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
 		sprite.transform.localScale = originalScale;
 		isPlaying = false;
 		

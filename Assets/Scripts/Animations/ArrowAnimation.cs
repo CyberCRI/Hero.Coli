@@ -13,9 +13,10 @@ public class ArrowAnimation : MonoBehaviour {
 	GameObject clone1;
 	GameObject clone2;
 
-	float time =0;
-	float duration = 10;
-	bool direction = true;
+	//variable used for the animation
+	float time =0;									//the actual state of the animation
+	float duration = 10;							//the duration of the animation
+	bool direction = true;							//the direction of the animation (up or down)
 
 	bool InInventory = false;
 
@@ -26,7 +27,7 @@ public class ArrowAnimation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			movement ();
+			Move ();
 	}
 
 
@@ -52,7 +53,7 @@ public class ArrowAnimation : MonoBehaviour {
 				else
 				{
 
-					GUITransitioner.get().arrowManager.worldScreenAnim +=1;
+					GUITransitioner.get().arrowManager.worldScreenAnim = true;
 					toswitch = true;
 					//playing = true;
 
@@ -119,7 +120,7 @@ public class ArrowAnimation : MonoBehaviour {
 		toswitch = !toswitch;
 	}
 
-	private void  movement ()
+	private void  Move ()
 	{
 
 		Vector3 pos = gameObject.transform.localPosition;
@@ -128,7 +129,7 @@ public class ArrowAnimation : MonoBehaviour {
 			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(1f/2f),pos.z);
 
 			if(time < duration)
-				time+=1f/2f;
+				time+=0.5f;
 			else
 				direction = !direction;
 		}
@@ -138,7 +139,7 @@ public class ArrowAnimation : MonoBehaviour {
 
 
 			if(time > 0)
-				time-=1f/2f;
+				time-=0.5f;
 			else
 			{
 				direction = !direction;

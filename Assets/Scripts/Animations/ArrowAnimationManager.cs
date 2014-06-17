@@ -4,15 +4,12 @@ using System.Collections.Generic;
 
 public class ArrowAnimationManager : MonoBehaviour {
 
-	public  LinkedList<ArrowAnimation> arrowList;
 
-	public int worldScreenAnim = 0;
+	public bool worldScreenAnim = false;
 	public bool inventoryAnim = false;
 	
 	// Use this for initialization
 	void Start () {
-
-		arrowList = new LinkedList<ArrowAnimation>();
 	
 	}
 	
@@ -20,16 +17,15 @@ public class ArrowAnimationManager : MonoBehaviour {
 	void Update () {
 	}
 
-	public void launchAnim ()
+	public void launchAnimation ()
 	{
 		//screen 1 pointer
-		if ( worldScreenAnim > 0 && GUITransitioner.get()._worldScreen.activeInHierarchy)
+		if ( worldScreenAnim == true && GUITransitioner.get()._worldScreen.activeInHierarchy)
 		{
-			for(int i=0 ; i< worldScreenAnim ; i++)
-			{
-				Inventory.get().scriptAnimator.arrowTuto.Play(GUITransitioner.GameScreen.screen1);
-				worldScreenAnim-=1;
-			}
+
+				Inventory.get().scriptAnimator.tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
+				worldScreenAnim = false;
+
 		}
 		//screen 2 pointer
 		else if (Inventory.get().getDeviceAdded() && GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen2)
@@ -37,11 +33,11 @@ public class ArrowAnimationManager : MonoBehaviour {
 			if (inventoryAnim)
 			{
 				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
-				Destroy (parent.transform.GetChild(parent.transform.childCount-4).gameObject.transform.Find ("TutoArrow(Clone)").gameObject);
+				Destroy (parent.transform.GetChild(parent.transform.childCount-4).gameObject.transform.Find ("tutorialArrow(Clone)").gameObject);
 					
 				inventoryAnim = false;
 			}
-			Inventory.get ().scriptAnimator.arrowTuto.Play (GUITransitioner.GameScreen.screen2);
+			Inventory.get ().scriptAnimator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);
 			inventoryAnim = true;
 		}
 	}

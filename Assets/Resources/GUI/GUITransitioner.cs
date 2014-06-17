@@ -58,7 +58,7 @@ public class GUITransitioner : MonoBehaviour {
   public Hero hero;
   public CellControl control;
 
-	public ArrowAnimationManager arrowManager;		//Maanger for the arrow Animation
+	public ArrowAnimationManager arrowManager;		//Manager for the arrow Animation
 	
 	// Use this for initialization
 	void Start () {
@@ -261,7 +261,7 @@ public class GUITransitioner : MonoBehaviour {
       _timeAtLastFrame = _timeAtCurrentFrame;
 		}
 
-		arrowManager.launchAnim ();
+		arrowManager.launchAnimation ();
 	}
 	
 	void LateUpdate () {
