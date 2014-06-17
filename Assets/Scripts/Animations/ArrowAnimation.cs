@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/*
+ * pointer animation for the tutorial
+
+ * */
 public class ArrowAnimation : MonoBehaviour {
 
 	bool playing = false;
@@ -14,24 +19,14 @@ public class ArrowAnimation : MonoBehaviour {
 
 	bool InInventory = false;
 
-	// Use this for initialization
-	void Start () {
-
-		//iTween.MoveTo(gameObject,iTween.Hash("y",10f,"time",3f,"islocal",true,"looptype",iTween.LoopType.loop));
-		//iTween.MoveTo(gameObject,iTween.Hash("x",30,"time",4,"delay",1,"looptype",iTween.LoopType.pingPong));
-		//iTween.MoveTo (gameObject, new Vector3(0,1f,0),4f);
-	}
+	public bool getPlaying() {return playing;}
+	
 
 
 	
 	// Update is called once per frame
 	void Update () {
-
-		//Logger.Log ("pointer::y::"+gameObject.transform.localPosition.y,Logger.Level.WARN);
 			movement ();
-
-		//iTween.MoveUpdate(gameObject,iTween.Hash("y",10f,"time",3f,"islocal",true));
-		//iTween.MoveTo(gameObject,iTween.Hash("x",3,"time",4,"delay",1,"looptype",iTween.LoopType.pingPong));
 	}
 
 
@@ -72,7 +67,7 @@ public class ArrowAnimation : MonoBehaviour {
 		}
 		if ( screen == GUITransitioner.GameScreen.screen2)
 		{
-			if (playing)
+			if (!playing)
 			{
 				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
 				g = parent.transform.GetChild(parent.transform.childCount -3).gameObject;
@@ -82,24 +77,24 @@ public class ArrowAnimation : MonoBehaviour {
 
 
 				Create(targetVector,rotateVector,g);
-				playing = true;
+				//playing = true;
 				Inventory.get().setDeviceAdded(false);
 			}
 			else 
 			{
 				Destroy(clone1);
 				playing = false;
+				Inventory.get().setDeviceAdded(false);
+
 			}
 		}
 
 	}
 
-	public void PointerInInventory()
+	public void Delete()
 	{
-		if (Inventory.get().getDeviceAdded())
-		{
-			//Create ();
-		}
+		Inventory.get ().setDeviceAdded(false);
+		Destroy(gameObject);
 	}
 
 	private void Create(Vector3 vec, Vector3 rot, GameObject g) {

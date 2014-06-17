@@ -7,7 +7,7 @@ public class ArrowAnimationManager : MonoBehaviour {
 	public  LinkedList<ArrowAnimation> arrowList;
 
 	public int worldScreenAnim = 0;
-	//public int inventoryAnim = 0;
+	public bool inventoryAnim = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -22,6 +22,7 @@ public class ArrowAnimationManager : MonoBehaviour {
 
 	public void launchAnim ()
 	{
+		//screen 1 pointer
 		if ( worldScreenAnim > 0 && GUITransitioner.get()._worldScreen.activeInHierarchy)
 		{
 			for(int i=0 ; i< worldScreenAnim ; i++)
@@ -30,9 +31,18 @@ public class ArrowAnimationManager : MonoBehaviour {
 				worldScreenAnim-=1;
 			}
 		}
+		//screen 2 pointer
 		else if (Inventory.get().getDeviceAdded() && GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen2)
 		{
+			if (inventoryAnim)
+			{
+				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
+				Destroy (parent.transform.GetChild(parent.transform.childCount-4).gameObject.transform.Find ("TutoArrow(Clone)").gameObject);
+					
+				inventoryAnim = false;
+			}
 			Inventory.get ().scriptAnimator.arrowTuto.Play (GUITransitioner.GameScreen.screen2);
+			inventoryAnim = true;
 		}
 	}
 }
