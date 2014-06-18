@@ -104,7 +104,7 @@ public class ArrowAnimation : MonoBehaviour {
 		Vector3 pos = gameObject.transform.localPosition;
 		if(direction)
 		{
-			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(1f/2f),pos.z);
+			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(0.5f),pos.z);
 
 			if(time < duration)
 				time+=0.5f;
@@ -113,7 +113,7 @@ public class ArrowAnimation : MonoBehaviour {
 		}
 		else
 		{
-			gameObject.transform.localPosition = new Vector3(pos.x,pos.y-(1f/2f),pos.z);
+			gameObject.transform.localPosition = new Vector3(pos.x,pos.y-(0.5f),pos.z);
 
 
 			if(time > 0)
