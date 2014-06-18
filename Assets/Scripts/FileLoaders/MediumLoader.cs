@@ -13,8 +13,8 @@ using UnityEngine;
           <Medium type="Cellia">
             <Id>01</Id>                                         -> Unique ID of the medium
             <Name>Cellia</Name>                                 -> Name of the medium
-            <ReactionsSet>CelliaReactions</ReactionsSet>        -> ReactionsSet to load in the medium
-            <MoleculesSet>CelliaMolecules</MoleculesSet>        -> MoleculesSet to load in the medium
+            <ReactionSet>CelliaReactions</ReactionSet>        -> ReactionSet to load in the medium
+            <MoleculeSet>CelliaMolecules</MoleculeSet>        -> MoleculeSet to load in the medium
             <Energy>1000</Energy>                               -> Initial Energy
             <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
             <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
@@ -22,8 +22,8 @@ using UnityEngine;
         </Mediums>
 
  *  \author    Pierre COLLET
- *  \sa ReactionsSet
- *  \sa MoleculesSet
+ *  \sa ReactionSet
+ *  \sa MoleculeSet
  *  \sa Medium
  */
 using System.Reflection;
@@ -120,18 +120,18 @@ public class MediumLoader : GenericLoader
           case "MaxEnergy":
             loadMaxEnergy(attr.InnerText, medium);
             break;
-          case "ReactionsSet":
-            medium.setReactionsSet(attr.InnerText);
+          case "ReactionSet":
+            medium.setReactionSet(attr.InnerText);
             break;
-          case "MoleculesSet":
-            medium.setMoleculesSet(attr.InnerText);
+          case "MoleculeSet":
+            medium.setMoleculeSet(attr.InnerText);
             break;
           }
       }
     return medium;
   }
 
-	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
+	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();

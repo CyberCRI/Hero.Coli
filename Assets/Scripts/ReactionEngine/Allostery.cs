@@ -8,7 +8,7 @@ using System.Collections.Generic;
   \author Pierre COLLET
   \sa Allostery
  */
-public class AllosteryProprieties
+public class AllosteryProperties
 {
   public string name;
   public string effector;
@@ -127,11 +127,11 @@ public class Allostery : IReaction
   //FIXME : Create fonction that create prop with this reaction
 
   /*!
-    \brief This function create a new Allostery reaction from an AllosteryProprieties
-    \param props Proprieties of the reaction
+    \brief This function create a new Allostery reaction from an AllosteryProperties
+    \param props Properties of the reaction
     \return This function return a new Allostery reaction or null if props is null
    */
-  public static IReaction       buildAllosteryFromProps(AllosteryProprieties props)
+  public static IReaction       buildAllosteryFromProps(AllosteryProperties props)
   {
     if (props == null)
       return null;

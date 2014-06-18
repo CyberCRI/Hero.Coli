@@ -128,10 +128,10 @@ public class Device: DNABit
     return products;
   }
 
-  private PromoterProprieties getPromoterReaction(ExpressionModule em, int id)
+  private PromoterProperties getPromoterReaction(ExpressionModule em, int id)
   {
     Logger.Log("Device::getPromoterReaction("+em.ToString()+", "+id+")", Logger.Level.TRACE);
-    PromoterProprieties prom = new PromoterProprieties();
+    PromoterProperties prom = new PromoterProperties();
 
     prom.energyCost = _energyPerBasePair*em.getSize();
     //promoter only
@@ -157,12 +157,12 @@ public class Device: DNABit
     return prom;
   }
 
-  private LinkedList<PromoterProprieties> getPromoterReactions()
+  private LinkedList<PromoterProperties> getPromoterReactions()
   {
     Logger.Log("Device::getPromoterReactions() starting... device="+this, Logger.Level.TRACE);
     LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
-    LinkedList<PromoterProprieties> reactions = new LinkedList<PromoterProprieties>();
-    PromoterProprieties reaction;
+    LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
+    PromoterProperties reaction;
     Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
 
     foreach (ExpressionModule em in modules)
@@ -181,8 +181,8 @@ public class Device: DNABit
     Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
 		
     LinkedList<IReaction> reactions = new LinkedList<IReaction>();		
-    LinkedList<PromoterProprieties> props = new LinkedList<PromoterProprieties>(getPromoterReactions());
-    foreach (PromoterProprieties promoterProps in props) {
+    LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
+    foreach (PromoterProperties promoterProps in props) {
       Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
       reactions.AddLast(PromoterReaction.buildPromoterFromProps(promoterProps));
     }

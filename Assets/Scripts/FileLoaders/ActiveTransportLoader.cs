@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class load proprieties from XML files
+  \brief This class load properties from XML files
 
   \important
   A file should respects this convention :
@@ -41,12 +41,12 @@ using System.Reflection;
 public class ActiveTransportLoader : GenericLoader
 {
   /*!
-    \brief Load all the proprieties from a file
+    \brief Load all the properties from a file
     \param The path of the file
-    \return The list of ActiveTranportProprieties. If the list is empty this function return null
+    \return The list of ActiveTranportProperties. If the list is empty this function return null
    */
 
-	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
+	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();
@@ -76,21 +76,21 @@ public class ActiveTransportLoader : GenericLoader
 	}
 
   /*!
-    \brief Load all the proprieties from multiple files
+    \brief Load all the properties from multiple files
     \param files All the files
     \return A list of all the propieties
    */
-  public LinkedList<ActiveTransportProprieties> getActiveTransportProprietiesFromFiles(IEnumerable files)
+  public LinkedList<ActiveTransportProperties> getActiveTransportPropertiesFromFiles(IEnumerable files)
   {
-    LinkedList<ActiveTransportProprieties> propsList = new LinkedList<ActiveTransportProprieties>();
-    LinkedList<ActiveTransportProprieties> newPropList;
+    LinkedList<ActiveTransportProperties> propsList = new LinkedList<ActiveTransportProperties>();
+    LinkedList<ActiveTransportProperties> newPropList;
 
     foreach (string file in files)
       {
-			newPropList = loadObjectFromFiles<ActiveTransportProprieties>(file,"activeTransports");
-       // newPropList = loadActiveTransportProprietiesFromFile(file);
+			newPropList = loadObjectFromFiles<ActiveTransportProperties>(file,"activeTransports");
+       // newPropList = loadActiveTransportPropertiesFromFile(file);
         if (newPropList != null)
-          LinkedListExtensions.AppendRange<ActiveTransportProprieties>(propsList, newPropList);
+          LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);
       }
     return propsList;
   }
@@ -141,12 +141,12 @@ public class ActiveTransportLoader : GenericLoader
   }
 
   /*!
-    \brief This function load all the products wich are in <Products> fields and store them in an ActiveTransportProprieties.
+    \brief This function load all the products wich are in <Products> fields and store them in an ActiveTransportProperties.
     \param node The XmlNode corresponding to <Products> </Products>.
-    \param AT The ActiveTransportProprieties where to store the products
+    \param AT The ActiveTransportProperties where to store the products
     \return Return true always (not really usefull)
    */
-  private bool loadActiveTransportReactionProducts(XmlNode node, ActiveTransportProprieties AT)
+  private bool loadActiveTransportReactionProducts(XmlNode node, ActiveTransportProperties AT)
   {
     AT.products = new LinkedList<Product>();
     foreach (XmlNode attr in node)
@@ -164,13 +164,13 @@ public class ActiveTransportLoader : GenericLoader
   }
 
   /*!
-    \brief Load all the attributes of an ActiveTransportProprieties.
-    \return The ActiveTransportProprieties object corresponding to the reaction describe in the node.
+    \brief Load all the attributes of an ActiveTransportProperties.
+    \return The ActiveTransportProperties object corresponding to the reaction describe in the node.
     \param node The XmlNode corresponding to the <ATProp> </ATProp> node.
    */
-  public ActiveTransportProprieties loadActiveTransportProprieties(XmlNode node)
+  public ActiveTransportProperties loadActiveTransportProperties(XmlNode node)
   {
-    ActiveTransportProprieties prop = new ActiveTransportProprieties();
+    ActiveTransportProperties prop = new ActiveTransportProperties();
 
     foreach (XmlNode attr in node)
       {

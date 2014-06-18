@@ -12,7 +12,7 @@ using System.Collections.Generic;
  \sa ActiveTransport
  \sa ActiveTransportReaction
  */
-public class ActiveTransportProprieties : Loadable
+public class ActiveTransportProperties : XMLLoadable
 {
   public string name;
   public int mediumId;                    //!< The Medium where the reaction will be executed
@@ -37,7 +37,7 @@ public class ActiveTransportProprieties : Loadable
  */
 public class ActiveTransport {
 
-  private ActiveTransportLoader                 _loader;        //!< The file loader that reads proprieties from files
+  private ActiveTransportLoader                 _loader;        //!< The file loader that reads properties from files
 
   //! Default Constructor
   public ActiveTransport()
@@ -47,15 +47,15 @@ public class ActiveTransport {
 
   /*!
    \brief Load a list of propieties in order to convert it into a ActiveTransportReaction
-   \param props The list of ActiveTransportProprieties
+   \param props The list of ActiveTransportProperties
    \param mediums The list of mediums
    */
-  public void loadActiveTransportReactionsFromProprieties(LinkedList<ActiveTransportProprieties> props, LinkedList<Medium> mediums)
+  public void loadActiveTransportReactionsFromProperties(LinkedList<ActiveTransportProperties> props, LinkedList<Medium> mediums)
   {
     ActiveTransportReaction reaction;
     Medium med;
 
-    foreach (ActiveTransportProprieties prop in props)
+    foreach (ActiveTransportProperties prop in props)
       {
         reaction = new ActiveTransportReaction();
         reaction.setName(prop.name);
@@ -73,21 +73,21 @@ public class ActiveTransport {
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);
         if (med == null)
           {
-            Debug.Log("Cannot load Active Transport proprieties because the medium Id : " + prop.srcMediumId + " is unknown.");
+            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
             break;
           }
         reaction.setSrcMedium(med);
         med = ReactionEngine.getMediumFromId(prop.dstMediumId, mediums);
         if (med == null)
           {
-            Debug.Log("Cannot load Active Transport proprieties because the medium Id : " + prop.dstMediumId + " is unknown.");
+            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.dstMediumId + " is unknown.");
             break;
           }
         reaction.setDstMedium(med);
         med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
         if (med == null)
           {
-            Debug.Log("Cannot load Active Transport proprieties because the medium Id : " + prop.mediumId + " is unknown.");
+            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.mediumId + " is unknown.");
             break;
           }
         reaction.setMedium(med);
@@ -97,18 +97,18 @@ public class ActiveTransport {
   }
 
   /*!
-   \brief This function load proprieties from files and load it.
+   \brief This function load properties from files and load it.
    \param filesPaths All the files to be loaded.
    \params mediums The list of all mediums.
    */
   public  void loadActiveTransportReactionsFromFiles(IEnumerable filesPaths, LinkedList<Medium> mediums)
   {
-    LinkedList<ActiveTransportProprieties> proprieties = _loader.getActiveTransportProprietiesFromFiles(filesPaths);
-    loadActiveTransportReactionsFromProprieties(proprieties, mediums);
+    LinkedList<ActiveTransportProperties> properties = _loader.getActiveTransportPropertiesFromFiles(filesPaths);
+    loadActiveTransportReactionsFromProperties(properties, mediums);
   }
 
-	public ActiveTransportProprieties initFromLoad(XmlNode node, ActiveTransportLoader loader)
+	public ActiveTransportProperties initFromLoad(XmlNode node, ActiveTransportLoader loader)
 	{
-		return loader.loadActiveTransportProprieties(node);
+		return loader.loadActiveTransportProperties(node);
 	}
 }

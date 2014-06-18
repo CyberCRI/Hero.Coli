@@ -9,7 +9,7 @@ using UnityEngine;
   \author Pierre COLLET
   \sa PromoterReaction
  */
-public class PromoterProprieties
+public class PromoterProperties
 {
   public string name;                           //!< The name of the reaction
   public float beta;                            //!< The maximal production rate of the promoter
@@ -24,7 +24,7 @@ public class PromoterProprieties
  *  \details   ToString method, with all fields, including detailed internal products
  */
   public override string ToString() {
-    return "PromoterProprieties["+
+    return "PromoterProperties["+
       "name:"+name+
       ", beta:"+beta+
       ", terminatorFactor:"+terminatorFactor+
@@ -233,11 +233,11 @@ public class PromoterReaction : IReaction
   */
 
   /*!
-    \brief This reaction build a PromoterReaction reaction from a PromoterProprieties class
-    \param props The PromoterProprieties wich will serve to create the reaction
+    \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
+    \param props The PromoterProperties wich will serve to create the reaction
     \return Return the new reaction or null if it fail.
    */
-  public static IReaction       buildPromoterFromProps(PromoterProprieties props)
+  public static IReaction       buildPromoterFromProps(PromoterProperties props)
   {
     if (props == null)
       return null;

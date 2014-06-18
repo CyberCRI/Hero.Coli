@@ -79,6 +79,7 @@ public class Logger : MonoBehaviour {
     }
   }
 
+  //TODO optimize
   public static string ToString<T>(ICollection<T> objects, string separator = defaultSeparator) {
     T[] array = new T[objects.Count];
     objects.CopyTo(array, 0);

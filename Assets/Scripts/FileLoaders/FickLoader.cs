@@ -27,12 +27,12 @@ using System.Reflection;
 
 public class FickLoader : GenericLoader
 {
-  //! Create from an XML node a FickProprieties.
+  //! Create from an XML node a FickProperties.
   //! \param node The XML node
-  //! \return A FickProprieties (descriptor of FickReaction)
-  public FickProprieties   loadFickProprieties(XmlNode node)
+  //! \return A FickProperties (descriptor of FickReaction)
+  public FickProperties   loadFickProperties(XmlNode node)
   {
-    FickProprieties props = new FickProprieties();
+    FickProperties props = new FickProperties();
 
     foreach (XmlNode attr in node)
       {
@@ -55,7 +55,7 @@ public class FickLoader : GenericLoader
     return props;
   }
 
-	public override LinkedList<T> specificLoader<T> (XmlNodeList ficksLists)
+	public override LinkedList<T> loadFromXml<T> (XmlNodeList ficksLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();

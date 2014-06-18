@@ -8,7 +8,7 @@ using System.Collections.Generic;
   \author Pierre COLLET
   \sa EnzymeReaction
  */
-public class EnzymeReactionProprieties
+public class EnzymeReactionProperties
 {
   public string name;
   public string substrate;
@@ -105,11 +105,11 @@ public class EnzymeReaction : IReaction
 
 
   /*!
-    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProprieties
+    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProperties
     \param props The proprities class
     \return This function return a new EnzymeReaction or null if props is null.
    */
-  public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProprieties props)
+  public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProperties props)
   {
     if (props == null)
       return null;

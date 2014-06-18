@@ -110,7 +110,7 @@ public class Line{
 	}
 	
 	/*!
-	 * \brief Resizes the graph based on the panel Transform proprieties
+	 * \brief Resizes the graph based on the panel Transform properties
 	 * \sa PanelInfos
  	*/
 	public void resize(){

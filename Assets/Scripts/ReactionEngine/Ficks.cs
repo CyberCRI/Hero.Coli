@@ -12,7 +12,7 @@ using System.Collections;
 using System.Xml;
 
 
-public class FickProprieties : Loadable
+public class FickProperties : XMLLoadable
 {
   public int MediumId1 {get; set;}
   public int MediumId2  {get; set;}
@@ -20,9 +20,9 @@ public class FickProprieties : Loadable
   public float surface  {get; set;}
   public float energyCost {get; set;}
 
-	public FickProprieties initFromLoad(XmlNode node, FickLoader loader)
+	public FickProperties initFromLoad(XmlNode node, FickLoader loader)
 	{
-		return loader.loadFickProprieties(node);
+		return loader.loadFickProperties(node);
 	}
 }
 
@@ -70,16 +70,16 @@ public class Fick
     return null;
   }
 
-  //! Set attributes of FickReactions by using a list of FickProprieties
+  //! Set attributes of FickReactions by using a list of FickProperties
   /*!
-      \param propsList The list of Proprieties.
+      \param propsList The list of Properties.
       \param FRList The list of FickReactions.
     */
-  public static void           finalizeFickReactionFromProps(LinkedList<FickProprieties> propsList, LinkedList<FickReaction> FRList)
+  public static void           finalizeFickReactionFromProps(LinkedList<FickProperties> propsList, LinkedList<FickReaction> FRList)
   {
     FickReaction react;
 
-    foreach (FickProprieties prop in propsList)
+    foreach (FickProperties prop in propsList)
       {
         react = getFickReactionFromIds(prop.MediumId1, prop.MediumId2, FRList);
         if (react != null)
@@ -105,15 +105,15 @@ public class Fick
     */
   public void           loadFicksReactionsFromFiles(string[] files, LinkedList<Medium> mediums)
   {
-    LinkedList<FickProprieties> propsList = new LinkedList<FickProprieties>();
-    LinkedList<FickProprieties> newPropList;
+    LinkedList<FickProperties> propsList = new LinkedList<FickProperties>();
+    LinkedList<FickProperties> newPropList;
 
     foreach (string file in files)
       {
-			newPropList = _loader.loadObjectFromFiles<FickProprieties>(file,"ficks");
-        //newPropList = _loader.loadFickProprietiesFromFile(file);
+			newPropList = _loader.loadObjectFromFiles<FickProperties>(file,"ficks");
+        //newPropList = _loader.loadFickPropertiesFromFile(file);
         if (newPropList != null)
-          LinkedListExtensions.AppendRange<FickProprieties>(propsList, newPropList);
+          LinkedListExtensions.AppendRange<FickProperties>(propsList, newPropList);
       }
     _reactions = FickReaction.getFickReactionsFromMediumList(mediums);
     finalizeFickReactionFromProps(propsList, _reactions);
@@ -199,7 +199,7 @@ public class FickReaction : IReaction
     //TODO check Medium equality
   }
 
-  public static IReaction        buildFickReactionFromProps(FickProprieties props, LinkedList<Medium> mediums)
+  public static IReaction        buildFickReactionFromProps(FickProperties props, LinkedList<Medium> mediums)
   {
     FickReaction reaction = new FickReaction();
     Medium med1 = ReactionEngine.getMediumFromId(props.MediumId1, mediums);
@@ -207,7 +207,7 @@ public class FickReaction : IReaction
 
     if (med1 == null || med2 == null)
       {
-        Debug.Log("failed to build FickReaction from FickProprieties beacause one or all the medium id don't exist");
+        Debug.Log("failed to build FickReaction from FickProperties beacause one or all the medium id don't exist");
         return null;
       }
     reaction.setSurface(props.surface);

@@ -7,7 +7,7 @@ using System.Collections.Generic;
   \brief Describe an InstantReaction. This class can be loaded by the ReactionEngine
   \author Pierre COLLET
  */
-public class InstantReactionProprieties
+public class InstantReactionProperties
 {
   public string name;                           //!< The name of the reaction
   public LinkedList<Product> reactants;         //!< The List of reactants
@@ -54,11 +54,11 @@ public class InstantReaction : IReaction
   }
 
   /*!
-    \brief Build an Instant reaction with a InstantReactionProprieties class
-    \param props The proprieties
+    \brief Build an Instant reaction with a InstantReactionProperties class
+    \param props The properties
     \return Return a new reaction or null if it fail.
    */
-  public static IReaction       buildInstantReactionFromProps(InstantReactionProprieties props)
+  public static IReaction       buildInstantReactionFromProps(InstantReactionProperties props)
   {
     if (props == null)
       return null;

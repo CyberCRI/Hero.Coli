@@ -34,8 +34,8 @@ public class ReactionEngine : MonoBehaviour {
   private Fick _fick;                                   //!< The Fick class that manages molecules diffusions between medium
   private ActiveTransport       _activeTransport;       //!< The class that manages Active transport reactions.
   private LinkedList<Medium>    _mediums;               //!< The list that contains all the mediums
-  private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contains the reactions sets
-  private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contains the molecules sets
+  private LinkedList<ReactionSet> _reactionsSets;      //!< The list that contains the reactions sets
+  private LinkedList<MoleculeSet> _moleculesSets;      //!< The list that contains the molecules sets
   public string[]      _mediumsFiles;                   //!< all the medium files
   public string[]      _reactionsFiles;                 //!< all the reaction files
   public string[]      _moleculesFiles;                 //!< all the molecule files
@@ -68,9 +68,9 @@ public class ReactionEngine : MonoBehaviour {
 	}
 	
 	/*TODO FIXME USEFULNESS?/////////////////////////////////////////////////////////////////////
-	ReactionsSet reactionsSet = null;
+	ReactionSet reactionsSet = null;
 	string medName = med.getName()+"Reactions";
-	foreach (ReactionsSet rs in _reactionsSets) {
+	foreach (ReactionSet rs in _reactionsSets) {
 	  if (rs.id == medName) reactionsSet = rs;
 	}
 	if (reactionsSet != null) {
@@ -145,14 +145,14 @@ public class ReactionEngine : MonoBehaviour {
     return null;
   }
 
-//! Return the ReactionsSet reference corresponding to the given id
+//! Return the ReactionSet reference corresponding to the given id
   /*!
-      \param id The id of the ReactionsSet
-      \param list The list of ReactionsSet where to search in
+      \param id The id of the ReactionSet
+      \param list The list of ReactionSet where to search in
   */
-  public static ReactionsSet    getReactionsSetFromId(string id, LinkedList<ReactionsSet> list)
+  public static ReactionSet    getReactionSetFromId(string id, LinkedList<ReactionSet> list)
   {
-    foreach (ReactionsSet reactSet in list)
+    foreach (ReactionSet reactSet in list)
       if (reactSet.id == id)
         return reactSet;
     return null;
@@ -180,16 +180,16 @@ public class ReactionEngine : MonoBehaviour {
     return _mediums;
   }
 
-  //! Return an ArrayList that contain all the differents molecules an list of MoleculesSet
+  //! Return an ArrayList that contain all the differents molecules an list of MoleculeSet
   /*!
-      \param list the list of MoleculesSet
+      \param list the list of MoleculeSet
   */
-  public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculesSet> list)
+  public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculeSet> list)
   {
     ArrayList molecules = new ArrayList();
 
     
-    foreach (MoleculesSet molSet in list)
+    foreach (MoleculeSet molSet in list)
       {
         foreach (Molecule mol in molSet.molecules)
           if (!isMoleculeIsDuplicated(mol, molecules))
@@ -198,14 +198,14 @@ public class ReactionEngine : MonoBehaviour {
     return molecules;
   }
 
-  //! Return the MoleculesSet of a list of MoleculesSet corresponding to an id
+  //! Return the MoleculeSet of a list of MoleculeSet corresponding to an id
   /*!
-    \param id The id of the MoleculesSet
-    \param list The list of MoleculesSet
+    \param id The id of the MoleculeSet
+    \param list The list of MoleculeSet
   */
-  public static MoleculesSet    getMoleculesSetFromId(string id, LinkedList<MoleculesSet> list)
+  public static MoleculeSet    getMoleculeSetFromId(string id, LinkedList<MoleculeSet> list)
   {
-    foreach (MoleculesSet molSet in list)
+    foreach (MoleculeSet molSet in list)
       if (molSet.id == id)
         return molSet;
     return null;
@@ -226,21 +226,21 @@ public class ReactionEngine : MonoBehaviour {
     _instance = this;
 
     FileLoader fileLoader = new FileLoader();
-    _reactionsSets = new LinkedList<ReactionsSet>();
-    _moleculesSets = new LinkedList<MoleculesSet>();
+    _reactionsSets = new LinkedList<ReactionSet>();
+    _moleculesSets = new LinkedList<MoleculeSet>();
     _mediums = new LinkedList<Medium>();
     
 
 		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
     foreach (string file in _reactionsFiles)
 		{
-			LinkedList<ReactionsSet> lr = fileLoader.loadObjectFromFiles<ReactionsSet>(file,"reactions");
-      		LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, lr);
+			LinkedList<ReactionSet> lr = fileLoader.loadObjectFromFiles<ReactionSet>(file,"reactions");
+      		LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
 		}
     foreach (string file in _moleculesFiles)
 		{
-			LinkedList<MoleculesSet> lm = fileLoader.loadObjectFromFiles<MoleculesSet>(file,"molecules");
-			LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, lm);
+			LinkedList<MoleculeSet> lm = fileLoader.loadObjectFromFiles<MoleculeSet>(file,"molecules");
+			LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 		}
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)

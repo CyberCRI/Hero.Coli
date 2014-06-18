@@ -13,7 +13,6 @@ using System.IO;
   \sa InstantReactionLoader
   \author Pierre COLLET
  */
-using System.Reflection;
 
 
 public class FileLoader : GenericLoader
@@ -127,7 +126,7 @@ public class FileLoader : GenericLoader
     return true;
   }
 
-	public override LinkedList<T> specificLoader<T> (XmlNodeList objectNodeList)
+	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeList)
 	{
 		string setId;
 		LinkedList<T> objectList = new LinkedList<T>();
@@ -138,10 +137,7 @@ public class FileLoader : GenericLoader
 			{
 
 				T t= new T();
-				// Reflection Call
-				MethodInfo method = typeof(T).GetMethod("init");
-				object[] mParam = new object[] {objectNode,setId};
-				method.Invoke(t,mParam);
+				t.init(objectNode,setId);
 
 				objectList.AddLast(t);
 

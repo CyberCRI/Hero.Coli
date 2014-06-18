@@ -6,16 +6,6 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 
-public  class Loadable {
-
-	public string id;
-	
-	public  void init(XmlNode node, string id)
-	{
-	}
-
-}
-
 public abstract class GenericLoader  {
 	
 	
@@ -26,7 +16,7 @@ public abstract class GenericLoader  {
 	}
 	
 	public LinkedList<T> loadObjectFromFiles<T> (string filePath, string tag)  
-		where T : Loadable,  new()
+		where T : XMLLoadable,  new()
 			
 	{
 		//  Generics
@@ -37,14 +27,14 @@ public abstract class GenericLoader  {
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
 		
 		
-		objectList = specificLoader <T>(objectNodeLists);
+		objectList = loadFromXml <T>(objectNodeLists);
 
 		return objectList;
 
 	}
 	
-	public abstract LinkedList<T> specificLoader<T> (XmlNodeList objectNodeLists)
-		where T : Loadable, new();
+	public abstract LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeLists)
+		where T : XMLLoadable, new();
 	
 	
 }

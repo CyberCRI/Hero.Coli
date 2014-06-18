@@ -19,14 +19,14 @@ using System.Collections.Generic;
 using System.Xml;
 
 
-public class Medium : Loadable
+public class Medium : XMLLoadable
 {
   private LinkedList<IReaction> _reactions;             //!< The list of reactions
   private ArrayList             _molecules;             //!< The list of molecules (Molecule)
 
   private int           _id;                            //!< The id of the Medium
   private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionsSet id assigned to this Medium
+  private string        _reactionsSet;                  //!< The ReactionSet id assigned to this Medium
   private string        _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
   private bool          _enableSequential;
   private bool          _enableNoise;
@@ -44,10 +44,10 @@ public class Medium : Loadable
   public string getName() { return _name;}
   public void setReactions(LinkedList<IReaction> RL) { _reactions = RL;}
   public LinkedList<IReaction> getReactions() { return _reactions;}
-  public void setReactionsSet(string reactionsSet) { _reactionsSet = reactionsSet;}
-  public string getReactionsSet() { return _reactionsSet;}
-  public void setMoleculesSet(string moleculesSet) { _moleculesSet = moleculesSet;}
-  public string getMoleculesSet() { return _moleculesSet;}
+  public void setReactionSet(string reactionsSet) { _reactionsSet = reactionsSet;}
+  public string getReactionSet() { return _reactionsSet;}
+  public void setMoleculeSet(string moleculesSet) { _moleculesSet = moleculesSet;}
+  public string getMoleculeSet() { return _moleculesSet;}
   public ArrayList getMolecules() { return _molecules; }
 
   //TODO extract energy methods and fields and make class out of it
@@ -198,10 +198,10 @@ public class Medium : Loadable
   }
 
   /*!
-    \brief Load reactions from a ReactionsSet
+    \brief Load reactions from a ReactionSet
     \param reactionsSet The set to load
    */
-  public void initReactionsFromReactionsSet(ReactionsSet reactionsSet)
+  public void initReactionsFromReactionSet(ReactionSet reactionsSet)
   {
     if (reactionsSet == null)
       return;
@@ -221,13 +221,13 @@ public class Medium : Loadable
   }
 
   /*!
-    \brief Load Molecules from a MoleculesSet
+    \brief Load Molecules from a MoleculeSet
     \param molSet The set to Load
     \param allMolecules The list of all the molecules
    */
-  public void initMoleculesFromMoleculesSets(MoleculesSet molSet, ArrayList allMolecules)
+  public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
   {
-	Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id,Logger.Level.TRACE);
+	Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_id,Logger.Level.TRACE);
     Molecule newMol;
     Molecule startingMolStatus;
 
@@ -241,7 +241,7 @@ public class Medium : Loadable
 		} else {
           newMol.setConcentration(startingMolStatus.getConcentration());
 		}
-		Logger.Log("Medium::initMoleculesFromMoleculesSets medium#"+_id
+		Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_id
 				+" add mol "+newMol.getName()
 				+" with cc="+newMol.getConcentration()
 				,Logger.Level.TRACE
@@ -269,7 +269,7 @@ public class Medium : Loadable
     \param reactionsSets The list of all the reactions sets
     \param moleculesSets The list of all the molecules sets
    */
-  public void Init(LinkedList<ReactionsSet> reactionsSets, LinkedList<MoleculesSet> moleculesSets)
+  public void Init(LinkedList<ReactionSet> reactionsSets, LinkedList<MoleculeSet> moleculesSets)
   {
 
 		//Receive a linkedlist of Sets
@@ -277,8 +277,8 @@ public class Medium : Loadable
     _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
 
 		//Try to find the good set in the LinkedList
-    ReactionsSet reactSet = ReactionEngine.getReactionsSetFromId(_reactionsSet, reactionsSets);
-    MoleculesSet molSet = ReactionEngine.getMoleculesSetFromId(_moleculesSet, moleculesSets);
+    ReactionSet reactSet = ReactionEngine.getReactionSetFromId(_reactionsSet, reactionsSets);
+    MoleculeSet molSet = ReactionEngine.getMoleculeSetFromId(_moleculesSet, moleculesSets);
 
 		//Put all the different molecules from the linkedList in an arrayList
     ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
@@ -289,8 +289,8 @@ public class Medium : Loadable
       Logger.Log("Medium::Init Cannot find group of molecules named" + _moleculesSet, Logger.Level.WARN);
 
     initATPProduction();
-    initReactionsFromReactionsSet(reactSet);
-    initMoleculesFromMoleculesSets(molSet, allMolecules);
+    initReactionsFromReactionSet(reactSet);
+    initMoleculesFromMoleculeSets(molSet, allMolecules);
     initDegradationReactions(allMolecules);
     foreach (IReaction r in _reactions)
       {
