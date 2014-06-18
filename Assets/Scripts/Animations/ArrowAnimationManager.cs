@@ -30,11 +30,11 @@ public class ArrowAnimationManager : MonoBehaviour {
 		//screen 2 pointer
 		else if (Inventory.get().getDeviceAdded() && GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen2)
 		{
-			if (inventoryAnim)
+			if (inventoryAnim && Inventory.get().getDeviceAdded())
 			{
-				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
-				Destroy (parent.transform.GetChild(parent.transform.childCount-4).gameObject.transform.Find ("tutorialArrow(Clone)").gameObject);
-					
+
+				ArrowAnimation.Delete("InventoryDevicesSlotsPanel");
+	
 				inventoryAnim = false;
 			}
 			Inventory.get ().scriptAnimator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);

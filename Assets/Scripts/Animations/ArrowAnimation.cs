@@ -7,8 +7,7 @@ using System.Collections;
 
  * */
 public class ArrowAnimation : MonoBehaviour {
-
-	bool playing = false;
+	
 	bool toswitch = false; // say if the animation have to be launch  next update()
 	GameObject clone1;
 	GameObject clone2;
@@ -19,11 +18,6 @@ public class ArrowAnimation : MonoBehaviour {
 	bool direction = true;							//the direction of the animation (up or down)
 
 	bool InInventory = false;
-
-	public bool getPlaying() {return playing;}
-	
-
-
 	
 	// Update is called once per frame
 	void Update () {
@@ -37,9 +31,7 @@ public class ArrowAnimation : MonoBehaviour {
 		Vector3 rotateVector;
 		if( screen == GUITransitioner.GameScreen.screen1)
 		{
-			if (playing == false)
-			{
-				if(GUITransitioner.get()._worldScreen.activeInHierarchy)
+			if(GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen1)
 				{
 					
 					g = GameObject.Find("WorldEquipButtonPanel");
@@ -48,7 +40,6 @@ public class ArrowAnimation : MonoBehaviour {
 					targetVector.Set(targetVector.x,targetVector.y+50,targetVector.z);
 					Create(targetVector,new Vector3(0,0,0),g);
 					toswitch = false;
-					playing = true;
 				}
 				else
 				{
@@ -58,18 +49,10 @@ public class ArrowAnimation : MonoBehaviour {
 					//playing = true;
 
 				}
-			}
-			else 
-			{
-				Destroy(clone1);
-				playing = false;
-			}
 
 		}
 		if ( screen == GUITransitioner.GameScreen.screen2)
 		{
-			if (!playing)
-			{
 				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
 				g = parent.transform.GetChild(parent.transform.childCount -3).gameObject;
 
@@ -78,24 +61,22 @@ public class ArrowAnimation : MonoBehaviour {
 
 
 				Create(targetVector,rotateVector,g);
-				//playing = true;
-				Inventory.get().setDeviceAdded(false);
-			}
-			else 
-			{
-				Destroy(clone1);
-				playing = false;
 				Inventory.get().setDeviceAdded(false);
 
-			}
 		}
 
 	}
 
-	public void Delete()
+	public static void Delete(string name)
 	{
-		Inventory.get ().setDeviceAdded(false);
-		Destroy(gameObject);
+		GameObject parent = GameObject.Find (name);
+		if(parent)
+		{
+			ArrowAnimation ts = parent.transform.GetComponentInChildren<ArrowAnimation>();
+			if(GUITransitioner.get ()._currentScreen == GUITransitioner.GameScreen.screen2)
+				Inventory.get ().setDeviceAdded(false);
+			Destroy(ts.gameObject);
+		}
 	}
 
 	private void Create(Vector3 vec, Vector3 rot, GameObject g) {
@@ -106,9 +87,6 @@ public class ArrowAnimation : MonoBehaviour {
 		clone1 = NGUITools.AddChild(g,this.gameObject);
 		clone1.SetActive(true);
 
-		//GUITransitioner.get().arrowManager.arrowList.AddLast(clone.GetComponent<ArrowAnimation>());
-
-		//Bounds sizeOfChild = g.transform.FindChild("Background").renderer.bounds;
 		clone1.transform.localPosition = new Vector3(vec.x,vec.y,vec.z);
 		clone1.transform.Rotate (new Vector3(rot.x,rot.y,rot.z));
 

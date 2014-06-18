@@ -22,7 +22,7 @@ class InventoriedDisplayedDevice : DisplayedDevice {
 			//pointer Animation
 			if(gameObject.transform.FindChild("tutorialArrow(Clone)"))
 			{
-				gameObject.transform.FindChild("tutorialArrow(Clone)").GetComponent<ArrowAnimation>().Delete();
+				ArrowAnimation.Delete("InventoryDevicesSlotsPanel");
 				GUITransitioner.get ().arrowManager.inventoryAnim = false;
 			}
 		}

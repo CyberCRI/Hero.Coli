@@ -48,7 +48,7 @@ public class InventoryAnimator : MonoBehaviour {
 	}
 	
 		public void reset() {
-		tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
+		ArrowAnimation.Delete ("WorldEquipButtonPanel");
 		sprite.transform.localScale = originalScale;
 		isPlaying = false;
 		
