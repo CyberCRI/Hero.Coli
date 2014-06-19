@@ -25,7 +25,7 @@ using System.IO;
 using System.Reflection;
 
 
-public class FickLoader : GenericLoader
+public class FickLoader : XmlLoader
 {
   //! Create from an XML node a FickProperties.
   //! \param node The XML node
@@ -55,7 +55,7 @@ public class FickLoader : GenericLoader
     return props;
   }
 
-	public override LinkedList<T> loadFromXml<T> (XmlNodeList ficksLists)
+  public override LinkedList<T> loadObjects<T> (XmlNodeList ficksLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();

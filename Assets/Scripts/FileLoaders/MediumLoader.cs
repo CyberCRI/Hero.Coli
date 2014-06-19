@@ -29,7 +29,7 @@ using UnityEngine;
 using System.Reflection;
 
 
-public class MediumLoader : GenericLoader
+public class MediumLoader : XmlLoader
 {
 
   /*!
@@ -131,7 +131,7 @@ public class MediumLoader : GenericLoader
     return medium;
   }
 
-	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeLists)
+  public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();

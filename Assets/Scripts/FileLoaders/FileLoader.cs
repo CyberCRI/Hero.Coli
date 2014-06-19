@@ -15,7 +15,7 @@ using System.IO;
  */
 
 
-public class FileLoader : GenericLoader
+public class FileLoader : XmlLoader
 {
   private delegate void  StrSetter(string dst);
   private delegate void  FloatSetter(float dst);
@@ -126,7 +126,7 @@ public class FileLoader : GenericLoader
     return true;
   }
 
-	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeList)
+  public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeList)
 	{
 		string setId;
 		LinkedList<T> objectList = new LinkedList<T>();
@@ -137,7 +137,7 @@ public class FileLoader : GenericLoader
 			{
 
 				T t = new T();
-				t.initializeFromXML(objectNode, setId);
+				t.initializeFromXml(objectNode, setId);
 
 				objectList.AddLast(t);
 

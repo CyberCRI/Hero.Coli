@@ -12,7 +12,7 @@ using System.Collections;
 using System.Xml;
 
 
-public class FickProperties : XMLLoadableImpl
+public class FickProperties : XmlLoadableImpl
 {
   public int MediumId1 {get; set;}
   public int MediumId2  {get; set;}
@@ -110,7 +110,7 @@ public class Fick
 
     foreach (string file in files)
       {
-			newPropList = _loader.loadObjectFromFile<FickProperties>(file,"ficks");
+			newPropList = _loader.loadObjectsFromFile<FickProperties>(file,"ficks");
         //newPropList = _loader.loadFickPropertiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<FickProperties>(propsList, newPropList);

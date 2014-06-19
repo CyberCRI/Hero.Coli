@@ -18,7 +18,7 @@ A reaction set musth be declare in molecule's files respecting this synthax :
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
-public class ReactionSet : XMLLoadable
+public class ReactionSet : XmlLoadable
 {
   private string                 _id;                    //!< The ReactionSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
@@ -31,7 +31,7 @@ public class ReactionSet : XMLLoadable
   }
 
   //implementation of XMLLoadable interface
-  public void initializeFromXML(XmlNode node, string id)
+  public void initializeFromXml(XmlNode node, string id)
 	{
     _id = id;
 

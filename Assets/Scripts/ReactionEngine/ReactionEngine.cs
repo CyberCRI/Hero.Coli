@@ -235,18 +235,18 @@ public class ReactionEngine : MonoBehaviour {
 		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
     foreach (string file in _reactionsFiles)
 		{
-			LinkedList<ReactionSet> lr = fileLoader.loadObjectFromFile<ReactionSet>(file,"reactions");
+			LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file,"reactions");
       		LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
 		}
     foreach (string file in _moleculesFiles)
 		{
-			LinkedList<MoleculeSet> lm = fileLoader.loadObjectFromFile<MoleculeSet>(file,"molecules");
+			LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file,"molecules");
 			LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 		}
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)
 		{
-			LinkedList<Medium> lmed = mediumLoader.loadObjectFromFile<Medium>(file,"Mediums");
+			LinkedList<Medium> lmed = mediumLoader.loadObjectsFromFile<Medium>(file,"Mediums");
 			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
 		}
 

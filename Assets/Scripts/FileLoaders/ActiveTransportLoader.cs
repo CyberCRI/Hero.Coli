@@ -38,33 +38,25 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-public class ActiveTransportLoader : GenericLoader
+public class ActiveTransportLoader : XmlLoader
 {
   /*!
-    \brief Load all the properties from a file
-    \param The path of the file
+    \brief Load all the properties from an xml document
+    \param The xml document
     \return The list of ActiveTranportProperties. If the list is empty this function return null
    */
-
-	public override LinkedList<T> loadFromXml<T> (XmlNodeList objectNodeLists)
+  public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();
-		ActiveTransportLoader loader = new ActiveTransportLoader();
-		
-		
-		// Reflection Call
-		MethodInfo method = typeof(T).GetMethod("initFromLoad");
-		object[] mParam;
-		
+				
 		foreach (XmlNode ATsNodes in objectNodeLists)
 		{
 			foreach (XmlNode ATNode in ATsNodes)
 			{
 				if (ATNode.Name == "ATProp")
 				{
-					mParam = new object[] {ATNode, loader};
-					t =(T) method.Invoke (t,mParam);
+          t.initFromLoad(ATNode, this);
 					objectList.AddLast(t);
 				}
 			}
@@ -87,7 +79,7 @@ public class ActiveTransportLoader : GenericLoader
 
     foreach (string file in files)
       {
-			newPropList = loadObjectFromFile<ActiveTransportProperties>(file,"activeTransports");
+			newPropList = loadObjectsFromFile<ActiveTransportProperties>(file,"activeTransports");
        // newPropList = loadActiveTransportPropertiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);
