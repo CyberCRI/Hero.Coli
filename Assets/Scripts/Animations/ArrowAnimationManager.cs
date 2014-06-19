@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class ArrowAnimationManager : MonoBehaviour {
 
 
-	public bool worldScreenAnim = false;
-	public bool inventoryAnim = false;
+	public bool isWorldScreenAnimPlaying = false;
+	public bool isInventoryAnimPlaying = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -20,25 +20,25 @@ public class ArrowAnimationManager : MonoBehaviour {
 	public void launchAnimation ()
 	{
 		//screen 1 pointer
-		if ( worldScreenAnim == true && GUITransitioner.get()._worldScreen.activeInHierarchy)
+		if ( isWorldScreenAnimPlaying == true && GUITransitioner.get()._worldScreen.activeInHierarchy)
 		{
 
 				Inventory.get().scriptAnimator.tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
-				worldScreenAnim = false;
+				isWorldScreenAnimPlaying = false;
 
 		}
 		//screen 2 pointer
 		else if (Inventory.get().getDeviceAdded() && GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen2)
 		{
-			if (inventoryAnim && Inventory.get().getDeviceAdded())
+			if (isInventoryAnimPlaying && Inventory.get().getDeviceAdded())
 			{
 
 				ArrowAnimation.Delete("InventoryDevicesSlotsPanel");
 	
-				inventoryAnim = false;
+				isInventoryAnimPlaying = false;
 			}
 			Inventory.get ().scriptAnimator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);
-			inventoryAnim = true;
+			isInventoryAnimPlaying = true;
 		}
 	}
 }

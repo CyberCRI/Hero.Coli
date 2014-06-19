@@ -8,16 +8,14 @@ using System.Collections;
  * */
 public class ArrowAnimation : MonoBehaviour {
 	
-	bool toswitch = false; // say if the animation have to be launch  next update()
+	bool toSwitch = false; // say if the animation have to be launch  next update()
 	GameObject clone1;
-	GameObject clone2;
 
 	//variable used for the animation
 	float time =0;									//the actual state of the animation
+	float step =0.5f;
 	float duration = 10;							//the duration of the animation
-	bool direction = true;							//the direction of the animation (up or down)
-
-	bool InInventory = false;
+	bool isGoingUp = true;							//the direction of the animation (up or down)
 	
 	// Update is called once per frame
 	void Update () {
@@ -36,16 +34,17 @@ public class ArrowAnimation : MonoBehaviour {
 					
 					g = GameObject.Find("WorldEquipButtonPanel");
 
+					float shift = 50f;
 					targetVector = g.transform.FindChild("WorldEquipButton").localPosition;
-					targetVector.Set(targetVector.x,targetVector.y+50,targetVector.z);
+					targetVector.Set(targetVector.x,targetVector.y+shift,targetVector.z);
 					Create(targetVector,new Vector3(0,0,0),g);
-					toswitch = false;
+					toSwitch = false;
 				}
 				else
 				{
 
-					GUITransitioner.get().arrowManager.worldScreenAnim = true;
-					toswitch = true;
+					GUITransitioner.get().arrowManager.isWorldScreenAnimPlaying = true;
+					toSwitch = true;
 					//playing = true;
 
 				}
@@ -92,35 +91,31 @@ public class ArrowAnimation : MonoBehaviour {
 
 
 	}
-
-	public void ToggleSwitch ()
-	{
-		toswitch = !toswitch;
-	}
+	
 
 	private void  Move ()
 	{
 
 		Vector3 pos = gameObject.transform.localPosition;
-		if(direction)
+		if(isGoingUp)
 		{
-			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(0.5f),pos.z);
+			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(step),pos.z);
 
 			if(time < duration)
-				time+=0.5f;
+				time+=step;
 			else
-				direction = !direction;
+				isGoingUp = !isGoingUp;
 		}
 		else
 		{
-			gameObject.transform.localPosition = new Vector3(pos.x,pos.y-(0.5f),pos.z);
+			gameObject.transform.localPosition = new Vector3(pos.x,pos.y-(step),pos.z);
 
 
 			if(time > 0)
-				time-=0.5f;
+				time-=step;
 			else
 			{
-				direction = !direction;
+				isGoingUp = !isGoingUp;
 			}
 		}
 
