@@ -20,21 +20,29 @@ A reaction set musth be declare in molecule's files respecting this synthax :
  */
 public class ReactionSet : XMLLoadable
 {
-  new public string              id;                    //!< The ReactionSet id (string id),
+  private string                 _id;                    //!< The ReactionSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
+  public string getTag() {return "";}
 
+  //implementation of XMLLoadable interface
+  public string getId()
+  {
+    return _id;
+  }
 
-	public new void init (XmlNode node, string id2)
+  //implementation of XMLLoadable interface
+  public void initializeFromXML(XmlNode node, string id)
 	{
+    _id = id;
+
 		reactions = new LinkedList<IReaction>();
-		id = id2;
+
 		FileLoader loader = new FileLoader();
 		loader.loadReactions(node, reactions);
-		
 	}
 	
   public override string ToString()
 	{
-    return "ReactionSet[id:"+id+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
+    return "ReactionSet[id:"+_id+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
 	}
 }

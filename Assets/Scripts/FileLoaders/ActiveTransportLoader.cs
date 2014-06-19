@@ -87,7 +87,7 @@ public class ActiveTransportLoader : GenericLoader
 
     foreach (string file in files)
       {
-			newPropList = loadObjectFromFiles<ActiveTransportProperties>(file,"activeTransports");
+			newPropList = loadObjectFromFile<ActiveTransportProperties>(file,"activeTransports");
        // newPropList = loadActiveTransportPropertiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);

@@ -136,13 +136,14 @@ public class FileLoader : GenericLoader
 			if(setId != "" && setId != null)
 			{
 
-				T t= new T();
-				t.init(objectNode,setId);
+				T t = new T();
+				t.initializeFromXML(objectNode, setId);
 
 				objectList.AddLast(t);
 
 			}
-			else{
+			else
+      {
 				Debug.Log("Error : missing attribute id in reactions node");
 			}
 

@@ -85,7 +85,22 @@ public class Logger : MonoBehaviour {
     objects.CopyTo(array, 0);
     return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
   }
-	
+    
+    public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)
+    {
+        string resultString = "";
+        foreach(object obj in objects)
+        {
+            if(!string.IsNullOrEmpty(resultString))
+            {
+                resultString += ", ";
+            }
+            resultString += ((T)obj).ToString();
+        }
+        resultString = typeName+"s["+resultString+"]";
+        return resultString;
+    }
+
   public static string ToString<T>(TreeNode<T> tree, string separator = defaultSeparator) {
 		if(tree==null) {
 			return "";

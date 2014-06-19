@@ -153,7 +153,7 @@ public class ReactionEngine : MonoBehaviour {
   public static ReactionSet    getReactionSetFromId(string id, LinkedList<ReactionSet> list)
   {
     foreach (ReactionSet reactSet in list)
-      if (reactSet.id == id)
+      if (reactSet.getId() == id)
         return reactSet;
     return null;
   }
@@ -186,6 +186,7 @@ public class ReactionEngine : MonoBehaviour {
   */
   public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculeSet> list)
   {
+
     ArrayList molecules = new ArrayList();
 
     
@@ -206,7 +207,7 @@ public class ReactionEngine : MonoBehaviour {
   public static MoleculeSet    getMoleculeSetFromId(string id, LinkedList<MoleculeSet> list)
   {
     foreach (MoleculeSet molSet in list)
-      if (molSet.id == id)
+      if (molSet.getId() == id)
         return molSet;
     return null;
   }
@@ -234,20 +235,21 @@ public class ReactionEngine : MonoBehaviour {
 		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
     foreach (string file in _reactionsFiles)
 		{
-			LinkedList<ReactionSet> lr = fileLoader.loadObjectFromFiles<ReactionSet>(file,"reactions");
+			LinkedList<ReactionSet> lr = fileLoader.loadObjectFromFile<ReactionSet>(file,"reactions");
       		LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
 		}
     foreach (string file in _moleculesFiles)
 		{
-			LinkedList<MoleculeSet> lm = fileLoader.loadObjectFromFiles<MoleculeSet>(file,"molecules");
+			LinkedList<MoleculeSet> lm = fileLoader.loadObjectFromFile<MoleculeSet>(file,"molecules");
 			LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 		}
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)
 		{
-			LinkedList<Medium> lmed = mediumLoader.loadObjectFromFiles<Medium>(file,"Mediums");
+			LinkedList<Medium> lmed = mediumLoader.loadObjectFromFile<Medium>(file,"Mediums");
 			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
 		}
+
     foreach (Medium medium in _mediums)
       {
         medium.Init(_reactionsSets, _moleculesSets);

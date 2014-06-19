@@ -20,14 +20,22 @@ A molecule set must be declared in molecule's files respecting this synthax :
  */
 public class MoleculeSet : XMLLoadable
 {
-  new public string             id;                     //!< The MoleculeSet id (string id).
+  private string                _id;                     //!< The MoleculeSet id (string id).
   public ArrayList              molecules;              //!< The list of Molecule present in the set.
+  public string getTag() {return "";}
 
-
-  public new void init (XmlNode node, string id2)
+  //implementation of XMLLoadable interface
+  public string getId()
   {
+    return _id;
+  }
+
+  //implementation of XMLLoadable interface
+  public void initializeFromXML(XmlNode node, string id)
+  {
+    _id = id;
+
     molecules = new ArrayList();
-    id = id2;
     foreach (XmlNode mol in node)
     {
         
@@ -40,6 +48,16 @@ public class MoleculeSet : XMLLoadable
     
   public override string ToString()
   {
-    return "MoleculeSet[id:"+id+", molecules="+molecules+"]";
+    string moleculeString = "";
+    foreach(object molecule in molecules)
+    {
+      if(!string.IsNullOrEmpty(moleculeString))
+      {
+        moleculeString += ", ";
+      }
+      moleculeString += ((Molecule)molecule).ToString();
+    }
+    moleculeString = "Molecules["+moleculeString+"]";
+    return "MoleculeSet[id:"+_id+", molecules="+moleculeString+"]";
   }
 }

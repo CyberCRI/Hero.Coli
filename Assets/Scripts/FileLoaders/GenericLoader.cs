@@ -15,7 +15,7 @@ public abstract class GenericLoader  {
 		
 	}
 	
-	public LinkedList<T> loadObjectFromFiles<T> (string filePath, string tag)  
+	public LinkedList<T> loadObjectFromFile<T> (string filePath, string tag)  
 		where T : XMLLoadable,  new()
 			
 	{
