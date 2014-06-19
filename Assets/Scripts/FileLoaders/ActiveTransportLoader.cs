@@ -46,6 +46,7 @@ public class ActiveTransportLoader : XmlLoader
     \return The list of ActiveTranportProperties. If the list is empty this function return null
    */
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
+    //where T : LoadableFromXml, new()
 	{
 		LinkedList<T> objectList = new LinkedList<T>();
 		T t = new T();
@@ -56,7 +57,7 @@ public class ActiveTransportLoader : XmlLoader
 			{
 				if (ATNode.Name == "ATProp")
 				{
-          t.initFromLoad(ATNode, this);
+          t.initFromLoad<T, ActiveTransportLoader>(ATNode, this);
 					objectList.AddLast(t);
 				}
 			}

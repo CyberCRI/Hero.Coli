@@ -8,6 +8,9 @@ public interface LoadableFromXml {
   string getId();
 
   void initializeFromXml(XmlNode node, string id);
+
+  T initFromLoad<T,L>(XmlNode node, L loader) where T : new();
+  //LoadableFromXml initFromLoad<LoadableFromXml,L>(XmlNode node, L loader);
     
 }
 
@@ -36,5 +39,10 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     {
         _id = id;
     }
-    
+
+    public T initFromLoad<T,L>(XmlNode node, L loader)
+        where T: new()
+    {
+        return new T();
+    }
 }
