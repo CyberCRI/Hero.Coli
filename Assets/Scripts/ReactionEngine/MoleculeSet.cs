@@ -18,38 +18,39 @@ A molecule set must be declared in molecule's files respecting this synthax :
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
-public class MoleculeSet : LoadableFromXml
+public class MoleculeSet : LoadableFromXmlImpl
 {
-  private string                _id;                     //!< The MoleculeSet id (string id).
+  private new string            _stringId;                     //!< The MoleculeSet id (string id).
   public ArrayList              molecules;              //!< The list of Molecule present in the set.
-  public string getTag() {return "";}
+  public override string getTag() {return "";}
+
+  //public MoleculeSet(){}
 
   //implementation of XMLLoadable interface
-  public string getId()
+  public override string getStringId()
   {
-    return _id;
-  }
-
-  //implementation of XMLLoadable interface
-  public void initializeFromXml(XmlNode node, string id)
-  {
-    _id = id;
-
-    molecules = new ArrayList();
-    foreach (XmlNode mol in node)
-    {
-        
-      if (mol.Name == "molecule")
-      {
-          FileLoader.loadMolecule(mol, molecules);
-      }
-    }
+    return _stringId;
   }
     
-  public T initFromLoad<T,L>(XmlNode node, L loader)
-      where T: new()
+  public override MoleculeSet initFromLoad<MoleculeSet,L>(XmlNode node, FileLoader loader)
   {
-      return new T();
+        //public static bool loadMolecule(XmlNode node, ArrayList molecules)
+
+    molecules = new ArrayList();
+
+    switch (node.Attributes["type"].Value)
+    {
+      case "enzyme":
+        FileLoader.storeMolecule(node, Molecule.eType.ENZYME, molecules);
+        break;
+      case "transcription_factor":
+        FileLoader.storeMolecule(node, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
+        break;
+      case "other":
+        FileLoader.storeMolecule(node, Molecule.eType.OTHER, molecules);
+        break;
+    }
+    return this;
   }
     
   public override string ToString()
@@ -64,6 +65,6 @@ public class MoleculeSet : LoadableFromXml
       moleculeString += ((Molecule)molecule).ToString();
     }
     moleculeString = "Molecules["+moleculeString+"]";
-    return "MoleculeSet[id:"+_id+", molecules="+moleculeString+"]";
+    return "MoleculeSet[id:"+_stringId+", molecules="+moleculeString+"]";
   }
 }

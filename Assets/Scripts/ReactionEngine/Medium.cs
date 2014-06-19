@@ -21,25 +21,25 @@ using System.Xml;
 
 public class Medium : LoadableFromXmlImpl
 {
-  private LinkedList<IReaction> _reactions;             //!< The list of reactions
-  private ArrayList             _molecules;             //!< The list of molecules (Molecule)
+  private LinkedList<IReaction> _reactions;               //!< The list of reactions
+  private ArrayList             _molecules;               //!< The list of molecules (Molecule)
 
-  private int           _id;                            //!< The id of the Medium
-  private string        _name;                          //!< The name of the Medium
-  private string        _reactionsSet;                  //!< The ReactionSet id assigned to this Medium
-  private string        _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
-  private bool          _enableSequential;
-  private bool          _enableNoise;
-  private NumberGenerator _numberGenerator;             //!< Random number generator
-  private bool          _enableEnergy;
-  private float         _energy;                        //!< Represents the quantity of ATP
-  private float 		_energyVariation;				//!< The variation of energy during one frame
-  private float         _maxEnergy;                     //!< The maximum quantity of ATP
-  private float         _energyProductionRate;          //!< The energy production speed
-  public bool           enableShufflingReactionOrder;   //!< Enables shuffling of reactions
+  private int             _numberId;                            //!< The id of the Medium
+  private string          _name;                          //!< The name of the Medium
+  private string          _reactionsSet;                  //!< The ReactionSet id assigned to this Medium
+  private string          _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
+  private bool            _enableSequential;
+  private bool            _enableNoise;
+  private NumberGenerator _numberGenerator;               //!< Random number generator
+  private bool            _enableEnergy;
+  private float           _energy;                        //!< Represents the quantity of ATP
+  private float 		      _energyVariation;				        //!< The variation of energy during one frame
+  private float           _maxEnergy;                     //!< The maximum quantity of ATP
+  private float           _energyProductionRate;          //!< The energy production speed
+  public bool             enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
-  public void setId(int id) { _id = id;}
-  public int getId() { return _id;}
+  public void setId(int id) { _numberId = id;}
+  //public int getId() { return _id;}
   public void setName(string name) { _name = name;}
   public string getName() { return _name;}
   public void setReactions(LinkedList<IReaction> RL) { _reactions = RL;}
@@ -114,7 +114,7 @@ public class Medium : LoadableFromXmlImpl
    */
   public void addReaction(IReaction reaction)
   {
-    Logger.Log("Medium::addReaction to medium#"+_id+" with "+reaction, Logger.Level.DEBUG);
+    Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
     if (reaction != null)
     {
       reaction.setMedium(this);
@@ -227,7 +227,7 @@ public class Medium : LoadableFromXmlImpl
    */
   public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
   {
-	Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_id,Logger.Level.TRACE);
+	Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_numberId,Logger.Level.TRACE);
     Molecule newMol;
     Molecule startingMolStatus;
 
@@ -241,7 +241,7 @@ public class Medium : LoadableFromXmlImpl
 		} else {
           newMol.setConcentration(startingMolStatus.getConcentration());
 		}
-		Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_id
+		Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_numberId
 				+" add mol "+newMol.getName()
 				+" with cc="+newMol.getConcentration()
 				,Logger.Level.TRACE
@@ -321,7 +321,7 @@ public class Medium : LoadableFromXmlImpl
 	  content += m.ToString();
 	}
 					
-	Logger.Log("Medium::debug() #"+_id+"["+content+"]", level);
+	Logger.Log("Medium::debug() #"+_numberId+"["+content+"]", level);
   }
 
   /*!

@@ -36,7 +36,7 @@ public class FileLoader : XmlLoader
   }
 
   /*!
-    \brief This fonction load a molecule
+    \brief This function loads a molecule
     \param node The xml node to parse
     \param type The molecule type
     \param molecules The array of molecules where to add new molecules
@@ -70,46 +70,7 @@ public class FileLoader : XmlLoader
      }
     molecules.Add(mol);
     return true;
-  }
-
-  /*!
-    \brief Load one molecule from an xml node
-    \param node The xml node
-    \param molecules The array where to add the new molecule
-    \return always true
-   */
-  public static bool loadMolecule(XmlNode node, ArrayList molecules)
-  {
-
-    if (node.Attributes["type"] == null)
-      return false;
-    switch (node.Attributes["type"].Value)
-      {
-      case "enzyme":
-        return storeMolecule(node, Molecule.eType.ENZYME, molecules);
-      case "transcription_factor":
-        return storeMolecule(node, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
-      case "other":
-        return storeMolecule(node, Molecule.eType.OTHER, molecules);
-      }
-    return true;
-  }
-
-  /*!
-    \brief Load molecules from files
-    \param node The xml node
-    \param molecules The array of molecule to fill
-    \return Return always true
-   */
-  private bool loadMolecules(XmlNode node, ArrayList molecules)
-  {
-    foreach (XmlNode mol in node)
-      {
-        if (mol.Name == "molecule")
-          loadMolecule(mol, molecules);
-      }
-    return true;
-  }
+   }
 
   /*!
     \brief This function load reactions from xml node

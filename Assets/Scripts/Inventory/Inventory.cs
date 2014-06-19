@@ -208,7 +208,7 @@ public class Inventory : DeviceContainer
     UpdateData(devices, new List<Device>(), new List<Device>());
   }
 	
-  void Start() {
+  protected override void Start() {
     base.Start();
     Logger.Log("Inventory::Start()", Logger.Level.DEBUG);
     loadDevices();

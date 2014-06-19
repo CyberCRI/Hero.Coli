@@ -25,7 +25,7 @@ public class ReactionSet : LoadableFromXml
   public string getTag() {return "";}
 
   //implementation of XMLLoadable interface
-  public string getId()
+  public string getStringId()
   {
     return _id;
   }

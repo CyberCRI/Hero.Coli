@@ -5,7 +5,7 @@ public interface LoadableFromXml {
     
   string getTag();
 
-  string getId();
+  string getStringId();
 
   void initializeFromXml(XmlNode node, string id);
 
@@ -16,18 +16,18 @@ public interface LoadableFromXml {
 
 public class LoadableFromXmlImpl : LoadableFromXml {
 
-    private string _id = "";
-    private string _tag = "";
+    protected string _stringId = "";
+    protected string _tag = "";
 
     //implementation of LoadableFromXml interface
-    public string getTag()
+    public virtual string getTag()
     {
         return _tag;
     }
 
-    public string getId()
+    public virtual string getStringId()
     {
-        return _id;
+        return _stringId;
     }
 
     //implementation of LoadableFromXml interface
@@ -37,12 +37,17 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     // that had this tag
     public void initializeFromXml(XmlNode node, string id)
     {
-        _id = id;
+        Logger.Log ("LoadableFromXml::initializeFromXml FAKE CALLED"
+                    , Logger.Level.ERROR);
+        _stringId = id;
     }
 
     public T initFromLoad<T,L>(XmlNode node, L loader)
         where T: new()
     {
+        Logger.Log ("LoadableFromXml::initFromLoad FAKE CALLED"
+                    , Logger.Level.ERROR);
+
         return new T();
     }
 }

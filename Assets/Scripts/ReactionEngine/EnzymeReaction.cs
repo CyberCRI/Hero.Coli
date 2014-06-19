@@ -210,7 +210,7 @@ public class EnzymeReaction : IReaction
   }
 
   /*!
-    \brief this fonction execute all the enzyme reactions
+    \brief this function execute all the enzyme reactions
     \details It's call execEnzymeReaction and substract to the substrate concentration what this function return.
     This function also add this returned value to all the producted molecules.
     \param molecules The list of molecules

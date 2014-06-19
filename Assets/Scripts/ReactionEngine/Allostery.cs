@@ -124,7 +124,7 @@ public class Allostery : IReaction
   */
 
 
-  //FIXME : Create fonction that create prop with this reaction
+  //FIXME : Create function that create prop with this reaction
 
   /*!
     \brief This function create a new Allostery reaction from an AllosteryProperties

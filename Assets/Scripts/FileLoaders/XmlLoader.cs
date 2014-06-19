@@ -21,6 +21,9 @@ public abstract class XmlLoader
 		
 		
 		objectList = loadObjects <T>(objectNodeLists);
+        
+        Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath
+                    , Logger.Level.ERROR);
 
 		return objectList;
 
@@ -32,7 +35,7 @@ public abstract class XmlLoader
 
 public class XmlLoaderImpl : XmlLoader
 {    
-  private string _xmlTag;
+  protected string _xmlTag;
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
       //where T : LoadableFromXml, new()
@@ -51,6 +54,9 @@ public class XmlLoaderImpl : XmlLoader
           }
         }
       }
+
+        Logger.Log ("XmlLoaderImpl::loadObjects with tag "+_xmlTag+" loaded "+Logger.ToString<T>(objectList)
+                    , Logger.Level.ERROR);
 
       if (objectList.Count == 0)
         return null;

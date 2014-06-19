@@ -42,7 +42,7 @@ public abstract class DeviceContainer : MonoBehaviour {
   abstract public void editDevice(Device device);
 
  // Use this for initialization
- protected void Start () {
+ protected virtual void Start () {
    Logger.Log("DeviceContainer::Start()", Logger.Level.TRACE);
    _displayer = safeGetDisplayer();
  }
