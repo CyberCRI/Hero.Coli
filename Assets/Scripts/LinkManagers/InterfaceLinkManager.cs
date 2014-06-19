@@ -22,6 +22,9 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public UIPanel inventoryDevicesSlotsPanel;
 	public UIPanel end;
 
+	public GameObject mediumInfoInstruction;
+	public GameObject queryButton;
+
 	//public Camera _uicamera;
 
 
