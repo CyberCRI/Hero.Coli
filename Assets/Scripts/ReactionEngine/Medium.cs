@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 
 
-public class Medium : XmlLoadableImpl
+public class Medium : LoadableFromXmlImpl
 {
   private LinkedList<IReaction> _reactions;             //!< The list of reactions
   private ArrayList             _molecules;             //!< The list of molecules (Molecule)

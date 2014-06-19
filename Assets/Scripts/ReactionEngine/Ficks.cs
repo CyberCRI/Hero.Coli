@@ -12,7 +12,7 @@ using System.Collections;
 using System.Xml;
 
 
-public class FickProperties : XmlLoadableImpl
+public class FickProperties : LoadableFromXmlImpl
 {
   public int MediumId1 {get; set;}
   public int MediumId2  {get; set;}

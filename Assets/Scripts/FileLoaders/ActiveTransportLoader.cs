@@ -38,35 +38,10 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-public class ActiveTransportLoader : XmlLoader
+public class ActiveTransportLoader : XmlLoaderImpl
 {
-  /*!
-    \brief Load all the properties from an xml document
-    \param The xml document
-    \return The list of ActiveTranportProperties. If the list is empty this function return null
-   */
-  public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
-    //where T : LoadableFromXml, new()
-	{
-		LinkedList<T> objectList = new LinkedList<T>();
-		T t = new T();
-				
-		foreach (XmlNode ATsNodes in objectNodeLists)
-		{
-			foreach (XmlNode ATNode in ATsNodes)
-			{
-				if (ATNode.Name == "ATProp")
-				{
-          t.initFromLoad<T, ActiveTransportLoader>(ATNode, this);
-					objectList.AddLast(t);
-				}
-			}
-		}
-		
-		if (objectList.Count == 0)
-			return null;
-		return objectList;
-	}
+
+  private new string _xmlTag = "ATProp";
 
   /*!
     \brief Load all the properties from multiple files

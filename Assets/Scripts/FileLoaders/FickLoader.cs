@@ -25,8 +25,10 @@ using System.IO;
 using System.Reflection;
 
 
-public class FickLoader : XmlLoader
+public class FickLoader : XmlLoaderImpl
 {
+  private new string _xmlTag = "fickProp";
+
   //! Create from an XML node a FickProperties.
   //! \param node The XML node
   //! \return A FickProperties (descriptor of FickReaction)
@@ -53,34 +55,5 @@ public class FickLoader : XmlLoader
           }
       }
     return props;
-  }
-
-  public override LinkedList<T> loadObjects<T> (XmlNodeList ficksLists)
-	{
-		LinkedList<T> objectList = new LinkedList<T>();
-		T t = new T();
-		FickLoader loader = new FickLoader();
-
-
-		// Reflection Call
-		MethodInfo method = typeof(T).GetMethod("initFromLoad");
-		object[] mParam;
-
-		foreach (XmlNode ficksNodes in ficksLists)
-		{
-			foreach (XmlNode fickNode in ficksNodes)
-			{
-				if (fickNode.Name == "fickProp")
-				{
-					mParam = new object[] {fickNode, loader};
-					t =(T) method.Invoke (t,mParam);
-					objectList.AddLast(t);
-				}
-			}
-		}
-		
-		if (objectList.Count == 0)
-			return null;
-		return objectList;
-	}
+   }
 }

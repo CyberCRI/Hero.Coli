@@ -12,7 +12,7 @@ using System.Collections.Generic;
  \sa ActiveTransport
  \sa ActiveTransportReaction
  */
-public class ActiveTransportProperties : XmlLoadableImpl
+public class ActiveTransportProperties : LoadableFromXmlImpl
 {
   public string name;
   public int mediumId;                    //!< The Medium where the reaction will be executed

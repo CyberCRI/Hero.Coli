@@ -29,8 +29,10 @@ using UnityEngine;
 using System.Reflection;
 
 
-public class MediumLoader : XmlLoader
+public class MediumLoader : XmlLoaderImpl
 {
+
+  private new string _xmlTag = "Medium";
 
   /*!
     \brief This function load the initial energy of the medium and parse the validity of the given string
@@ -129,29 +131,5 @@ public class MediumLoader : XmlLoader
           }
       }
     return medium;
-  }
-
-  public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
-	{
-		LinkedList<T> objectList = new LinkedList<T>();
-		T t = new T();
-		MediumLoader loader = new MediumLoader();
-
-		// Reflection Call
-		MethodInfo method = typeof(T).GetMethod("initFromLoad");
-		object[] mParam;
-
-
-
-		foreach (XmlNode mediumNodes in objectNodeLists)
-		{
-			foreach (XmlNode mediumNode in mediumNodes)
-			{
-				mParam = new object[] {mediumNode,loader};
-				t =(T) method.Invoke(t,mParam);
-				objectList.AddLast(t);
-			}
-		}
-		return objectList;
-	}
+   }
 }

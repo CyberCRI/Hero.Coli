@@ -32,6 +32,8 @@ public abstract class XmlLoader
 
 public class XmlLoaderImpl : XmlLoader
 {    
+  private string _xmlTag;
+
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
       //where T : LoadableFromXml, new()
   {
@@ -42,10 +44,10 @@ public class XmlLoaderImpl : XmlLoader
       {
         foreach (XmlNode node in nodes)
         {
-          if (node.Name == "ATProp")
+          if (node.Name == _xmlTag)
           {
-              t.initFromLoad<T,XmlLoaderImpl>(node, this);
-              objectList.AddLast(t);
+            t.initFromLoad<T,XmlLoaderImpl>(node, this);
+            objectList.AddLast(t);
           }
         }
       }

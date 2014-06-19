@@ -18,7 +18,7 @@ A molecule set must be declared in molecule's files respecting this synthax :
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
-public class MoleculeSet : XmlLoadable
+public class MoleculeSet : LoadableFromXml
 {
   private string                _id;                     //!< The MoleculeSet id (string id).
   public ArrayList              molecules;              //!< The list of Molecule present in the set.
@@ -44,6 +44,12 @@ public class MoleculeSet : XmlLoadable
           FileLoader.loadMolecule(mol, molecules);
       }
     }
+  }
+    
+  public T initFromLoad<T,L>(XmlNode node, L loader)
+      where T: new()
+  {
+      return new T();
   }
     
   public override string ToString()
