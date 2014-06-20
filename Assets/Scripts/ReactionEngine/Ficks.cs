@@ -20,9 +20,9 @@ public class FickProperties : LoadableFromXmlImpl
   public float surface  {get; set;}
   public float energyCost {get; set;}
 
-	public FickProperties initFromLoad(XmlNode node, FickLoader loader)
+	public override void initFromLoad(XmlNode node, object loader)
 	{
-		return loader.loadFickProperties(node);
+    ((FickLoader)loader).loadFickProperties(node, this);
 	}
 }
 

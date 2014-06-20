@@ -41,7 +41,6 @@ public class XmlLoaderImpl : XmlLoader
       //where T : LoadableFromXml, new()
   {
       LinkedList<T> objectList = new LinkedList<T>();
-      T t = new T();
 
       foreach (XmlNode nodes in objectNodeLists)
       {
@@ -49,7 +48,8 @@ public class XmlLoaderImpl : XmlLoader
         {
           if (node.Name == _xmlTag)
           {
-            t.initFromLoad<T,XmlLoaderImpl>(node, this);
+            T t = new T();
+            t.initFromLoad(node, this);
             objectList.AddLast(t);
           }
         }

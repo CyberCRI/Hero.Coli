@@ -29,31 +29,39 @@ public class FickLoader : XmlLoaderImpl
 {
   private new string _xmlTag = "fickProp";
 
+    
   //! Create from an XML node a FickProperties.
   //! \param node The XML node
   //! \return A FickProperties (descriptor of FickReaction)
-  public FickProperties   loadFickProperties(XmlNode node)
+  public FickProperties loadFickProperties(XmlNode node)
   {
     FickProperties props = new FickProperties();
-
-    foreach (XmlNode attr in node)
-      {
-        switch (attr.Name)
-          {
-          case "MediumId1":
-            props.MediumId1 = Convert.ToInt32(attr.InnerText);
-            break;
-          case "MediumId2":
-            props.MediumId2 = Convert.ToInt32(attr.InnerText);
-            break;
-          case "P":
-            props.P = float.Parse(attr.InnerText.Replace(",", "."));
-            break;
-          case "surface":
-            props.surface = float.Parse(attr.InnerText.Replace(",", "."));
-            break;
-          }
-      }
+    loadFickProperties(node, props);
     return props;
-   }
+  }
+
+  //! Create from an XML node a FickProperties.
+  //! \param node The XML node
+  //! \param properties The Fick properties that will be initialized by this loading.
+  public void loadFickProperties(XmlNode node, FickProperties properties)
+  {
+    foreach (XmlNode attr in node)
+    {
+      switch (attr.Name)
+      {
+        case "MediumId1":
+          properties.MediumId1 = Convert.ToInt32(attr.InnerText);
+          break;
+        case "MediumId2":
+          properties.MediumId2 = Convert.ToInt32(attr.InnerText);
+          break;
+        case "P":
+          properties.P = float.Parse(attr.InnerText.Replace(",", "."));
+          break;
+        case "surface":
+          properties.surface = float.Parse(attr.InnerText.Replace(",", "."));
+          break;
+      }
+    }
+  }
 }

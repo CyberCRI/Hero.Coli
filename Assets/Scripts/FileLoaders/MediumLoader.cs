@@ -94,42 +94,53 @@ public class MediumLoader : XmlLoaderImpl
     return true;
   }
 
+    
+    
+  /*!
+  \brief This function create a new Medium based on the information in the given XML Node
+  \param node The XmlNode to load.
+  \return Return the new Medium
+  */
+    public Medium loadMedium(XmlNode node)
+    {
+      Medium medium = new Medium();
+      loadMedium(node, medium);
+      return medium;
+    }
+
   /*!
     \brief This function create a new Medium based on the information in the given XML Node
     \param node The XmlNode to load.
-    \return Return the new Medium
+    \param medium The medium that will be initialized by this loading.
   */
-  public Medium loadMedium(XmlNode node)
+  public void loadMedium(XmlNode node, Medium medium)
   {
-    Medium medium = new Medium();
-
     foreach (XmlNode attr in node)
+    {
+      switch (attr.Name)
       {
-        switch (attr.Name)
-          {
-          case "Id":
-            medium.setId(Convert.ToInt32(attr.InnerText));
-            break;
-          case "Name":
-            medium.setName(attr.InnerText);
-            break;
-          case "Energy":
-            loadEnergy(attr.InnerText, medium);
-            break;
-          case "EnergyProductionRate":
-            loadEnergyProductionRate(attr.InnerText, medium);
-            break;
-          case "MaxEnergy":
-            loadMaxEnergy(attr.InnerText, medium);
-            break;
-          case "ReactionSet":
-            medium.setReactionSet(attr.InnerText);
-            break;
-          case "MoleculeSet":
-            medium.setMoleculeSet(attr.InnerText);
-            break;
-          }
+        case "Id":
+          medium.setId(Convert.ToInt32(attr.InnerText));
+          break;
+        case "Name":
+          medium.setName(attr.InnerText);
+          break;
+        case "Energy":
+          loadEnergy(attr.InnerText, medium);
+          break;
+        case "EnergyProductionRate":
+          loadEnergyProductionRate(attr.InnerText, medium);
+          break;
+        case "MaxEnergy":
+          loadMaxEnergy(attr.InnerText, medium);
+          break;
+        case "ReactionSet":
+          medium.setReactionSet(attr.InnerText);
+          break;
+        case "MoleculeSet":
+          medium.setMoleculeSet(attr.InnerText);
+          break;
       }
-    return medium;
-   }
+    }
+  }
 }

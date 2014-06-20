@@ -130,65 +130,76 @@ public class ActiveTransportLoader : XmlLoaderImpl
       }
     return true;
   }
-
-  /*!
+    
+    /*!
     \brief Load all the attributes of an ActiveTransportProperties.
     \return The ActiveTransportProperties object corresponding to the reaction describe in the node.
     \param node The XmlNode corresponding to the <ATProp> </ATProp> node.
    */
-  public ActiveTransportProperties loadActiveTransportProperties(XmlNode node)
-  {
-    ActiveTransportProperties prop = new ActiveTransportProperties();
+    public ActiveTransportProperties loadActiveTransportProperties(XmlNode node)
+    {
+        ActiveTransportProperties prop = new ActiveTransportProperties();
 
+        loadActiveTransportProperties(node, prop);
+
+        return prop;
+    }
+
+  /*!
+    \brief Load all the attributes of an ActiveTransportProperties.
+    \param node The XmlNode corresponding to the <ATProp> </ATProp> node.
+    \param properties The properties to be initialized by this loading.
+   */
+  public void loadActiveTransportProperties(XmlNode node, ActiveTransportProperties properties)
+  {   
     foreach (XmlNode attr in node)
+    {
+      switch (attr.Name)
       {
-        switch (attr.Name)
-          {
-          case "name":
-            prop.name = checkActiveTransportString(attr.InnerText);
-            break;
-          case "substrate":
-            prop.substrate = checkActiveTransportString(attr.InnerText);
-            break;
-          case "enzyme":
-            prop.enzyme = checkActiveTransportString(attr.InnerText);
-            break;
-          case "Kcat":
-            prop.Kcat = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "effector":
-            prop.effector = checkActiveTransportString(attr.InnerText);
-            break;
-          case "alpha":
-            prop.alpha = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "beta":
-            prop.beta = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "Km":
-            prop.Km = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "Ki":
-            prop.Ki = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "Medium":
-            prop.mediumId = checkActiveTransportInt(attr.InnerText);
-            break;
-          case "EnergyCost":
-            prop.energyCost = checkActiveTransportFloat(attr.InnerText);
-            break;
-          case "MediumSrc":
-            prop.srcMediumId = checkActiveTransportInt(attr.InnerText);
-            break;
-          case "MediumDst":
-            prop.dstMediumId = checkActiveTransportInt(attr.InnerText);
-            break;
-          case "Products":
-            loadActiveTransportReactionProducts(attr, prop);
-            break;
-          }
+        case "name":
+          properties.name = checkActiveTransportString(attr.InnerText);
+          break;
+        case "substrate":
+          properties.substrate = checkActiveTransportString(attr.InnerText);
+          break;
+        case "enzyme":
+          properties.enzyme = checkActiveTransportString(attr.InnerText);
+          break;
+        case "Kcat":
+          properties.Kcat = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "effector":
+          properties.effector = checkActiveTransportString(attr.InnerText);
+          break;
+        case "alpha":
+          properties.alpha = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "beta":
+          properties.beta = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "Km":
+          properties.Km = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "Ki":
+          properties.Ki = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "Medium":
+          properties.mediumId = checkActiveTransportInt(attr.InnerText);
+          break;
+        case "EnergyCost":
+          properties.energyCost = checkActiveTransportFloat(attr.InnerText);
+          break;
+        case "MediumSrc":
+          properties.srcMediumId = checkActiveTransportInt(attr.InnerText);
+          break;
+        case "MediumDst":
+          properties.dstMediumId = checkActiveTransportInt(attr.InnerText);
+          break;
+        case "Products":
+          loadActiveTransportReactionProducts(attr, properties);
+          break;
       }
-    return prop;
+    }
   }
 
 }

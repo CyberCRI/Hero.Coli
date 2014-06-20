@@ -41,10 +41,10 @@ public class ReactionSet : LoadableFromXml
 		loader.loadReactions(node, reactions);
 	}
     
-  public T initFromLoad<T,L>(XmlNode node, L loader)
-      where T: new()
+  public virtual void initFromLoad(XmlNode node, object loader)
   {
-      return new T();
+        Logger.Log ("ReactionSet::initFromLoad NOT IMPLEMENTED (btw loader="+loader+")"
+                    , Logger.Level.ERROR);
   }
 	
   public override string ToString()

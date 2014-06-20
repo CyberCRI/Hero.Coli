@@ -24,7 +24,7 @@ public class MoleculeSet : LoadableFromXmlImpl
   public ArrayList              molecules;              //!< The list of Molecule present in the set.
   public override string getTag() {return "";}
 
-  //public MoleculeSet(){}
+  public MoleculeSet(){}
 
   //implementation of XMLLoadable interface
   public override string getStringId()
@@ -32,7 +32,7 @@ public class MoleculeSet : LoadableFromXmlImpl
     return _stringId;
   }
     
-  public override MoleculeSet initFromLoad<MoleculeSet,L>(XmlNode node, FileLoader loader)
+  public override void initFromLoad(XmlNode node, object loader)
   {
         //public static bool loadMolecule(XmlNode node, ArrayList molecules)
 
@@ -50,7 +50,6 @@ public class MoleculeSet : LoadableFromXmlImpl
         FileLoader.storeMolecule(node, Molecule.eType.OTHER, molecules);
         break;
     }
-    return this;
   }
     
   public override string ToString()

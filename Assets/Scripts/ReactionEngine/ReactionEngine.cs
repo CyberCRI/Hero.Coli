@@ -153,7 +153,7 @@ public class ReactionEngine : MonoBehaviour {
   public static ReactionSet    getReactionSetFromId(string id, LinkedList<ReactionSet> list)
   {
     foreach (ReactionSet reactSet in list)
-      if (reactSet.getId() == id)
+      if (reactSet.getStringId() == id)
         return reactSet;
     return null;
   }
@@ -207,7 +207,7 @@ public class ReactionEngine : MonoBehaviour {
   public static MoleculeSet    getMoleculeSetFromId(string id, LinkedList<MoleculeSet> list)
   {
     foreach (MoleculeSet molSet in list)
-      if (molSet.getId() == id)
+      if (molSet.getStringId() == id)
         return molSet;
     return null;
   }
@@ -236,7 +236,7 @@ public class ReactionEngine : MonoBehaviour {
     foreach (string file in _reactionsFiles)
 		{
 			LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file,"reactions");
-      		LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
+      LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
 		}
     foreach (string file in _moleculesFiles)
 		{

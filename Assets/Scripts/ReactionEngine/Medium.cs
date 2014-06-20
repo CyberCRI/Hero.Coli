@@ -39,7 +39,7 @@ public class Medium : LoadableFromXmlImpl
   public bool             enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
   public void setId(int id) { _numberId = id;}
-  //public int getId() { return _id;}
+  public int getId() { return _numberId;}
   public void setName(string name) { _name = name;}
   public string getName() { return _name;}
   public void setReactions(LinkedList<IReaction> RL) { _reactions = RL;}
@@ -389,9 +389,9 @@ public class Medium : LoadableFromXmlImpl
     }
   }
 
-	public Medium initFromLoad(XmlNode node, MediumLoader loader)
+	public override void initFromLoad(XmlNode node, object loader)
 	{
-		return loader.loadMedium(node);
+    ((MediumLoader)loader).loadMedium(node, this);
 	}
 
 }

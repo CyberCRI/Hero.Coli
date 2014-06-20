@@ -9,7 +9,7 @@ public interface LoadableFromXml {
 
   void initializeFromXml(XmlNode node, string id);
 
-  T initFromLoad<T,L>(XmlNode node, L loader) where T : new();
+  void initFromLoad(XmlNode node, object loader);
   //LoadableFromXml initFromLoad<LoadableFromXml,L>(XmlNode node, L loader);
     
 }
@@ -35,19 +35,16 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //TODO implement default XML loader that takes tag
     // and then applies loader to all xml node elements
     // that had this tag
-    public void initializeFromXml(XmlNode node, string id)
+    public virtual void initializeFromXml(XmlNode node, string id)
     {
-        Logger.Log ("LoadableFromXml::initializeFromXml FAKE CALLED"
+        Logger.Log ("LoadableFromXmlImpl::initializeFromXml NOT IMPLEMENTED"
                     , Logger.Level.ERROR);
         _stringId = id;
     }
 
-    public T initFromLoad<T,L>(XmlNode node, L loader)
-        where T: new()
+    public virtual void initFromLoad(XmlNode node, object loader)
     {
-        Logger.Log ("LoadableFromXml::initFromLoad FAKE CALLED"
+        Logger.Log ("LoadableFromXmlImpl::initFromLoad NOT IMPLEMENTED"
                     , Logger.Level.ERROR);
-
-        return new T();
     }
 }

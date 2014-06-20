@@ -28,6 +28,11 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   public float Ki;                    //!< Affinity coefficient between effector and enzyme
   public LinkedList<Product> products;  //!< The list of the products
   public float energyCost;              //!< Cost in energy for one reaction
+
+  public override void initFromLoad(XmlNode node, object loader)
+  {
+        ((ActiveTransportLoader)loader).loadActiveTransportProperties(node, this);
+  }
 }
 
 /*!
@@ -106,9 +111,4 @@ public class ActiveTransport {
     LinkedList<ActiveTransportProperties> properties = _loader.getActiveTransportPropertiesFromFiles(filesPaths);
     loadActiveTransportReactionsFromProperties(properties, mediums);
   }
-
-	public ActiveTransportProperties initFromLoad(XmlNode node, ActiveTransportLoader loader)
-	{
-		return loader.loadActiveTransportProperties(node);
-	}
 }
