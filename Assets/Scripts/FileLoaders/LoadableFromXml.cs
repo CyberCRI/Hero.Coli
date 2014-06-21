@@ -37,14 +37,22 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     // that had this tag
     public virtual void initializeFromXml(XmlNode node, string id)
     {
-        Logger.Log ("LoadableFromXmlImpl::initializeFromXml NOT IMPLEMENTED"
+        Logger.Log ("LoadableFromXmlImpl::initializeFromXml NOT IMPLEMENTED "+ToString()
                     , Logger.Level.ERROR);
         _stringId = id;
     }
 
     public virtual void initFromLoad(XmlNode node, object loader)
     {
-        Logger.Log ("LoadableFromXmlImpl::initFromLoad NOT IMPLEMENTED"
+        Logger.Log ("LoadableFromXmlImpl::initFromLoad NOT IMPLEMENTED "+ToString ()
                     , Logger.Level.ERROR);
     }
+
+  public override string ToString ()
+  {
+    return string.Format ("[LoadableFromXmlImpl "
+                              +"id:"+_stringId+";"
+                              +"tag:"+_tag
+                              +"]");
+  }
 }

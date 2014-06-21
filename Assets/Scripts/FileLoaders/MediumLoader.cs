@@ -32,7 +32,13 @@ using System.Reflection;
 public class MediumLoader : XmlLoaderImpl
 {
 
-  private new string _xmlTag = "Medium";
+  public override string xmlTag
+  {
+      get
+      {
+          return "Medium";
+      }
+  }
 
   /*!
     \brief This function load the initial energy of the medium and parse the validity of the given string
@@ -115,6 +121,8 @@ public class MediumLoader : XmlLoaderImpl
   */
   public void loadMedium(XmlNode node, Medium medium)
   {
+        Logger.Log("MediumLoader.loadMedium("+node+", "+medium+")", Logger.Level.ERROR);
+
     foreach (XmlNode attr in node)
     {
       switch (attr.Name)
@@ -142,5 +150,8 @@ public class MediumLoader : XmlLoaderImpl
           break;
       }
     }
+
+        Logger.Log("MediumLoader.loadMedium(node, medium) loaded this="+this, Logger.Level.ERROR);
+
   }
 }

@@ -40,8 +40,14 @@ using System.Reflection;
 
 public class ActiveTransportLoader : XmlLoaderImpl
 {
-
-  private new string _xmlTag = "ATProp";
+    
+  public override string xmlTag
+  {
+    get
+    {
+        return "ATProp";
+    }
+  }
 
   /*!
     \brief Load all the properties from multiple files
@@ -152,6 +158,8 @@ public class ActiveTransportLoader : XmlLoaderImpl
    */
   public void loadActiveTransportProperties(XmlNode node, ActiveTransportProperties properties)
   {   
+        Logger.Log("ActiveTransportLoader.loadActiveTransportProperties("+node+", "+properties+") will load", Logger.Level.ERROR);
+
     foreach (XmlNode attr in node)
     {
       switch (attr.Name)
@@ -200,6 +208,9 @@ public class ActiveTransportLoader : XmlLoaderImpl
           break;
       }
     }
+
+        Logger.Log("ActiveTransportLoader.loadActiveTransportProperties(node, properties) loaded this="+this, Logger.Level.ERROR);
+
   }
 
 }

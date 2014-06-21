@@ -31,37 +31,65 @@ public class MoleculeSet : LoadableFromXmlImpl
   {
     return _stringId;
   }
-    
+
+    public override void initializeFromXml(XmlNode node, string id)
+    {
+        Logger.Log ("MoleculeSet::initializeFromXml"
+                    , Logger.Level.ERROR);
+        _stringId = id;
+        initFromLoad(node, null);
+    }
+
+
+  //loader is not used here
   public override void initFromLoad(XmlNode node, object loader)
   {
         //public static bool loadMolecule(XmlNode node, ArrayList molecules)
 
-    molecules = new ArrayList();
+        Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(node)+", "+loader+")", Logger.Level.ERROR);
 
-    switch (node.Attributes["type"].Value)
-    {
-      case "enzyme":
-        FileLoader.storeMolecule(node, Molecule.eType.ENZYME, molecules);
-        break;
-      case "transcription_factor":
-        FileLoader.storeMolecule(node, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
-        break;
-      case "other":
-        FileLoader.storeMolecule(node, Molecule.eType.OTHER, molecules);
-        break;
-    }
+        if(null != node.Attributes["type"])
+        {
+
+          molecules = new ArrayList();
+
+          switch (node.Attributes["type"].Value)
+          {
+            case "enzyme":
+              FileLoader.storeMolecule(node, Molecule.eType.ENZYME, molecules);
+              break;
+            case "transcription_factor":
+              FileLoader.storeMolecule(node, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
+              break;
+            case "other":
+              FileLoader.storeMolecule(node, Molecule.eType.OTHER, molecules);
+              break;
+          }
+
+              Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished"
+                          +" with molecules="+Logger.ToString<Molecule>("Molecule", molecules)
+                          , Logger.Level.ERROR);
+        }
+        else
+        {
+            Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished early (no type)"
+                        , Logger.Level.ERROR);
+        }
   }
     
   public override string ToString()
   {
     string moleculeString = "";
-    foreach(object molecule in molecules)
+    if(molecules != null)
     {
-      if(!string.IsNullOrEmpty(moleculeString))
+      foreach(object molecule in molecules)
       {
-        moleculeString += ", ";
+        if(!string.IsNullOrEmpty(moleculeString))
+        {
+          moleculeString += ", ";
+        }
+        moleculeString += ((Molecule)molecule).ToString();
       }
-      moleculeString += ((Molecule)molecule).ToString();
     }
     moleculeString = "Molecules["+moleculeString+"]";
     return "MoleculeSet[id:"+_stringId+", molecules="+moleculeString+"]";

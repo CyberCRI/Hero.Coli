@@ -18,7 +18,9 @@ public abstract class XmlLoader
 		XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
-		
+        
+        Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" will load from "+filePath
+                    , Logger.Level.ERROR);
 		
 		objectList = loadObjects <T>(objectNodeLists);
         
@@ -33,20 +35,29 @@ public abstract class XmlLoader
 		where T : LoadableFromXml, new();
 }
 
-public class XmlLoaderImpl : XmlLoader
-{    
-  protected string _xmlTag;
+public abstract class XmlLoaderImpl : XmlLoader
+{ 
+  //property
+  public abstract string xmlTag
+  {
+    get;
+  }
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
       //where T : LoadableFromXml, new()
   {
+        Logger.Log ("XmlLoaderImpl::loadObjects with tag="+xmlTag+" will load"
+                    , Logger.Level.ERROR);
+
       LinkedList<T> objectList = new LinkedList<T>();
 
       foreach (XmlNode nodes in objectNodeLists)
       {
+        SpecificLog(nodes);
         foreach (XmlNode node in nodes)
         {
-          if (node.Name == _xmlTag)
+          SpecificLog(node, 1);
+          if (node.Name == xmlTag)
           {
             T t = new T();
             t.initFromLoad(node, this);
@@ -55,13 +66,23 @@ public class XmlLoaderImpl : XmlLoader
         }
       }
 
-        Logger.Log ("XmlLoaderImpl::loadObjects with tag "+_xmlTag+" loaded "+Logger.ToString<T>(objectList)
+        Logger.Log ("XmlLoaderImpl::loadObjects with tag "+xmlTag+" loaded "+Logger.ToString<T>(objectList)
                     , Logger.Level.ERROR);
 
       if (objectList.Count == 0)
         return null;
       return objectList;
   }
+
+    //TODO remove (debug function)
+    private void SpecificLog(XmlNode node, int level = 0)
+    {
+        if(xmlTag == "molecules")
+        {
+            string tabulation = new string(' ', 4*level);
+            Logger.Log(tabulation+ "XmlLoaderImpl::SpecificLog node="+node, Logger.Level.ERROR);
+        }
+    }
 }
 
 

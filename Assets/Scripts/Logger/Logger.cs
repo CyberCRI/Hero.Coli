@@ -131,6 +131,21 @@ public class Logger : MonoBehaviour {
     }
     return beginString + middleString + endString;
   }
+
+  public static string ToString(System.Xml.XmlNode node, int indentation = 0)
+  {
+    using (var sw = new System.IO.StringWriter())
+    {
+      using (var xw = new System.Xml.XmlTextWriter(sw))
+      {
+        xw.Formatting = System.Xml.Formatting.Indented;
+        xw.Indentation = indentation;
+        node.WriteContentTo(xw);
+      }
+      return sw.ToString();
+    }
+  }
+
 	
   private static void pushMessage(string msg) {
     _singleton._messages.Add(msg);

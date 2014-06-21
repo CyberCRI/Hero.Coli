@@ -27,8 +27,14 @@ using System.Reflection;
 
 public class FickLoader : XmlLoaderImpl
 {
-  private new string _xmlTag = "fickProp";
-
+        
+  public override string xmlTag
+  {
+    get
+    {
+      return "fickProp";
+    }
+  }
     
   //! Create from an XML node a FickProperties.
   //! \param node The XML node
@@ -45,6 +51,9 @@ public class FickLoader : XmlLoaderImpl
   //! \param properties The Fick properties that will be initialized by this loading.
   public void loadFickProperties(XmlNode node, FickProperties properties)
   {
+
+        Logger.Log("FickLoader.loadActiveTransportProperties("+node+", "+properties+") will load", Logger.Level.ERROR);
+
     foreach (XmlNode attr in node)
     {
       switch (attr.Name)
@@ -63,5 +72,7 @@ public class FickLoader : XmlLoaderImpl
           break;
       }
     }
+
+        Logger.Log("FickLoader.loadActiveTransportProperties(node, properties) loaded this="+this, Logger.Level.ERROR);
   }
 }
