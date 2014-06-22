@@ -22,6 +22,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public UIPanel inventoryDevicesSlotsPanel;
 	public UIPanel end;
 
+	public GameObject tutorialArrow;
+
 	//public Camera _uicamera;
 
 
@@ -51,8 +53,6 @@ public class InterfaceLinkManager : MonoBehaviour {
 		gameStateController.introPanel = GameObject.Find ("Introduction1").GetComponent<UIPanel>();
 		gameStateController.fadeSprite = fade;
 		gameStateController.endPanel = end;
-    gameStateController.gameTimeCounter = GameObject.Find ("TimeCounter").GetComponent<TimeCounter>();
-    gameStateController.endPanelMessage = end.gameObject.GetComponent<EndMessage>();
 
 		//Object with GameStateController 
 		GameObject.Find ("OK1Button").GetComponent<ContinueButton>().gameStateController = gameStateController;
@@ -105,6 +105,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 		//DeviceInventory
 		Inventory.get().scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+		Inventory.get ().scriptAnimator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
 		
 		//BiobrickInventory
 		

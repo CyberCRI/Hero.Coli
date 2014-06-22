@@ -27,8 +27,6 @@ public class GameStateController : MonoBehaviour {
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
   public UIPanel  introPanel, endPanel;
-  public EndMessage endPanelMessage;
-  public TimeCounter gameTimeCounter;
   public bool dePauseForbidden;
 
 	void Awake() {
@@ -74,7 +72,6 @@ public class GameStateController : MonoBehaviour {
 				gUITransitioner.Pause(true);
 				dePauseForbidden = true;
 				endPanel.gameObject.SetActive(true);
-        endPanelMessage.setTimeInMessage(gameTimeCounter.getFormattedTime());
         break;		
 		}
 	}

@@ -23,6 +23,7 @@ public class Inventory : DeviceContainer
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
+		_deviceAdded = false;
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +39,12 @@ public class Inventory : DeviceContainer
   private string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.txt";
 
   private string _genericDeviceNamePrefix = "device";
+
+	private bool _deviceAdded;
+
+	public bool getDeviceAdded() {return _deviceAdded;}
+	public void setDeviceAdded(bool b) {_deviceAdded = b;}
+
 
   private static string[] proteinsIn = new string[]{
     "Collagen",
@@ -122,6 +129,7 @@ public class Inventory : DeviceContainer
 
 		if (scriptAnimator.isPlaying ==false)
 		{
+			_deviceAdded = true;
 			scriptAnimator.Play();
 		}
   }
@@ -158,8 +166,8 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
-      DeviceSaver dSaver = new DeviceSaver();
-      dSaver.saveDevicesToFile(_devices, _saveFilePath);
+      //DeviceSaver dSaver = new DeviceSaver();
+      //dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
