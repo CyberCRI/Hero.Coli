@@ -394,4 +394,18 @@ public class Medium : LoadableFromXmlImpl
     ((MediumLoader)loader).loadMedium(node, this);
 	}
 
+    public override string ToString ()
+  {
+    
+        string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
+        string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
+
+    return string.Format ("[Medium "
+                              +"name:"+_name
+                              +"; id:"+_numberId
+                              +"; molecules:"+moleculeString
+                              +"; reactions:"+reactionString
+                              +"]");
+  }
+
 }

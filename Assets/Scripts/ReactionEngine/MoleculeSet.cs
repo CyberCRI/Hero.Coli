@@ -35,46 +35,55 @@ public class MoleculeSet : LoadableFromXmlImpl
     public override void initializeFromXml(XmlNode node, string id)
     {
         Logger.Log ("MoleculeSet::initializeFromXml"
-                    , Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
         _stringId = id;
         initFromLoad(node, null);
     }
 
 
   //loader is not used here
-  public override void initFromLoad(XmlNode node, object loader)
+  public override void initFromLoad(XmlNode setNode, object loader)
   {
-        //public static bool loadMolecule(XmlNode node, ArrayList molecules)
+    //public static bool loadMolecule(XmlNode node, ArrayList molecules)
 
-        Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(node)+", "+loader+")", Logger.Level.ERROR);
+        Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(setNode)+", "+loader+")", Logger.Level.DEBUG);
 
-        if(null != node.Attributes["type"])
+    molecules = new ArrayList();
+
+    foreach (XmlNode moleculeNode in setNode)
+    {
+      if (moleculeNode.Name == "molecule")
+      {
+        if(null != moleculeNode.Attributes["type"])
         {
-
-          molecules = new ArrayList();
-
-          switch (node.Attributes["type"].Value)
+          switch (moleculeNode.Attributes["type"].Value)
           {
             case "enzyme":
-              FileLoader.storeMolecule(node, Molecule.eType.ENZYME, molecules);
+              FileLoader.storeMolecule(moleculeNode, Molecule.eType.ENZYME, molecules);
               break;
             case "transcription_factor":
-              FileLoader.storeMolecule(node, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
+              FileLoader.storeMolecule(moleculeNode, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
               break;
             case "other":
-              FileLoader.storeMolecule(node, Molecule.eType.OTHER, molecules);
+              FileLoader.storeMolecule(moleculeNode, Molecule.eType.OTHER, molecules);
               break;
           }
 
               Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished"
                           +" with molecules="+Logger.ToString<Molecule>("Molecule", molecules)
-                          , Logger.Level.ERROR);
+                          , Logger.Level.DEBUG);
         }
         else
         {
             Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished early (no type)"
                         , Logger.Level.ERROR);
         }
+      }
+      else
+      {
+            Logger.Log("MoleculeSet.initFromLoad bad name "+moleculeNode.Name, Logger.Level.ERROR);
+      }
+    }
   }
     
   public override string ToString()

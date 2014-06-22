@@ -240,14 +240,14 @@ public class ReactionEngine : MonoBehaviour {
 		}
     foreach (string file in _moleculesFiles)
 		{
-      Logger.Log("ReactionEngine::Awake() loading molecules from file", Logger.Level.ERROR);
+      Logger.Log("ReactionEngine::Awake() loading molecules from file", Logger.Level.DEBUG);
 
 			LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file,"molecules");
 			LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 
             Logger.Log("ReactionEngine::Awake() loading molecules from file done"
                        +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
-                       , Logger.Level.ERROR);
+                       , Logger.Level.DEBUG);
 		}
     MediumLoader mediumLoader = new MediumLoader();
     foreach (string file in _mediumsFiles)

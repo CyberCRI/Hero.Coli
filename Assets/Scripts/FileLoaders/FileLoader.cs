@@ -44,6 +44,13 @@ public class FileLoader : XmlLoader
    */
   public static bool storeMolecule(XmlNode node, Molecule.eType type, ArrayList molecules)
   {
+
+        Logger.Log ("FileLoader.storeMolecule("+Logger.ToString(node)
+                    +", "+type
+                    +", "+Logger.ToString<Molecule>("Molecule", molecules)
+                    +")"
+                    , Logger.Level.DEBUG);
+
     Molecule mol = new Molecule();
 
     mol.setType(type);
@@ -69,6 +76,13 @@ public class FileLoader : XmlLoader
           }
      }
     molecules.Add(mol);
+        
+        Logger.Log ("FileLoader.storeMolecule(node"
+                    +", type"
+                    +", "+Logger.ToString<Molecule>("Molecule", molecules)
+                    +") loaded "+mol
+                    , Logger.Level.DEBUG);
+
     return true;
    }
 

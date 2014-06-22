@@ -20,12 +20,12 @@ public abstract class XmlLoader
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" will load from "+filePath
-                    , Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
 		
 		objectList = loadObjects <T>(objectNodeLists);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath
-                    , Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
 
 		return objectList;
 
@@ -47,7 +47,7 @@ public abstract class XmlLoaderImpl : XmlLoader
       //where T : LoadableFromXml, new()
   {
         Logger.Log ("XmlLoaderImpl::loadObjects with tag="+xmlTag+" will load"
-                    , Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
 
       LinkedList<T> objectList = new LinkedList<T>();
 
@@ -67,7 +67,7 @@ public abstract class XmlLoaderImpl : XmlLoader
       }
 
         Logger.Log ("XmlLoaderImpl::loadObjects with tag "+xmlTag+" loaded "+Logger.ToString<T>(objectList)
-                    , Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
 
       if (objectList.Count == 0)
         return null;
@@ -80,7 +80,7 @@ public abstract class XmlLoaderImpl : XmlLoader
         if(xmlTag == "molecules")
         {
             string tabulation = new string(' ', 4*level);
-            Logger.Log(tabulation+ "XmlLoaderImpl::SpecificLog node="+node, Logger.Level.ERROR);
+            Logger.Log(tabulation+ "XmlLoaderImpl::SpecificLog node="+node, Logger.Level.DEBUG);
         }
     }
 }

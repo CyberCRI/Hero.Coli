@@ -52,7 +52,7 @@ public class FickLoader : XmlLoaderImpl
   public void loadFickProperties(XmlNode node, FickProperties properties)
   {
 
-        Logger.Log("FickLoader.loadActiveTransportProperties("+node+", "+properties+") will load", Logger.Level.ERROR);
+        Logger.Log("FickLoader.loadActiveTransportProperties("+node+", "+properties+") will load", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -73,6 +73,6 @@ public class FickLoader : XmlLoaderImpl
       }
     }
 
-        Logger.Log("FickLoader.loadActiveTransportProperties(node, properties) loaded this="+this, Logger.Level.ERROR);
+        Logger.Log("FickLoader.loadActiveTransportProperties(node, properties) loaded this="+this, Logger.Level.DEBUG);
   }
 }

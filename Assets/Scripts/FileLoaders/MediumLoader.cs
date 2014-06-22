@@ -121,7 +121,7 @@ public class MediumLoader : XmlLoaderImpl
   */
   public void loadMedium(XmlNode node, Medium medium)
   {
-        Logger.Log("MediumLoader.loadMedium("+node+", "+medium+")", Logger.Level.ERROR);
+        Logger.Log("MediumLoader.loadMedium("+Logger.ToString(node)+", "+medium+")", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -151,7 +151,7 @@ public class MediumLoader : XmlLoaderImpl
       }
     }
 
-        Logger.Log("MediumLoader.loadMedium(node, medium) loaded this="+this, Logger.Level.ERROR);
+        Logger.Log("MediumLoader.loadMedium(node, medium) loaded medium="+medium, Logger.Level.DEBUG);
 
   }
 }
