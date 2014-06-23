@@ -22,8 +22,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public UIPanel inventoryDevicesSlotsPanel;
 	public UIPanel end;
 
-	public GameObject mediumInfoInstruction;
-	public GameObject queryButton;
+	public GameObject tutorialArrow;
 
 	//public Camera _uicamera;
 
@@ -106,6 +105,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 		//DeviceInventory
 		Inventory.get().scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+		Inventory.get ().scriptAnimator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
 		
 		//BiobrickInventory
 		
