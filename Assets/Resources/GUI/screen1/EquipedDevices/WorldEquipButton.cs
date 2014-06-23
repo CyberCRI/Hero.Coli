@@ -12,7 +12,7 @@ public class WorldEquipButton : MonoBehaviour {
       GUITransitioner.get().SwitchScreen(GUITransitioner.GameScreen.screen1, GUITransitioner.GameScreen.screen2);
     }
 
-		/*if(scriptAnimator.isPlaying == true)
+		/*if(scriptAnimator.isPlaying)
 		{
 			scriptAnimator.reset();
 		}*/

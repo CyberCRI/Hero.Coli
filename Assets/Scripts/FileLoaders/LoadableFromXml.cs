@@ -7,11 +7,14 @@ public interface LoadableFromXml {
 
   string getStringId();
 
+
+  //TODO merge two approaches
+
+  //MoleculeSet, ReactionSet, FileLoader
   void initializeFromXml(XmlNode node, string id);
 
+  //ActiveTransportLoader, FickLoader, MediumLoader, XmlLoaderImpl
   void initFromLoad(XmlNode node, object loader);
-  //LoadableFromXml initFromLoad<LoadableFromXml,L>(XmlNode node, L loader);
-    
 }
 
 public class LoadableFromXmlImpl : LoadableFromXml {

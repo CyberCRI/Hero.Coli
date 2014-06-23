@@ -26,7 +26,6 @@ using UnityEngine;
  *  \sa MoleculeSet
  *  \sa Medium
  */
-using System.Reflection;
 
 
 public class MediumLoader : XmlLoaderImpl

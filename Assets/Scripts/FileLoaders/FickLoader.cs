@@ -22,7 +22,6 @@ using System.IO;
  *  \author    Pierre COLLET
  *  \mail      pierre.collet91@gmail.com
  */
-using System.Reflection;
 
 
 public class FickLoader : XmlLoaderImpl

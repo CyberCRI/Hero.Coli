@@ -21,8 +21,8 @@ A molecule set must be declared in molecule's files respecting this synthax :
 public class MoleculeSet : LoadableFromXmlImpl
 {
   private new string            _stringId;                     //!< The MoleculeSet id (string id).
-  public ArrayList              molecules;              //!< The list of Molecule present in the set.
-  public override string getTag() {return "";}
+  public ArrayList              molecules;                     //!< The list of Molecule present in the set.
+  public override string getTag() {return "molecule";}
 
   public MoleculeSet(){}
 
@@ -52,7 +52,7 @@ public class MoleculeSet : LoadableFromXmlImpl
 
     foreach (XmlNode moleculeNode in setNode)
     {
-      if (moleculeNode.Name == "molecule")
+      if (moleculeNode.Name == getTag ())
       {
         if(null != moleculeNode.Attributes["type"])
         {

@@ -4,16 +4,15 @@ using System.Collections;
 
 /*
  * pointer animation for the tutorial
-
  * */
 public class ArrowAnimation : MonoBehaviour {
 	
-	bool toSwitch = false; // say if the animation have to be launch  next update()
+	bool toSwitch = false; // say if the animation has to be launched on next update()
 	GameObject clone1;
 
 	//variable used for the animation
-	float time =0;									//the actual state of the animation
-	float step =0.5f;
+	float time = 0;									//the actual state of the animation
+	float step = 0.5f;
 	float duration = 10;							//the duration of the animation
 	bool isGoingUp = true;							//the direction of the animation (up or down)
 	
@@ -102,7 +101,7 @@ public class ArrowAnimation : MonoBehaviour {
 			gameObject.transform.localPosition = new Vector3(pos.x,pos.y+(step),pos.z);
 
 			if(time < duration)
-				time+=step;
+				time += step;
 			else
 				isGoingUp = !isGoingUp;
 		}
@@ -112,7 +111,7 @@ public class ArrowAnimation : MonoBehaviour {
 
 
 			if(time > 0)
-				time-=step;
+				time -= step;
 			else
 			{
 				isGoingUp = !isGoingUp;

@@ -35,7 +35,6 @@ using System.Collections.Generic;
   \sa EnzymeReaction
   \author Pierre COLLET
  */
-using System.Reflection;
 
 
 public class ActiveTransportLoader : XmlLoaderImpl
