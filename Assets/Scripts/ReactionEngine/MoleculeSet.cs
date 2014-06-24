@@ -35,7 +35,7 @@ public class MoleculeSet : LoadableFromXmlImpl
     public override void initializeFromXml(XmlNode node, string id)
     {
         Logger.Log ("MoleculeSet::initializeFromXml"
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.INFO);
         _stringId = id;
         initFromLoad(node, null);
     }
@@ -46,43 +46,35 @@ public class MoleculeSet : LoadableFromXmlImpl
   {
     //public static bool loadMolecule(XmlNode node, ArrayList molecules)
 
-        Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(setNode)+", "+loader+")", Logger.Level.DEBUG);
+    Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(setNode)+", "+loader+")", Logger.Level.WARN);
+                
+    string typeString1 = "";
+      if(null != setNode.Attributes["type"])
+    {
+      typeString1 = "type="+setNode.Attributes["type"].Value;
+    }
+    else
+    {
+      typeString1 = "type=null";
+    }
+    Logger.Log ("MoleculeSet.initFromLoad name="+setNode.Name+", "+typeString1, Logger.Level.ERROR);
 
     molecules = new ArrayList();
 
     foreach (XmlNode moleculeNode in setNode)
-    {
-      if (moleculeNode.Name == getTag ())
-      {
+    {            
+      string typeString = "";
         if(null != moleculeNode.Attributes["type"])
-        {
-          switch (moleculeNode.Attributes["type"].Value)
-          {
-            case "enzyme":
-              FileLoader.storeMolecule(moleculeNode, Molecule.eType.ENZYME, molecules);
-              break;
-            case "transcription_factor":
-              FileLoader.storeMolecule(moleculeNode, Molecule.eType.TRANSCRIPTION_FACTOR, molecules);
-              break;
-            case "other":
-              FileLoader.storeMolecule(moleculeNode, Molecule.eType.OTHER, molecules);
-              break;
-          }
-
-              Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished"
-                          +" with molecules="+Logger.ToString<Molecule>("Molecule", molecules)
-                          , Logger.Level.DEBUG);
-        }
-        else
-        {
-            Logger.Log ("MoleculeSet.initFromLoad(node, loader) finished early (no type)"
-                        , Logger.Level.ERROR);
-        }
+      {
+        typeString = "type="+moleculeNode.Attributes["type"].Value;
       }
       else
       {
-            Logger.Log("MoleculeSet.initFromLoad bad name "+moleculeNode.Name, Logger.Level.ERROR);
+        typeString = "type=null";
       }
+      Logger.Log ("MoleculeSet.initFromLoad inner name="+moleculeNode.Name+", inner "+typeString, Logger.Level.ERROR);
+
+      FileLoader.storeMolecule(moleculeNode, molecules);        
     }
   }
     

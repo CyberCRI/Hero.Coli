@@ -42,46 +42,35 @@ public class FileLoader : XmlLoader
     \param molecules The array of molecules where to add new molecules
     \return Return always true
    */
-  public static bool storeMolecule(XmlNode node, Molecule.eType type, ArrayList molecules)
+  public static bool storeMolecule(XmlNode node, ArrayList molecules)
   {
 
         Logger.Log ("FileLoader.storeMolecule("+Logger.ToString(node)
-                    +", "+type
                     +", "+Logger.ToString<Molecule>("Molecule", molecules)
                     +")"
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.WARN);
+
+        string typeString = "";
+        if(null != node.Attributes["type"])
+        {
+            typeString = "type="+node.Attributes["type"].Value;
+        }
+        else
+        {
+            typeString = "type=null";
+        }
+        Logger.Log ("FileLoader.storeMolecule name="+node.Name+", "+typeString, Logger.Level.ERROR);
 
     Molecule mol = new Molecule();
 
-    mol.setType(type);
-    foreach (XmlNode attr in node)
-      {
-        switch (attr.Name)
-          {
-          case "name":
-            mol.setName(attr.InnerText);
-            break;
-          case "description":
-            mol.setDescription(attr.InnerText);
-            break;
-          case "concentration":
-            mol.setConcentration(float.Parse(attr.InnerText.Replace(",", ".")));
-            break;
-          case "degradationRate":
-            mol.setDegradationRate(float.Parse(attr.InnerText.Replace(",", ".")));
-            break;
-          case "FickFactor":
-            mol.setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
-            break;
-          }
-     }
+    mol.initFromLoad(node, null);
+
     molecules.Add(mol);
         
         Logger.Log ("FileLoader.storeMolecule(node"
-                    +", type"
                     +", "+Logger.ToString<Molecule>("Molecule", molecules)
                     +") loaded "+mol
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.WARN);
 
     return true;
    }

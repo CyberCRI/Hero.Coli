@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Xml;
 
 
 /*!
@@ -29,7 +30,7 @@ Molecules wich are declared in files should respect this synthax :
    \author Pierre COLLET
    \mail pierre.collet91@gmail.com
  */
-public class Molecule
+public class Molecule : LoadableFromXmlImpl
 {
   //! Define Molecule type
   public enum eType
@@ -49,6 +50,8 @@ public class Molecule
   private float _fickFactor;                      //!< The FickFactor is a coefficient for FickReaction
   private float _negligibilityThreshold = 1E-10f; //!< The threshold below which the concentration is rounded down to 0.
 	
+  public override string getTag() { return "molecule"; }
+
   private bool _debug = false;
 	
   //! Default constructor
@@ -131,6 +134,95 @@ public class Molecule
   public void updateConcentration() {
 	if(_debug) Logger.Log("Molecule::updateConcentration() "+_name+" old="+_concentration+", new="+_newConcentration, Logger.Level.TRACE);
 	_concentration = _newConcentration;
+  }
+
+  public override void initFromLoad(XmlNode moleculeNode, object loader)
+  {
+        Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.WARN);
+
+        
+        string typeString = "";
+        if(null != moleculeNode.Attributes["type"])
+        {
+            typeString = "type="+moleculeNode.Attributes["type"].Value;
+        }
+        else
+        {
+            typeString = "type=null";
+        }
+        Logger.Log ("Molecule.initFromLoad name="+moleculeNode.Name+", "+typeString+", tag="+getTag(), Logger.Level.ERROR);
+
+
+    if (moleculeNode.Name == getTag())
+    {
+      if(null != moleculeNode.Attributes["type"])
+      {
+        Molecule.eType type = Molecule.eType.OTHER;
+
+        switch (moleculeNode.Attributes["type"].Value)
+        {
+          case "enzyme":
+            {
+              type = Molecule.eType.ENZYME;
+              break;
+            }
+          case "transcription_factor":
+            {
+              type = Molecule.eType.TRANSCRIPTION_FACTOR;
+              break;
+            }
+          case "other":
+            {
+              type = Molecule.eType.OTHER;
+              break;
+            }
+          default:
+            {
+              Logger.Log ("Molecule::initFromLoad unknown molecule type "+moleculeNode.Attributes["type"].Value
+                          ,Logger.Level.WARN);
+              break;
+            }
+        }
+
+        setType(type);
+
+        foreach (XmlNode attr in moleculeNode)
+        {
+          switch (attr.Name)
+          {
+            case "name":
+              setName(attr.InnerText);
+              break;
+            case "description":
+              setDescription(attr.InnerText);
+              break;
+            case "concentration":
+              setConcentration(float.Parse(attr.InnerText.Replace(",", ".")));
+              break;
+            case "degradationRate":
+              setDegradationRate(float.Parse(attr.InnerText.Replace(",", ".")));
+              break;
+            case "FickFactor":
+              setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+              break;
+          }
+        }
+
+                Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished"
+                    +" with molecule="+this
+                    , Logger.Level.WARN);
+      }
+      else
+      {
+                Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished early"
+                            +"- no type in "+Logger.ToString(moleculeNode)
+                            , Logger.Level.ERROR);
+      }
+    }
+    else
+    {
+            Logger.Log("Molecule.initFromLoad bad name in "+Logger.ToString(moleculeNode), Logger.Level.ERROR);
+    }
   }
 	
   public override string ToString() {
@@ -423,5 +515,5 @@ public class Degradation : IReaction
       mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed);
     else
       mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
-  }
+   }
 }

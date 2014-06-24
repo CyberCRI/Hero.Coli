@@ -2,7 +2,28 @@ using System;
 using System.Xml;
 
 public interface LoadableFromXml {
-    
+
+  //LoadableFromXml(XmlNode node, string id, object loader);
+
+    /* TODO
+
+  //getTag
+  //property
+  abstract string xmlTag
+  {
+    get;
+  }
+
+  //getStringId
+  //property
+  public abstract string stringId
+  {
+      get;
+  }
+  
+  */
+
+
   string getTag();
 
   string getStringId();
