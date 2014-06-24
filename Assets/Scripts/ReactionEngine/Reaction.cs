@@ -138,20 +138,7 @@ public class Molecule : LoadableFromXmlImpl
 
   public override void initFromLoad(XmlNode moleculeNode, object loader)
   {
-        Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.WARN);
-
-        
-        string typeString = "";
-        if(null != moleculeNode.Attributes["type"])
-        {
-            typeString = "type="+moleculeNode.Attributes["type"].Value;
-        }
-        else
-        {
-            typeString = "type=null";
-        }
-        Logger.Log ("Molecule.initFromLoad name="+moleculeNode.Name+", "+typeString+", tag="+getTag(), Logger.Level.ERROR);
-
+    Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.INFO);
 
     if (moleculeNode.Name == getTag())
     {
@@ -210,18 +197,18 @@ public class Molecule : LoadableFromXmlImpl
 
                 Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished"
                     +" with molecule="+this
-                    , Logger.Level.WARN);
+                    , Logger.Level.DEBUG);
       }
       else
       {
                 Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished early"
                             +"- no type in "+Logger.ToString(moleculeNode)
-                            , Logger.Level.ERROR);
+                            , Logger.Level.WARN);
       }
     }
     else
     {
-            Logger.Log("Molecule.initFromLoad bad name in "+Logger.ToString(moleculeNode), Logger.Level.ERROR);
+            Logger.Log("Molecule.initFromLoad bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
     }
   }
 	

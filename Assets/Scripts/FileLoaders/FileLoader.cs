@@ -48,18 +48,7 @@ public class FileLoader : XmlLoader
         Logger.Log ("FileLoader.storeMolecule("+Logger.ToString(node)
                     +", "+Logger.ToString<Molecule>("Molecule", molecules)
                     +")"
-                    , Logger.Level.WARN);
-
-        string typeString = "";
-        if(null != node.Attributes["type"])
-        {
-            typeString = "type="+node.Attributes["type"].Value;
-        }
-        else
-        {
-            typeString = "type=null";
-        }
-        Logger.Log ("FileLoader.storeMolecule name="+node.Name+", "+typeString, Logger.Level.ERROR);
+                    , Logger.Level.DEBUG);
 
     Molecule mol = new Molecule();
 
@@ -70,7 +59,7 @@ public class FileLoader : XmlLoader
         Logger.Log ("FileLoader.storeMolecule(node"
                     +", "+Logger.ToString<Molecule>("Molecule", molecules)
                     +") loaded "+mol
-                    , Logger.Level.WARN);
+                    , Logger.Level.TRACE);
 
     return true;
    }

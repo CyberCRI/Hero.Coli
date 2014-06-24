@@ -35,7 +35,7 @@ public class MoleculeSet : LoadableFromXmlImpl
     public override void initializeFromXml(XmlNode node, string id)
     {
         Logger.Log ("MoleculeSet::initializeFromXml"
-                    , Logger.Level.INFO);
+                    , Logger.Level.DEBUG);
         _stringId = id;
         initFromLoad(node, null);
     }
@@ -47,33 +47,11 @@ public class MoleculeSet : LoadableFromXmlImpl
     //public static bool loadMolecule(XmlNode node, ArrayList molecules)
 
     Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(setNode)+", "+loader+")", Logger.Level.WARN);
-                
-    string typeString1 = "";
-      if(null != setNode.Attributes["type"])
-    {
-      typeString1 = "type="+setNode.Attributes["type"].Value;
-    }
-    else
-    {
-      typeString1 = "type=null";
-    }
-    Logger.Log ("MoleculeSet.initFromLoad name="+setNode.Name+", "+typeString1, Logger.Level.ERROR);
 
     molecules = new ArrayList();
 
     foreach (XmlNode moleculeNode in setNode)
     {            
-      string typeString = "";
-        if(null != moleculeNode.Attributes["type"])
-      {
-        typeString = "type="+moleculeNode.Attributes["type"].Value;
-      }
-      else
-      {
-        typeString = "type=null";
-      }
-      Logger.Log ("MoleculeSet.initFromLoad inner name="+moleculeNode.Name+", inner "+typeString, Logger.Level.ERROR);
-
       FileLoader.storeMolecule(moleculeNode, molecules);        
     }
   }
