@@ -31,15 +31,15 @@ public class MoleculeSet : LoadableFromXmlImpl
   {
     return _stringId;
   }
-
-    public override void initializeFromXml(XmlNode node, string id)
+    
+  //warning: assumes that node contains correct information
+  protected override void innerInstantiateFromXml(XmlNode node)
     {
-        Logger.Log ("MoleculeSet::initializeFromXml"
+        Logger.Log ("MoleculeSet::innerInstantiateFromXml"
                     , Logger.Level.DEBUG);
-        _stringId = id;
-        initFromLoad(node, null);
-    }
-
+      _stringId = node.Attributes["id"].Value;
+      initFromLoad(node, null);
+  }
 
   //loader is not used here
   public override void initFromLoad(XmlNode setNode, object loader)
@@ -52,9 +52,39 @@ public class MoleculeSet : LoadableFromXmlImpl
 
     foreach (XmlNode moleculeNode in setNode)
     {            
-      FileLoader.storeMolecule(moleculeNode, molecules);        
+      storeMolecule(moleculeNode, molecules);        
     }
   }
+
+    
+    /*!
+    \brief This function loads a molecule
+    \param node The xml node to parse
+    \param type The molecule type
+    \param molecules The array of molecules where to add new molecules
+    \return Return always true
+   */
+    public static bool storeMolecule(XmlNode node, ArrayList molecules)
+    {
+        
+      Logger.Log ("MoleculeSet.storeMolecule("+Logger.ToString(node)
+                  +", "+Logger.ToString<Molecule>("Molecule", molecules)
+                  +")"
+                  , Logger.Level.DEBUG);
+
+      Molecule mol = new Molecule();
+
+      mol.initFromLoad(node, null);
+
+      molecules.Add(mol);
+
+      Logger.Log ("MoleculeSet.storeMolecule(node"
+                  +", "+Logger.ToString<Molecule>("Molecule", molecules)
+                  +") loaded "+mol
+                  , Logger.Level.TRACE);
+
+      return true;
+    }
     
   public override string ToString()
   {

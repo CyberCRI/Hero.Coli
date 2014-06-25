@@ -30,9 +30,9 @@ public interface LoadableFromXml {
 
 
   //TODO merge two approaches
-
+    
   //MoleculeSet, ReactionSet, FileLoader
-  void initializeFromXml(XmlNode node, string id);
+  bool tryInstantiateFromXml(XmlNode node);
 
   //ActiveTransportLoader, FickLoader, MediumLoader, XmlLoaderImpl
   void initFromLoad(XmlNode node, object loader);
@@ -46,24 +46,45 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //implementation of LoadableFromXml interface
     public virtual string getTag()
     {
-        return _tag;
+      return _tag;
     }
 
     public virtual string getStringId()
     {
-        return _stringId;
+      return _stringId;
+    }
+    
+    //warning: assumes that node contains correct information
+    //implementation of LoadableFromXml interface
+    protected virtual void innerInstantiateFromXml(XmlNode node)
+    {
+      _stringId = node.Attributes["id"].Value;
     }
 
-    //implementation of LoadableFromXml interface
-    //
-    //TODO implement default XML loader that takes tag
-    // and then applies loader to all xml node elements
-    // that had this tag
-    public virtual void initializeFromXml(XmlNode node, string id)
+    protected bool isIdDataCorrect(XmlNode node)
     {
-        Logger.Log ("LoadableFromXmlImpl::initializeFromXml NOT IMPLEMENTED "+ToString()
-                    , Logger.Level.ERROR);
-        _stringId = id;
+      return ((null != node) && (null != node.Attributes["id"]) && !string.IsNullOrEmpty(node.Attributes["id"].Value));
+    }
+
+    protected virtual bool isDataCorrect(XmlNode node)
+    {
+      return isIdDataCorrect(node);
+    }
+
+    //checks that 'node' contains appropriate id information
+    //TODO: check that 'node' contains appropriate additional
+    //information for innerInstantiateFromXml
+    public virtual bool tryInstantiateFromXml(XmlNode node)
+    {
+      if(isDataCorrect(node))
+      {
+        innerInstantiateFromXml(node);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
 
     public virtual void initFromLoad(XmlNode node, object loader)

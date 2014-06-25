@@ -18,30 +18,21 @@ A reaction set musth be declare in molecule's files respecting this synthax :
   \author Pierre COLLET
   \mail pierre.collet91@gmail.com
  */
-public class ReactionSet : LoadableFromXml
+public class ReactionSet : LoadableFromXmlImpl
 {
-  private string                 _id;                    //!< The ReactionSet id (string id),
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
-  public string getTag() {return "";}
 
-  //implementation of XMLLoadable interface
-  public string getStringId()
+  //warning: assumes that node contains correct information
+  protected override void innerInstantiateFromXml(XmlNode node)
   {
-    return _id;
-  }
-
-  //implementation of XMLLoadable interface
-  public void initializeFromXml(XmlNode node, string id)
-	{
-    _id = id;
-
-		reactions = new LinkedList<IReaction>();
-
-		FileLoader loader = new FileLoader();
-		loader.loadReactions(node, reactions);
-	}
+    _stringId = node.Attributes["id"].Value;
+    reactions = new LinkedList<IReaction>();
     
-  public virtual void initFromLoad(XmlNode node, object loader)
+    FileLoader loader = new FileLoader();
+    loader.loadReactions(node, reactions);
+  }
+    
+  public override void initFromLoad(XmlNode node, object loader)
   {
         Logger.Log ("ReactionSet::initFromLoad NOT IMPLEMENTED (btw loader="+loader+")"
                     , Logger.Level.ERROR);
@@ -49,6 +40,6 @@ public class ReactionSet : LoadableFromXml
 	
   public override string ToString()
 	{
-    return "ReactionSet[id:"+_id+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
+    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
 	}
 }

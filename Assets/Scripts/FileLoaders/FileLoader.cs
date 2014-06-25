@@ -36,35 +36,6 @@ public class FileLoader : XmlLoader
   }
 
   /*!
-    \brief This function loads a molecule
-    \param node The xml node to parse
-    \param type The molecule type
-    \param molecules The array of molecules where to add new molecules
-    \return Return always true
-   */
-  public static bool storeMolecule(XmlNode node, ArrayList molecules)
-  {
-
-        Logger.Log ("FileLoader.storeMolecule("+Logger.ToString(node)
-                    +", "+Logger.ToString<Molecule>("Molecule", molecules)
-                    +")"
-                    , Logger.Level.DEBUG);
-
-    Molecule mol = new Molecule();
-
-    mol.initFromLoad(node, null);
-
-    molecules.Add(mol);
-        
-        Logger.Log ("FileLoader.storeMolecule(node"
-                    +", "+Logger.ToString<Molecule>("Molecule", molecules)
-                    +") loaded "+mol
-                    , Logger.Level.TRACE);
-
-    return true;
-   }
-
-  /*!
     \brief This function load reactions from xml node
     \param node The xml node
     \param reaction The list of reaction where to add new reactions
@@ -81,26 +52,18 @@ public class FileLoader : XmlLoader
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeList)
 	{
-		string setId;
 		LinkedList<T> objectList = new LinkedList<T>();
 		foreach (XmlNode objectNode in objectNodeList)
 		{
-			setId = objectNode.Attributes["id"].Value;
-			if(setId != "" && setId != null)
-			{
-
-				T t = new T();
-				t.initializeFromXml(objectNode, setId);
-
-				objectList.AddLast(t);
-
-			}
-			else
+			T t = new T();
+      if(t.tryInstantiateFromXml(objectNode))
       {
-				Debug.Log("Error : missing attribute id in reactions node");
-			}
-
-
+        objectList.AddLast(t);
+      }
+      else
+      {
+        Logger.Log("FileLoader.loadObjects incorrect data in "+Logger.ToString (objectNode), Logger.Level.WARN);
+      }  	
 		}
 		return objectList;
 	}
