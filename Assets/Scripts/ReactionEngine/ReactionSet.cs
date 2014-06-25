@@ -23,19 +23,13 @@ public class ReactionSet : LoadableFromXmlImpl
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
 
   //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node)
+  protected override void innerInstantiateFromXml(XmlNode node, object loader)
   {
     _stringId = node.Attributes["id"].Value;
     reactions = new LinkedList<IReaction>();
     
-    FileLoader loader = new FileLoader();
-    loader.loadReactions(node, reactions);
-  }
-    
-  public override void initFromLoad(XmlNode node, object loader)
-  {
-        Logger.Log ("ReactionSet::initFromLoad NOT IMPLEMENTED (btw loader="+loader+")"
-                    , Logger.Level.ERROR);
+    FileLoader fileLoader = new FileLoader();
+    fileLoader.loadReactions(node, reactions);
   }
 	
   public override string ToString()

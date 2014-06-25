@@ -56,7 +56,7 @@ public class FileLoader : XmlLoader
 		foreach (XmlNode objectNode in objectNodeList)
 		{
 			T t = new T();
-      if(t.tryInstantiateFromXml(objectNode))
+      if(t.tryInstantiateFromXml(objectNode, null))
       {
         objectList.AddLast(t);
       }

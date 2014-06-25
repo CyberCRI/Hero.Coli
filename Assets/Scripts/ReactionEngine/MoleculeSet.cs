@@ -33,58 +33,27 @@ public class MoleculeSet : LoadableFromXmlImpl
   }
     
   //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node)
-    {
-        Logger.Log ("MoleculeSet::innerInstantiateFromXml"
-                    , Logger.Level.DEBUG);
-      _stringId = node.Attributes["id"].Value;
-      initFromLoad(node, null);
-  }
-
-  //loader is not used here
-  public override void initFromLoad(XmlNode setNode, object loader)
+  protected override void innerInstantiateFromXml(XmlNode node, object loader)
   {
-    //public static bool loadMolecule(XmlNode node, ArrayList molecules)
-
-    Logger.Log ("MoleculeSet.initFromLoad("+Logger.ToString(setNode)+", "+loader+")", Logger.Level.WARN);
-
+    Logger.Log ("MoleculeSet::innerInstantiateFromXml"
+                  , Logger.Level.DEBUG);
+    _stringId = node.Attributes["id"].Value;
+    
     molecules = new ArrayList();
 
-    foreach (XmlNode moleculeNode in setNode)
-    {            
-      storeMolecule(moleculeNode, molecules);        
+    foreach (XmlNode moleculeNode in node)
+    {
+      Molecule mol = new Molecule();
+      if(mol.tryInstantiateFromXml(moleculeNode, null))
+      {
+        molecules.Add(mol);
+      }
+      else
+      {
+        Logger.Log ("MoleculeSet.innerInstantiateFromXml could not load molecule from "+Logger.ToString(moleculeNode), Logger.Level.WARN);
+      }
     }
   }
-
-    
-    /*!
-    \brief This function loads a molecule
-    \param node The xml node to parse
-    \param type The molecule type
-    \param molecules The array of molecules where to add new molecules
-    \return Return always true
-   */
-    public static bool storeMolecule(XmlNode node, ArrayList molecules)
-    {
-        
-      Logger.Log ("MoleculeSet.storeMolecule("+Logger.ToString(node)
-                  +", "+Logger.ToString<Molecule>("Molecule", molecules)
-                  +")"
-                  , Logger.Level.DEBUG);
-
-      Molecule mol = new Molecule();
-
-      mol.initFromLoad(node, null);
-
-      molecules.Add(mol);
-
-      Logger.Log ("MoleculeSet.storeMolecule(node"
-                  +", "+Logger.ToString<Molecule>("Molecule", molecules)
-                  +") loaded "+mol
-                  , Logger.Level.TRACE);
-
-      return true;
-    }
     
   public override string ToString()
   {

@@ -32,7 +32,7 @@ public interface LoadableFromXml {
   //TODO merge two approaches
     
   //MoleculeSet, ReactionSet, FileLoader
-  bool tryInstantiateFromXml(XmlNode node);
+  bool tryInstantiateFromXml(XmlNode node, object loader);
 
   //ActiveTransportLoader, FickLoader, MediumLoader, XmlLoaderImpl
   void initFromLoad(XmlNode node, object loader);
@@ -56,7 +56,7 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     
     //warning: assumes that node contains correct information
     //implementation of LoadableFromXml interface
-    protected virtual void innerInstantiateFromXml(XmlNode node)
+    protected virtual void innerInstantiateFromXml(XmlNode node, object loader)
     {
       _stringId = node.Attributes["id"].Value;
     }
@@ -74,11 +74,11 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //checks that 'node' contains appropriate id information
     //TODO: check that 'node' contains appropriate additional
     //information for innerInstantiateFromXml
-    public virtual bool tryInstantiateFromXml(XmlNode node)
+    public virtual bool tryInstantiateFromXml(XmlNode node, object loader)
     {
       if(isDataCorrect(node))
       {
-        innerInstantiateFromXml(node);
+        innerInstantiateFromXml(node, loader);
         return true;
       }
       else

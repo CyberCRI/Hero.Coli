@@ -136,9 +136,9 @@ public class Molecule : LoadableFromXmlImpl
 	_concentration = _newConcentration;
   }
 
-  public override void initFromLoad(XmlNode moleculeNode, object loader)
+  public override bool tryInstantiateFromXml(XmlNode moleculeNode, object loader)
   {
-    Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.INFO);
+    Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.INFO);
 
     if (moleculeNode.Name == getTag())
     {
@@ -165,9 +165,9 @@ public class Molecule : LoadableFromXmlImpl
             }
           default:
             {
-              Logger.Log ("Molecule::initFromLoad unknown molecule type "+moleculeNode.Attributes["type"].Value
+              Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
                           ,Logger.Level.WARN);
-              break;
+              return false;
             }
         }
 
@@ -192,24 +192,32 @@ public class Molecule : LoadableFromXmlImpl
             case "FickFactor":
               setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
               break;
+            default:
+                            Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"
+                                        +" - unknown attribute "+attr.Name
+                                        , Logger.Level.WARN);
+              return false;
           }
         }
 
-                Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished"
+                Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
                     +" with molecule="+this
                     , Logger.Level.DEBUG);
       }
       else
       {
-                Logger.Log ("Molecule.initFromLoad("+Logger.ToString(moleculeNode)+", loader) finished early"
+                Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"
                             +"- no type in "+Logger.ToString(moleculeNode)
                             , Logger.Level.WARN);
+                return false;
       }
     }
     else
     {
-            Logger.Log("Molecule.initFromLoad bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
+            Logger.Log("Molecule.tryInstantiateFromXml bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
+            return false;
     }
+    return true;
   }
 	
   public override string ToString() {
