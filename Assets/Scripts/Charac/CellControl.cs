@@ -21,6 +21,8 @@ public class CellControl : MonoBehaviour{
 
   private bool _pause;
   private Vector3 _inputMovement;
+  public Vector3 GetInputMovement() { return _inputMovement;}
+
   /* 
    * Click to move variables
    */
@@ -38,6 +40,14 @@ public class CellControl : MonoBehaviour{
   };
   private ControlType _currentControlType = ControlType.AbsoluteWASDAndLeftClickToMove;
 
+	public enum RockCollisionType {
+		Slide = 2,
+		Grab = 1,
+		Normal = 0
+	}
+
+	private RockCollisionType _currentCollisionType = 0;
+	public RockCollisionType GetCurrentCollisionType() {return _currentCollisionType;}
 
   public void Pause(bool pause)
   {
@@ -216,11 +226,26 @@ public class CellControl : MonoBehaviour{
       commonUpdate();
     }
     
+		switchRockCollision();
     //if(Input.GetKeyDown(KeyCode.Space)) {
     //  switchControlTypeTo((ControlType)(((int)_currentControlType + 1) % 5));
     //}
     
   }
+
+
+	private void switchRockCollision () {
+
+		if(Input.GetKeyDown(KeyCode.Space))
+		   {
+			if (_currentCollisionType == RockCollisionType.Slide)
+				_currentCollisionType -=2;
+			else
+				_currentCollisionType +=1;
+			Logger.Log ("collisionType::"+_currentCollisionType,Logger.Level.WARN);
+
+			}
+		}
 
   private void switchControlTypeTo(ControlType newControlType) {
     switch(newControlType) {
