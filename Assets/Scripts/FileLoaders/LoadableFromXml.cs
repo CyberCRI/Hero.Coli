@@ -34,7 +34,7 @@ public interface LoadableFromXml {
   //MoleculeSet, ReactionSet, FileLoader
   bool tryInstantiateFromXml(XmlNode node, object loader);
 
-  //ActiveTransportLoader, FickLoader, MediumLoader, XmlLoaderImpl
+  //ActiveTransport, FickLoader, MediumLoader, XmlLoaderImpl
   void initFromLoad(XmlNode node, object loader);
 }
 

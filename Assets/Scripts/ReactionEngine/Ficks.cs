@@ -6,8 +6,8 @@ using System.Collections;
 /*!
   \brief     Describe a FickReaction
   \details   This class is a descriptive class of a FickReaction
-  \author    Pierre COLLET
-  \mail      pierre.collet91@gmail.com
+  
+  
  */
 using System.Xml;
 
@@ -29,15 +29,15 @@ public class FickProperties : LoadableFromXmlImpl
 /*!
  *  \brief     The class that manage all the diffusions reactions using Fick model.
  *  \details   This class initialize from files and execute all the FickReaction.
- *  \author    Pierre COLLET
- *  \mail      pierre.collet91@gmail.com
+ *  
+ *  
  */
 public class Fick
 {
   public const float MaximumMoleculeSize = 0.25f;       //!< Limit size of molecules that can cross the membrane of the Medium
 
   private LinkedList<FickReaction>      _reactions;     //!< The list of FickReaction
-  FickLoader                            _loader;        //!< The class that load the FickReaction propieties
+  FickLoader                            _loader;        //!< The class that load the FickReaction properties
 
   //! Default constructor.
   public Fick()
@@ -99,7 +99,7 @@ public class Fick
 
       This function load the diffusions reactions based on Fick model. It take a Array of file paths
       and a list of Medium that should contain all the mediums of the simulation.
-      This function create the list of all the reactions between each Medium wich exist and initialize their parameters to 0.
+      This function create the list of all the reactions between each Medium which exist and initialize their parameters to 0.
       Only the reactions explicitly defined in files are initialized to the values explicited in files.
       If a parameter of a fick reaction is not specified in files then this parameter will be equal to 0.
     */
@@ -148,8 +148,8 @@ public class Fick
   - A exchange surface
 
   \reference http://books.google.fr/books?id=fXZW1REM0YEC&pg=PA636&lpg=PA636&dq=vitesse+de+diffusion+loi+de+fick&source=bl&ots=3eKv2NYYtx&sig=ciSW-RNAr0RTieE2oZfdBa73nT8&hl=en&sa=X&ei=bTufUcw4sI7sBqykgOAL&sqi=2&ved=0CD0Q6AEwAQ#v=onepage&q=vitesse%20de%20diffusion%20loi%20de%20fick&f=false
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 public class FickReaction : IReaction
 {

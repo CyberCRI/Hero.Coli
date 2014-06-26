@@ -28,7 +28,7 @@ A PromoterReaction should respect this synthax:
         </promoter>
 
   \sa PromoterReaction
-  \author Pierre COLLET
+  
  */
 public class PromoterLoader
 {

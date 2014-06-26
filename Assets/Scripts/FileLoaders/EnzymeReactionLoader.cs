@@ -23,7 +23,7 @@ using System.Xml;
           </Products>
         </enzyme>
 
-  \author Pierre COLLET
+  
   \sa EnzymeReaction
  */
 public class EnzymeReactionLoader

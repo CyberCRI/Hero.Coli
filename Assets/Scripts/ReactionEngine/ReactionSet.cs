@@ -15,8 +15,8 @@ A reaction set musth be declare in molecule's files respecting this synthax :
       </reactions>
     </Document>
 
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 public class ReactionSet : LoadableFromXmlImpl
 {

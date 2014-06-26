@@ -10,7 +10,7 @@ using System.Text;
 /*!
   \brief This class create token from PromoterReaction formula
   \details The tokens list should be given to the PromoterParser in order to parse the string
-  \author Pierre COLLET
+  
   \sa PromoterParser
  */
 public class PromoterLexer
@@ -36,7 +36,7 @@ public class PromoterLexer
   /*!
     \brief This struct is a token.
     \details It contain a string and the corresponding eToken
-    \author Pierre COLLET
+    
    */
   public struct Token
   {
@@ -146,7 +146,7 @@ public class PromoterLexer
 
 /*!
   \brief This class is the node of the synthax tree of the promoter formula
-  \author Pierre COLLET
+  
  */
 public class PromoterNodeData
 {
@@ -167,7 +167,7 @@ public class PromoterNodeData
   \brief This class parse a promoter formula
   \details For more information about the grammar, see PromoterReaction class
   \sa PromoterReaction
-  \author Pierre COLLET
+  
  */
 public class PromoterParser
 {
@@ -186,7 +186,7 @@ public class PromoterParser
   }
 
 
-  LinkedList<PromoterLexer.Token>     _restoreList;     //!< The trash bin of token wich serve to restore token list
+  LinkedList<PromoterLexer.Token>     _restoreList;     //!< The trash bin of token which serve to restore token list
   int                   _restoreStatus;                 //!< The state of the parsing
 
   //! Default Constructor

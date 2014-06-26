@@ -15,8 +15,8 @@ using System.Collections.Generic;
  - Enzyme reaction with effectors (EnzymeReaction)
  - Promoter expressions (Promoter)
 
-   \author    Pierre COLLET
-   \mail pierre.collet91@gmail.com
+   
+   
  */
 public class ReactionEngine : MonoBehaviour {
 
@@ -267,8 +267,16 @@ public class ReactionEngine : MonoBehaviour {
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
+
+        Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.ERROR);
+
     _activeTransport = new ActiveTransport();
+
+        Logger.Log("ReactionEngine::Awake() activeTransport instantiated", Logger.Level.ERROR);
+        
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
+
+        Logger.Log("ReactionEngine::Awake() activeTransport done", Logger.Level.ERROR);
   }
 	
   //TODO manage reaction speed for smooth pausing

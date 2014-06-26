@@ -7,14 +7,14 @@ using System.Collections.Generic;
   \brief This class represents a Medium
   \details
   A Medium is an area closed by a something that is permeable or not.
-  Each Medium contains a list of molecules wich contains the concentration of
+  Each Medium contains a list of molecules which contains the concentration of
   each kind of molecules.
   Each Medium also has a list of reactions.
   You can define molecule diffusion between mediums with Fick or ActiveTransport.
   \sa Fick
   \sa ActiveTransport
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
 */
 using System.Xml;
 

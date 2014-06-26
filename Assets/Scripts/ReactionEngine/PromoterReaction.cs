@@ -6,7 +6,7 @@ using UnityEngine;
 
 /*!
   \brief This class represent a PromoterReaction and can be loaded by the simulator.
-  \author Pierre COLLET
+  
   \sa PromoterReaction
  */
 public class PromoterProperties
@@ -148,12 +148,12 @@ To see how the calculus is done, refer you to the react() function of this class
 
 \attention To understand how to build a PromoterReaction refer you to the PromoterLoader class
 
-\author    Pierre COLLET
-\mail pierre.collet91@gmail.com
+
+
  */
 public class PromoterReaction : IReaction
 {
-  private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 wich correspond to 0% to 100%)
+  private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
   private TreeNode<PromoterNodeData> _formula;          //! The formula describe in the detailled description
   protected float _beta;                                //! The maximal production of the promoter
 
@@ -234,7 +234,7 @@ public class PromoterReaction : IReaction
 
   /*!
     \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
-    \param props The PromoterProperties wich will serve to create the reaction
+    \param props The PromoterProperties which will serve to create the reaction
     \return Return the new reaction or null if it fail.
    */
   public static IReaction       buildPromoterFromProps(PromoterProperties props)

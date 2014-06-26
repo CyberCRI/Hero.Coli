@@ -6,8 +6,8 @@ using System;
 /*!
  \brief A phenotype class that represent a fick activation
  \details This Phenotype enable the contact surface between two medium when they collide together
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  */
 public class PhenoFickContact : Phenotype {
 

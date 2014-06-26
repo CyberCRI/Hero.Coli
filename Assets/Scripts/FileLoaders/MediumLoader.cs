@@ -21,7 +21,7 @@ using UnityEngine;
           </Medium>
         </Mediums>
 
- *  \author    Pierre COLLET
+ *  
  *  \sa ReactionSet
  *  \sa MoleculeSet
  *  \sa Medium

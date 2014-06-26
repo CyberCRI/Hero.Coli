@@ -18,7 +18,7 @@ using System.Xml;
     </allostery>
 
 \sa Allostery
-\author Pierre COLLET
+
 */
 public class AllosteryLoader
 {

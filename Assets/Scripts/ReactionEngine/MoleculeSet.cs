@@ -15,8 +15,8 @@ A molecule set must be declared in molecule's files respecting this synthax :
       </molecules>
     <Document>
 
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 public class MoleculeSet : LoadableFromXmlImpl
 {

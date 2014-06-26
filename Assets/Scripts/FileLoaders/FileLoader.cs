@@ -11,7 +11,7 @@ using System.IO;
   \sa EnzymeReactionLoader
   \sa AllosteryLoader
   \sa InstantReactionLoader
-  \author Pierre COLLET
+  
  */
 
 

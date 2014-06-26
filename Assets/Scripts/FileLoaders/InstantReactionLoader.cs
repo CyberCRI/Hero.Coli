@@ -29,7 +29,7 @@ using System.Xml;
         </instantReaction>
 
   \sa InstantReaction
-  \author Pierre COLLET
+  
  */
 public class InstantReactionLoader
 {

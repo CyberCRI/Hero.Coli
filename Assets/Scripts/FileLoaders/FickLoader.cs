@@ -18,9 +18,6 @@ using System.IO;
         <surface>0.003</surface>                -> contact surface between the two medium
       </fickProp>
      </ficks>
-
- *  \author    Pierre COLLET
- *  \mail      pierre.collet91@gmail.com
  */
 
 
@@ -51,7 +48,7 @@ public class FickLoader : XmlLoaderImpl
   public void loadFickProperties(XmlNode node, FickProperties properties)
   {
 
-        Logger.Log("FickLoader.loadActiveTransportProperties("+node+", "+properties+") will load", Logger.Level.DEBUG);
+    Logger.Log("FickLoader.loadFickProperties("+node+", "+properties+") will load", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -72,6 +69,6 @@ public class FickLoader : XmlLoaderImpl
       }
     }
 
-        Logger.Log("FickLoader.loadActiveTransportProperties(node, properties) loaded this="+this, Logger.Level.DEBUG);
+    Logger.Log("FickLoader.loadFickProperties(node, properties) loaded this="+this, Logger.Level.DEBUG);
   }
 }

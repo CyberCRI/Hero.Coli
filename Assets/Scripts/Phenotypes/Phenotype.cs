@@ -15,8 +15,8 @@ using System.Collections.Generic;
                 - A mediumId
 
  This class also implements useful functions like a hill function.
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  \sa ReactionEngine
  \sa Medium
  */

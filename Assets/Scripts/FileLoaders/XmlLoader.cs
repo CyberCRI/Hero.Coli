@@ -20,12 +20,12 @@ public abstract class XmlLoader
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" will load from "+filePath
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.ERROR);
 		
 		objectList = loadObjects <T>(objectNodeLists);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.ERROR);
 
 		return objectList;
 
@@ -47,7 +47,7 @@ public abstract class XmlLoaderImpl : XmlLoader
       //where T : LoadableFromXml, new()
   {
         Logger.Log ("XmlLoaderImpl::loadObjects with tag="+xmlTag+" will load"
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.ERROR);
 
       LinkedList<T> objectList = new LinkedList<T>();
 
@@ -67,7 +67,7 @@ public abstract class XmlLoaderImpl : XmlLoader
       }
 
         Logger.Log ("XmlLoaderImpl::loadObjects with tag "+xmlTag+" loaded "+Logger.ToString<T>(objectList)
-                    , Logger.Level.DEBUG);
+                    , Logger.Level.ERROR);
 
       if (objectList.Count == 0)
         return null;

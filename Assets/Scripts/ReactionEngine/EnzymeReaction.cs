@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 /*!
   \brief This class represent an EnzymeReaction and can be loaded by the ReactionEngine class
-  \author Pierre COLLET
+  
   \sa EnzymeReaction
  */
 public class EnzymeReactionProperties
@@ -37,8 +37,8 @@ In this simulation we have used a model that can describe enzymes kinetics (Mich
  as well as common models of enzyme inhibition and activation by other molecules (different from the substrate).
 The following scheme is a generalized model of inhibition that can describe competitive,
  uncompetitive, mixed and non-competitive inhibition, as well as heterotropic activation.
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  */
 public class EnzymeReaction : IReaction
 {
