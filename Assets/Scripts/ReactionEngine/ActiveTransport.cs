@@ -48,28 +48,29 @@ public class ActiveTransport : XmlLoaderImpl
           reaction.addProduct(p);
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);
         if (med == null)
-          {
-            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
-            break;
-          }
+        {
+          Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
+          break;
+        }
         reaction.setSrcMedium(med);
         med = ReactionEngine.getMediumFromId(prop.dstMediumId, mediums);
-        if (med == null)
+            if (med == null)
           {
             Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.dstMediumId + " is unknown.");
             break;
           }
         reaction.setDstMedium(med);
         med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
-        if (med == null)
+            if (med == null)
           {
             Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.mediumId + " is unknown.");
             break;
           }
         reaction.setMedium(med);
-        med.addReaction(reaction);
+            med.addReaction(reaction);
         //         _reactions.AddLast(reaction);
-     }
+            Debug.LogError("ActiveTransport::loadActiveTransportReactionsFromProperties() ends");
+        }
   }
 
   /*!
@@ -83,7 +84,7 @@ public class ActiveTransport : XmlLoaderImpl
                     
         Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles("
                     +Logger.EnumerableToString<string>(filesPaths)
-                    //+", "+Logger.ToString<Medium>(mediums)
+                    //+", "+Logger.ToString<Medium>(mediums) //makes Unity crash
                     +") starts"
                     ,Logger.Level.ERROR);
 
@@ -93,9 +94,12 @@ public class ActiveTransport : XmlLoaderImpl
                     +Logger.ToString<ActiveTransportProperties>(properties)
                     ,Logger.Level.ERROR);
         
-    //loadActiveTransportReactionsFromProperties(properties, mediums);    
-  }
-
+        loadActiveTransportReactionsFromProperties(properties, mediums);    
+        
+        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles ends"
+                    ,Logger.Level.ERROR);
+    }
+    
     
     
     /*!

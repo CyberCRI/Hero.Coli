@@ -7,7 +7,7 @@ using System.Collections.Generic;
   \details A MoleculeSet is assigned to a medium and so describe
   what quantity of which molecule is present in a medium.
 
-A molecule set must be declared in molecule's files respecting this synthax :
+A molecule set must be declared in molecule's files respecting this syntax :
 
     <Document>
       <molecules id="CelliaMolecules">

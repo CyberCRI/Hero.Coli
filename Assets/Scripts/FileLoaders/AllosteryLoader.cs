@@ -5,7 +5,7 @@ using System.Xml;
 
 /*!
 \brief This class load all the allostery reactions
-\details A allostery's reaction's declaration should respect this synthax :
+\details A allostery's reaction's declaration should respect this syntax :
 
     <allostery>
       <name>inhibitLacI</name>

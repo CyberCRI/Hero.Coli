@@ -7,7 +7,7 @@ using UnityEngine;
 /*! 
  *  \brief     Load medium files
  *  \details   This class load everything about mediums from medium files
- A medium file should respect this synthax :
+ A medium file should respect this syntax :
 
         <Mediums>
           <Medium type="Cellia">

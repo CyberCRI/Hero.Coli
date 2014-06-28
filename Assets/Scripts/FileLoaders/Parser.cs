@@ -145,7 +145,7 @@ public class PromoterLexer
 }
 
 /*!
-  \brief This class is the node of the synthax tree of the promoter formula
+  \brief This class is the node of the syntax tree of the promoter formula
   
  */
 public class PromoterNodeData
@@ -241,7 +241,7 @@ public class PromoterParser
   /*!
     \brief Parse the formula
     \param tokenList The list of tokens to parse
-    \return Return the synthax tree or null if the parsing fail
+    \return Return the syntax tree or null if the parsing fail
    */
   public TreeNode<PromoterNodeData>     ParseFormula(LinkedList<PromoterLexer.Token> tokenList)
   {
@@ -605,7 +605,7 @@ public class PromoterParser
 
   /*!
     \brief This function pretty print the tree for debugging.
-    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \details The syntax of this pretty print function can be given to dot (graphiz)
     \param node The root of the tree
     \param str The string where to append the text
    */
@@ -628,7 +628,7 @@ public class PromoterParser
 
   /*!
     \brief This function pretty print the tree for debugging.
-    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \details The syntax of this pretty print function can be given to dot (graphiz)
     \param tree The tree to pretty print
     \return Return a string that contain the text
   */

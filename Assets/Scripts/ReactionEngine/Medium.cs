@@ -114,9 +114,14 @@ public class Medium : LoadableFromXmlImpl
    */
   public void addReaction(IReaction reaction)
   {
-    Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
+    Debug.LogError("Medium::addReaction starts");
+        _numberId.ToString();
+    //Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
     if (reaction != null)
     {
+
+            Debug.LogError("Medium::addReaction (reaction != null)");
+
       reaction.setMedium(this);
       reaction.enableEnergy = _enableEnergy;
       _reactions.AddLast(reaction);
@@ -124,6 +129,8 @@ public class Medium : LoadableFromXmlImpl
     }
     else
       Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
+
+    Debug.LogError("Medium::addReaction ends");
   }
 
   /* !

@@ -39,7 +39,7 @@ public class PromoterProperties
  *  \details   This class manage all the promoter reactions
 
  A promoter reaction represent the behaviour of a promoter and of the transcription that it manage (Device).
- The promoter responds to a logic input function that should respect the synthax below.
+ The promoter responds to a logic input function that should respect the syntax below.
 
  Input function:
  ==============

@@ -13,7 +13,7 @@ using System.Xml;
         - A Size -> used for fick reaction (not implemented yet)
 
 
-Molecules which are declared in files should respect this synthax :
+Molecules which are declared in files should respect this syntax :
 
       <molecule type="other">
         <name>H2O</name>

@@ -7,7 +7,7 @@ using System.Collections.Generic;
   \brief This class load promoters reactions from xml files
   \details
 
-A PromoterReaction should respect this synthax:
+A PromoterReaction should respect this syntax:
 
         <promoter>
           <name>ptet</name>                           -> The name of the reaction

@@ -5,7 +5,7 @@ using System.Xml;
 
 /*!
   \brief This class parse and load instant reactions
-  \details A Instant reaction should respect this synthax :
+  \details A Instant reaction should respect this syntax :
 
         <instantReaction>
           <name>Water</name>                        -> Name of the reaction

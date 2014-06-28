@@ -265,18 +265,17 @@ public class ReactionEngine : MonoBehaviour {
         medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
       }
 
+        Logger.Log("ReactionEngine::Awake() FickReactions starting", Logger.Level.INFO);
+
     _fick = new Fick();
-    _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
+    //_fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
 
-        Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.ERROR);
+        Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.INFO);
 
-    _activeTransport = new ActiveTransport();
-
-        Logger.Log("ReactionEngine::Awake() activeTransport instantiated", Logger.Level.ERROR);
-        
+    _activeTransport = new ActiveTransport();        
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
 
-        Logger.Log("ReactionEngine::Awake() activeTransport done", Logger.Level.ERROR);
+        Logger.Log("ReactionEngine::Awake() done", Logger.Level.INFO);
   }
 	
   //TODO manage reaction speed for smooth pausing

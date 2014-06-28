@@ -7,7 +7,7 @@ using System.Collections.Generic;
   \details A ReactionSet is assigned to a medium and so describe
   which reaction is present in each medium.
 
-A reaction set musth be declare in molecule's files respecting this synthax :
+A reaction set musth be declare in molecule's files respecting this syntax :
 
     <Document>
       <reactions id="CelliaReactions">
