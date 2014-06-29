@@ -2,29 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-//!  
-/*!
-  \brief     Describe a FickReaction
-  \details   This class is a descriptive class of a FickReaction
-  
-  
- */
-using System.Xml;
-
-
-public class FickProperties : LoadableFromXmlImpl
-{
-  public int MediumId1 {get; set;}
-  public int MediumId2  {get; set;}
-  public float P  {get; set;}
-  public float surface  {get; set;}
-  public float energyCost {get; set;}
-
-	public override void initFromLoad(XmlNode node, object loader)
-	{
-    ((FickLoader)loader).loadFickProperties(node, this);
-	}
-}
 
 /*!
  *  \brief     The class that manage all the diffusions reactions using Fick model.
@@ -32,19 +9,25 @@ public class FickProperties : LoadableFromXmlImpl
  *  
  *  
  */
-public class Fick
+public class Fick : XmlLoaderImpl
 {
   public const float MaximumMoleculeSize = 0.25f;       //!< Limit size of molecules that can cross the membrane of the Medium
 
   private LinkedList<FickReaction>      _reactions;     //!< The list of FickReaction
-  FickLoader                            _loader;        //!< The class that load the FickReaction properties
+
+  public override string xmlTag
+  {
+      get
+      {
+          return "fickProp";
+      }
+  }
+
 
   //! Default constructor.
   public Fick()
   {
     _reactions = new LinkedList<FickReaction>();
-    _loader = new FickLoader();
-//     _mediums = mediums;
   }
 
   public LinkedList<FickReaction>       getFickReactions() { return _reactions; }
@@ -110,7 +93,7 @@ public class Fick
 
     foreach (string file in files)
       {
-			newPropList = _loader.loadObjectsFromFile<FickProperties>(file,"ficks");
+			newPropList = loadObjectsFromFile<FickProperties>(file,"ficks");
         //newPropList = _loader.loadFickPropertiesFromFile(file);
         if (newPropList != null)
           LinkedListExtensions.AppendRange<FickProperties>(propsList, newPropList);
