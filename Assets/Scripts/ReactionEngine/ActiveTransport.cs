@@ -84,7 +84,7 @@ public class ActiveTransport : XmlLoaderImpl
                     
         Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles("
                     +Logger.EnumerableToString<string>(filesPaths)
-                    //+", "+Logger.ToString<Medium>(mediums) //makes Unity crash
+                    +", "+Logger.ToString<Medium>(mediums)
                     +") starts"
                     ,Logger.Level.ERROR);
 

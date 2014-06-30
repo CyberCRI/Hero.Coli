@@ -100,14 +100,14 @@ public abstract class IReaction
 	{
 		return string.Format ("IReaction[name:{0}, products:{1}, isActive:{2}, medium:{3}, "
 			+"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
-		  _name,                                    //!< The name of the reaction
-          Logger.ToString<Product>(_products),      //!< The list of products
-          _isActive,                                //!< Activation booleen
-          _medium,                                  //!< The medium where the reaction will be executed
-          _reactionSpeed,                           //!< Speed coefficient of the reaction
-          _energyCost,                              //!< Energy consumed by the reaction
-          enableSequential,
-          enableEnergy
+		  _name,                                     //!< The name of the reaction
+      Logger.ToString<Product>(_products),       //!< The list of products
+      _isActive,                                 //!< Activation booleen
+      _medium.getName()+"("+_medium.getId()+")", //!< The medium where the reaction will be executed
+      _reactionSpeed,                            //!< Speed coefficient of the reaction
+      _energyCost,                               //!< Energy consumed by the reaction
+      enableSequential,
+      enableEnergy
 		);
 	}
 
