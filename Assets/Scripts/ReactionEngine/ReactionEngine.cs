@@ -268,7 +268,7 @@ public class ReactionEngine : MonoBehaviour {
         Logger.Log("ReactionEngine::Awake() FickReactions starting", Logger.Level.INFO);
 
     _fick = new Fick();
-    //_fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
+    _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
 
         Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.INFO);
 

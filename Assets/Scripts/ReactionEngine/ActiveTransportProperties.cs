@@ -66,7 +66,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   */
   public override bool tryInstantiateFromXml(XmlNode node, object loader)
   {
-    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load", Logger.Level.ERROR);
+    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load", Logger.Level.INFO);
     
     foreach (XmlNode attr in node)
     {
@@ -116,7 +116,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
         break;
       }
     }
-    Logger.Log("ActiveTransport.tryInstantiateFromXml(node, properties) loaded this="+this, Logger.Level.ERROR);
+    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node, properties) loaded this="+this, Logger.Level.INFO);
     return true;
   }
   

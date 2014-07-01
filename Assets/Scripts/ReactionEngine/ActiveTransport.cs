@@ -68,8 +68,6 @@ public class ActiveTransport : XmlLoaderImpl
           }
         reaction.setMedium(med);
             med.addReaction(reaction);
-        //         _reactions.AddLast(reaction);
-            Debug.LogError("ActiveTransport::loadActiveTransportReactionsFromProperties() ends");
         }
   }
 
@@ -80,24 +78,13 @@ public class ActiveTransport : XmlLoaderImpl
    */
   public  void loadActiveTransportReactionsFromFiles(IEnumerable<string> filesPaths, LinkedList<Medium> mediums)
   {
-        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles starting", Logger.Level.ERROR);
-                    
-        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles("
-                    +Logger.EnumerableToString<string>(filesPaths)
-                    +", "+Logger.ToString<Medium>(mediums)
-                    +") starts"
-                    ,Logger.Level.ERROR);
+        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles starting", Logger.Level.DEBUG);
 
     LinkedList<ActiveTransportProperties> properties = getActiveTransportPropertiesFromFiles(filesPaths);
-
-        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles properties="
-                    +Logger.ToString<ActiveTransportProperties>(properties)
-                    ,Logger.Level.ERROR);
-        
         loadActiveTransportReactionsFromProperties(properties, mediums);    
         
         Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles ends"
-                    ,Logger.Level.ERROR);
+                    ,Logger.Level.DEBUG);
     }
     
     
@@ -113,7 +100,7 @@ public class ActiveTransport : XmlLoaderImpl
         Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") starts"
-                    ,Logger.Level.ERROR);
+                    ,Logger.Level.DEBUG);
 
         LinkedList<ActiveTransportProperties> propsList = new LinkedList<ActiveTransportProperties>();
         LinkedList<ActiveTransportProperties> newPropList;
@@ -127,7 +114,7 @@ public class ActiveTransport : XmlLoaderImpl
         Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") returns "+Logger.ToString<ActiveTransportProperties>(propsList)
-                    ,Logger.Level.ERROR);
+                    ,Logger.Level.DEBUG);
 
         return propsList;
     }

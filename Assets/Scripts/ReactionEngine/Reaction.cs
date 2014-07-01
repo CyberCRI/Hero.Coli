@@ -94,22 +94,59 @@ public abstract class IReaction
     \brief Add a Product to the product list.
     \param prod The product to be added to the list
    */
-  public void addProduct(Product prod) { if (prod != null) _products.AddLast(prod); }
-	
-  public override string ToString ()
-	{
-		return string.Format ("IReaction[name:{0}, products:{1}, isActive:{2}, medium:{3}, "
-			+"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
-		  _name,                                     //!< The name of the reaction
-      Logger.ToString<Product>(_products),       //!< The list of products
-      _isActive,                                 //!< Activation booleen
-      _medium.getName()+"("+_medium.getId()+")", //!< The medium where the reaction will be executed
-      _reactionSpeed,                            //!< Speed coefficient of the reaction
-      _energyCost,                               //!< Energy consumed by the reaction
-      enableSequential,
-      enableEnergy
-		);
-	}
+    public void addProduct(Product prod) { if (prod != null) _products.AddLast(prod); }
+    
+    public override string ToString ()
+    {
+        string productString = "(null)";
+        if(null != _products)
+        {
+            productString = _products.Count.ToString();
+        }
+        string mediumString = "(null)";
+        if(null != _medium)
+        {
+            mediumString = "["+_medium.getName()+", id#"+_medium.getId()+"]";
+        }
+        
+        return string.Format ("IReaction[name:{0}, products:{1}, isActive:{2}, medium:{3}, "
+                              +"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
+                              _name,                                     //!< The name of the reaction
+                              Logger.ToString<Product>(_products),       //!< The list of products
+                              _isActive,                                 //!< Activation booleen
+                              mediumString,                              //!< The medium where the reaction will be executed
+                              _reactionSpeed,                            //!< Speed coefficient of the reaction
+                              _energyCost,                               //!< Energy consumed by the reaction
+                              enableSequential,
+                              enableEnergy
+                              );
+    }
+    
+    public string ToStringDetailed ()
+    {
+        string productString = "(null)";
+        if(null != _products)
+        {
+          productString = Logger.ToString<Product>(_products);
+        }
+        string mediumString = "(null)";
+        if(null != _medium)
+        {
+            mediumString = _medium.ToString();
+        }
+
+        return string.Format ("IReaction[name:{0}, products:{1}, isActive:{2}, medium:{3}, "
+                              +"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
+                              _name,                                     //!< The name of the reaction
+                              productString,                             //!< The list of products
+                              _isActive,                                 //!< Activation booleen
+                              mediumString,                              //!< The medium where the reaction will be executed
+                              _reactionSpeed,                            //!< Speed coefficient of the reaction
+                              _energyCost,                               //!< Energy consumed by the reaction
+                              enableSequential,
+                              enableEnergy
+                              );
+    }
 
 
   /* !

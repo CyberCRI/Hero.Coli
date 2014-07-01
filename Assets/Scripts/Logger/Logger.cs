@@ -94,16 +94,23 @@ public class Logger : MonoBehaviour {
   }
 
   public static string EnumerableToString<T>(IEnumerable<T> objects, string separator = defaultSeparator) {
-    string result = "";
-    foreach(T elt in objects)
+    if(null != objects)
     {
-      if(!string.IsNullOrEmpty(result))
+      string result = "";
+      foreach(T elt in objects)
       {
-        result += ", ";
+        if(!string.IsNullOrEmpty(result))
+        {
+          result += ", ";
+        }
+        result += elt.ToString();
       }
-      result += elt.ToString();
+      return result;
     }
-    return result;
+    else
+    {
+        return "null";
+    }
   }
     
   public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)

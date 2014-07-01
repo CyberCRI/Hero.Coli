@@ -13,7 +13,7 @@ using System;
         <MediumId1>2</MediumId1>                -> Unique ID of the first medium
         <MediumId2>1</MediumId2>                -> Unique ID of the second medium
         <P>0.05</P>                             -> Permeability coefficient
-        <surface>0.003</surface>                -> contact surface between the two medium
+        <surface>0.003</surface>                -> contact surface between the two mediums
       </fickProp>
      </ficks>
  */
@@ -38,7 +38,7 @@ public class FickProperties : LoadableFromXmlImpl
   //! \param properties The Fick properties that will be initialized by this loading.
     public override bool tryInstantiateFromXml(XmlNode node, object loader)
   {
-    Logger.Log("FickLoader.loadFickProperties("+node+", loader) will load", Logger.Level.DEBUG);
+        Logger.Log("FickLoader.tryInstantiateFromXml("+node+", loader) will load", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -62,7 +62,7 @@ public class FickProperties : LoadableFromXmlImpl
       }
     }
 
-    Logger.Log("FickLoader.loadFickProperties(node, properties) loaded this="+this, Logger.Level.DEBUG);
+        Logger.Log("FickLoader.tryInstantiateFromXml(node, loader) loaded this="+this, Logger.Level.DEBUG);
     return true;
   }
 }

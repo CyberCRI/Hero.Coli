@@ -114,7 +114,6 @@ public class Medium : LoadableFromXmlImpl
    */
   public void addReaction(IReaction reaction)
   {
-    Debug.LogError("Medium::addReaction starts");
     //Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
     if (reaction != null)
     {
@@ -126,7 +125,6 @@ public class Medium : LoadableFromXmlImpl
     else
       Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
 
-    Debug.LogError("Medium::addReaction ends");
   }
 
   /* !
@@ -397,11 +395,11 @@ public class Medium : LoadableFromXmlImpl
     ((MediumLoader)loader).loadMedium(node, this);
 	}
 
-    public override string ToString ()
+  public override string ToString ()
   {
     
-        string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
-        string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
+        string moleculeString = null == _molecules? "" : _molecules.Count.ToString();
+        string reactionString = null == _reactions? "" : _reactions.Count.ToString();
 
     return string.Format ("[Medium "
                           +"name:"+_name
@@ -410,5 +408,18 @@ public class Medium : LoadableFromXmlImpl
                           +"; reactions:"+reactionString
                           +"]");
   }
-
+    
+  public string ToStringDetailed ()
+  {
+      
+      string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
+      string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
+      
+      return string.Format ("[Medium "
+                            +"name:"+_name
+                            +"; id:"+_numberId
+                            +"; molecules:"+moleculeString
+                            +"; reactions:"+reactionString
+                            +"]");
+  }
 }
