@@ -45,9 +45,16 @@ public class CellControl : MonoBehaviour{
 		Grab = 1,
 		Normal = 0
 	}
-
+	//Drag PushableBox
 	private RockCollisionType _currentCollisionType = 0;
 	public RockCollisionType GetCurrentCollisionType() {return _currentCollisionType;}
+
+	private bool _isDragging = false;
+	public bool GetIsDragging() {return _isDragging;}
+	public void SetIsDragging(bool b) { _isDragging =b;}
+
+	GameObject box;
+	public void SetBox(GameObject o) {box = o;}
 
   public void Pause(bool pause)
   {
@@ -63,14 +70,36 @@ public class CellControl : MonoBehaviour{
     Vector3 lastTickPosition = transform.position;
     if(Input.GetKeyDown(mouseButtonCode))            
     {
-      _smooth = 1;
-    
-      Plane playerPlane = new Plane(Vector3.up, transform.position);            
-      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
-      
+		    _smooth = 1;
+			    
+			Plane playerPlane = new Plane(Vector3.up, transform.position);            
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
+			      
 			if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
-        _targetPosition = ray.GetPoint(_hitdist);
-      }
+				 _targetPosition = ray.GetPoint(_hitdist);
+		}
+
+			if(_isDragging)
+			{
+				box.GetComponent<PushableBox>().SetUsedClicked(true);
+				box.GetComponent<PushableBox>().Clicked();
+
+				if(_isDragging)
+				{
+					float angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
+					if(angle >=20f)
+					{
+						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
+
+						if (relativepoint.x < 0.0f)
+							angle = -angle;
+
+
+						DraggingMove(angle);
+					}
+				}
+			}
+
     }
 
     if(Vector3.zero == _inputMovement)
@@ -143,6 +172,13 @@ public class CellControl : MonoBehaviour{
       transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
     }
   }
+
+	private void DraggingMove(float angle) {
+		if(_isDragging)
+		{
+			transform.RotateAround(box.transform.position,new Vector3(0,1,0),angle);
+		}
+	}
 
   private void commonUpdate() {
     if(Vector3.zero != _inputMovement) {

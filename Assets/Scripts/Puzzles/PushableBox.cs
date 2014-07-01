@@ -17,6 +17,8 @@ public class PushableBox : MonoBehaviour {
 		private Color32 _nearColor;
 
 	private bool _playerIsNear = false;
+	private bool _usedClicked = false;			// if Clicked Fonction has already been used from outside the GO during the frame 
+	public void SetUsedClicked(bool b) {_usedClicked = b;}
 	
 	void Start(){
 		_initPos = transform.position;
@@ -38,7 +40,9 @@ public class PushableBox : MonoBehaviour {
 
 		if(col.gameObject == _control.gameObject && _willBeDragged && _control.GetCurrentCollisionType() == CellControl.RockCollisionType.Grab)
 		{
-			CreateHingeJoint(col);
+		//	CreateHingeJoint(col);
+			//CreateFixedJoint(col);
+			CreateSpringJoint(col);
 			UpdateDragStatusOnContact();
 		}
     if (col.collider){
@@ -84,9 +88,44 @@ public class PushableBox : MonoBehaviour {
 		{
 			gameObject.AddComponent<HingeJoint>();
 			hingeJoint.connectedBody = _control.rigidbody;
-		//	hingeJoint.anchor = col.contacts[0].point;
+			hingeJoint.anchor = Vector3.zero;
+			hingeJoint.autoConfigureConnectedAnchor = false;
+			hingeJoint.connectedAnchor = new Vector3(0,0,1);
 			hingeJoint.breakForce = Mathf.Infinity;
 			//hingeJoint.axis= new Vector3(0,1,0);
+			JointLimits limit = hingeJoint.limits;
+			limit.min = -30;
+			limit.max = 30;
+
+			hingeJoint.limits = limit;
+			hingeJoint.useLimits = true;
+		}
+	}
+
+	void CreateSpringJoint(Collision col)
+	{
+		if(_willBeDragged)
+		{
+			SpringJoint buffjoint = gameObject.AddComponent<SpringJoint>() as SpringJoint;
+			buffjoint.connectedBody = _control.rigidbody;
+			buffjoint.minDistance = transform.localScale.magnitude;
+			buffjoint.maxDistance = buffjoint.minDistance;
+			buffjoint.breakForce = Mathf.Infinity;
+			buffjoint.anchor = Vector3.zero;
+			_control.SetIsDragging(true);
+			_control.SetBox(gameObject);
+		}
+	}
+
+	void CreateFixedJoint(Collision col)
+	{
+		if(_willBeDragged)
+		{
+			FixedJoint buffjoint = gameObject.AddComponent<FixedJoint>() as FixedJoint;
+			//FixedJoint buffjoint = new FixedJoint();
+			buffjoint.connectedBody = _control.rigidbody;
+			buffjoint.breakForce = Mathf.Infinity;
+
 		}
 	}
 	
@@ -108,25 +147,20 @@ public class PushableBox : MonoBehaviour {
 		else if (!_willBeDragged && !_dragged) _willBeDragged = true;
 		else if (!_willBeDragged && _dragged) {
 			_dragged = false;
-			Destroy(hingeJoint);
+			Destroy(GetComponent<SpringJoint>() as SpringJoint);
+			_control.SetIsDragging(false);
+			_control.SetBox(null);
 		}
 	}
 	
 
-	void Clicked() {
+	public void Clicked() {
 
 		// if left-clicked 
-		if(Input.GetMouseButtonDown(0) && renderer.isVisible)
+		if(Input.GetMouseButtonDown(0) && renderer.isVisible && _playerIsNear)
 		{
-			Vector3 radius = transform.localScale;
-			Collider[] hitsColliders = Physics.OverlapSphere(transform.position,radius.sqrMagnitude*40);
-
-			// If Player is in a small area
-			if (System.Array.Find(hitsColliders,col => col == _control.collider))
-			    {
 					int i = 0 ;
 					bool isFound = false;
-					_playerIsNear = true;
 
 					RaycastHit[] hits;
 					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -143,11 +177,7 @@ public class PushableBox : MonoBehaviour {
 						}
 						i++;
 					}
-				}
-			else
-			{
-				_playerIsNear = false;
-			}
+
 
 
 
@@ -161,8 +191,11 @@ public class PushableBox : MonoBehaviour {
 			lazySafeGetCellControl(GameObject.Find("Perso"));
 		if(_control && _control.GetCurrentCollisionType() == CellControl.RockCollisionType.Grab)
 		{
-
-		  Clicked();
+			DetectProximity();
+			if(!_usedClicked)
+		    	Clicked();
+			else 
+				_usedClicked = false;
 			SwitchParticlesColor();
 		}
 	}
@@ -180,6 +213,31 @@ public class PushableBox : MonoBehaviour {
 			particleSystem.startColor = _normalColor;
 			particleSystem.startSize = 3f;
 		}
+	}
+
+	void DetectProximity ()
+	{
+		if(renderer.isVisible)
+		{
+			Vector3 radius = transform.localScale;
+			Collider[] hitsColliders = Physics.OverlapSphere(transform.position,radius.sqrMagnitude*40);
+			
+			// If Player is in a small area
+			if (System.Array.Find(hitsColliders,col => col == _control.collider))
+			{
+				if(!_playerIsNear)
+				{
+				_playerIsNear = true;
+				Logger.Log ("Near",Logger.Level.WARN);
+				}
+			}
+			else if (_playerIsNear)
+			{
+				_playerIsNear = false;
+				Logger.Log ("NotNear",Logger.Level.WARN);
+			}
+		}
+
 	}
 
 }
