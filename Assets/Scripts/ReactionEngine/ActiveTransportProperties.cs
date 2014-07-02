@@ -53,18 +53,11 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   public LinkedList<Product> products;  //!< The list of the products
   public float energyCost;              //!< Cost in energy for one reaction
   
-  
-  public override void initFromLoad(XmlNode node, object loader)
-  {
-    tryInstantiateFromXml(node, loader);
-  }
-  
   /*!
   \brief Load all the attributes of an ActiveTransportProperties.
   \param node The XmlNode corresponding to the <ATProp> </ATProp> node.
-  \param properties The properties to be initialized by this loading.
   */
-  public override bool tryInstantiateFromXml(XmlNode node, object loader)
+  public override bool tryInstantiateFromXml(XmlNode node)
   {
     Logger.Log("ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load", Logger.Level.INFO);
     
@@ -116,7 +109,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
         break;
       }
     }
-    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node, properties) loaded this="+this, Logger.Level.INFO);
+    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.INFO);
     return true;
   }
   

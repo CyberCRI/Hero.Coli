@@ -59,7 +59,7 @@ public class FileLoader : XmlLoader
 		{
       Debug.LogError("FileLoader::loadObjects objectNode="+Logger.ToString(objectNode));
 			T t = new T();
-      if(t.tryInstantiateFromXml(objectNode, null))
+      if(t.tryInstantiateFromXml(objectNode))
       {
         objectList.AddLast(t);
       }

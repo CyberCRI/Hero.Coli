@@ -23,7 +23,7 @@ public class ReactionSet : LoadableFromXmlImpl
   public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
 
   //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node, object loader)
+  protected override void innerInstantiateFromXml(XmlNode node)
   {
     _stringId = node.Attributes["id"].Value;
     reactions = new LinkedList<IReaction>();

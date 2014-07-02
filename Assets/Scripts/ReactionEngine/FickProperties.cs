@@ -27,18 +27,11 @@ public class FickProperties : LoadableFromXmlImpl
   public float surface  {get; set;}
   public float energyCost {get; set;}
 
-  public override void initFromLoad(XmlNode node, object loader)
-  {
-    tryInstantiateFromXml(node, loader);
-  }
-
-
   //! Create from an XML node a FickProperties.
   //! \param node The XML node
-  //! \param properties The Fick properties that will be initialized by this loading.
-    public override bool tryInstantiateFromXml(XmlNode node, object loader)
+    public override bool tryInstantiateFromXml(XmlNode node)
   {
-        Logger.Log("FickLoader.tryInstantiateFromXml("+node+", loader) will load", Logger.Level.DEBUG);
+        Logger.Log("FickLoader.tryInstantiateFromXml("+node+") will load", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -57,12 +50,12 @@ public class FickProperties : LoadableFromXmlImpl
           surface = float.Parse(attr.InnerText.Replace(",", "."));
           break;
         default:
-          Logger.Log ("FickProperties::tryInstantiateFromXml(node, loader) unexpected attribute "+attr.Name, Logger.Level.ERROR);
+          Logger.Log ("FickProperties::tryInstantiateFromXml(node) unexpected attribute "+attr.Name, Logger.Level.ERROR);
           return false;
       }
     }
 
-        Logger.Log("FickLoader.tryInstantiateFromXml(node, loader) loaded this="+this, Logger.Level.DEBUG);
+        Logger.Log("FickLoader.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
     return true;
   }
 }

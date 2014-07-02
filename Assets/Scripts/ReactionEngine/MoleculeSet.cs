@@ -33,7 +33,7 @@ public class MoleculeSet : LoadableFromXmlImpl
   }
     
   //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node, object loader)
+  protected override void innerInstantiateFromXml(XmlNode node)
   {
     Logger.Log ("MoleculeSet::innerInstantiateFromXml"
                   , Logger.Level.DEBUG);
@@ -44,7 +44,7 @@ public class MoleculeSet : LoadableFromXmlImpl
     foreach (XmlNode moleculeNode in node)
     {
       Molecule mol = new Molecule();
-      if(mol.tryInstantiateFromXml(moleculeNode, null))
+      if(mol.tryInstantiateFromXml(moleculeNode))
       {
         molecules.Add(mol);
       }

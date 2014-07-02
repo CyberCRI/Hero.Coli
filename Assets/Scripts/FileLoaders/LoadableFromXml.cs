@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface LoadableFromXml {
 
-  //LoadableFromXml(XmlNode node, string id, object loader);
+  //LoadableFromXml(XmlNode node, string id);
 
     /* TODO
 
@@ -28,15 +28,13 @@ public interface LoadableFromXml {
   string getTag();
 
   string getStringId();
-
-
-  //TODO merge two approaches
     
   //MoleculeSet, ReactionSet, FileLoader
-  bool tryInstantiateFromXml(XmlNode node, object loader);
+    //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
+  bool tryInstantiateFromXml(XmlNode node);
 
-  //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
-  void initFromLoad(XmlNode node, object loader);
+    //TODO Allostery, EnzymeReaction, InstantReaction, Promoter
+  
 }
 
 public class LoadableFromXmlImpl : LoadableFromXml {
@@ -57,7 +55,7 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     
     //warning: assumes that node contains correct information
     //implementation of LoadableFromXml interface
-    protected virtual void innerInstantiateFromXml(XmlNode node, object loader)
+    protected virtual void innerInstantiateFromXml(XmlNode node)
     {
       _stringId = node.Attributes["id"].Value;
     }
@@ -75,25 +73,19 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //checks that 'node' contains appropriate id information
     //TODO: check that 'node' contains appropriate additional
     //information for innerInstantiateFromXml
-    public virtual bool tryInstantiateFromXml(XmlNode node, object loader)
+    public virtual bool tryInstantiateFromXml(XmlNode node)
     {
         Debug.LogError("LoadableFromXml::tryInstantiateFromXml("+Logger.ToString(node)+")");
 
       if(isDataCorrect(node))
       {
-        innerInstantiateFromXml(node, loader);
+        innerInstantiateFromXml(node);
         return true;
       }
       else
       {
         return false;
       }
-    }
-
-    public virtual void initFromLoad(XmlNode node, object loader)
-    {
-        Logger.Log ("LoadableFromXmlImpl::initFromLoad NOT IMPLEMENTED "+ToString ()
-                    , Logger.Level.ERROR);
     }
 
   public override string ToString ()

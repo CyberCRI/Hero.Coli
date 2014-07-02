@@ -390,15 +390,6 @@ public class Medium : LoadableFromXmlImpl
     }
   }
 
-	public override void initFromLoad(XmlNode node, object loader)
-	{
-        Debug.LogError("Medium::initFromLoad starts");
-
-    tryInstantiateFromXml(node, null);
-
-        Debug.LogError("Medium::initFromLoad ends");
-	}
-
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// loading methods /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,23 +497,22 @@ public class Medium : LoadableFromXmlImpl
     /*!
     \brief This function create a new Medium based on the information in the given XML Node
     \param node The XmlNode to load.
-    \param medium The medium that will be initialized by this loading.
   */
-    public override bool tryInstantiateFromXml(XmlNode node, object loader)
+    public override bool tryInstantiateFromXml(XmlNode node)
     {
         Debug.LogError("Medium::tryInstantiateFromXml("+Logger.ToString(node)+") starts");
 
-        Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+", loader)", Logger.Level.DEBUG);
+        Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+")", Logger.Level.DEBUG);
         
         foreach (XmlNode attr in node)
         {
             if(null == attr)
             {
-                Debug.LogError("Medium::tryInstantiateFromXml(node, loader) attr=null");
+                Debug.LogError("Medium::tryInstantiateFromXml(node) attr=null");
                 continue;
             }
 
-            Debug.LogError("Medium::tryInstantiateFromXml(node, loader) attr="+attr.Name);
+            Debug.LogError("Medium::tryInstantiateFromXml(node) attr="+attr.Name);
 
             switch (attr.Name)
             {
@@ -550,7 +540,7 @@ public class Medium : LoadableFromXmlImpl
             }
         }
         
-        Logger.Log("Medium.tryInstantiateFromXml(node, loader) loaded this="+this, Logger.Level.DEBUG);
+        Logger.Log("Medium.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
 
         Debug.LogError("Medium::tryInstantiateFromXml ends");
 

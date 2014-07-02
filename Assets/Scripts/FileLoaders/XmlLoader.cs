@@ -72,7 +72,7 @@ public abstract class XmlLoaderImpl : XmlLoader
           {
             Debug.LogError("XmlLoaderImpl::loadObjects (node.Name == xmlTag)");
             T t = new T();
-            t.initFromLoad(node, this);
+            t.tryInstantiateFromXml(node);
             objectList.AddLast(t);
           }
         }

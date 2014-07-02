@@ -129,11 +129,11 @@ public class Molecule : LoadableFromXmlImpl
       _concentration = _newConcentration;
   }
 
-  public override bool tryInstantiateFromXml(XmlNode moleculeNode, object loader)
+  public override bool tryInstantiateFromXml(XmlNode moleculeNode)
   {
-        Debug.LogError("Molecule::tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader)");
+        Debug.LogError("Molecule::tryInstantiateFromXml("+Logger.ToString(moleculeNode)+")");
 
-      Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.INFO);
+      Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+")", Logger.Level.INFO);
       
       if (moleculeNode.Name == getTag())
       {
