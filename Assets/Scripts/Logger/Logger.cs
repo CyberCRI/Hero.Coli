@@ -116,13 +116,16 @@ public class Logger : MonoBehaviour {
   public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)
   {
     string resultString = "";
-    foreach(object obj in objects)
+    if(null != objects)
     {
-      if(!string.IsNullOrEmpty(resultString))
+      foreach(object obj in objects)
       {
-        resultString += ", ";
+        if(!string.IsNullOrEmpty(resultString))
+        {
+          resultString += ", ";
+        }
+        resultString += ((T)obj).ToString();
       }
-      resultString += ((T)obj).ToString();
     }
     resultString = typeName+"s["+resultString+"]";
     return resultString;

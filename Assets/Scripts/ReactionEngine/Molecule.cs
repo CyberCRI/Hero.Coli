@@ -48,6 +48,8 @@ public class Molecule : LoadableFromXmlImpl
   private bool _debug = false;
 
   //! Default constructor
+    public Molecule() : this(null) {}
+
   public Molecule(Molecule mol = null)
   {
     if (mol != null)

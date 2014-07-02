@@ -1,6 +1,8 @@
 using System;
 using System.Xml;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public interface LoadableFromXml {
 
@@ -30,11 +32,10 @@ public interface LoadableFromXml {
   string getStringId();
     
   //MoleculeSet, ReactionSet, FileLoader
-    //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
+  //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
   bool tryInstantiateFromXml(XmlNode node);
 
-    //TODO Allostery, EnzymeReaction, InstantReaction, Promoter
-  
+  //TODO Allostery, EnzymeReaction, InstantReaction, Promoter  
 }
 
 public class LoadableFromXmlImpl : LoadableFromXml {
@@ -95,4 +96,49 @@ public class LoadableFromXmlImpl : LoadableFromXml {
                               +"tag:"+_tag
                               +"]");
   }
+}
+
+
+
+public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl 
+  where T : LoadableFromXml, new()
+{
+    
+    protected ArrayList elementCollection;
+
+    protected virtual void otherInitialize(XmlNode node)
+    {
+        Debug.LogError("LoadableFromXml::otherInitialize("+Logger.ToString(node)+")");
+        _stringId = node.Attributes["id"].Value;
+        Debug.LogError("LoadableFromXml::otherInitialize now _stringId="+_stringId);
+    }
+
+  //warning: assumes that node contains correct information
+  protected override void innerInstantiateFromXml(XmlNode node)
+  {
+        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml("+Logger.ToString(node)+")"
+                    +" with elementCollection="+Logger.ToString<T>("T", elementCollection)
+                , Logger.Level.ERROR);
+    
+    otherInitialize(node);
+            
+    elementCollection = new ArrayList();
+    
+    foreach (XmlNode eltNode in node)
+    {
+      T elt = new T();
+      if(elt.tryInstantiateFromXml(eltNode))
+      {
+        elementCollection.Add(elt);
+      }
+      else
+      {
+        Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
+      }
+    }
+
+        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml ends with elements="+Logger.ToString<T>("T", elementCollection)
+                    +"from node="+Logger.ToString(node)
+                    , Logger.Level.ERROR);
+    }
 }
