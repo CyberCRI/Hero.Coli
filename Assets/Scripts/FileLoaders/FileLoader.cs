@@ -52,12 +52,9 @@ public class FileLoader : XmlLoader
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeList)
 	{
-        Debug.LogError("FileLoader::loadObjects("+Logger.ToString(objectNodeList)+")");
-
 		LinkedList<T> objectList = new LinkedList<T>();
 		foreach (XmlNode objectNode in objectNodeList)
 		{
-      Debug.LogError("FileLoader::loadObjects objectNode="+Logger.ToString(objectNode));
 			T t = new T();
       if(t.tryInstantiateFromXml(objectNode))
       {

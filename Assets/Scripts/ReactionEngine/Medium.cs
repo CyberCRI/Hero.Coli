@@ -427,8 +427,6 @@ public class Medium : LoadableFromXmlImpl
    */
     private bool loadEnergy(string value)
     {
-        Debug.LogError("Medium::loadEnergy starts");
-
         if (String.IsNullOrEmpty(value))
         {
             Debug.Log("Error: Empty Energy field. default value = 0");
@@ -436,8 +434,6 @@ public class Medium : LoadableFromXmlImpl
         }
         else
             setEnergy(float.Parse(value.Replace(",", ".")));
-
-        Debug.LogError("Medium::loadEnergy ends");
 
         return true;
     }
@@ -450,8 +446,6 @@ public class Medium : LoadableFromXmlImpl
    */
     private bool loadEnergyProductionRate(string value)
     {
-        Debug.LogError("Medium::loadEnergyProductionRate starts");
-
         float productionRate;
         
         if (String.IsNullOrEmpty(value))
@@ -462,8 +456,6 @@ public class Medium : LoadableFromXmlImpl
         else
             productionRate = float.Parse(value.Replace(",", ".")); 
         setEnergyProductionRate(productionRate);
-
-        Debug.LogError("Medium::loadEnergyProductionRate ends");
 
         return true;
     }
@@ -476,8 +468,6 @@ public class Medium : LoadableFromXmlImpl
    */
     private bool loadMaxEnergy(string value)
     {
-        Debug.LogError("Medium::loadMaxEnergy starts");
-
         float prodMax;
         
         if (String.IsNullOrEmpty(value))
@@ -489,8 +479,6 @@ public class Medium : LoadableFromXmlImpl
             prodMax = float.Parse(value.Replace(",", ".")); 
         setMaxEnergy(prodMax);
 
-        Debug.LogError("Medium::loadMaxEnergy ends");
-
         return true;
     }
     
@@ -500,19 +488,14 @@ public class Medium : LoadableFromXmlImpl
   */
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-        Debug.LogError("Medium::tryInstantiateFromXml("+Logger.ToString(node)+") starts");
-
         Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+")", Logger.Level.DEBUG);
         
         foreach (XmlNode attr in node)
         {
             if(null == attr)
             {
-                Debug.LogError("Medium::tryInstantiateFromXml(node) attr=null");
                 continue;
             }
-
-            Debug.LogError("Medium::tryInstantiateFromXml(node) attr="+attr.Name);
 
             switch (attr.Name)
             {
@@ -541,8 +524,6 @@ public class Medium : LoadableFromXmlImpl
         }
         
         Logger.Log("Medium.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
-
-        Debug.LogError("Medium::tryInstantiateFromXml ends");
 
         return true;
     }

@@ -249,18 +249,12 @@ public class ReactionEngine : MonoBehaviour {
                        +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
                        , Logger.Level.DEBUG);
 		}
-
-      Debug.LogError("ReactionEngine::Awake() work on mediums starts");
     
     foreach (string file in _mediumsFiles)
 		{
-      Debug.LogError("ReactionEngine::Awake() work on file "+file);
-
       LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file,"Medium");
 			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
 		}
-
-      Debug.LogError("ReactionEngine::Awake() work on mediums ends");
 
     foreach (Medium medium in _mediums)
     {

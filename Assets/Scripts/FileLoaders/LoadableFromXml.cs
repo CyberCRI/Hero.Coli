@@ -76,8 +76,6 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //information for innerInstantiateFromXml
     public virtual bool tryInstantiateFromXml(XmlNode node)
     {
-        Debug.LogError("LoadableFromXml::tryInstantiateFromXml("+Logger.ToString(node)+")");
-
       if(isDataCorrect(node))
       {
         innerInstantiateFromXml(node);
@@ -108,9 +106,7 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
 
     protected virtual void otherInitialize(XmlNode node)
     {
-        Debug.LogError("LoadableFromXml::otherInitialize("+Logger.ToString(node)+")");
-        _stringId = node.Attributes["id"].Value;
-        Debug.LogError("LoadableFromXml::otherInitialize now _stringId="+_stringId);
+      _stringId = node.Attributes["id"].Value;
     }
 
   //warning: assumes that node contains correct information
@@ -118,7 +114,7 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
   {
         Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml("+Logger.ToString(node)+")"
                     +" with elementCollection="+Logger.ToString<T>("T", elementCollection)
-                , Logger.Level.ERROR);
+                , Logger.Level.DEBUG);
     
     otherInitialize(node);
             
@@ -136,9 +132,5 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
         Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
       }
     }
-
-        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml ends with elements="+Logger.ToString<T>("T", elementCollection)
-                    +"from node="+Logger.ToString(node)
-                    , Logger.Level.ERROR);
-    }
+  }
 }
