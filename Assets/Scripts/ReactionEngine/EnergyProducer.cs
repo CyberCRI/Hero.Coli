@@ -9,7 +9,7 @@ using UnityEngine;
   of production of ATP.
   This class only create ATP without consuming anything else. If you want to implement the
   real reactions you can create a new reaction that inherit from IReaction class.
-  \author Pierre COLLET
+  
  */
 public class ATPProducer : IReaction
 {

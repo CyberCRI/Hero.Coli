@@ -6,52 +6,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
- \brief This class is a king of descriptor of ActiveTransportReaction
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
- \sa ActiveTransport
- \sa ActiveTransportReaction
- */
-public class ActiveTransportProperties : LoadableFromXmlImpl
-{
-  public string name;
-  public int mediumId;                    //!< The Medium where the reaction will be executed
-  public int srcMediumId;            //!< The source medium for the transport
-  public int dstMediumId;            //!< The destination medium for the transport
-  public string substrate;            //!< The substrate of the reaction
-  public string enzyme;               //!< The enzyme of the reaction
-  public float Kcat;                  //!< The affinity between the substrate and the enzyme coefficient
-  public string  effector;            //!< The effector of the reaction
-  public float alpha;                 //!< Alpha descriptor of the effector
-  public float beta;                  //!< Beta descriptor of the effector
-  public float Km;                    //!< Affinity coefficient between substrate and enzyme
-  public float Ki;                    //!< Affinity coefficient between effector and enzyme
-  public LinkedList<Product> products;  //!< The list of the products
-  public float energyCost;              //!< Cost in energy for one reaction
-
-  public override void initFromLoad(XmlNode node, object loader)
-  {
-        ((ActiveTransportLoader)loader).loadActiveTransportProperties(node, this);
-  }
-}
-
-/*!
  \brief This class manages all the Active Transport reaction
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  */
-public class ActiveTransport {
-
-  private ActiveTransportLoader                 _loader;        //!< The file loader that reads properties from files
-
-  //! Default Constructor
-  public ActiveTransport()
+public class ActiveTransport : XmlLoaderImpl
+{    
+    
+  public override string xmlTag
   {
-    _loader = new ActiveTransportLoader();
+    get
+    {
+      return "ATProp";
+    }
   }
 
   /*!
-   \brief Load a list of propieties in order to convert it into a ActiveTransportReaction
+   \brief Load a list of properties in order to convert it into a ActiveTransportReaction
    \param props The list of ActiveTransportProperties
    \param mediums The list of mediums
    */
@@ -77,28 +48,27 @@ public class ActiveTransport {
           reaction.addProduct(p);
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);
         if (med == null)
-          {
-            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
-            break;
-          }
+        {
+          Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
+          break;
+        }
         reaction.setSrcMedium(med);
         med = ReactionEngine.getMediumFromId(prop.dstMediumId, mediums);
-        if (med == null)
+            if (med == null)
           {
             Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.dstMediumId + " is unknown.");
             break;
           }
         reaction.setDstMedium(med);
         med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
-        if (med == null)
+            if (med == null)
           {
             Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.mediumId + " is unknown.");
             break;
           }
         reaction.setMedium(med);
-        med.addReaction(reaction);
-        //         _reactions.AddLast(reaction);
-     }
+            med.addReaction(reaction);
+        }
   }
 
   /*!
@@ -106,9 +76,46 @@ public class ActiveTransport {
    \param filesPaths All the files to be loaded.
    \params mediums The list of all mediums.
    */
-  public  void loadActiveTransportReactionsFromFiles(IEnumerable filesPaths, LinkedList<Medium> mediums)
+  public  void loadActiveTransportReactionsFromFiles(IEnumerable<string> filesPaths, LinkedList<Medium> mediums)
   {
-    LinkedList<ActiveTransportProperties> properties = _loader.getActiveTransportPropertiesFromFiles(filesPaths);
-    loadActiveTransportReactionsFromProperties(properties, mediums);
-  }
+        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles starting", Logger.Level.DEBUG);
+
+    LinkedList<ActiveTransportProperties> properties = getActiveTransportPropertiesFromFiles(filesPaths);
+        loadActiveTransportReactionsFromProperties(properties, mediums);    
+        
+        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles ends"
+                    ,Logger.Level.DEBUG);
+    }
+    
+    
+    
+    /*!
+    \brief Load all the properties from multiple files
+    \param files All the files
+    \return A list of all the properties
+   */
+    public LinkedList<ActiveTransportProperties> getActiveTransportPropertiesFromFiles(IEnumerable<string> files)
+    {
+        
+        Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
+                    +Logger.EnumerableToString<string>(files)
+                    +") starts"
+                    ,Logger.Level.DEBUG);
+
+        LinkedList<ActiveTransportProperties> propsList = new LinkedList<ActiveTransportProperties>();
+        LinkedList<ActiveTransportProperties> newPropList;
+        
+        foreach (string file in files)
+        {
+          newPropList = loadObjectsFromFile<ActiveTransportProperties>(file,"activeTransports");
+          LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);
+        }
+        
+        Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
+                    +Logger.EnumerableToString<string>(files)
+                    +") returns "+Logger.ToString<ActiveTransportProperties>(propsList)
+                    ,Logger.Level.DEBUG);
+
+        return propsList;
+    }
 }

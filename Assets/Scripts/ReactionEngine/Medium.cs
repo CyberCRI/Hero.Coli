@@ -7,14 +7,14 @@ using System.Collections.Generic;
   \brief This class represents a Medium
   \details
   A Medium is an area closed by a something that is permeable or not.
-  Each Medium contains a list of molecules wich contains the concentration of
+  Each Medium contains a list of molecules which contains the concentration of
   each kind of molecules.
   Each Medium also has a list of reactions.
   You can define molecule diffusion between mediums with Fick or ActiveTransport.
   \sa Fick
   \sa ActiveTransport
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
 */
 using System.Xml;
 
@@ -114,7 +114,7 @@ public class Medium : LoadableFromXmlImpl
    */
   public void addReaction(IReaction reaction)
   {
-    Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
+    //Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
     if (reaction != null)
     {
       reaction.setMedium(this);
@@ -124,6 +124,7 @@ public class Medium : LoadableFromXmlImpl
     }
     else
       Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
+
   }
 
   /* !
@@ -389,23 +390,172 @@ public class Medium : LoadableFromXmlImpl
     }
   }
 
-	public override void initFromLoad(XmlNode node, object loader)
-	{
-    ((MediumLoader)loader).loadMedium(node, this);
-	}
 
-    public override string ToString ()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// loading methods /////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*! 
+     *  \brief     Load medium files
+     *  \details   This class loads everything about mediums from medium files
+     A medium file should respect this syntax :
+
+            <Mediums>
+              <Medium type="Cellia">
+                <Id>01</Id>                                         -> Unique ID of the medium
+                <Name>Cellia</Name>                                 -> Name of the medium
+                <ReactionSet>CelliaReactions</ReactionSet>        -> ReactionSet to load in the medium
+                <MoleculeSet>CelliaMolecules</MoleculeSet>        -> MoleculeSet to load in the medium
+                <Energy>1000</Energy>                               -> Initial Energy
+                <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
+                <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
+              </Medium>
+            </Mediums>
+
+     *  
+     *  \sa ReactionSet
+     *  \sa MoleculeSet
+     *  \sa Medium
+     */
+
+    public override string getTag() {return "Medium";}
+    
+    /*!
+    \brief This function load the initial energy of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadEnergy(string value)
+    {
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty Energy field. default value = 0");
+            setEnergy(0f);
+        }
+        else
+            setEnergy(float.Parse(value.Replace(",", ".")));
+
+        return true;
+    }
+    
+    /*!
+    \brief This function load the energy production rate of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadEnergyProductionRate(string value)
+    {
+        float productionRate;
+        
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            productionRate = 0f;
+        }
+        else
+            productionRate = float.Parse(value.Replace(",", ".")); 
+        setEnergyProductionRate(productionRate);
+
+        return true;
+    }
+    
+    /*!
+    \brief This function load the maximum energy in the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadMaxEnergy(string value)
+    {
+        float prodMax;
+        
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            prodMax = 0f;
+        }
+        else
+            prodMax = float.Parse(value.Replace(",", ".")); 
+        setMaxEnergy(prodMax);
+
+        return true;
+    }
+    
+    /*!
+    \brief This function create a new Medium based on the information in the given XML Node
+    \param node The XmlNode to load.
+  */
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+        Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+")", Logger.Level.DEBUG);
+        
+        foreach (XmlNode attr in node)
+        {
+            if(null == attr)
+            {
+                continue;
+            }
+
+            switch (attr.Name)
+            {
+              case "Id":
+                setId(Convert.ToInt32(attr.InnerText));
+                break;
+              case "Name":
+                setName(attr.InnerText);
+                break;
+              case "Energy":
+                loadEnergy(attr.InnerText);
+                break;
+              case "EnergyProductionRate":
+                loadEnergyProductionRate(attr.InnerText);
+                break;
+              case "MaxEnergy":
+                loadMaxEnergy(attr.InnerText);
+                break;
+              case "ReactionSet":
+                setReactionSet(attr.InnerText);
+                break;
+              case "MoleculeSet":
+                setMoleculeSet(attr.InnerText);
+                break;
+            }
+        }
+        
+        Logger.Log("Medium.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
+
+        return true;
+    }
+
+
+
+
+  public override string ToString ()
   {
     
-        string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
-        string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
+        string moleculeString = null == _molecules? "" : _molecules.Count.ToString();
+        string reactionString = null == _reactions? "" : _reactions.Count.ToString();
 
     return string.Format ("[Medium "
-                              +"name:"+_name
-                              +"; id:"+_numberId
-                              +"; molecules:"+moleculeString
-                              +"; reactions:"+reactionString
-                              +"]");
+                          +"name:"+_name
+                          +"; id:"+_numberId
+                          +"; molecules:"+moleculeString
+                          +"; reactions:"+reactionString
+                          +"]");
   }
-
+    
+  public string ToStringDetailed ()
+  {
+      
+      string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
+      string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
+      
+      return string.Format ("[Medium "
+                            +"name:"+_name
+                            +"; id:"+_numberId
+                            +"; molecules:"+moleculeString
+                            +"; reactions:"+reactionString
+                            +"]");
+  }
 }

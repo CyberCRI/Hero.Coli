@@ -81,25 +81,55 @@ public class Logger : MonoBehaviour {
 
   //TODO optimize
   public static string ToString<T>(ICollection<T> objects, string separator = defaultSeparator) {
-    T[] array = new T[objects.Count];
-    objects.CopyTo(array, 0);
-    return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
+    if(null != objects && 0 != objects.Count)
+    {
+      T[] array = new T[objects.Count];
+      objects.CopyTo(array, 0);
+      return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
+    }
+    else
+    {
+      return "null";
+    }
+  }
+
+  public static string EnumerableToString<T>(IEnumerable<T> objects, string separator = defaultSeparator) {
+    if(null != objects)
+    {
+      string result = "";
+      foreach(T elt in objects)
+      {
+        if(!string.IsNullOrEmpty(result))
+        {
+          result += ", ";
+        }
+        result += elt.ToString();
+      }
+      return result;
+    }
+    else
+    {
+        return "null";
+    }
   }
     
-    public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)
+  public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)
+  {
+    string resultString = "";
+    if(null != objects)
     {
-        string resultString = "";
-        foreach(object obj in objects)
+      foreach(object obj in objects)
+      {
+        if(!string.IsNullOrEmpty(resultString))
         {
-            if(!string.IsNullOrEmpty(resultString))
-            {
-                resultString += ", ";
-            }
-            resultString += ((T)obj).ToString();
+          resultString += ", ";
         }
-        resultString = typeName+"s["+resultString+"]";
-        return resultString;
+        resultString += ((T)obj).ToString();
+      }
     }
+    resultString = typeName+"s["+resultString+"]";
+    return resultString;
+  }
 
   public static string ToString<T>(TreeNode<T> tree, string separator = defaultSeparator) {
 		if(tree==null) {
@@ -145,6 +175,18 @@ public class Logger : MonoBehaviour {
       return sw.ToString();
     }
   }
+
+    public static string ToString(System.Xml.XmlNodeList list, int indentation = 0)
+    {
+        string result = "";
+        foreach(System.Xml.XmlNode node in list)
+        {
+            result += ToString(node, indentation);
+        }
+
+        result = "XmlNodeList[" + result + "]";
+        return result;
+    }
 
 	
   private static void pushMessage(string msg) {

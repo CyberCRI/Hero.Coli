@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Xml;
 
 /*!
-  \brief This class load all enzymatics reactions from a file
-  \detail A enzymatic reaction should be declared by respecting this convention :
+  \brief This class loads all enzymatic reactions from a file
+  \detail A enzymatic reaction should be declared by respecting this convention:
 
         <enzyme>
           <name>ER</name>                   -> Name of the reaction
@@ -23,7 +23,7 @@ using System.Xml;
           </Products>
         </enzyme>
 
-  \author Pierre COLLET
+  
   \sa EnzymeReaction
  */
 public class EnzymeReactionLoader

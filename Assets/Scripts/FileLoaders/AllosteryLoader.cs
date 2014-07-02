@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Xml;
 
 /*!
-\brief This class load all the allostery reactions
-\details A allostery's reaction's declaration should respect this synthax :
+\brief This class loads all the allostery reactions
+\details A allostery's reaction's declaration should respect this syntax :
 
     <allostery>
       <name>inhibitLacI</name>
@@ -18,7 +18,7 @@ using System.Xml;
     </allostery>
 
 \sa Allostery
-\author Pierre COLLET
+
 */
 public class AllosteryLoader
 {

@@ -8,13 +8,13 @@ using System.Collections.Generic;
 
 /*!
   \brief This class contains some useful functions
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 class Tools
 {
   /*!
-    \brief Clean a string by removing space tab and return characters at it begining and at it end
+    \brief Clean a string by removing space tab and return characters at its begining and at its end
     \param str The string to clean.
    */
   static public string epurStr(string str)

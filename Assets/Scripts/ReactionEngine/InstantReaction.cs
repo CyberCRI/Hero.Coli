@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 /*!
   \brief Describe an InstantReaction. This class can be loaded by the ReactionEngine
-  \author Pierre COLLET
+  
  */
 public class InstantReactionProperties
 {
@@ -23,8 +23,8 @@ public class InstantReactionProperties
   see react() method for more details.
 
   \sa react()
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
   */
 public class InstantReaction : IReaction
 {

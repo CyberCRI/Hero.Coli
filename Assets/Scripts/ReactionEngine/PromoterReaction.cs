@@ -6,7 +6,7 @@ using UnityEngine;
 
 /*!
   \brief This class represent a PromoterReaction and can be loaded by the simulator.
-  \author Pierre COLLET
+  
   \sa PromoterReaction
  */
 public class PromoterProperties
@@ -39,7 +39,7 @@ public class PromoterProperties
  *  \details   This class manage all the promoter reactions
 
  A promoter reaction represent the behaviour of a promoter and of the transcription that it manage (Device).
- The promoter responds to a logic input function that should respect the synthax below.
+ The promoter responds to a logic input function that should respect the syntax below.
 
  Input function:
  ==============
@@ -148,12 +148,12 @@ To see how the calculus is done, refer you to the react() function of this class
 
 \attention To understand how to build a PromoterReaction refer you to the PromoterLoader class
 
-\author    Pierre COLLET
-\mail pierre.collet91@gmail.com
+
+
  */
 public class PromoterReaction : IReaction
 {
-  private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 wich correspond to 0% to 100%)
+  private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
   private TreeNode<PromoterNodeData> _formula;          //! The formula describe in the detailled description
   protected float _beta;                                //! The maximal production of the promoter
 
@@ -234,7 +234,7 @@ public class PromoterReaction : IReaction
 
   /*!
     \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
-    \param props The PromoterProperties wich will serve to create the reaction
+    \param props The PromoterProperties which will serve to create the reaction
     \return Return the new reaction or null if it fail.
    */
   public static IReaction       buildPromoterFromProps(PromoterProperties props)
@@ -336,7 +336,7 @@ public class PromoterReaction : IReaction
     Execute a Node of type : Num
     \param node The node of the tree to execute
     \param molecules The list of molecules
-    \return The value that contain the node
+    \return The value that contains the node
   */
   private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {

@@ -1,20 +1,41 @@
 using System;
 using System.Xml;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public interface LoadableFromXml {
-    
+
+  //LoadableFromXml(XmlNode node, string id);
+
+    /* TODO
+
+  //getTag
+  //property
+  abstract string xmlTag
+  {
+    get;
+  }
+
+  //getStringId
+  //property
+  public abstract string stringId
+  {
+      get;
+  }
+  
+  */
+
+
   string getTag();
 
   string getStringId();
-
-
-  //TODO merge two approaches
-
+    
   //MoleculeSet, ReactionSet, FileLoader
-  void initializeFromXml(XmlNode node, string id);
+  //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
+  bool tryInstantiateFromXml(XmlNode node);
 
-  //ActiveTransportLoader, FickLoader, MediumLoader, XmlLoaderImpl
-  void initFromLoad(XmlNode node, object loader);
+  //TODO Allostery, EnzymeReaction, InstantReaction, Promoter  
 }
 
 public class LoadableFromXmlImpl : LoadableFromXml {
@@ -25,30 +46,45 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //implementation of LoadableFromXml interface
     public virtual string getTag()
     {
-        return _tag;
+      return _tag;
     }
 
     public virtual string getStringId()
     {
-        return _stringId;
+      return _stringId;
     }
-
+    
+    //warning: assumes that node contains correct information
     //implementation of LoadableFromXml interface
-    //
-    //TODO implement default XML loader that takes tag
-    // and then applies loader to all xml node elements
-    // that had this tag
-    public virtual void initializeFromXml(XmlNode node, string id)
+    protected virtual void innerInstantiateFromXml(XmlNode node)
     {
-        Logger.Log ("LoadableFromXmlImpl::initializeFromXml NOT IMPLEMENTED "+ToString()
-                    , Logger.Level.ERROR);
-        _stringId = id;
+      _stringId = node.Attributes["id"].Value;
     }
 
-    public virtual void initFromLoad(XmlNode node, object loader)
+    protected bool isIdDataCorrect(XmlNode node)
     {
-        Logger.Log ("LoadableFromXmlImpl::initFromLoad NOT IMPLEMENTED "+ToString ()
-                    , Logger.Level.ERROR);
+      return ((null != node) && (null != node.Attributes["id"]) && !string.IsNullOrEmpty(node.Attributes["id"].Value));
+    }
+
+    protected virtual bool isDataCorrect(XmlNode node)
+    {
+      return isIdDataCorrect(node);
+    }
+
+    //checks that 'node' contains appropriate id information
+    //TODO: check that 'node' contains appropriate additional
+    //information for innerInstantiateFromXml
+    public virtual bool tryInstantiateFromXml(XmlNode node)
+    {
+      if(isDataCorrect(node))
+      {
+        innerInstantiateFromXml(node);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
 
   public override string ToString ()
@@ -57,5 +93,44 @@ public class LoadableFromXmlImpl : LoadableFromXml {
                               +"id:"+_stringId+";"
                               +"tag:"+_tag
                               +"]");
+  }
+}
+
+
+
+public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl 
+  where T : LoadableFromXml, new()
+{
+    
+    protected ArrayList elementCollection;
+
+    protected virtual void otherInitialize(XmlNode node)
+    {
+      _stringId = node.Attributes["id"].Value;
+    }
+
+  //warning: assumes that node contains correct information
+  protected override void innerInstantiateFromXml(XmlNode node)
+  {
+        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml("+Logger.ToString(node)+")"
+                    +" with elementCollection="+Logger.ToString<T>("T", elementCollection)
+                , Logger.Level.DEBUG);
+    
+    otherInitialize(node);
+            
+    elementCollection = new ArrayList();
+    
+    foreach (XmlNode eltNode in node)
+    {
+      T elt = new T();
+      if(elt.tryInstantiateFromXml(eltNode))
+      {
+        elementCollection.Add(elt);
+      }
+      else
+      {
+        Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
+      }
+    }
   }
 }

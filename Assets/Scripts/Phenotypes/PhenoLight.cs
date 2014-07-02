@@ -6,8 +6,8 @@ using System;
 /*!
  \brief A phenotype class that represent a light reaction in function of the concentration in Water (H2O)
  in the Medium
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  */
 public class PhenoLight : Phenotype {
 

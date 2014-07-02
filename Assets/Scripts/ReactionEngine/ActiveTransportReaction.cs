@@ -10,8 +10,8 @@ using System.Collections.Generic;
   \details This reaction is the same reaction as an EnzymeReaction but the Substrate
   is consumed in a Medium and release in another one.
   \sa EnzymeReaction
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 public class ActiveTransportReaction : EnzymeReaction
 {
