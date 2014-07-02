@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml;
 
 /*!
-\brief This class load all the allostery reactions
+\brief This class loads all the allostery reactions
 \details A allostery's reaction's declaration should respect this syntax :
 
     <allostery>

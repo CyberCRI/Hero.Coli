@@ -336,7 +336,7 @@ public class PromoterReaction : IReaction
     Execute a Node of type : Num
     \param node The node of the tree to execute
     \param molecules The list of molecules
-    \return The value that contain the node
+    \return The value that contains the node
   */
   private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
   {

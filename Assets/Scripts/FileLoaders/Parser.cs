@@ -630,7 +630,7 @@ public class PromoterParser
     \brief This function pretty print the tree for debugging.
     \details The syntax of this pretty print function can be given to dot (graphiz)
     \param tree The tree to pretty print
-    \return Return a string that contain the text
+    \return Return a string that contains the text
   */
   public string PPTree(TreeNode<PromoterNodeData> tree)
   {

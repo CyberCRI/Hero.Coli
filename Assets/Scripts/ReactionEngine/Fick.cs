@@ -5,7 +5,7 @@ using System.Collections;
 
 /*!
  *  \brief     The class that manage all the diffusions reactions using Fick model.
- *  \details   This class initialize from files and execute all the FickReaction.
+ *  \details   This class initializes from files and execute all the FickReaction.
  *  
  *  
  */

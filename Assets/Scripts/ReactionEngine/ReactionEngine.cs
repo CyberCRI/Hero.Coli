@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 //!
 /*!
- *  \brief     The main class that compute all the reactions.
- *  \details     This class initialize from files and execute all the reactions.
+ *  \brief     The main class that computes all the reactions.
+ *  \details     This class initializes from files and execute all the reactions.
  The reactions that are currently implemented are :
 
  - Degradation
@@ -180,7 +180,7 @@ public class ReactionEngine : MonoBehaviour {
     return _mediums;
   }
 
-  //! Return an ArrayList that contain all the differents molecules an list of MoleculeSet
+  //! Return an ArrayList that contains all the differents molecules an list of MoleculeSet
   /*!
       \param list the list of MoleculeSet
   */
@@ -249,21 +249,27 @@ public class ReactionEngine : MonoBehaviour {
                        +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
                        , Logger.Level.DEBUG);
 		}
-    MediumLoader mediumLoader = new MediumLoader();
+
+      Debug.LogError("ReactionEngine::Awake() work on mediums starts");
+    
     foreach (string file in _mediumsFiles)
 		{
-			LinkedList<Medium> lmed = mediumLoader.loadObjectsFromFile<Medium>(file,"Mediums");
+      Debug.LogError("ReactionEngine::Awake() work on file "+file);
+
+      LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file,"Medium");
 			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
 		}
 
+      Debug.LogError("ReactionEngine::Awake() work on mediums ends");
+
     foreach (Medium medium in _mediums)
-      {
-        medium.Init(_reactionsSets, _moleculesSets);
-        medium.enableSequential(enableSequential);
-        medium.enableNoise(enableNoise);
-        medium.enableEnergy(enableEnergy);
-        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
-      }
+    {
+      medium.Init(_reactionsSets, _moleculesSets);
+      medium.enableSequential(enableSequential);
+      medium.enableNoise(enableNoise);
+      medium.enableEnergy(enableEnergy);
+      medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+    }
 
         Logger.Log("ReactionEngine::Awake() FickReactions starting", Logger.Level.INFO);
 

@@ -131,6 +131,8 @@ public class Molecule : LoadableFromXmlImpl
 
   public override bool tryInstantiateFromXml(XmlNode moleculeNode, object loader)
   {
+        Debug.LogError("Molecule::tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader)");
+
       Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader)", Logger.Level.INFO);
       
       if (moleculeNode.Name == getTag())

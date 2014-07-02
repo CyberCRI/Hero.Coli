@@ -173,6 +173,18 @@ public class Logger : MonoBehaviour {
     }
   }
 
+    public static string ToString(System.Xml.XmlNodeList list, int indentation = 0)
+    {
+        string result = "";
+        foreach(System.Xml.XmlNode node in list)
+        {
+            result += ToString(node, indentation);
+        }
+
+        result = "XmlNodeList[" + result + "]";
+        return result;
+    }
+
 	
   private static void pushMessage(string msg) {
     _singleton._messages.Add(msg);

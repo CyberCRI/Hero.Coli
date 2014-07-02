@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using UnityEngine;
 
 public interface LoadableFromXml {
 
@@ -34,7 +35,7 @@ public interface LoadableFromXml {
   //MoleculeSet, ReactionSet, FileLoader
   bool tryInstantiateFromXml(XmlNode node, object loader);
 
-  //ActiveTransport, FickLoader, MediumLoader, XmlLoaderImpl
+  //ActiveTransport, FickLoader, Medium, XmlLoaderImpl
   void initFromLoad(XmlNode node, object loader);
 }
 
@@ -76,6 +77,8 @@ public class LoadableFromXmlImpl : LoadableFromXml {
     //information for innerInstantiateFromXml
     public virtual bool tryInstantiateFromXml(XmlNode node, object loader)
     {
+        Debug.LogError("LoadableFromXml::tryInstantiateFromXml("+Logger.ToString(node)+")");
+
       if(isDataCorrect(node))
       {
         innerInstantiateFromXml(node, loader);

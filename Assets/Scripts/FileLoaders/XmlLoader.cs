@@ -13,11 +13,16 @@ public abstract class XmlLoader
 		where T : LoadableFromXml,  new()
 			
 	{
+        Debug.LogError("XmlLoader::loadObjectsFromFile("+filePath+", "+tag+")");
+
+
 		LinkedList<T> objectList;
 
 		XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
 
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
+
+        Debug.LogError("objectNodeLists="+Logger.ToString (objectNodeLists));
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" will load from "+filePath
                     , Logger.Level.INFO);
@@ -46,6 +51,8 @@ public abstract class XmlLoaderImpl : XmlLoader
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
       //where T : LoadableFromXml, new()
   {
+        Debug.LogError("XmlLoaderImpl::loadObjects("+Logger.ToString (objectNodeLists)+")");
+
         Logger.Log ("XmlLoaderImpl::loadObjects with tag="+xmlTag+" will load"
                     , Logger.Level.INFO);
 
@@ -53,12 +60,17 @@ public abstract class XmlLoaderImpl : XmlLoader
 
       foreach (XmlNode nodes in objectNodeLists)
       {
+            Debug.LogError("XmlLoaderImpl::loadObjects nodes="+Logger.ToString(nodes));
+
         SpecificLog(nodes);
         foreach (XmlNode node in nodes)
         {
+                Debug.LogError("XmlLoaderImpl::loadObjects node="+Logger.ToString(node));
+
           SpecificLog(node, 1);
           if (node.Name == xmlTag)
           {
+            Debug.LogError("XmlLoaderImpl::loadObjects (node.Name == xmlTag)");
             T t = new T();
             t.initFromLoad(node, this);
             objectList.AddLast(t);

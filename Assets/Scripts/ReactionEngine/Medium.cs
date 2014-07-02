@@ -392,8 +392,173 @@ public class Medium : LoadableFromXmlImpl
 
 	public override void initFromLoad(XmlNode node, object loader)
 	{
-    ((MediumLoader)loader).loadMedium(node, this);
+        Debug.LogError("Medium::initFromLoad starts");
+
+    tryInstantiateFromXml(node, null);
+
+        Debug.LogError("Medium::initFromLoad ends");
 	}
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// loading methods /////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*! 
+     *  \brief     Load medium files
+     *  \details   This class loads everything about mediums from medium files
+     A medium file should respect this syntax :
+
+            <Mediums>
+              <Medium type="Cellia">
+                <Id>01</Id>                                         -> Unique ID of the medium
+                <Name>Cellia</Name>                                 -> Name of the medium
+                <ReactionSet>CelliaReactions</ReactionSet>        -> ReactionSet to load in the medium
+                <MoleculeSet>CelliaMolecules</MoleculeSet>        -> MoleculeSet to load in the medium
+                <Energy>1000</Energy>                               -> Initial Energy
+                <MaxEnergy>2000</MaxEnergy>                         -> Maximal energy
+                <EnergyProductionRate>10</EnergyProductionRate>     -> The energy production speed
+              </Medium>
+            </Mediums>
+
+     *  
+     *  \sa ReactionSet
+     *  \sa MoleculeSet
+     *  \sa Medium
+     */
+
+    public override string getTag() {return "Medium";}
+    
+    /*!
+    \brief This function load the initial energy of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadEnergy(string value)
+    {
+        Debug.LogError("Medium::loadEnergy starts");
+
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty Energy field. default value = 0");
+            setEnergy(0f);
+        }
+        else
+            setEnergy(float.Parse(value.Replace(",", ".")));
+
+        Debug.LogError("Medium::loadEnergy ends");
+
+        return true;
+    }
+    
+    /*!
+    \brief This function load the energy production rate of the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadEnergyProductionRate(string value)
+    {
+        Debug.LogError("Medium::loadEnergyProductionRate starts");
+
+        float productionRate;
+        
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            productionRate = 0f;
+        }
+        else
+            productionRate = float.Parse(value.Replace(",", ".")); 
+        setEnergyProductionRate(productionRate);
+
+        Debug.LogError("Medium::loadEnergyProductionRate ends");
+
+        return true;
+    }
+    
+    /*!
+    \brief This function load the maximum energy in the medium and parse the validity of the given string
+    \param value The value to parse and load
+    \param med The medium to initialize
+    \return Return true if the function succed to parse the string or false else
+   */
+    private bool loadMaxEnergy(string value)
+    {
+        Debug.LogError("Medium::loadMaxEnergy starts");
+
+        float prodMax;
+        
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            prodMax = 0f;
+        }
+        else
+            prodMax = float.Parse(value.Replace(",", ".")); 
+        setMaxEnergy(prodMax);
+
+        Debug.LogError("Medium::loadMaxEnergy ends");
+
+        return true;
+    }
+    
+    /*!
+    \brief This function create a new Medium based on the information in the given XML Node
+    \param node The XmlNode to load.
+    \param medium The medium that will be initialized by this loading.
+  */
+    public override bool tryInstantiateFromXml(XmlNode node, object loader)
+    {
+        Debug.LogError("Medium::tryInstantiateFromXml("+Logger.ToString(node)+") starts");
+
+        Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+", loader)", Logger.Level.DEBUG);
+        
+        foreach (XmlNode attr in node)
+        {
+            if(null == attr)
+            {
+                Debug.LogError("Medium::tryInstantiateFromXml(node, loader) attr=null");
+                continue;
+            }
+
+            Debug.LogError("Medium::tryInstantiateFromXml(node, loader) attr="+attr.Name);
+
+            switch (attr.Name)
+            {
+              case "Id":
+                setId(Convert.ToInt32(attr.InnerText));
+                break;
+              case "Name":
+                setName(attr.InnerText);
+                break;
+              case "Energy":
+                loadEnergy(attr.InnerText);
+                break;
+              case "EnergyProductionRate":
+                loadEnergyProductionRate(attr.InnerText);
+                break;
+              case "MaxEnergy":
+                loadMaxEnergy(attr.InnerText);
+                break;
+              case "ReactionSet":
+                setReactionSet(attr.InnerText);
+                break;
+              case "MoleculeSet":
+                setMoleculeSet(attr.InnerText);
+                break;
+            }
+        }
+        
+        Logger.Log("Medium.tryInstantiateFromXml(node, loader) loaded this="+this, Logger.Level.DEBUG);
+
+        Debug.LogError("Medium::tryInstantiateFromXml ends");
+
+        return true;
+    }
+
+
+
 
   public override string ToString ()
   {

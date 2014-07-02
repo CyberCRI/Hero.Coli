@@ -4,7 +4,7 @@ using System.Xml;
 using System.Collections.Generic;
 
 /*!
-  \brief This class load promoters reactions from xml files
+  \brief This class loads promoters reactions from xml files
   \details
 
 A PromoterReaction should respect this syntax:

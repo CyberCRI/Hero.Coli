@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 
 /*!
-  \brief This class load all the files needed by the reaction Engine
+  \brief This class loads all the files needed by the reaction Engine
   \sa PromoterLoader
   \sa EnzymeReactionLoader
   \sa AllosteryLoader
@@ -52,9 +52,12 @@ public class FileLoader : XmlLoader
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeList)
 	{
+        Debug.LogError("FileLoader::loadObjects("+Logger.ToString(objectNodeList)+")");
+
 		LinkedList<T> objectList = new LinkedList<T>();
 		foreach (XmlNode objectNode in objectNodeList)
 		{
+      Debug.LogError("FileLoader::loadObjects objectNode="+Logger.ToString(objectNode));
 			T t = new T();
       if(t.tryInstantiateFromXml(objectNode, null))
       {
