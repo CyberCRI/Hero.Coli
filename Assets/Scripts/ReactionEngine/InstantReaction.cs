@@ -16,7 +16,7 @@ public class InstantReactionProperties
 }
 
 /*!
-  This class represent all the reactions that are instantaneous
+  This class represents all the reactions that are instantaneous
   The reactions that look like :
 
   2H + O = H2O should be managed by this class.

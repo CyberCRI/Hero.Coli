@@ -3,33 +3,6 @@ using System;
 using System.Xml;
 using System.Collections.Generic;
 
-/*!
-  \brief This class loads promoters reactions from xml files
-  \details
-
-A PromoterReaction should respect this syntax:
-
-        <promoter>
-          <name>ptet</name>                           -> The name of the reaction
-          <productionMax>100</productionMax>          -> The maximal production speed of the promoter
-          <terminatorFactor>1</terminatorFactor>      -> between 0 and 1, represent the Terminator
-          <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see PromoterReaction class for more infos)
-          <EnergyCost>0.1</EnergyCost>                -> The cost in energy
-          <operon>
-            <gene>
-              <name>RFP</name>                        -> The molecule name of a product
-              <RBSFactor>0.12</RBSFactor>             -> The RBS factor that represent the affinity between Ribosome and RBS
-            </gene>
-            <gene>
-              <name>LacI</name>
-              <RBSFactor>0.12</RBSFactor>
-            </gene>
-          </operon>
-        </promoter>
-
-  \sa PromoterReaction
-  
- */
 public class PromoterLoader
 {
   private PromoterParser _parser;               //!< The Formula Parser
@@ -44,7 +17,7 @@ public class PromoterLoader
     \brief Load promoter name by checking the validity of the given string
     \param value The given name
     \param prom The PromoterReaction reaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadPromoterName(string value, PromoterReaction prom)
   {
@@ -61,7 +34,7 @@ public class PromoterLoader
     \brief Load promoter maximal production speed by checking the validity of the given string
     \param value The given maximal production
     \param prom The PromoterReaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadPromoterProductionMax(string value, PromoterReaction prom)
   {
@@ -78,7 +51,7 @@ public class PromoterLoader
     \brief Load promoter terminator factor by checking the validity of the given string
     \param value The given terminator factor
     \param prom The PromoterReaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadPromoterTerminatorFactor(string value, PromoterReaction prom)
   {
@@ -95,7 +68,7 @@ public class PromoterLoader
     \brief Load promoter energy cost by checking the validity of the given string
     \param value The given energy cost
     \param prom The PromoterReaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadEnergyCost(string value, PromoterReaction prom)
   {
@@ -114,7 +87,7 @@ public class PromoterLoader
     \param prom The PromoterReaction
     \param name The name of the molecule that the gene will produce
     \param RBSf The Ribosome Binding Site factor string
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadGene(PromoterReaction prom, string name, string RBSf)
   {
@@ -135,7 +108,7 @@ public class PromoterLoader
     \brief Load promoter operon
     \param node the xml node
     \param prom The PromoterReaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
    */
   private bool loadPromoterOperon(XmlNode node, PromoterReaction prom)
   {
@@ -177,7 +150,7 @@ public class PromoterLoader
     \brief Load promoter formula by checking the validity of the given string
     \param formula The given formula
     \param p The PromoterReaction
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
   */
   private bool loadPromoterFormula(string formula, PromoterReaction p)
   {
@@ -196,7 +169,7 @@ public class PromoterLoader
     \brief Load all promoter reaction in the given node
     \param node The xml node
     \param reactions The list of reactions where the new promoter reactions will be added
-    \return Return true if succed and false if value parameter is invalid.
+    \return Return true if succeeded and false if value parameter is invalid.
   */
   public bool loadPromoters(XmlNode node, LinkedList<IReaction> reactions)
   {

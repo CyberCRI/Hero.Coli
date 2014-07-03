@@ -423,7 +423,7 @@ public class Medium : LoadableFromXmlImpl
     \brief This function load the initial energy of the medium and parse the validity of the given string
     \param value The value to parse and load
     \param med The medium to initialize
-    \return Return true if the function succed to parse the string or false else
+    \return Return true if the function succeeded to parse the string or false else
    */
     private bool loadEnergy(string value)
     {
@@ -442,7 +442,7 @@ public class Medium : LoadableFromXmlImpl
     \brief This function load the energy production rate of the medium and parse the validity of the given string
     \param value The value to parse and load
     \param med The medium to initialize
-    \return Return true if the function succed to parse the string or false else
+    \return Return true if the function succeeded to parse the string or false else
    */
     private bool loadEnergyProductionRate(string value)
     {
@@ -464,7 +464,7 @@ public class Medium : LoadableFromXmlImpl
     \brief This function load the maximum energy in the medium and parse the validity of the given string
     \param value The value to parse and load
     \param med The medium to initialize
-    \return Return true if the function succed to parse the string or false else
+    \return Return true if the function succeeded to parse the string or false else
    */
     private bool loadMaxEnergy(string value)
     {

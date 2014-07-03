@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 /*!
- \brief A phenotype class that represent a fick activation
+ \brief A phenotype class that represents a fick activation
  \details This Phenotype enable the contact surface between two medium when they collide together
  
  

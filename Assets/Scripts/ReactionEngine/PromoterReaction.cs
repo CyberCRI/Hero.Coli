@@ -3,42 +3,11 @@ using System.Collections;
 using System;
 using UnityEngine;
 
-
-/*!
-  \brief This class represent a PromoterReaction and can be loaded by the simulator.
-  
-  \sa PromoterReaction
- */
-public class PromoterProperties
-{
-  public string name;                           //!< The name of the reaction
-  public float beta;                            //!< The maximal production rate of the promoter
-  public float terminatorFactor;                //!< The Coefficient that represent the terminator
-  public string formula;                        //!< The formula that drive the promoter behaviour
-  public LinkedList<Product> products;          //!< The list of products
-  public float energyCost;                      //!< The cost in energy
-	
-	
-/*!
- *  \brief     ToString method
- *  \details   ToString method, with all fields, including detailed internal products
- */
-  public override string ToString() {
-    return "PromoterProperties["+
-      "name:"+name+
-      ", beta:"+beta+
-      ", terminatorFactor:"+terminatorFactor+
-      ", formula:"+formula+
-      ", products:"+Logger.ToString<Product>(products)+
-      ", energyCost:"+energyCost+"]";
-  }
-}
-
 /*!
  *  \brief     Manage promoter reactions
  *  \details   This class manage all the promoter reactions
 
- A promoter reaction represent the behaviour of a promoter and of the transcription that it manage (Device).
+ A promoter reaction represents the behaviour of a promoter and of the transcription that it manage (Device).
  The promoter responds to a logic input function that should respect the syntax below.
 
  Input function:
@@ -450,6 +419,40 @@ public class PromoterReaction : IReaction
 				
       }
   }
+
+
+    // Xml loading
+    
+    /*!
+  \brief This class loads promoters reactions from xml files
+  \details
+
+A PromoterReaction should respect this syntax:
+
+        <promoter>
+          <name>ptet</name>                           -> The name of the reaction
+          <productionMax>100</productionMax>          -> The maximal production speed of the promoter
+          <terminatorFactor>1</terminatorFactor>      -> between 0 and 1, represents the Terminator
+          <formula>![0.8,3]tetR</formula>             -> The formula that manage the behaviour of the promoter (see PromoterReaction class for more infos)
+          <EnergyCost>0.1</EnergyCost>                -> The cost in energy
+          <operon>
+            <gene>
+              <name>RFP</name>                        -> The molecule name of a product
+              <RBSFactor>0.12</RBSFactor>             -> The RBS factor that represents the affinity between Ribosome and RBS
+            </gene>
+            <gene>
+              <name>LacI</name>
+              <RBSFactor>0.12</RBSFactor>
+            </gene>
+          </operon>
+        </promoter>
+
+  \sa PromoterReaction
+  
+ */
+
+
+
 
   public override string ToString ()
   {

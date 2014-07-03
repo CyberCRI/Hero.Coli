@@ -87,7 +87,7 @@ public class EnzymeReactionLoader
     \brief Load all enzymatic reactions from an xml node
     \param node The xml node
     \param reactions The list of reactions
-    \return Return true if succed, false otherwise
+    \return Return true if succeeded, false otherwise
   */
   public bool loadEnzymeReactions(XmlNode node, LinkedList<IReaction> reactions)
   {

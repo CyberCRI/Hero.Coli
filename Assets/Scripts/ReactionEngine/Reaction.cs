@@ -9,7 +9,7 @@ using System.Xml;
   \details It contains a name, a list of products, and an activation boolean.
   The react() function should be implemented in child classes.
  */
-public abstract class IReaction
+public abstract class IReaction : LoadableFromXmlImpl
 {
   protected string _name;                       //!< The name of the reaction
   protected LinkedList<Product> _products;      //!< The list of products

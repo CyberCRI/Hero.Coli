@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 /*!
- \brief A phenotype class that represent a light reaction in function of the concentration in Water (H2O)
+ \brief A phenotype class that represents a light reaction in function of the concentration in Water (H2O)
  in the Medium
  
  

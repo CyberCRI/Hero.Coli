@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class represent an EnzymeReaction and can be loaded by the ReactionEngine class
+  \brief This class represents an EnzymeReaction and can be loaded by the ReactionEngine class
   
   \sa EnzymeReaction
  */

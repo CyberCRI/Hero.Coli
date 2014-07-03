@@ -64,7 +64,7 @@ public class AllosteryLoader
 \brief This function load all the allostric reactions and add them to the given IReaction list
 \param node The xml load to parse
 \param reactions The list of reaction where will be appened the new allosteric reactions
-\return Return true of succed and false if the function has failed
+\return Return true of succeeded and false if the function has failed
   */
   public bool loadAllostericReactions(XmlNode node, LinkedList<IReaction> reactions)
   {
