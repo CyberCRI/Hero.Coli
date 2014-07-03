@@ -47,20 +47,20 @@ public class CellControl : MonoBehaviour{
 	}
 	//Drag PushableBox
 	private RockCollisionType _currentCollisionType = 0;
-	public RockCollisionType GetCurrentCollisionType() {return _currentCollisionType;}
+	public RockCollisionType getCurrentCollisionType() {return _currentCollisionType;}
 
-	private float _angle =0f;		// the angle for the rotation around the pushable box
+	private float _angle = 0f;		// the angle for the rotation around the pushable box
 	private float _angleProgress = 0f;	// the current progression of the rotation
 	private float _angleStep = 0f;
 	private float _rotationSpeed = 2f;
 
 	private bool _isDragging = false;
-	public bool GetIsDragging() {return _isDragging;}
-	public void SetIsDragging(bool b) { _isDragging =b;}
+	public bool getIsDragging() {return _isDragging;}
+	public void setIsDragging(bool b) {_isDragging = b;}
 
 	GameObject box;
-	public void SetBox(GameObject o) {box = o;}
-	public GameObject GetBox(){return box;}
+	public void setBox(GameObject o) {box = o;}
+	public GameObject getBox(){return box;}
 
   public void Pause(bool pause)
   {
@@ -72,7 +72,7 @@ public class CellControl : MonoBehaviour{
     return _pause;
   }
 
-  private void ClickToMoveUpdate(KeyCode mouseButtonCode) {
+  private void clickToMoveUpdate(KeyCode mouseButtonCode) {
     Vector3 lastTickPosition = transform.position;
     if(Input.GetKeyDown(mouseButtonCode))            
     {
@@ -87,32 +87,27 @@ public class CellControl : MonoBehaviour{
 
 			if(_isDragging)
 			{
-				box.GetComponent<PushableBox>().SetUsedClicked(true);
-				box.GetComponent<PushableBox>().Clicked();
+				box.GetComponent<PushableBox>().setUsedClicked(true);
+				box.GetComponent<PushableBox>().clicked();
 
 				if(_isDragging)
 				{
-					_angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
-					if(_angle >=20f)
+					_angle = Vector3.Angle(transform.forward, _targetPosition-box.transform.position);
+					if(_angle >= 20f)
 					{
 						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
-
 						_angleProgress = 0f;
+
 						if (relativepoint.x < 0.0f)
 						{
 							_angle = -_angle;
-
 							_angleStep = -_rotationSpeed;
 						}
 						else 
 							_angleStep = _rotationSpeed;
-
 					}
 				}
-
-
 			}
-
     }
 
     if(Vector3.zero == _inputMovement)
@@ -126,12 +121,12 @@ public class CellControl : MonoBehaviour{
         _inputMovement = _inputMovement.normalized;
       }
 	  if(_isDragging)
-	    DraggingUpdate();
+	    draggingUpdate();
       rotationUpdate();
     }
   }
     
-  private void AbsoluteWASDUpdate() {
+  private void absoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
 
       cancelMouseMove();
@@ -147,7 +142,7 @@ public class CellControl : MonoBehaviour{
     }
   }
 
-  private void RelativeWASDUpdate() {
+  private void relativeWASDUpdate() {
 
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
 
@@ -187,19 +182,21 @@ public class CellControl : MonoBehaviour{
     }
   }
 
-	private void DraggingMove(float angle) {
+	private void draggingMove(float angle) {
 		if(_isDragging)
 		{
-			Vector3 moveAmount = new Vector3(0,0,-150);
+      //unused
+			//Vector3 moveAmount = new Vector3(0,0,-150);
+
 			//this.collider.attachedRigidbody.AddForce(moveAmount);
-			transform.RotateAround(box.transform.position,new Vector3(0,1,0),angle);
+			transform.RotateAround(box.transform.position, new Vector3(0,1,0), angle);
 
 		}
 	}
 
-	private void DraggingUpdate() {
+	private void draggingUpdate() {
 
-		if (Mathf.Abs(_angle) > 20 && Mathf.Abs(_angle)< 50)
+		if (Mathf.Abs(_angle) > 20 && Mathf.Abs(_angle) < 50)
 		{
 			if(Mathf.Abs(_angleProgress) < Mathf.Abs (0.8f*_angle))
 					_angleProgress += _angleStep;
@@ -209,14 +206,14 @@ public class CellControl : MonoBehaviour{
 			if(Mathf.Abs(_angleProgress) >= Mathf.Abs (_angle))
 			{
 				_angle = 0.0f;
-				_angleProgress =0.0f;
+				_angleProgress = 0.0f;
 				_angleStep = 0.0f;
 			}
 				
 			else 
 			{
 				Logger.Log(_angleProgress+"° of ::"+_angle,Logger.Level.WARN);
-				DraggingMove(_angleStep);
+				draggingMove(_angleStep);
 			}
 		}
 
@@ -278,27 +275,27 @@ public class CellControl : MonoBehaviour{
 
       switch(_currentControlType) {
         case ControlType.AbsoluteWASDAndLeftClickToMove:  
-            AbsoluteWASDUpdate();
+            absoluteWASDUpdate();
             if(!_isFirstUpdate) {
-                ClickToMoveUpdate(KeyCode.Mouse0);
+                clickToMoveUpdate(KeyCode.Mouse0);
             } else { _isFirstUpdate = false; }
             break;
         case ControlType.LeftClickToMove:      
           if(!_isFirstUpdate) {
-              ClickToMoveUpdate(KeyCode.Mouse0);
+              clickToMoveUpdate(KeyCode.Mouse0);
           } else { _isFirstUpdate = false; }
           break;
         case ControlType.RightClickToMove:
-          ClickToMoveUpdate(KeyCode.Mouse1);
+          clickToMoveUpdate(KeyCode.Mouse1);
           break;
         case ControlType.AbsoluteWASD:
-          AbsoluteWASDUpdate();
+          absoluteWASDUpdate();
           break;
         case ControlType.RelativeWASD:
-          RelativeWASDUpdate();
+          relativeWASDUpdate();
           break;
         default:
-          AbsoluteWASDUpdate();
+          absoluteWASDUpdate();
           break;
       }
       commonUpdate();

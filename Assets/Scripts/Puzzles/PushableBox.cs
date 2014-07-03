@@ -14,11 +14,11 @@ public class PushableBox : MonoBehaviour {
 	private bool _willBeDragged = false;
 
 	private Color32 _normalColor;
-		private Color32 _nearColor;
+	private Color32 _nearColor;
 
 	private bool _playerIsNear = false;
-	private bool _usedClicked = false;			// if Clicked Fonction has already been used from outside the GO during the frame 
-	public void SetUsedClicked(bool b) {_usedClicked = b;}
+	private bool _usedClicked = false;			// if Clicked method has already been used from outside the GameObject during the frame 
+	public void setUsedClicked(bool b) {_usedClicked = b;}
 	
 	void Start(){
 		_initPos = transform.position;
@@ -38,12 +38,14 @@ public class PushableBox : MonoBehaviour {
   void OnCollisionEnter(Collision col) {
 		lazySafeGetCellControl(col.gameObject);
 
-		if(col.gameObject == _control.gameObject && _willBeDragged && _control.GetCurrentCollisionType() == CellControl.RockCollisionType.Grab)
+		if(col.gameObject == _control.gameObject 
+           && _willBeDragged 
+           && _control.getCurrentCollisionType() == CellControl.RockCollisionType.Grab)
 		{
 		//	CreateHingeJoint(col);
 			//CreateFixedJoint(col);
-			CreateSpringJoint(col);
-			UpdateDragStatusOnContact();
+			createSpringJoint(col);
+			updateDragStatusOnContact();
 		}
     if (col.collider){
       lazySafeGetCellControl(col.gameObject);
@@ -58,7 +60,7 @@ public class PushableBox : MonoBehaviour {
       lazySafeGetCellControl(col.gameObject);
       if(_control)
 			{
-				if(_control.GetCurrentCollisionType() == CellControl.RockCollisionType.Slide)
+				if(_control.getCurrentCollisionType() == CellControl.RockCollisionType.Slide)
 				  rigidbody.AddForce(_control.GetInputMovement()*(0.25f+(_control.currentMoveSpeed/minSpeed)),ForceMode.Acceleration);
 				else
        			  rigidbody.constraints = noPush;
@@ -75,14 +77,12 @@ public class PushableBox : MonoBehaviour {
         lazySafeGetCellControl(col.gameObject);
         if(_control && _control.currentMoveSpeed >= minSpeed){
           rigidbody.constraints = canPush;
-
-
         }
       }
     }
   }
 
-	void CreateHingeJoint(Collision col)
+	void createHingeJoint(Collision col)
 	{
 		if(_willBeDragged)
 		{
@@ -102,27 +102,30 @@ public class PushableBox : MonoBehaviour {
 		}
 	}
 
-	void CreateSpringJoint(Collision col)
+	void createSpringJoint(Collision col)
 	{
 		if(_willBeDragged)
 		{
 			SpringJoint buffjoint = gameObject.AddComponent<SpringJoint>() as SpringJoint;
 			buffjoint.connectedBody = _control.rigidbody;
 			buffjoint.minDistance = transform.lossyScale.magnitude;
+
+      //TODO create variables for these numbers
 			buffjoint.maxDistance = buffjoint.minDistance*3f;
 			buffjoint.breakForce = _control.currentMoveSpeed*1.1f;
+
 			buffjoint.anchor = transform.InverseTransformPoint(col.contacts[0].point);
 			buffjoint.autoConfigureConnectedAnchor=false;
 			buffjoint.connectedAnchor = _control.transform.InverseTransformPoint(col.contacts[0].point);
 
 			Logger.Log ("anchor ::"+buffjoint.anchor,Logger.Level.WARN);
 			//buffjoint.anchor = Vector3.zero;
-			_control.SetIsDragging(true);
-			_control.SetBox(gameObject);
+			_control.setIsDragging(true);
+			_control.setBox(gameObject);
 		}
 	}
 
-	void CreateFixedJoint(Collision col)
+	void createFixedJoint(Collision col)
 	{
 		if(_willBeDragged)
 		{
@@ -138,74 +141,62 @@ public class PushableBox : MonoBehaviour {
 		transform.position = _initPos;
 	}
 
-	private void UpdateDragStatusOnContact() {
-
-		if(_willBeDragged){_willBeDragged = !_willBeDragged; _dragged = true;}
-
-
-
-
+	private void updateDragStatusOnContact() {
+  	if(_willBeDragged){
+      _willBeDragged = !_willBeDragged;
+      _dragged = true;
+    }
 	}
 
-	private void UpdateDragStatusOnClick() {
+	private void updateDragStatusOnClick() {
 		if(_willBeDragged) _willBeDragged = false;
 		else if (!_willBeDragged && !_dragged) _willBeDragged = true;
 		else if (!_willBeDragged && _dragged) {
 			_dragged = false;
 			Destroy(GetComponent<SpringJoint>() as SpringJoint);
-			_control.SetIsDragging(false);
-			_control.SetBox(null);
+			_control.setIsDragging(false);
+			_control.setBox(null);
 		}
 	}
 	
 
-	public void Clicked() {
-
+	public void clicked() {
 		// if left-clicked 
 		if(Input.GetMouseButtonDown(0) && renderer.isVisible && _playerIsNear)
 		{
-					int i = 0 ;
-					bool isFound = false;
-
-					RaycastHit[] hits;
-					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-					hits = Physics.RaycastAll(ray);
-					
-					
-					while (i < hits.Length && !isFound)
-					{
-						//if the pushableBox have been clicked
-						if(hits[i].transform.GetComponent<PushableBox>())
-						{
-						UpdateDragStatusOnClick();
-							isFound = true;
-						}
-						i++;
-					}
-
-
-
-
+			RaycastHit[] hits;
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			hits = Physics.RaycastAll(ray);
+								
+			foreach(RaycastHit hit in hits)
+			{
+				//if the pushableBox have been clicked
+				if(hit.transform.GetComponent<PushableBox>())
+				{
+          updateDragStatusOnClick();
+          break;
+				}
+			}
 		}
 	}
 
 	void Update()
 	{
 
-		if(renderer.isVisible && !_control)
+		if(renderer.isVisible && (null == _control))
 			lazySafeGetCellControl(GameObject.Find("Perso"));
-		if(_control && _control.GetCurrentCollisionType() == CellControl.RockCollisionType.Grab)
+		if(_control && _control.getCurrentCollisionType() == CellControl.RockCollisionType.Grab)
 		{
-			DetectProximity();
+			detectProximity();
 			if(!_usedClicked)
-		    	Clicked();
+		    	clicked();
 			else 
 				_usedClicked = false;
-			SwitchParticlesColor();
+			  switchParticleColor();
 		}
 	}
 
-	void SwitchParticlesColor()
+	void switchParticleColor()
 	{
 		if (_playerIsNear && particleSystem.startColor != _nearColor)
 		{
@@ -220,26 +211,26 @@ public class PushableBox : MonoBehaviour {
 		}
 	}
 
-	void DetectProximity ()
+	void detectProximity ()
 	{
 		if(renderer.isVisible)
 		{
 			Vector3 radius = transform.localScale;
-			Collider[] hitsColliders = Physics.OverlapSphere(transform.position,radius.sqrMagnitude*40);
+			Collider[] hitsColliders = Physics.OverlapSphere(transform.position, radius.sqrMagnitude*40);
 			
 			// If Player is in a small area
-			if (System.Array.Find(hitsColliders,col => col == _control.collider))
+			if (System.Array.Find(hitsColliders, col => col == _control.collider))
 			{
 				if(!_playerIsNear)
 				{
 				_playerIsNear = true;
-				Logger.Log ("Near",Logger.Level.WARN);
+				Logger.Log ("Near", Logger.Level.WARN);
 				}
 			}
 			else if (_playerIsNear)
 			{
 				_playerIsNear = false;
-				Logger.Log ("NotNear",Logger.Level.WARN);
+				Logger.Log ("NotNear", Logger.Level.WARN);
 			}
 		}
 

@@ -227,15 +227,18 @@ public class Hero : MonoBehaviour {
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
 
-	    CellControl cc = GetComponent<CellControl>();
-	    cc.enabled = false;
+    CellControl cc = GetComponent<CellControl>();
+    cc.enabled = false;
+
+    //TODO put in a separate method
 		CellControl _control = transform.GetComponent<CellControl>();
-		if(_control.GetBox())
+		if(_control.getBox())
 		{
-			Destroy(_control.GetBox().transform.GetComponent<SpringJoint>() as SpringJoint);
-			_control.SetBox(null);
-			_control.SetIsDragging(false);
+			Destroy(_control.getBox().transform.GetComponent<SpringJoint>() as SpringJoint);
+			_control.setBox(null);
+			_control.setIsDragging(false);
 		}
+
 	//	Destroy(transform.hingeJoint);
 		//Logger.Log (""+transform.hingeJoint,Logger.Level.WARN);
 	    yield return new WaitForSeconds(2F);
