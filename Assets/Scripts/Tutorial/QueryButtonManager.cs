@@ -18,8 +18,10 @@ public class QueryButtonManager : MonoBehaviour {
 		Vector3 size = new Vector3(15,15,1);
 
 
-		clone.transform.localPosition = new Vector3(vec.x,vec.y,vec.z);
-		clone.transform.GetChild(0).localScale = new Vector3(size.x,size.y,size.z);
+		clone.transform.localPosition = vec;
+
+    //TODO find non-empirical solution
+		clone.transform.GetChild(0).localScale = size;
 
 
 		mediumInfoInstruction.transform.parent = parent.transform;
@@ -33,8 +35,10 @@ public class QueryButtonManager : MonoBehaviour {
 		vec = new Vector3(-80,70,0);
 		size = new Vector3(15,15,1);
 
-		clone.transform.localPosition = new Vector3(vec.x,vec.y,vec.z);
-		clone.transform.GetChild(0).localScale = new Vector3(size.x,size.y,size.z);
+		clone.transform.localPosition = vec;
+
+    //TODO find non-empirical solution
+		clone.transform.GetChild(0).localScale = size;
 		
 		
 		cellInfoInstruction.transform.parent = parent.transform;

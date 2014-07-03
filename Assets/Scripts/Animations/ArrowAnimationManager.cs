@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -23,7 +23,7 @@ public class ArrowAnimationManager : MonoBehaviour {
 		if ( isWorldScreenAnimPlaying == true && GUITransitioner.get()._worldScreen.activeInHierarchy)
 		{
 
-				Inventory.get().scriptAnimator.tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
+				Inventory.get().scriptAnimator.tutorialArrowAnimation.play(GUITransitioner.GameScreen.screen1);
 				isWorldScreenAnimPlaying = false;
 
 		}
@@ -33,11 +33,11 @@ public class ArrowAnimationManager : MonoBehaviour {
 			if (isInventoryAnimPlaying && Inventory.get().getDeviceAdded())
 			{
 
-				ArrowAnimation.Delete("InventoryDevicesSlotsPanel");
+				ArrowAnimation.delete("InventoryDevicesSlotsPanel");
 	
 				isInventoryAnimPlaying = false;
 			}
-			Inventory.get ().scriptAnimator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);
+			Inventory.get ().scriptAnimator.tutorialArrowAnimation.play (GUITransitioner.GameScreen.screen2);
 			isInventoryAnimPlaying = true;
 		}
 	}

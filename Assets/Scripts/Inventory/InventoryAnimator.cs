@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class InventoryAnimator : MonoBehaviour {
@@ -42,13 +42,13 @@ public class InventoryAnimator : MonoBehaviour {
 	
 	
 		public void Play() {
-		tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
+		tutorialArrowAnimation.play(GUITransitioner.GameScreen.screen1);
 		isPlaying = true;
 		time =0f;
 	}
 	
 		public void reset() {
-		ArrowAnimation.Delete ("WorldEquipButtonPanel");
+		ArrowAnimation.delete ("WorldEquipButtonPanel");
 		sprite.transform.localScale = originalScale;
 		isPlaying = false;
 		
