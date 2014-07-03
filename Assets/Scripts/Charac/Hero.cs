@@ -229,7 +229,15 @@ public class Hero : MonoBehaviour {
 
 	    CellControl cc = GetComponent<CellControl>();
 	    cc.enabled = false;
-
+		CellControl _control = transform.GetComponent<CellControl>();
+		if(_control.GetBox())
+		{
+			Destroy(_control.GetBox().transform.GetComponent<SpringJoint>() as SpringJoint);
+			_control.SetBox(null);
+			_control.SetIsDragging(false);
+		}
+	//	Destroy(transform.hingeJoint);
+		//Logger.Log (""+transform.hingeJoint,Logger.Level.WARN);
 	    yield return new WaitForSeconds(2F);
 
 		    cc.enabled = true;

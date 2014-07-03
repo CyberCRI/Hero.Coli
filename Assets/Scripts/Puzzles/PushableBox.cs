@@ -108,10 +108,15 @@ public class PushableBox : MonoBehaviour {
 		{
 			SpringJoint buffjoint = gameObject.AddComponent<SpringJoint>() as SpringJoint;
 			buffjoint.connectedBody = _control.rigidbody;
-			buffjoint.minDistance = transform.localScale.magnitude;
-			buffjoint.maxDistance = buffjoint.minDistance;
-			buffjoint.breakForce = Mathf.Infinity;
-			buffjoint.anchor = Vector3.zero;
+			buffjoint.minDistance = transform.lossyScale.magnitude;
+			buffjoint.maxDistance = buffjoint.minDistance*3f;
+			buffjoint.breakForce = _control.currentMoveSpeed*1.1f;
+			buffjoint.anchor = transform.InverseTransformPoint(col.contacts[0].point);
+			buffjoint.autoConfigureConnectedAnchor=false;
+			buffjoint.connectedAnchor = _control.transform.InverseTransformPoint(col.contacts[0].point);
+
+			Logger.Log ("anchor ::"+buffjoint.anchor,Logger.Level.WARN);
+			//buffjoint.anchor = Vector3.zero;
 			_control.SetIsDragging(true);
 			_control.SetBox(gameObject);
 		}
