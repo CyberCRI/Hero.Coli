@@ -107,6 +107,29 @@ public class CellControl : MonoBehaviour{
 						else 
 							_angleStep = _rotationSpeed;
 
+						int i = 0 ;
+						bool isFound = false;
+						Vector3 inverseTargetPosition = box.transform.TransformPoint(box.transform.InverseTransformPoint(_targetPosition)*(-1f));
+
+
+						RaycastHit[] hits;
+						//hits = Physics.RaycastAll(inverseTargetPosition, box.transform.position);
+						Ray ray2 = new Ray(inverseTargetPosition, _targetPosition);
+						hits = Physics.RaycastAll(ray2);
+						Debug.DrawLine(inverseTargetPosition, _targetPosition, Color.red, 1000f);
+						Logger.Log("HitCount::"+hits.Length,Logger.Level.WARN);
+						while (i < hits.Length && !isFound)
+						{
+							Logger.Log("looking for drawline::"+hits[i].transform,Logger.Level.WARN);
+							//if the pushableBox have been clicked
+							if(hits[i].collider == box.collider)
+							{
+								Logger.Log ("drawLine::"+box.transform.InverseTransformPoint(hits[i].point),Logger.Level.WARN);
+								Debug.DrawLine(box.transform.localPosition,hits[i].point,Color.red,1000f);
+								isFound = true;
+							}
+							i++;
+						}
 					}
 				}
 
@@ -215,7 +238,7 @@ public class CellControl : MonoBehaviour{
 				
 			else 
 			{
-				Logger.Log(_angleProgress+"° of ::"+_angle,Logger.Level.WARN);
+				//Logger.Log(_angleProgress+"° of ::"+_angle,Logger.Level.WARN);
 				DraggingMove(_angleStep);
 			}
 		}
