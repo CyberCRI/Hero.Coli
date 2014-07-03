@@ -19,7 +19,8 @@ public class LinkManager : MonoBehaviour {
 
 
 		//Cellcontrol connection
-    guiTransitioner.control = perso.GetComponent<CellControl>();
+    CellControl control = perso.GetComponent<CellControl>();
+    guiTransitioner.control = control;
 
 
 		//Hero connections
@@ -38,5 +39,27 @@ public class LinkManager : MonoBehaviour {
 
 		//Main Camera
     guiTransitioner._mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>();
-  	}
+
+
+    //CellControl buttons
+    GameObject absoluteWASDButton = GameObject.Find("AbsoluteWASDButton");
+    GameObject leftClickToMoveButton = GameObject.Find("LeftClickToMoveButton");
+    GameObject relativeWASDButton = GameObject.Find("RelativeWASDButton");
+    GameObject rightClickToMoveButton = GameObject.Find("RightClickToMoveButton");
+    GameObject selectedControlTypeSprite = GameObject.Find ("SelectedControlTypeSprite");
+
+    control.absoluteWASDButton = absoluteWASDButton.GetComponent<AbsoluteWASDButton>();
+    control.leftClickToMoveButton = leftClickToMoveButton.GetComponent<LeftClickToMoveButton>();
+    control.relativeWASDButton = relativeWASDButton.GetComponent<RelativeWASDButton>();
+    control.rightClickToMoveButton = rightClickToMoveButton.GetComponent<RightClickToMoveButton>();
+    control.selectedControlTypeSprite = selectedControlTypeSprite.GetComponent<UISprite>();
+
+    control.absoluteWASDButton.cellControl = control;
+    control.leftClickToMoveButton.cellControl = control;
+    control.relativeWASDButton.cellControl = control;
+    control.rightClickToMoveButton.cellControl = control;
+
+    //feature is turned off for now
+    GameObject.Find("CellControlPanel").SetActive(false);
+  }
 }
