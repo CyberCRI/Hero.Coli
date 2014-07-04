@@ -450,7 +450,42 @@ A PromoterReaction should respect this syntax:
   \sa PromoterReaction
   
  */
-
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+        XmlNodeList promotersList = node.SelectNodes("promoter");
+        bool b = true;
+        
+        foreach (XmlNode promoter in promotersList)
+        {
+            PromoterReaction p = new PromoterReaction();
+            foreach (XmlNode attr in promoter)
+            {
+                switch (attr.Name)
+                {
+                    case "name":
+                        b = b && loadPromoterName(attr.InnerText, p);
+                        break;
+                    case "productionMax":
+                        b = b && loadPromoterProductionMax(attr.InnerText, p);
+                        break;
+                    case "terminatorFactor":
+                        b = b && loadPromoterTerminatorFactor(attr.InnerText, p);
+                        break;
+                    case "EnergyCost":
+                        b = b && loadEnergyCost(attr.InnerText, p);
+                        break;
+                    case "formula":
+                        b = b && loadPromoterFormula(attr.InnerText, p);
+                        break;
+                    case "operon":
+                        b = b && loadPromoterOperon(attr, p);
+                        break;
+                }
+            }
+            reactions.AddLast(p);
+        }
+        return b;
+    }
 
 
 

@@ -163,48 +163,5 @@ public class PromoterLoader
       }
     p.setFormula(tree);
     return true;
-  }
-
-  /*!
-    \brief Load all promoter reaction in the given node
-    \param node The xml node
-    \param reactions The list of reactions where the new promoter reactions will be added
-    \return Return true if succeeded and false if value parameter is invalid.
-  */
-  public bool loadPromoters(XmlNode node, LinkedList<IReaction> reactions)
-  {
-    XmlNodeList promotersList = node.SelectNodes("promoter");
-    bool b = true;
-
-    foreach (XmlNode promoter in promotersList)
-      {
-        PromoterReaction p = new PromoterReaction();
-        foreach (XmlNode attr in promoter)
-          {
-            switch (attr.Name)
-              {
-              case "name":
-                b = b && loadPromoterName(attr.InnerText, p);
-                break;
-              case "productionMax":
-                b = b && loadPromoterProductionMax(attr.InnerText, p);
-                break;
-              case "terminatorFactor":
-                b = b && loadPromoterTerminatorFactor(attr.InnerText, p);
-                break;
-              case "EnergyCost":
-                b = b && loadEnergyCost(attr.InnerText, p);
-                break;
-              case "formula":
-                b = b && loadPromoterFormula(attr.InnerText, p);
-                break;
-              case "operon":
-                b = b && loadPromoterOperon(attr, p);
-                break;
-              }
-          }
-        reactions.AddLast(p);
-      }
-    return b;
-  }
+   }
 }
