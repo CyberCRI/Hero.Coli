@@ -253,4 +253,56 @@ public class EnzymeReaction : IReaction
         mol.addNewConcentration(delta);
     }
   }
+
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+        XmlNodeList EReactionsList = node.SelectNodes("enzyme");
+        bool b = true;
+        
+        foreach (XmlNode EReaction in EReactionsList)
+        {
+            EnzymeReaction er = new EnzymeReaction();
+            foreach (XmlNode attr in EReaction)
+            {
+                switch (attr.Name)
+                {
+                    case "name":
+                        b = b && loadEnzymeString(attr.InnerText, er.setName);
+                        break;
+                    case "substrate":
+                        b = b && loadEnzymeString(attr.InnerText, er.setSubstrate);
+                        break;
+                    case "enzyme":
+                        b = b && loadEnzymeString(attr.InnerText, er.setEnzyme);
+                        break;
+                    case "Kcat":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setKcat);
+                        break;
+                    case "effector":
+                        b = b && loadEnzymeString(attr.InnerText, er.setEffector);
+                        break;
+                    case "alpha":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setAlpha);
+                        break;
+                    case "EnergyCost":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setEnergyCost);
+                        break;
+                    case "beta":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setBeta);
+                        break;
+                    case "Km":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setKm);
+                        break;
+                    case "Ki":
+                        b = b && loadEnzymeFloat(attr.InnerText, er.setKi);
+                        break;
+                    case "Products":
+                        b = b && loadEnzymeReactionProducts(attr, er);
+                        break;
+                }
+            }
+            reactions.AddLast(er);
+        }
+        return b;
+    }
 }
