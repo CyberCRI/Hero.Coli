@@ -216,4 +216,44 @@ public class Allostery : IReaction
           }
       }
   }
+
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+        XmlNodeList AReactionsList = node.SelectNodes("allostery");
+        bool b = true;
+        
+        foreach (XmlNode AReaction in AReactionsList)
+        {
+            Allostery ar = new Allostery();
+            foreach (XmlNode attr in AReaction)
+            {
+                switch (attr.Name)
+                {
+                    case "name":
+                        b = b && loadAllosteryString(attr.InnerText, ar.setName);
+                        break;
+                    case "effector":
+                        b = b && loadAllosteryString(attr.InnerText, ar.setEffector);
+                        break;
+                    case "K":
+                        b = b && loadAllosteryFloat(attr.InnerText, ar.setK);
+                        break;
+                    case "EnergyCost":
+                        b = b && loadAllosteryFloat(attr.InnerText, ar.setEnergyCost);
+                        break;
+                    case "n":
+                        ar.setN(Convert.ToInt32(attr.InnerText));
+                        break;
+                    case "protein":
+                        b = b && loadAllosteryString(attr.InnerText, ar.setProtein);
+                        break;
+                    case "products":
+                        b = b && loadAllosteryString(attr.InnerText, ar.setProduct);
+                        break;
+                }
+            }
+            reactions.AddLast(ar);
+        }
+        return b;
+    }
 }
