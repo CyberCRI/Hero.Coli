@@ -7,10 +7,6 @@ using System.IO;
 
 /*!
   \brief This class loads all the files needed by the reaction Engine
-  \sa PromoterLoader
-  \sa EnzymeReactionLoader
-  \sa AllosteryLoader
-  \sa InstantReactionLoader
   
  */
 
@@ -20,19 +16,9 @@ public class FileLoader : XmlLoader
   private delegate void  StrSetter(string dst);
   private delegate void  FloatSetter(float dst);
 
-
-  private PromoterLoader _promoterLoader;                       //!< The loader that will load everything about PromoterReactions
-  private EnzymeReactionLoader _enzymeReactionLoader;           //!< The loader that will load everything about Enzymes reactions
-  private AllosteryLoader _allosteryLoader;                     //!< The loader that will load everything about allostery reactions
-  private InstantReactionLoader _instantReactionLoader;         //!< The loader that will load everything about instant reactions
-
   //! Default constructor
   public FileLoader()
   {
-    _promoterLoader = new PromoterLoader();
-    _enzymeReactionLoader = new EnzymeReactionLoader();
-    _allosteryLoader = new AllosteryLoader();
-    _instantReactionLoader = new InstantReactionLoader();
   }
 
   /*!
@@ -43,10 +29,12 @@ public class FileLoader : XmlLoader
    */
   public bool loadReactions(XmlNode node, LinkedList<IReaction> reactions)
   {
+        /*
     _promoterLoader.loadPromoters(node, reactions);
     _enzymeReactionLoader.loadEnzymeReactions(node, reactions);
     _allosteryLoader.loadAllostericReactions(node, reactions);
     _instantReactionLoader.loadInstantReactions(node, reactions);
+    */
     return true;
   }
 

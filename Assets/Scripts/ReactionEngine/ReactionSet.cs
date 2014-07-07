@@ -18,19 +18,70 @@ A reaction set musth be declare in molecule's files respecting this syntax :
   
   
  */
-public class ReactionSet : LoadableFromXmlImpl
+public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
 {
-  public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
+  //!< The list of reactions present in the set.
+  //TODO setter/modifier/appender
+  public LinkedList<IReaction> reactions {
+    get
+    {
+        return new LinkedList<IReaction>(elementCollection);
+    }
+  }
+
+  //TODO FIXME: one tag per reaction type
+  //=> change xml with tag=reaction and type=promoter, allostery...
+  //=> change logic of treatment
+  public override string getTag() {return "reactions";}
+
+
+  IReaction create(string reactionType)
+  {
+    switch(reactionType)
+    {
+      case "promoter":
+        return new PromoterReaction();
+        break;
+      case "enzyme":
+        return new EnzymeReaction();
+        break;
+      case "allostery":
+        return new Allostery();
+        break;
+      case "instantReaction":
+        return new InstantReaction();
+        break;
+      default:
+        return new InstantReaction();
+        break;
+    }
+  }
 
   //warning: assumes that node contains correct information
   protected override void innerInstantiateFromXml(XmlNode node)
   {
-    _stringId = node.Attributes["id"].Value;
-    reactions = new LinkedList<IReaction>();
+    Logger.Log ("ReactionSet::innerInstantiateFromXml("+Logger.ToString(node)+")"
+                +" with elementCollection="+Logger.ToString<IReaction>("T", elementCollection)
+                , Logger.Level.DEBUG);
     
-    FileLoader fileLoader = new FileLoader();
-    fileLoader.loadReactions(node, reactions);
+    otherInitialize(node);
+
+    elementCollection = new ArrayList();
+    
+    foreach (XmlNode eltNode in node)
+    {
+      IReaction elt = create(eltNode.Name);
+      if(elt.tryInstantiateFromXml(eltNode))
+      {
+        elementCollection.Add(elt);
+      }
+      else
+      {
+        Logger.Log ("ReactionSet.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
+      }
+    }
   }
+
 	
   public override string ToString()
 	{

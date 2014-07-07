@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine;
+using System.Xml;
 
 /*!
  *  \brief     Manage promoter reactions
@@ -133,6 +134,8 @@ public class PromoterReaction : IReaction
   public void setFormula(TreeNode<PromoterNodeData> tree) { _formula = tree; }
   public TreeNode<PromoterNodeData> getFormula() { return _formula; }
 	
+  private static PromoterParser _parser = new PromoterParser();               //!< The Formula Parser
+
   private bool _debug = false;
 
   //! Default Constructor
@@ -450,43 +453,35 @@ A PromoterReaction should respect this syntax:
   \sa PromoterReaction
   
  */
-    public override bool tryInstantiateFromXml(XmlNode node)
+  public override bool tryInstantiateFromXml(XmlNode node)
+  {
+    bool b = true;
+    foreach (XmlNode attr in node)
     {
-        XmlNodeList promotersList = node.SelectNodes("promoter");
-        bool b = true;
-        
-        foreach (XmlNode promoter in promotersList)
-        {
-            PromoterReaction p = new PromoterReaction();
-            foreach (XmlNode attr in promoter)
-            {
-                switch (attr.Name)
-                {
-                    case "name":
-                        b = b && loadPromoterName(attr.InnerText, p);
-                        break;
-                    case "productionMax":
-                        b = b && loadPromoterProductionMax(attr.InnerText, p);
-                        break;
-                    case "terminatorFactor":
-                        b = b && loadPromoterTerminatorFactor(attr.InnerText, p);
-                        break;
-                    case "EnergyCost":
-                        b = b && loadEnergyCost(attr.InnerText, p);
-                        break;
-                    case "formula":
-                        b = b && loadPromoterFormula(attr.InnerText, p);
-                        break;
-                    case "operon":
-                        b = b && loadPromoterOperon(attr, p);
-                        break;
-                }
-            }
-            reactions.AddLast(p);
-        }
-        return b;
+      switch (attr.Name)
+      {
+        case "name":
+          b = b && loadPromoterName(attr.InnerText);
+          break;
+        case "productionMax":
+          b = b && loadPromoterProductionMax(attr.InnerText);
+          break;
+        case "terminatorFactor":
+          b = b && loadPromoterTerminatorFactor(attr.InnerText);
+          break;
+        case "EnergyCost":
+          b = b && loadEnergyCost(attr.InnerText);
+          break;
+        case "formula":
+          b = b && loadPromoterFormula(attr.InnerText);
+          break;
+        case "operon":
+          b = b && loadPromoterOperon(attr);
+          break;
+      }
     }
-
+    return b;
+  }
 
 
   public override string ToString ()
@@ -503,5 +498,155 @@ A PromoterReaction should respect this syntax:
 			+", enableEnergy:"+enableEnergy
 			+"]");
   }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// loading ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    
+    /*!
+    \brief Load promoter name by checking the validity of the given string
+    \param value The given name
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadPromoterName(string value)
+    {
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty name field");
+            return false;
+        }
+        setName(value);
+        return true;
+    }
+    
+    /*!
+    \brief Load promoter maximal production speed by checking the validity of the given string
+    \param value The given maximal production
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadPromoterProductionMax(string value)
+    {
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty productionMax field");
+            return false;
+        }
+        setBeta(float.Parse(value.Replace(",", ".")));
+        return true;
+    }
+    
+    /*!
+    \brief Load promoter terminator factor by checking the validity of the given string
+    \param value The given terminator factor
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadPromoterTerminatorFactor(string value)
+    {
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty TerminatorFactor field");
+            return false;
+        }
+        setTerminatorFactor(float.Parse(value.Replace(",", ".")));
+        return true;
+    }
+    
+    /*!
+    \brief Load promoter energy cost by checking the validity of the given string
+    \param value The given energy cost
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadEnergyCost(string value)
+    {
+        if (String.IsNullOrEmpty(value))
+        {
+            Debug.Log("Error: Empty EnergyCost field. default value = 0");
+            setEnergyCost(0f);
+        }
+        else
+            setEnergyCost(float.Parse(value.Replace(",", ".")));
+        return true;
+    }
+    
+    /*!
+    \brief Load promoter gene by checking the validity of the given strings
+    \param name The name of the molecule that the gene will produce
+    \param RBSf The Ribosome Binding Site factor string
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadGene(string name, string RBSf)
+    {
+        Product gene = new Product();
+        
+        if (String.IsNullOrEmpty(name) || String.IsNullOrEmpty(RBSf))
+        {
+            Debug.Log("Error: Empty Gene name field");
+            return false;
+        }
+        gene.setName(name);
+        gene.setQuantityFactor(float.Parse(RBSf.Replace(",", ".")));
+        addProduct(gene);
+        return true;
+    }
+    
+    /*!
+    \brief Load promoter operon
+    \param node the xml node
+    \return Return true if succeeded and false if value parameter is invalid.
+   */
+    private bool loadPromoterOperon(XmlNode node)
+    {
+        string name = null;
+        string RBSf = null;
+        bool n = false;
+        bool rbsf = false;
+        bool b = true;
+        
+        foreach (XmlNode gene in node)
+        {
+            n = false;
+            rbsf = false;
+            foreach(XmlNode attr in gene)
+            {
+                switch (attr.Name)
+                {
+                    case "name":
+                        name = attr.InnerText;
+                        n = true;
+                        break;
+                    case "RBSFactor":
+                        RBSf = attr.InnerText;
+                        rbsf = true;
+                        break;
+                }
+            }
+            if (n && rbsf)
+                b = b && loadGene(name, RBSf);
+            if (!n)
+                Debug.Log("Error : Missing Gene name in operon");
+            if (!rbsf)
+                Debug.Log("Error : Missing RBSfactor in operon");
+        }
+        return b;
+    }
+    
+    /*!
+    \brief Load promoter formula by checking the validity of the given string
+    \param formula The given formula
+    \return Return true if succeeded and false if value parameter is invalid.
+  */
+    private bool loadPromoterFormula(string formula)
+    {
+        TreeNode<PromoterNodeData> tree = _parser.Parse(formula);
+        
+        if (tree == null)
+        {
+            Debug.Log("Syntax Error in promoter Formula");
+            return false;
+        }
+        setFormula(tree);
+        return true;
+    }
 
 }
