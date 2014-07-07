@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 
 public class Hero : MonoBehaviour {
@@ -25,6 +26,8 @@ public class Hero : MonoBehaviour {
 
   private bool _pause;
 	private bool _isAlive;
+
+	private  object _jointType = typeof(SpringJoint);
 
 
 

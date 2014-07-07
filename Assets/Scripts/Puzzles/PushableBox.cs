@@ -12,6 +12,8 @@ public class PushableBox : MonoBehaviour {
 
 	private bool _dragged = false;
 	private bool _willBeDragged = false;
+	private Vector3 _destination;
+	public void SetDestination(Vector3 v) {_destination = new Vector3 (v.x,v.y,v.z);}
 
 	private Color32 _normalColor;
 		private Color32 _nearColor;
@@ -84,7 +86,7 @@ public class PushableBox : MonoBehaviour {
 
 	void CreateHingeJoint(Collision col)
 	{
-		if(_willBeDragged)
+		/*if(_willBeDragged)
 		{
 			gameObject.AddComponent<HingeJoint>();
 			hingeJoint.connectedBody = _control.rigidbody;
@@ -99,6 +101,21 @@ public class PushableBox : MonoBehaviour {
 
 			hingeJoint.limits = limit;
 			hingeJoint.useLimits = true;
+		}*/
+
+		if(_willBeDragged)
+		{
+			HingeJoint buffjoint = gameObject.AddComponent<HingeJoint>();
+			buffjoint.connectedBody = _control.rigidbody;
+			buffjoint.breakForce = _control.currentMoveSpeed*1.1f;
+			buffjoint.anchor = transform.InverseTransformPoint(col.contacts[0].point);
+			buffjoint.autoConfigureConnectedAnchor=false;
+			buffjoint.connectedAnchor = _control.transform.InverseTransformPoint(col.contacts[0].point);
+			
+			Logger.Log ("anchor ::"+buffjoint.anchor,Logger.Level.WARN);
+			//buffjoint.anchor = Vector3.zero;
+			_control.SetIsDragging(true);
+			_control.SetBox(gameObject);
 		}
 	}
 
@@ -242,6 +259,14 @@ public class PushableBox : MonoBehaviour {
 				Logger.Log ("NotNear",Logger.Level.WARN);
 			}
 		}
+
+	}
+
+	public void PushRock()
+	{
+		//rigidbody.AddForce((_destination- transform.position).normalized *_control.currentMoveSpeed);
+		rigidbody.AddForce(_control.GetInputMovement()*(0.25f+(_control.currentMoveSpeed/minSpeed)),ForceMode.Acceleration);
+		Debug.DrawRay(transform.position,(_destination- transform.position).normalized *_control.currentMoveSpeed,Color.black,1000);
 
 	}
 

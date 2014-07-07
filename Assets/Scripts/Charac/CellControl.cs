@@ -92,9 +92,12 @@ public class CellControl : MonoBehaviour{
 
 				if(_isDragging)
 				{
+					box.GetComponent<PushableBox>().SetDestination(_targetPosition);
 					_angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
-					if(_angle >=20f)
-					{
+					if(_angle < 20f || _angle >= 50f)
+						_angle = 0f;
+					else if(_angle >=20f && _angle < 50f)
+					{ 
 						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
 
 						_angleProgress = 0f;
@@ -109,27 +112,17 @@ public class CellControl : MonoBehaviour{
 
 						int i = 0 ;
 						bool isFound = false;
+						//inverse of _targetPosition in world coord
 						Vector3 inverseTargetPosition = box.transform.TransformPoint(box.transform.InverseTransformPoint(_targetPosition)*(-1f));
+						inverseTargetPosition = new Vector3(inverseTargetPosition.x,_targetPosition.y,inverseTargetPosition.z);
 
 
-						RaycastHit[] hits;
-						//hits = Physics.RaycastAll(inverseTargetPosition, box.transform.position);
-						Ray ray2 = new Ray(inverseTargetPosition, _targetPosition);
-						hits = Physics.RaycastAll(ray2);
-						Debug.DrawLine(inverseTargetPosition, _targetPosition, Color.red, 1000f);
-						Logger.Log("HitCount::"+hits.Length,Logger.Level.WARN);
-						while (i < hits.Length && !isFound)
-						{
-							Logger.Log("looking for drawline::"+hits[i].transform,Logger.Level.WARN);
-							//if the pushableBox have been clicked
-							if(hits[i].collider == box.collider)
-							{
-								Logger.Log ("drawLine::"+box.transform.InverseTransformPoint(hits[i].point),Logger.Level.WARN);
-								Debug.DrawLine(box.transform.localPosition,hits[i].point,Color.red,1000f);
-								isFound = true;
-							}
-							i++;
-						}
+						Vector3 closestPoint = box.rigidbody.ClosestPointOnBounds(inverseTargetPosition);
+	
+						Debug.DrawLine(inverseTargetPosition,closestPoint,Color.blue,1000);
+						box.GetComponent<SpringJoint>().anchor = box.transform.InverseTransformPoint(closestPoint);
+
+
 					}
 				}
 
@@ -154,7 +147,8 @@ public class CellControl : MonoBehaviour{
     }
   }
     
-  private void AbsoluteWASDUpdate() {
+
+	private void AbsoluteWASDUpdate() {
     if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
 
       cancelMouseMove();
@@ -214,7 +208,6 @@ public class CellControl : MonoBehaviour{
 		if(_isDragging)
 		{
 			Vector3 moveAmount = new Vector3(0,0,-150);
-			//this.collider.attachedRigidbody.AddForce(moveAmount);
 			transform.RotateAround(box.transform.position,new Vector3(0,1,0),angle);
 
 		}
@@ -231,17 +224,18 @@ public class CellControl : MonoBehaviour{
 
 			if(Mathf.Abs(_angleProgress) >= Mathf.Abs (_angle))
 			{
-				_angle = 0.0f;
+				_angle = 0f;
 				_angleProgress =0.0f;
 				_angleStep = 0.0f;
 			}
 				
 			else 
 			{
-				//Logger.Log(_angleProgress+"° of ::"+_angle,Logger.Level.WARN);
 				DraggingMove(_angleStep);
 			}
 		}
+		else
+			_angle = 0f;
 
 	}
 
@@ -324,7 +318,14 @@ public class CellControl : MonoBehaviour{
           AbsoluteWASDUpdate();
           break;
       }
-      commonUpdate();
+	  if( !_isDragging)
+        commonUpdate();
+	  else if(_isDragging && _angle ==0f)
+			{
+				commonUpdate();
+			//	box.GetComponent<PushableBox>().PushRock();
+			//Logger.Log ("pushing::"+_angle,Logger.Level.WARN);
+			}
     }
     
 		switchRockCollision();
