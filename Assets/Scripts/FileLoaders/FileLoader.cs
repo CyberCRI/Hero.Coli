@@ -10,33 +10,13 @@ using System.IO;
   
  */
 
-
 public class FileLoader : XmlLoader
 {
-  private delegate void  StrSetter(string dst);
-  private delegate void  FloatSetter(float dst);
-
   //! Default constructor
   public FileLoader()
   {
   }
 
-  /*!
-    \brief This function load reactions from xml node
-    \param node The xml node
-    \param reaction The list of reaction where to add new reactions
-    \return Return Always true
-   */
-  public bool loadReactions(XmlNode node, LinkedList<IReaction> reactions)
-  {
-        /*
-    _promoterLoader.loadPromoters(node, reactions);
-    _enzymeReactionLoader.loadEnzymeReactions(node, reactions);
-    _allosteryLoader.loadAllostericReactions(node, reactions);
-    _instantReactionLoader.loadInstantReactions(node, reactions);
-    */
-    return true;
-  }
 
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeList)
 	{
@@ -55,6 +35,4 @@ public class FileLoader : XmlLoader
 		}
 		return objectList;
 	}
-
-
 }
