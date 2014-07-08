@@ -1,6 +1,7 @@
 using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /*!
   \brief Represent a Reaction set
@@ -22,10 +23,10 @@ public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
 {
   //!< The list of reactions present in the set.
   //TODO setter/modifier/appender
-  public LinkedList<IReaction> reactions {
+  public ArrayList reactions {
     get
     {
-        return new LinkedList<IReaction>(elementCollection);
+        return elementCollection;
     }
   }
 
@@ -41,50 +42,24 @@ public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
     {
       case "promoter":
         return new PromoterReaction();
-        break;
       case "enzyme":
         return new EnzymeReaction();
-        break;
       case "allostery":
         return new Allostery();
-        break;
       case "instantReaction":
         return new InstantReaction();
-        break;
       default:
         return new InstantReaction();
-        break;
     }
   }
 
-  //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node)
+  protected override IReaction construct(XmlNode node)
   {
-    Logger.Log ("ReactionSet::innerInstantiateFromXml("+Logger.ToString(node)+")"
-                +" with elementCollection="+Logger.ToString<IReaction>("T", elementCollection)
-                , Logger.Level.DEBUG);
-    
-    otherInitialize(node);
-
-    elementCollection = new ArrayList();
-    
-    foreach (XmlNode eltNode in node)
-    {
-      IReaction elt = create(eltNode.Name);
-      if(elt.tryInstantiateFromXml(eltNode))
-      {
-        elementCollection.Add(elt);
-      }
-      else
-      {
-        Logger.Log ("ReactionSet.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
-      }
-    }
+    return create(node.Name);
   }
-
 	
   public override string ToString()
 	{
-    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
+    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>("IReaction", reactions)+"]";
 	}
 }

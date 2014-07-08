@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+using System.Collections.Generic;
 
 /*!
   \brief This class represents a PromoterReaction and can be loaded by the simulator.

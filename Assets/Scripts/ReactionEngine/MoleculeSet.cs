@@ -18,7 +18,7 @@ A molecule set must be declared in molecule's files respecting this syntax :
   
   
  */
-public class MoleculeSet : CompoundLoadableFromXmlImpl<Molecule>
+public class MoleculeSet : CompoundLoadableFromXmlImplWithNew<Molecule>
 {  
   //!< The list of Molecule present in the set.
   public ArrayList molecules {

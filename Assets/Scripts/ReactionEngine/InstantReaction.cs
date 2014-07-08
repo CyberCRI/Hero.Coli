@@ -247,10 +247,9 @@ public class InstantReaction : IReaction
     /*!
     \brief Parse and load reactant of an InstantReaction
     \param node The xml node to parse
-    \param ir the InstantReaction to initialize
     \return return always true
   */
-    private bool loadInstantReactionProducts(XmlNode node, InstantReaction ir)
+    private bool loadInstantReactionProducts(XmlNode node)
     {
       foreach (XmlNode attr in node)
       if (attr.Name == "product")
