@@ -98,8 +98,8 @@ public class LoadableFromXmlImpl : LoadableFromXml {
 
 
 
-public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl 
-  where T : LoadableFromXml, new()
+public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl 
+  where T : LoadableFromXml
 {
     
     protected ArrayList elementCollection;
@@ -108,6 +108,8 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
     {
       _stringId = node.Attributes["id"].Value;
     }
+
+    protected abstract T construct(XmlNode node);
 
   //warning: assumes that node contains correct information
   protected override void innerInstantiateFromXml(XmlNode node)
@@ -122,7 +124,7 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
     
     foreach (XmlNode eltNode in node)
     {
-      T elt = new T();
+      T elt = construct(eltNode);
       if(elt.tryInstantiateFromXml(eltNode))
       {
         elementCollection.Add(elt);
@@ -133,4 +135,13 @@ public class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
       }
     }
   }
+}
+
+public class CompoundLoadableFromXmlImplWithNew<T> : CompoundLoadableFromXmlImpl<T>
+    where T : LoadableFromXml, new()
+{
+    protected override T construct(XmlNode node)
+    {
+      return new T();
+    }
 }

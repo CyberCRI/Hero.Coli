@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*!
-  \brief This class represent an active transport between two mediums.
+  \brief This class represents an active transport between two mediums.
   \details This reaction is the same reaction as an EnzymeReaction but the Substrate
   is consumed in a Medium and release in another one.
   \sa EnzymeReaction

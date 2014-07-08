@@ -1,6 +1,7 @@
 using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /*!
   \brief Represent a Reaction set
@@ -18,22 +19,47 @@ A reaction set musth be declare in molecule's files respecting this syntax :
   
   
  */
-public class ReactionSet : LoadableFromXmlImpl
+public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
 {
-  public LinkedList<IReaction>   reactions;             //!< The list of reactions present in the set.
+  //!< The list of reactions present in the set.
+  //TODO setter/modifier/appender
+  public ArrayList reactions {
+    get
+    {
+        return elementCollection;
+    }
+  }
 
-  //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node)
+  //TODO FIXME: one tag per reaction type
+  //=> change xml with tag=reaction and type=promoter, allostery...
+  //=> change logic of treatment
+  public override string getTag() {return "reactions";}
+
+
+  IReaction create(string reactionType)
   {
-    _stringId = node.Attributes["id"].Value;
-    reactions = new LinkedList<IReaction>();
-    
-    FileLoader fileLoader = new FileLoader();
-    fileLoader.loadReactions(node, reactions);
+    switch(reactionType)
+    {
+      case "promoter":
+        return new PromoterReaction();
+      case "enzyme":
+        return new EnzymeReaction();
+      case "allostery":
+        return new Allostery();
+      case "instantReaction":
+        return new InstantReaction();
+      default:
+        return new InstantReaction();
+    }
+  }
+
+  protected override IReaction construct(XmlNode node)
+  {
+    return create(node.Name);
   }
 	
   public override string ToString()
 	{
-    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>(reactions)+"]";
+    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>("IReaction", reactions)+"]";
 	}
 }

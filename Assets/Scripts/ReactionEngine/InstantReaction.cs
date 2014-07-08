@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 
 /*!
   \brief Describe an InstantReaction. This class can be loaded by the ReactionEngine
@@ -16,7 +17,7 @@ public class InstantReactionProperties
 }
 
 /*!
-  This class represent all the reactions that are instantaneous
+  This class represents all the reactions that are instantaneous
   The reactions that look like :
 
   2H + O = H2O should be managed by this class.
@@ -173,4 +174,156 @@ public class InstantReaction : IReaction
           mol.addNewConcentration(delta * prod.getQuantityFactor());
       }
   }
+
+
+
+
+
+    /*
+      An Instant reaction should respect this syntax :
+
+              <instantReaction>
+                <name>Water</name>                        -> Name of the reaction
+                <EnergyCost>0.1</EnergyCost>              -> Energy cost of the reaction
+                <reactants>
+                  <reactant>
+                    <name>O</name>                        -> Reactant name
+                    <quantity>1</quantity>                -> Reactant coefficiant (how much of this to make products)
+                  </reactant>
+                  <reactant>
+                    <name>H</name>
+                    <quantity>2</quantity>
+                  </reactant>
+                </reactants>
+                <products>
+                  <product>
+                    <name>H2O</name>                      -> Product Name
+                    <quantity>1</quantity>                -> Product Quantity (how much is created)
+                  </product>
+                </products>
+              </instantReaction>
+     */
+
+    /*!
+    \brief Parse and load reactants of an InstantReaction
+    \param node The xml node to parse
+    \return return always true
+   */
+    private bool loadInstantReactionReactants(XmlNode node)
+    {
+      foreach (XmlNode attr in node)
+        if (attr.Name == "reactant")
+          loadInstantReactionReactant(attr);
+      return true;
+    }
+    
+    /*!
+    \brief Parse and load reactant of an InstantReaction
+    \param node The xml node to parse
+    \return return always true
+  */
+    private bool loadInstantReactionReactant(XmlNode node)
+    {
+      Product prod = new Product();
+      foreach (XmlNode attr in node)
+      {
+        if (attr.Name == "name")
+        {
+            if (String.IsNullOrEmpty(attr.InnerText))
+                Debug.Log("Warning : Empty name field in instant reaction reactant definition");
+            prod.setName(attr.InnerText);
+        }
+        else if (attr.Name == "quantity")
+        {
+          if (String.IsNullOrEmpty(attr.InnerText))
+              Debug.Log("Warning : Empty quantity field in instant reaction reactant definition");
+          prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+        }
+      }
+      addReactant(prod);
+      return true;
+    }
+    
+    /*!
+    \brief Parse and load reactant of an InstantReaction
+    \param node The xml node to parse
+    \return return always true
+  */
+    private bool loadInstantReactionProducts(XmlNode node)
+    {
+      foreach (XmlNode attr in node)
+      if (attr.Name == "product")
+          loadInstantReactionProduct(attr);
+      return true;
+    }
+    
+    /*!
+    \brief Parse and load products of an InstantReaction
+    \param node The xml node to parse
+    \return return always true
+  */
+    private bool loadInstantReactionProduct(XmlNode node)
+    {
+        Product prod = new Product();
+        foreach (XmlNode attr in node)
+        {
+            if (attr.Name == "name")
+            {
+                if (String.IsNullOrEmpty(attr.InnerText))
+                    Debug.Log("Warning : Empty name field in instant reaction product definition");
+                prod.setName(attr.InnerText);
+            }
+            else if (attr.Name == "quantity")
+            {
+                if (String.IsNullOrEmpty(attr.InnerText))
+                    Debug.Log("Warning : Empty quantity field in instant reaction product definition");
+                prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+            }
+        }
+        addProduct(prod);
+        return true;
+    }
+    
+    /*!
+    \brief Parse and load the energy cost of an InstantReaction
+    \param value The value string
+    \return return always true
+  */
+    private bool loadEnergyCost(string value)
+    {
+      if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty EnergyCost field. default value = 0");
+        setEnergyCost(0f);
+      }
+      else
+        setEnergyCost(float.Parse(value.Replace(",", ".")));
+      return true;
+    }
+
+
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+      bool b = true;
+
+      foreach (XmlNode attr in node)
+      {
+        switch (attr.Name)
+        {
+          case "name":
+            setName(attr.InnerText);
+            break;
+          case "reactants":
+            loadInstantReactionReactants(attr);
+            break;
+          case "products":
+            loadInstantReactionProducts(attr);
+            break;
+          case "EnergyCost":
+            loadEnergyCost(attr.InnerText);
+            break;
+        }
+      }
+      return b;
+    }
 }
