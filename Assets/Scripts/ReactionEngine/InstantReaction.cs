@@ -251,10 +251,15 @@ public class InstantReaction : IReaction
   */
     private bool loadInstantReactionProducts(XmlNode node)
     {
+      Boolean b = true;
       foreach (XmlNode attr in node)
-      if (attr.Name == "product")
-          loadInstantReactionProduct(attr);
-      return true;
+      {
+        if (attr.Name == "product")
+        {
+          b = b && loadInstantReactionProduct(attr);
+        }
+      }
+      return b;
     }
     
     /*!
@@ -270,13 +275,19 @@ public class InstantReaction : IReaction
             if (attr.Name == "name")
             {
                 if (String.IsNullOrEmpty(attr.InnerText))
+                {
                     Debug.Log("Warning : Empty name field in instant reaction product definition");
+                    return false;
+                }
                 prod.setName(attr.InnerText);
             }
             else if (attr.Name == "quantity")
             {
                 if (String.IsNullOrEmpty(attr.InnerText))
+                {
                     Debug.Log("Warning : Empty quantity field in instant reaction product definition");
+                    return false;
+                }
                 prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
             }
         }
@@ -304,8 +315,7 @@ public class InstantReaction : IReaction
 
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-      bool b = true;
-
+      Boolean b = true;
       foreach (XmlNode attr in node)
       {
         switch (attr.Name)
@@ -314,16 +324,20 @@ public class InstantReaction : IReaction
             setName(attr.InnerText);
             break;
           case "reactants":
-            loadInstantReactionReactants(attr);
+            b = b && loadInstantReactionReactants(attr);
             break;
           case "products":
-            loadInstantReactionProducts(attr);
+            b = b && loadInstantReactionProducts(attr);
             break;
           case "EnergyCost":
-            loadEnergyCost(attr.InnerText);
+            b = b && loadEnergyCost(attr.InnerText);
             break;
         }
       }
-      return b;
-    }
+
+      return b
+          && !string.IsNullOrEmpty(_name) 
+          && (null != _reactants) && (0 != _reactants.Count)
+          && (null != _products) && (0 != _products.Count);
+  }
 }
