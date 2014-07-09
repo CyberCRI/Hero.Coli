@@ -27,8 +27,6 @@ public class Hero : MonoBehaviour {
   private bool _pause;
 	private bool _isAlive;
 
-	private  object _jointType = typeof(SpringJoint);
-
 
 
 	public void Pause(bool pause)

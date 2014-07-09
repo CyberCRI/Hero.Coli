@@ -51,8 +51,11 @@ public class CellControl : MonoBehaviour{
 
 	private float _angle =0f;		// the angle for the rotation around the pushable box
 	private float _angleProgress = 0f;	// the current progression of the rotation
-	private float _angleStep = 0f;
 	private float _rotationSpeed = 2f;
+	private float _angleStep = 0f;		// depends on the rotationSpeed and the position of the click
+
+	private float _minAngle = 17f;
+	private float _maxAngle = 50f;
 
 	private bool _isDragging = false;
 	public bool GetIsDragging() {return _isDragging;}
@@ -61,6 +64,9 @@ public class CellControl : MonoBehaviour{
 	GameObject box;
 	public void SetBox(GameObject o) {box = o;}
 	public GameObject GetBox(){return box;}
+
+
+
 
   public void Pause(bool pause)
   {
@@ -86,19 +92,20 @@ public class CellControl : MonoBehaviour{
 		}
 
 			if(_isDragging)
-			{
+			{	//Cancel the drag
 				box.GetComponent<PushableBox>().SetUsedClicked(true);
 				box.GetComponent<PushableBox>().Clicked();
 
 				if(_isDragging)
-				{
+				{//Determine the angle for the move
 					box.GetComponent<PushableBox>().SetDestination(_targetPosition);
 					_angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
-					if(_angle < 20f || _angle >= 50f)
+					if(_angle < _minAngle || _angle >= _maxAngle)
 						_angle = 0f;
-					else if(_angle >=20f && _angle < 50f)
+					else if(_angle >=_minAngle && _angle < _maxAngle)
 					{ 
-						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
+						// if the point is on the left or the right of the player
+						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition); 
 
 						_angleProgress = 0f;
 						if (relativepoint.x < 0.0f)
@@ -112,16 +119,18 @@ public class CellControl : MonoBehaviour{
 
 						int i = 0 ;
 						bool isFound = false;
+
+
+
 						//inverse of _targetPosition in world coord
-						Vector3 inverseTargetPosition = box.transform.TransformPoint(box.transform.InverseTransformPoint(_targetPosition)*(-1f));
-						inverseTargetPosition = new Vector3(inverseTargetPosition.x,_targetPosition.y,inverseTargetPosition.z);
+						/*Vector3 inverseTargetPosition = box.transform.TransformPoint(box.transform.InverseTransformPoint(_targetPosition)*(-1f));
+						inverseTargetPosition = new Vector3(inverseTargetPosition.x,_targetPosition.y,inverseTargetPosition.z);*/
 
 
-						Vector3 closestPoint = box.rigidbody.ClosestPointOnBounds(inverseTargetPosition);
-	
-						Debug.DrawLine(inverseTargetPosition,closestPoint,Color.blue,1000);
-						box.GetComponent<SpringJoint>().anchor = box.transform.InverseTransformPoint(closestPoint);
+						//Change the position of the anchor 
 
+						//Vector3 closestPoint = box.rigidbody.ClosestPointOnBounds(inverseTargetPosition);
+						//transform.FindChild("springStart").GetComponent<SpringJoint>().anchor = box.transform.InverseTransformPoint(closestPoint);
 
 					}
 				}
@@ -204,18 +213,21 @@ public class CellControl : MonoBehaviour{
     }
   }
 
+
+
 	private void DraggingMove(float angle) {
 		if(_isDragging)
 		{
-			Vector3 moveAmount = new Vector3(0,0,-150);
 			transform.RotateAround(box.transform.position,new Vector3(0,1,0),angle);
-
 		}
 	}
 
+
+
+	//the update during the Drag mode with a PushableBox
 	private void DraggingUpdate() {
 
-		if (Mathf.Abs(_angle) > 20 && Mathf.Abs(_angle)< 50)
+		if (Mathf.Abs(_angle) > _minAngle && Mathf.Abs(_angle)< _maxAngle)
 		{
 			if(Mathf.Abs(_angleProgress) < Mathf.Abs (0.8f*_angle))
 					_angleProgress += _angleStep;
@@ -235,7 +247,10 @@ public class CellControl : MonoBehaviour{
 			}
 		}
 		else
+		{
+
 			_angle = 0f;
+		}
 
 	}
 
@@ -323,8 +338,6 @@ public class CellControl : MonoBehaviour{
 	  else if(_isDragging && _angle ==0f)
 			{
 				commonUpdate();
-			//	box.GetComponent<PushableBox>().PushRock();
-			//Logger.Log ("pushing::"+_angle,Logger.Level.WARN);
 			}
     }
     
@@ -337,7 +350,7 @@ public class CellControl : MonoBehaviour{
     
   }
 
-
+	//Allow the user to choose the way to interact with the pushableBox
 	private void switchRockCollision () {
 
 		if(Input.GetKeyDown(KeyCode.Space))
