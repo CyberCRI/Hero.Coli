@@ -34,6 +34,7 @@ public class GameStateController : MonoBehaviour {
 		Application.LoadLevelAdditive("Interface1.0");
 		Application.LoadLevelAdditive("Bacterium1.0");
 		Application.LoadLevelAdditive("World1.0");
+		Application.LoadLevelAdditive("test-Challenge3-Vincent");
 	}
 	// Use this for initialization
 	void Start () {
