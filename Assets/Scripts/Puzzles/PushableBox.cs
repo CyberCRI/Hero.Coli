@@ -17,6 +17,7 @@ public class PushableBox : MonoBehaviour {
 
 	private Color32 _normalColor;
 	private Color32 _nearColor;
+	private Color32 _draggingColor;
 
 	private bool _playerIsNear = false;
 	private bool _usedClicked = false;			// if Clicked method has already been used from outside the GameObject during the frame 
@@ -26,6 +27,7 @@ public class PushableBox : MonoBehaviour {
 		_initPos = transform.position;
 		_nearColor = new Color32 (51,233,72,255);
 		_normalColor = new Color32(140,180,187,190);
+		_draggingColor = new Color32(255,178,41,147);
 	}
 
   private CellControl lazySafeGetCellControl(GameObject col)
@@ -230,7 +232,12 @@ public class PushableBox : MonoBehaviour {
 
 	void switchParticleColor()
 	{
-		if (_playerIsNear && particleSystem.startColor != _nearColor)
+		if(_control.getIsDragging() && _control.getBox() == gameObject 
+		   && particleSystem.startColor != _draggingColor)
+		{
+			particleSystem.startColor = _draggingColor;
+		}
+		else if (!_control.getIsDragging() && _playerIsNear && particleSystem.startColor != _nearColor)
 		{
 			particleSystem.startColor = _nearColor;
 			particleSystem.startSize = 4.5f;
@@ -241,6 +248,8 @@ public class PushableBox : MonoBehaviour {
 			particleSystem.startColor = _normalColor;
 			particleSystem.startSize = 3f;
 		}
+
+
 	}
 
 	void detectProximity ()
