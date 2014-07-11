@@ -212,9 +212,18 @@ public class InstantReaction : IReaction
     private bool loadInstantReactionReactants(XmlNode node)
     {
       foreach (XmlNode attr in node)
+      {
         if (attr.Name == "reactant")
+        {
           loadInstantReactionReactant(attr);
-      return true;
+          return true;
+        }
+        else
+        {
+            Logger.Log ("InstantReaction::loadInstantReactionReactants bad attr name:"+attr.Name, Logger.Level.ERROR);
+            return false;
+        }
+      }
     }
     
     /*!
@@ -230,13 +239,21 @@ public class InstantReaction : IReaction
         if (attr.Name == "name")
         {
             if (String.IsNullOrEmpty(attr.InnerText))
-                Debug.Log("Warning : Empty name field in instant reaction reactant definition");
+            {
+              Logger.Log("InstantReaction::loadInstantReactionReactant Empty name field in instant reaction reactant definition"
+                               , Logger.Level.ERROR);
+              return false;
+            }
             prod.setName(attr.InnerText);
         }
         else if (attr.Name == "quantity")
         {
           if (String.IsNullOrEmpty(attr.InnerText))
-              Debug.Log("Warning : Empty quantity field in instant reaction reactant definition");
+          {                    
+            Logger.Log("InstantReaction::loadInstantReactionReactant Empty quantity field in instant reaction reactant definition"
+                       , Logger.Level.ERROR);
+            return false;
+          }
           prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
         }
       }
@@ -254,6 +271,7 @@ public class InstantReaction : IReaction
       Boolean b = true;
       foreach (XmlNode attr in node)
       {
+            //TODO should this be "if (b && (attr.Name == "product"))" ?
         if (attr.Name == "product")
         {
           b = b && loadInstantReactionProduct(attr);
@@ -269,30 +287,32 @@ public class InstantReaction : IReaction
   */
     private bool loadInstantReactionProduct(XmlNode node)
     {
-        Product prod = new Product();
-        foreach (XmlNode attr in node)
+      Product prod = new Product();
+      foreach (XmlNode attr in node)
+      {
+        if (attr.Name == "name")
         {
-            if (attr.Name == "name")
-            {
-                if (String.IsNullOrEmpty(attr.InnerText))
-                {
-                    Debug.Log("Warning : Empty name field in instant reaction product definition");
-                    return false;
-                }
-                prod.setName(attr.InnerText);
-            }
-            else if (attr.Name == "quantity")
-            {
-                if (String.IsNullOrEmpty(attr.InnerText))
-                {
-                    Debug.Log("Warning : Empty quantity field in instant reaction product definition");
-                    return false;
-                }
-                prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
-            }
+          if (String.IsNullOrEmpty(attr.InnerText))
+          {
+            Logger.Log("InstantReaction::loadInstantReactionProduct Empty name field in instant reaction product definition"
+                               , Logger.Level.ERROR);
+            return false;
+          }
+          prod.setName(attr.InnerText);
         }
-        addProduct(prod);
-        return true;
+        else if (attr.Name == "quantity")
+        {
+          if (String.IsNullOrEmpty(attr.InnerText))
+          {
+            Logger.Log("InstantReaction::loadInstantReactionProduct Empty quantity field in instant reaction product definition"
+                         , Logger.Level.ERROR);
+            return false;
+          }
+          prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+        }
+      }
+      addProduct(prod);
+      return true;
     }
     
     /*!
@@ -304,7 +324,8 @@ public class InstantReaction : IReaction
     {
       if (String.IsNullOrEmpty(value))
       {
-        Debug.Log("Error: Empty EnergyCost field. default value = 0");
+        Logger.Log("InstantReaction::loadInstantReactionProduct Empty EnergyCost field. default value = 0"
+                       , Logger.Level.WARN);
         setEnergyCost(0f);
       }
       else
