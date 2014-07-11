@@ -22,7 +22,7 @@ public class PhenoFickContact : Phenotype {
   }
 
   public VectrosityPanel vectroPanel;
-  public MoleculeDebug moleculeDebug;
+  public GraphMoleculeList moleculeDebug;
   private int _vectroPanelInitMediumId = 2;
   private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
 

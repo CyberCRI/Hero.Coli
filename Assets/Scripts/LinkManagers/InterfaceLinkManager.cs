@@ -24,6 +24,13 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 	public GameObject tutorialArrow;
 
+  public GameObject tutorialPanels;
+
+  public GameObject introduction1;
+  public GameObject introduction2;
+  public GameObject okButton1;
+  public GameObject okButton2;
+
 	//public Camera _uicamera;
 
 
@@ -50,15 +57,16 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 
 		//GameStateController
-		gameStateController.introPanel = GameObject.Find ("Introduction1").GetComponent<UIPanel>();
+    gameStateController.introPanel = introduction1.GetComponent<UIPanel>();
 		gameStateController.fadeSprite = fade;
 		gameStateController.endPanel = end;
 
 		//Object with GameStateController 
-		GameObject.Find ("OK1Button").GetComponent<ContinueButton>().gameStateController = gameStateController;
-		GameObject.Find ("OK2Button").GetComponent<StartGameButton>().gameStateController = gameStateController;
-		GameObject.Find ("Introduction1").SetActive(false);
-		GameObject.Find ("Introduction2").SetActive(false);
+		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
+		okButton2.GetComponent<StartGameButton>().gameStateController = gameStateController;
+    tutorialPanels.SetActive (true);
+    introduction1.SetActive(false);
+    introduction2.SetActive(false);
 
 
 		//CraftFinalizer

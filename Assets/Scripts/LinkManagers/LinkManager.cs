@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -33,7 +33,7 @@ public class LinkManager : MonoBehaviour {
 
 		//PhenoFickcontact connections
 		pheno.vectroPanel =GameObject.Find("MediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
-		pheno.moleculeDebug = GameObject.Find("MediumInfoPanelRoom").GetComponent<MoleculeDebug>();
+		pheno.moleculeDebug = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
 
 
 		//Main Camera

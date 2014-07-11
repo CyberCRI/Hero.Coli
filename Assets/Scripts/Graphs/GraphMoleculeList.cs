@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MoleculeDebug : MonoBehaviour {
+public class GraphMoleculeList : MonoBehaviour {
 
 	private ReactionEngine   _reactionEngine;
 	public int               mediumId;
