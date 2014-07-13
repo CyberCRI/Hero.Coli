@@ -332,10 +332,10 @@ public class EnzymeReaction : IReaction
    */
     private bool loadEnzymeString(string value, StrSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-            return false;
-        setter(value);
-        return true;    
+      if (String.IsNullOrEmpty(value))
+        return false;
+      setter(value);
+      return true;    
     }
     
     /*!
@@ -345,13 +345,14 @@ public class EnzymeReaction : IReaction
    */
     private bool loadEnzymeFloat(string value, FloatSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-        {
-            Debug.Log("Error: Empty productionMax field");
-            return false;
-        }
-        setter(float.Parse(value.Replace(",", ".")));
-        return true;    
+      if (String.IsNullOrEmpty(value))
+      {
+        Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty productionMax field"
+                       , Logger.Level.ERROR);
+        return false;
+      }
+      setter(float.Parse(value.Replace(",", ".")));
+      return true;    
     }
     
     /*!
@@ -366,7 +367,11 @@ public class EnzymeReaction : IReaction
         if (attr.Name == "name")
         {
           if (String.IsNullOrEmpty(attr.InnerText))
-            Debug.Log("Warning : Empty name field in Enzyme Reaction definition");
+          {
+            Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty name field in Enzyme Reaction definition"
+                               , Logger.Level.ERROR);
+            return false;
+          }
           Product prod = new Product();
           prod.setName(node.InnerText);
           addProduct(prod);

@@ -279,13 +279,13 @@ public class Allostery : IReaction
   */
     private bool loadAllosteryString(string value, StrSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-        {
-            Debug.Log("Error: Empty name field");
-            return false;
-        }
-        setter(value);
-        return true;    
+      if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty name field");
+        return false;
+      }
+      setter(value);
+      return true;    
     }
     
     /*!
@@ -296,12 +296,12 @@ public class Allostery : IReaction
   */
     private bool loadAllosteryFloat(string value, FloatSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-        {
-            Debug.Log("Error: Empty productionMax field");
-            return false;
-        }
-        setter(float.Parse(value.Replace(",", ".")));
-        return true;    
+      if (String.IsNullOrEmpty(value))
+      {
+        Debug.Log("Error: Empty productionMax field");
+        return false;
+      }
+      setter(float.Parse(value.Replace(",", ".")));
+      return true;    
     }
 }
