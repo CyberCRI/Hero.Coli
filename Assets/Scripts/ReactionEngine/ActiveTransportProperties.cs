@@ -107,10 +107,33 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       case "Products":
         loadActiveTransportReactionProducts(attr);
         break;
+      default:
+        Logger.Log("ActiveTransportProperties.tryInstantiateFromXml unrecognized attribute '"+attr.Name+"'"
+                   , Logger.Level.WARN);
+        break;
       }
     }
-    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.INFO);
-    return true;
+    
+    if(
+      string.IsNullOrEmpty(name)
+      || string.IsNullOrEmpty(substrate)
+      || string.IsNullOrEmpty(enzyme)
+      || string.IsNullOrEmpty(effector)
+      || (0 == mediumId)
+      || (0 == srcMediumId)
+      || (0 == dstMediumId)
+      || (0 == products.Count)
+      //TODO conditions on Kcat, alpha, beta, Km, Ki, energyCost
+      )
+    {
+      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml failed to load", Logger.Level.INFO);
+      return false;
+    }
+    else
+    {
+      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.INFO);
+      return true;
+    }
   }
   
   /*!
@@ -178,7 +201,16 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
         products.AddLast(prod);
       }
     }
-    return true;
+    if(0 == products.Count)
+    {
+      Logger.Log("ActiveTransport.loadActiveTransportReactionProducts no product loaded"
+                 , Logger.Level.ERROR);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
   }
   
   public override string ToString ()
