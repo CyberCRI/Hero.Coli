@@ -544,7 +544,7 @@ public class Medium : LoadableFromXmlImpl
         {
           Logger.Log("Medium.tryInstantiateFromXml failed to load"
                        , Logger.Level.ERROR);
-          return false
+            return false;
         }
         else
         {

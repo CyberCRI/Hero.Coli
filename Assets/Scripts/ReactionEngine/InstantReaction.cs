@@ -211,19 +211,44 @@ public class InstantReaction : IReaction
    */
     private bool loadInstantReactionReactants(XmlNode node)
     {
+      bool b = false;
+
       foreach (XmlNode attr in node)
       {
         if (attr.Name == "reactant")
         {
-          loadInstantReactionReactant(attr);
-          return true;
+          if(!loadInstantReactionReactant(attr))
+          {                    
+            Logger.Log ("InstantReaction::loadInstantReactionReactants loadInstantReactionReactant failed"
+                        , Logger.Level.ERROR);
+            return false;
+          }
+          else
+          {
+              b = true;
+          }
         }
         else
         {
-            Logger.Log ("InstantReaction::loadInstantReactionReactants bad attr name:"+attr.Name, Logger.Level.ERROR);
-            return false;
+          Logger.Log ("InstantReaction::loadInstantReactionReactants bad attr name:"+attr.Name
+                            , Logger.Level.ERROR);
+          return false;
         }
       }
+
+      if(!b)
+      {
+        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded nothing"
+          , Logger.Level.ERROR);
+        return false;
+      }
+      else
+      {
+        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded successfully "+this
+          , Logger.Level.DEBUG);
+        return true;
+      }
+
     }
     
     /*!

@@ -194,10 +194,30 @@ public class Molecule : LoadableFromXmlImpl
                           return false;
                   }
               }
+
+              if(
+                    string.IsNullOrEmpty(_name)                           //!< The use name of the molecule
+                    || string.IsNullOrEmpty(_realName)                    //!< The real name of the molecule
+                    || (null == _type)                                    //!< The type of the molecule
+                    //private string _description;                        //!< The description of the molecule (optionnal)
+                    //private float _concentration;                       //!< The concentration of the molecule
+                    //private float _newConcentration;                    //!< The concentration of the molecule for the next stage
+                    //private float _degradationRate;                     //!< The degradation rate of the molecule
+                    //private float _fickFactor;                          //!< The FickFactor is a coefficient for FickReaction
+                    )
+                {
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually"
+                                , Logger.Level.ERROR);
+                  return false;
+                }
+                else
+                {
               
-              Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
                           +" with molecule="+this
-                          , Logger.Level.DEBUG);
+                            , Logger.Level.DEBUG);
+                  return true;
+                }
           }
           else
           {
@@ -212,7 +232,6 @@ public class Molecule : LoadableFromXmlImpl
           Logger.Log("Molecule.tryInstantiateFromXml bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
           return false;
       }
-      return true;
   }
 
   public override string ToString() {
