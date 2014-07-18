@@ -264,7 +264,29 @@ public class Allostery : IReaction
             break;
         }
       }
-      return b;
+        //TODO method that checks IReaction's loading
+        // + method that checks child classes loading
+      return b && !(
+
+            //IReaction check
+
+            string.IsNullOrEmpty(_name)                   //!< The name of the reaction
+            //TODO LinkedList<Product> _products;         //!< The list of products
+            // _isActive;                                 //!< Activation booleen
+            || (null != _medium) //TODO better check      //!< The medium where the reaction will be executed
+            //_reactionSpeed;               //!< Speed coefficient of the reaction
+            //_energyCost;                  //!< Energy consumed by the reaction
+            //enableSequential;
+            //enableEnergy;
+
+            //IReaction check
+            
+            || string.IsNullOrEmpty(_effector)             //! The name of the effector
+            //TODO private float _K;                     //! The binding affinity between the effector and the protein
+            || (0 != _n) //TODO better check                       //! Stepness of the HillFunction
+            || string.IsNullOrEmpty(_protein)              //! The name of the protein
+            || string.IsNullOrEmpty(_product)              //! The name of the product
+            );
     }
 
     
