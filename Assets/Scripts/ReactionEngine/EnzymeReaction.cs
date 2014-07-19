@@ -90,10 +90,11 @@ public class EnzymeReaction : IReaction
     \brief Checks that two reactions have the same EnzymeReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     EnzymeReaction enzyme = reaction as EnzymeReaction;
     return (enzyme != null)
+    && base.PartialEquals(reaction)
     && (_substrate == enzyme._substrate)
     && (_enzyme    == enzyme._enzyme)
     && (_Kcat      == enzyme._Kcat)

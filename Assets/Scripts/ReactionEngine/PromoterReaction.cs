@@ -164,7 +164,7 @@ public class PromoterReaction : IReaction
     \brief Checks that two reactions have the same PromoterReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     PromoterReaction promoter = reaction as PromoterReaction;
 
@@ -173,7 +173,7 @@ public class PromoterReaction : IReaction
     bool bformula = formulaEquals(_formula, promoter._formula);
     bool bbeta = (_beta == promoter._beta);
 
-    Logger.Log("PromoterReaction::CharacEquals"
+    Logger.Log("PromoterReaction::PartialEquals"
       +", bnullProm="+bnullProm
       +", btermFac="+btermFac
       +", bformula="+bformula
@@ -181,13 +181,14 @@ public class PromoterReaction : IReaction
       , Logger.Level.DEBUG);
 
     return (promoter != null)
+    && base.PartialEquals(reaction)
     && (_terminatorFactor == promoter._terminatorFactor)
     //&& _formula.Equals(promoter._formula)
     && formulaEquals(_formula, promoter._formula)
     && (_beta == promoter._beta);
   }
   /*
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     PromoterReaction promoter = reaction as PromoterReaction;
     if (promoter != null)

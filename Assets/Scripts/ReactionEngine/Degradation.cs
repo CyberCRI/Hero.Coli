@@ -33,12 +33,13 @@ public class Degradation : IReaction
     \brief Checks that two reactions have the same Degradation field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     Degradation degradation = reaction as Degradation;
     return (degradation != null)
+      && base.PartialEquals(reaction)
       && (_degradationRate == degradation._degradationRate)
-        && (_molName == degradation._molName);
+      && (_molName == degradation._molName);
   }
   
   /*!

@@ -47,10 +47,11 @@ public class InstantReaction : IReaction
     \brief Checks that two reactions have the same InstantReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     InstantReaction instant = reaction as InstantReaction;
     return (instant != null)
+    && base.PartialEquals(reaction)
     && _reactants.Equals(instant._reactants);
   }
 

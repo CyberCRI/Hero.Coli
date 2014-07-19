@@ -34,10 +34,11 @@ public class ATPProducer : IReaction
     \brief Checks that two reactions have the same ATPProducer field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     ATPProducer producer = reaction as ATPProducer;
     return (producer != null)
+    && base.PartialEquals(reaction)
     && (_production == producer._production);
   }
 
