@@ -225,6 +225,8 @@ public class EnzymeReaction : IReaction
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
       return ;
+
+    //TODO introduce delta t here instead of 1f
     float delta = execEnzymeReaction(molecules) * 1f;
 
     float energyCoef;
@@ -319,7 +321,37 @@ public class EnzymeReaction : IReaction
             break;
         }
       }
-      return b;
+      return b && hasValidData();
+    }
+
+    
+    public override bool hasValidData()
+    {
+      bool valid = base.hasValidData()
+        && !string.IsNullOrEmpty(_substrate)            //!< The substrate of the reaction
+        && !string.IsNullOrEmpty(_enzyme)               //!< The enzyme of the reaction
+      //protected float _Kcat;                  //!< Reaction constant of enzymatic reaction
+        && !string.IsNullOrEmpty(_effector);            //!< The effector of the reaction
+      //protected float _alpha;                 //!< Alpha descriptor of the effector
+      //protected float _beta;                  //!< Beta descriptor of the effector
+      //protected float _Km;                    //!< Affinity coefficient between substrate and enzyme
+      //protected float _Ki;                    //!< Affinity coefficient between effector and enzyme;
+      if(valid)
+      {
+        if((0 == _alpha)
+           || (0 == _Ki)
+           || (0 == _Km))
+        {
+          //TODO check also _Kcat, _beta
+          Logger.Log ("EnzymeReaction::hasValidData please check values of "
+            + "alpha="+_alpha
+            + ", Ki="+_Ki
+            + ", Km="+_Km
+            +" for reaction "+this.getName()
+            , Logger.Level.WARN);
+        }
+      }
+      return valid;
     }
 
     private delegate void  StrSetter(string dst);

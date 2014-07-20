@@ -74,6 +74,15 @@ public class FickReaction : IReaction
       && _medium2.Equals(fick._medium2);
     //TODO check Medium equality
   }
+
+    public override bool hasValidData()
+    {
+        return base.hasValidData()
+          && 0 != _surface
+          && 0 != _P
+          && null != _medium1
+          && null != _medium2;
+    }
   
   public static IReaction        buildFickReactionFromProps(FickProperties props, LinkedList<Medium> mediums)
   {

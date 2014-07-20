@@ -7,8 +7,9 @@ using System.Collections;
 /*!
   \brief This class manages degradation reactions
   \details
-  Manage the degradation of a specific molecule inside the cell or in a specific medium.
+  Manages the degradation of a specific molecule inside the cell or in a specific medium.
   In this simulation, the degradation is determined by the degradation constant (half-life) of a specific chemical or protein.
+  Loading done through medium initialization by browsing the list of molecules, which have a degradation rate attribute.
  */
 public class Degradation : IReaction
 {
@@ -61,4 +62,20 @@ public class Degradation : IReaction
     else
       mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
   }
+
+    public override bool hasValidData()
+    {
+        bool valid = base.hasValidData()
+            && !string.IsNullOrEmpty(_molName);
+        if(valid)
+        {
+          if(0 == _degradationRate)
+          {
+            Logger.Log ("Degradation::hasValidData please check that you really intended a degradation rate of 0 " +
+              "for molecule "+_molName
+              , Logger.Level.WARN);
+          }
+        }
+        return valid;
+    }
 }

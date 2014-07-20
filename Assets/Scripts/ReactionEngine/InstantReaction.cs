@@ -382,9 +382,12 @@ public class InstantReaction : IReaction
         }
       }
 
-      return b
-          && !string.IsNullOrEmpty(_name) 
-          && (null != _reactants) && (0 != _reactants.Count)
-          && (null != _products) && (0 != _products.Count);
+      return b && hasValidData();
   }
+
+    public override bool hasValidData()
+    {
+        return base.hasValidData()
+          && (null != _reactants) && (0 != _reactants.Count);
+    }
 }

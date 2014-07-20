@@ -50,4 +50,20 @@ public class ATPProducer : IReaction
   {
     _medium.addEnergy(_production * _reactionSpeed * ReactionEngine.reactionsSpeed);
   }
+  
+
+  public override bool hasValidData()
+  {
+    bool valid = base.hasValidData();
+    if(valid)
+    {
+      if(0 == _production)
+      {
+        Logger.Log ("Degradation::hasValidData please check that you really intended a production rate of 0 " +
+                      "for energy producer "+this.getName()
+                      , Logger.Level.WARN);
+      }
+    }
+    return valid;
+  }
 }
