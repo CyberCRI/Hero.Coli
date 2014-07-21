@@ -23,8 +23,8 @@ public class LinkManager : MonoBehaviour {
 
 
 		//Hero connections
-		hero.lifeAnimation=GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
-		hero.energyAnimation=GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+		hero.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
+		hero.energyAnimation = GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
 		
 		GameObject.Find ("LifeIndicator").GetComponent<LifeIndicator>().hero = hero;
 		GameObject.Find ("EnergyIndicator").GetComponent<EnergyIndicator>().hero = hero;
@@ -32,7 +32,7 @@ public class LinkManager : MonoBehaviour {
 
 
 		//PhenoFickcontact connections
-		pheno.vectroPanel =GameObject.Find("MediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
+		pheno.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
 		pheno.moleculeDebug = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
 
 

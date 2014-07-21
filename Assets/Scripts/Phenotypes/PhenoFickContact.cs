@@ -28,8 +28,7 @@ public class PhenoFickContact : Phenotype {
 
   private void configureExternalDisplays(int mediumId)
   {
-	
-	vectroPanel.setMedium(mediumId);
+	  vectroPanel.setMedium(mediumId);
     moleculeDebug.setMediumId(mediumId);
   }
 
