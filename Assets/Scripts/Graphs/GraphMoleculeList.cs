@@ -9,11 +9,12 @@ public class GraphMoleculeList : MonoBehaviour {
 	public UILabel           namesLabel;
   public UILabel           valuesLabel;
 	public bool              displayAll;
+  public GameObject        unfoldingMoleculeList;
 
-  private LinkedList<DebugMolecule> _debugMolecules = new LinkedList<DebugMolecule>();
-  private LinkedList<DebugMolecule> _toRemove = new LinkedList<DebugMolecule>();
+  private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
+  private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
 
-  private class DebugMolecule
+  private class DisplayedMolecule
   {
     private string _name;
     private string _val;
@@ -34,14 +35,14 @@ public class GraphMoleculeList : MonoBehaviour {
       return _updated;
     }
 
-    public DebugMolecule(string name, string val)
+    public DisplayedMolecule(string name, string val)
     {
       _updated = true;
       _name = name;
       _val = val;
     }
 
-    public DebugMolecule(string name, float val) : this(name, val.ToString())
+    public DisplayedMolecule(string name, float val) : this(name, val.ToString())
     {
     }
 
@@ -73,7 +74,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
   private void resetMoleculeList()
   {
-    foreach(DebugMolecule molecule in _debugMolecules)
+    foreach(DisplayedMolecule molecule in _displayedMolecules)
     {
       molecule.reset();
     }
@@ -82,16 +83,16 @@ public class GraphMoleculeList : MonoBehaviour {
   private void removeUnusedMolecules()
   {
     _toRemove.Clear();
-    foreach(DebugMolecule molecule in _debugMolecules)
+    foreach(DisplayedMolecule molecule in _displayedMolecules)
     {
       if(!molecule.isUpdated())
       {
         _toRemove.AddLast(molecule);
       }
     }
-    foreach(DebugMolecule molecule in _toRemove)
+    foreach(DisplayedMolecule molecule in _toRemove)
     {
-      _debugMolecules.Remove(molecule);
+      _displayedMolecules.Remove(molecule);
     }
 
   }
@@ -108,15 +109,15 @@ public class GraphMoleculeList : MonoBehaviour {
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DebugMolecule found = LinkedListExtensions.Find(_debugMolecules, m => m.getName() == name);
+        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getName() == name);
         if(null != found)
         {
           found.update(concentration);
         }
         else
         {
-          DebugMolecule created = new DebugMolecule(name, concentration);
-          _debugMolecules.AddLast(created);
+          DisplayedMolecule created = new DisplayedMolecule(name, concentration);
+          _displayedMolecules.AddLast(created);
         }
       }
 		}
@@ -125,7 +126,7 @@ public class GraphMoleculeList : MonoBehaviour {
 		
 		string namesToDisplay = "";
     string valuesToDisplay = "";
-		foreach(DebugMolecule molecule in _debugMolecules) {
+		foreach(DisplayedMolecule molecule in _displayedMolecules) {
 			namesToDisplay+=molecule.getName()+":\n";
       valuesToDisplay+=molecule.getVal()+"\n";
 		}
