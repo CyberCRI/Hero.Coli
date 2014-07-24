@@ -322,7 +322,8 @@ public class DevicesDisplayer : MonoBehaviour {
 
     SafeGetTransitioner();
 	  inventoryPanel.gameObject.SetActive(false);
-    if(equipedDevice == null) {
+    if(null == equipedDevice) {
+      Debug.LogError("DD null == equipedDevice");
       equipedDevice = GameObject.Find ("EquipedDeviceButtonPrefabPos");
       equipedDevice2 = GameObject.Find ("EquipedDeviceButtonPrefabPos2");
     }

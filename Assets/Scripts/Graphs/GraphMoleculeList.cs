@@ -10,6 +10,7 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+  public int               pixelsPerLine;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
