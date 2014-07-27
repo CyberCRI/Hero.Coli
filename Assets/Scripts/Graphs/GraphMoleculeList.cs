@@ -11,9 +11,11 @@ public class GraphMoleculeList : MonoBehaviour {
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
   public int               pixelsPerLine;
+  public Vector3           currentDownShift;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
+  private Vector3 _initialScale;
 
   private class DisplayedMolecule
   {
@@ -69,7 +71,13 @@ public class GraphMoleculeList : MonoBehaviour {
     mediumId = newMediumId;
   }
 
-  void Start () {
+  void Awake()
+  {
+    currentDownShift = Vector3.zero;
+    _initialScale = unfoldingMoleculeList.transform.localScale;
+  }
+   
+  void Start() {
     _reactionEngine = ReactionEngine.get();
   }
 
@@ -95,7 +103,12 @@ public class GraphMoleculeList : MonoBehaviour {
     {
       _displayedMolecules.Remove(molecule);
     }
+  }
 
+  void setMoleculeListBackgroundScale()
+  {
+    currentDownShift = Vector3.up * pixelsPerLine * _displayedMolecules.Count;
+    unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
   }
 
 	// Update is called once per frame
@@ -124,6 +137,8 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
 
     removeUnusedMolecules();
+
+    setMoleculeListBackgroundScale();
 		
 		string namesToDisplay = "";
     string valuesToDisplay = "";
