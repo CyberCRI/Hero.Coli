@@ -10,61 +10,16 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+
+  //
   public int               pixelsPerLine;
+
+  
   public Vector3           currentDownShift;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
   private Vector3 _initialScale;
-
-  private class DisplayedMolecule
-  {
-    private string _name;
-    private string _val;
-    private bool _updated;
-
-    public string getName()
-    {
-      return _name;
-    }
-
-    public string getVal()
-    {
-      return _val;
-    }
-
-    public bool isUpdated()
-    {
-      return _updated;
-    }
-
-    public DisplayedMolecule(string name, string val)
-    {
-      _updated = true;
-      _name = name;
-      _val = val;
-    }
-
-    public DisplayedMolecule(string name, float val) : this(name, val.ToString())
-    {
-    }
-
-    public void update(string val)
-    {
-      _val = val;
-      _updated = true;
-    }
-
-    public void update(float val)
-    {
-      update(val.ToString());
-    }
-
-    public void reset()
-    {
-      _updated = false;
-    }
-  }
 
   public void setMediumId(int newMediumId)
   {
@@ -105,6 +60,7 @@ public class GraphMoleculeList : MonoBehaviour {
     }
   }
 
+  //TODO iTween this
   void setMoleculeListBackgroundScale()
   {
     currentDownShift = Vector3.up * pixelsPerLine * _displayedMolecules.Count;
