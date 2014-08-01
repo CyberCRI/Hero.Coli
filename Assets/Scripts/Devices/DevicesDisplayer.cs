@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
+//TODO adapt script for Device/Molecules pair in new interface
 public class DevicesDisplayer : MonoBehaviour {
 
 

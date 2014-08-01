@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ContinueButton : MonoBehaviour {
@@ -21,7 +21,7 @@ public class ContinueButton : MonoBehaviour {
       Logger.Log("ContinueButton::OnPress()", Logger.Level.INFO);
       currentInfoPanel.SetActive(false);
 	  nextInfoPanel.SetActive(true);
-	  gameStateController.StateChange(GameState.Pause);
+	  gameStateController.changeState(GameState.Pause);
 	  gameStateController.dePauseForbidden = true;
     }
   }

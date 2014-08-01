@@ -55,7 +55,7 @@ public class InfoWindowManager : MonoBehaviour {
     if(fillInFieldsFromCode(code))
     {
       _instance.infoPanel.SetActive(true);
-      _instance.gameStateController.StateChange(GameState.Pause);
+      _instance.gameStateController.changeState(GameState.Pause);
       _instance.gameStateController.dePauseForbidden = true;
       return true;
     }
@@ -128,7 +128,7 @@ public class InfoWindowManager : MonoBehaviour {
     {
       case NextAction.GOTOWORLD:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.StateChange(GameState.Game);
+        _instance.gameStateController.changeState(GameState.Game);
         break;
       case NextAction.GOTOEQUIP:
         Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
@@ -140,7 +140,7 @@ public class InfoWindowManager : MonoBehaviour {
         break;
       default:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.StateChange(GameState.Game);
+        _instance.gameStateController.changeState(GameState.Game);
         break;
     }
   }

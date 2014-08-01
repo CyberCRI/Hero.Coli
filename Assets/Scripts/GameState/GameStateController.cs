@@ -56,12 +56,12 @@ public class GameStateController : MonoBehaviour {
         break;
 			
 			case GameState.Game:
-				if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Pause);
+				if (Input.GetKeyDown(KeyCode.Escape)) changeState(GameState.Pause);
 			  break;
 			
 			case GameState.Pause:
 				if (dePauseForbidden == false){
-					if (Input.GetKeyDown(KeyCode.Escape)) StateChange(GameState.Game);
+					if (Input.GetKeyDown(KeyCode.Escape)) changeState(GameState.Game);
 				}
 			  break;
 			
@@ -76,7 +76,7 @@ public class GameStateController : MonoBehaviour {
 		}
 	}
 	
-	public void StateChange(GameState newState){
+	public void changeState(GameState newState){
 		_gameState = newState;
     Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);
 		

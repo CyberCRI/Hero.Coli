@@ -16,7 +16,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public GameObject lastHoveredInfo;
 	public GameObject genericInfoWindow;
 	public GameObject craftScreenPanel;
-	public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
+  public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
+  public UIPanel equipedDevicesSlotsPanel;
 	public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
 	public CraftFinalizer craftFinalizer;
 	public UIPanel inventoryDevicesSlotsPanel;
@@ -90,7 +91,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 		devicesDisplayer.listedInventoryDevice =listedDevicePrefab;
 		devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
 		devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
-		devicesDisplayer.equipPanel = GameObject.Find ("EquipedDevicesSlotsPanel").GetComponent<UIPanel>();
+    devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
 		devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
 		devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
 
