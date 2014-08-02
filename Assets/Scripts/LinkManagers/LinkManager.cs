@@ -37,6 +37,6 @@ public class LinkManager : MonoBehaviour {
 
 
 		//Main Camera
-    guiTransitioner._mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>();
+      guiTransitioner.mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>();
   	}
 }

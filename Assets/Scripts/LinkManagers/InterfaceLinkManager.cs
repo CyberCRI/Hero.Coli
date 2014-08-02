@@ -48,13 +48,13 @@ public class InterfaceLinkManager : MonoBehaviour {
     TooltipManager tooltipManager = TooltipManager.get();
 
 		//GUITransitioner
-		guiTransitioner._celliaGraph = GameObject.Find ("MediumInfoPanelCell").transform.Find("CellMediumInfoBackgroundSprite").gameObject
+		guiTransitioner.celliaGraph = GameObject.Find ("MediumInfoPanelCell").transform.Find("CellMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
-		guiTransitioner._roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
+		guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
-		guiTransitioner.scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-		guiTransitioner._worldScreen = GameObject.Find ("WorldScreensPanel");
-		guiTransitioner._craftScreen = craftScreenPanel;
+		guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+		guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
+		guiTransitioner.craftScreen = craftScreenPanel;
 
 
 		//GameStateController
@@ -113,8 +113,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 
 		//DeviceInventory
-		Inventory.get().scriptAnimator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-		Inventory.get ().scriptAnimator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
+		Inventory.get().animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+		Inventory.get ().animator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
 		
 		//BiobrickInventory
 		

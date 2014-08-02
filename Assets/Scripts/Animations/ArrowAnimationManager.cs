@@ -20,10 +20,10 @@ public class ArrowAnimationManager : MonoBehaviour {
 	public void launchAnimation ()
 	{
 		//screen 1 pointer
-		if ( isWorldScreenAnimPlaying && GUITransitioner.get()._worldScreen.activeInHierarchy)
+		if ( isWorldScreenAnimPlaying && GUITransitioner.get().worldScreen.activeInHierarchy)
 		{
 
-				Inventory.get().scriptAnimator.tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
+				Inventory.get().animator.tutorialArrowAnimation.Play(GUITransitioner.GameScreen.screen1);
 				isWorldScreenAnimPlaying = false;
 
 		}
@@ -37,7 +37,7 @@ public class ArrowAnimationManager : MonoBehaviour {
 	
 				isInventoryAnimPlaying = false;
 			}
-			Inventory.get ().scriptAnimator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);
+			Inventory.get ().animator.tutorialArrowAnimation.Play (GUITransitioner.GameScreen.screen2);
 			isInventoryAnimPlaying = true;
 		}
 	}

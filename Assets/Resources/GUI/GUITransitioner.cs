@@ -22,7 +22,7 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
-  public InventoryAnimator scriptAnimator;
+  public InventoryAnimator animator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -45,15 +45,15 @@ public class GUITransitioner : MonoBehaviour {
 	
 	
 	//public GameObject _mainCameraObject;
-	public cameraFollow _mainCameraFollow;
+  public BoundCamera mainBoundCamera;
 	
-	public GameObject _worldScreen;
-	public GameObject _craftScreen;
+	public GameObject worldScreen;
+	public GameObject craftScreen;
 	private DevicesDisplayer _devicesDisplayer;
 
 
-	public VectrosityPanel _celliaGraph;
-	public VectrosityPanel _roomGraph;
+	public VectrosityPanel celliaGraph;
+	public VectrosityPanel roomGraph;
 
   public Hero hero;
   public CellControl control;
@@ -82,43 +82,43 @@ public class GUITransitioner : MonoBehaviour {
 	
 	private void SetScreen1(bool active) {
 		if(active) ZoomOut();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
 		//_craftScreen.SetActive(!active);
 	}
 	
 	private void SetScreen2(bool active) {
 		if(active) ZoomIn();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
 	}
 	
 	private void SetScreen3(bool active) {
-		_craftScreen.SetActive(active);
+		craftScreen.SetActive(active);
 	}
 	
   /*
    * "Defensive programming" method
    * Cannot work during Awake
 	private void checkCamera() {
-		if(_mainCameraFollow == null) {
-			_mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>() as cameraFollow;
+		if(_mainBoundCamera == null) {
+			_mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>() as BoundCamera;
 		}
 	}
  */ 
 	
 	private void ZoomIn() {
 		//checkCamera();
-		_mainCameraFollow.SetZoom(true);
-		//Logger.Log("main camera"+_mainCameraFollow, Logger.Level.WARN);
+		mainBoundCamera.SetZoom(true);
+		//Logger.Log("main camera"+_mainBoundCamera, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {
 		//checkCamera();
-		_mainCameraFollow.SetZoom(false);
+		mainBoundCamera.SetZoom(false);
 	}
 		
   public void TerminateGraphs() {
-  	_roomGraph.gameObject.SetActive(false);
-    _celliaGraph.gameObject.SetActive(false);
+  	roomGraph.gameObject.SetActive(false);
+    celliaGraph.gameObject.SetActive(false);
   }
   public void Pause(bool pause) {
     _pauseTransition = !pause;
@@ -131,8 +131,8 @@ public class GUITransitioner : MonoBehaviour {
 	  if(pause) {
 	    Time.timeScale = 0;
     }
-	_roomGraph.setPause(pause);
-    _celliaGraph.setPause(pause);
+	roomGraph.setPause(pause);
+    celliaGraph.setPause(pause);
   
     hero.Pause(pause);
     control.Pause(pause);
@@ -169,9 +169,9 @@ public class GUITransitioner : MonoBehaviour {
 
 
     } else if (destination == GameScreen.screen2) {
-			if(scriptAnimator.isPlaying == true)
+			if(animator.isPlaying == true)
 			{
-				scriptAnimator.reset();
+				animator.reset();
 			}
       if(_currentScreen == GameScreen.screen1) {
          Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
