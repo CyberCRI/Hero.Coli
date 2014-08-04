@@ -39,6 +39,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
   public enum DeviceType {
     Equiped,
+    EquipedWithMolecules,
     Inventoried,
     Listed
   }
@@ -60,6 +61,9 @@ public class DevicesDisplayer : MonoBehaviour {
 
   public GameObject equipedDevice;
   public GameObject equipedDevice2;
+
+  public GameObject equipedWithMoleculesDevice;
+
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
 
@@ -143,19 +147,19 @@ public class DevicesDisplayer : MonoBehaviour {
     {
       Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
     }
-		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
+		bool alreadyEquiped = (!_equipedDevices.Exists(equiped => equiped._device.GetHashCode() == device.GetHashCode())); 
 		if(alreadyEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
 			UnityEngine.Transform parent = equipPanel.transform;
 
 			DisplayedDevice newDevice = 
-				EquipedDisplayedDevice.Create(
+				EquipedDisplayedDeviceWithMolecules.Create(
           parent,
           localPosition,
           null,
           device,
           this,
-          DevicesDisplayer.DeviceType.Equiped
+          DevicesDisplayer.DeviceType.EquipedWithMolecules
         );
 			_equipedDevices.Add(newDevice);
 		} else {
@@ -210,10 +214,19 @@ public class DevicesDisplayer : MonoBehaviour {
     if(deviceType == DeviceType.Equiped) {
       if(idx == -1) idx = _equipedDevices.Count;
       res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
-    } else if(deviceType == DeviceType.Inventoried) {
+    }
+    else if(deviceType == DeviceType.EquipedWithMolecules)
+    {
+      if(idx == -1) idx = _equipedDevices.Count;
+      res = equipedWithMoleculesDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
+    }
+    else if(deviceType == DeviceType.Inventoried)
+    {
       if(idx == -1) idx = _inventoriedDevices.Count;
       res = inventoryDevice.transform.localPosition + new Vector3((idx%1)*_inventoriedWidth, -(idx/1)*_inventoriedHeight, -0.1f);
-    } else if(deviceType == DeviceType.Listed) {
+    }
+    else if(deviceType == DeviceType.Listed)
+    {
       if(idx == -1) idx = _listedInventoriedDevices.Count;
       res = listedInventoryDevice.transform.localPosition + new Vector3(idx*_listedInventoriedWidth, 0.0f, -0.1f);
       Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
@@ -221,7 +234,9 @@ public class DevicesDisplayer : MonoBehaviour {
         +", localPosition="+listedInventoryDevice.transform.localPosition
         +", res="+res
         );
-    } else {
+    }
+    else
+    {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
       res = new Vector3();
     }
@@ -247,7 +262,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	public void removeDevice(int deviceID) {
 		DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
 		List<DisplayedDevice> devices = _equipedDevices;
-		DeviceType deviceType = DeviceType.Equiped;
+		DeviceType deviceType = DeviceType.EquipedWithMolecules;
 		if(toRemove == null) {
 			toRemove = _inventoriedDevices.Find(device => device.getID() == deviceID);
 			devices = _inventoriedDevices;
@@ -259,7 +274,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
   public void removeEquipedDevice(Device toRemove) {
-    removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
+    removeDevice(DevicesDisplayer.DeviceType.EquipedWithMolecules, toRemove);
   }
 
   public void removeInventoriedDevice(Device toRemove) {
@@ -269,7 +284,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
     List<DisplayedDevice> devices;
     DisplayedDevice found;
-    if(type == DevicesDisplayer.DeviceType.Equiped) {
+    if(type == DevicesDisplayer.DeviceType.EquipedWithMolecules) {
       devices = _equipedDevices;
     } else {
       devices = _inventoriedDevices;

@@ -32,6 +32,7 @@ public class LinkManager : MonoBehaviour {
 
 
 		//PhenoFickcontact connections
+    //TODO use InterfaceLinkManager
 		pheno.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
 		pheno.graphMoleculeList = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
 
