@@ -101,12 +101,19 @@ public class CellControl : MonoBehaviour{
 				{//Determine the angle for the move
 					box.GetComponent<PushableBox>().setDestination(_targetPosition);
 					_angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
+
+					Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
+
+					//if clicking behind cell : leave the grab
+					if(relativepoint.z < 0.0f)
+						box.GetComponent<PushableBox>().updateDragStatusOnClick();
+
 					if(_angle < _minAngle || _angle >= _maxAngle)
 						_angle = 0f;
 					else if(_angle >=_minAngle && _angle < _maxAngle)
 					{ 
 						// if the point is on the left or the right of the player
-						Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
+
 						_angleProgress = 0f;
 
 						if (relativepoint.x < 0.0f)

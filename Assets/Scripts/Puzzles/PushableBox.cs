@@ -167,7 +167,7 @@ public class PushableBox : MonoBehaviour {
     }
 	}
 
-	private void updateDragStatusOnClick() {
+	public void updateDragStatusOnClick() {
 		if(_willBeDragged) _willBeDragged = false;
 		else if (!_willBeDragged && !_dragged) _willBeDragged = true;
 		else if (!_willBeDragged && _dragged) {
