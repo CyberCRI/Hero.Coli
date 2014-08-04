@@ -168,13 +168,45 @@ public class CellControl : MonoBehaviour{
 
       //Translate
       _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-      if(_inputMovement.sqrMagnitude > 1) _inputMovement /= Mathf.Sqrt(2);
+	  if(_isDragging)
+	  {
+				draggingWASDUpdate();
+	  }
+      else if(_inputMovement.sqrMagnitude > 1) _inputMovement /= Mathf.Sqrt(2);
 
       rotationUpdate();
 
     } else if (Vector3.zero != _inputMovement) {
       stopMovement();
     }
+  }
+
+  private void draggingWASDUpdate()
+  {
+		float angularSpeed = 5f;
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
+		if (h != 0.0f)
+		{
+			if(h>0.0f)
+				transform.RotateAround(box.transform.position,new Vector3(0,1,0),angularSpeed);
+
+			else
+				transform.RotateAround(box.transform.position,new Vector3(0,1,0),-angularSpeed);
+
+			transform.LookAt(box.transform.position);
+		}
+		else if (v != 0.0f)
+		{
+			if(v>0.0f)
+			{	
+				_inputMovement = (box.transform.position - transform.position).normalized;
+				commonUpdate();
+			}
+			else 
+				box.GetComponent<PushableBox>().updateDragStatusOnClick();
+		}
+
   }
 
   private void relativeWASDUpdate() {
