@@ -4,18 +4,25 @@ using System.Collections;
 public class Mine : MonoBehaviour {
 
 
-	private MeshRenderer _physicRenderer;
-	private MeshRenderer _lightRenderer;
 	private float _radius = 10f;
+
+	private bool _isNear = false;
+
+	private Hashtable _optionsIn = iTween.Hash(
+		"scale", Vector3.one,
+		"time", 0.8f,
+		"easetype", iTween.EaseType.easeOutElastic
+		);
+
+	private Hashtable _optionsOut = iTween.Hash(
+		"scale", Vector3.zero,
+		"time",1.2f,
+		"easetype", iTween.EaseType.easeInQuint
+		);
+
 	// Use this for initialization
 	void Start () {
-
-		_physicRenderer = transform.FindChild("Mine Physic Collider").GetComponent<MeshRenderer>();
-		_physicRenderer.enabled = false;
-
-		_lightRenderer = transform.FindChild("Mine Light Collider").GetComponent<MeshRenderer>();
-		_lightRenderer.enabled = false;
-
+		transform.localScale = Vector3.zero;
 	}
 	
 	// Update is called once per frame
@@ -32,18 +39,19 @@ public class Mine : MonoBehaviour {
 		// If Player is in a small area
 		if (System.Array.Find(hitsColliders, (col) => col.gameObject.name == "Perso"))
 		{
-			if(!_lightRenderer.enabled)
+			if(!_isNear)
 			{
-				_physicRenderer.enabled = true;
-				_lightRenderer.enabled = true;
+				iTween.ScaleTo(this.gameObject, _optionsIn);
+				_isNear = true;
 			}
 		}
-		else if(_lightRenderer.enabled == true)
+		else 
 		{
-			_physicRenderer.enabled = false;
-			_lightRenderer.enabled = false;
+			iTween.ScaleTo (this.gameObject, _optionsOut);
+			_isNear = false;
 		}
 
 
 	}
+
 }
