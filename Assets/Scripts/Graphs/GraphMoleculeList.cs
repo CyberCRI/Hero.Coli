@@ -10,15 +10,17 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+  public GameObject        equipedWithMoleculesDevice;
 
   //
   public int               pixelsPerLine;
-
-  
+  public int               equipedHeight = 60;
+      
   public Vector3           currentDownShift;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
+  private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
   public void setMediumId(int newMediumId)
@@ -65,6 +67,46 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     currentDownShift = Vector3.up * pixelsPerLine * _displayedMolecules.Count;
     unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
+  }
+
+  public void addDeviceAndMoleculesComponent(Device device)
+  {
+    Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent");
+    if(device == null)
+    {
+      Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
+    }
+    bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
+    if(newEquiped) { 
+        Vector3 localPosition = getNewPosition(DevicesDisplayer.DeviceType.Equiped);
+            UnityEngine.Transform parent = unfoldingMoleculeList.transform;
+        
+        DisplayedDevice newDevice = 
+            EquipedDisplayedDeviceWithMolecules.Create(
+                parent,
+                localPosition,
+                null,
+                device,
+                this,
+                DevicesDisplayer.DeviceType.Equiped
+                );
+        _equipedDevices.Add(newDevice);
+    } else {
+        Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
+    }
+  }
+
+  public Vector3 getNewPosition(int index = -1) {
+    Vector3 res;
+    int idx = index;
+    if(idx == -1) idx = _equipedDevices.Count;
+    res = equipedWithMoleculesDevice.transform.localPosition + new Vector3(0.0f, -idx*equipedHeight, -0.1f);
+    return res;
+  }
+
+  public void removeDeviceAndMoleculesComponent(Device device)
+  {
+    Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent");
   }
 
 	// Update is called once per frame

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Device: DNABit
 {
+  private static float                  _energyPerBasePair = 0.005f;
+
   private static int                    _idCounter;
   private int                           _id;
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;
 
-  private static float                  _energyPerBasePair = 0.005f;
-  
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
   public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
@@ -366,5 +366,21 @@ public class Device: DNABit
     }
     Logger.Log("Device::hasSameBricks("+device+") of "+this+" coincide", Logger.Level.TRACE);
     return true;
+  }
+
+  public override bool Equals(System.Object obj)
+  {
+    if (obj == null)
+    {
+      return false;
+    }
+    
+    Device d = obj as Device;
+    if ((System.Object)d == null)
+    {
+      return false;
+    }
+    
+    return this.hasSameBricks(d);
   }
 }

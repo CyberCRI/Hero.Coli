@@ -39,7 +39,6 @@ public class DevicesDisplayer : MonoBehaviour {
 
   public enum DeviceType {
     Equiped,
-    EquipedWithMolecules,
     Inventoried,
     Listed
   }
@@ -59,10 +58,10 @@ public class DevicesDisplayer : MonoBehaviour {
   public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
 
+  public GraphMoleculeList graphMoleculeList;
+
   public GameObject equipedDevice;
   public GameObject equipedDevice2;
-
-  public GameObject equipedWithMoleculesDevice;
 
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
@@ -90,8 +89,7 @@ public class DevicesDisplayer : MonoBehaviour {
       return;
     }
 
-    //TODO replace hashing
-		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
+    bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice._device == device));
 		if(!alreadyInventoried) {
       // ADD TO EQUIPABLE DEVICES
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
@@ -147,8 +145,8 @@ public class DevicesDisplayer : MonoBehaviour {
     {
       Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
     }
-		bool alreadyEquiped = (!_equipedDevices.Exists(equiped => equiped._device.GetHashCode() == device.GetHashCode())); 
-		if(alreadyEquiped) { 
+		bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
+		if(newEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
 			UnityEngine.Transform parent = equipPanel.transform;
 
@@ -159,11 +157,14 @@ public class DevicesDisplayer : MonoBehaviour {
           null,
           device,
           this,
-          DevicesDisplayer.DeviceType.EquipedWithMolecules
+          DevicesDisplayer.DeviceType.Equiped
         );
 			_equipedDevices.Add(newDevice);
+
+      graphMoleculeList.addDeviceAndMoleculesComponent(device);
+
 		} else {
-			Logger.Log("addDevice failed: alreadyEquiped="+alreadyEquiped, Logger.Level.TRACE);
+			Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
 		}
 	}
 
@@ -215,11 +216,6 @@ public class DevicesDisplayer : MonoBehaviour {
       if(idx == -1) idx = _equipedDevices.Count;
       res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
     }
-    else if(deviceType == DeviceType.EquipedWithMolecules)
-    {
-      if(idx == -1) idx = _equipedDevices.Count;
-      res = equipedWithMoleculesDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
-    }
     else if(deviceType == DeviceType.Inventoried)
     {
       if(idx == -1) idx = _inventoriedDevices.Count;
@@ -262,7 +258,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	public void removeDevice(int deviceID) {
 		DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
 		List<DisplayedDevice> devices = _equipedDevices;
-		DeviceType deviceType = DeviceType.EquipedWithMolecules;
+		DeviceType deviceType = DeviceType.Equiped;
 		if(toRemove == null) {
 			toRemove = _inventoriedDevices.Find(device => device.getID() == deviceID);
 			devices = _inventoriedDevices;
@@ -274,7 +270,8 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
   public void removeEquipedDevice(Device toRemove) {
-    removeDevice(DevicesDisplayer.DeviceType.EquipedWithMolecules, toRemove);
+    removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
+    graphMoleculeList.removeDeviceAndMoleculesComponent(toRemove);
   }
 
   public void removeInventoriedDevice(Device toRemove) {
@@ -284,7 +281,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
     List<DisplayedDevice> devices;
     DisplayedDevice found;
-    if(type == DevicesDisplayer.DeviceType.EquipedWithMolecules) {
+    if(type == DevicesDisplayer.DeviceType.Equiped) {
       devices = _equipedDevices;
     } else {
       devices = _inventoriedDevices;

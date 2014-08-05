@@ -87,6 +87,10 @@ public static class LinkedListExtensions
 
   public static bool Equals<T>(LinkedList<T> list1, LinkedList<T> list2)
   {
+    if(list1 == null || list2 == null) return false;
+
+    if(list1.Count != list2.Count) return false;
+
     LinkedListNode<T> it1 = list1.First;
     LinkedListNode<T> it2 = list2.First;
 
