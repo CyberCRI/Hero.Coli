@@ -51,11 +51,11 @@ public class CellControl : MonoBehaviour{
 
 	private float _angle = 0f;		// the angle for the rotation around the pushable box
 	private float _angleProgress = 0f;	// the current progression of the rotation
-	private float _rotationSpeed = 2f;
+	private float _rotationSpeed = 5f;
 	private float _angleStep = 0f;		// depends on the rotationSpeed and the position of the click
 
-	private float _minAngle = 17f;
-	private float _maxAngle = 50f;
+	private float _minAngle = 25f;
+	private float _maxAngle = 65f;
 
 	private bool _isDragging = false;
 	public bool getIsDragging() {return _isDragging;}
@@ -100,8 +100,7 @@ public class CellControl : MonoBehaviour{
 				if(_isDragging)
 				{//Determine the angle for the move
 					box.GetComponent<PushableBox>().setDestination(_targetPosition);
-					_angle = Vector3.Angle(transform.forward,_targetPosition-box.transform.position);
-
+					_angle = Vector3.Angle(box.transform.position-transform.position,_targetPosition-box.transform.position);
 					Vector3 relativepoint = transform.InverseTransformPoint(_targetPosition);
 
 					//if clicking behind cell : leave the grab
@@ -251,9 +250,7 @@ public class CellControl : MonoBehaviour{
 
 	private void draggingMove(float angle) {
 		if(_isDragging)
-		{
 			transform.RotateAround(box.transform.position,new Vector3(0,1,0),angle);
-		}
 	}
 
 
@@ -279,17 +276,10 @@ public class CellControl : MonoBehaviour{
 			}
 				
 			else 
-			{
-
 				draggingMove(_angleStep);
-
-			}
 		}
 		else
-		{
-
 			_angle = 0f;
-		}
 
 	}
 
@@ -372,12 +362,21 @@ public class CellControl : MonoBehaviour{
           absoluteWASDUpdate();
           break;
       }
+
 	  if( !_isDragging)
         commonUpdate();
-	  else if(_isDragging && _angle ==0f)
-			{
-				commonUpdate();
-			}
+	  else if(_isDragging)
+		{
+		  transform.LookAt(box.transform.position);
+
+		  if(_angle == 0f)
+		  {
+			_inputMovement = (box.transform.position - transform.position).normalized;
+			commonUpdate();
+		  }
+		}
+
+
     }
     
 		switchRockCollision();
