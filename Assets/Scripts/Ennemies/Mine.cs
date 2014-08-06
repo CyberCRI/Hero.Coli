@@ -4,7 +4,7 @@ using System.Collections;
 public class Mine : MonoBehaviour {
 
 
-	private float _radius = 10f;
+	private float _radius = 6f;
 
 	private bool _isNear = false;
 
@@ -16,7 +16,7 @@ public class Mine : MonoBehaviour {
 
 	private Hashtable _optionsOut = iTween.Hash(
 		"scale", Vector3.zero,
-		"time",1.2f,
+		"time",1f,
 		"easetype", iTween.EaseType.easeInQuint
 		);
 
