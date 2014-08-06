@@ -20,7 +20,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
-  private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
+  private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
   private Vector3 _initialScale;
 
   public void setMediumId(int newMediumId)
@@ -69,7 +69,7 @@ public class GraphMoleculeList : MonoBehaviour {
     unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
   }
 
-  public void addDeviceAndMoleculesComponent(Device device)
+  public void addDeviceAndMoleculesComponent(Device device, DevicesDisplayer displayer)
   {
     Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent");
     if(device == null)
@@ -78,8 +78,8 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
     if(newEquiped) { 
-        Vector3 localPosition = getNewPosition(DevicesDisplayer.DeviceType.Equiped);
-            UnityEngine.Transform parent = unfoldingMoleculeList.transform;
+        Vector3 localPosition = getNewPosition();
+        UnityEngine.Transform parent = unfoldingMoleculeList.transform;
         
         DisplayedDevice newDevice = 
             EquipedDisplayedDeviceWithMolecules.Create(
@@ -87,9 +87,10 @@ public class GraphMoleculeList : MonoBehaviour {
                 localPosition,
                 null,
                 device,
-                this,
+                displayer,
                 DevicesDisplayer.DeviceType.Equiped
                 );
+
         _equipedDevices.Add(newDevice);
     } else {
         Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
