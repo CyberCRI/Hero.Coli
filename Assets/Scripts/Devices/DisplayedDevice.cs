@@ -6,6 +6,7 @@ public class DisplayedDevice : DisplayedElement {
 
   // static stuff
   private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  private static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
   private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
   private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
@@ -99,7 +100,7 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
-      prefab = Resources.Load(equipedPrefabURI);
+      prefab = Resources.Load(equipedWithMoleculesPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
