@@ -18,7 +18,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public GameObject craftScreenPanel;
   public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
   public UIPanel equipedDevicesSlotsPanel;
-	public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
+  public GameObject equipedDevice ,equipedDevice2;
+  public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
 	public CraftFinalizer craftFinalizer;
 	public UIPanel inventoryDevicesSlotsPanel;
 	public UIPanel end;

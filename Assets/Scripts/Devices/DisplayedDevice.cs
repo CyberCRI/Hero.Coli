@@ -6,7 +6,7 @@ public class DisplayedDevice : DisplayedElement {
 
   // static stuff
   private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
-  private static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
+  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
   private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
   private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
@@ -100,7 +100,7 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
-      prefab = Resources.Load(equipedWithMoleculesPrefabURI);
+      prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
@@ -209,5 +209,11 @@ public class DisplayedDevice : DisplayedElement {
   {
     Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
     TooltipManager.displayTooltip(isOver, _device, transform.position);
+  }
+
+  //TODO remove tooltip only if tooltip was about this displayed device
+  protected virtual void OnDestroy()
+  {
+    TooltipManager.displayTooltip();
   }
 }

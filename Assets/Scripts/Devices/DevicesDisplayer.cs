@@ -151,7 +151,7 @@ public class DevicesDisplayer : MonoBehaviour {
 			UnityEngine.Transform parent = equipPanel.transform;
 
 			DisplayedDevice newDevice = 
-				EquipedDisplayedDeviceWithMolecules.Create(
+				EquipedDisplayedDevice.Create(
           parent,
           localPosition,
           null,
@@ -161,7 +161,7 @@ public class DevicesDisplayer : MonoBehaviour {
         );
 			_equipedDevices.Add(newDevice);
 
-      graphMoleculeList.addDeviceAndMoleculesComponent(device, this);
+      graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
 
 		} else {
 			Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
@@ -336,8 +336,9 @@ public class DevicesDisplayer : MonoBehaviour {
 	  inventoryPanel.gameObject.SetActive(false);
     if(null == equipedDevice) {
       Debug.LogError("DD null == equipedDevice");
-      equipedDevice = GameObject.Find ("EquipedDeviceButtonPrefabPos");
-      equipedDevice2 = GameObject.Find ("EquipedDeviceButtonPrefabPos2");
+            
+      equipedDevice = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice;
+      equipedDevice2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice2;
     }
     if(_equipedHeight == 0.0f)
     {
@@ -345,5 +346,10 @@ public class DevicesDisplayer : MonoBehaviour {
     }
     equipedDevice.SetActive(false);
     equipedDevice2.SetActive(false);
+    if(null == equipPanel)
+    {
+      equipPanel = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevicesSlotsPanel;
+    }
+    equipPanel.gameObject.SetActive(false);
   }
 }

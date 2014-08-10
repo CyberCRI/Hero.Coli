@@ -10,7 +10,7 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
-  public GameObject        equipedWithMoleculesDevice;
+  public GameObject        equipedWithMoleculesDeviceDummy;
 
   //
   public int               pixelsPerLine;
@@ -20,7 +20,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
-  private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
+  private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
   public void setMediumId(int newMediumId)
@@ -32,6 +32,7 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     currentDownShift = Vector3.zero;
     _initialScale = unfoldingMoleculeList.transform.localScale;
+    equipedWithMoleculesDeviceDummy.SetActive(false);
   }
    
   void Start() {
@@ -69,31 +70,50 @@ public class GraphMoleculeList : MonoBehaviour {
     unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
   }
 
-  public void addDeviceAndMoleculesComponent(Device device, DevicesDisplayer displayer)
+  public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
   {
     Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent");
-    if(device == null)
+    if(equipedDeviceScript == null)
     {
       Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
     }
-    bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
-    if(newEquiped) { 
+    else
+    {
+      GameObject equipedDevice = equipedDeviceScript.gameObject;
+      bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
+      if(newEquiped) { 
+
+        GameObject clone = Instantiate(equipedDevice) as GameObject;
+        Debug.LogError("clone instantiated");
+
         Vector3 localPosition = getNewPosition();
         UnityEngine.Transform parent = unfoldingMoleculeList.transform;
+        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
         
-        DisplayedDevice newDevice = 
-            EquipedDisplayedDeviceWithMolecules.Create(
-                parent,
-                localPosition,
-                null,
-                device,
-                displayer,
-                DevicesDisplayer.DeviceType.Equiped
-                );
+        GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+        Debug.LogError("EquipedDisplayedDeviceWithMolecules instantiated");
+        deviceWithMoleculesComponent.transform.parent = parent;
+        deviceWithMoleculesComponent.transform.localPosition = localPosition;
+        deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
+        EquipedDisplayedDeviceWithMolecules script = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+        Debug.LogError("got EquipedDisplayedDeviceWithMolecules script");
 
-        _equipedDevices.Add(newDevice);
-    } else {
-        Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
+        script.equipedDevice = clone;
+        Debug.LogError("assigned clone to EquipedDisplayedDeviceWithMolecules script");
+
+        script.device = equipedDeviceScript._device;
+        Debug.LogError("assigned Device to EquipedDisplayedDeviceWithMolecules script");
+
+        script.equipedDeviceScript = equipedDeviceScript;
+        Debug.LogError("assigned equipedDeviceScript to EquipedDisplayedDeviceWithMolecules script");
+
+        script.initialize();
+
+        _equipedDevices.Add(script);
+
+      } else {
+        Logger.Log("addDevice failed: newEquiped="+newEquiped, Logger.Level.TRACE);
+      }
     }
   }
 
@@ -101,7 +121,7 @@ public class GraphMoleculeList : MonoBehaviour {
     Vector3 res;
     int idx = index;
     if(idx == -1) idx = _equipedDevices.Count;
-    res = equipedWithMoleculesDevice.transform.localPosition + new Vector3(0.0f, -idx*equipedHeight, -0.1f);
+    res = equipedWithMoleculesDeviceDummy.transform.localPosition + new Vector3(0.0f, -idx*equipedHeight, -0.1f);
     return res;
   }
 

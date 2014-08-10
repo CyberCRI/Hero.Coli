@@ -2,45 +2,45 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EquipedDisplayedDeviceWithMolecules : DisplayedDevice {
+public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
 
-  private static GameObject           equipedDevice;
+  public GameObject equipedDeviceDummy;
+  public GameObject equipedDevice;
+  public Device device;
+  public DisplayedDevice equipedDeviceScript;
+
+  public void initialize()
+  {
+    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize");
+    equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
+    equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
+  }
   
   void OnEnable() {
-    Logger.Log("DisplayedDeviceWithMolecules::OnEnable "+_device, Logger.Level.INFO);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnEnable", Logger.Level.WARN);
   }
   
   void OnDisable() {
-    Logger.Log("DisplayedDeviceWithMolecules::OnDisable "+_device, Logger.Level.INFO);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnDisable", Logger.Level.WARN);
   }
   
-  protected override void OnPress(bool isPressed) {
+  void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("DisplayedDeviceWithMolecules::OnPress() "+getDebugInfos(), Logger.Level.INFO);
-      if(_device == null)
+      Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos(), Logger.Level.WARN);
+      if(device == null)
       {
-        Logger.Log("DisplayedDeviceWithMolecules::OnPress _device == null", Logger.Level.WARN);
+        Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress _device == null", Logger.Level.WARN);
         return;
       }
-      if (_devicesDisplayer.IsEquipScreen()) {
-        TooltipManager.displayTooltip();
-        _devicesDisplayer.askRemoveEquipedDevice(_device);
-      }
-    }
-  }
-  
-  void initIfNecessary() {
-    Logger.Log("DisplayedDeviceWithMolecules::initIfNecessary starts", Logger.Level.WARN);
-    if(
-      (null == equipedDevice)
-      ) 
-    {
-      equipedDevice = DevicesDisplayer.get().equipedDevice;      
     }
   }
   
   // Use this for initialization
   void Start () {
-    Logger.Log("DisplayedDeviceWithMolecules::Start", Logger.Level.TRACE);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.WARN);
+  }
+    
+  protected string getDebugInfos() {
+        return "EquipedDisplayedDeviceWithMolecules inner device="+device+", inner equipedDeviceScript type="+equipedDeviceScript+", time="+Time.realtimeSinceStartup;
   }
 }

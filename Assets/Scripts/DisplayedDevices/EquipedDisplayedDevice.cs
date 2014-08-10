@@ -64,7 +64,6 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
 			tinyBioBrickIcon = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos;
 			tinyBioBrickIcon2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos2;
-
     }
     
     if(null != tinyBioBrickIcon)
@@ -76,6 +75,8 @@ public class EquipedDisplayedDevice : DisplayedDevice {
       if (null != tinyBioBrickIcon2)
       {  
         _width = tinyBioBrickIcon2.transform.localPosition.x - tinyBioBrickIcon.transform.localPosition.x;
+        tinyBioBrickIcon.SetActive(false);
+        tinyBioBrickIcon2.SetActive(false);
       }
       Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.WARN);
     }
@@ -120,5 +121,6 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
+    createBioBricksIfNecessary();
   }
 }
