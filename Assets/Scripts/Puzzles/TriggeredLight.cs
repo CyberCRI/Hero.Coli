@@ -3,8 +3,17 @@ using System.Collections;
 
 public class TriggeredLight : TriggeredBehaviour {
 	
-	public float maxIntensity = 2f;
-	public float tweenSpeed = 2f;
+	public float maxIntensity =3f;
+	public float tweenSpeed = 4f;
+
+	private bool _isStarting = false;
+	private bool _isPlaying = false;
+
+
+	public bool getIsStarting () {return _isStarting;}
+
+	public void setIsPlaying (bool b) { _isPlaying = b;}
+	public bool getIsPlaying () {return _isPlaying;}
 	
 	public override void triggerStart(){
 		iTween.Stop(gameObject);
@@ -12,9 +21,14 @@ public class TriggeredLight : TriggeredBehaviour {
 			"from", light.intensity,
 			"to", maxIntensity,
 			"speed", tweenSpeed,
-			"easetype", iTween.EaseType.easeInOutQuad,
-			"onupdate", "updateLight"
+			"easetype", iTween.EaseType.easeInQuint,
+			"onupdate", "updateLight",
+			"onupdatetarget",gameObject,
+			"oncomplete", "setIsPlaying",
+			"oncompletetarget", gameObject,
+			"oncompleteparams", true
 		));
+		_isStarting = true;
 	}
 	
 	private void updateLight(float val){
@@ -28,10 +42,36 @@ public class TriggeredLight : TriggeredBehaviour {
 			"to", 0,
 			"speed", tweenSpeed,
 			"easetype", iTween.EaseType.easeInOutQuad,
-			"onupdate", "updateLight"
+			"onupdate", "updateLight",
+			"onupdatetarget",gameObject,
+			"oncomplete", "setIsPlaying",
+			"oncompletetarget", gameObject,
+			"oncompleteparams", false
 		));
+		_isStarting = false;
 	}
 	
 	public override void triggerStay(){}
+
+	private void updateLightIntensity()
+	{
+		Logger.Log ("parent::"+transform.parent, Logger.Level.WARN);
+		Logger.Log ("perso::"+transform.Find("Perso"), Logger.Level.WARN);
+		float distance = Vector3.Magnitude (transform.parent.position - GameObject.Find("Perso").transform.position);
+
+		//intensity increase when the player get near :: max 9 * maxIntensity
+		light.intensity = maxIntensity * (1f + 8f*(light.range - distance)/light.range);
+
+	}
+
+	public void Update() {
+
+		if(_isPlaying)
+		{
+			updateLightIntensity();
+		}
+
+	}
+
 	
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class Mine : MonoBehaviour {
 
 
-	private float _radius = 6f;
+	private float _radius = 9f;
 
 	private bool _isNear = false;
 
@@ -29,6 +29,15 @@ public class Mine : MonoBehaviour {
 	void Update () {
 	
 		detection ();
+
+		if(_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == false)
+		{
+			transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
+		}
+		else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == true)
+		{
+			transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
+		}
 	}
 
 	void detection() {
@@ -50,6 +59,15 @@ public class Mine : MonoBehaviour {
 			iTween.ScaleTo (this.gameObject, _optionsOut);
 			_isNear = false;
 		}
+
+
+	}
+
+	void OnCollisionEnter(Collision col) {
+		/*if(col.gameObject.name == "Perso")
+		{
+			transform.FindChild("Mine Light Collider").GetComponent<SimpleFracture>().OnCollisionEnter
+		}*/
 
 
 	}
