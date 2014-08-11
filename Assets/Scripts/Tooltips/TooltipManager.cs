@@ -107,8 +107,15 @@ public class TooltipManager : MonoBehaviour {
 
   public static bool displayTooltip()
   {
-    _instance._tooltipPanel.gameObject.SetActive(false);
-    return true;
+    if(_instance && _instance._tooltipPanel && _instance._tooltipPanel.gameObject)
+    {
+      _instance._tooltipPanel.gameObject.SetActive(false);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   public static bool displayTooltip(bool isOver, Device device, Vector3 pos)

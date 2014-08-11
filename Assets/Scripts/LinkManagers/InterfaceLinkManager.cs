@@ -47,9 +47,10 @@ public class InterfaceLinkManager : MonoBehaviour {
     InfoWindowManager infoWindowManager = InfoWindowManager.get();
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
     TooltipManager tooltipManager = TooltipManager.get();
+    GameObject mediumInfoPanelCell = GameObject.Find("MediumInfoPanelCell");
 
 		//GUITransitioner
-		guiTransitioner.celliaGraph = GameObject.Find ("MediumInfoPanelCell").transform.Find("CellMediumInfoBackgroundSprite").gameObject
+    guiTransitioner.celliaGraph = mediumInfoPanelCell.transform.Find("CellMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
 		guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
@@ -87,15 +88,19 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 
 		//DevicesDisplayer
+        
+    devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
+    devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
+    devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
+
+    devicesDisplayer.graphMoleculeList = mediumInfoPanelCell.GetComponent<GraphMoleculeList>() as GraphMoleculeList;
+            
+    devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
+    devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
 
     devicesDisplayer.inventoryDevice = inventoryButtonprefab;
 		devicesDisplayer.listedInventoryDevice =listedDevicePrefab;
-		devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
-		devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
-    devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
-		devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
-		devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
-
+		
 
 		//InfoWindowManager
 

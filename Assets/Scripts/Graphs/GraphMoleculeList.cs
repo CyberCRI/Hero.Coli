@@ -11,6 +11,7 @@ public class GraphMoleculeList : MonoBehaviour {
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
   public GameObject        equipedWithMoleculesDeviceDummy;
+  public string            debugName;
 
   //
   public int               pixelsPerLine;
@@ -28,15 +29,45 @@ public class GraphMoleculeList : MonoBehaviour {
     mediumId = newMediumId;
   }
 
+  void safeInitialization()
+  {
+    if(null == equipedWithMoleculesDeviceDummy)
+    {
+      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 1 "+debugName, Logger.Level.WARN);
+      EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
+      equipedWithMoleculesDeviceDummy = script.gameObject;
+    }
+    if(null == equipedWithMoleculesDeviceDummy)
+    {
+      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 2 "+debugName, Logger.Level.WARN);
+      equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
+    }
+    if(null == equipedWithMoleculesDeviceDummy)
+    {
+      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 3 "+debugName, Logger.Level.WARN);
+      equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
+    }
+  }
+
   void Awake()
   {
     currentDownShift = Vector3.zero;
     _initialScale = unfoldingMoleculeList.transform.localScale;
-    equipedWithMoleculesDeviceDummy.SetActive(false);
   }
    
   void Start() {
     _reactionEngine = ReactionEngine.get();
+
+    safeInitialization();
+    
+    if(null != equipedWithMoleculesDeviceDummy)
+    {
+      equipedWithMoleculesDeviceDummy.SetActive(false);
+    }
+    else
+    {
+      Logger.Log("GraphMoleculeList::Start failed safeInitialization ", Logger.Level.WARN);
+    }
   }
 
   private void resetMoleculeList()
