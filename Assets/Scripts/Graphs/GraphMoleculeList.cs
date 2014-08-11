@@ -118,12 +118,11 @@ public class GraphMoleculeList : MonoBehaviour {
         Debug.LogError("clone instantiated");
 
         Vector3 localPosition = getNewPosition();
-        UnityEngine.Transform parent = unfoldingMoleculeList.transform;
         GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
         
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         Debug.LogError("EquipedDisplayedDeviceWithMolecules instantiated");
-        deviceWithMoleculesComponent.transform.parent = parent;
+        deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localPosition = localPosition;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
         EquipedDisplayedDeviceWithMolecules script = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
