@@ -103,7 +103,8 @@ public class GraphMoleculeList : MonoBehaviour {
 
   public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
   {
-    Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent");
+    Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent("+equipedDeviceScript+")");
+    Debug.LogError("including _device="+equipedDeviceScript._device);
     if(equipedDeviceScript == null)
     {
       Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
@@ -129,10 +130,12 @@ public class GraphMoleculeList : MonoBehaviour {
         Debug.LogError("got EquipedDisplayedDeviceWithMolecules script");
 
         script.equipedDevice = clone;
-        Debug.LogError("assigned clone to EquipedDisplayedDeviceWithMolecules script");
+        EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        edd._device = equipedDeviceScript._device;
+        Debug.LogError("assigned clone to EquipedDisplayedDeviceWithMolecules script with clone.device="+edd._device);
 
         script.device = equipedDeviceScript._device;
-        Debug.LogError("assigned Device to EquipedDisplayedDeviceWithMolecules script");
+        Debug.LogError("assigned device="+script.device+" to EquipedDisplayedDeviceWithMolecules script");
 
         script.equipedDeviceScript = equipedDeviceScript;
         Debug.LogError("assigned equipedDeviceScript to EquipedDisplayedDeviceWithMolecules script");
@@ -158,6 +161,14 @@ public class GraphMoleculeList : MonoBehaviour {
   public void removeDeviceAndMoleculesComponent(Device device)
   {
     Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent");
+    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
+    int startIndex = _equipedDevices.IndexOf(eddwm);
+    _equipedDevices.Remove(eddwm);
+    Destroy(eddwm.gameObject);    
+    for(int idx = startIndex; idx < _equipedDevices.Count; idx++) {
+      Vector3 newLocalPosition = getNewPosition();
+      _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
+    }
   }
 
 	// Update is called once per frame
