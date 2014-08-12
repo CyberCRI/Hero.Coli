@@ -26,7 +26,7 @@ public class Hero : MonoBehaviour {
   private bool _pause;
 	private bool _isAlive;
 
-
+	public Life getLifeManager () {return _lifeManager;}
 
 	public void Pause(bool pause)
 	{

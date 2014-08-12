@@ -14,6 +14,7 @@ var destroySmallAfterTime = 0.0;
 var instantiateOnBreak : GameObject;
 var totalMassIfStatic = 1.0;
 private var joints : Joint[];
+
 //-------------------------------------------------------------------
 function Start () {
 	if (rigidbody) {
@@ -31,11 +32,12 @@ function OnCollisionEnter (collision : Collision) {
 
 	if(collision.gameObject.name == "Perso")
 	{
-	
 	//Debug.DrawLine(transform.position, collision.gameObject.transform.position, Color.red, 1.0f);
 		point=collision.contacts[0].point;
 		vec = collision.relativeVelocity*UsedMass(collision);
 		FractureAtPoint(point,vec);
+		
+		collision.gameObject.GetComponent("Hero").getLifeManager().setSuddenDeath(true);
 	}
 }
 //-------------------------------------------------------------------

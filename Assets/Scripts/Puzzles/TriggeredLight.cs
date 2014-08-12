@@ -55,8 +55,6 @@ public class TriggeredLight : TriggeredBehaviour {
 
 	private void updateLightIntensity()
 	{
-		Logger.Log ("parent::"+transform.parent, Logger.Level.WARN);
-		Logger.Log ("perso::"+transform.Find("Perso"), Logger.Level.WARN);
 		float distance = Vector3.Magnitude (transform.parent.position - GameObject.Find("Perso").transform.position);
 
 		//intensity increase when the player get near :: max 9 * maxIntensity
