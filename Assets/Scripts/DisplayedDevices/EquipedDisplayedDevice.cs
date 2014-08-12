@@ -9,30 +9,37 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   private static GameObject           equipedDevice;
   private static GameObject           tinyBioBrickIcon;
   private static GameObject           tinyBioBrickIcon2;
-  private float                       _tinyIconVerticalShift = 0.0f;
+  private static float                _tinyIconVerticalShift = 0.0f;
   private static float                _width = 0.0f;
 
   private static string               _equipedDeviceButtonPrefabPosString = "EquipedDeviceButtonPrefabPos";
   private static string               _tinyBioBrickPosString              = "TinyBioBrickIconPrefabPos";
   private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
 
+  private bool                        _displayBricks;
+
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
-
     createBioBricksIfNecessary();
-
-    foreach(GenericDisplayedBioBrick brick in _currentDisplayedBricks)
-    {
-      brick.gameObject.SetActive(true);
-    }
+    updateVisibility();
   }
 
   void OnDisable() {
     Logger.Log("EquipedDisplayedDevice::OnDisable "+_device, Logger.Level.TRACE);
+    setBricksVisibilityTo(false);
+  }
+
+  protected void setBricksVisibilityTo(bool visible)
+  {
     foreach(GenericDisplayedBioBrick brick in _currentDisplayedBricks)
     {
-      brick.gameObject.SetActive(false);
+      brick.gameObject.SetActive(visible);
     }
+  }
+
+  protected void updateVisibility()
+  {
+    setBricksVisibilityTo(_displayBricks);
   }
 
   protected override void OnPress(bool isPressed) {
@@ -83,7 +90,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   }
 
   void createBioBricksIfNecessary() {
-    Logger.Log("EquipedDisplayedDevice::displayBioBricks", Logger.Level.DEBUG);
+    Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary", Logger.Level.DEBUG);
     initIfNecessary();
     if(0 == _currentDisplayedBricks.Count)
     {
@@ -101,7 +108,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
           }
         }
       } else {
-        Logger.Log("EquipedDisplayedDevice::displayBioBricks _device == null", Logger.Level.WARN);
+        Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary _device == null", Logger.Level.WARN);
       }
     }
   }
@@ -118,9 +125,16 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     }
   }
 
+  public void setDisplayBricks(bool display)
+  {
+    _displayBricks = display;
+    updateVisibility();
+  }
+
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
     createBioBricksIfNecessary();
+    updateVisibility();
   }
 }

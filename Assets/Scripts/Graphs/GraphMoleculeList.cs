@@ -137,7 +137,7 @@ public class GraphMoleculeList : MonoBehaviour {
         script.device = equipedDeviceScript._device;
         Debug.LogError("assigned device="+script.device+" to EquipedDisplayedDeviceWithMolecules script");
 
-        script.equipedDeviceScript = equipedDeviceScript;
+        script.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
         Debug.LogError("assigned equipedDeviceScript to EquipedDisplayedDeviceWithMolecules script");
 
         script.initialize();

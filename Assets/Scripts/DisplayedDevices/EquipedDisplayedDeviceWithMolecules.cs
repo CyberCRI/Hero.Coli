@@ -7,7 +7,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   public GameObject equipedDeviceDummy;
   public GameObject equipedDevice;
   public Device device;
-  public DisplayedDevice equipedDeviceScript;
+  public EquipedDisplayedDevice equipedDeviceScript;
 
   public void initialize()
   {
@@ -27,7 +27,9 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
     equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
     Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize localRotation");
     equipedDeviceDummy.SetActive(false);
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize SetActive");
+    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize SetActive"); 
+    equipedDeviceScript.setDisplayBricks(false);
+    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize setDisplayBricks"); 
   }
   
   void OnEnable() {
