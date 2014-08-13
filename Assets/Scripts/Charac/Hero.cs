@@ -39,6 +39,9 @@ public class Hero : MonoBehaviour {
 	}
 
 
+	public Medium getMedium() { return _medium;}
+
+
 	//getter and setter for energy
 	public float getEnergy() {
 		return _energy;
