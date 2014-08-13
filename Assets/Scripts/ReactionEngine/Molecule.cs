@@ -143,27 +143,30 @@ public class Molecule : LoadableFromXmlImpl
               
               switch (moleculeNode.Attributes["type"].Value)
               {
-                  case "enzyme":
-                  {
-                      type = Molecule.eType.ENZYME;
-                      break;
-                  }
-                  case "transcription_factor":
-                  {
-                      type = Molecule.eType.TRANSCRIPTION_FACTOR;
-                      break;
-                  }
-                  case "other":
-                  {
-                      type = Molecule.eType.OTHER;
-                      break;
-                  }
-                  default:
-                  {
-                      Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
-                                  ,Logger.Level.WARN);
-                      return false;
-                  }
+                case "enzyme":
+                {
+                  type = Molecule.eType.ENZYME;
+                  break;
+                }
+                case "transcription_factor":
+                {
+                  type = Molecule.eType.TRANSCRIPTION_FACTOR;
+                  break;
+                }
+                case "other":
+                {
+                  type = Molecule.eType.OTHER;
+                  break;
+                }
+                //TODO add this case to all tryInstantiateFromXml implementations
+                case "#comment":
+                  break;
+                default:
+                {
+                  Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
+                              ,Logger.Level.WARN);
+                  return false;
+                }
               }
               
               setType(type);
@@ -186,6 +189,8 @@ public class Molecule : LoadableFromXmlImpl
                           break;
                       case "FickFactor":
                           setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+                          break;
+                      case "#comment":
                           break;
                       default:
                           Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"

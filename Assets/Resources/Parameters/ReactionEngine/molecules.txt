@@ -47,7 +47,8 @@
       <name>AMPI*</name>
       <description></description>
       <concentration>0</concentration>
-      <degradationRate>0.01</degradationRate>
+      <!-- degradationRate was 0.01 in previous versions -->
+      <degradationRate>0.2</degradationRate>
     </molecule>
   </molecules>
 </Document>

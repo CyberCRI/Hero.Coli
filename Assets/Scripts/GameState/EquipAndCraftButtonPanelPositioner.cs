@@ -12,10 +12,12 @@ public class EquipAndCraftButtonPanelPositioner : MonoBehaviour {
     void Start () {
         _initialLocalPosition =
         //    new Vector3(522.9f, 172.5f, 0);
+        //    y = 204 for optimal placement
               unfoldingMoleculeList.transform.parent.transform.localPosition
             + unfoldingMoleculeList.transform.localPosition                 
-            + Vector3.up*unfoldingMoleculeList.transform.localScale.y       
-            - Vector3.up*backgroundSprite.transform.localScale.y            
+            + Vector3.up*unfoldingMoleculeList.transform.localScale.y
+            - new Vector3(0f, 20f, 0f)
+            //- Vector3.up*backgroundSprite.transform.localScale.y            
               ;
     }
 	

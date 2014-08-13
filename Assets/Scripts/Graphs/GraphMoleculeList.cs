@@ -13,9 +13,8 @@ public class GraphMoleculeList : MonoBehaviour {
   public GameObject        equipedWithMoleculesDeviceDummy;
   public string            debugName;
 
-  //
-  public int               pixelsPerLine;
-  public int               equipedHeight = 60;
+  private int               pixelsPerMoleculeLine = 15;
+  private int               pixelsPerDeviceLine = 80;
       
   public Vector3           currentDownShift;
 
@@ -23,6 +22,11 @@ public class GraphMoleculeList : MonoBehaviour {
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
+
+  private enum DisplayType {
+    MOLECULELINE,
+    DEVICELINE
+  }
 
   public void setMediumId(int newMediumId)
   {
@@ -52,6 +56,7 @@ public class GraphMoleculeList : MonoBehaviour {
   void Awake()
   {
     currentDownShift = Vector3.zero;
+    unfoldingMoleculeList.transform.localScale = new Vector3(unfoldingMoleculeList.transform.localScale.x, 20, unfoldingMoleculeList.transform.localScale.z);
     _initialScale = unfoldingMoleculeList.transform.localScale;
   }
    
@@ -95,9 +100,9 @@ public class GraphMoleculeList : MonoBehaviour {
   }
 
   //TODO iTween this
-  void setMoleculeListBackgroundScale()
+  void setUnfoldingListBackgroundScale()
   {
-    currentDownShift = Vector3.up * pixelsPerLine * _displayedMolecules.Count;
+    currentDownShift = Vector3.up * (pixelsPerMoleculeLine * _displayedMolecules.Count + pixelsPerDeviceLine * _equipedDevices.Count);
     unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
   }
 
@@ -150,11 +155,31 @@ public class GraphMoleculeList : MonoBehaviour {
     }
   }
 
-  public Vector3 getNewPosition(int index = -1) {
+  Vector3 getNewPosition(DisplayType displayType = DisplayType.MOLECULELINE, int index = -1) {
     Vector3 res;
     int idx = index;
-    if(idx == -1) idx = _equipedDevices.Count;
-    res = equipedWithMoleculesDeviceDummy.transform.localPosition + new Vector3(0.0f, -idx*equipedHeight, -0.1f);
+    if(idx == -1)
+    {
+      idx = _equipedDevices.Count;
+    }
+    switch(displayType)
+    {
+      case DisplayType.MOLECULELINE:
+        res = equipedWithMoleculesDeviceDummy.transform.localPosition + new Vector3(0.0f, -idx*pixelsPerMoleculeLine, -0.1f);
+        break;
+      case DisplayType.DEVICELINE:
+        res = equipedWithMoleculesDeviceDummy.transform.localPosition
+                    + new Vector3(
+                        0.0f,
+                        _displayedMolecules.Count*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
+                        -0.1f
+                        );
+        break;
+      default:
+        Logger.Log("GraphMoleculeList::getNewPosition: unknown display type "+displayType, Logger.Level.ERROR);
+        res = Vector3.zero;
+        break;
+    }
     return res;
   }
 
@@ -198,7 +223,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
     removeUnusedMolecules();
 
-    setMoleculeListBackgroundScale();
+    setUnfoldingListBackgroundScale();
 		
 		string namesToDisplay = "";
     string valuesToDisplay = "";
