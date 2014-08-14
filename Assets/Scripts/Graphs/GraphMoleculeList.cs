@@ -120,26 +120,37 @@ public class GraphMoleculeList : MonoBehaviour {
 
         GameObject clone = Instantiate(equipedDevice) as GameObject;
 
-        Vector3 localPosition = getNewPosition();
         GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
         
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         deviceWithMoleculesComponent.transform.parent = transform;
-        deviceWithMoleculesComponent.transform.localPosition = localPosition;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
-        EquipedDisplayedDeviceWithMolecules script = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
 
-        script.equipedDevice = clone;
+        eddwm.equipedDevice = clone;
         EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
         edd._device = equipedDeviceScript._device;
 
-        script.device = equipedDeviceScript._device;
+        eddwm.device = equipedDeviceScript._device;
 
-        script.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
+        eddwm.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
 
-        script.initialize();
+        eddwm.initialize();
 
-        _equipedDevices.Add(script);
+        _equipedDevices.Add(eddwm);
+
+        //search if there's already in the cell a molecule that this device produces
+        foreach(DisplayedMolecule molecule in _displayedMolecules)
+        {
+          if(molecule.getCodeName() == eddwm.device.getFirstGeneProteinName())
+          {
+            displayMoleculeInDevice(molecule, eddwm);
+          }
+        }
+
+        //depends on displayed list of molecules
+        Vector3 localPosition = getNewPosition();
+        deviceWithMoleculesComponent.transform.localPosition = localPosition;
 
       } else {
         Logger.Log("addDevice failed: newEquiped="+newEquiped, Logger.Level.TRACE);
@@ -158,7 +169,7 @@ public class GraphMoleculeList : MonoBehaviour {
     res = equipedWithMoleculesDeviceDummy.transform.localPosition
             + new Vector3(
                 0.0f,
-                -_displayedListMoleculesCount*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
+                -_displayedListMoleculesCount*pixelsPerMoleculeLine -(idx-1)*pixelsPerDeviceLine,
                 -0.1f
                 );
     
@@ -168,12 +179,33 @@ public class GraphMoleculeList : MonoBehaviour {
   public void removeDeviceAndMoleculesComponent(Device device)
   {
     EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
-    int startIndex = _equipedDevices.IndexOf(eddwm);
-    shiftDeviceAndMoleculeComponents(startIndex);
-    _equipedDevices.Remove(eddwm);
-    Destroy(eddwm.gameObject);
+    if(null != eddwm)
+    {
+      displayMoleculeInList(eddwm);
+
+      int startIndex = _equipedDevices.IndexOf(eddwm);
+      _equipedDevices.Remove(eddwm);
+      Destroy(eddwm.gameObject);
+
+      positionDeviceAndMoleculeComponents(0);
+      setUnfoldingListBackgroundScale();
+    }
   }
 
+  void displayMoleculeInList(EquipedDisplayedDeviceWithMolecules eddwm)
+  {
+    eddwm.releaseMoleculeDisplay();
+    _displayedListMoleculesCount++;
+  }
+
+  //change a display type of a molecule from molecule list to deviceWithMolecules list
+  void displayMoleculeInDevice(DisplayedMolecule molecule, EquipedDisplayedDeviceWithMolecules eddwm)
+  {
+    eddwm.addDisplayedMolecule(molecule);
+    _displayedListMoleculesCount--;
+  }
+
+  //unused but works
   void shiftDeviceAndMoleculeComponents(int removedIndex)
   {
     for(int idx = removedIndex+1; idx < _equipedDevices.Count; idx++) {        
@@ -202,11 +234,11 @@ public class GraphMoleculeList : MonoBehaviour {
 		foreach(System.Object molecule in molecules) {
       Molecule castMolecule = (Molecule)molecule;
       string realName = castMolecule.getRealName();
-      string name = castMolecule.getName();
+      string codeName = castMolecule.getName();
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getName() == realName);
+        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getRealName() == realName);
         if(null != found)
         {
           found.update(concentration);
@@ -214,10 +246,10 @@ public class GraphMoleculeList : MonoBehaviour {
         else
         //molecule is not displayed yet
         {
-          DisplayedMolecule created = new DisplayedMolecule(realName, concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
+          DisplayedMolecule created = new DisplayedMolecule(codeName, realName, concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
 
           //search if molecule should be displayed in a Device/molecule component
-          List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == name);
+          List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == codeName);
           if(containers.Count != 0)
           {                        
             created.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
@@ -251,7 +283,7 @@ public class GraphMoleculeList : MonoBehaviour {
 		foreach(DisplayedMolecule molecule in _displayedMolecules) {
       if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
       {
-          namesToDisplay+=molecule.getName()+":\n";
+          namesToDisplay+=molecule.getRealName()+":\n";
           valuesToDisplay+=molecule.getVal()+"\n";
       }
 		}

@@ -3,7 +3,8 @@ using System.Collections;
 
 public class DisplayedMolecule
 {
-    private string _name;
+    private string _codeName;
+    private string _realName;
     private string _val;
     private bool _updated;
     private DisplayType _displayType;
@@ -13,9 +14,14 @@ public class DisplayedMolecule
       DEVICEMOLECULELIST
     }
     
-    public string getName()
+    public string getCodeName()
     {
-        return _name;
+        return _codeName;
+    }
+    
+    public string getRealName()
+    {
+        return _realName;
     }
     
     public string getVal()
@@ -38,15 +44,16 @@ public class DisplayedMolecule
         return _updated;
     }
     
-    public DisplayedMolecule(string name, string val, DisplayType displayType = DisplayType.MOLECULELIST)
+    public DisplayedMolecule(string codeName, string realName, string val, DisplayType displayType = DisplayType.MOLECULELIST)
     {
         _updated = true;
-        _name = name;
+        _codeName = codeName;
+        _realName = realName;
         _val = val;
         _displayType = displayType;
     }
     
-    public DisplayedMolecule(string name, float val, DisplayType displayType = DisplayType.MOLECULELIST) : this(name, val.ToString(), displayType)
+    public DisplayedMolecule(string codeName, string realName, float val, DisplayType displayType = DisplayType.MOLECULELIST) : this(codeName, realName, val.ToString(), displayType)
     {
     }
     

@@ -32,6 +32,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   public void addDisplayedMolecule(DisplayedMolecule molecule)
   {
     _displayedMolecule = molecule;
+    molecule.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
   }
 
   //TODO implement & allow multiple protein management
@@ -70,8 +71,16 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   {
     if(null != _displayedMolecule)
     {
-      namesLabel.text = _displayedMolecule.getName();
+      namesLabel.text = _displayedMolecule.getRealName();
       valuesLabel.text = _displayedMolecule.getVal();
+    }
+  }
+
+  public void releaseMoleculeDisplay()
+  {
+    if(null != _displayedMolecule)
+    {
+      _displayedMolecule.setDisplayType(DisplayedMolecule.DisplayType.MOLECULELIST);
     }
   }
 
