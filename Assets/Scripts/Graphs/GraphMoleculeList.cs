@@ -23,11 +23,6 @@ public class GraphMoleculeList : MonoBehaviour {
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
-  private enum DisplayType {
-    MOLECULELINE,
-    DEVICELINE
-  }
-
   public void setMediumId(int newMediumId)
   {
     mediumId = newMediumId;
@@ -155,31 +150,21 @@ public class GraphMoleculeList : MonoBehaviour {
     }
   }
 
-  Vector3 getNewPosition(DisplayType displayType = DisplayType.MOLECULELINE, int index = -1) {
+  Vector3 getNewPosition(int index = -1) {
     Vector3 res;
     int idx = index;
     if(idx == -1)
     {
       idx = _equipedDevices.Count;
     }
-    switch(displayType)
-    {
-      case DisplayType.MOLECULELINE:
-        res = equipedWithMoleculesDeviceDummy.transform.localPosition + new Vector3(0.0f, -idx*pixelsPerMoleculeLine, -0.1f);
-        break;
-      case DisplayType.DEVICELINE:
-        res = equipedWithMoleculesDeviceDummy.transform.localPosition
-                    + new Vector3(
-                        0.0f,
-                        _displayedMolecules.Count*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
-                        -0.1f
-                        );
-        break;
-      default:
-        Logger.Log("GraphMoleculeList::getNewPosition: unknown display type "+displayType, Logger.Level.ERROR);
-        res = Vector3.zero;
-        break;
-    }
+    
+    res = equipedWithMoleculesDeviceDummy.transform.localPosition
+            + new Vector3(
+                0.0f,
+                -_displayedMolecules.Count*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
+                -0.1f
+                );
+    
     return res;
   }
 
@@ -188,16 +173,31 @@ public class GraphMoleculeList : MonoBehaviour {
     Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent");
     EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
     int startIndex = _equipedDevices.IndexOf(eddwm);
+    shiftDeviceAndMoleculeComponents(startIndex);
     _equipedDevices.Remove(eddwm);
-    Destroy(eddwm.gameObject);    
+    Destroy(eddwm.gameObject);
+  }
+
+  void shiftDeviceAndMoleculeComponents(int removedIndex)
+  {
+    for(int idx = removedIndex+1; idx < _equipedDevices.Count; idx++) {        
+        Vector3 newLocalPosition = getNewPosition(idx-1);
+        _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
+    }
+  }
+
+  void positionDeviceAndMoleculeComponents(int startIndex = 0)
+  {
     for(int idx = startIndex; idx < _equipedDevices.Count; idx++) {
-      Vector3 newLocalPosition = getNewPosition();
+      Vector3 newLocalPosition = getNewPosition(idx);
       _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
     }
   }
 
 	// Update is called once per frame
 	void Update () {
+
+    int previousCount = _displayedMolecules.Count;
 
     resetMoleculeList();
 
@@ -222,6 +222,12 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
 
     removeUnusedMolecules();
+
+    if(_displayedMolecules.Count != previousCount)
+    {
+      //rearrange devices
+      positionDeviceAndMoleculeComponents();
+    }
 
     setUnfoldingListBackgroundScale();
 		
