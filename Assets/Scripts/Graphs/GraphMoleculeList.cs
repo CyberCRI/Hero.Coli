@@ -19,6 +19,7 @@ public class GraphMoleculeList : MonoBehaviour {
   public Vector3           currentDownShift;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
+  private int                           _displayedListMoleculesCount = 0;
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
@@ -91,20 +92,22 @@ public class GraphMoleculeList : MonoBehaviour {
     foreach(DisplayedMolecule molecule in _toRemove)
     {
       _displayedMolecules.Remove(molecule);
+      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+      {
+        _displayedListMoleculesCount--;
+      }
     }
   }
 
   //TODO iTween this
   void setUnfoldingListBackgroundScale()
   {
-    currentDownShift = Vector3.up * (pixelsPerMoleculeLine * _displayedMolecules.Count + pixelsPerDeviceLine * _equipedDevices.Count);
+    currentDownShift = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
     unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
   }
 
   public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
   {
-    Debug.LogError("GraphMoleculeList::addDeviceAndMoleculesComponent("+equipedDeviceScript+")");
-    Debug.LogError("including _device="+equipedDeviceScript._device);
     if(equipedDeviceScript == null)
     {
       Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
@@ -116,29 +119,23 @@ public class GraphMoleculeList : MonoBehaviour {
       if(newEquiped) { 
 
         GameObject clone = Instantiate(equipedDevice) as GameObject;
-        Debug.LogError("clone instantiated");
 
         Vector3 localPosition = getNewPosition();
         GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
         
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-        Debug.LogError("EquipedDisplayedDeviceWithMolecules instantiated");
         deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localPosition = localPosition;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
         EquipedDisplayedDeviceWithMolecules script = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
-        Debug.LogError("got EquipedDisplayedDeviceWithMolecules script");
 
         script.equipedDevice = clone;
         EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
         edd._device = equipedDeviceScript._device;
-        Debug.LogError("assigned clone to EquipedDisplayedDeviceWithMolecules script with clone.device="+edd._device);
 
         script.device = equipedDeviceScript._device;
-        Debug.LogError("assigned device="+script.device+" to EquipedDisplayedDeviceWithMolecules script");
 
         script.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
-        Debug.LogError("assigned equipedDeviceScript to EquipedDisplayedDeviceWithMolecules script");
 
         script.initialize();
 
@@ -161,7 +158,7 @@ public class GraphMoleculeList : MonoBehaviour {
     res = equipedWithMoleculesDeviceDummy.transform.localPosition
             + new Vector3(
                 0.0f,
-                -_displayedMolecules.Count*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
+                -_displayedListMoleculesCount*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
                 -0.1f
                 );
     
@@ -170,7 +167,6 @@ public class GraphMoleculeList : MonoBehaviour {
 
   public void removeDeviceAndMoleculesComponent(Device device)
   {
-    Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent");
     EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
     int startIndex = _equipedDevices.IndexOf(eddwm);
     shiftDeviceAndMoleculeComponents(startIndex);
@@ -196,26 +192,45 @@ public class GraphMoleculeList : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
-    int previousCount = _displayedMolecules.Count;
+        
+    int previousListedCount = _displayedListMoleculesCount;
+    int previousTotalCount = _displayedMolecules.Count;
 
     resetMoleculeList();
 
 		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
 		foreach(System.Object molecule in molecules) {
       Molecule castMolecule = (Molecule)molecule;
-      string name = castMolecule.getRealName();
+      string realName = castMolecule.getRealName();
+      string name = castMolecule.getName();
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getName() == name);
+        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getName() == realName);
         if(null != found)
         {
           found.update(concentration);
         }
         else
+        //molecule is not displayed yet
         {
-          DisplayedMolecule created = new DisplayedMolecule(name, concentration);
+          DisplayedMolecule created = new DisplayedMolecule(realName, concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
+
+          //search if molecule should be displayed in a Device/molecule component
+          List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == name);
+          if(containers.Count != 0)
+          {                        
+            created.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
+            foreach(EquipedDisplayedDeviceWithMolecules container in containers)
+            {
+              container.addDisplayedMolecule(created);
+            }
+          }
+          else
+          {
+            _displayedListMoleculesCount++;
+          }
+          //anyway add it to molecule list
           _displayedMolecules.AddLast(created);
         }
       }
@@ -223,19 +238,22 @@ public class GraphMoleculeList : MonoBehaviour {
 
     removeUnusedMolecules();
 
-    if(_displayedMolecules.Count != previousCount)
+    if(_displayedMolecules.Count != previousTotalCount
+       || previousListedCount != _displayedListMoleculesCount)
     {
       //rearrange devices
       positionDeviceAndMoleculeComponents();
     }
-
-    setUnfoldingListBackgroundScale();
 		
 		string namesToDisplay = "";
     string valuesToDisplay = "";
+
 		foreach(DisplayedMolecule molecule in _displayedMolecules) {
-			namesToDisplay+=molecule.getName()+":\n";
-      valuesToDisplay+=molecule.getVal()+"\n";
+      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+      {
+          namesToDisplay+=molecule.getName()+":\n";
+          valuesToDisplay+=molecule.getVal()+"\n";
+      }
 		}
 		if(!string.IsNullOrEmpty(namesToDisplay)) {
 			namesToDisplay.Remove(namesToDisplay.Length-1, 1);
@@ -243,5 +261,7 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
     namesLabel.text = namesToDisplay;
     valuesLabel.text = valuesToDisplay;
+
+    setUnfoldingListBackgroundScale();
 	}
 }

@@ -161,7 +161,6 @@ public class DevicesDisplayer : MonoBehaviour {
         );
 			_equipedDevices.Add(newDevice);
 
-      Debug.LogError("newDevice._device="+newDevice._device);
       graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
 
 		} else {

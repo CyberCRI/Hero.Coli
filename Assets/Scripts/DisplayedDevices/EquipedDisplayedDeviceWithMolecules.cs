@@ -3,33 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
-
+    
+  public UILabel           namesLabel;
+  public UILabel           valuesLabel;
   public GameObject equipedDeviceDummy;
   public GameObject equipedDevice;
   public Device device;
   public EquipedDisplayedDevice equipedDeviceScript;
 
+  private DisplayedMolecule _displayedMolecule;
+
   public void initialize()
   {
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize");
     setEquipedDevice();
   }
 
   public void setEquipedDevice()
   {
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::setEquipedDevice");
     equipedDevice.transform.parent = transform;
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize parent");
     equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize localPosition");
     equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize localScale");
     equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize localRotation");
     equipedDeviceDummy.SetActive(false);
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize SetActive"); 
     equipedDeviceScript.setDisplayBricks(false);
-    Debug.LogError("EquipedDisplayedDeviceWithMolecules::initialize setDisplayBricks"); 
+  }
+
+  //TODO allow multiple protein management
+  public void addDisplayedMolecule(DisplayedMolecule molecule)
+  {
+    _displayedMolecule = molecule;
+  }
+
+  //TODO implement & allow multiple protein management
+  public void removeDisplayedMolecule(string molecule)
+  {
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::removedDisplayedMolecule not implemented", Logger.Level.WARN);
   }
   
   void OnEnable() {
@@ -54,8 +62,19 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.WARN);
+    namesLabel.text = "";
+    valuesLabel.text = "";
   }
-    
+
+  void Update()
+  {
+    if(null != _displayedMolecule)
+    {
+      namesLabel.text = _displayedMolecule.getName();
+      valuesLabel.text = _displayedMolecule.getVal();
+    }
+  }
+
   protected string getDebugInfos() {
         return "EquipedDisplayedDeviceWithMolecules inner device="+device+", inner equipedDeviceScript type="+equipedDeviceScript+", time="+Time.realtimeSinceStartup;
   }
