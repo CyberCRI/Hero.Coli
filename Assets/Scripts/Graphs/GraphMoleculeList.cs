@@ -137,6 +137,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
         eddwm.initialize();
 
+        int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);
 
         //search if there's already in the cell a molecule that this device produces
@@ -149,9 +150,10 @@ public class GraphMoleculeList : MonoBehaviour {
         }
 
         //depends on displayed list of molecules
-        Vector3 localPosition = getNewPosition();
-        deviceWithMoleculesComponent.transform.localPosition = localPosition;
-
+        //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
+        //deviceWithMoleculesComponent.transform.localPosition = localPosition;
+        positionDeviceAndMoleculeComponents();
+                    
       } else {
         Logger.Log("addDevice failed: newEquiped="+newEquiped, Logger.Level.TRACE);
       }
@@ -169,7 +171,7 @@ public class GraphMoleculeList : MonoBehaviour {
     res = equipedWithMoleculesDeviceDummy.transform.localPosition
             + new Vector3(
                 0.0f,
-                -_displayedListMoleculesCount*pixelsPerMoleculeLine -(idx-1)*pixelsPerDeviceLine,
+                -_displayedListMoleculesCount*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
                 -0.1f
                 );
     
