@@ -194,18 +194,48 @@ public class GraphMoleculeList : MonoBehaviour {
     }
   }
 
-  void displayMoleculeInList(EquipedDisplayedDeviceWithMolecules eddwm)
+  bool isAlreadyDisplayedInADevice(string moleculeCodeName)
   {
-    eddwm.releaseMoleculeDisplay();
-    _displayedListMoleculesCount++;
+    return null != _equipedDevices.Find(equiped => equiped.device.getFirstGeneProteinName() == moleculeCodeName);
   }
 
+  void displayMoleculeInList(EquipedDisplayedDeviceWithMolecules eddwm)
+  {
+    string moleculeCodeName = eddwm.device.getFirstGeneProteinName();
+    if(isAlreadyDisplayedInADevice(moleculeCodeName))
+    {
+      _displayedMolecules.Remove(eddwm.getDisplayedMolecule());
+    }
+    else
+    {
+      eddwm.releaseMoleculeDisplay();
+      _displayedListMoleculesCount++;
+    }
+  }
+    
   //change a display type of a molecule from molecule list to deviceWithMolecules list
   void displayMoleculeInDevice(DisplayedMolecule molecule, EquipedDisplayedDeviceWithMolecules eddwm)
   {
-    eddwm.addDisplayedMolecule(molecule);
-    _displayedListMoleculesCount--;
+      if((molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+         || !isAlreadyDisplayedInADevice(molecule.getCodeName()))
+      {
+          _displayedListMoleculesCount--;
+      }
+      eddwm.addDisplayedMolecule(molecule);
   }
+
+  void updateDisplayedListMoleculesCount()
+  {
+    int res = 0;
+    foreach(DisplayedMolecule molecule in _displayedMolecules)
+    {
+      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+      {
+          res++;
+      }
+    }
+    _displayedListMoleculesCount = res;
+   }
 
   //unused but works
   void shiftDeviceAndMoleculeComponents(int removedIndex)

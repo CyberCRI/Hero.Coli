@@ -44,6 +44,7 @@ public class Device: DNABit
       _modules.AddLast(new ExpressionModule(em));
   }
 
+  //returns the code name of the first - 'upstream' - protein produced by the device
   public string getFirstGeneProteinName()
   {
     foreach (ExpressionModule module in _modules)

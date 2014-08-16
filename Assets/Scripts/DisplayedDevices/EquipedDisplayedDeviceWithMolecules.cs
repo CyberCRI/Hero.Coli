@@ -35,6 +35,11 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
     molecule.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
   }
 
+  public DisplayedMolecule getDisplayedMolecule()
+  {
+    return _displayedMolecule;
+  }
+
   //TODO implement & allow multiple protein management
   public void removeDisplayedMolecule(string molecule)
   {
