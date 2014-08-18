@@ -38,10 +38,28 @@ public class FickProperties : LoadableFromXmlImpl
       switch (attr.Name)
       {
         case "MediumId1":
-          MediumId1 = Convert.ToInt32(attr.InnerText);
+          if(String.IsNullOrEmpty(attr.InnerText))
+          {
+              Logger.Log("FickProperties::tryInstantiateFromXml empty MediumId1"
+                                 , Logger.Level.ERROR);
+              return false;
+          }
+          else
+          {
+              MediumId1 = Convert.ToInt32(attr.InnerText);
+          }          
           break;
         case "MediumId2":
-          MediumId2 = Convert.ToInt32(attr.InnerText);
+          if(String.IsNullOrEmpty(attr.InnerText))
+          {
+              Logger.Log("FickProperties::tryInstantiateFromXml empty MediumId2"
+                         , Logger.Level.ERROR);
+              return false;
+          }
+          else
+          {
+              MediumId2 = Convert.ToInt32(attr.InnerText);
+          }
           break;
         case "P":
           P = float.Parse(attr.InnerText.Replace(",", "."));

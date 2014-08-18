@@ -47,10 +47,11 @@ public class InstantReaction : IReaction
     \brief Checks that two reactions have the same InstantReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     InstantReaction instant = reaction as InstantReaction;
     return (instant != null)
+    && base.PartialEquals(reaction)
     && _reactants.Equals(instant._reactants);
   }
 
@@ -211,10 +212,44 @@ public class InstantReaction : IReaction
    */
     private bool loadInstantReactionReactants(XmlNode node)
     {
+      bool b = false;
+
       foreach (XmlNode attr in node)
+      {
         if (attr.Name == "reactant")
-          loadInstantReactionReactant(attr);
-      return true;
+        {
+          if(!loadInstantReactionReactant(attr))
+          {                    
+            Logger.Log ("InstantReaction::loadInstantReactionReactants loadInstantReactionReactant failed"
+                        , Logger.Level.ERROR);
+            return false;
+          }
+          else
+          {
+              b = true;
+          }
+        }
+        else
+        {
+          Logger.Log ("InstantReaction::loadInstantReactionReactants bad attr name:"+attr.Name
+                            , Logger.Level.ERROR);
+          return false;
+        }
+      }
+
+      if(!b)
+      {
+        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded nothing"
+          , Logger.Level.ERROR);
+        return false;
+      }
+      else
+      {
+        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded successfully "+this
+          , Logger.Level.DEBUG);
+        return true;
+      }
+
     }
     
     /*!
@@ -230,13 +265,21 @@ public class InstantReaction : IReaction
         if (attr.Name == "name")
         {
             if (String.IsNullOrEmpty(attr.InnerText))
-                Debug.Log("Warning : Empty name field in instant reaction reactant definition");
+            {
+              Logger.Log("InstantReaction::loadInstantReactionReactant Empty name field in instant reaction reactant definition"
+                               , Logger.Level.ERROR);
+              return false;
+            }
             prod.setName(attr.InnerText);
         }
         else if (attr.Name == "quantity")
         {
           if (String.IsNullOrEmpty(attr.InnerText))
-              Debug.Log("Warning : Empty quantity field in instant reaction reactant definition");
+          {                    
+            Logger.Log("InstantReaction::loadInstantReactionReactant Empty quantity field in instant reaction reactant definition"
+                       , Logger.Level.ERROR);
+            return false;
+          }
           prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
         }
       }
@@ -251,10 +294,16 @@ public class InstantReaction : IReaction
   */
     private bool loadInstantReactionProducts(XmlNode node)
     {
+      Boolean b = true;
       foreach (XmlNode attr in node)
-      if (attr.Name == "product")
-          loadInstantReactionProduct(attr);
-      return true;
+      {
+            //TODO should this be "if (b && (attr.Name == "product"))" ?
+        if (attr.Name == "product")
+        {
+          b = b && loadInstantReactionProduct(attr);
+        }
+      }
+      return b;
     }
     
     /*!
@@ -264,24 +313,32 @@ public class InstantReaction : IReaction
   */
     private bool loadInstantReactionProduct(XmlNode node)
     {
-        Product prod = new Product();
-        foreach (XmlNode attr in node)
+      Product prod = new Product();
+      foreach (XmlNode attr in node)
+      {
+        if (attr.Name == "name")
         {
-            if (attr.Name == "name")
-            {
-                if (String.IsNullOrEmpty(attr.InnerText))
-                    Debug.Log("Warning : Empty name field in instant reaction product definition");
-                prod.setName(attr.InnerText);
-            }
-            else if (attr.Name == "quantity")
-            {
-                if (String.IsNullOrEmpty(attr.InnerText))
-                    Debug.Log("Warning : Empty quantity field in instant reaction product definition");
-                prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
-            }
+          if (String.IsNullOrEmpty(attr.InnerText))
+          {
+            Logger.Log("InstantReaction::loadInstantReactionProduct Empty name field in instant reaction product definition"
+                               , Logger.Level.ERROR);
+            return false;
+          }
+          prod.setName(attr.InnerText);
         }
-        addProduct(prod);
-        return true;
+        else if (attr.Name == "quantity")
+        {
+          if (String.IsNullOrEmpty(attr.InnerText))
+          {
+            Logger.Log("InstantReaction::loadInstantReactionProduct Empty quantity field in instant reaction product definition"
+                         , Logger.Level.ERROR);
+            return false;
+          }
+          prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+        }
+      }
+      addProduct(prod);
+      return true;
     }
     
     /*!
@@ -293,7 +350,8 @@ public class InstantReaction : IReaction
     {
       if (String.IsNullOrEmpty(value))
       {
-        Debug.Log("Error: Empty EnergyCost field. default value = 0");
+        Logger.Log("InstantReaction::loadInstantReactionProduct Empty EnergyCost field. default value = 0"
+                       , Logger.Level.WARN);
         setEnergyCost(0f);
       }
       else
@@ -304,8 +362,7 @@ public class InstantReaction : IReaction
 
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-      bool b = true;
-
+      Boolean b = true;
       foreach (XmlNode attr in node)
       {
         switch (attr.Name)
@@ -314,16 +371,23 @@ public class InstantReaction : IReaction
             setName(attr.InnerText);
             break;
           case "reactants":
-            loadInstantReactionReactants(attr);
+            b = b && loadInstantReactionReactants(attr);
             break;
           case "products":
-            loadInstantReactionProducts(attr);
+            b = b && loadInstantReactionProducts(attr);
             break;
           case "EnergyCost":
-            loadEnergyCost(attr.InnerText);
+            b = b && loadEnergyCost(attr.InnerText);
             break;
         }
       }
-      return b;
+
+      return b && hasValidData();
+  }
+
+    public override bool hasValidData()
+    {
+        return base.hasValidData()
+          && (null != _reactants) && (0 != _reactants.Count);
     }
 }

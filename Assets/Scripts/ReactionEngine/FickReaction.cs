@@ -63,16 +63,26 @@ public class FickReaction : IReaction
     \brief Checks that two reactions have the same FickReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     FickReaction fick = reaction as FickReaction;
     return (fick != null)
+      && base.PartialEquals(reaction)
       && (_surface == fick._surface)
-        && (_P       == fick._P)
-        && _medium1.Equals(fick._medium1)
-        && _medium2.Equals(fick._medium2);
+      && (_P       == fick._P)
+      && _medium1.Equals(fick._medium1)
+      && _medium2.Equals(fick._medium2);
     //TODO check Medium equality
   }
+
+    public override bool hasValidData()
+    {
+        return base.hasValidData()
+          && 0 != _surface
+          && 0 != _P
+          && null != _medium1
+          && null != _medium2;
+    }
   
   public static IReaction        buildFickReactionFromProps(FickProperties props, LinkedList<Medium> mediums)
   {
