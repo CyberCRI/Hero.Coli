@@ -528,21 +528,25 @@ public class Medium : LoadableFromXmlImpl
             //_molecules;               //!< The list of molecules (Molecule)
 
                (0 == _numberId)
-            || (string.IsNullOrEmpty(_name))                          //!< The name of the Medium
-            || string.IsNullOrEmpty(_reactionsSet)                  //!< The ReactionSet id assigned to this Medium
-            || string.IsNullOrEmpty(_moleculesSet)                  //!< The MoleculeSet id assigned to this Medium
-              //_enableSequential;
-              //_enableNoise;
-            || (null == _numberGenerator)               //!< Random number generator
-  //_enableEnergy;
-             //_energy;                        //!< Represents the quantity of ATP
-             //_energyVariation;               //!< The variation of energy during one frame
-             //_maxEnergy;                     //!< The maximum quantity of ATP
-             //_energyProductionRate;          //!< The energy production speed
+            || (string.IsNullOrEmpty(_name))            //!< The name of the Medium
+            || string.IsNullOrEmpty(_reactionsSet)      //!< The ReactionSet id assigned to this Medium
+            || string.IsNullOrEmpty(_moleculesSet)      //!< The MoleculeSet id assigned to this Medium
+            //_enableSequential;
+            //_enableNoise;
+            //_numberGenerator                          //!< Random number generator (initialized in Init)
+            //_enableEnergy;
+            //_energy;                                  //!< Represents the quantity of ATP
+            //_energyVariation;                         //!< The variation of energy during one frame
+            //_maxEnergy;                               //!< The maximum quantity of ATP
+            //_energyProductionRate;                    //!< The energy production speed
 
             )
         {
-          Logger.Log("Medium.tryInstantiateFromXml failed to load"
+          Logger.Log("Medium.tryInstantiateFromXml failed to load because "
+                       +"_numberId="+_numberId
+                       +"& _name="+_name
+                       +"& _reactionsSet="+_reactionsSet
+                       +"& _moleculesSet="+_moleculesSet
                        , Logger.Level.ERROR);
             return false;
         }

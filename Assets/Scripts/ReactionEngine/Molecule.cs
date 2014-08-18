@@ -55,8 +55,7 @@ public class Molecule : LoadableFromXmlImpl
     if (mol != null)
     {
       if(_debug) Logger.Log("Molecule::Molecule("+mol+")", Logger.Level.TRACE);
-      _name = mol._name;
-      _realName = GameplayNames.getMoleculeRealName(_name);
+      setName(mol._name);
       _type = mol._type;
       _description = mol._description;
       _concentration = mol._concentration;
@@ -79,7 +78,11 @@ public class Molecule : LoadableFromXmlImpl
   }
   public float getDegradationRate() {return _degradationRate; }
   public float getFickFactor() { return _fickFactor; }
-  public void setName(string name) { _name = name; }
+  public void setName(string name)
+  {
+        _name = name;
+        _realName = GameplayNames.getMoleculeRealName(_name);
+  }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }
   public void setConcentration(float concentration) {
@@ -206,7 +209,10 @@ public class Molecule : LoadableFromXmlImpl
                     //private float _fickFactor;                          //!< The FickFactor is a coefficient for FickReaction
                     )
                 {
-                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually"
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
+                                +"_name="+_name
+                                +"& _realName="+_realName
+                                +"& _type="+_type
                                 , Logger.Level.ERROR);
                   return false;
                 }
