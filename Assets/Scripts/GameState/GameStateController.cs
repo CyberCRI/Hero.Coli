@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 public enum GameState{
 	Start,
 	Game,
@@ -37,12 +38,13 @@ public class GameStateController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-
-
-		 _gameState = GameState.Start;
-		 dePauseForbidden = true;
-	   //dePauseForbidden = false;
-		 //StateChange(GameState.Game);
+		_gameState = GameState.Start;
+		dePauseForbidden = true;
+	  //dePauseForbidden = false;
+		//StateChange(GameState.Game);
+    
+    I18n.changeLanguageTo(I18n.Language.French);
+    Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.ERROR);
 	}
 	
 	// Update is called once per frame

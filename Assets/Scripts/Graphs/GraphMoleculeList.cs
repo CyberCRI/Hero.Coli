@@ -270,7 +270,7 @@ public class GraphMoleculeList : MonoBehaviour {
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getRealName() == realName);
+        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getCodeName() == codeName);
         if(null != found)
         {
           found.update(concentration);
