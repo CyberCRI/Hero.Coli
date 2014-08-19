@@ -12,5 +12,8 @@ public class I18n {
     public static void changeLanguageTo(Language lang)
     {
       Localization.instance.currentLanguage = lang.ToString();
+
+      CraftZoneManager.OnLanguageChanged();
+      //TooltipManager.OnLanguageChanged();
     }
 }

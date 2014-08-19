@@ -62,6 +62,23 @@ public class TooltipInfo
     }
   }
 
+  public void OnLanguageChanged()
+  {
+    /*
+    _code              = code;
+    _title             = title;
+    _type              = type;
+    _subtitle          = subtitle;
+    _illustration      = illustration;
+    _customField       = customField;
+    _customValue       = customValue;
+    _length            = length;
+    _reference         = reference;
+    _energyConsumption = energyConsumption;
+    _explanation       = explanation;
+    */
+  }
+
   public override string ToString ()
   {
     return string.Format ("[TooltipInfo " +
