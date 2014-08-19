@@ -33,11 +33,18 @@ function OnCollisionEnter (collision : Collision) {
 	if(collision.gameObject.name == "Perso")
 	{
 	//Debug.DrawLine(transform.position, collision.gameObject.transform.position, Color.red, 1.0f);
-		point=collision.contacts[0].point;
-		vec = collision.relativeVelocity*UsedMass(collision);
-		FractureAtPoint(point,vec);
+		if(transform.parent.GetComponent("Mine") != null)
+		{
+			point=collision.contacts[0].point;
+			vec = collision.relativeVelocity*UsedMass(collision);
 		
-		collision.gameObject.GetComponent("Hero").getLifeManager().setSuddenDeath(true);
+			FractureAtPoint(point,vec);
+		
+
+			transform.parent.GetComponent("Mine").setChanged(true);
+			
+			collision.gameObject.GetComponent("Hero").getLifeManager().setSuddenDeath(true);
+		}
 	}
 }
 //-------------------------------------------------------------------

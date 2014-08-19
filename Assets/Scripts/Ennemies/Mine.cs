@@ -3,6 +3,12 @@ using System.Collections;
 
 public class Mine : MonoBehaviour {
 
+
+	private bool _changed = false;
+	private float _x;
+	private float _z;
+	private float _id;
+
 	private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive
 	private float _concentrationTreshold = 2f;
 
@@ -23,13 +29,35 @@ public class Mine : MonoBehaviour {
 		"easetype", iTween.EaseType.easeInQuint
 		);
 
+
+	public void setChanged(bool b) { 
+		if (b == true)
+			SceneManager3.mineChanged += 1;
+		_changed = b;
+	}
+
+	public bool getChanged() { return _changed;}
+
+	public float getX() {return _x;}
+	public float getZ() {return _z;}
+	public float getId() {return _id;}
+
+	public void setId(float f) {_id = f;}
+
 	// Use this for initialization
 	void Start () {
 		transform.localScale = Vector3.zero;
+
+		_x = transform.position.x;
+		_z = transform.position.z;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
+		AutoReset();
+
 	
 		detection ();
 
@@ -44,6 +72,9 @@ public class Mine : MonoBehaviour {
 		{
 			transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
 		}
+
+
+
 	}
 
 	void detection() {
@@ -92,13 +123,16 @@ public class Mine : MonoBehaviour {
 
 	}
 
-	void OnCollisionEnter(Collision col) {
-		/*if(col.gameObject.name == "Perso")
+
+
+	public void AutoReset()
+	{
+		if(SceneManager3.isReseting && _changed)
 		{
-			transform.FindChild("Mine Light Collider").GetComponent<SimpleFracture>().OnCollisionEnter
-		}*/
-
-
+			GameObject.Find ("SceneManager").GetComponent<SceneManager3>().resetSelectedMine(_id, gameObject);
+		}
 	}
+
+
 
 }

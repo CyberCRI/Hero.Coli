@@ -40,6 +40,7 @@ public class Hero : MonoBehaviour {
 
 
 	public Medium getMedium() { return _medium;}
+	public bool getIsAlive() { return _isAlive;}
 
 
 	//getter and setter for energy
