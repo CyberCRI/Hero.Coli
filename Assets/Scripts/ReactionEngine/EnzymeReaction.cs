@@ -351,6 +351,15 @@ public class EnzymeReaction : IReaction
             , Logger.Level.WARN);
         }
       }
+      else
+      {
+        Debug.LogError(
+                "EnzymeReaction::hasValidData base.hasValidData()="+base.hasValidData()
+                +" & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
+                +" & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
+                +" & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
+                +" => valid="+valid);
+      }
       return valid;
     }
 
