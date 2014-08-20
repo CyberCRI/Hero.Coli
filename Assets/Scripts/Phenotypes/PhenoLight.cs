@@ -51,7 +51,7 @@ public class PhenoLight : Phenotype {
 		//if(_mol == null)
 			//return;
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
-		if(null != lm){
+		if(null != lm && col.gameObject != null){
 			phenoLight.light.enabled = true;
 			colliderActivated = true;
 			phenoLight.light.color = lm.colorTo;
@@ -61,7 +61,7 @@ public class PhenoLight : Phenotype {
 	
 	void OnTriggerExit(Collider col){
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
-		if(null != lm){
+		if(null != lm && col.gameObject != null){
 			phenoLight.light.enabled = false;
 			((SphereCollider)phenoLight.collider).radius = 0;
 			colliderActivated = false;

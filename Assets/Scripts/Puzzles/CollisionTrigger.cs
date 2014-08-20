@@ -22,16 +22,25 @@ public class CollisionTrigger : TriggerBehaviour {
 	
 	void OnTriggerEnter(Collider collision){
 		foreach(TriggeredBehaviour tb in toTrigger)
-			tb.triggerStart();
+		{
+			if(tb.gameObject != null)
+				tb.triggerStart();
+		}
 	}
 	
 	void OnTriggerStay(Collider collision){
 		foreach(TriggeredBehaviour tb in toTrigger)
-			tb.triggerStay();
+		{
+			if(tb.gameObject != null)
+				tb.triggerStay();
+		}
 	}
 	
 	void OnTriggerExit(Collider collision){
 		foreach(TriggeredBehaviour tb in toTrigger)
-			tb.triggerExit();
+			{
+				if(tb.gameObject != null)
+					tb.triggerExit();
+			}
 	}
 }

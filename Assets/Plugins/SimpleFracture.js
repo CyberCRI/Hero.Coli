@@ -33,7 +33,7 @@ function OnCollisionEnter (collision : Collision) {
 	if(collision.gameObject.name == "Perso")
 	{
 	//Debug.DrawLine(transform.position, collision.gameObject.transform.position, Color.red, 1.0f);
-		if(transform.parent.GetComponent("Mine") != null)
+		if(transform.parent && transform.parent.GetComponent("Mine") != null)
 		{
 			point=collision.contacts[0].point;
 			vec = collision.relativeVelocity*UsedMass(collision);
@@ -247,4 +247,15 @@ function UsedMass (collision : Collision) {
 		return (rigidbody.mass);
 	}
 	else {return (1);}
+}
+
+	function  deletePieces() 
+	{
+		if(transform.position.y <=-50)
+			Destroy(gameObject);
+	}
+
+function Update() {
+
+	deletePieces() ;
 }

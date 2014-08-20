@@ -10,11 +10,17 @@ public class SceneManager3 : MonoBehaviour {
 	public static bool isReseting;
 	public static int mineChanged;
 
+	private Hero _hero;
+
+
+
 	// Use this for initialization
 	void Start () {
 
 		isReseting = false;
 		loadMines();
+
+		_hero = GameObject.Find("Perso").GetComponent<Hero>();
 	
 	}
 	
@@ -27,7 +33,6 @@ public class SceneManager3 : MonoBehaviour {
 
 	private void loadMines()
 	{
-		Logger.Log("GO ::"+ mine, Logger.Level.WARN);
 		XmlDocument xmlDoc = new XmlDocument();
 		xmlDoc.LoadXml(sceneFilePath3.text);
 
@@ -41,7 +46,6 @@ public class SceneManager3 : MonoBehaviour {
 				float z = float.Parse(node["z"].InnerText);
 
 				GameObject go = (GameObject) Instantiate(mine, new Vector3(x,0,z),Quaternion.identity);
-				Logger.Log("x: "+x+" z: "+z, Logger.Level.WARN);
 
 				go.GetComponent<Mine>().setId(float.Parse(node["id"].InnerText));
 
@@ -53,7 +57,7 @@ public class SceneManager3 : MonoBehaviour {
 
 	public void resetMines() {
 		
-		if (GameObject.Find("Perso").GetComponent<Hero>().getIsAlive() == false)
+		if (_hero.getIsAlive() == false)
 		{
 			isReseting = true;
 
@@ -65,7 +69,7 @@ public class SceneManager3 : MonoBehaviour {
 		float x = target.transform.position.x;
 		float z = target.transform.position.z;
 	
-
+		iTween.Stop(target, true);
 		Destroy(target);
 
 		GameObject go = (GameObject) Instantiate(mine, new Vector3(x,0,z),Quaternion.identity);
@@ -75,8 +79,6 @@ public class SceneManager3 : MonoBehaviour {
 
 		if (isReseting && mineChanged == 0)
 			isReseting = false;
-
-		Logger.Log ("Reseted ::"+id, Logger.Level.WARN);
 
 	}
 }

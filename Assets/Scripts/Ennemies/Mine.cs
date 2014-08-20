@@ -24,7 +24,7 @@ public class Mine : MonoBehaviour {
 
 	private Hashtable _optionsOut = iTween.Hash(
 		"scale", Vector3.zero,
-		//"alpha", 0f,
+	//	"alpha", 0f,
 		"time",1f,
 		"easetype", iTween.EaseType.easeInQuint
 		);
@@ -62,15 +62,19 @@ public class Mine : MonoBehaviour {
 		detection ();
 
 		//Start the red light of the mine
-		if(_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == false)
-		{
-			transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
-		}
 
-		//end the red light of the mine
-		else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == true)
+		if(transform.FindChild("Point light"))
 		{
-			transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
+			if(_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == false)
+			{
+				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
+			}
+
+			//end the red light of the mine
+			else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == true)
+			{
+				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
+			}
 		}
 
 
@@ -98,15 +102,18 @@ public class Mine : MonoBehaviour {
 						if(!_isNear)
 						{
 							iTween.ScaleTo(this.gameObject, _optionsIn);
-							//iTween.FadeTo(this.gameObject, _optionsIn);
+							//iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
+							//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
 							_isNear = true;
 						}
 					}
 					else if(m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
 					{
 						iTween.ScaleTo (this.gameObject, _optionsOut);
-						//iTween.FadeTo (this.gameObject, _optionsOut);
+						//iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
+						//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
 						_isNear = false;
+
 					}
 				}
 				
@@ -116,13 +123,19 @@ public class Mine : MonoBehaviour {
 		else 
 		{
 			iTween.ScaleTo (this.gameObject, _optionsOut);
-			//iTween.FadeTo (this.gameObject, _optionsOut);
+			//iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
+			//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
 			_isNear = false;
 		}
 
 
 	}
-
+	public void stopAnimation() {
+		if(_changed)
+		{
+			iTween.Stop(transform.FindChild("Point light").gameObject);
+		}
+	}
 
 
 	public void AutoReset()
@@ -132,7 +145,5 @@ public class Mine : MonoBehaviour {
 			GameObject.Find ("SceneManager").GetComponent<SceneManager3>().resetSelectedMine(_id, gameObject);
 		}
 	}
-
-
 
 }
