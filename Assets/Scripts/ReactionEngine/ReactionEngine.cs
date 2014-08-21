@@ -163,7 +163,7 @@ public class ReactionEngine : MonoBehaviour {
       \param mol Molecule to match.
       \param list Molecule list where to search in.
   */
-  public static bool    isMoleculeIsDuplicated(Molecule mol, ArrayList list)
+  public static bool    isMoleculeDuplicated(Molecule mol, ArrayList list)
   {
     foreach (Molecule mol2 in list)
       if (mol2.getName() == mol.getName())
@@ -180,7 +180,7 @@ public class ReactionEngine : MonoBehaviour {
     return _mediums;
   }
 
-  //! Return an ArrayList that contains all the differents molecules an list of MoleculeSet
+  //! Return an ArrayList that contains all the differents molecules from a list of MoleculeSet
   /*!
       \param list the list of MoleculeSet
   */
@@ -193,7 +193,7 @@ public class ReactionEngine : MonoBehaviour {
     foreach (MoleculeSet molSet in list)
       {
         foreach (Molecule mol in molSet.molecules)
-          if (!isMoleculeIsDuplicated(mol, molecules))
+          if (!isMoleculeDuplicated(mol, molecules))
             molecules.Add(mol);
       }
     return molecules;
@@ -213,7 +213,11 @@ public class ReactionEngine : MonoBehaviour {
   }
 	
   public ArrayList getMoleculesFromMedium(int id) {
-    Medium medium = LinkedListExtensions.Find<Medium>(_mediums, m => m.getId() == id);
+    Medium medium = LinkedListExtensions.Find<Medium>(
+            _mediums
+            , m => m.getId() == id
+            , true
+            , " RE::getMoleculesFromMedium("+id+")");
 		if (medium != null) {
 	  return medium.getMolecules();
 	} else {
@@ -236,14 +240,16 @@ public class ReactionEngine : MonoBehaviour {
     foreach (string file in _reactionsFiles)
 		{
 			LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file,"reactions");
-      LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
+      if(null != lr)
+        LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
 		}
     foreach (string file in _moleculesFiles)
 		{
       Logger.Log("ReactionEngine::Awake() loading molecules from file", Logger.Level.DEBUG);
 
 			LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file,"molecules");
-			LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
+      if(null != lm)
+			  LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 
             Logger.Log("ReactionEngine::Awake() loading molecules from file done"
                        +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
@@ -253,7 +259,8 @@ public class ReactionEngine : MonoBehaviour {
     foreach (string file in _mediumsFiles)
 		{
       LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file,"Medium");
-			LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
+      if(null != lmed)
+			  LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
 		}
 
     foreach (Medium medium in _mediums)

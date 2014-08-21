@@ -122,9 +122,15 @@ public class AvailableBioBricksManager : MonoBehaviour {
     Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.DEBUG);
     string bbName = brick.getName();
     if ((null != brick)
-     && (null == LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b.getName() == bbName)))
+     && (null == LinkedListExtensions.Find<BioBrick>(
+                  _availableBioBricks
+                  , b => b.getName() == bbName
+                  , true
+                  , " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")"
+                 )
+       ))
     // TODO deeper safety check
-    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick))
+    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")")
     {
       _availableBioBricks.AddLast(brick);
       if(updateView)
@@ -239,7 +245,12 @@ public class AvailableBioBricksManager : MonoBehaviour {
     if(_allBioBricks == null || _allBioBricks.Count == 0) {
       _instance.loadAllBioBricks();
     }
-    BioBrick brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks, b => (b.getName() == brickName));
+    BioBrick brick = LinkedListExtensions.Find<BioBrick>(
+            _allBioBricks
+            , b => (b.getName() == brickName)
+            , true
+            , "AvailableBioBricksManager::getBioBrickFromAll("+brickName+")"
+            );
     if(brick != null) {
       Logger.Log("AvailableBioBricksManager::getBioBrickFromAll found "+brick, Logger.Level.TRACE);
       return brick;

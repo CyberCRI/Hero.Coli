@@ -108,7 +108,10 @@ public class ActiveTransport : XmlLoaderImpl
         foreach (string file in files)
         {
           newPropList = loadObjectsFromFile<ActiveTransportProperties>(file,"activeTransports");
-          LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);
+          if(null != newPropList)
+          {
+            LinkedListExtensions.AppendRange<ActiveTransportProperties>(propsList, newPropList);
+          }
         }
         
         Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
