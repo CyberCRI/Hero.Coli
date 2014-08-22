@@ -5,7 +5,7 @@
     <MediumSrc>1</MediumSrc>
     <MediumDst>2</MediumDst>
     <EnergyCost>0.1</EnergyCost>
-    <substrate>AMPI</substrate>
+    <substrate>RANDOM</substrate>
     <enzyme>FLUO1</enzyme>
     <Kcat>0.1</Kcat>
     <effector>False</effector>
