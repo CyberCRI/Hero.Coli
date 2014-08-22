@@ -171,12 +171,15 @@ public abstract class IReaction : LoadableFromXmlImpl
    */
   protected virtual bool PartialEquals(IReaction reaction)
   {
+    //TODO check this
+        /*
     if(!hasValidData() || !reaction.hasValidData())
     {
         Logger.Log("IReaction::PartialEquals invalid reaction"
                    , Logger.Level.ERROR);
         return false;
     }
+    */
 
     bool res =
          LinkedListExtensions.Equals(_products,reaction._products)
