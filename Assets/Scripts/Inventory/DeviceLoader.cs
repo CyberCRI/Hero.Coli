@@ -63,7 +63,11 @@ public class DeviceLoader {
               //find brick in existing bricks
               string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
               Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
-              brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => (b.getName() == brickName));
+                        brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
+                                                                    , b => (b.getName() == brickName)
+                                                                    , true
+                                                                    , " DeviceLoader::loadDevicesFromFile("+filePath+")"
+                                                                      );
               if(brick != null) {
                 Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
                 deviceBricks.AddLast(brick);

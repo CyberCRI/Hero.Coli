@@ -255,7 +255,8 @@ public class GraphMoleculeList : MonoBehaviour {
   }
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+  {
         
     int previousListedCount = _displayedListMoleculesCount;
     int previousTotalCount = _displayedMolecules.Count;
@@ -270,7 +271,12 @@ public class GraphMoleculeList : MonoBehaviour {
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getCodeName() == codeName);
+        DisplayedMolecule found = LinkedListExtensions.Find(
+                    _displayedMolecules
+                    , m => m.getCodeName() == codeName
+                    , false
+                    , " GraphMoleculeList::Update()"
+                    );
         if(null != found)
         {
           found.update(concentration);

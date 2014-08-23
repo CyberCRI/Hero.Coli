@@ -171,12 +171,15 @@ public abstract class IReaction : LoadableFromXmlImpl
    */
   protected virtual bool PartialEquals(IReaction reaction)
   {
+    //TODO check this
+        /*
     if(!hasValidData() || !reaction.hasValidData())
     {
         Logger.Log("IReaction::PartialEquals invalid reaction"
                    , Logger.Level.ERROR);
         return false;
     }
+    */
 
     bool res =
          LinkedListExtensions.Equals(_products,reaction._products)
@@ -193,14 +196,27 @@ public abstract class IReaction : LoadableFromXmlImpl
     //TODO check chemistry
     public virtual bool hasValidData()
     {
-        return 
+        bool isValid =
           !string.IsNullOrEmpty(_name)           //!< The name of the reaction
           && 0 != _products.Count                //!< The list of products
-        //protected bool _isActive;              //!< Activation boolean
-          && null != _medium                     //!< The medium where the reaction will be executed
+          //protected bool _isActive;              //!< Activation boolean
+          //? && null != _medium                     //!< The medium where the reaction will be executed
           && 0 != _reactionSpeed                 //!< Speed coefficient of the reaction
-          && 0 != _energyCost;                   //!< Energy consumed by the reaction
-        //public bool enableSequential;
-        //public bool enableEnergy;
+          //? && 0 != _energyCost                   //!< Energy consumed by the reaction
+          //public bool enableSequential
+          //public bool enableEnergy
+                ;
+
+        if(!isValid)
+        {
+            Debug.LogError("IReaction::hasValidData !string.IsNullOrEmpty(_name)="+(!string.IsNullOrEmpty(_name))
+          +" & 0 != _products.Count="+(0 != _products.Count)
+          +" & null != _medium="+(null != _medium)
+          +" & 0 != _reactionSpeed="+(0 != _reactionSpeed)
+          +" & 0 != _energyCost="+(0 != _energyCost)
+          +" => valid="+isValid
+            );
+        }
+        return isValid;
     }
 }
