@@ -5,27 +5,30 @@ public class BlackLight : MonoBehaviour {
 
 
 	public bool isActivate = false;
+	private bool _isCreating = false;			//used for the lerp during the creation of the black light
+	private bool _isDestroying = false;			
+
 	private Light _directionalLight;
 	private float _initialIntensity;
+
+
 
 	private Camera _camera;
 	private Color _initialBackground;
 
 	//Spotlight values
+	private GameObject _spotLightBL;
 	private float _range = 115f;
 	private float _angle = 125f;
 	private float _intensity = 0.25f;
 
 	//BackgroundSpotlight values
-	private float _bkRange = 95f;
+	private GameObject _backGroundSpotlight;
+	private float _bkRange = 70f;
 	private float _bkAngle = 125f;
 	private float _bkIntensity = 2.5f;
 	private Color32 _bkColor = new Color32(55,65,172,255);
-
-	//RenderSetting values
-	private float _density = 0.025f;
-	private float _haloStrength = 0.2f;
-	private float _initialHaloStrength;
+	
 
 	private bool _shaderChanged = false;
 
@@ -38,96 +41,73 @@ public class BlackLight : MonoBehaviour {
 		_camera = transform.parent.FindChild("Main Camera").GetComponent<Camera>();
 		_initialBackground = _camera.backgroundColor;
 
-		_initialHaloStrength = RenderSettings.haloStrength;
-
 		setDiffuseTransparentPlane();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKeyDown("x") && !isActivate)
-		{
-			createBlackLight();
-			/*if(!_shaderChanged)
-				setDiffuseTransparentPlane();*/
-			isActivate = true;
-		}
-		if(Input.GetKeyDown("c") && isActivate)
-		{
-			leaveBlackLight();
-			isActivate = false;
-		}
+
+		lerpLight();
+		switchLight();
+
 
 	
 	}
 
 	public void createBlackLight () {
 
-		_directionalLight.intensity = 0f;
-		_camera.backgroundColor = Color.black;
+		_isCreating = true;
+		_isDestroying = false;
+
 
 		//Add spotlight 
-		GameObject spotLightBL = new GameObject();
+		_spotLightBL = new GameObject();
 
-		spotLightBL.name = "spotLightBL";
-		spotLightBL.transform.parent = transform;
-		spotLightBL.transform.localPosition = new Vector3(0f,0.05f,0f);
-		spotLightBL.transform.localEulerAngles = new Vector3(90f,0f,0f);
+		_spotLightBL.name = "spotLightBL";
+		_spotLightBL.transform.parent = transform;
+		_spotLightBL.transform.localPosition = new Vector3(0f,0.05f,0f);
+		_spotLightBL.transform.localEulerAngles = new Vector3(90f,0f,0f);
 
-		spotLightBL.AddComponent<Light>();
+		_spotLightBL.AddComponent<Light>();
 
-		spotLightBL.light.type = LightType.Spot;
-		spotLightBL.light.range = _range;
-		spotLightBL.light.spotAngle = _angle;
-		spotLightBL.light.intensity = _intensity;
-		spotLightBL.light.color = Color.white;
+		_spotLightBL.light.type = LightType.Spot;
+		_spotLightBL.light.range = _range;
+		_spotLightBL.light.spotAngle = _angle;
+		_spotLightBL.light.intensity = 0f;
+		_spotLightBL.light.color = Color.white;
 
 		//Add backGroundSpotlight
-		GameObject backGroundSpotlight = new GameObject();
+		 _backGroundSpotlight = new GameObject();
 		
-		backGroundSpotlight.name = "backGroundSpotlight";
-		backGroundSpotlight.transform.parent = transform;
-		backGroundSpotlight.transform.localPosition = new Vector3(0f,-0.3f,0f);
-		backGroundSpotlight.transform.localEulerAngles = new Vector3(90f,0f,0f);
+		_backGroundSpotlight.name = "backGroundSpotlight";
+		_backGroundSpotlight.transform.parent = transform;
+		_backGroundSpotlight.transform.localPosition = new Vector3(0f,-0.25f,0f);
+		_backGroundSpotlight.transform.localEulerAngles = new Vector3(90f,0f,0f);
 		
-		backGroundSpotlight.AddComponent<Light>();
+		_backGroundSpotlight.AddComponent<Light>();
 		
-		backGroundSpotlight.light.type = LightType.Spot;
-		backGroundSpotlight.light.range = _bkRange;
-		backGroundSpotlight.light.spotAngle = _bkAngle;
-		backGroundSpotlight.light.intensity = _bkIntensity;
-		backGroundSpotlight.light.color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
+		_backGroundSpotlight.light.type = LightType.Spot;
+		_backGroundSpotlight.light.range = _bkRange;
+		_backGroundSpotlight.light.spotAngle = _bkAngle;
+		_backGroundSpotlight.light.intensity = 0;
+		_backGroundSpotlight.light.color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
 
-		//Change the render setting
-	/*	RenderSettings.fog = true;
-		RenderSettings.fogColor = Color.black;
-		RenderSettings.fogMode = FogMode.ExponentialSquared;
-		RenderSettings.fogDensity = 0.025f;
-
-		RenderSettings.haloStrength = 0.2f;*/
 
 	}
 
 	public void leaveBlackLight () {
 
-		_directionalLight.intensity = _initialIntensity;
-		_camera.backgroundColor = _initialBackground;
-
-		//Destroy spotlight
-		Destroy(gameObject.transform.FindChild("spotLightBL").gameObject);
+		_isCreating = false;
+		_isDestroying = true;
 
 		//Destroy BackgroundSpotlight
 		Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
 
-
-		//disable the fog
-	/*	RenderSettings.fog = false;
-		RenderSettings.haloStrength = _initialHaloStrength;*/
 	}
 
 
-	// change the shader of the background planes in the first asset
+	// change the shader of the background planes in the first asset. The shaders from the other assets are already "Transparent/Diffuse"
 	public void setDiffuseTransparentPlane ()
 	{
 
@@ -148,5 +128,52 @@ public class BlackLight : MonoBehaviour {
 		_shaderChanged = true;
 
 				
+	}
+
+	// add lerp effect on light and color for the transition between normal light and black light
+	public void lerpLight ()
+	{
+		if(_isCreating)
+		{
+			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, Color.black, 3*Time.deltaTime);
+			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, 0f, 3*Time.deltaTime);
+			_spotLightBL.light.intensity = Mathf.Lerp(_spotLightBL.light.intensity, _intensity, 1.5f*Time.deltaTime);
+			_backGroundSpotlight.light.intensity = Mathf.Lerp(_backGroundSpotlight.light.intensity, _bkIntensity, 3*Time.deltaTime);
+			//when finished
+			if (_camera.backgroundColor == Color.black)
+				_isCreating = false;
+		}
+		
+		if(_isDestroying)
+		{
+			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, _initialBackground, 1.5f*Time.deltaTime);
+			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, _initialIntensity, 1.5f*Time.deltaTime);
+			_spotLightBL.light.intensity = Mathf.Lerp(_spotLightBL.light.intensity, 0f, 3f*Time.deltaTime);
+			//when finished
+			if (_camera.backgroundColor == _initialBackground)
+			{
+				Destroy(gameObject.transform.FindChild("spotLightBL").gameObject);
+				
+				_isDestroying = false;
+			}
+		}
+	}
+
+
+	// light on/off for the black light
+	public void switchLight ()
+	{
+		if (Input.GetKeyDown("x") && !isActivate)
+		{
+			createBlackLight();
+			if(!_shaderChanged)
+				setDiffuseTransparentPlane();
+			isActivate = true;
+		}
+		if(Input.GetKeyDown("c") && isActivate)
+		{
+			leaveBlackLight();
+			isActivate = false;
+		}
 	}
 }
