@@ -1,4 +1,5 @@
 MAIN.LANGUAGE=English
+
 BRICK.PRCONS=Constitutive promoter
 BRICK.PRLACI=pLac
 BRICK.PRTETR=pTet
@@ -9,6 +10,7 @@ BRICK.FLUO2=Red - mCherry
 BRICK.MOV=Flagella master regulator
 BRICK.AMPR=Ampicillin resistance cassette
 BRICK.DTER=Double terminator
+
 MOL.IPTG=IPTG
 MOL.aTc=aTc tetracycline
 MOL.FLUO1=GFP
@@ -19,6 +21,7 @@ MOL.REPR1=lacI
 MOL.REPR2=tetR
 MOL.AMPI=Ampicillin
 MOL.AMPI*=Penicilloic acid
+
 DEVICE.FLUO1=Green fluorescence
 DEVICE.FLUO2=Red fluorescence
 DEVICE.MOV=Hyperflagellation
@@ -28,6 +31,7 @@ DEVICE.REPR2=TetR inhibition
 DEVICE.SUFMED= (med)
 DEVICE.SUFLOW= (low)
 DEVICE.PREREG=Regulated 
+
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
@@ -44,13 +48,66 @@ INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
 INFO.RFP.BOTTOM=Keep playing and come back once you have found the RFP gene BioBrick!
+
 GUI.MEDIUMINFOSTATICINFO.LABELS=temperature:\npH:\nenergy input:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n15
+
 TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Gene
 TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.
 TOOLTIP.B_AMPR.LENGTH=943bp
 TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
 TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.
+
+TOOLTIP.B_DTER.TITLE=Terminator 1
+TOOLTIP.B_DTER.TYPE=BioBrick
+TOOLTIP.B_DTER.SUBTITLE=Use: necessary to determine the end of a device.
+TOOLTIP.B_DTER.LENGTH=129bp
+TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
+TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double terminator.
+
+TOOLTIP.B_FLUO1.TITLE=GFP Gene
+TOOLTIP.B_FLUO1.TYPE=BioBrick
+TOOLTIP.B_FLUO1.SUBTITLE=Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.
+TOOLTIP.B_FLUO1.CUSTOMFIELD=Fluorescence\nparameters:
+TOOLTIP.B_FLUO1.CUSTOMVALUE=Emission max: 511nm\nExcitation max: 501nm
+TOOLTIP.B_FLUO1.LENGTH=716bp
+TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
+TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein coding sequence.
+
+TOOLTIP.B_MOV.TITLE=Hyperflagellation Operon
+TOOLTIP.B_MOV.TYPE=BioBrick
+TOOLTIP.B_MOV.SUBTITLE=Use: increases the number of flagella and consequently the motility speed.
+TOOLTIP.B_MOV.LENGTH=932bp
+TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.B_MOV.EXPLANATION=FlhDC master operon that produces an hexameric transcription factor activating flagella synthesis.
+
+TOOLTIP.B_PRCONS.TITLE=pCons Promoter
+TOOLTIP.B_PRCONS.TYPE=BioBrick
+TOOLTIP.B_PRCONS.SUBTITLE=Use: initiates expression of downstream genes in all circumstances.
+TOOLTIP.B_PRCONS.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRCONS.CUSTOMVALUE=None
+TOOLTIP.B_PRCONS.LENGTH=48bp
+TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
+TOOLTIP.B_PRCONS.EXPLANATION=Constitutive promoter (constantly ON).
+
+TOOLTIP.B_PRLACI.TITLE=pLac Promoter
+TOOLTIP.B_PRLACI.TYPE=BioBrick
+TOOLTIP.B_PRLACI.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'CAP' and 'LacI'.
+TOOLTIP.B_PRLACI.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
+TOOLTIP.B_PRLACI.LENGTH=200bp
+TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
+TOOLTIP.B_PRLACI.EXPLANATION=Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.
+
+TOOLTIP.B_PRTETR.TITLE=pTet Promoter
+TOOLTIP.B_PRTETR.TYPE=BioBrick
+TOOLTIP.B_PRTETR.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'TetR'.
+TOOLTIP.B_PRTETR.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --
+TOOLTIP.B_PRTETR.LENGTH=54bp
+TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)
+TOOLTIP.B_PRTETR.EXPLANATION=Promoter coupled with two tetR binding sequences.
+
 TOOLTIP.B_RBS1.TITLE=Medium RBS
 TOOLTIP.B_RBS1.SUBTITLE=Use: determines the level of expression of downstream gene.
 TOOLTIP.B_RBS1.CUSTOMFIELD=Expression level:
@@ -58,3 +115,77 @@ TOOLTIP.B_RBS1.CUSTOMVALUE=23%
 TOOLTIP.B_RBS1.LENGTH=943bp
 TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
 TOOLTIP.B_RBS1.EXPLANATION=Ribosome Binding Site sequence with medium low translation initialization.
+
+TOOLTIP.B_RBS2.TITLE=RBS low
+TOOLTIP.B_RBS2.TYPE=BioBrick
+TOOLTIP.B_RBS2.SUBTITLE=Use: determines the level of expression of downstream gene.
+TOOLTIP.B_RBS2.CUSTOMFIELD=Expression level:
+TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
+TOOLTIP.B_RBS2.LENGTH=14bp
+TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
+TOOLTIP.B_RBS2.EXPLANATION=Ribosome Binding Site sequence with weak translation initialization.
+
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).title>Green fluorescence (low)
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).type>Device
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).length>1101bp
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).reference>Stanford University
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).energyConsumption>XXX
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).explanation>Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.
+
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).TITLE=Green fluorescence (med)
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).TYPE=Device
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).LENGTH=1101bp
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).REFERENCE=Stanford University
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' gene.
+
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).TITLE=Hyperflagellation (low)
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).TYPE=Device
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+
+TOOLTIP.D_HYPERFLAGELLATION_(MED).TITLE=Hyperflagellation (med)
+TOOLTIP.D_HYPERFLAGELLATION_(MED).TYPE=Device
+TOOLTIP.D_HYPERFLAGELLATION_(MED).SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.D_HYPERFLAGELLATION_(MED).LENGTH=1122bp
+TOOLTIP.D_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TITLE=Regulated green fluorescence (low)
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TYPE=Device
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).LENGTH=1101bp
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).REFERENCE=Stanford University
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).EXPLANATION=Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.
+
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).TITLE=Regulated green fluorescence (med)
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).TYPE=Device
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).LENGTH=1101bp
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).REFERENCE=Stanford University
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' gene.
+
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).TITLE=Regulated hyperflagellation (low)
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).TYPE=Device
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).TITLE=Regulated hyperflagellation (med)
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).TYPE=Device
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).LENGTH=1122bp
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+
