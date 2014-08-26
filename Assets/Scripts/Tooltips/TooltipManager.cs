@@ -36,6 +36,17 @@ public class TooltipManager : MonoBehaviour {
   private UILabel _energyConsumptionValueLabel;
   private UILabel _explanationLabel;
 
+
+    private static string _tooltipPrefix     = "TOOLTIP.";
+    private static string _titleSuffix       = ".TITLE";
+    private static string _subtitleSuffix    = ".SUBTITLE";
+    private static string _customFieldSuffix = ".CUSTOMFIELD";
+    private static string _customValueSuffix = ".CUSTOMVALUE";
+    private static string _lengthSuffix      = ".LENGTH";
+    private static string _referenceSuffix   = ".REFERENCE";
+    private static string _energySuffix      = ".ENERGY";
+    private static string _explanationSuffix = ".EXPLANATION";
+
   //public GameObject _tooltipPanel;
   private UIPanel _tooltipPanel;
   public TooltipPanel bioBrickTooltipPanel;
@@ -155,8 +166,7 @@ public class TooltipManager : MonoBehaviour {
 
   private static bool fillInFieldsFromCode(string code)
   {
-
-    TooltipInfo info = retrieveFromDico(code);
+    TooltipInfo info = produceTooltipInfo(code);
 
     if(null != info)
     {
@@ -192,6 +202,12 @@ public class TooltipManager : MonoBehaviour {
     }
   }
 
+  private static TooltipInfo produceTooltipInfo(string code)
+  {
+    TooltipInfo retrieved = retrieveFromDico(code);
+    return localize(retrieved);
+  }
+
   private static TooltipInfo retrieveFromDico(string code)
   {
     TooltipInfo info;
@@ -201,6 +217,30 @@ public class TooltipManager : MonoBehaviour {
       info = null;
     }
     return info;
+  }
+
+  private static TooltipInfo localize(TooltipInfo coded)
+  { 
+    //TODO test on type
+    //string _code;
+    //string _background;
+
+    //string _type;
+    //TooltipManager.TooltipType _tooltipType;
+    //string _illustration;
+
+    string root = _tooltipPrefix+coded._code.ToUpper().Replace(' ','_');
+
+    coded._title = Localization.Localize(root+_titleSuffix);
+    coded._subtitle = Localization.Localize(root+_subtitleSuffix);
+    coded._customField = Localization.Localize(root+_customFieldSuffix);
+    coded._customValue = Localization.Localize(root+_customValueSuffix);
+    coded._length = Localization.Localize(root+_lengthSuffix);
+    coded._reference = Localization.Localize(root+_referenceSuffix);
+    coded._energyConsumption = Localization.Localize(root+_energySuffix);
+    coded._explanation = Localization.Localize(root+_explanationSuffix);
+
+    return coded;
   }
 
   private void loadDataIntoDico(string[] inputFiles, Dictionary<string, TooltipInfo> dico)
