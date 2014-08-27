@@ -18,6 +18,7 @@ public class TooltipInfo
   public string _energyConsumption;
   public string _explanation;
 
+  //TODO replace "type" of type string by type enum
   public TooltipInfo(
     string code,
     string title,

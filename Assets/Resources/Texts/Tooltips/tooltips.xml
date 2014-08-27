@@ -1,175 +1,70 @@
 <tooltipList>
   <tooltip code="b_AMPR">
-    <title>Ampicillin Resistance Gene</title>
     <type>BioBrick</type>
-    <subtitle>Use: provides resistance against ampicillin antibiotic.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <length>943bp</length>
-    <reference>Knight Lab, MIT</reference>
-    <explanation>Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.</explanation>
   </tooltip>
   <tooltip code="b_DTER">
-    <title>Terminator 1</title>
     <type>BioBrick</type>
-    <subtitle>Use: necessary to determine the end of a device.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <length>129bp</length>
-    <reference>iGEM (BBa_B0015)</reference>
-    <explanation>Strong transcription terminator sequence - Double terminator.</explanation>
   </tooltip>
   <tooltip code="b_FLUO1">
-    <title>GFP Gene</title>
     <type>BioBrick</type>
-    <subtitle>Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Fluorescence\nparameters:</customField>
-    <customValue>Emission max: 511nm\nExcitation max: 501nm</customValue>
-    <length>716bp</length>
-    <reference>Stanford Univ. (GFP mut3 CDS)</reference>
-    <explanation>Green Fluorescent Protein coding sequence.</explanation>
   </tooltip>
   <tooltip code="b_MOV">
-    <title>Hyperflagellation Operon</title>
     <type>BioBrick</type>
-    <subtitle>Use: increases the number of flagella and consequently the motility speed.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <length>932bp</length>
-    <reference>SDU-Denmark 2010 iGEM</reference>
-    <explanation>FlhDC master operon that produces an hexameric transcription factor activating flagella synthesis.</explanation>
   </tooltip>
   <tooltip code="b_PRCONS">
-    <title>pCons Promoter</title>
     <type>BioBrick</type>
-    <subtitle>Use: initiates expression of downstream genes in all circumstances.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Regulation:</customField>
-    <customValue>None</customValue>
-    <length>48bp</length>
-    <reference>BIOFAB (apFAB95)</reference>
-    <explanation>Constitutive promoter (constantly ON).</explanation>
   </tooltip>
   <tooltip code="b_PRLACI">
-    <title>pLac Promoter</title>
     <type>BioBrick</type>
-    <subtitle>Use: initiates expression of downstream genes; activity inhibited by 'CAP' and 'LacI'.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Regulation:</customField>
-    <customValue>LacI --\nCAP --</customValue>
-    <length>200bp</length>
-    <reference>iGEM (BBa_C0012)</reference>
-    <explanation>Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.</explanation>
   </tooltip>
   <tooltip code="b_PRTETR">
-    <title>pTet Promoter</title>
     <type>BioBrick</type>
-    <subtitle>Use: initiates expression of downstream genes; activity inhibited by 'TetR'.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Regulation:</customField>
-    <customValue>TetR --</customValue>
-    <length>54bp</length>
-    <reference>iGEM (BBa_R0040)</reference>
-    <explanation>Promoter coupled with two tetR binding sequences.</explanation>
   </tooltip>
   <tooltip code="b_RBS1">
-    <title>RBS medium</title>
     <type>BioBrick</type>
-    <subtitle>Use: determines the level of expression of downstream gene.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Expression level:</customField>
-    <customValue>23%</customValue>
-    <length>13bp</length>
-    <reference>iGEM (BBa_0030)</reference>
-    <explanation>Ribosome Binding Site sequence with medium low translation initialization.</explanation>
   </tooltip>
   <tooltip code="b_RBS2">
-    <title>RBS low</title>
     <type>BioBrick</type>
-    <subtitle>Use: determines the level of expression of downstream gene.</subtitle>
     <illustration>tuto_intro-01</illustration>
-    <customField>Expression level:</customField>
-    <customValue>12.6%</customValue>
-    <length>14bp</length>
-    <reference>iGEM (BBa_0031)</reference>
-    <explanation>Ribosome Binding Site sequence with weak translation initialization.</explanation>
   </tooltip>
   <tooltip code="d_Green fluorescence (low)">
-    <title>Green fluorescence (low)</title>
     <type>Device</type>
-    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
     <illustration>pic_d_cons-gfp-low</illustration>
-    <length>1101bp</length>
-    <reference>Stanford University</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Green fluorescence (med)">
-    <title>Green fluorescence (med)</title>
     <type>Device</type>
-    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
     <illustration>pic_d_cons-gfp-med</illustration>
-    <length>1101bp</length>
-    <reference>Stanford University</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 23% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Hyperflagellation (low)">
-    <title>Hyperflagellation (low)</title>
     <type>Device</type>
-    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>pic_d_cons-speed-low</illustration>
-    <length>1122bp</length>
-    <reference>SDU-Denmark 2010 iGEM</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
   </tooltip>
   <tooltip code="d_Hyperflagellation (med)">
-    <title>Hyperflagellation (med)</title>
     <type>Device</type>
-    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>pic_d_cons-speed-med</illustration>
-    <length>1122bp</length>
-    <reference>SDU-Denmark 2010 iGEM</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
   </tooltip>
   <tooltip code="d_Regulated green fluorescence (low)">
-    <title>Regulated green fluorescence (low)</title>
     <type>Device</type>
-    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
     <illustration>pic_d_plac-gfp-low</illustration>
-    <length>1101bp</length>
-    <reference>Stanford University</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Regulated green fluorescence (med)">
-    <title>Regulated green fluorescence (med)</title>
     <type>Device</type>
-    <subtitle>Equipped: your bacterium becomes green fluorescent when exposed to blue light.</subtitle>
     <illustration>pic_d_plac-gfp-med</illustration>
-    <length>1101bp</length>
-    <reference>Stanford University</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 23% of the 'Green fluorescent protein' gene.</explanation>
   </tooltip>
   <tooltip code="d_Regulated hyperflagellation (low)">
-    <title>Regulated hyperflagellation (low)</title>
     <type>Device</type>
-    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>pic_d_plac-speed-low</illustration>
-    <length>1122bp</length>
-    <reference>SDU-Denmark 2010 iGEM</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
   </tooltip>
   <tooltip code="d_Regulated hyperflagellation (med)">
-    <title>Regulated hyperflagellation (med)</title>
     <type>Device</type>
-    <subtitle>Equipped: increases swimming speed at 100% expression.</subtitle>
     <illustration>pic_d_plac-speed-med</illustration>
-    <length>1122bp</length>
-    <reference>SDU-Denmark 2010 iGEM</reference>
-    <energyConsumption>XXX</energyConsumption>
-    <explanation>Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.</explanation>
   </tooltip>
 </tooltipList>

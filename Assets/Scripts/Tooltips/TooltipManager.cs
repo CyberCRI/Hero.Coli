@@ -44,7 +44,7 @@ public class TooltipManager : MonoBehaviour {
     private static string _customValueSuffix = ".CUSTOMVALUE";
     private static string _lengthSuffix      = ".LENGTH";
     private static string _referenceSuffix   = ".REFERENCE";
-    private static string _energySuffix      = ".ENERGY";
+    private static string _energySuffix      = ".ENERGYCONSUMPTION";
     private static string _explanationSuffix = ".EXPLANATION";
 
   //public GameObject _tooltipPanel;
@@ -232,15 +232,22 @@ public class TooltipManager : MonoBehaviour {
     string root = _tooltipPrefix+coded._code.ToUpper().Replace(' ','_');
 
     coded._title = Localization.Localize(root+_titleSuffix);
-    coded._subtitle = Localization.Localize(root+_subtitleSuffix);
-    coded._customField = Localization.Localize(root+_customFieldSuffix);
-    coded._customValue = Localization.Localize(root+_customValueSuffix);
+    coded._subtitle = Localization.Localize(root+_subtitleSuffix);            
+    coded._customField = localizeIfExists(root+_customFieldSuffix);
+    coded._customValue = localizeIfExists(root+_customValueSuffix);    
     coded._length = Localization.Localize(root+_lengthSuffix);
-    coded._reference = Localization.Localize(root+_referenceSuffix);
-    coded._energyConsumption = Localization.Localize(root+_energySuffix);
+    coded._reference = Localization.Localize(root+_referenceSuffix);    
+    coded._energyConsumption = localizeIfExists(root+_energySuffix);
     coded._explanation = Localization.Localize(root+_explanationSuffix);
 
     return coded;
+  }
+
+  private static string localizeIfExists(string code)
+  {
+    string localization = Localization.Localize(code);
+    string res = localization == code ? "" : localization;
+    return res;
   }
 
   private void loadDataIntoDico(string[] inputFiles, Dictionary<string, TooltipInfo> dico)
