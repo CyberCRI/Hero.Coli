@@ -12,7 +12,7 @@ BRICK.AMPR=Cassette de résistance à l'ampicilline
 BRICK.DTER=Terminateur double
 
 MOL.IPTG=IPTG
-MOL.aTc=aTc tetracycline
+MOL.aTc=aTc tétracycline
 MOL.FLUO1=GFP
 MOL.FLUO2=mCherry
 MOL.MOV=FlhDC
@@ -52,77 +52,77 @@ INFO.RFP.BOTTOM=Continuez de jouer et revenez une fois que vous aurez trouvé la
 GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
 
-TOOLTIP.MAIN.LENGTH=Longueur:
-TOOLTIP.MAIN.REFERENCE=Référence:
-TOOLTIP.MAIN.ENERGYCONSUMPTION=Consommation énergétique:
+TOOLTIP.MAIN.LENGTH=Longueur :
+TOOLTIP.MAIN.REFERENCE=Référence :
+TOOLTIP.MAIN.ENERGYCONSUMPTION=Consommation énergétique :
 TOOLTIP.MAIN.DEVICETYPE=Device
 TOOLTIP.MAIN.BIOBRICKTYPE=BioBrique
 
-TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Genefr
-TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.fr
-TOOLTIP.B_AMPR.LENGTH=943bpfr
-TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MITfr
-TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.fr
+TOOLTIP.B_AMPR.TITLE=Gène de Résistance à l'Ampicilline
+TOOLTIP.B_AMPR.SUBTITLE=Fonction : permet de résister aux antibiotiques de type ampicilline.
+TOOLTIP.B_AMPR.LENGTH=943bp
+TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
+TOOLTIP.B_AMPR.EXPLANATION=Séquence codant pour le béta-lactamase, une enzyme qui catalyze l'hydrolyse des pénicillines.
 
-TOOLTIP.B_DTER.TITLE=Terminator 1fr
-TOOLTIP.B_DTER.SUBTITLE=Use: necessary to determine the end of a device.fr
-TOOLTIP.B_DTER.LENGTH=129bpfr
-TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)fr
-TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double terminator.fr
+TOOLTIP.B_DTER.TITLE=Terminateur 1
+TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former un device.
+TOOLTIP.B_DTER.LENGTH=129bp
+TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
+TOOLTIP.B_DTER.EXPLANATION=Terminateur fort de séquence de transcription - Terminateur double.
 
-TOOLTIP.B_FLUO1.TITLE=GFP Genefr
-TOOLTIP.B_FLUO1.SUBTITLE=Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.fr
-TOOLTIP.B_FLUO1.CUSTOMFIELD=Fluorescence\nparameters:fr
-TOOLTIP.B_FLUO1.CUSTOMVALUE=Emission max: 511nm\nExcitation max: 501nmfr
-TOOLTIP.B_FLUO1.LENGTH=716bpfr
-TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)fr
-TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein coding sequence.fr
+TOOLTIP.B_FLUO1.TITLE=Gène de la GFP
+TOOLTIP.B_FLUO1.SUBTITLE=Fonction : exhibe une fluorescence vert vif quand exposée à une lumière allant du bleu à l'ultraviolet.
+TOOLTIP.B_FLUO1.CUSTOMFIELD=Paramètres de\nfluorescence :
+TOOLTIP.B_FLUO1.CUSTOMVALUE=Émission max : 511nm\nExcitation max : 501nm
+TOOLTIP.B_FLUO1.LENGTH=716bp
+TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
+TOOLTIP.B_FLUO1.EXPLANATION=Séquence codant pour la protéine de fluorescence verte (GFP).
 
-TOOLTIP.B_MOV.TITLE=Hyperflagellation Operonfr
-TOOLTIP.B_MOV.SUBTITLE=Use: increases the number of flagella and consequently the motility speed.fr
-TOOLTIP.B_MOV.LENGTH=932bpfr
-TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEMfr
-TOOLTIP.B_MOV.EXPLANATION=FlhDC master operon that produces an hexameric transcription factor activating flagella synthesis.fr
+TOOLTIP.B_MOV.TITLE=Opéron d'Hyperflagellation
+TOOLTIP.B_MOV.SUBTITLE=Fonction : augmente le nombre de flagelles et donc la vitesse de déplacement.
+TOOLTIP.B_MOV.LENGTH=932bp
+TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.B_MOV.EXPLANATION=Opéron maître de FlhDC qui produit un facteur de transcription hexamérique activant la synthèse de flagelles.fr
 
-TOOLTIP.B_PRCONS.TITLE=pCons Promoterfr
-TOOLTIP.B_PRCONS.SUBTITLE=Use: initiates expression of downstream genes in all circumstances.fr
-TOOLTIP.B_PRCONS.CUSTOMFIELD=Regulation:fr
-TOOLTIP.B_PRCONS.CUSTOMVALUE=Nonefr
-TOOLTIP.B_PRCONS.LENGTH=48bpfr
-TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)fr
-TOOLTIP.B_PRCONS.EXPLANATION=Constitutive promoter (constantly ON).fr
+TOOLTIP.B_PRCONS.TITLE=Promoteur pCons
+TOOLTIP.B_PRCONS.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence en toute circonstance.
+TOOLTIP.B_PRCONS.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRCONS.CUSTOMVALUE=Aucune
+TOOLTIP.B_PRCONS.LENGTH=48bp
+TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
+TOOLTIP.B_PRCONS.EXPLANATION=Promoteur constitutif (toujours activé).
 
-TOOLTIP.B_PRLACI.TITLE=pLac Promoterfr
-TOOLTIP.B_PRLACI.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'CAP' and 'LacI'.fr
-TOOLTIP.B_PRLACI.CUSTOMFIELD=Regulation:fr
-TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --fr
-TOOLTIP.B_PRLACI.LENGTH=200bpfr
-TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)fr
-TOOLTIP.B_PRLACI.EXPLANATION=Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.fr
+TOOLTIP.B_PRLACI.TITLE=Promoteur pLac
+TOOLTIP.B_PRLACI.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence ; activité inhibée par 'CAP' et 'LacI'.
+TOOLTIP.B_PRLACI.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
+TOOLTIP.B_PRLACI.LENGTH=200bp
+TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
+TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites d'ancrage de 'CAP' et 'LacI'.fr
 
-TOOLTIP.B_PRTETR.TITLE=pTet Promoterfr
-TOOLTIP.B_PRTETR.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'TetR'.fr
-TOOLTIP.B_PRTETR.CUSTOMFIELD=Regulation:fr
-TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --fr
-TOOLTIP.B_PRTETR.LENGTH=54bpfr
-TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)fr
-TOOLTIP.B_PRTETR.EXPLANATION=Promoter coupled with two tetR binding sequences.fr
+TOOLTIP.B_PRTETR.TITLE=Promoteur pTet
+TOOLTIP.B_PRTETR.SUBTITLE=Fonction : entraîne l'expression des gènes en aval ; activité inhibée par 'TetR'.
+TOOLTIP.B_PRTETR.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --
+TOOLTIP.B_PRTETR.LENGTH=54bp
+TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)
+TOOLTIP.B_PRTETR.EXPLANATION=Promoteur couplé avec deux séquences se liant à tetR.fr
 
-TOOLTIP.B_RBS1.TITLE=Medium RBSfr
-TOOLTIP.B_RBS1.SUBTITLE=Use: determines the level of expression of downstream gene.fr
-TOOLTIP.B_RBS1.CUSTOMFIELD=Expression level:fr
-TOOLTIP.B_RBS1.CUSTOMVALUE=23%fr
-TOOLTIP.B_RBS1.LENGTH=943bpfr
-TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)fr
-TOOLTIP.B_RBS1.EXPLANATION=Ribosome Binding Site sequence with medium low translation initialization.fr
+TOOLTIP.B_RBS1.TITLE=RBS Moyen
+TOOLTIP.B_RBS1.SUBTITLE=Fonction : détermine le niveau d'expression du gène en aval.
+TOOLTIP.B_RBS1.CUSTOMFIELD=Niveau d'expression :
+TOOLTIP.B_RBS1.CUSTOMVALUE=23%
+TOOLTIP.B_RBS1.LENGTH=943bp
+TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
+TOOLTIP.B_RBS1.EXPLANATION=Séquence de site d'ancrage de ribosome (RBS) avec initialisation de traduction moyenne faible.fr
 
-TOOLTIP.B_RBS2.TITLE=RBS lowfr
-TOOLTIP.B_RBS2.SUBTITLE=Use: determines the level of expression of downstream gene.fr
-TOOLTIP.B_RBS2.CUSTOMFIELD=Expression level:fr
-TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%fr
-TOOLTIP.B_RBS2.LENGTH=14bpfr
-TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)fr
-TOOLTIP.B_RBS2.EXPLANATION=Ribosome Binding Site sequence with weak translation initialization.fr
+TOOLTIP.B_RBS2.TITLE=RBS Faible
+TOOLTIP.B_RBS2.SUBTITLE=Fonction : détermine le niveau d'expression de gènes en aval.
+TOOLTIP.B_RBS2.CUSTOMFIELD=Niveau d'expression :
+TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
+TOOLTIP.B_RBS2.LENGTH=14bp
+TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
+TOOLTIP.B_RBS2.EXPLANATION=Séquence de site d'ancrage de ribosome (RBS) avec initialisation de traduction faible.fr
 
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).title>Green fluorescence (low)fr
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).type>Devicefr
