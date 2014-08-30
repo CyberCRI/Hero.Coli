@@ -38,8 +38,8 @@ INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Il permet d'accroître la vitesse de 
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et équiper le device.
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
-INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un Ribosome Binding Site (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouveaux devices avec !
-INFO.PICKEDUPRBS.BOTTOM=Allez fabriquer de nouveaux devices en allant dans la zone d'élaboration des nouveaux devices.
+INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouveaux devices avec !
+INFO.PICKEDUPRBS.BOTTOM=Allez fabriquer de nouveaux devices en cliquant sur 'Continuer' pour ouvrir l'interface de Crafting.
 INFO.PICKEDUPGFP.TITLE=DEVICE TROUVÉ !
 INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé votre premier device génétique !
 INFO.PICKEDUPGFP.EXPLANATION=Ce device contient le gène controllant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
@@ -98,7 +98,7 @@ TOOLTIP.B_PRLACI.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
 TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
-TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites d'ancrage de 'CAP' et 'LacI'.fr
+TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites de fixation de 'CAP' et 'LacI'.fr
 
 TOOLTIP.B_PRTETR.TITLE=Promoteur pTet
 TOOLTIP.B_PRTETR.SUBTITLE=Fonction : entraîne l'expression des gènes en aval ; activité inhibée par 'TetR'.
@@ -114,7 +114,7 @@ TOOLTIP.B_RBS1.CUSTOMFIELD=Niveau d'expression :
 TOOLTIP.B_RBS1.CUSTOMVALUE=23%
 TOOLTIP.B_RBS1.LENGTH=943bp
 TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
-TOOLTIP.B_RBS1.EXPLANATION=Séquence de site d'ancrage de ribosome (RBS) avec initialisation de traduction moyenne faible.fr
+TOOLTIP.B_RBS1.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction moyenne faible.fr
 
 TOOLTIP.B_RBS2.TITLE=RBS Faible
 TOOLTIP.B_RBS2.SUBTITLE=Fonction : détermine le niveau d'expression de gènes en aval.
@@ -122,7 +122,7 @@ TOOLTIP.B_RBS2.CUSTOMFIELD=Niveau d'expression :
 TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
-TOOLTIP.B_RBS2.EXPLANATION=Séquence de site d'ancrage de ribosome (RBS) avec initialisation de traduction faible.fr
+TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.fr
 
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).title=Fluorescence verte (faible)
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).subtitle=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
@@ -143,14 +143,14 @@ TOOLTIP.D_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de dé
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression constant à 12,6% de la séquence codant pour l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_HYPERFLAGELLATION_(MED).TITLE=Hyperflagellation (moyen)
 TOOLTIP.D_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
 TOOLTIP.D_HYPERFLAGELLATION_(MED).LENGTH=1122bp
 TOOLTIP.D_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression constant à 23% de la séquence codant pour l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
 
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TITLE=(Régulé) Fluorescence verte (faible)
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
@@ -171,12 +171,12 @@ TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vite
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% de la séquence codant pour l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
 
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).TITLE=(Régulé) hyperflagellation (moyen)
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).LENGTH=1122bp
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression régulé, à 23% de la séquence codant pour l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression régulé, à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
 
