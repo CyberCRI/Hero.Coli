@@ -51,6 +51,20 @@ INFO.RFP.BOTTOM=Continuez de jouer et revenez une fois que vous aurez trouvé la
 
 GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
+GUI.BUTTON.RESTART=RECOMMENCER
+GUI.BUTTON.INVENTORY=Inventaire
+GUI.BUTTON.CRAFTING=Crafting
+GUI.MEDIUMINFO.TITLE=INFO MEDIUM
+GUI.CELLINFO.TITLE=INFO CELLIA
+GUI.INVENTORY.TITLE=INVENTAIRE
+GUI.EQUIPED.TITLE=DEVICES EQUIPÉS
+GUI.INTRODUCTION1.TITLE=INTRODUCTION
+GUI.INTRODUCTION2.TITLE=INTRODUCTION
+
+TUTORIAL.END.TITLE=VICTOIRE !
+TUTORIAL.END.EXPLANATION=Merci d'avoir joué, nous espérons que vous avez aimé ce jeu. N'oubliez pas de dire ce que vous en avez pensé, surtout si vous voulez nous aider à le développer !
+TUTORIAL.END.SUBTITLE=Vous avez fini le jeu, félicitations !
+TUTORIAL.END.BOTTOM=Recommencez en cliquant sur le bouton.
 
 TOOLTIP.MAIN.LENGTH=Longueur :
 TOOLTIP.MAIN.REFERENCE=Référence :
