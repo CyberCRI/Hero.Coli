@@ -32,7 +32,7 @@ DEVICE.SUFMED=(moyen)
 DEVICE.SUFLOW=(faible)
 DEVICE.PREREG=(Régulé) 
 
-INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉlICITATIONS!
+INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre premier device génétique!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Il permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et équiper le device.
