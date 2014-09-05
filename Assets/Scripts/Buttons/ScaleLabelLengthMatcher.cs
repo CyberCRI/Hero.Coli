@@ -7,8 +7,11 @@ public class ScaleLabelLengthMatcher : MonoBehaviour {
   private UILabel _label;
   private UISprite _bg;
   private BoxCollider _collider;
-
-	// Use this for initialization
+        
+  public float factor = .5f;
+  public float offset = .5f;
+    
+    // Use this for initialization
   void Start () {        
     _label = gameObject.GetComponentInChildren<UILabel>();        
     _bg = gameObject.GetComponentInChildren<UISprite>();
@@ -23,5 +26,6 @@ public class ScaleLabelLengthMatcher : MonoBehaviour {
             _bg.transform.localScale.z);   
 
     _collider.size = _bg.transform.localScale;
-	}
+    _collider.center = new Vector3(_collider.size.x*factor+offset, _collider.center.y, _collider.center.z);
+  }
 }
