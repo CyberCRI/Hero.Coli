@@ -108,7 +108,7 @@ TOOLTIP.B_MOV.TITLE=Opéron d'Hyperflagellation
 TOOLTIP.B_MOV.SUBTITLE=Fonction : augmente le nombre de flagelles et donc la vitesse de déplacement.
 TOOLTIP.B_MOV.LENGTH=932bp
 TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.B_MOV.EXPLANATION=Opéron maître de FlhDC qui produit un facteur de transcription hexamérique activant la synthèse de flagelles.fr
+TOOLTIP.B_MOV.EXPLANATION=Opéron maître de FlhDC qui produit un facteur de transcription hexamérique activant la synthèse de flagelles.
 
 TOOLTIP.B_PRCONS.TITLE=Promoteur pCons
 TOOLTIP.B_PRCONS.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence en toute circonstance.
@@ -124,7 +124,7 @@ TOOLTIP.B_PRLACI.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
 TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
-TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites de fixation de 'CAP' et 'LacI'.fr
+TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites de fixation de 'CAP' et 'LacI'.
 
 TOOLTIP.B_PRTETR.TITLE=Promoteur pTet
 TOOLTIP.B_PRTETR.SUBTITLE=Fonction : entraîne l'expression des gènes en aval ; activité inhibée par 'TetR'.
@@ -132,7 +132,7 @@ TOOLTIP.B_PRTETR.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --
 TOOLTIP.B_PRTETR.LENGTH=54bp
 TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)
-TOOLTIP.B_PRTETR.EXPLANATION=Promoteur couplé avec deux séquences se liant à tetR.fr
+TOOLTIP.B_PRTETR.EXPLANATION=Promoteur couplé avec deux séquences se liant à tetR.
 
 TOOLTIP.B_RBS1.TITLE=RBS Moyen
 TOOLTIP.B_RBS1.SUBTITLE=Fonction : détermine le niveau d'expression du gène en aval.
@@ -140,7 +140,7 @@ TOOLTIP.B_RBS1.CUSTOMFIELD=Niveau d'expression :
 TOOLTIP.B_RBS1.CUSTOMVALUE=23%
 TOOLTIP.B_RBS1.LENGTH=943bp
 TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
-TOOLTIP.B_RBS1.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction moyenne faible.fr
+TOOLTIP.B_RBS1.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction moyenne faible.
 
 TOOLTIP.B_RBS2.TITLE=RBS Faible
 TOOLTIP.B_RBS2.SUBTITLE=Fonction : détermine le niveau d'expression de gènes en aval.
@@ -148,7 +148,7 @@ TOOLTIP.B_RBS2.CUSTOMFIELD=Niveau d'expression :
 TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
-TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.fr
+TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.
 
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).title=Fluorescence verte (faible)
 TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).subtitle=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
@@ -165,18 +165,18 @@ TOOLTIP.D_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
 TOOLTIP.D_GREEN_FLUORESCENCE_(MED).EXPLANATION=Niveau d'expression constant à 23% du gène codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).TITLE=Hyperflagellation (faible)
-TOOLTIP.D_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_HYPERFLAGELLATION_(MED).TITLE=Hyperflagellation (moyen)
-TOOLTIP.D_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
+TOOLTIP.D_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_HYPERFLAGELLATION_(MED).LENGTH=1122bp
 TOOLTIP.D_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TITLE=(Régulé) Fluorescence verte (faible)
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
@@ -193,16 +193,16 @@ TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).EXPLANATION=Niveau d'expression régulé, à 23% du gène codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).TITLE=(Régulé) Hyperflagellation (faible)
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).TITLE=(Régulé) hyperflagellation (moyen)
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).LENGTH=1122bp
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression régulé, à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.fr
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression régulé, à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
