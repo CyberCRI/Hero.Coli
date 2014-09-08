@@ -80,6 +80,11 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
   }
 
+  public static void OnLanguageChanged()
+  {
+    _instance.OnBioBricksChanged();
+  }
+
   private static int getIndex(BioBrick brick)
   {
     int idx;

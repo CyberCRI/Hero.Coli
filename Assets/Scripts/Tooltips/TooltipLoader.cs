@@ -102,16 +102,16 @@ public class TooltipLoader {
           }
         }
         if(
-          checkString(_title)
-          && checkString(_type)
-          && checkString(_subtitle)
+          //checkString(_title)
+           checkString(_type)
+          //&& checkString(_subtitle)
           //&& checkString(_illustration)
           //&& checkString(_customField)
           //&& checkString(_customValue)
-          && checkString(_length)
-          && checkString(_reference)
+          //&& checkString(_length)
+          //&& checkString(_reference)
           //&& checkString(_energyConsumption)
-          && checkString(_explanation)
+          //&& checkString(_explanation)
           )
         {
           _info = new TooltipInfo(

@@ -273,7 +273,7 @@ public class GraphMoleculeList : MonoBehaviour {
       {
         DisplayedMolecule found = LinkedListExtensions.Find(
                     _displayedMolecules
-                    , m => m.getRealName() == realName
+                    , m => m.getCodeName() == codeName
                     , false
                     , " GraphMoleculeList::Update()"
                     );
