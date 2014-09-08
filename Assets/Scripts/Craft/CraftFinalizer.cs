@@ -48,8 +48,11 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
 
     bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
-
+                
+    if(null == craftFinalizationButton)
+        craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
     craftFinalizationButton.setEnabled(enabled);
+
     Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     finalizationInfoPanelManager.setDisplayedDevice(device, status);
     Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice(device, status)", Logger.Level.TRACE);

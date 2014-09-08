@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CraftFinalizationButton : MonoBehaviour {
   public CraftFinalizer craftFinalizer;
-  private UIImageButton _button;
+  private UIButton _button;
 
   void OnPress(bool isPressed) {
     if(isPressed) {
@@ -14,7 +14,7 @@ public class CraftFinalizationButton : MonoBehaviour {
 
   public void setEnabled(bool enabled) {
     if(_button == null) {
-      _button = GetComponent<UIImageButton>();
+      _button = GetComponent<UIButton>();
     }
 		//Logger.Log ("bool enabled ====>"+enabled,Logger.Level.WARN);
     _button.enabled = enabled;
@@ -29,7 +29,7 @@ public class CraftFinalizationButton : MonoBehaviour {
   // Use this for initialization
   void Start () {
     if(_button == null) {
-      _button = GetComponent<UIImageButton>();
+      _button = GetComponent<UIButton>();
     }
     //hack to correctly initialize button state
     setEnabled(!_button.enabled);

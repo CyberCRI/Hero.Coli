@@ -79,8 +79,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 		craftZoneManager.GetComponent<CraftZoneManager>().craftFinalizer = craftFinalizer;
 
 		//CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
-		craftFinalizer.craftFinalizationButton = craftFinalizer.transform.Find("CraftButton").gameObject
-			.GetComponent<CraftFinalizationButton>();
+    if(null == craftFinalizer.craftFinalizationButton)
+      craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
 
 		craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
 		craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
