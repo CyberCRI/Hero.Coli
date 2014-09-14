@@ -18,11 +18,11 @@ public class CraftFinalizer : MonoBehaviour {
 
   public static Dictionary<Inventory.AddingResult, string>   statusMessagesDictionary =
     new Dictionary<Inventory.AddingResult, string>() {
-      {Inventory.AddingResult.SUCCESS,                "You found the recipe of a new device!"},
-      {Inventory.AddingResult.FAILURE_SAME_NAME,      "There already is a device with the same name."},
-      {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "This recipe is already known."},
-      {Inventory.AddingResult.FAILURE_SAME_DEVICE,    "You already know this recipe. There's nothing new to craft!"},
-      {Inventory.AddingResult.FAILURE_DEFAULT,        "You will find here the result of the crafting operation."}
+        {Inventory.AddingResult.SUCCESS,                "CRAFT.FINALIZATION.SUCCESS"},
+        {Inventory.AddingResult.FAILURE_SAME_NAME,      "CRAFT.FINALIZATION.FAILURE_SAME_NAME"},
+        {Inventory.AddingResult.FAILURE_SAME_BRICKS,    "CRAFT.FINALIZATION.FAILURE_SAME_BRICKS"},
+        {Inventory.AddingResult.FAILURE_SAME_DEVICE,    "CRAFT.FINALIZATION.FAILURE_SAME_DEVICE"},
+        {Inventory.AddingResult.FAILURE_DEFAULT,        "CRAFT.FINALIZATION.FAILURE_DEFAULT"}
     };
 
   public void finalizeCraft() {
@@ -55,7 +55,7 @@ public class CraftFinalizer : MonoBehaviour {
 
     Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     finalizationInfoPanelManager.setDisplayedDevice(device, status);
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice(device, status)", Logger.Level.TRACE);
+    Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice("+device+", "+status+")", Logger.Level.TRACE);
   }
 
   public void randomRename() {

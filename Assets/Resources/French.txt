@@ -72,9 +72,12 @@ CRAFT.ASSEMBLY.3RD=Gène
 CRAFT.ASSEMBLY.4TH=Terminateur
 
 CRAFT.FINALIZATION.TITLE=Résultat
-CRAFT.FINALIZATION.KNOWN=
-CRAFT.FINALIZATION.NEW=
-CRAFT.FINALIZATION.SAMENAME=
+
+CRAFT.FINALIZATION.SUCCESS=Nouvelle recette de device !
+CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de device est déjà utilisé !
+CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déjà connu.
+CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à crafter : cette recette est déjà connue !
+CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat du crafting s'affiche ici.
 
 CRAFT.BANK.TITLE=Banque de BioBriques
 CRAFT.BANK.PROMOTER=Promoteur
