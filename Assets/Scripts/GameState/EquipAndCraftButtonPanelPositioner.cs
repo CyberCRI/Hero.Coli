@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EquipAndCraftButtonPanelPositioner : MonoBehaviour {
@@ -23,6 +23,6 @@ public class EquipAndCraftButtonPanelPositioner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-    transform.localPosition = _initialLocalPosition - list.currentDownShift;
+    transform.localPosition = _initialLocalPosition - list.currentHeight;
 	}
 }

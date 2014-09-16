@@ -16,7 +16,11 @@ public class GraphMoleculeList : MonoBehaviour {
   private int               pixelsPerMoleculeLine = 15;
   private int               pixelsPerDeviceLine = 80;
       
-  public Vector3           currentDownShift;
+  public UILabel           topLabels;
+  public UILabel           topValues;
+  public Vector3           topLabelsShift;
+  public Vector3           topValuesShift;
+  public Vector3           currentHeight;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private int                           _displayedListMoleculesCount = 0;
@@ -51,7 +55,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
   void Awake()
   {
-    currentDownShift = Vector3.zero;
+    currentHeight = Vector3.zero;
     unfoldingMoleculeList.transform.localScale = new Vector3(unfoldingMoleculeList.transform.localScale.x, 20, unfoldingMoleculeList.transform.localScale.z);
     _initialScale = unfoldingMoleculeList.transform.localScale;
   }
@@ -102,8 +106,8 @@ public class GraphMoleculeList : MonoBehaviour {
   //TODO iTween this
   void setUnfoldingListBackgroundScale()
   {
-    currentDownShift = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
-    unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
+    currentHeight = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
+    unfoldingMoleculeList.transform.localScale = _initialScale + currentHeight;
   }
 
   public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
@@ -331,6 +335,14 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
     namesLabel.text = namesToDisplay;
     valuesLabel.text = valuesToDisplay;
+
+        /*
+    if(null != topLabels)
+    {
+      topLabelsShift = Vector3.up * topLabels.relativeSize.y * topLabels.transform.localScale.y;
+      namesLabel.transform.localPosition = topLabels.transform.localPosition + topLabelsShift;
+    }
+    */
 
     setUnfoldingListBackgroundScale();
 	}
