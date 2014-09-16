@@ -59,13 +59,35 @@ GUI.CELLINFO.TITLE=CELLIA INFO
 GUI.INVENTORY.TITLE=INVENTORY
 GUI.EQUIPED.TITLE=DEVICES EQUIPED
 
+CRAFT.TITLE.LABEL=CRAFTING INTERFACE
+
+CRAFT.PROCESS.EQUIP=Inventory
+CRAFT.PROCESS.CRAFT=Craft
+
+CRAFT.ASSEMBLY.TITLE=Crafting table
+CRAFT.ASSEMBLY.TIP=To build your own genetic devices, click on the elements of your BioBrick bank to feature them on the crafting table. Craft the combination of BioBricks of your choice in order to add a new device to your inventory.
+CRAFT.ASSEMBLY.1ST=Promoter
+CRAFT.ASSEMBLY.2ND=RBS
+CRAFT.ASSEMBLY.3RD=Gene
+CRAFT.ASSEMBLY.4TH=Terminator
+
+CRAFT.FINALIZATION.TITLE=Output
+
+CRAFT.FINALIZATION.SUCCESS=You found the recipe of a new device!
+CRAFT.FINALIZATION.FAILURE_SAME_NAME=There already is a device with the same name.
+CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=This recipe is already known.
+CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=You already know this recipe. There's nothing new to craft!
+CRAFT.FINALIZATION.FAILURE_DEFAULT=You will find here the result of the crafting operation.
+
+CRAFT.BANK.TITLE=BioBrick bank
 CRAFT.BANK.PROMOTER=Promoter
 CRAFT.BANK.RBS=RBS
 CRAFT.BANK.GENE=Gene
 CRAFT.BANK.TERMINATOR=Terminator
+CRAFT.BANK.TIP=Click on a category to display your goods.
 
-CRAFT.PROCESS.EQUIP=Inventory
-CRAFT.PROCESS.CRAFT=Craft
+CRAFT.RECIPES.TITLE=Recipes
+CRAFT.RECIPES.TIP=Click on an existing device of your catalog to display its components on the crafting table.
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=THIS IS YOU!
 TUTORIAL.INTRODUCTION1.CELLLABEL=CELLIA, YOUR COMPANION!
