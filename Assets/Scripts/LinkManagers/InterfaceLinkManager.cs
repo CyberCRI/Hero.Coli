@@ -22,7 +22,6 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
 	public CraftFinalizer craftFinalizer;
 	public UIPanel inventoryDevicesSlotsPanel;
-	public UIPanel end;
 
 	public GameObject tutorialArrow;
 
@@ -32,6 +31,7 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject introduction2;
   public GameObject okButton1;
   public GameObject okButton2;
+  public GameObject end;
 
 	//public Camera _uicamera;
 
@@ -60,9 +60,9 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 
 		//GameStateController
-    gameStateController.introPanel = introduction1.GetComponent<UIPanel>();
+    gameStateController.intro = introduction1;
 		gameStateController.fadeSprite = fade;
-		gameStateController.endPanel = end;
+		gameStateController.end = end;
 
 		//Object with GameStateController 
 		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
@@ -70,7 +70,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
     introduction2.SetActive(false);
-
+    end.SetActive(false);
 
 		//CraftFinalizer
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;

@@ -27,7 +27,7 @@ public class GameStateController : MonoBehaviour {
   private GameState _gameState;
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
-  public UIPanel  introPanel, endPanel;
+  public GameObject  intro, end;
   public bool dePauseForbidden;
 
 	void Awake() {
@@ -53,7 +53,8 @@ public class GameStateController : MonoBehaviour {
 		
 			case GameState.Start:
         fadeSprite.gameObject.SetActive(true);
-			  introPanel.gameObject.SetActive(true);
+			  intro.SetActive(true);
+        end.SetActive(false);
 				gUITransitioner.Pause(true);
         break;
 			
@@ -73,7 +74,7 @@ public class GameStateController : MonoBehaviour {
 				fadeSprite.FadeIn();
 				gUITransitioner.Pause(true);
 				dePauseForbidden = true;
-				endPanel.gameObject.SetActive(true);
+				end.SetActive(true);
         break;		
 		}
 	}
