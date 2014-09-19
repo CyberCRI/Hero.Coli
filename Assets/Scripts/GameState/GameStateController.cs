@@ -44,7 +44,7 @@ public class GameStateController : MonoBehaviour {
 		//StateChange(GameState.Game);
     
     I18n.changeLanguageTo(I18n.Language.French);
-    Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.ERROR);
+    Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
 	}
 	
 	// Update is called once per frame
@@ -83,7 +83,7 @@ public class GameStateController : MonoBehaviour {
     
     //TODO remove
     I18n.changeLanguageTo(I18n.Language.French);
-    Logger.Log("GameStateController::Start game is in "+Localization.Localize("MAIN.LANGUAGE")+" while state becomes "+newState, Logger.Level.ERROR);
+    Logger.Log("GameStateController::Start game is in "+Localization.Localize("MAIN.LANGUAGE")+" while state becomes "+newState, Logger.Level.INFO);
 
 		_gameState = newState;
     Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);

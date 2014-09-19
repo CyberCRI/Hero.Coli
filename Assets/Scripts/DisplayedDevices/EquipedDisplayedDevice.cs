@@ -50,11 +50,16 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
         return;
       }
-	    if (_devicesDisplayer.IsEquipScreen()) {
-        TooltipManager.displayTooltip();
-	      _devicesDisplayer.askRemoveEquipedDevice(_device);
-	    }
+      askRemoveDevice();
 	  }
+  }
+
+  public void askRemoveDevice()
+  {        
+    if (_devicesDisplayer.IsEquipScreen()) {
+      TooltipManager.displayTooltip();
+      _devicesDisplayer.askRemoveEquipedDevice(_device);
+    }
   }
 
   void initIfNecessary() {
