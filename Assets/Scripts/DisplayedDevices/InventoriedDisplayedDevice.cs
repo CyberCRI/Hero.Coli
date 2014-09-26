@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-class InventoriedDisplayedDevice : DisplayedDevice {
+public class InventoriedDisplayedDevice : DisplayedDevice {
 	
 	void OnEnable() {
 		Logger.Log("InventoriedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);

@@ -9,7 +9,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 	public Fade fade;
 	public TooltipPanel biobrickTooltipPanel,deviceTooltipPanel;
-	public GameObject inventoryButtonprefab;
+	public GameObject inventoryDevicePrefab;
 	public GameObject listedDevicePrefab;
 
 	public GameObject craftZoneDisplayedBioBrickPrefab;
@@ -98,7 +98,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
     devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
 
-    devicesDisplayer.inventoryDevice = inventoryButtonprefab;
+    devicesDisplayer.inventoryDevice = inventoryDevicePrefab;
 		devicesDisplayer.listedInventoryDevice =listedDevicePrefab;
 		
 

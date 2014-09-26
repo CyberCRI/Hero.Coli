@@ -5,9 +5,16 @@ using System.Collections.Generic;
 public class DisplayedDevice : DisplayedElement {
 
   // static stuff
-  private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
-  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+
+  //private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  private static string equipedPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+
+  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
+  
+  //private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
   private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
+  
+
   private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
   private static string baseDeviceTextureString = "device_";
@@ -100,10 +107,13 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
+      Debug.LogError("DisplayedDevice: will create Equiped "+equipedPrefabURI);
       prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
+      Debug.LogError("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI);
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
+      Debug.LogError("DisplayedDevice: will create Listed "+listedPrefabURI);
       prefab = Resources.Load(listedPrefabURI);
     } else {
       Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);
@@ -207,7 +217,7 @@ public class DisplayedDevice : DisplayedElement {
 
   protected virtual void OnHover(bool isOver)
   {
-    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.ERROR);
+    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
     TooltipManager.displayTooltip(isOver, _device, transform.position);
   }
 

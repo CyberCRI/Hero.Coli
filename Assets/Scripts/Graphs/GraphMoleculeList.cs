@@ -129,6 +129,7 @@ public class GraphMoleculeList : MonoBehaviour {
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
+
         EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
 
         eddwm.equipedDevice = clone;
