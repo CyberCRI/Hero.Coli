@@ -63,7 +63,25 @@ public class DisplayedElement : MonoBehaviour {
       }
       else
       {
-          Debug.LogError("EARLY FAIL!");
+          Debug.LogError("EARLY FAIL?");
+          EquipmentDevice equipmentDevice = newElement.GetComponent<EquipmentDevice>();
+          if(equipmentDevice != null)
+          {
+              Debug.LogError("WIN?");
+              script = newElement.GetComponent<EquipmentDevice>().equipedDisplayedDevice;
+              if(script != null)
+              {
+                  Debug.LogError("WIN!");
+              }
+              else
+              {
+                  Debug.LogError("LATE FAIL!");
+              }
+          }
+          else
+          {
+              Debug.LogError("EARLY FAIL!");
+          }
       }
     }
 

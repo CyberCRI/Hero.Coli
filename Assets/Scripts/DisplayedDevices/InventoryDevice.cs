@@ -2,5 +2,5 @@
 using System.Collections;
 
 public class InventoryDevice : MonoBehaviour {
-    public InventoriedDisplayedDevice inventoriedDisplayedDevice;
+  public InventoriedDisplayedDevice inventoriedDisplayedDevice;
 }
