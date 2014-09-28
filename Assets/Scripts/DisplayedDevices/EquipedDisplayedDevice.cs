@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class EquipedDisplayedDevice : DisplayedDevice {
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
-
-	
+    	
   private static GameObject           equipedDevice;
   private static GameObject           tinyBioBrickIcon;
   private static GameObject           tinyBioBrickIcon2;
@@ -17,6 +16,9 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
 
   private bool                        _displayBricks;
+
+
+  public EquipedDeviceCloseButton closeButton;
 
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
@@ -134,6 +136,23 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   {
     _displayBricks = display;
     updateVisibility();
+  }
+    
+  protected override void OnHover(bool isOver)
+  {
+    Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    base.OnHover(isOver);
+    if(!_devicesDisplayer.IsEquipScreen())
+    {
+      closeButton.gameObject.SetActive(isOver);
+    }
+  }
+
+  void Update () {
+    if(_devicesDisplayer.IsEquipScreen())
+    {
+      closeButton.gameObject.SetActive(true);
+    }
   }
 
   // Use this for initialization

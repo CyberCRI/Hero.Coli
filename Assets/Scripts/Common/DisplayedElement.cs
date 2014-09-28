@@ -51,7 +51,7 @@ public class DisplayedElement : MonoBehaviour {
       if(inventoryDevice != null)
       {
         Debug.LogError("WIN?");
-        script = newElement.GetComponent<InventoryDevice>().inventoriedDisplayedDevice;
+        script = inventoryDevice.inventoriedDisplayedDevice;
         if(script != null)
         {
             Debug.LogError("WIN!");
@@ -68,7 +68,7 @@ public class DisplayedElement : MonoBehaviour {
           if(equipmentDevice != null)
           {
               Debug.LogError("WIN?");
-              script = newElement.GetComponent<EquipmentDevice>().equipedDisplayedDevice;
+              script = equipmentDevice.equipedDisplayedDevice;
               if(script != null)
               {
                   Debug.LogError("WIN!");
