@@ -20,6 +20,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
 
   public void setEquipedDevice()
   {
+    //    if(equipedDevice.GetComponent<EquipmentDevice>
     equipedDevice.transform.parent = transform;
     equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
     equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
