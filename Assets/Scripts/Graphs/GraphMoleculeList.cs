@@ -118,7 +118,9 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     else
     {
+      //equipedDevice is "EquipedDevicePrefabPos" object
       GameObject equipedDevice = equipedDeviceScript.gameObject;
+
       bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
       if(newEquiped) { 
 
@@ -126,6 +128,8 @@ public class GraphMoleculeList : MonoBehaviour {
 
         GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
         
+        //deviceWithMoleculesComponent is "EquipedDisplayedDeviceWithMoleculesButtonPrefab" object
+        //it needs an EquipmentDevice instance - it has only an EquipmentDeviceDummy object
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
