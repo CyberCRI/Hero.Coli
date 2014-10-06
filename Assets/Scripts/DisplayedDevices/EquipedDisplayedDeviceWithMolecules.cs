@@ -6,26 +6,44 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
     
   public UILabel           namesLabel;
   public UILabel           valuesLabel;
+
   public GameObject equipedDeviceDummy;
   public GameObject equipedDevice;
+
+  public GameObject equipmentDeviceDummy;
+  public GameObject equipmentDevice;
+
   public Device device;
   public EquipedDisplayedDevice equipedDeviceScript;
-
-  private DisplayedMolecule _displayedMolecule;
+  public EquipmentDevice equipmentDeviceScript;
+    
+    private DisplayedMolecule _displayedMolecule;
 
   public void initialize()
   {
+    setEquipmentDevice();
+  }
+
+  public void setEquipmentDevice()
+  {
+    equipmentDevice.transform.parent = transform;
+    equipmentDevice.transform.localPosition = equipmentDeviceDummy.transform.localPosition;
+    equipmentDevice.transform.localScale = new Vector3(1f, 1f, 0);
+    equipmentDevice.transform.localRotation = equipmentDeviceDummy.transform.localRotation;
+    equipmentDeviceDummy.SetActive(false);
+
     setEquipedDevice();
   }
 
   public void setEquipedDevice()
   {
     //    if(equipedDevice.GetComponent<EquipmentDevice>
-    equipedDevice.transform.parent = transform;
+    equipedDevice.transform.parent = equipmentDevice.transform;
     equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
     equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
     equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
     equipedDeviceDummy.SetActive(false);
+
     equipedDeviceScript.setDisplayBricks(false);
   }
 

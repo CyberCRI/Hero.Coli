@@ -124,10 +124,8 @@ public class GraphMoleculeList : MonoBehaviour {
       bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
       if(newEquiped) { 
 
-        GameObject clone = Instantiate(equipedDevice) as GameObject;
-
-        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
-        
+        //EquipedDisplayedDeviceWithMolecules
+        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;        
         //deviceWithMoleculesComponent is "EquipedDisplayedDeviceWithMoleculesButtonPrefab" object
         //it needs an EquipmentDevice instance - it has only an EquipmentDeviceDummy object
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
@@ -135,14 +133,22 @@ public class GraphMoleculeList : MonoBehaviour {
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
 
         EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+        
 
-        eddwm.equipedDevice = clone;
-        EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
-        edd._device = equipedDeviceScript._device;
-
+        //equipmentDevice
+        GameObject equipmentDevicePrefab = Resources.Load(DisplayedDevice.equipmentPrefabURI) as GameObject;
+        GameObject equipmentDeviceComponent = Instantiate(equipmentDevicePrefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+        eddwm.equipmentDevice = equipmentDeviceComponent;
+        EquipmentDevice equipmentD = equipmentDeviceComponent.GetComponent<EquipmentDevice>() as EquipmentDevice;
+        eddwm.equipmentDeviceScript = equipmentD;
+                
+        //equipedDevice
+        GameObject equipedDeviceComponent = Instantiate(equipedDevice) as GameObject;
+        eddwm.equipedDevice = equipedDeviceComponent;
+        EquipedDisplayedDevice edd = equipedDeviceComponent.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        eddwm.equipedDeviceScript = edd;
         eddwm.device = equipedDeviceScript._device;
-
-        eddwm.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
+        edd._device = equipedDeviceScript._device;
 
         eddwm.initialize();
 
