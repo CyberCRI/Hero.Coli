@@ -104,5 +104,20 @@ public class Equipment : DeviceContainer
     Logger.Log("Equipment::Start()", Logger.Level.DEBUG);
     _reactionEngine = ReactionEngine.get();
   }
+
+  public override string ToString ()
+  {
+    string res = "";
+    foreach(Device d in _devices)
+    {
+      if(res != "")
+      {
+        res = res + "; ";
+      }
+      res = res + d.ToString();
+    }
+    res = "[Equipment " + res + "]";
+    return res;
+  }
 }
 

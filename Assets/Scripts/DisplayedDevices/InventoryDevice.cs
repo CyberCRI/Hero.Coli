@@ -12,7 +12,8 @@ public class InventoryDevice : MonoBehaviour {
     {
       _device = inventoriedDisplayedDevice._device;
     }
+    bool exists = Equipment.get().exists (d => d.getName() == _device.getName());
 
-    equipedMask.SetActive(Inventory.get().contains (_device));
+    equipedMask.SetActive(exists);
   }
 }

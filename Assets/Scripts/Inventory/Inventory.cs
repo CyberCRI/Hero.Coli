@@ -21,11 +21,6 @@ public class Inventory : DeviceContainer
 		return _devices.Count;
 	}
 
-  public bool contains(Device device)
-  {
-    return _devices.Exists(d => d.Equals(device));
-  }
-
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
