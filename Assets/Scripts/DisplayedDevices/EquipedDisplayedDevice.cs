@@ -142,17 +142,27 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   {
     Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
     base.OnHover(isOver);
-    if(!_devicesDisplayer.IsEquipScreen())
+    
+    /*
+    if(null != closeButton && !_devicesDisplayer.IsEquipScreen())
     {
+      //TODO fix interaction with Update
       closeButton.gameObject.SetActive(isOver);
     }
+    */
   }
 
   void Update () {
-    if(_devicesDisplayer.IsEquipScreen())
+    /*
+    if(null != closeButton && _devicesDisplayer.IsEquipScreen())
     {
+      //TODO fix interaction with OnHover
       closeButton.gameObject.SetActive(true);
     }
+    */
+
+    //no-hover version
+    closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
   }
 
   // Use this for initialization

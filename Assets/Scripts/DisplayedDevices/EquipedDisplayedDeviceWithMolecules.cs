@@ -7,30 +7,45 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   public UILabel           namesLabel;
   public UILabel           valuesLabel;
 
-  public GameObject equipedDeviceDummy;
-  public GameObject equipedDevice;
-
+  private GameObject _equipmentDeviceDummy;
   public GameObject equipmentDeviceDummy;
   public GameObject equipmentDevice;
-
-  public Device device;
-  public EquipedDisplayedDevice equipedDeviceScript;
   public EquipmentDevice equipmentDeviceScript;
     
-    private DisplayedMolecule _displayedMolecule;
+  private GameObject _equipedDeviceDummy;
+  public GameObject equipedDevice;
+  public EquipedDisplayedDevice equipedDeviceScript;
+    
+  public Device device; 
+  
+    
+  private DisplayedMolecule _displayedMolecule;
 
-  public void initialize()
+  public void initialize(GameObject staticEquipmentDeviceDummy, GameObject staticEquipedDeviceDummy)
   {
-    setEquipmentDevice();
+    if(null != equipmentDeviceDummy)
+    {
+        equipmentDeviceDummy.SetActive(false);
+    }
+
+        if(null == staticEquipmentDeviceDummy || null == staticEquipedDeviceDummy)
+        {
+      Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
+    }
+    else
+    {
+      _equipmentDeviceDummy = staticEquipmentDeviceDummy;
+            _equipedDeviceDummy = staticEquipedDeviceDummy;
+      setEquipmentDevice();
+    }
   }
 
   public void setEquipmentDevice()
   {
     equipmentDevice.transform.parent = transform;
-    equipmentDevice.transform.localPosition = equipmentDeviceDummy.transform.localPosition;
+    equipmentDevice.transform.localPosition = _equipmentDeviceDummy.transform.localPosition;
     equipmentDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    equipmentDevice.transform.localRotation = equipmentDeviceDummy.transform.localRotation;
-    equipmentDeviceDummy.SetActive(false);
+    equipmentDevice.transform.localRotation = _equipmentDeviceDummy.transform.localRotation;    
 
     setEquipedDevice();
   }
@@ -39,11 +54,12 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   {
     //    if(equipedDevice.GetComponent<EquipmentDevice>
     equipedDevice.transform.parent = equipmentDevice.transform;
-    equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
+    equipedDevice.transform.localPosition = _equipedDeviceDummy.transform.localPosition;
     equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
-    equipedDeviceDummy.SetActive(false);
-
+    equipedDevice.transform.localRotation = _equipedDeviceDummy.transform.localRotation;
+            
+    equipedDeviceScript.closeButton = equipmentDeviceScript.closeButton;
+    equipmentDeviceScript.closeButton.device = equipedDeviceScript;
     equipedDeviceScript.setDisplayBricks(false);
   }
 

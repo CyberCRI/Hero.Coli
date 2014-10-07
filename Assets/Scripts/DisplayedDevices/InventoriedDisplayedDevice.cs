@@ -16,6 +16,7 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
         Logger.Log("InventoriedDisplayedDevice::OnPress _device==null", Logger.Level.WARN);
         return;
       }
+
 			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
       Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.INFO);
 

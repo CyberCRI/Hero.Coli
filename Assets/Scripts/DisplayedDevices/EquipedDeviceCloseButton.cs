@@ -20,8 +20,13 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
     {
       device.askRemoveDevice();
     }
+    else
+    {
+      Debug.LogWarning("EquipedDeviceCloseButton::OnPress null==device");
+    }
   }
 
+    /*
   void Update()
   {
     if(null == _devicesDisplayer)
@@ -33,4 +38,5 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
       gameObject.SetActive(_devicesDisplayer.IsEquipScreen());
     }
   }
+  */
 }

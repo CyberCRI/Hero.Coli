@@ -5,10 +5,10 @@ public class Inventory : DeviceContainer
 {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
-  	public static string gameObjectName = "DeviceInventory";
+  public static string gameObjectName = "DeviceInventory";
 	public InventoryAnimator animator;
-  	private static Inventory _instance;
-  	public static Inventory get() {
+  private static Inventory _instance;
+  public static Inventory get() {
     if(_instance == null) {
       Logger.Log("Inventory::get was badly initialized", Logger.Level.WARN);
       _instance = GameObject.Find(gameObjectName).GetComponent<Inventory>();
@@ -16,10 +16,16 @@ public class Inventory : DeviceContainer
     return _instance;
   }
 	
-		public int GetDeviceCount()
+  public int GetDeviceCount()
 	{
 		return _devices.Count;
 	}
+
+  public bool contains(Device device)
+  {
+    return _devices.Exists(d => d.Equals(device));
+  }
+
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);

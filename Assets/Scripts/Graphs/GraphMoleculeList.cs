@@ -10,7 +10,11 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+
   public GameObject        equipedWithMoleculesDeviceDummy;
+  public GameObject        equipmentDeviceDummy;
+  public GameObject        equipedDeviceDummy;
+    
   public string            debugName;
 
   private int               pixelsPerMoleculeLine = 15;
@@ -150,7 +154,7 @@ public class GraphMoleculeList : MonoBehaviour {
         eddwm.device = equipedDeviceScript._device;
         edd._device = equipedDeviceScript._device;
 
-        eddwm.initialize();
+        eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
 
         int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);

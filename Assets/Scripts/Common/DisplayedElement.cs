@@ -61,6 +61,7 @@ public class DisplayedElement : MonoBehaviour {
             Debug.LogError("LATE FAIL!");
         }
       }
+            /*
       else
       {
           Debug.LogError("EARLY FAIL?");
@@ -83,6 +84,7 @@ public class DisplayedElement : MonoBehaviour {
               Debug.LogError("EARLY FAIL!");
           }
       }
+      */
     }
 
     script._id = ++_idCounter;
