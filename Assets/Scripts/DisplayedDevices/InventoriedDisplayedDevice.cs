@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-class InventoriedDisplayedDevice : DisplayedDevice {
+public class InventoriedDisplayedDevice : DisplayedDevice {
 	
 	void OnEnable() {
 		Logger.Log("InventoriedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
@@ -16,6 +16,7 @@ class InventoriedDisplayedDevice : DisplayedDevice {
         Logger.Log("InventoriedDisplayedDevice::OnPress _device==null", Logger.Level.WARN);
         return;
       }
+
 			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
       Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.INFO);
 

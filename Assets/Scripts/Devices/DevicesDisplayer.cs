@@ -346,6 +346,7 @@ public class DevicesDisplayer : MonoBehaviour {
     }
     equipedDevice.SetActive(false);
     equipedDevice2.SetActive(false);
+    inventoryDevice.SetActive (false);
     if(null == equipPanel)
     {
       equipPanel = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevicesSlotsPanel;

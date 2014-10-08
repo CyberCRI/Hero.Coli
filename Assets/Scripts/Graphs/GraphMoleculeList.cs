@@ -10,7 +10,11 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+
   public GameObject        equipedWithMoleculesDeviceDummy;
+  public GameObject        equipmentDeviceDummy;
+  public GameObject        equipedDeviceDummy;
+    
   public string            debugName;
 
   private int               pixelsPerMoleculeLine = 15;
@@ -118,28 +122,39 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     else
     {
+      //equipedDevice is "EquipedDevicePrefabPos" object
       GameObject equipedDevice = equipedDeviceScript.gameObject;
+
       bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
       if(newEquiped) { 
 
-        GameObject clone = Instantiate(equipedDevice) as GameObject;
-
-        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
-        
+        //EquipedDisplayedDeviceWithMolecules
+        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;        
+        //deviceWithMoleculesComponent is "EquipedDisplayedDeviceWithMoleculesButtonPrefab" object
+        //it needs an EquipmentDevice instance - it has only an EquipmentDeviceDummy object
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
-        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
 
-        eddwm.equipedDevice = clone;
-        EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+        
+
+        //equipmentDevice
+        GameObject equipmentDevicePrefab = Resources.Load(DisplayedDevice.equipmentPrefabURI) as GameObject;
+        GameObject equipmentDeviceComponent = Instantiate(equipmentDevicePrefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+        eddwm.equipmentDevice = equipmentDeviceComponent;
+        EquipmentDevice equipmentD = equipmentDeviceComponent.GetComponent<EquipmentDevice>() as EquipmentDevice;
+        eddwm.equipmentDeviceScript = equipmentD;
+                
+        //equipedDevice
+        GameObject equipedDeviceComponent = Instantiate(equipedDevice) as GameObject;
+        eddwm.equipedDevice = equipedDeviceComponent;
+        EquipedDisplayedDevice edd = equipedDeviceComponent.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        eddwm.equipedDeviceScript = edd;
+        eddwm.device = equipedDeviceScript._device;
         edd._device = equipedDeviceScript._device;
 
-        eddwm.device = equipedDeviceScript._device;
-
-        eddwm.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
-
-        eddwm.initialize();
+        eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
 
         int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);
