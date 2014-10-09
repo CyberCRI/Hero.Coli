@@ -33,6 +33,12 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject okButton2;
   public GameObject end;
 
+  public CellControlButton absoluteWASDButton;
+  public CellControlButton leftClickToMoveButton;
+  public CellControlButton relativeWASDButton;
+  public CellControlButton rightClickToMoveButton;
+  public UISprite selectedControlTypeSprite;
+
 	//public Camera _uicamera;
 
 
@@ -133,6 +139,6 @@ public class InterfaceLinkManager : MonoBehaviour {
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
 		tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
 		tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
-    
+            
   	}
 }

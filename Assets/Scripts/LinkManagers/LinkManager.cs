@@ -2,11 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 
-/*DESCRIPTION
- * This class create the links between the Player's Scene, classes and GameObject and the others
+/*
+ * This class creates the links between the Player's Scene, classes and GameObject and the other scenes
  * */
 
-//Create the necessaries links between the Player scene and the other scenes
 public class LinkManager : MonoBehaviour {
 
 	// Use this for initialization
@@ -16,10 +15,22 @@ public class LinkManager : MonoBehaviour {
 		Hero hero = perso.GetComponent<Hero>();
 		PhenoFickContact pheno = perso.GetComponent<PhenoFickContact>();
     GUITransitioner guiTransitioner = GUITransitioner.get ();
-
+    CellControl cellControl = perso.GetComponent<CellControl>();
 
 		//Cellcontrol connection
-    guiTransitioner.control = perso.GetComponent<CellControl>();
+    guiTransitioner.control = cellControl;
+
+    InterfaceLinkManager interfaceLinkManager = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>();
+    cellControl.absoluteWASDButton = interfaceLinkManager.absoluteWASDButton;
+    cellControl.leftClickToMoveButton = interfaceLinkManager.leftClickToMoveButton;
+    cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;
+    cellControl.rightClickToMoveButton = interfaceLinkManager.rightClickToMoveButton;
+    cellControl.selectedControlTypeSprite = interfaceLinkManager.selectedControlTypeSprite;
+        
+    cellControl.absoluteWASDButton.cellControl = cellControl;
+    cellControl.leftClickToMoveButton.cellControl = cellControl;
+    cellControl.relativeWASDButton.cellControl = cellControl;
+    cellControl.rightClickToMoveButton.cellControl = cellControl;
 
 
 		//Hero connections
