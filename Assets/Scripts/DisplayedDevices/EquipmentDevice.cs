@@ -8,6 +8,9 @@ public class EquipmentDevice : MonoBehaviour {
 
   void Start()
   {
-    equipedDisplayedDeviceDummy.SetActive(false);
+    if(null != equipedDisplayedDeviceDummy)
+    {
+      equipedDisplayedDeviceDummy.SetActive(false);
+    }
   }
 }
