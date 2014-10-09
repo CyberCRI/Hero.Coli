@@ -209,12 +209,13 @@ public abstract class IReaction : LoadableFromXmlImpl
 
         if(!isValid)
         {
-            Debug.LogError("IReaction::hasValidData !string.IsNullOrEmpty(_name)="+(!string.IsNullOrEmpty(_name))
-          +" & 0 != _products.Count="+(0 != _products.Count)
-          +" & null != _medium="+(null != _medium)
-          +" & 0 != _reactionSpeed="+(0 != _reactionSpeed)
-          +" & 0 != _energyCost="+(0 != _energyCost)
-          +" => valid="+isValid
+          Logger.Log("IReaction::hasValidData !string.IsNullOrEmpty(_name)="+(!string.IsNullOrEmpty(_name))
+            +" & 0 != _products.Count="+(0 != _products.Count)
+            +" & null != _medium="+(null != _medium)
+            +" & 0 != _reactionSpeed="+(0 != _reactionSpeed)
+            +" & 0 != _energyCost="+(0 != _energyCost)
+            +" => valid="+isValid
+            , Logger.Level.ERROR
             );
         }
         return isValid;

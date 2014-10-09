@@ -46,45 +46,21 @@ public class DisplayedElement : MonoBehaviour {
     if(null == script)
     {
       //TODO remove hack
-      Debug.LogWarning("(null == script) 1 with name="+newElement.name);
+      Logger.Log("DisplayedElement::Create (null == script) 1 with name="+newElement.name, Logger.Level.DEBUG);
       InventoryDevice inventoryDevice = newElement.GetComponent<InventoryDevice>();
       if(inventoryDevice != null)
       {
-        Debug.LogError("WIN?");
+        Logger.Log("DisplayedElement::Create found inventory device", Logger.Level.DEBUG);
         script = inventoryDevice.inventoriedDisplayedDevice;
         if(script != null)
         {
-            Debug.LogError("WIN!");
+          Logger.Log("DisplayedElement::Create found inventory device script", Logger.Level.DEBUG);
         }
         else
         {
-            Debug.LogError("LATE FAIL!");
+          Logger.Log("DisplayedElement::Create failed to find inventory device script", Logger.Level.WARN);
         }
       }
-            /*
-      else
-      {
-          Debug.LogError("EARLY FAIL?");
-          EquipmentDevice equipmentDevice = newElement.GetComponent<EquipmentDevice>();
-          if(equipmentDevice != null)
-          {
-              Debug.LogError("WIN?");
-              script = equipmentDevice.equipedDisplayedDevice;
-              if(script != null)
-              {
-                  Debug.LogError("WIN!");
-              }
-              else
-              {
-                  Debug.LogError("LATE FAIL!");
-              }
-          }
-          else
-          {
-              Debug.LogError("EARLY FAIL!");
-          }
-      }
-      */
     }
 
     script._id = ++_idCounter;

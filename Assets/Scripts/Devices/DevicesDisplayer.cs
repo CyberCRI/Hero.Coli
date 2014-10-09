@@ -335,7 +335,7 @@ public class DevicesDisplayer : MonoBehaviour {
     SafeGetTransitioner();
 	  inventoryPanel.gameObject.SetActive(false);
     if(null == equipedDevice) {
-      Debug.LogError("DD null == equipedDevice");
+      Logger.Log("DevicesDisplayer::Start null==equipedDevice", Logger.Level.WARN);
             
       equipedDevice = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice;
       equipedDevice2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice2;

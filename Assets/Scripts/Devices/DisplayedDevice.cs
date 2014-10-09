@@ -107,13 +107,13 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
-      Debug.LogError("DisplayedDevice: will create Equiped "+equipedPrefabURI);
+            Logger.Log("DisplayedDevice: will create Equiped "+equipedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
-      Debug.LogError("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI);
+            Logger.Log("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
-      Debug.LogError("DisplayedDevice: will create Listed "+listedPrefabURI);
+            Logger.Log("DisplayedDevice: will create Listed "+listedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(listedPrefabURI);
     } else {
       Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);

@@ -353,12 +353,14 @@ public class EnzymeReaction : IReaction
       }
       else
       {
-        Debug.LogError(
+        Logger.Log(
                 "EnzymeReaction::hasValidData base.hasValidData()="+base.hasValidData()
                 +" & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
                 +" & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
                 +" & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
-                +" => valid="+valid);
+                +" => valid="+valid
+                , Logger.Level.ERROR
+                );
       }
       return valid;
     }
