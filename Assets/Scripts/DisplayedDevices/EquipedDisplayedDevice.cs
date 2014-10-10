@@ -58,10 +58,10 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
   public void askRemoveDevice()
   {        
-    if (_devicesDisplayer.IsEquipScreen()) {
+    //if (_devicesDisplayer.IsEquipScreen()) {
       TooltipManager.displayTooltip();
       _devicesDisplayer.askRemoveEquipedDevice(_device);
-    }
+    //}
   }
 
   void initIfNecessary() {
