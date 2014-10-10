@@ -41,13 +41,13 @@ INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouveaux devices avec !
 INFO.PICKEDUPRBS.BOTTOM=Allez fabriquer de nouveaux devices en cliquant sur 'Continuer' pour ouvrir l'interface de Crafting.
 INFO.PICKEDUPGFP.TITLE=DEVICE TROUVÉ !
-INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé votre premier device génétique !
-INFO.PICKEDUPGFP.EXPLANATION=Ce device contient le gène controllant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
+INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé un nouveau device génétique !
+INFO.PICKEDUPGFP.EXPLANATION=Ce device contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
 INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire pour équiper ce device.
 INFO.RFP.TITLE=ZUT! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
-INFO.RFP.BOTTOM=Continuez de jouer et revenez une fois que vous aurez trouvé la BioBrique du gène RFP !
+INFO.RFP.BOTTOM=La BioBrique du gène RFP sera présente dans une prochaine version du jeu !
 
 GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
