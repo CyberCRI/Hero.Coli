@@ -49,8 +49,10 @@ public class ArrowAnimation : MonoBehaviour {
 				}
 
 		}
+        //TODO fix that, cf. bug#221
 		if ( screen == GUITransitioner.GameScreen.screen2)
 		{
+        /*
 				GameObject parent = GameObject.Find ("InventoryDevicesSlotsPanel");
 				g = parent.transform.GetChild(parent.transform.childCount -3).gameObject;
 
@@ -60,7 +62,7 @@ public class ArrowAnimation : MonoBehaviour {
 
 				Create(targetVector,rotateVector,g);
 				Inventory.get().setDeviceAdded(false);
-
+        */
 		}
 
 	}
