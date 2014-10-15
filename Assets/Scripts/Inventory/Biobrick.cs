@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public abstract class BioBrick: DNABit
+public class BioBrick: DNABit
 {
   public enum Type
   {
@@ -28,6 +28,36 @@ public abstract class BioBrick: DNABit
   {
     _type = type;
   }
+
+  public BioBrick(BioBrick b)
+  {
+        Logger.Log("BioBrick::BioBrick("+b+") starting", Logger.Level.WARN);
+    switch(b._type)
+    {
+        case Type.PROMOTER:
+                Logger.Log("BioBrick::BioBrick("+b+") PROMOTER brick type="+b._type, Logger.Level.WARN);
+            new PromoterBrick((PromoterBrick)b);
+            break;
+        case Type.RBS:
+                Logger.Log("BioBrick::BioBrick("+b+") RBS brick type="+b._type, Logger.Level.WARN);
+            new RBSBrick((RBSBrick)b);
+            break;
+        case Type.GENE:
+                Logger.Log("BioBrick::BioBrick("+b+") GENE brick type="+b._type, Logger.Level.WARN);
+            new GeneBrick((GeneBrick)b);
+            break;
+        case Type.TERMINATOR:
+                Logger.Log("BioBrick::BioBrick("+b+") TERMINATOR brick type="+b._type, Logger.Level.WARN);
+            new TerminatorBrick((TerminatorBrick)b);
+            break;
+        case Type.UNKNOWN:
+            Logger.Log("BioBrick::BioBrick("+b+") unmanaged brick type="+b._type, Logger.Level.WARN);
+            break;
+        default:
+            Logger.Log("BioBrick::BioBrick("+b+") unidentified brick type="+b._type, Logger.Level.WARN);
+            break;
+    }
+  }
 }
 
 public class PromoterBrick : BioBrick
@@ -49,6 +79,10 @@ public class PromoterBrick : BioBrick
     _name = name;
 		_beta = beta;
 		_formula = formula;
+  }
+
+  public PromoterBrick(PromoterBrick p) : this(p._name, p._beta, p._formula)
+  {
   }
 	
   public override string ToString ()
@@ -74,6 +108,10 @@ class RBSBrick : BioBrick
 		_RBSFactor = RBSFactor;
   }
 	
+  public RBSBrick(RBSBrick r) : this(r._name, r._RBSFactor)
+  {
+  }
+
   public override string ToString ()
   {
 	return string.Format ("[RBSBrick: name: {0}, RBSFactor: {1}]", _name, _RBSFactor);
@@ -96,6 +134,10 @@ class GeneBrick : BioBrick
     _name = name;
 		_proteinName = proteinName;
   }
+
+  public GeneBrick(GeneBrick g) : this(g._name, g._proteinName)
+  {
+  }
 	
   public override string ToString ()
   {
@@ -105,7 +147,7 @@ class GeneBrick : BioBrick
 
 class TerminatorBrick : BioBrick
 {
-  private float _terminatorFactor;
+  protected float _terminatorFactor;
 
   public void setTerminatorFactor(float v) { _terminatorFactor = v; }
   public float getTerminatorFactor() { return _terminatorFactor; }
@@ -118,6 +160,10 @@ class TerminatorBrick : BioBrick
   {
     _name = name;
 		_terminatorFactor = terminatorFactor;
+  }
+
+  public TerminatorBrick(TerminatorBrick t) : this(t._name, t._terminatorFactor)
+  {
   }
 	
   public override string ToString ()

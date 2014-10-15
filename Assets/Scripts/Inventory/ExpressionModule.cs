@@ -33,7 +33,11 @@ public class ExpressionModule
     _name = m._name;
     _bioBricks = new LinkedList<BioBrick>();
     foreach (BioBrick b in m.getBioBricks())
-      _bioBricks.AddLast(b);
+    {
+      //_bioBricks.AddLast(b);
+            Logger.Log("ExpressionModule::ExpressionModule(m) on b="+b, Logger.Level.WARN);
+      _bioBricks.AddLast(new BioBrick(b));
+    }
   }
 
   public bool hasSameBricks(ExpressionModule module) {

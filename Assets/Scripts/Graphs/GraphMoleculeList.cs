@@ -199,7 +199,8 @@ public class GraphMoleculeList : MonoBehaviour {
 
   public void removeDeviceAndMoleculesComponent(Device device)
   {
-    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
+        Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent("+device+")");
+    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
     if(null != eddwm)
     {
       displayMoleculeInList(eddwm);
@@ -211,6 +212,10 @@ public class GraphMoleculeList : MonoBehaviour {
       positionDeviceAndMoleculeComponents(0);
       setUnfoldingListBackgroundScale();
     }
+        else
+        {
+            Debug.LogError("failed to remove eddwm");
+        }
   }
 
   bool isAlreadyDisplayedInADevice(string moleculeCodeName)

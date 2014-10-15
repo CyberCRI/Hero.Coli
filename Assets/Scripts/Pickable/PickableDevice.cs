@@ -14,10 +14,10 @@ public abstract class PickableDevice : PickableItem {
 
   protected override void addTo()
   {
-    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.DEBUG);
+    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.INFO);
     foreach(BioBrick brick in _dnaBit.getExpressionModules().First.Value.getBioBricks())
     {
-      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.TRACE);
+      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.INFO);
       AvailableBioBricksManager.get().addAvailableBioBrick(brick, false);
     }
 

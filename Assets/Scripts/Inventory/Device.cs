@@ -37,11 +37,16 @@ public class Device: DNABit
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
+    Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.WARN);
+
     idInit();
     _name = name;
     _modules = new LinkedList<ExpressionModule>();
     foreach (ExpressionModule em in modules)
+    {
+      Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.WARN);
       _modules.AddLast(new ExpressionModule(em));
+    }
   }
 
   //returns the code name of the first - 'upstream' - protein produced by the device

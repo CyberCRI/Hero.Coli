@@ -169,6 +169,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
   public DeviceContainer.AddingResult askAddEquipedDevice(Device device) {
+        Debug.LogError("DevicesDisplayer::askAddEquipedDevice("+device+")");
     if(device == null)
     {
       Logger.Log("DevicesDisplayer::askAddEquipedDevice device==null", Logger.Level.WARN);
@@ -252,6 +253,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
 
   public void askRemoveEquipedDevice(Device device) {
+        Debug.LogError("DevicesDisplayer::askRemoveEquipedDevice("+device+")");
     Equipment.get().removeDevice(device);
   }
 	
@@ -270,6 +272,7 @@ public class DevicesDisplayer : MonoBehaviour {
 	}
 
   public void removeEquipedDevice(Device toRemove) {
+        Debug.LogError("DevicesDisplayer::removeEquipedDevice("+toRemove+")");
     removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
     graphMoleculeList.removeDeviceAndMoleculesComponent(toRemove);
   }
