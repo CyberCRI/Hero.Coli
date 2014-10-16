@@ -30,6 +30,7 @@ public class ExpressionModule
 
   public ExpressionModule(ExpressionModule m)
   {
+        Logger.Log("ExpressionModule::ExpressionModule("+m+")", Logger.Level.WARN);
     _name = m._name;
     _bioBricks = new LinkedList<BioBrick>();
     foreach (BioBrick b in m.getBioBricks())

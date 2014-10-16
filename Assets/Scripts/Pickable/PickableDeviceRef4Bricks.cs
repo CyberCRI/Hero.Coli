@@ -24,15 +24,19 @@ public class PickableDeviceRef4Bricks : PickableDevice {
     {
       BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(brickName);
       if(brick != null) {
-        Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.TRACE);
+        Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.ERROR);
         deviceBricks.AddLast(brick);
       } else {
-        Logger.Log("PickableDeviceRef4Bricks::produceDevice failed to add brick with name "+brickName+"!", Logger.Level.WARN);
+        Logger.Log("PickableDeviceRef4Bricks::produceDevice failed to add brick with name "+brickName+"!", Logger.Level.ERROR);
       }
     }
+    Debug.LogError("will create ExpressionModule 'deviceModule'");
     ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
     LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
     deviceModules.AddLast(deviceModule);
-    return Device.buildDevice(deviceName, deviceModules);
+        Debug.LogError("will create Device 'result'");
+    Device result = Device.buildDevice(deviceName, deviceModules);
+    Debug.LogError("PickableDeviceRef4Bricks::produceDevice result device="+result);
+    return result;
   }
 }

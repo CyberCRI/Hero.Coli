@@ -14,14 +14,14 @@ public abstract class PickableDevice : PickableItem {
 
   protected override void addTo()
   {
-    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.INFO);
+    Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.ERROR);
     foreach(BioBrick brick in _dnaBit.getExpressionModules().First.Value.getBioBricks())
     {
-      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.INFO);
+      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.ERROR);
       AvailableBioBricksManager.get().addAvailableBioBrick(brick, false);
     }
 
-    Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.DEBUG);
+    Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.ERROR);
     Inventory.get().askAddDevice(_dnaBit);
   }
 }
