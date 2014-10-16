@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class BioBrick: DNABit
+public abstract class BioBrick: DNABit
 {
   public enum Type
   {
@@ -29,35 +29,7 @@ public class BioBrick: DNABit
     _type = type;
   }
 
-  public BioBrick(BioBrick b)
-  {
-        Logger.Log("BioBrick::BioBrick("+b+") starting", Logger.Level.WARN);
-    switch(b._type)
-    {
-        case Type.PROMOTER:
-                Logger.Log("BioBrick::BioBrick("+b+") PROMOTER brick type="+b._type, Logger.Level.WARN);
-            new PromoterBrick((PromoterBrick)b);
-            break;
-        case Type.RBS:
-                Logger.Log("BioBrick::BioBrick("+b+") RBS brick type="+b._type, Logger.Level.WARN);
-            new RBSBrick((RBSBrick)b);
-            break;
-        case Type.GENE:
-                Logger.Log("BioBrick::BioBrick("+b+") GENE brick type="+b._type, Logger.Level.WARN);
-            new GeneBrick((GeneBrick)b);
-            break;
-        case Type.TERMINATOR:
-                Logger.Log("BioBrick::BioBrick("+b+") TERMINATOR brick type="+b._type, Logger.Level.WARN);
-            new TerminatorBrick((TerminatorBrick)b);
-            break;
-        case Type.UNKNOWN:
-            Logger.Log("BioBrick::BioBrick("+b+") unmanaged brick type="+b._type, Logger.Level.WARN);
-            break;
-        default:
-            Logger.Log("BioBrick::BioBrick("+b+") unidentified brick type="+b._type, Logger.Level.WARN);
-            break;
-    }
-  }
+  public abstract BioBrick copy();
 }
 
 public class PromoterBrick : BioBrick
@@ -85,6 +57,11 @@ public class PromoterBrick : BioBrick
   {
   }
 	
+  public override BioBrick copy()
+  {
+    return new PromoterBrick(this);
+  }
+
   public override string ToString ()
   {
 	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}]", _name, _beta, _formula);
@@ -110,6 +87,11 @@ class RBSBrick : BioBrick
 	
   public RBSBrick(RBSBrick r) : this(r._name, r._RBSFactor)
   {
+  }
+
+  public override BioBrick copy()
+  {
+      return new RBSBrick(this);
   }
 
   public override string ToString ()
@@ -138,6 +120,11 @@ class GeneBrick : BioBrick
   public GeneBrick(GeneBrick g) : this(g._name, g._proteinName)
   {
   }
+
+  public override BioBrick copy()
+  {
+      return new GeneBrick(this);
+  }
 	
   public override string ToString ()
   {
@@ -164,6 +151,11 @@ class TerminatorBrick : BioBrick
 
   public TerminatorBrick(TerminatorBrick t) : this(t._name, t._terminatorFactor)
   {
+  }
+
+  public override BioBrick copy()
+  {
+    return new TerminatorBrick(this);
   }
 	
   public override string ToString ()

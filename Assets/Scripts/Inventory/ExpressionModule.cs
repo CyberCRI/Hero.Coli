@@ -37,7 +37,7 @@ public class ExpressionModule
     {
       //_bioBricks.AddLast(b);
             Logger.Log("ExpressionModule::ExpressionModule(m) on b="+b, Logger.Level.WARN);
-      _bioBricks.AddLast(new BioBrick(b));
+      _bioBricks.AddLast(b.copy());
     }
   }
 
