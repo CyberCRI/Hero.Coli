@@ -164,10 +164,21 @@ public class Device: DNABit
     return prom;
   }
 
+
   private LinkedList<PromoterProperties> getPromoterReactions()
   {
     Logger.Log("Device::getPromoterReactions() starting... device="+this, Logger.Level.TRACE);
-    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+
+    //cf issue #224
+    //previously:
+    //LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+    //caused early deletion problem
+    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+    foreach(ExpressionModule module in _modules)
+    {
+      modules.AddLast(new ExpressionModule(module));
+    }
+
     LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
     PromoterProperties reaction;
     Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
@@ -187,7 +198,7 @@ public class Device: DNABit
   public LinkedList<IReaction> getReactions() {
     Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
 		
-    LinkedList<IReaction> reactions = new LinkedList<IReaction>();		
+    LinkedList<IReaction> reactions = new LinkedList<IReaction>();	
     LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
     foreach (PromoterProperties promoterProps in props) {
       Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
