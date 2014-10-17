@@ -37,7 +37,7 @@ public class Device: DNABit
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
-    Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.ERROR);
+    Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.DEBUG);
 
     idInit();
     _name = name;
@@ -311,14 +311,13 @@ public class Device: DNABit
 
   public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
   {
-    Debug.LogError("Device::buildDevice modules='"+Logger.ToString(modules)+"', checkDeviceValidity(modules)="+checkDeviceValidity(modules));
     if (modules == null || checkDeviceValidity(modules) == false) {
-            Debug.LogError("Device::buildDevice FAIL");
+      Logger.Log("Device::buildDevice FAIL", Logger.Level.WARN);
       return null;
 	  }
-        Debug.LogError("Device::buildDevice SUCCESS");
+
     Device device = new Device(name, modules);
-        Debug.LogError("Device::buildDevice returns "+device);
+    Logger.Log("Device::buildDevice returns "+device, Logger.Level.INFO);
     return device;
   }
 

@@ -65,7 +65,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   }
 
   void initIfNecessary() {
-    Logger.Log("EquipedDisplayedDevice::initIfNecessary starts", Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDevice::initIfNecessary starts", Logger.Level.INFO);
     if(
         (null == equipedDevice)
         || (null == tinyBioBrickIcon)
@@ -92,7 +92,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         tinyBioBrickIcon.SetActive(false);
         tinyBioBrickIcon2.SetActive(false);
       }
-      Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.WARN);
+      Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.INFO);
     }
   }
 

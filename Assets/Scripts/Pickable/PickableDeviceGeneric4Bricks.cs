@@ -32,7 +32,6 @@ public class PickableDeviceGeneric4Bricks : PickableDevice {
     ExpressionModule module = new ExpressionModule(expressionModuleName, bricks);
         
         Device result = Device.buildDevice(deviceName, new LinkedList<ExpressionModule>(new List<ExpressionModule>(){module}));
-        Debug.LogError("PickableDeviceGeneric4Bricks::produceDevice result device="+result);
         return result;
   }
 }

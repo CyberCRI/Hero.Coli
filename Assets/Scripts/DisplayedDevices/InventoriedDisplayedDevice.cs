@@ -18,11 +18,10 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
       }
 
 			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
-      Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.ERROR);
+      Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.DEBUG);
       if(DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
          || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
       {
-                Debug.LogError("InventoriedDisplayedDevice will askRemoveEquipedDevice("+_device+")");
           _devicesDisplayer.askRemoveEquipedDevice(_device);
       }
 

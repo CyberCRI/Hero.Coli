@@ -41,18 +41,15 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 1 "+debugName, Logger.Level.WARN);
       EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
       equipedWithMoleculesDeviceDummy = script.gameObject;
     }
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 2 "+debugName, Logger.Level.WARN);
       equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
     }
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 3 "+debugName, Logger.Level.WARN);
       equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
     }
   }
@@ -199,7 +196,6 @@ public class GraphMoleculeList : MonoBehaviour {
 
   public void removeDeviceAndMoleculesComponent(Device device)
   {
-    Debug.LogError("GraphMoleculeList::removeDeviceAndMoleculesComponent("+device+")");
     //TODO fix Equals method
     //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
     EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getName() == device.getName());
@@ -216,7 +212,7 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     else
     {
-        Debug.LogError("failed to remove eddwm");
+      Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
     }
   }
 

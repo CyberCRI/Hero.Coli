@@ -88,8 +88,8 @@ public class Equipment : DeviceContainer
   }
 
   public override void removeDevice(Device device)
-    {
-        Debug.LogError("Equipment::removeDevice("+device+")");
+  {
+    Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
     _devices.RemoveAll(d => d.getName() == device.getName());
     safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
