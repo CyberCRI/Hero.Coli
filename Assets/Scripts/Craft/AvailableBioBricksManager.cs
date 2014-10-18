@@ -119,7 +119,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
   public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
   {
-    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.DEBUG);
+    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.INFO);
     string bbName = brick.getName();
     if ((null != brick)
      && (null == LinkedListExtensions.Find<BioBrick>(
@@ -132,6 +132,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
     // TODO deeper safety check
     // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")")
     {
+      Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") will _availableBioBricks.AddLast("+brick+")", Logger.Level.INFO);
+
       _availableBioBricks.AddLast(brick);
       if(updateView)
       {
@@ -139,7 +141,11 @@ public class AvailableBioBricksManager : MonoBehaviour {
       }
       return true;
     }
+    else
+    {
+    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") fail", Logger.Level.INFO);
     return false;
+    }    
   }
 
   public void OnPanelEnabled()
