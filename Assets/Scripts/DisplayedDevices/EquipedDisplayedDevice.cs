@@ -16,6 +16,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
 
   private bool                        _displayBricks;
+  private bool                        _isEquipScreen;
 
 
   public EquipedDeviceCloseButton closeButton;
@@ -143,26 +144,34 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
     base.OnHover(isOver);
     
-    /*
     if(null != closeButton && !_devicesDisplayer.IsEquipScreen())
     {
       //TODO fix interaction with Update
       closeButton.gameObject.SetActive(isOver);
     }
-    */
   }
 
   void Update () {
-    /*
-    if(null != closeButton && _devicesDisplayer.IsEquipScreen())
+    bool newIsEquipScreen = _devicesDisplayer.IsEquipScreen();
+    if(null != closeButton)
     {
-      //TODO fix interaction with OnHover
-      closeButton.gameObject.SetActive(true);
+      if(_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+      {
+        closeButton.gameObject.SetActive(false);
+      }
+      else
+      {
+        if(!_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+        {
+          //TODO fix interaction with OnHover
+          closeButton.gameObject.SetActive(true);
+        }
+      }
     }
-    */
+    _isEquipScreen = newIsEquipScreen;
 
     //no-hover version
-    closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
+    //closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
   }
 
   // Use this for initialization
