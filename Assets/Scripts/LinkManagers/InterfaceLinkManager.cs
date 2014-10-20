@@ -38,6 +38,8 @@ public class InterfaceLinkManager : MonoBehaviour {
   public CellControlButton relativeWASDButton;
   public CellControlButton rightClickToMoveButton;
   public UISprite selectedControlTypeSprite;
+  public GameObject modalBackground;
+  public GameObject genericModalWindow;
 
 	//public Camera _uicamera;
 
@@ -53,6 +55,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     InfoWindowManager infoWindowManager = InfoWindowManager.get();
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
     TooltipManager tooltipManager = TooltipManager.get();
+    ModalManager modalManager = ModalManager.get();
     GameObject mediumInfoPanelCell = GameObject.Find("MediumInfoPanelCell");
 
 		//GUITransitioner
@@ -139,6 +142,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
 		tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
 		tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
-            
-  	}
+
+    //ModalManager
+    modalManager.modalBackground = modalBackground;
+    modalManager.genericModalWindow = genericModalWindow;
+  }
 }

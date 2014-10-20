@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RestartButton : ModalButton {
+public class QuitModalWindow : ModalButton {
   protected override void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("RestartButton::OnPress()", Logger.Level.INFO);
-      GameStateController.restart();
+      Logger.Log("ModalManager::OnPress()", Logger.Level.INFO);
+      ModalManager.get().unsetModal();
     }
     base.OnPress(isPressed);
   }
