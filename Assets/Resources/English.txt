@@ -49,12 +49,16 @@ INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
 INFO.RFP.BOTTOM=The RFP gene BioBrick will be included in future versions of the game!
 
+MODAL.RESTARTGAME.TITLE=RESTART GAME?
+MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?
+
 GUI.MEDIUMINFOSTATICINFO.LABELS=temperature:\npH:\nenergy input:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n15
 GUI.BUTTON.RESTART=RESTART
 GUI.BUTTON.INVENTORY=Inventory
 GUI.BUTTON.CRAFTING=Crafting
 GUI.BUTTON.VALIDATE=OK
+GUI.BUTTON.CANCEL=Cancel
 GUI.MEDIUMINFO.TITLE=MEDIUM INFO
 GUI.CELLINFO.TITLE=CELLIA INFO
 GUI.INVENTORY.TITLE=INVENTORY

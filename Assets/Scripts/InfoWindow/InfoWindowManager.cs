@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+//TODO: merge with ModalManager
 public class InfoWindowManager : MonoBehaviour {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
@@ -136,6 +137,7 @@ public class InfoWindowManager : MonoBehaviour {
       case NextAction.GOTOWORLD:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
         _instance.gameStateController.changeState(GameState.Game);
+        _instance.gameStateController.dePauseForbidden = false;
         break;
       case NextAction.GOTOEQUIP:
         Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
@@ -148,6 +150,7 @@ public class InfoWindowManager : MonoBehaviour {
       default:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
         _instance.gameStateController.changeState(GameState.Game);
+        _instance.gameStateController.dePauseForbidden = false;
         break;
     }
   }
