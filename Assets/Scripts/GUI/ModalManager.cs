@@ -35,6 +35,7 @@ public class ModalManager : MonoBehaviour {
 
   public UISprite infoSprite;
   public UIButton validateButton;
+  private string _validateButtonClass;
 
   private GameObject _currentModalElement;
   private float _previousZ;
@@ -87,6 +88,7 @@ public class ModalManager : MonoBehaviour {
       _instance.explanationLabel.text = Localization.Localize(generic+_genericExplanation);
 
       _instance.validateButton.gameObject.AddComponent(info._next);
+      _instance._validateButtonClass = info._next;
       
       return true;
     }
@@ -133,16 +135,12 @@ public class ModalManager : MonoBehaviour {
     Vector3 position = _currentModalElement.transform.localPosition;
     _currentModalElement.transform.localPosition = new Vector3(position.x, position.y, _previousZ);
 
+    if(!string.IsNullOrEmpty(_validateButtonClass))
+    {
+      Object.Destroy(validateButton.GetComponent(_validateButtonClass));
+      _validateButtonClass = null;
+    }
     _currentModalElement.SetActive(false);
     modalBackground.SetActive(false);
-  }
-
-  public void unsetModal(MonoBehaviour behaviour)
-  {
-    if(null != behaviour)
-    {
-      Object.Destroy(behaviour);
-    }    
-    unsetModal();
   }
 }
