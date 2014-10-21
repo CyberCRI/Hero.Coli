@@ -49,12 +49,16 @@ INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
 INFO.RFP.BOTTOM=La BioBrique du gène RFP sera présente dans une prochaine version du jeu !
 
+MODAL.RESTARTGAME.TITLE=RECOMMENCER ?
+MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vous sûr ?
+
 GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
 GUI.BUTTON.RESTART=RECOMMENCER
 GUI.BUTTON.INVENTORY=Inventaire
 GUI.BUTTON.CRAFTING=Crafting
 GUI.BUTTON.VALIDATE=OK
+GUI.BUTTON.CANCEL=Annuler
 GUI.MEDIUMINFO.TITLE=INFOS MEDIUM
 GUI.CELLINFO.TITLE=INFOS CELLIA
 GUI.INVENTORY.TITLE=INVENTAIRE

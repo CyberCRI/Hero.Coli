@@ -28,6 +28,7 @@ public class GameStateController : MonoBehaviour {
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
   public GameObject  intro, end;
+    //TODO make the management of dePauseForbidden better
   public bool dePauseForbidden;
 
 	void Awake() {
@@ -59,12 +60,16 @@ public class GameStateController : MonoBehaviour {
         break;
 			
 			case GameState.Game:
-				if (Input.GetKeyDown(KeyCode.Escape)) changeState(GameState.Pause);
+				if (Input.GetKeyDown(KeyCode.Escape))
+        {
+          changeState(GameState.Pause);
+        }
 			  break;
 			
 			case GameState.Pause:
-				if (dePauseForbidden == false){
-					if (Input.GetKeyDown(KeyCode.Escape)) changeState(GameState.Game);
+        if (!dePauseForbidden && Input.GetKeyDown(KeyCode.Escape))
+        {
+					changeState(GameState.Game);
 				}
 			  break;
 			
