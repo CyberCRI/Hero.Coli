@@ -60,9 +60,7 @@ public class InfoWindowManager : MonoBehaviour {
   {
     if(fillInFieldsFromCode(code))
     {
-      _instance.infoPanel.SetActive(true);
-      _instance.gameStateController.changeState(GameState.Pause);
-      _instance.gameStateController.dePauseForbidden = true;
+      ModalManager.setModal(_instance.infoPanel);
       return true;
     }
     else
@@ -131,7 +129,7 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static void next()
   {
-    _instance.infoPanel.SetActive(false);
+    ModalManager.unsetModal();
     switch(_instance.nextAction)
     {
       case NextAction.GOTOWORLD:

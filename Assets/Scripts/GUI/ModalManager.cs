@@ -98,17 +98,17 @@ public class ModalManager : MonoBehaviour {
     }
   }
 
-  public void setModal(GameObject guiComponent)
+  public static void setModal(GameObject guiComponent)
   {
     if(null != guiComponent)
     {
       Vector3 position = guiComponent.transform.localPosition;
-      _previousZ = position.z;
-      guiComponent.transform.localPosition = new Vector3(position.x, position.y, foregroundZ);
-      _currentModalElement = guiComponent;
+      _instance._previousZ = position.z;
+      guiComponent.transform.localPosition = new Vector3(position.x, position.y, _instance.foregroundZ);
+      _instance._currentModalElement = guiComponent;
 
-      _currentModalElement.SetActive(true);
-      modalBackground.SetActive(true);
+      _instance._currentModalElement.SetActive(true);
+      _instance.modalBackground.SetActive(true);
 
       GameStateController.get().changeState(GameState.Pause);
       GameStateController.get().dePauseForbidden = true;
@@ -119,7 +119,7 @@ public class ModalManager : MonoBehaviour {
   {
     if(null != _instance.genericModalWindow && fillInFieldsFromCode(code))
     {
-        _instance.setModal(_instance.genericModalWindow);
+        setModal(_instance.genericModalWindow);
         
         return true;
     }
@@ -130,17 +130,22 @@ public class ModalManager : MonoBehaviour {
     }
   }
 
-  public void unsetModal()
+  public static void unsetModal()
   {
-    Vector3 position = _currentModalElement.transform.localPosition;
-    _currentModalElement.transform.localPosition = new Vector3(position.x, position.y, _previousZ);
-
-    if(!string.IsNullOrEmpty(_validateButtonClass))
+    if(null != _instance._currentModalElement)
     {
-      Object.Destroy(validateButton.GetComponent(_validateButtonClass));
-      _validateButtonClass = null;
+      Vector3 position = _instance._currentModalElement.transform.localPosition;
+      _instance._currentModalElement.transform.localPosition = new Vector3(position.x, position.y, _instance._previousZ);
+
+      if(!string.IsNullOrEmpty(_instance._validateButtonClass))
+      {
+        Object.Destroy(_instance.validateButton.GetComponent(_instance._validateButtonClass));
+        _instance._validateButtonClass = null;
+      }
+      _instance._currentModalElement.SetActive(false);
+      _instance.modalBackground.SetActive(false);
+
+      _instance._currentModalElement = null;
     }
-    _currentModalElement.SetActive(false);
-    modalBackground.SetActive(false);
   }
 }
