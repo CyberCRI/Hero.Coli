@@ -29,7 +29,16 @@ public class GameStateController : MonoBehaviour {
   public Fade fadeSprite;
   public GameObject  intro, end;
     //TODO make the management of dePauseForbidden better
-  public bool dePauseForbidden;
+  //public bool dePauseForbidden;
+  private int pausesStacked = 0;
+    public int getPausesInStackCount {
+        return pausesStacked;
+    }
+  public int addPauseInStack()
+    {
+
+    }
+
 
 	void Awake() {
     _instance = this;
