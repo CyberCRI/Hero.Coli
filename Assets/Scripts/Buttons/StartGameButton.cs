@@ -22,8 +22,8 @@ public class StartGameButton : MonoBehaviour {
       fadeSprite.FadeOut();
       panel.SetActive(false);
       gameStateController.changeState(GameState.Game);
-      gameStateController.dePauseForbidden = false;
-	    }
-  	}
+      gameStateController.popPauseInStack();
+	  }
+  }
 				
 }

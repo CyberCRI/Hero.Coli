@@ -6,7 +6,7 @@ public class CancelModal : MonoBehaviour {
     if(isPressed) {
       Logger.Log("CancelModal::OnPress()", Logger.Level.INFO);
       GameStateController.get().changeState(GameState.Game);
-      GameStateController.get().dePauseForbidden = false;
+      GameStateController.get().popPauseInStack();
       ModalManager.unsetModal();
     }
   }

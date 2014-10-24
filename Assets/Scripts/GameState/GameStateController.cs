@@ -31,13 +31,28 @@ public class GameStateController : MonoBehaviour {
     //TODO make the management of dePauseForbidden better
   //public bool dePauseForbidden;
   private int pausesStacked = 0;
-    public int getPausesInStackCount {
-        return pausesStacked;
-    }
-  public int addPauseInStack()
+  public int getPausesInStackCount(){
+    return pausesStacked;
+  }
+  public int pushPauseInStack()
+  {
+    pausesStacked++;
+    return pausesStacked;
+  }
+  public int popPauseInStack()
+  {
+    if(pausesStacked > 0)
     {
-
+      pausesStacked--;
+      return pausesStacked;
     }
+    else
+    {
+      Logger.Log("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
+      pausesStacked = 0;
+      return pausesStacked;
+    }
+  }
 
 
 	void Awake() {
@@ -49,7 +64,7 @@ public class GameStateController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_gameState = GameState.Start;
-		dePauseForbidden = true;
+		pushPauseInStack();
 	  //dePauseForbidden = false;
 		//StateChange(GameState.Game);
     
@@ -76,7 +91,7 @@ public class GameStateController : MonoBehaviour {
 			  break;
 			
 			case GameState.Pause:
-        if (!dePauseForbidden && Input.GetKeyDown(KeyCode.Escape))
+        if (0 != getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
         {
 					changeState(GameState.Game);
 				}
@@ -87,7 +102,7 @@ public class GameStateController : MonoBehaviour {
 				fadeSprite.gameObject.SetActive(true);
 				fadeSprite.FadeIn();
 				gUITransitioner.Pause(true);
-				dePauseForbidden = true;
+				pushPauseInStack();
 				end.SetActive(true);
         break;		
 		}
@@ -105,7 +120,7 @@ public class GameStateController : MonoBehaviour {
 			case GameState.Game:
 			//gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
 				gUITransitioner.Pause(false);
-				dePauseForbidden = false;
+				popPauseInStack();
 			  break;
 			
 			case GameState.Pause:

@@ -6,7 +6,7 @@ public class QuitModalWindow : ModalButton {
     if(isPressed) {
       Logger.Log("QuitModalWindow::OnPress()", Logger.Level.INFO);
       GameStateController.get().changeState(GameState.Game);
-      GameStateController.get().dePauseForbidden = false;
+      GameStateController.get().popPauseInStack();
     }
     base.OnPress(isPressed);
   }
