@@ -22,6 +22,7 @@ public class EndGameCollider : MonoBehaviour {
 		        
 				gameStateController.changeState(GameState.End);
 				gameStateController.pushPauseInStack();
+
 				alreadyDisplayed = true;
 				StartCoroutine(WaitFade(2000f));
 				

@@ -110,8 +110,7 @@ public class ModalManager : MonoBehaviour {
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
 
-      GameStateController.get().changeState(GameState.Pause);
-      GameStateController.get().pushPauseInStack();
+      GameStateController.get().tryLockPause();
     }
   }
   

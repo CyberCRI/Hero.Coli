@@ -21,8 +21,7 @@ public class ContinueButton : MonoBehaviour {
       Logger.Log("ContinueButton::OnPress()", Logger.Level.INFO);
       currentInfoPanel.SetActive(false);
 	    nextInfoPanel.SetActive(true);
-	    gameStateController.changeState(GameState.Pause);
-      gameStateController.pushPauseInStack();
+      gameStateController.tryLockPause();
     }
   }
 }

@@ -21,8 +21,7 @@ public class StartGameButton : MonoBehaviour {
       Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
       fadeSprite.FadeOut();
       panel.SetActive(false);
-      gameStateController.changeState(GameState.Game);
-      gameStateController.popPauseInStack();
+      gameStateController.tryUnlockPause();
 	  }
   }
 				

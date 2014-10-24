@@ -53,6 +53,18 @@ public class GameStateController : MonoBehaviour {
       return pausesStacked;
     }
   }
+  public void tryUnlockPause()
+  {
+    if(0 == popPauseInStack())
+    {
+      changeState(GameState.Game);
+    }
+  }
+  public void tryLockPause()
+  {
+    pushPauseInStack();
+    changeState(GameState.Pause);
+  }
 
 
 	void Awake() {
@@ -91,7 +103,7 @@ public class GameStateController : MonoBehaviour {
 			  break;
 			
 			case GameState.Pause:
-        if (0 != getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
+        if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
         {
 					changeState(GameState.Game);
 				}
