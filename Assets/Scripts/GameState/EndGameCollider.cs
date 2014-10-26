@@ -21,7 +21,6 @@ public class EndGameCollider : MonoBehaviour {
 			if(other == hero.GetComponent<Collider>()) {
 		        
 				gameStateController.changeState(GameState.End);
-				gameStateController.pushPauseInStack();
 
 				alreadyDisplayed = true;
 				StartCoroutine(WaitFade(2000f));
