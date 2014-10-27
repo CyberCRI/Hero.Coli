@@ -44,7 +44,7 @@ INFO.PICKEDUPGFP.TITLE=DEVICE TROUVÉ !
 INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé un nouveau device génétique !
 INFO.PICKEDUPGFP.EXPLANATION=Ce device contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
 INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire pour équiper ce device.
-INFO.RFP.TITLE=ZUT! PAS DE FLUORESCENCE ROUGE !
+INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
 INFO.RFP.BOTTOM=La BioBrique du gène RFP sera présente dans une prochaine version du jeu !
@@ -68,10 +68,10 @@ GUI.EQUIPED.TITLE=DEVICES ÉQUIPÉS
 CRAFT.TITLE.LABEL=INTERFACE DE CRAFT
 
 CRAFT.PROCESS.EQUIP=Inventaire
-CRAFT.PROCESS.CRAFT=Crafter
+CRAFT.PROCESS.CRAFT=Assemblage
 
-CRAFT.ASSEMBLY.TITLE=Table de Craft
-CRAFT.ASSEMBLY.TIP=Pour créer ton devices génétiques, clique sur les éléments de ta banque de BioBriques pour les afficher sur la table. Crafte ta combinaison de BioBriques pour l'ajouter à ton inventaire.
+CRAFT.ASSEMBLY.TITLE=Table d'Assemblage
+CRAFT.ASSEMBLY.TIP=Pour fabriquer vos devices génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Créez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
 CRAFT.ASSEMBLY.1ST=Promoteur
 CRAFT.ASSEMBLY.2ND=RBS
 CRAFT.ASSEMBLY.3RD=Gène
@@ -82,32 +82,32 @@ CRAFT.FINALIZATION.TITLE=Résultat
 CRAFT.FINALIZATION.SUCCESS=Nouvelle recette de device !
 CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de device est déjà utilisé !
 CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déjà connu.
-CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à crafter : cette recette est déjà connue !
-CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat du crafting s'affiche ici.
+CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette recette est déjà connue !
+CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de l'assemblage s'affiche ici.
 
 CRAFT.BANK.TITLE=Banque de BioBriques
 CRAFT.BANK.PROMOTER=Promoteur
 CRAFT.BANK.RBS=RBS
 CRAFT.BANK.GENE=Gène
 CRAFT.BANK.TERMINATOR=Terminateur
-CRAFT.BANK.TIP=Clique sur une catégorie pour afficher tes BioBriques.
+CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 
 CRAFT.RECIPES.TITLE=Recettes
-CRAFT.RECIPES.TIP=Clique sur un device pour mettre ses BioBriques sur la table.
+CRAFT.RECIPES.TIP=Cliquez sur un device pour mettre ses BioBriques sur la table.
 
-TUTORIAL.INTRODUCTION1.NANOBOTLABEL=C'EST TOI!
-TUTORIAL.INTRODUCTION1.CELLLABEL=CELLIA, TON AMIE!
-TUTORIAL.INTRODUCTION1.WELCOMETITLE=BIENVENUE DANS HERO.COLI
-TUTORIAL.INTRODUCTION1.PART1=DANS CE MONDE, DES MACHINES INTELLIGENTES ET DES ÊTRES VIVANTS ASSURENT ENSEMBLE L'HARMONIE ET L'ÉQUILIBRE DE LEUR PLANÈTE.
-TUTORIAL.INTRODUCTION1.PART2=TU ES UN PETIT ROBOT HABITANT CETTE PLANÈTE.
-TUTORIAL.INTRODUCTION1.PART3=TA MEILLEURE AMIE CELLIA EST UNE BACTÉRIE VIVANT DANS UN ENVIRONNEMENT AQUATIQUE.
+TUTORIAL.INTRODUCTION1.NANOBOTLABEL=C'est vous !
+TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, votre amie !
+TUTORIAL.INTRODUCTION1.WELCOMETITLE=Bienvenue dans Hero.coli
+TUTORIAL.INTRODUCTION1.PART1=Dans ce monde, des machines intelligentes et des êtres vivants assurent ensemble l'harmonie et l'équilibre de leur planète.
+TUTORIAL.INTRODUCTION1.PART2=Vous êtes un petit robot habitant cette planète.
+TUTORIAL.INTRODUCTION1.PART3=Votre meilleure amie Cellia est une bactérie vivant dans un environnement aquatique.
 TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
 
-TUTORIAL.INTRODUCTION2.PART1=DANS CE NIVEAU, TU VAS AIDER TON AMIE BACTÉRIE À DÉTRUIRE UNE MYSTÉRIEUSE CRÉATURE QUI RÉPAND DES COMPOSÉS TOXIQUES DANS L'EAU.
-TUTORIAL.INTRODUCTION2.PART2=CEPENDANT SUR TON CHEMIN TU DEVRAS REMPORTER DIFFÉRENTES ÉPREUVES AVANT DE TROUVER TON ENNEMI.
-TUTORIAL.INTRODUCTION2.PART3=POUR CETTE MISSION TU DEVRAS MODIFIER L'ADN DE CELLIA POUR REMPORTER CES ÉPREUVES AVANT DE L'AMENER JUSQU'À TON ENNEMI.
+TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous allez aider votre amie bactérie à sortir de ce labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
+TUTORIAL.INTRODUCTION2.PART2=Cependant sur votre chemin vous devrez remporter différentes épreuves avant de trouver la sortie.
+TUTORIAL.INTRODUCTION2.PART3=Pour cette mission vous devrez modifier l'ADN de Cellia pour remporter ces épreuves.
 TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION
-TUTORIAL.INTRODUCTION2.BOTTOM=CLIQUE POUR ENTRER DANS CELLIA, TU POURRAS LA CONTRÔLER AVEC LE CLIC GAUCHE.
+TUTORIAL.INTRODUCTION2.BOTTOM=Cliquez pour entrer dans Cellia, vous pourrez la contrôler avec le clic gauche.
 
 TUTORIAL.END.TITLE=VICTOIRE !
 TUTORIAL.END.EXPLANATION=Merci d'avoir joué, nous espérons que vous avez aimé ce jeu. N'oubliez pas de dire ce que vous en avez pensé, surtout si vous voulez nous aider à le développer !
@@ -207,12 +207,12 @@ TOOLTIP.D_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
 TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
-TOOLTIP.D_HYPERFLAGELLATION_(MED).TITLE=Hyperflagellation (moyen)
-TOOLTIP.D_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.
-TOOLTIP.D_HYPERFLAGELLATION_(MED).LENGTH=1122bp
-TOOLTIP.D_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.D_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).TITLE=Hyperflagellation (moyen)
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).LENGTH=1122bp
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TITLE=(Régulé) Fluorescence verte (faible)
 TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.

@@ -51,6 +51,10 @@
     <type>Device</type>
     <illustration>pic_d_cons-speed-med</illustration>
   </tooltip>
+  <tooltip code="d_Hyperflagellation (moyen)">
+    <type>Device</type>
+    <illustration>pic_d_cons-speed-med</illustration>
+  </tooltip>
   <tooltip code="d_Regulated green fluorescence (low)">
     <type>Device</type>
     <illustration>pic_d_plac-gfp-low</illustration>
