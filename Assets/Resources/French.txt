@@ -33,9 +33,9 @@ DEVICE.SUFLOW=(faible)
 DEVICE.PREREG=(Régulé) 
 
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
-INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre premier device génétique!
-INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Il permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et équiper le device.
+INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre première construction génétique!
+INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Elle permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et activer la construction.
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouveaux devices avec !
