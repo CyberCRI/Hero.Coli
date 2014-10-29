@@ -35,11 +35,12 @@ public class GameStateController : MonoBehaviour {
   public int pushPauseInStack()
   {
     _pausesStacked++;
-    Logger.Log("pushPauseInStack() returns "+_pausesStacked, Logger.Level.DEBUG);
+        Logger.Log("pushPauseInStack() returns "+_pausesStacked, Logger.Level.INFO);
     return _pausesStacked;
   }
   public int popPauseInStack()
   {
+        Logger.Log("popPauseInStack() starts with _pausesStacked=="+_pausesStacked, Logger.Level.DEBUG);
     if(_pausesStacked > 0)
     {
       _pausesStacked--;
@@ -49,7 +50,7 @@ public class GameStateController : MonoBehaviour {
       Logger.Log("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
       _pausesStacked = 0;
     }
-    Logger.Log("popPauseInStack() returns "+_pausesStacked, Logger.Level.DEBUG);
+        Logger.Log("popPauseInStack() returns _pausesStacked=="+_pausesStacked, Logger.Level.INFO);
     return _pausesStacked;
   }
   public void tryUnlockPause()
@@ -59,14 +60,14 @@ public class GameStateController : MonoBehaviour {
     {
       changeState(GameState.Game);
     }
-        Logger.Log("tryUnlockPause() with final pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
+        Logger.Log("tryUnlockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
   }
   public void tryLockPause()
   {
         Logger.Log("tryLockPause() with previous pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
     pushPauseInStack();
     changeState(GameState.Pause);
-        Logger.Log("tryLockPause() with final pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
+        Logger.Log("tryLockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
   }
 
 
