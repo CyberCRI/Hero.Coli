@@ -27,7 +27,7 @@ public class GameStateController : MonoBehaviour {
   private GameState _gameState;
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
-  public GameObject intro, end;
+  public GameObject intro, end, pauseIndicator;
   private int _pausesStacked = 0;
   public int getPausesInStackCount(){
     return _pausesStacked;
@@ -100,6 +100,7 @@ public class GameStateController : MonoBehaviour {
 			case GameState.Game:
 				if (Input.GetKeyDown(KeyCode.Escape))
         {
+          ModalManager.setModal(pauseIndicator, false);
           changeState(GameState.Pause);
         }
 			  break;
@@ -107,6 +108,7 @@ public class GameStateController : MonoBehaviour {
 			case GameState.Pause:
         if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
         {
+          ModalManager.unsetModal();
 					changeState(GameState.Game);
 				}
 			  break;
