@@ -31,7 +31,7 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject introduction2;
   public GameObject okButton1;
   public GameObject okButton2;
-  public GameObject end;
+  public GameObject end, pauseIndicator;
 
   public CellControlButton absoluteWASDButton;
   public CellControlButton leftClickToMoveButton;
@@ -72,6 +72,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     gameStateController.intro = introduction1;
 		gameStateController.fadeSprite = fade;
 		gameStateController.end = end;
+    gameStateController.pauseIndicator = pauseIndicator;
 
 		//Object with GameStateController 
 		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
@@ -80,6 +81,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     introduction1.SetActive(false);
     introduction2.SetActive(false);
     end.SetActive(false);
+    pauseIndicator.SetActive(false);
     genericModalWindow.SetActive(false);
 
 		//CraftFinalizer
