@@ -98,19 +98,38 @@ public class GameStateController : MonoBehaviour {
         break;
 			
 			case GameState.Game:
+        
+                //pause
 				if (Input.GetKeyDown(KeyCode.Escape))
         {
           ModalManager.setModal(pauseIndicator, false);
           changeState(GameState.Pause);
+        } 
+                //inventory
+                //TODO add DNA damage accumulation management when player equips/unequips too often
+        else if(Input.GetKeyDown(KeyCode.Escape))
+        {
+        }
+                //crafting
+        else if(Input.GetKeyDown(KeyCode.Escape))
+        {
         }
 			  break;
 			
 			case GameState.Pause:
-        if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
-        {
-          ModalManager.unsetModal();
-					changeState(GameState.Game);
-				}
+          if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
+          {
+            ModalManager.unsetModal();
+					  changeState(GameState.Game);
+				  } else if(
+                    (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2)
+                    && (Input.GetKeyDown(KeyCode.Escape)
+                        || Input.GetKeyDown(KeyCode.KeypadEnter))
+                    )
+          {
+            gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+          }
+        }
 			  break;
 			
 			case GameState.End:
