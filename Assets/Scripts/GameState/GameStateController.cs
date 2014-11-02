@@ -107,12 +107,14 @@ public class GameStateController : MonoBehaviour {
         } 
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-        else if(Input.GetKeyDown(KeyCode.Escape))
+        else if(Input.GetKeyDown(KeyCode.I))
         {
+          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
         }
                 //crafting
-        else if(Input.GetKeyDown(KeyCode.Escape))
+        else if(Input.GetKeyDown(KeyCode.C))
         {
+          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
         }
 			  break;
 			
@@ -122,14 +124,25 @@ public class GameStateController : MonoBehaviour {
             ModalManager.unsetModal();
 					  changeState(GameState.Game);
 				  } else if(
-                    (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2)
-                    && (Input.GetKeyDown(KeyCode.Escape)
-                        || Input.GetKeyDown(KeyCode.KeypadEnter))
+                      (
+                        (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2)
+                        ||
+                        (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen3)
+                      )
+                      &&
+                      (
+                        Input.GetKeyDown(KeyCode.Escape)
+                        ||
+                        Input.GetKeyDown(KeyCode.KeypadEnter)
+                      )
                     )
           {
+                    //POP 1 PAUSE
+                    //MAKE THIS PRIVATE
+                    //COUPLE/REFACTOR CODE
             gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
           }
-        }
+
 			  break;
 			
 			case GameState.End:
@@ -139,7 +152,10 @@ public class GameStateController : MonoBehaviour {
 				gUITransitioner.Pause(true);
 				pushPauseInStack();
 				end.SetActive(true);
-        break;		
+        break;	
+
+       default:
+        break;
 		}
 	}
 	
