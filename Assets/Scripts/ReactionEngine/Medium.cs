@@ -38,6 +38,13 @@ public class Medium : LoadableFromXmlImpl
   private float           _energyProductionRate;          //!< The energy production speed
   public bool             enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
+    
+  //TODO refactor interactions out of medium
+  private string _shortkeyPrefix = "KEY.";
+  private string _shortkeyPlusSuffix = ".PLUS";
+  private string _shortkeyMinusSuffix = ".MINUS";
+
+
   public void setId(int id) { _numberId = id;}
   public int getId() { return _numberId;}
   public void setName(string name) { _name = name;}
@@ -362,26 +369,28 @@ public class Medium : LoadableFromXmlImpl
     }
 
     //TODO improve check that it's the medium of the hero bacterium Cellia
+    //TODO refactor interactions out of medium
     if (_name == "Cellia")
     {
-      manageMoleculeConcentrationWithKey(KeyCode.P, KeyCode.M, "MOV");
-      manageMoleculeConcentrationWithKey(KeyCode.O, KeyCode.L, "AMPI");
-      manageMoleculeConcentrationWithKey(KeyCode.I, KeyCode.K, "FLUO1");
-      manageMoleculeConcentrationWithKey(KeyCode.U, KeyCode.J, "AMPR");
-      manageMoleculeConcentrationWithKey(KeyCode.Y, KeyCode.H, "FLUO2");
+      manageMoleculeConcentrationWithKey("MOV");
+      manageMoleculeConcentrationWithKey("AMPI");
+      manageMoleculeConcentrationWithKey("FLUO1");
+      manageMoleculeConcentrationWithKey("AMPR");
+      manageMoleculeConcentrationWithKey("FLUO2");
     }
   }
 
-  private void manageMoleculeConcentrationWithKey(KeyCode plusCode, KeyCode minusCode, String molecule)
+  //TODO refactor interactions out of medium
+  private void manageMoleculeConcentrationWithKey(String molecule)
   {
-    if (Input.GetKey(plusCode))
+    if (GameStateController.isShortcutKey(_shortkeyPrefix+molecule+_shortkeyPlusSuffix))
     {
       if (_enableSequential)
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
       else
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
     }
-    if (Input.GetKey(minusCode))
+    if (GameStateController.isShortcutKey(_shortkeyPrefix+molecule+_shortkeyMinusSuffix))
     {
       if (_enableSequential)
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(- 10f);

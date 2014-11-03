@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public enum GameState{
 	Start,
@@ -85,6 +86,24 @@ public class GameStateController : MonoBehaviour {
     I18n.changeLanguageTo(I18n.Language.French);
     Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
 	}
+
+    //TODO optimize for frequent calls & refactor out of GameStateController
+    public static KeyCode getKeyCode(string localizationKey)
+    {
+      return (KeyCode) Enum.Parse(typeof(KeyCode), Localization.Localize(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKeyDown(string localizationKey)
+    {
+      return Input.GetKeyDown(getKeyCode(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKey(string localizationKey)
+    {
+      return Input.GetKey(getKeyCode(localizationKey));
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -98,28 +117,27 @@ public class GameStateController : MonoBehaviour {
         break;
 			
 			case GameState.Game:
-        
                 //pause
-				if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown("KEY.PAUSE"))
         {
           ModalManager.setModal(pauseIndicator, false);
           changeState(GameState.Pause);
         } 
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-        else if(Input.GetKeyDown(KeyCode.I))
+        else if(isShortcutKeyDown("KEY.INVENTORY"))
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
         }
                 //crafting
-        else if(Input.GetKeyDown(KeyCode.C))
+        else if(isShortcutKeyDown("KEY.CRAFTING"))
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
         }
 			  break;
 			
 			case GameState.Pause:
-          if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
+          if (0 == getPausesInStackCount() && (Input.GetKeyDown(KeyCode.Escape)|| isShortcutKeyDown("KEY.PAUSE")))
           {
             ModalManager.unsetModal();
 					  changeState(GameState.Game);
@@ -133,13 +151,10 @@ public class GameStateController : MonoBehaviour {
                       (
                         Input.GetKeyDown(KeyCode.Escape)
                         ||
-                        Input.GetKeyDown(KeyCode.KeypadEnter)
+                        Input.GetKeyDown(KeyCode.Return)
                       )
                     )
           {
-                    //POP 1 PAUSE
-                    //MAKE THIS PRIVATE
-                    //COUPLE/REFACTOR CODE
             gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
           }
 
