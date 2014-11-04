@@ -38,12 +38,12 @@ INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Elle permet d'accroître la vitesse d
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et activer la construction.
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
-INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouveaux devices avec !
-INFO.PICKEDUPRBS.BOTTOM=Allez fabriquer de nouveaux devices en cliquant sur 'Continuer' pour ouvrir l'interface de Crafting.
-INFO.PICKEDUPGFP.TITLE=DEVICE TROUVÉ !
-INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé un nouveau device génétique !
-INFO.PICKEDUPGFP.EXPLANATION=Ce device contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
-INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire pour équiper ce device.
+INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
+INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur 'Continuer' pour ouvrir l'interface d'Assemblage.
+INFO.PICKEDUPGFP.TITLE=CONSTRUCTION TROUVÉE !
+INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé une nouvelle construction génétique !
+INFO.PICKEDUPGFP.EXPLANATION=Cette construction contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
+INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire pour injecter cette construction dans Cellia.
 INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
@@ -56,22 +56,22 @@ GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
 GUI.BUTTON.RESTART=RECOMMENCER
 GUI.BUTTON.INVENTORY=Inventaire
-GUI.BUTTON.CRAFTING=Crafting
+GUI.BUTTON.CRAFTING=Assemblage
 GUI.BUTTON.VALIDATE=OK
 GUI.BUTTON.CANCEL=Annuler
 GUI.MEDIUMINFO.TITLE=INFOS MEDIUM
 GUI.CELLINFO.TITLE=INFOS CELLIA
 GUI.INVENTORY.TITLE=INVENTAIRE
 GUI.INVENTORY.EQUIPED=ÉQUIPÉ
-GUI.EQUIPED.TITLE=DEVICES ÉQUIPÉS
+GUI.EQUIPED.TITLE=CONSTRUCTIONS ÉQUIPÉES
 
-CRAFT.TITLE.LABEL=INTERFACE DE CRAFT
+CRAFT.TITLE.LABEL=INTERFACE D'ASSEMBLAGE
 
 CRAFT.PROCESS.EQUIP=Inventaire
-CRAFT.PROCESS.CRAFT=Assemblage
+CRAFT.PROCESS.CRAFT=assembler
 
 CRAFT.ASSEMBLY.TITLE=Table d'Assemblage
-CRAFT.ASSEMBLY.TIP=Pour fabriquer vos devices génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Créez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
+CRAFT.ASSEMBLY.TIP=Pour fabriquer vos constructions génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Assemblez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
 CRAFT.ASSEMBLY.1ST=Promoteur
 CRAFT.ASSEMBLY.2ND=RBS
 CRAFT.ASSEMBLY.3RD=Gène
@@ -79,10 +79,10 @@ CRAFT.ASSEMBLY.4TH=Terminateur
 
 CRAFT.FINALIZATION.TITLE=Résultat
 
-CRAFT.FINALIZATION.SUCCESS=Nouvelle recette de device !
-CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de device est déjà utilisé !
+CRAFT.FINALIZATION.SUCCESS=Nouvelle construction génétique !
+CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de construction est déjà utilisé !
 CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déjà connu.
-CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette recette est déjà connue !
+CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette construction est déjà connue !
 CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de l'assemblage s'affiche ici.
 
 CRAFT.BANK.TITLE=Banque de BioBriques
@@ -92,8 +92,8 @@ CRAFT.BANK.GENE=Gène
 CRAFT.BANK.TERMINATOR=Terminateur
 CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 
-CRAFT.RECIPES.TITLE=Recettes
-CRAFT.RECIPES.TIP=Cliquez sur un device pour mettre ses BioBriques sur la table.
+CRAFT.RECIPES.TITLE=Constructions
+CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour mettre ses BioBriques sur la table.
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=C'est vous !
 TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, votre amie !
@@ -117,7 +117,7 @@ TUTORIAL.END.BOTTOM=Recommencez en cliquant sur le bouton.
 TOOLTIP.MAIN.LENGTH=Longueur :
 TOOLTIP.MAIN.REFERENCE=Référence :
 TOOLTIP.MAIN.ENERGYCONSUMPTION=Consommation énergétique :
-TOOLTIP.MAIN.DEVICETYPE=Device
+TOOLTIP.MAIN.DEVICETYPE=Construction
 TOOLTIP.MAIN.BIOBRICKTYPE=BioBrique
 
 TOOLTIP.B_AMPR.TITLE=Gène de Résistance à l'Ampicilline
@@ -127,7 +127,7 @@ TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
 TOOLTIP.B_AMPR.EXPLANATION=Séquence codant pour le béta-lactamase, une enzyme qui catalyze l'hydrolyse des pénicillines.
 
 TOOLTIP.B_DTER.TITLE=Terminateur 1
-TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former un device.
+TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former une construction valable.
 TOOLTIP.B_DTER.LENGTH=129bp
 TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
 TOOLTIP.B_DTER.EXPLANATION=Terminateur fort de séquence de transcription - Terminateur double.
