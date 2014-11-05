@@ -125,12 +125,12 @@ public class GameStateController : MonoBehaviour {
         } 
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-        else if(isShortcutKeyDown("KEY.INVENTORY"))
+        else if(isShortcutKeyDown("KEY.INVENTORY") && Inventory.isOpenable())
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
         }
                 //crafting
-        else if(isShortcutKeyDown("KEY.CRAFTING"))
+        else if(isShortcutKeyDown("KEY.CRAFTING") && CraftZoneManager.isOpenable())
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
         }
