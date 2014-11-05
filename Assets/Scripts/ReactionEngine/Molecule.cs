@@ -80,8 +80,12 @@ public class Molecule : LoadableFromXmlImpl
   public float getFickFactor() { return _fickFactor; }
   public void setName(string name)
   {
-        _name = name;
-        _realName = GameplayNames.getMoleculeRealName(_name);
+    _name = name;
+    _realName = GameplayNames.getMoleculeRealName(_name);
+  }    
+  public void OnLanguageChanged()
+  {
+    _realName = GameplayNames.getMoleculeRealName(_name);
   }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }

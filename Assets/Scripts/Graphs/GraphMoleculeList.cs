@@ -10,13 +10,21 @@ public class GraphMoleculeList : MonoBehaviour {
   public UILabel           valuesLabel;
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
+
   public GameObject        equipedWithMoleculesDeviceDummy;
+  public GameObject        equipmentDeviceDummy;
+  public GameObject        equipedDeviceDummy;
+    
   public string            debugName;
 
   private int               pixelsPerMoleculeLine = 15;
   private int               pixelsPerDeviceLine = 80;
       
-  public Vector3           currentDownShift;
+  public UILabel           topLabels;
+  public UILabel           topValues;
+  public Vector3           topLabelsShift;
+  public Vector3           topValuesShift;
+  public Vector3           currentHeight;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
   private int                           _displayedListMoleculesCount = 0;
@@ -33,25 +41,22 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 1 "+debugName, Logger.Level.WARN);
       EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
       equipedWithMoleculesDeviceDummy = script.gameObject;
     }
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 2 "+debugName, Logger.Level.WARN);
       equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
     }
     if(null == equipedWithMoleculesDeviceDummy)
     {
-      Logger.Log("GraphMoleculeList::safeInitialization (null == equipedWithMoleculesDeviceDummy) 3 "+debugName, Logger.Level.WARN);
       equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
     }
   }
 
   void Awake()
   {
-    currentDownShift = Vector3.zero;
+    currentHeight = Vector3.zero;
     unfoldingMoleculeList.transform.localScale = new Vector3(unfoldingMoleculeList.transform.localScale.x, 20, unfoldingMoleculeList.transform.localScale.z);
     _initialScale = unfoldingMoleculeList.transform.localScale;
   }
@@ -102,8 +107,8 @@ public class GraphMoleculeList : MonoBehaviour {
   //TODO iTween this
   void setUnfoldingListBackgroundScale()
   {
-    currentDownShift = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
-    unfoldingMoleculeList.transform.localScale = _initialScale + currentDownShift;
+    currentHeight = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
+    unfoldingMoleculeList.transform.localScale = _initialScale + currentHeight;
   }
 
   public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
@@ -114,28 +119,39 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     else
     {
+      //equipedDevice is "EquipedDevicePrefabPos" object
       GameObject equipedDevice = equipedDeviceScript.gameObject;
+
       bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
       if(newEquiped) { 
 
-        GameObject clone = Instantiate(equipedDevice) as GameObject;
-
-        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
-        
+        //EquipedDisplayedDeviceWithMolecules
+        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;        
+        //deviceWithMoleculesComponent is "EquipedDisplayedDeviceWithMoleculesButtonPrefab" object
+        //it needs an EquipmentDevice instance - it has only an EquipmentDeviceDummy object
         GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
         deviceWithMoleculesComponent.transform.parent = transform;
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
-        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
 
-        eddwm.equipedDevice = clone;
-        EquipedDisplayedDevice edd = clone.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+        
+
+        //equipmentDevice
+        GameObject equipmentDevicePrefab = Resources.Load(DisplayedDevice.equipmentPrefabURI) as GameObject;
+        GameObject equipmentDeviceComponent = Instantiate(equipmentDevicePrefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+        eddwm.equipmentDevice = equipmentDeviceComponent;
+        EquipmentDevice equipmentD = equipmentDeviceComponent.GetComponent<EquipmentDevice>() as EquipmentDevice;
+        eddwm.equipmentDeviceScript = equipmentD;
+                
+        //equipedDevice
+        GameObject equipedDeviceComponent = Instantiate(equipedDevice) as GameObject;
+        eddwm.equipedDevice = equipedDeviceComponent;
+        EquipedDisplayedDevice edd = equipedDeviceComponent.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
+        eddwm.equipedDeviceScript = edd;
+        eddwm.device = equipedDeviceScript._device;
         edd._device = equipedDeviceScript._device;
 
-        eddwm.device = equipedDeviceScript._device;
-
-        eddwm.equipedDeviceScript = equipedDeviceScript as EquipedDisplayedDevice;
-
-        eddwm.initialize();
+        eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
 
         int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);
@@ -180,7 +196,9 @@ public class GraphMoleculeList : MonoBehaviour {
 
   public void removeDeviceAndMoleculesComponent(Device device)
   {
-    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device == device);
+    //TODO fix Equals method
+    //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
+    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getName() == device.getName());
     if(null != eddwm)
     {
       displayMoleculeInList(eddwm);
@@ -191,6 +209,10 @@ public class GraphMoleculeList : MonoBehaviour {
 
       positionDeviceAndMoleculeComponents(0);
       setUnfoldingListBackgroundScale();
+    }
+    else
+    {
+      Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
     }
   }
 
@@ -255,7 +277,8 @@ public class GraphMoleculeList : MonoBehaviour {
   }
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+  {
         
     int previousListedCount = _displayedListMoleculesCount;
     int previousTotalCount = _displayedMolecules.Count;
@@ -270,7 +293,12 @@ public class GraphMoleculeList : MonoBehaviour {
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(_displayedMolecules, m => m.getRealName() == realName);
+        DisplayedMolecule found = LinkedListExtensions.Find(
+                    _displayedMolecules
+                    , m => m.getCodeName() == codeName
+                    , false
+                    , " GraphMoleculeList::Update()"
+                    );
         if(null != found)
         {
           found.update(concentration);
@@ -325,6 +353,14 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
     namesLabel.text = namesToDisplay;
     valuesLabel.text = valuesToDisplay;
+
+        /*
+    if(null != topLabels)
+    {
+      topLabelsShift = Vector3.up * topLabels.relativeSize.y * topLabels.transform.localScale.y;
+      namesLabel.transform.localPosition = topLabels.transform.localPosition + topLabelsShift;
+    }
+    */
 
     setUnfoldingListBackgroundScale();
 	}

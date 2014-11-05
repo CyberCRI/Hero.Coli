@@ -5,18 +5,13 @@ using System.Collections.Generic;
 public class FinalizationInfoPanelManager : MonoBehaviour {
 
   //TODO refactor with LastHoveredInfoManager
-  private string                  _lengthPrefix = "Length: ";
-  private string                  _lengthPostfix = " bp";
   private const string            _defaultInfo = "";
   private const string            _defaultName = "no name";
-  //private const string            _defaultStatus = "invalid device!";
-  private const string            _defaultStatus = "You will find here the result of the crafting operation.";
+  private const string            _defaultStatus = "-";
 
   public UISprite finalizationIconSprite;
   public CraftResultDevice craftResultDevice;
-  //public UILabel    finalizationInfoLabel;
-  //public UILabel    finalizationNameLabel;
-  public UILabel    finalizationStatusLabel;
+  public UILocalize    finalizationStatusLabel;
 
   private Device    _device;
 
@@ -49,8 +44,11 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
     //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationNameLabel.text="+finalizationNameLabel.text, Logger.Level.TRACE);
 
     if(null != finalizationStatusLabel)
-     finalizationStatusLabel.text = status;
-    //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
+    {
+     finalizationStatusLabel.key = status;
+     finalizationStatusLabel.Localize();
+      //Logger.Log("FinalizationInfoPanelManager::setDisplayedDevice: finalizationStatusLabel.text="+finalizationStatusLabel.text, Logger.Level.TRACE);
+    }
   }
 }
 

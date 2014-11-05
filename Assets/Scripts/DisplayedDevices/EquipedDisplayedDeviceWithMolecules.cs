@@ -6,25 +6,60 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
     
   public UILabel           namesLabel;
   public UILabel           valuesLabel;
-  public GameObject equipedDeviceDummy;
-  public GameObject equipedDevice;
-  public Device device;
-  public EquipedDisplayedDevice equipedDeviceScript;
 
+  private GameObject _equipmentDeviceDummy;
+  public GameObject equipmentDeviceDummy;
+  public GameObject equipmentDevice;
+  public EquipmentDevice equipmentDeviceScript;
+    
+  private GameObject _equipedDeviceDummy;
+  public GameObject equipedDevice;
+  public EquipedDisplayedDevice equipedDeviceScript;
+    
+  public Device device; 
+  
+    
   private DisplayedMolecule _displayedMolecule;
 
-  public void initialize()
+  public void initialize(GameObject staticEquipmentDeviceDummy, GameObject staticEquipedDeviceDummy)
   {
+    if(null != equipmentDeviceDummy)
+    {
+        equipmentDeviceDummy.SetActive(false);
+    }
+
+        if(null == staticEquipmentDeviceDummy || null == staticEquipedDeviceDummy)
+        {
+      Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
+    }
+    else
+    {
+      _equipmentDeviceDummy = staticEquipmentDeviceDummy;
+            _equipedDeviceDummy = staticEquipedDeviceDummy;
+      setEquipmentDevice();
+    }
+  }
+
+  public void setEquipmentDevice()
+  {
+    equipmentDevice.transform.parent = transform;
+    equipmentDevice.transform.localPosition = _equipmentDeviceDummy.transform.localPosition;
+    equipmentDevice.transform.localScale = new Vector3(1f, 1f, 0);
+    equipmentDevice.transform.localRotation = _equipmentDeviceDummy.transform.localRotation;    
+
     setEquipedDevice();
   }
 
   public void setEquipedDevice()
   {
-    equipedDevice.transform.parent = transform;
-    equipedDevice.transform.localPosition = equipedDeviceDummy.transform.localPosition;
+    //    if(equipedDevice.GetComponent<EquipmentDevice>
+    equipedDevice.transform.parent = equipmentDevice.transform;
+    equipedDevice.transform.localPosition = _equipedDeviceDummy.transform.localPosition;
     equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    equipedDevice.transform.localRotation = equipedDeviceDummy.transform.localRotation;
-    equipedDeviceDummy.SetActive(false);
+    equipedDevice.transform.localRotation = _equipedDeviceDummy.transform.localRotation;
+            
+    equipedDeviceScript.closeButton = equipmentDeviceScript.closeButton;
+    equipmentDeviceScript.closeButton.device = equipedDeviceScript;
     equipedDeviceScript.setDisplayBricks(false);
   }
 
@@ -47,19 +82,19 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   }
   
   void OnEnable() {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnEnable", Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnEnable", Logger.Level.INFO);
   }
   
   void OnDisable() {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnDisable", Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnDisable", Logger.Level.INFO);
   }
   
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos(), Logger.Level.WARN);
+      Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos(), Logger.Level.INFO);
       if(device == null)
       {
-        Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress _device == null", Logger.Level.WARN);
+        Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress _device == null", Logger.Level.INFO);
         return;
       }
     }
@@ -67,7 +102,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   
   // Use this for initialization
   void Start () {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.INFO);
     namesLabel.text = "";
     valuesLabel.text = "";
   }

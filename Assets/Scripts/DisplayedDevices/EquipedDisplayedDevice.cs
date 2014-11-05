@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class EquipedDisplayedDevice : DisplayedDevice {
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
-
-	
+    	
   private static GameObject           equipedDevice;
   private static GameObject           tinyBioBrickIcon;
   private static GameObject           tinyBioBrickIcon2;
@@ -17,6 +16,10 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
 
   private bool                        _displayBricks;
+  private bool                        _isEquipScreen;
+
+
+  public EquipedDeviceCloseButton closeButton;
 
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
@@ -50,15 +53,20 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
         return;
       }
-	    if (_devicesDisplayer.IsEquipScreen()) {
-        TooltipManager.displayTooltip();
-	      _devicesDisplayer.askRemoveEquipedDevice(_device);
-	    }
+      askRemoveDevice();
 	  }
   }
 
+  public void askRemoveDevice()
+  {        
+    //if (_devicesDisplayer.IsEquipScreen()) {
+      TooltipManager.displayTooltip();
+      _devicesDisplayer.askRemoveEquipedDevice(_device);
+    //}
+  }
+
   void initIfNecessary() {
-    Logger.Log("EquipedDisplayedDevice::initIfNecessary starts", Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDevice::initIfNecessary starts", Logger.Level.INFO);
     if(
         (null == equipedDevice)
         || (null == tinyBioBrickIcon)
@@ -85,7 +93,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         tinyBioBrickIcon.SetActive(false);
         tinyBioBrickIcon2.SetActive(false);
       }
-      Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.WARN);
+      Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.INFO);
     }
   }
 
@@ -129,6 +137,41 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   {
     _displayBricks = display;
     updateVisibility();
+  }
+    
+  protected override void OnHover(bool isOver)
+  {
+    Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    base.OnHover(isOver);
+    
+    if(null != closeButton && !_devicesDisplayer.IsEquipScreen())
+    {
+      //TODO fix interaction with Update
+      closeButton.gameObject.SetActive(isOver);
+    }
+  }
+
+  void Update () {
+    bool newIsEquipScreen = _devicesDisplayer.IsEquipScreen();
+    if(null != closeButton)
+    {
+      if(_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+      {
+        closeButton.gameObject.SetActive(false);
+      }
+      else
+      {
+        if(!_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+        {
+          //TODO fix interaction with OnHover
+          closeButton.gameObject.SetActive(true);
+        }
+      }
+    }
+    _isEquipScreen = newIsEquipScreen;
+
+    //no-hover version
+    //closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
   }
 
   // Use this for initialization

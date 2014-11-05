@@ -30,10 +30,13 @@ public class ExpressionModule
 
   public ExpressionModule(ExpressionModule m)
   {
+    Logger.Log("ExpressionModule::ExpressionModule("+m+")", Logger.Level.DEBUG);
     _name = m._name;
     _bioBricks = new LinkedList<BioBrick>();
     foreach (BioBrick b in m.getBioBricks())
-      _bioBricks.AddLast(b);
+    {
+      _bioBricks.AddLast(b.copy());
+    }
   }
 
   public bool hasSameBricks(ExpressionModule module) {

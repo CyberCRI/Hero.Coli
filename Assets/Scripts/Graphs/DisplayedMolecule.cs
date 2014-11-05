@@ -16,41 +16,46 @@ public class DisplayedMolecule
     
     public string getCodeName()
     {
-        return _codeName;
+      return _codeName;
     }
     
     public string getRealName()
     {
-        return _realName;
+      return _realName;
+    }
+
+    public void setRealName(string realName)
+    {
+      _realName = realName;
     }
     
     public string getVal()
     {
-        return _val;
+      return _val;
     }
 
     public DisplayType getDisplayType()
     {
-        return _displayType;
+      return _displayType;
     }
     
     public void setDisplayType(DisplayType displayType)
     {
-        _displayType = displayType;
+      _displayType = displayType;
     }
     
     public bool isUpdated()
     {
-        return _updated;
+      return _updated;
     }
     
     public DisplayedMolecule(string codeName, string realName, string val, DisplayType displayType = DisplayType.MOLECULELIST)
     {
-        _updated = true;
-        _codeName = codeName;
-        _realName = realName;
-        _val = val;
-        _displayType = displayType;
+      _updated = true;
+      _codeName = codeName;
+      _realName = realName;
+      _val = val;
+      _displayType = displayType;
     }
     
     public DisplayedMolecule(string codeName, string realName, float val, DisplayType displayType = DisplayType.MOLECULELIST) : this(codeName, realName, val.ToString(), displayType)
@@ -71,5 +76,10 @@ public class DisplayedMolecule
     public void reset()
     {
         _updated = false;
+    }
+
+    public void OnLanguageChanged()
+    {
+      _realName = GameplayNames.getMoleculeRealName(_codeName);
     }
 }

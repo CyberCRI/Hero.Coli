@@ -1,34 +1,18 @@
 <infoList>
   <info code="PickedUpHyperflagellation">
-    <title>CONGRATULATIONS!</title>
-    <subtitle>You picked up your first genetic device!</subtitle>
     <texture>i_hyperflagellation</texture>
-    <explanation>It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.</explanation>
-    <bottom>Click on the button to open your Inventory and equip the device.</bottom>
     <next>equip</next>
   </info>
   <info code="PickedUpRBS">
-    <title>BIOBRICK FOUND!</title>
-    <subtitle>You picked up your first BioBrick!</subtitle>
     <texture>i_rbs</texture>
-    <explanation>This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!</explanation>
-    <bottom>Go craft new devices in your crafting interface by clicking on the button to open it.</bottom>
     <next>craft</next>
   </info>
   <info code="PickedUpGFP">
-    <title>DEVICE FOUND!</title>
-    <subtitle>You picked up a GFP genetic device!</subtitle>
     <texture>i_gfp</texture>
-    <explanation>This device contains the gene controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.</explanation>
-    <bottom>Click on the button to open your Inventory and equip the device.</bottom>
     <next>equip</next>
   </info>
   <info code="RFP">
-    <title>OOPS! NO RED FLUORESCENCE!</title>
-    <subtitle>This door requires red light to be opened.</subtitle>
     <texture>t_rfp_needed</texture>
-    <explanation>Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.</explanation>
-    <bottom>Keep playing and come back once you have found the RFP gene BioBrick!</bottom>
     <next>world</next>
   </info>
 </infoList>

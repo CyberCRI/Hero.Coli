@@ -24,7 +24,6 @@ public class PickableDeviceRef4Bricks : PickableDevice {
     {
       BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(brickName);
       if(brick != null) {
-        Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.TRACE);
         deviceBricks.AddLast(brick);
       } else {
         Logger.Log("PickableDeviceRef4Bricks::produceDevice failed to add brick with name "+brickName+"!", Logger.Level.WARN);
@@ -33,6 +32,7 @@ public class PickableDeviceRef4Bricks : PickableDevice {
     ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
     LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
     deviceModules.AddLast(deviceModule);
-    return Device.buildDevice(deviceName, deviceModules);
+    Device result = Device.buildDevice(deviceName, deviceModules);
+    return result;
   }
 }

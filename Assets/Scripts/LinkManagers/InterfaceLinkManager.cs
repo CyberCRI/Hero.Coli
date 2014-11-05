@@ -9,7 +9,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 	public Fade fade;
 	public TooltipPanel biobrickTooltipPanel,deviceTooltipPanel;
-	public GameObject inventoryButtonprefab;
+	public GameObject inventoryDevicePrefab;
 	public GameObject listedDevicePrefab;
 
 	public GameObject craftZoneDisplayedBioBrickPrefab;
@@ -22,7 +22,6 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
 	public CraftFinalizer craftFinalizer;
 	public UIPanel inventoryDevicesSlotsPanel;
-	public UIPanel end;
 
 	public GameObject tutorialArrow;
 
@@ -32,6 +31,15 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject introduction2;
   public GameObject okButton1;
   public GameObject okButton2;
+  public GameObject end;
+
+  public CellControlButton absoluteWASDButton;
+  public CellControlButton leftClickToMoveButton;
+  public CellControlButton relativeWASDButton;
+  public CellControlButton rightClickToMoveButton;
+  public UISprite selectedControlTypeSprite;
+  public GameObject modalBackground;
+  public GameObject genericModalWindow;
 
 	//public Camera _uicamera;
 
@@ -47,6 +55,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     InfoWindowManager infoWindowManager = InfoWindowManager.get();
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
     TooltipManager tooltipManager = TooltipManager.get();
+    ModalManager modalManager = ModalManager.get();
     GameObject mediumInfoPanelCell = GameObject.Find("MediumInfoPanelCell");
 
 		//GUITransitioner
@@ -60,9 +69,9 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 
 		//GameStateController
-    gameStateController.introPanel = introduction1.GetComponent<UIPanel>();
+    gameStateController.intro = introduction1;
 		gameStateController.fadeSprite = fade;
-		gameStateController.endPanel = end;
+		gameStateController.end = end;
 
 		//Object with GameStateController 
 		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
@@ -70,7 +79,8 @@ public class InterfaceLinkManager : MonoBehaviour {
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
     introduction2.SetActive(false);
-
+    end.SetActive(false);
+    genericModalWindow.SetActive(false);
 
 		//CraftFinalizer
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;
@@ -79,8 +89,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 		craftZoneManager.GetComponent<CraftZoneManager>().craftFinalizer = craftFinalizer;
 
 		//CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
-		craftFinalizer.craftFinalizationButton = craftFinalizer.transform.Find("CraftButton").gameObject
-			.GetComponent<CraftFinalizationButton>();
+    if(null == craftFinalizer.craftFinalizationButton)
+      craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
 
 		craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
 		craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
@@ -98,24 +108,25 @@ public class InterfaceLinkManager : MonoBehaviour {
     devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
     devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
 
-    devicesDisplayer.inventoryDevice = inventoryButtonprefab;
+    devicesDisplayer.inventoryDevice = inventoryDevicePrefab;
 		devicesDisplayer.listedInventoryDevice =listedDevicePrefab;
 		
 
 		//InfoWindowManager
-
 		infoWindowManager.infoPanel = genericInfoWindow;
-
-        /* TODO
-         * should rename children with unique names
-         * so that children can be fetched using GameObject.Find
-         * instead of browsing children
-         */ 
 		infoWindowManager.titleLabel = genericInfoWindow.transform.FindChild("TitleLabel").GetComponent<UILabel>();
 		infoWindowManager.subtitleLabel = genericInfoWindow.transform.FindChild("SubtitleLabel").GetComponent<UILabel>();
 		infoWindowManager.explanationLabel = genericInfoWindow.transform.FindChild("ExplanationLabel").GetComponent<UILabel>();
 		infoWindowManager.bottomLabel = genericInfoWindow.transform.FindChild("BottomLabel").GetComponent<UILabel>();
 		infoWindowManager.infoSprite = genericInfoWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
+                        
+    //ModalManager
+    modalManager.modalBackground = modalBackground;
+    modalManager.genericModalWindow = genericModalWindow;
+    modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILabel>();
+    modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILabel>();
+    modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
+    modalManager.validateButton = genericModalWindow.transform.FindChild("ValidateButton").GetComponent<UIButton>();
 
 
 		//DeviceInventory
@@ -133,6 +144,5 @@ public class InterfaceLinkManager : MonoBehaviour {
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
 		tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
 		tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
-    
-  	}
+  }
 }

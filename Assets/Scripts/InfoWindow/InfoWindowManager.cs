@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+//TODO: merge with ModalManager
 public class InfoWindowManager : MonoBehaviour {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
@@ -36,6 +37,11 @@ public class InfoWindowManager : MonoBehaviour {
   public GameStateController gameStateController;
 
   private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
+  private static string _genericPrefix = "INFO.";
+  private static string _genericTitle = ".TITLE";
+  private static string _genericSubtitle = ".SUBTITLE";
+  private static string _genericExplanation = ".EXPLANATION";
+  private static string _genericBottom = ".BOTTOM";
 
   public enum NextAction
   {
@@ -54,9 +60,7 @@ public class InfoWindowManager : MonoBehaviour {
   {
     if(fillInFieldsFromCode(code))
     {
-      _instance.infoPanel.SetActive(true);
-      _instance.gameStateController.changeState(GameState.Pause);
-      _instance.gameStateController.dePauseForbidden = true;
+      ModalManager.setModal(_instance.infoPanel);
       return true;
     }
     else
@@ -73,11 +77,13 @@ public class InfoWindowManager : MonoBehaviour {
 
     if(null != info)
     {
-      _instance.titleLabel.text       = info._title;
-      _instance.subtitleLabel.text    = info._subtitle;
+      string generic = _genericPrefix+code.ToUpper();
+
+      _instance.titleLabel.text       = Localization.Localize(generic+_genericTitle);
+      _instance.subtitleLabel.text    = Localization.Localize(generic+_genericSubtitle);
       _instance.infoSprite.spriteName = info._texture;
-      _instance.explanationLabel.text = info._explanation;
-      _instance.bottomLabel.text      = info._bottom;
+      _instance.explanationLabel.text = Localization.Localize(generic+_genericExplanation);
+      _instance.bottomLabel.text      = Localization.Localize(generic+_genericBottom);
       _instance.nextAction            = getFromString(info._next);
 
       return true;
@@ -123,12 +129,12 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static void next()
   {
-    _instance.infoPanel.SetActive(false);
+    ModalManager.unsetModal();
     switch(_instance.nextAction)
     {
       case NextAction.GOTOWORLD:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.changeState(GameState.Game);
+        _instance.gameStateController.tryUnlockPause();
         break;
       case NextAction.GOTOEQUIP:
         Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
@@ -140,7 +146,7 @@ public class InfoWindowManager : MonoBehaviour {
         break;
       default:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.changeState(GameState.Game);
+        _instance.gameStateController.tryUnlockPause();
         break;
     }
   }
