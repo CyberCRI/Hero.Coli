@@ -24,7 +24,12 @@ public class GameStateController : MonoBehaviour {
 		return _instance;
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
-    
+
+    private static string _keyPrefix = "KEY.";
+    private static string _inventoryKey = _keyPrefix+"INVENTORY";
+    private static string _craftingKey = _keyPrefix+"CRAFTING";
+
+
   private GameState _gameState;
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
@@ -125,12 +130,12 @@ public class GameStateController : MonoBehaviour {
         } 
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-        else if(isShortcutKeyDown("KEY.INVENTORY") && Inventory.isOpenable())
+        else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
         }
                 //crafting
-        else if(isShortcutKeyDown("KEY.CRAFTING") && CraftZoneManager.isOpenable())
+        else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
         {
           gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
         }
@@ -142,18 +147,30 @@ public class GameStateController : MonoBehaviour {
             ModalManager.unsetModal();
 					  changeState(GameState.Game);
 				  } else if(
+                    (
+                     (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2) 
+                     &&      
+                        (
+                          Input.GetKeyDown(KeyCode.Escape)
+                          ||
+                          Input.GetKeyDown(KeyCode.Return)
+                          ||
+                          isShortcutKeyDown(_inventoryKey)
+                        )
+                    )
+                    ||
+                    (
+                      (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen3) 
+                      &&      
                       (
-                        (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2)
-                        ||
-                        (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen3)
-                      )
-                      &&
-                      (
-                        Input.GetKeyDown(KeyCode.Escape)
-                        ||
-                        Input.GetKeyDown(KeyCode.Return)
+                      Input.GetKeyDown(KeyCode.Escape)
+                      ||
+                      Input.GetKeyDown(KeyCode.Return)
+                      ||
+                      isShortcutKeyDown(_craftingKey)
                       )
                     )
+                  )
           {
             gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
           }

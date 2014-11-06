@@ -165,7 +165,6 @@ public class GUITransitioner : MonoBehaviour {
        GameStateController.get().tryUnlockPause();
        ZoomOut();
        _currentScreen = GameScreen.screen1;
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen2) {
@@ -197,7 +196,6 @@ public class GUITransitioner : MonoBehaviour {
        
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen3) {
@@ -223,12 +221,13 @@ public class GUITransitioner : MonoBehaviour {
        } 
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
-       _devicesDisplayer.UpdateScreen();
-
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
     }
+
+    _devicesDisplayer.UpdateScreen();
+    TooltipManager.displayTooltip();
   }
 
   public void SwitchScreen(GameScreen alternate1, GameScreen alternate2) {
