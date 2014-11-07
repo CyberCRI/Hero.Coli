@@ -25,9 +25,10 @@ public class GameStateController : MonoBehaviour {
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static string _keyPrefix = "KEY.";
-    private static string _inventoryKey = _keyPrefix+"INVENTORY";
-    private static string _craftingKey = _keyPrefix+"CRAFTING";
+  private static string _keyPrefix = "KEY.";
+  private static string _inventoryKey = _keyPrefix+"INVENTORY";
+  private static string _craftingKey = _keyPrefix+"CRAFTING";
+  private static string _pauseKey = _keyPrefix+"PAUSE";
 
 
   private GameState _gameState;
@@ -123,7 +124,7 @@ public class GameStateController : MonoBehaviour {
 			
 			case GameState.Game:
                 //pause
-        if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown("KEY.PAUSE"))
+        if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
         {
           ModalManager.setModal(pauseIndicator, false);
           changeState(GameState.Pause);
@@ -142,39 +143,39 @@ public class GameStateController : MonoBehaviour {
 			  break;
 			
 			case GameState.Pause:
-          if (0 == getPausesInStackCount() && (Input.GetKeyDown(KeyCode.Escape)|| isShortcutKeyDown("KEY.PAUSE")))
-          {
-            ModalManager.unsetModal();
-					  changeState(GameState.Game);
-				  } else if(
-                    (
-                     (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen2) 
-                     &&      
-                        (
-                          Input.GetKeyDown(KeyCode.Escape)
-                          ||
-                          Input.GetKeyDown(KeyCode.Return)
-                          ||
-                          isShortcutKeyDown(_inventoryKey)
-                        )
-                    )
-                    ||
-                    (
-                      (gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen3) 
-                      &&      
-                      (
-                      Input.GetKeyDown(KeyCode.Escape)
-                      ||
-                      Input.GetKeyDown(KeyCode.Return)
-                      ||
-                      isShortcutKeyDown(_craftingKey)
-                      )
-                    )
-                  )
-          {
-            gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-          }
-
+        switch(gUITransitioner._currentScreen)
+        {
+          case GUITransitioner.GameScreen.screen1:
+            if ((Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey)) && (0 == getPausesInStackCount()))
+            {
+              ModalManager.unsetModal();
+              changeState(GameState.Game);
+            }
+            break;
+          case GUITransitioner.GameScreen.screen2:
+            if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+            }
+            else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+            }
+            break;
+          case GUITransitioner.GameScreen.screen3:
+            if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+            }
+            else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+            }
+            break;
+          default:
+            Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
+            break;
+        }
 			  break;
 			
 			case GameState.End:
