@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public enum GameState{
 	Start,
@@ -23,7 +24,13 @@ public class GameStateController : MonoBehaviour {
 		return _instance;
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
-    
+
+  private static string _keyPrefix = "KEY.";
+  private static string _inventoryKey = _keyPrefix+"INVENTORY";
+  private static string _craftingKey = _keyPrefix+"CRAFTING";
+  private static string _pauseKey = _keyPrefix+"PAUSE";
+
+
   private GameState _gameState;
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
@@ -85,6 +92,24 @@ public class GameStateController : MonoBehaviour {
     I18n.changeLanguageTo(I18n.Language.French);
     Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
 	}
+
+    //TODO optimize for frequent calls & refactor out of GameStateController
+    public static KeyCode getKeyCode(string localizationKey)
+    {
+      return (KeyCode) Enum.Parse(typeof(KeyCode), Localization.Localize(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKeyDown(string localizationKey)
+    {
+      return Input.GetKeyDown(getKeyCode(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKey(string localizationKey)
+    {
+      return Input.GetKey(getKeyCode(localizationKey));
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -98,19 +123,59 @@ public class GameStateController : MonoBehaviour {
         break;
 			
 			case GameState.Game:
-				if (Input.GetKeyDown(KeyCode.Escape))
+                //pause
+        if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
         {
           ModalManager.setModal(pauseIndicator, false);
           changeState(GameState.Pause);
+        } 
+                //inventory
+                //TODO add DNA damage accumulation management when player equips/unequips too often
+        else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+        {
+          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+        }
+                //crafting
+        else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+        {
+          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
         }
 			  break;
 			
 			case GameState.Pause:
-        if (0 == getPausesInStackCount() && Input.GetKeyDown(KeyCode.Escape))
+        switch(gUITransitioner._currentScreen)
         {
-          ModalManager.unsetModal();
-					changeState(GameState.Game);
-				}
+          case GUITransitioner.GameScreen.screen1:
+            if ((Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey)) && (0 == getPausesInStackCount()))
+            {
+              ModalManager.unsetModal();
+              changeState(GameState.Game);
+            }
+            break;
+          case GUITransitioner.GameScreen.screen2:
+            if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+            }
+            else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+            }
+            break;
+          case GUITransitioner.GameScreen.screen3:
+            if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+            }
+            else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+            {
+              gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+            }
+            break;
+          default:
+            Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
+            break;
+        }
 			  break;
 			
 			case GameState.End:
@@ -120,7 +185,10 @@ public class GameStateController : MonoBehaviour {
 				gUITransitioner.Pause(true);
 				pushPauseInStack();
 				end.SetActive(true);
-        break;		
+        break;	
+
+       default:
+        break;
 		}
 	}
 	

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//TODO make better name (cf ToCraftButton & ToWorlButton)
 public class ToEquipButton : MonoBehaviour {
 
 	 private void OnPress(bool isPressed) {

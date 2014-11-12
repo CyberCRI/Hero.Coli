@@ -7,7 +7,6 @@ public class CraftWorldButton : MonoBehaviour {
 	    if(isPressed) {
 	      Logger.Log("CraftWorldButton::OnPress()", Logger.Level.INFO);
 	      GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen1);
-        GameStateController.get ().tryUnlockPause();
 	    }
 	  }
 }

@@ -162,10 +162,9 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(false);
          SetScreen1(true);
        }
-       Pause(false);
+       GameStateController.get().tryUnlockPause();
        ZoomOut();
        _currentScreen = GameScreen.screen1;
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen2) {
@@ -180,6 +179,7 @@ public class GUITransitioner : MonoBehaviour {
          //add inventory device, deviceID
          //remove graphs
          //move devices and potions?
+         GameStateController.get().tryLockPause();
        } else if(_currentScreen == GameScreen.screen3) {
         Logger.Log("GUITransitioner::GoToScreen 3->2", Logger.Level.INFO);
          //3 -> 2
@@ -194,10 +194,8 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen2(true);
        }
        
-       Pause(true);
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen3) {
@@ -210,6 +208,7 @@ public class GUITransitioner : MonoBehaviour {
          //move devices and potions?
          SetScreen1(false);
          SetScreen3(true);
+         GameStateController.get().tryLockPause();
          
        } else if(_currentScreen == GameScreen.screen2) {
         Logger.Log("GUITransitioner::GoToScreen 2->3", Logger.Level.INFO);
@@ -220,15 +219,15 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(true);
          
        } 
-       Pause(true);
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
-       _devicesDisplayer.UpdateScreen();
-
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
     }
+
+    _devicesDisplayer.UpdateScreen();
+    TooltipManager.displayTooltip();
   }
 
   public void SwitchScreen(GameScreen alternate1, GameScreen alternate2) {
