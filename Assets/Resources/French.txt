@@ -56,7 +56,7 @@ INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Continuer" pour ouv
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
-INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur 'Continuer' pour ouvrir l'interface d'Assemblage.
+INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur 'Continuer' pour ouvrir l'interface de construction.
 INFO.PICKEDUPGFP.TITLE=CONSTRUCTION TROUVÉE !
 INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé une nouvelle construction génétique !
 INFO.PICKEDUPGFP.EXPLANATION=Cette construction contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
@@ -73,7 +73,7 @@ GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
 GUI.BUTTON.RESTART=RECOMMENCER
 GUI.BUTTON.INVENTORY=Inventaire
-GUI.BUTTON.CRAFTING=Assemblage
+GUI.BUTTON.CRAFTING=Construction
 GUI.BUTTON.VALIDATE=OK
 GUI.BUTTON.CANCEL=Annuler
 GUI.MEDIUMINFO.TITLE=INFOS MEDIUM
@@ -83,12 +83,12 @@ GUI.INVENTORY.EQUIPED=ÉQUIPÉ
 GUI.EQUIPED.TITLE=CONSTRUCTIONS ÉQUIPÉES
 GUI.PAUSE.LABEL=Pause
 
-CRAFT.TITLE.LABEL=INTERFACE D'ASSEMBLAGE
+CRAFT.TITLE.LABEL=INTERFACE DE CONSTRUCTION
 
 CRAFT.PROCESS.EQUIP=Inventaire
 CRAFT.PROCESS.CRAFT=assembler
 
-CRAFT.ASSEMBLY.TITLE=Table d'Assemblage
+CRAFT.ASSEMBLY.TITLE=Table de Construction
 CRAFT.ASSEMBLY.TIP=Pour fabriquer vos constructions génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Assemblez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
 CRAFT.ASSEMBLY.1ST=Promoteur
 CRAFT.ASSEMBLY.2ND=RBS
@@ -101,7 +101,7 @@ CRAFT.FINALIZATION.SUCCESS=Nouvelle construction génétique !
 CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de construction est déjà utilisé !
 CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déjà connu.
 CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette construction est déjà connue !
-CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de l'assemblage s'affiche ici.
+CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de la construction s'affiche ici.
 
 CRAFT.BANK.TITLE=Banque de BioBriques
 CRAFT.BANK.PROMOTER=Promoteur
