@@ -1,5 +1,22 @@
 MAIN.LANGUAGE=French
 
+KEY.PAUSE=P
+KEY.LIFE=V
+KEY.ENERGY=E
+KEY.INVENTORY=I
+KEY.CRAFTING=C
+
+KEY.MOV.PLUS=D
+KEY.MOV.MINUS=F
+KEY.AMPI.PLUS=A
+KEY.AMPI.MINUS=Z
+KEY.FLUO1.PLUS=G
+KEY.FLUO1.MINUS=H
+KEY.AMPR.PLUS=Q
+KEY.AMPR.MINUS=S
+KEY.FLUO2.PLUS=R
+KEY.FLUO2.MINUS=T
+
 BRICK.PRCONS=Promoteur constitutif
 BRICK.PRLACI=pLac
 BRICK.PRTETR=pTet
@@ -35,7 +52,7 @@ DEVICE.PREREG=(Régulé)
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre première construction génétique!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Elle permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton pour ouvrir l'inventaire et activer la construction.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Continuer" pour ouvrir l'inventaire et injecter cette construction dans Cellia.
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
@@ -43,7 +60,7 @@ INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur '
 INFO.PICKEDUPGFP.TITLE=CONSTRUCTION TROUVÉE !
 INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé une nouvelle construction génétique !
 INFO.PICKEDUPGFP.EXPLANATION=Cette construction contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
-INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire pour injecter cette construction dans Cellia.
+INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Continuer" pour injecter cette construction dans Cellia.
 INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
@@ -64,6 +81,7 @@ GUI.CELLINFO.TITLE=INFOS CELLIA
 GUI.INVENTORY.TITLE=INVENTAIRE
 GUI.INVENTORY.EQUIPED=ÉQUIPÉ
 GUI.EQUIPED.TITLE=CONSTRUCTIONS ÉQUIPÉES
+GUI.PAUSE.LABEL=Pause
 
 CRAFT.TITLE.LABEL=INTERFACE D'ASSEMBLAGE
 
@@ -127,7 +145,7 @@ TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
 TOOLTIP.B_AMPR.EXPLANATION=Séquence codant pour le béta-lactamase, une enzyme qui catalyze l'hydrolyse des pénicillines.
 
 TOOLTIP.B_DTER.TITLE=Terminateur 1
-TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former une construction valable.
+TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former une construction valide.
 TOOLTIP.B_DTER.LENGTH=129bp
 TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
 TOOLTIP.B_DTER.EXPLANATION=Terminateur fort de séquence de transcription - Terminateur double.

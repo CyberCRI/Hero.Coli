@@ -1,5 +1,22 @@
 MAIN.LANGUAGE=English
 
+KEY.PAUSE=P
+KEY.LIFE=L
+KEY.ENERGY=E
+KEY.INVENTORY=I
+KEY.CRAFTING=C
+
+KEY.MOV.PLUS=M
+KEY.MOV.MINUS=,
+KEY.AMPI.PLUS=A
+KEY.AMPI.MINUS=S
+KEY.FLUO1.PLUS=G
+KEY.FLUO1.MINUS=H
+KEY.AMPR.PLUS=Q
+KEY.AMPR.MINUS=W
+KEY.FLUO2.PLUS=R
+KEY.FLUO2.MINUS=T
+
 BRICK.PRCONS=Constitutive promoter
 BRICK.PRLACI=pLac
 BRICK.PRTETR=pTet
@@ -35,15 +52,15 @@ DEVICE.PREREG=Regulated
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the button to open your Inventory and equip the device.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Continue" button, then equip the device in your Inventory.
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
 INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
-INFO.PICKEDUPRBS.BOTTOM=Go craft new devices in your crafting interface by clicking on the button to open it.
+INFO.PICKEDUPRBS.BOTTOM=Go craft new devices in your crafting interface by clicking on the "Continue" button.
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
 INFO.PICKEDUPGFP.EXPLANATION=This device contains the gene controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
-INFO.PICKEDUPGFP.BOTTOM=Click on the button to open your Inventory and equip the device.
+INFO.PICKEDUPGFP.BOTTOM=Click on the "Continue" button and equip the device in your Inventory.
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
@@ -64,6 +81,7 @@ GUI.CELLINFO.TITLE=CELLIA INFO
 GUI.INVENTORY.TITLE=INVENTORY
 GUI.INVENTORY.EQUIPED=EQUIPED
 GUI.EQUIPED.TITLE=DEVICES EQUIPED
+GUI.PAUSE.LABEL=Pause
 
 CRAFT.TITLE.LABEL=CRAFTING INTERFACE
 

@@ -254,6 +254,12 @@ public class CraftZoneManager : MonoBehaviour {
     return _currentDevice;
   }
 
+  public static bool isOpenable()
+  {
+    //FIXME doesn't work with test null != _instance._currentDevice
+    return 0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count;
+  }
+
   void Start()
   {
     displayDevice();

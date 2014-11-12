@@ -15,11 +15,11 @@ public class Inventory : DeviceContainer
     }
     return _instance;
   }
-	
-  public int GetDeviceCount()
-	{
-		return _devices.Count;
-	}
+
+  public static bool isOpenable()
+  {
+    return 0 != _instance._devices.Count;
+  }
 
   void Awake()
   {
