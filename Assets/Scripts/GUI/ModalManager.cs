@@ -98,7 +98,7 @@ public class ModalManager : MonoBehaviour {
     }
   }
 
-  public static void setModal(GameObject guiComponent)
+  public static void setModal(GameObject guiComponent, bool lockPause = true)
   {
     if(null != guiComponent)
     {
@@ -110,15 +110,18 @@ public class ModalManager : MonoBehaviour {
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
 
-      GameStateController.get().tryLockPause();
+      if(lockPause)
+      {
+        GameStateController.get().tryLockPause();
+      }
     }
   }
   
-  public static bool setModal(string code)
+  public static bool setModal(string code, bool lockPause = true)
   {
     if(null != _instance.genericModalWindow && fillInFieldsFromCode(code))
     {
-        setModal(_instance.genericModalWindow);
+        setModal(_instance.genericModalWindow, lockPause);
         
         return true;
     }

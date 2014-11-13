@@ -130,11 +130,12 @@ public class InfoWindowManager : MonoBehaviour {
   public static void next()
   {
     ModalManager.unsetModal();
+    _instance.gameStateController.tryUnlockPause();
+
     switch(_instance.nextAction)
     {
       case NextAction.GOTOWORLD:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.tryUnlockPause();
         break;
       case NextAction.GOTOEQUIP:
         Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
@@ -146,7 +147,6 @@ public class InfoWindowManager : MonoBehaviour {
         break;
       default:
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        _instance.gameStateController.tryUnlockPause();
         break;
     }
   }
