@@ -4,7 +4,7 @@ using System.Collections;
 public class BlackLight : MonoBehaviour {
 
 
-	public bool isActivate = false;
+	public bool isActive = false;
 	private bool _isCreating = false;			//used for the lerp during the creation of the black light
 	private bool _isDestroying = false;			
 
@@ -31,6 +31,9 @@ public class BlackLight : MonoBehaviour {
 	
 
 	private bool _shaderChanged = false;
+  private static string _blackLight = "BL.";
+  private static string _blackLightOn = _blackLight+"ON";
+  private static string _blackLightOff = _blackLight+"OFF";
 
 	// Use this for initialization
 	void Start () {
@@ -163,17 +166,21 @@ public class BlackLight : MonoBehaviour {
 	// light on/off for the black light
 	public void switchLight ()
 	{
-		if (Input.GetKeyDown("x") && !isActivate)
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn)
+                && !isActive
+       )
 		{
 			createBlackLight();
 			if(!_shaderChanged)
 				setDiffuseTransparentPlane();
-			isActivate = true;
+			isActive = true;
 		}
-		if(Input.GetKeyDown("c") && isActivate)
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff)
+            && isActive
+       )
 		{
 			leaveBlackLight();
-			isActivate = false;
+			isActive = false;
 		}
 	}
 }
