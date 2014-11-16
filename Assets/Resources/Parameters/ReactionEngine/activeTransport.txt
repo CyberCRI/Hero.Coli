@@ -1,2 +1,20 @@
 <activeTransports>
+  <ATProp>
+    <name>testTransport</name>
+    <Medium>1</Medium>
+    <MediumSrc>1</MediumSrc>
+    <MediumDst>2</MediumDst>
+    <EnergyCost>0.1</EnergyCost>
+    <substrate>RANDOM</substrate>
+    <enzyme>FLUO1</enzyme>
+    <Kcat>0.1</Kcat>
+    <effector>False</effector>
+    <alpha>1</alpha>
+    <beta>0</beta>
+    <Km>1.3</Km>
+    <Ki>0.0000001</Ki>
+    <Products>
+      <name>FLUO2</name>
+    </Products>
+  </ATProp>
 </activeTransports>

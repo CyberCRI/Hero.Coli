@@ -25,10 +25,10 @@ public class GameStateController : MonoBehaviour {
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  private static string _keyPrefix = "KEY.";
-  private static string _inventoryKey = _keyPrefix+"INVENTORY";
-  private static string _craftingKey = _keyPrefix+"CRAFTING";
-  private static string _pauseKey = _keyPrefix+"PAUSE";
+  public static string keyPrefix = "KEY.";
+  private static string _inventoryKey = keyPrefix+"INVENTORY";
+  private static string _craftingKey = keyPrefix+"CRAFTING";
+  private static string _pauseKey = keyPrefix+"PAUSE";
 
 
   private GameState _gameState;
