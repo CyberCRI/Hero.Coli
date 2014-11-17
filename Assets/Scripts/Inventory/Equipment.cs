@@ -49,7 +49,7 @@ public class Equipment : DeviceContainer
     Device copy = Device.buildDevice(device);
     if(copy == null)
     {
-      Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);
+      Logger.Log("Equipment::askAddDevice copy == null", Logger.Level.WARN);
       return AddingResult.FAILURE_DEFAULT;
     }
     if(_devices.Exists(d => d.getName() == copy.getName()))
@@ -87,7 +87,9 @@ public class Equipment : DeviceContainer
     //  , Logger.Level.TRACE);
   }
 
-  public override void removeDevice(Device device) {
+  public override void removeDevice(Device device)
+  {
+    Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
     _devices.RemoveAll(d => d.getName() == device.getName());
     safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
@@ -103,6 +105,21 @@ public class Equipment : DeviceContainer
     base.Start();
     Logger.Log("Equipment::Start()", Logger.Level.DEBUG);
     _reactionEngine = ReactionEngine.get();
+  }
+
+  public override string ToString ()
+  {
+    string res = "";
+    foreach(Device d in _devices)
+    {
+      if(res != "")
+      {
+        res = res + "; ";
+      }
+      res = res + d.ToString();
+    }
+    res = "[Equipment " + res + "]";
+    return res;
   }
 }
 

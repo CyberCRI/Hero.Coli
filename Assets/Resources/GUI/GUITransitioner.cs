@@ -22,7 +22,7 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
-  public InventoryAnimator scriptAnimator;
+  public InventoryAnimator animator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -45,15 +45,15 @@ public class GUITransitioner : MonoBehaviour {
 	
 	
 	//public GameObject _mainCameraObject;
-	public cameraFollow _mainCameraFollow;
+  public BoundCamera mainBoundCamera;
 	
-	public GameObject _worldScreen;
-	public GameObject _craftScreen;
+	public GameObject worldScreen;
+	public GameObject craftScreen;
 	private DevicesDisplayer _devicesDisplayer;
 
 
-	public VectrosityPanel _celliaGraph;
-	public VectrosityPanel _roomGraph;
+	public VectrosityPanel celliaGraph;
+	public VectrosityPanel roomGraph;
 
   public Hero hero;
   public CellControl control;
@@ -82,43 +82,43 @@ public class GUITransitioner : MonoBehaviour {
 	
 	private void SetScreen1(bool active) {
 		if(active) ZoomOut();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
 		//_craftScreen.SetActive(!active);
 	}
 	
 	private void SetScreen2(bool active) {
 		if(active) ZoomIn();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
 	}
 	
 	private void SetScreen3(bool active) {
-		_craftScreen.SetActive(active);
+		craftScreen.SetActive(active);
 	}
 	
   /*
    * "Defensive programming" method
    * Cannot work during Awake
 	private void checkCamera() {
-		if(_mainCameraFollow == null) {
-			_mainCameraFollow = GameObject.Find ("Main Camera").GetComponent<cameraFollow>() as cameraFollow;
+		if(_mainBoundCamera == null) {
+			_mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>() as BoundCamera;
 		}
 	}
  */ 
 	
 	private void ZoomIn() {
 		//checkCamera();
-		_mainCameraFollow.SetZoom(true);
-		//Logger.Log("main camera"+_mainCameraFollow, Logger.Level.WARN);
+		mainBoundCamera.SetZoom(true);
+		//Logger.Log("main camera"+_mainBoundCamera, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {
 		//checkCamera();
-		_mainCameraFollow.SetZoom(false);
+		mainBoundCamera.SetZoom(false);
 	}
 		
   public void TerminateGraphs() {
-  	_roomGraph.gameObject.SetActive(false);
-    _celliaGraph.gameObject.SetActive(false);
+  	roomGraph.gameObject.SetActive(false);
+    celliaGraph.gameObject.SetActive(false);
   }
   public void Pause(bool pause) {
     _pauseTransition = !pause;
@@ -131,8 +131,8 @@ public class GUITransitioner : MonoBehaviour {
 	  if(pause) {
 	    Time.timeScale = 0;
     }
-	_roomGraph.setPause(pause);
-    _celliaGraph.setPause(pause);
+	roomGraph.setPause(pause);
+    celliaGraph.setPause(pause);
   
     hero.Pause(pause);
     control.Pause(pause);
@@ -162,16 +162,15 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(false);
          SetScreen1(true);
        }
-       Pause(false);
+       GameStateController.get().tryUnlockPause();
        ZoomOut();
        _currentScreen = GameScreen.screen1;
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen2) {
-			if(scriptAnimator.isPlaying == true)
+			if(animator.isPlaying == true)
 			{
-				scriptAnimator.reset();
+				animator.reset();
 			}
       if(_currentScreen == GameScreen.screen1) {
          Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
@@ -180,6 +179,7 @@ public class GUITransitioner : MonoBehaviour {
          //add inventory device, deviceID
          //remove graphs
          //move devices and potions?
+         GameStateController.get().tryLockPause();
        } else if(_currentScreen == GameScreen.screen3) {
         Logger.Log("GUITransitioner::GoToScreen 3->2", Logger.Level.INFO);
          //3 -> 2
@@ -194,10 +194,8 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen2(true);
        }
        
-       Pause(true);
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen3) {
@@ -210,6 +208,7 @@ public class GUITransitioner : MonoBehaviour {
          //move devices and potions?
          SetScreen1(false);
          SetScreen3(true);
+         GameStateController.get().tryLockPause();
          
        } else if(_currentScreen == GameScreen.screen2) {
         Logger.Log("GUITransitioner::GoToScreen 2->3", Logger.Level.INFO);
@@ -220,15 +219,15 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(true);
          
        } 
-       Pause(true);
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
-       _devicesDisplayer.UpdateScreen();
-
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
     }
+
+    _devicesDisplayer.UpdateScreen();
+    TooltipManager.displayTooltip();
   }
 
   public void SwitchScreen(GameScreen alternate1, GameScreen alternate2) {

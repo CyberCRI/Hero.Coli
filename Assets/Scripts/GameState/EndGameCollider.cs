@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EndGameCollider : MonoBehaviour {
@@ -20,8 +20,8 @@ public class EndGameCollider : MonoBehaviour {
 		if(alreadyDisplayed == false) {
 			if(other == hero.GetComponent<Collider>()) {
 		        
-				gameStateController.StateChange(GameState.End);
-				gameStateController.dePauseForbidden = true;
+				gameStateController.changeState(GameState.End);
+
 				alreadyDisplayed = true;
 				StartCoroutine(WaitFade(2000f));
 				

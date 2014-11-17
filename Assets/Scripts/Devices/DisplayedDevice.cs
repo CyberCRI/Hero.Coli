@@ -5,8 +5,16 @@ using System.Collections.Generic;
 public class DisplayedDevice : DisplayedElement {
 
   // static stuff
-  private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
-  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
+
+  private static string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  public static string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+
+  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
+  
+  //private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
+  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
+  
+
   private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
   private static string baseDeviceTextureString = "device_";
@@ -99,10 +107,13 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
+            Logger.Log("DisplayedDevice: will create Equiped "+equipedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
+            Logger.Log("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
+            Logger.Log("DisplayedDevice: will create Listed "+listedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(listedPrefabURI);
     } else {
       Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);
@@ -206,7 +217,13 @@ public class DisplayedDevice : DisplayedElement {
 
   protected virtual void OnHover(bool isOver)
   {
-    Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
+    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
     TooltipManager.displayTooltip(isOver, _device, transform.position);
+  }
+
+  //TODO remove tooltip only if tooltip was about this displayed device
+  protected virtual void OnDestroy()
+  {
+    TooltipManager.displayTooltip();
   }
 }

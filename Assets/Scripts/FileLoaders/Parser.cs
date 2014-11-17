@@ -182,7 +182,7 @@ public class PromoterParser
     CONSTANT,           //!< Constants node (example [2.1,1])
     WORD,               //!< WORD node
     NUM,                //!< Number node
-    BOOL                //!< Booleen node (T or F)
+    BOOL                //!< Boolean node (T or F)
   }
 
 

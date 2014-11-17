@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class cameraFollow : MonoBehaviour {
+
+public class BoundCamera : MonoBehaviour {
 	public Transform target;
 	public bool useScenePosition = true;
 	public Vector3 offset;

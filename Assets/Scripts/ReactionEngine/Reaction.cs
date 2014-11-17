@@ -13,7 +13,7 @@ public abstract class IReaction : LoadableFromXmlImpl
 {
   protected string _name;                       //!< The name of the reaction
   protected LinkedList<Product> _products;      //!< The list of products
-  protected bool _isActive;                     //!< Activation booleen
+  protected bool _isActive;                     //!< Activation boolean
   protected Medium _medium;                     //!< The medium where the reaction will be executed
   protected float _reactionSpeed;               //!< Speed coefficient of the reaction
   protected float _energyCost;                  //!< Energy consumed by the reaction
@@ -113,7 +113,7 @@ public abstract class IReaction : LoadableFromXmlImpl
                               +"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
                               _name,                                     //!< The name of the reaction
                               productString,                             //!< The list of products
-                              _isActive,                                 //!< Activation booleen
+                              _isActive,                                 //!< Activation boolean
                               mediumString,                              //!< The medium where the reaction will be executed
                               _reactionSpeed,                            //!< Speed coefficient of the reaction
                               _energyCost,                               //!< Energy consumed by the reaction
@@ -139,7 +139,7 @@ public abstract class IReaction : LoadableFromXmlImpl
                               +"reactionSpeed:{4}, energyCost:{5}, enableSequential:{6}, enableEnergy:{7} ]",
                               _name,                                     //!< The name of the reaction
                               productString,                             //!< The list of products
-                              _isActive,                                 //!< Activation booleen
+                              _isActive,                                 //!< Activation boolean
                               mediumString,                              //!< The medium where the reaction will be executed
                               _reactionSpeed,                            //!< Speed coefficient of the reaction
                               _energyCost,                               //!< Energy consumed by the reaction
@@ -160,53 +160,64 @@ public abstract class IReaction : LoadableFromXmlImpl
     {
       return Equals (reaction);
     }
-    return BaseCharacEquals(reaction) && CharacEquals(reaction);
+    return PartialEquals(reaction);
   }
 
 
   /* !
-    \brief Checks that two reactions have the same IReaction field values.
+    \brief Checks that two reactions have the same IReaction field values
+    except for medium
     \param reaction The reaction that will be compared to 'this'.
    */
-  public bool BaseCharacEquals(IReaction reaction)
+  protected virtual bool PartialEquals(IReaction reaction)
   {
+    //TODO check this
+        /*
+    if(!hasValidData() || !reaction.hasValidData())
+    {
+        Logger.Log("IReaction::PartialEquals invalid reaction"
+                   , Logger.Level.ERROR);
+        return false;
+    }
+    */
+
     bool res =
-         //_products.Equals(reaction._products)
          LinkedListExtensions.Equals(_products,reaction._products)
       && (_isActive        == reaction._isActive)
-      //&& _medium.Equals(reaction._medium)
       && (_reactionSpeed   == reaction._reactionSpeed)
       && (_energyCost      == reaction._energyCost)
       && (enableSequential == reaction.enableSequential)
       && (enableEnergy     == reaction.enableEnergy)
       ;
 
-    /*
-      //bool productivity =   _products.Equals(reaction._products);
-      bool productivity = LinkedListExtensions.Equals<Product>(_products,reaction._products);
-      bool activity = (_isActive        == reaction._isActive);
-      //&& _medium.Equals(reaction._medium)
-      bool reactivity = (_reactionSpeed   == reaction._reactionSpeed);
-      bool costity = (_energyCost      == reaction._energyCost);
-      bool sequentiality = (enableSequential == reaction.enableSequential);
-      bool energetity = (enableEnergy     == reaction.enableEnergy);
-
-    Logger.Log ("IReaction::BaseCharacEquals "
-      +", productivity ="+productivity
-      +", activity ="+activity
-      +", reactivity ="+reactivity
-      +", costity ="+costity
-      +", sequentiality ="+sequentiality
-      +", energetity ="+energetity
-      , Logger.Level.TRACE);
-    */
-
     return res;
   }
 
-  /* !
-    \brief Checks that two reactions have the same child class field values.
-    \param reaction The reaction that will be compared to 'this'.
-   */
-  protected abstract bool CharacEquals(IReaction reaction);
+    //TODO check chemistry
+    public virtual bool hasValidData()
+    {
+        bool isValid =
+          !string.IsNullOrEmpty(_name)           //!< The name of the reaction
+          && 0 != _products.Count                //!< The list of products
+          //protected bool _isActive;              //!< Activation boolean
+          //? && null != _medium                     //!< The medium where the reaction will be executed
+          && 0 != _reactionSpeed                 //!< Speed coefficient of the reaction
+          //? && 0 != _energyCost                   //!< Energy consumed by the reaction
+          //public bool enableSequential
+          //public bool enableEnergy
+                ;
+
+        if(!isValid)
+        {
+          Logger.Log("IReaction::hasValidData !string.IsNullOrEmpty(_name)="+(!string.IsNullOrEmpty(_name))
+            +" & 0 != _products.Count="+(0 != _products.Count)
+            +" & null != _medium="+(null != _medium)
+            +" & 0 != _reactionSpeed="+(0 != _reactionSpeed)
+            +" & 0 != _energyCost="+(0 != _energyCost)
+            +" => valid="+isValid
+            , Logger.Level.ERROR
+            );
+        }
+        return isValid;
+    }
 }

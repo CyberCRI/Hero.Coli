@@ -9,7 +9,7 @@ public class InventoryAnimator : MonoBehaviour {
 	private float time, dum;
 	private float animationTime = 50f;
 	private float miTime;
-	private UIImageButton sprite;
+	private UISprite sprite;
 	private Vector3 originalScale;
 
 	// Use this for initialization
@@ -18,7 +18,7 @@ public class InventoryAnimator : MonoBehaviour {
 		time = 0f;
 		miTime = animationTime/2;
 		
-		sprite = GetComponent<UIImageButton>();
+		sprite = GetComponentInChildren<UISprite>();
 		originalScale = sprite.transform.localScale;
 	
 	}

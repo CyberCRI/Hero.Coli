@@ -5,21 +5,22 @@ public class Inventory : DeviceContainer
 {
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
-  	public static string gameObjectName = "DeviceInventory";
-	public InventoryAnimator scriptAnimator;
-  	private static Inventory _instance;
-  	public static Inventory get() {
+  public static string gameObjectName = "DeviceInventory";
+	public InventoryAnimator animator;
+  private static Inventory _instance;
+  public static Inventory get() {
     if(_instance == null) {
       Logger.Log("Inventory::get was badly initialized", Logger.Level.WARN);
       _instance = GameObject.Find(gameObjectName).GetComponent<Inventory>();
     }
     return _instance;
   }
-	
-		public int GetDeviceCount()
-	{
-		return _devices.Count;
-	}
+
+  public static bool isOpenable()
+  {
+    return 0 != _instance._devices.Count;
+  }
+
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
@@ -127,10 +128,10 @@ public class Inventory : DeviceContainer
     _displayer.addInventoriedDevice(copy);
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count, Logger.Level.TRACE);
 
-		if (scriptAnimator.isPlaying ==false)
+		if (animator.isPlaying ==false)
 		{
 			_deviceAdded = true;
-			scriptAnimator.Play();
+			animator.Play();
 		}
   }
 

@@ -22,12 +22,16 @@ public class ArrowAnimation : MonoBehaviour {
 	}
 
 
-	public void Play(GUITransitioner.GameScreen screen) {
+    public void Play(GUITransitioner.GameScreen screen) {
+        //TODO fix that, cf. bug#221
+        /*
 		GameObject g;
 		Vector3 targetVector;
 		Vector3 rotateVector;
+
 		if( screen == GUITransitioner.GameScreen.screen1)
 		{
+
 			if(GUITransitioner.get()._currentScreen == GUITransitioner.GameScreen.screen1)
 				{
 					
@@ -60,13 +64,13 @@ public class ArrowAnimation : MonoBehaviour {
 
 				Create(targetVector,rotateVector,g);
 				Inventory.get().setDeviceAdded(false);
-
 		}
-
+        */
 	}
 
 	public static void Delete(string name)
 	{
+        /*
 		GameObject parent = GameObject.Find (name);
 		if(parent)
 		{
@@ -75,6 +79,7 @@ public class ArrowAnimation : MonoBehaviour {
 				Inventory.get ().setDeviceAdded(false);
 			Destroy(ts.gameObject);
 		}
+  */  
 	}
 
 	private void Create(Vector3 vec, Vector3 rot, GameObject g) {

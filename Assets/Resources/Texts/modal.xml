@@ -1,0 +1,6 @@
+<infoList>
+  <info code="RestartGame">
+    <texture>i_end</texture>
+    <next>ModalRestart</next>
+  </info>
+</infoList>

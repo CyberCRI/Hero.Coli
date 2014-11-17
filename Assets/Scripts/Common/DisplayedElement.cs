@@ -31,7 +31,7 @@ public class DisplayedElement : MonoBehaviour {
     + ", spriteName="+spriteName+nullSpriteName
     + ", prefab="+prefab
 	+ ")"
-    , Logger.Level.DEBUG
+    , Logger.Level.WARN
     );
 
     GameObject newElement = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
@@ -42,6 +42,27 @@ public class DisplayedElement : MonoBehaviour {
     newElement.transform.localScale = new Vector3(1f, 1f, 0);
     Logger.Log("DisplayedElement::Create GetComponent<DisplayedElement>()", Logger.Level.TRACE);
     DisplayedElement script = newElement.GetComponent<DisplayedElement>();
+    
+    if(null == script)
+    {
+      //TODO remove hack
+      Logger.Log("DisplayedElement::Create (null == script) 1 with name="+newElement.name, Logger.Level.DEBUG);
+      InventoryDevice inventoryDevice = newElement.GetComponent<InventoryDevice>();
+      if(inventoryDevice != null)
+      {
+        Logger.Log("DisplayedElement::Create found inventory device", Logger.Level.DEBUG);
+        script = inventoryDevice.inventoriedDisplayedDevice;
+        if(script != null)
+        {
+          Logger.Log("DisplayedElement::Create found inventory device script", Logger.Level.DEBUG);
+        }
+        else
+        {
+          Logger.Log("DisplayedElement::Create failed to find inventory device script", Logger.Level.WARN);
+        }
+      }
+    }
+
     script._id = ++_idCounter;
     Logger.Log("DisplayedElement::Create script._id = "+script._id, Logger.Level.TRACE);
     script._currentSpriteName = spriteName;

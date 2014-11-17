@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Device: DNABit
 {
+  private static float                  _energyPerBasePair = 0.005f;
+
   private static int                    _idCounter;
   private int                           _id;
   private string                        _name;
   private LinkedList<ExpressionModule>	_modules;
 
-  private static float                  _energyPerBasePair = 0.005f;
-  
   public string getName() { return _name; }
   public void setName(string v) { _name = v; }
   public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
@@ -37,13 +37,20 @@ public class Device: DNABit
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
+    Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.DEBUG);
+
     idInit();
     _name = name;
     _modules = new LinkedList<ExpressionModule>();
     foreach (ExpressionModule em in modules)
+    {
+      Logger.Log("Device::Device(...) treats em="+em, Logger.Level.WARN);
       _modules.AddLast(new ExpressionModule(em));
+      Logger.Log("Device::Device() now _modules="+Logger.ToString(_modules), Logger.Level.WARN);
+    }
   }
 
+  //returns the code name of the first - 'upstream' - protein produced by the device
   public string getFirstGeneProteinName()
   {
     foreach (ExpressionModule module in _modules)
@@ -157,10 +164,21 @@ public class Device: DNABit
     return prom;
   }
 
+
   private LinkedList<PromoterProperties> getPromoterReactions()
   {
     Logger.Log("Device::getPromoterReactions() starting... device="+this, Logger.Level.TRACE);
-    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+
+    //cf issue #224
+    //previously:
+    //LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+    //caused early deletion problem
+    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+    foreach(ExpressionModule module in _modules)
+    {
+      modules.AddLast(new ExpressionModule(module));
+    }
+
     LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
     PromoterProperties reaction;
     Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
@@ -180,7 +198,7 @@ public class Device: DNABit
   public LinkedList<IReaction> getReactions() {
     Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
 		
-    LinkedList<IReaction> reactions = new LinkedList<IReaction>();		
+    LinkedList<IReaction> reactions = new LinkedList<IReaction>();	
     LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
     foreach (PromoterProperties promoterProps in props) {
       Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
@@ -294,9 +312,12 @@ public class Device: DNABit
   public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
   {
     if (modules == null || checkDeviceValidity(modules) == false) {
+      Logger.Log("Device::buildDevice FAIL", Logger.Level.WARN);
       return null;
 	  }
+
     Device device = new Device(name, modules);
+    Logger.Log("Device::buildDevice returns "+device, Logger.Level.INFO);
     return device;
   }
 
@@ -366,5 +387,21 @@ public class Device: DNABit
     }
     Logger.Log("Device::hasSameBricks("+device+") of "+this+" coincide", Logger.Level.TRACE);
     return true;
+  }
+
+  public override bool Equals(System.Object obj)
+  {
+    if (obj == null)
+    {
+      return false;
+    }
+    
+    Device d = obj as Device;
+    if ((System.Object)d == null)
+    {
+      return false;
+    }
+    
+    return this.hasSameBricks(d);
   }
 }

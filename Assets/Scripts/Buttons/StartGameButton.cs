@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class StartGameButton : MonoBehaviour {
@@ -21,9 +21,8 @@ public class StartGameButton : MonoBehaviour {
       Logger.Log("StartGameButton::OnPress()", Logger.Level.INFO);
       fadeSprite.FadeOut();
       panel.SetActive(false);
-      gameStateController.StateChange(GameState.Game);
-      gameStateController.dePauseForbidden = false;
-	    }
-  	}
+      gameStateController.tryUnlockPause();
+	  }
+  }
 				
 }

@@ -11,12 +11,43 @@ using System.Collections.Generic;
  \mail raphael.goujet@gmail.com 
  */
 public class Logger : MonoBehaviour {
-  private static Logger _singleton = null;
+    private static Logger _internalSingleton;
+    private static Logger _singleton {
+      get {
+        if(_internalSingleton == null)
+        {
+          _internalSingleton = GameObject.Find("Logger").GetComponent<Logger>();
+          switch(_internalSingleton.logLevelIdx)
+          {
+            case 0: _level = Level.ALL;
+            break;
+            case 1: _level = Level.ONSCREEN;
+            break;
+            case 2: _level = Level.INTERACTIVE;
+            break;
+            case 3: _level = Level.TRACE;
+            break;
+            case 4: _level = Level.DEBUG;
+            break;
+            case 5: _level = Level.INFO;
+            break;
+            case 6: _level = Level.TEMP;
+            break;
+            case 7: _level = Level.WARN;
+            break;
+            case 8: _level = Level.ERROR;
+            break;
+          }
+        }
+        return _internalSingleton;
+      }
+    }
+
   //TODO fix interactive mode by making this field static
   //public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
   public int logLevelIdx;
-
+  
 /*!
  \brief log levels
  \details
@@ -197,33 +228,6 @@ public class Logger : MonoBehaviour {
     List<string> copy = new List<string>(_singleton._messages);
     _singleton._messages.Clear();
     return copy;
-  }
-	
-  public void Awake() {
-  	if(_singleton == null) {
-  	  _singleton = this;
-  	  switch(logLevelIdx) {
-  		case 0: _level = Level.ALL;
-  			break;
-  		case 1: _level = Level.ONSCREEN;
-  			break;
-  		case 2: _level = Level.INTERACTIVE;
-  			break;
-  		case 3: _level = Level.TRACE;
-  			break;
-  		case 4: _level = Level.DEBUG;
-  			break;
-  		case 5: _level = Level.INFO;
-  			break;
-      case 6: _level = Level.TEMP;
-        break;
-      case 7: _level = Level.WARN;
-        break;
-  		case 8: _level = Level.ERROR;
-  			break;
-  	  }
-  	  //_previousLevel = _level;
-  	}
   }
 
   /*

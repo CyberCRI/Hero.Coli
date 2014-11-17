@@ -55,8 +55,7 @@ public class Molecule : LoadableFromXmlImpl
     if (mol != null)
     {
       if(_debug) Logger.Log("Molecule::Molecule("+mol+")", Logger.Level.TRACE);
-      _name = mol._name;
-      _realName = GameplayNames.getMoleculeRealName(_name);
+      setName(mol._name);
       _type = mol._type;
       _description = mol._description;
       _concentration = mol._concentration;
@@ -79,7 +78,15 @@ public class Molecule : LoadableFromXmlImpl
   }
   public float getDegradationRate() {return _degradationRate; }
   public float getFickFactor() { return _fickFactor; }
-  public void setName(string name) { _name = name; }
+  public void setName(string name)
+  {
+    _name = name;
+    _realName = GameplayNames.getMoleculeRealName(_name);
+  }    
+  public void OnLanguageChanged()
+  {
+    _realName = GameplayNames.getMoleculeRealName(_name);
+  }
   public void setType(eType type) { _type = type; }
   public void setDescription(string description) { _description = description; }
   public void setConcentration(float concentration) {
@@ -143,27 +150,30 @@ public class Molecule : LoadableFromXmlImpl
               
               switch (moleculeNode.Attributes["type"].Value)
               {
-                  case "enzyme":
-                  {
-                      type = Molecule.eType.ENZYME;
-                      break;
-                  }
-                  case "transcription_factor":
-                  {
-                      type = Molecule.eType.TRANSCRIPTION_FACTOR;
-                      break;
-                  }
-                  case "other":
-                  {
-                      type = Molecule.eType.OTHER;
-                      break;
-                  }
-                  default:
-                  {
-                      Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
-                                  ,Logger.Level.WARN);
-                      return false;
-                  }
+                case "enzyme":
+                {
+                  type = Molecule.eType.ENZYME;
+                  break;
+                }
+                case "transcription_factor":
+                {
+                  type = Molecule.eType.TRANSCRIPTION_FACTOR;
+                  break;
+                }
+                case "other":
+                {
+                  type = Molecule.eType.OTHER;
+                  break;
+                }
+                //TODO add this case to all tryInstantiateFromXml implementations
+                case "#comment":
+                  break;
+                default:
+                {
+                  Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
+                              ,Logger.Level.WARN);
+                  return false;
+                }
               }
               
               setType(type);
@@ -187,6 +197,8 @@ public class Molecule : LoadableFromXmlImpl
                       case "FickFactor":
                           setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
                           break;
+                      case "#comment":
+                          break;
                       default:
                           Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"
                                       +" - unknown attribute "+attr.Name
@@ -194,10 +206,33 @@ public class Molecule : LoadableFromXmlImpl
                           return false;
                   }
               }
+
+              if(
+                    string.IsNullOrEmpty(_name)                           //!< The use name of the molecule
+                    || string.IsNullOrEmpty(_realName)                    //!< The real name of the molecule
+                    || (null == _type)                                    //!< The type of the molecule
+                    //private string _description;                        //!< The description of the molecule (optionnal)
+                    //private float _concentration;                       //!< The concentration of the molecule
+                    //private float _newConcentration;                    //!< The concentration of the molecule for the next stage
+                    //private float _degradationRate;                     //!< The degradation rate of the molecule
+                    //private float _fickFactor;                          //!< The FickFactor is a coefficient for FickReaction
+                    )
+                {
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
+                                +"_name="+_name
+                                +"& _realName="+_realName
+                                +"& _type="+_type
+                                , Logger.Level.ERROR);
+                  return false;
+                }
+                else
+                {
               
-              Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
                           +" with molecule="+this
-                          , Logger.Level.DEBUG);
+                            , Logger.Level.DEBUG);
+                  return true;
+                }
           }
           else
           {
@@ -212,7 +247,6 @@ public class Molecule : LoadableFromXmlImpl
           Logger.Log("Molecule.tryInstantiateFromXml bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
           return false;
       }
-      return true;
   }
 
   public override string ToString() {

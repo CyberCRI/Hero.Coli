@@ -9,22 +9,14 @@ using System.IO;
 public class InfoWindowLoader {
 
   private string _code;
-  private string _title;
-  private string _subtitle;
   private string _texture;
-  private string _explanation;
-  private string _bottom;
   private string _next;
 
   private StandardInfoWindowInfo _info;
 
   private void reinitVars() {
     _code = null;
-    _title = null;
-    _subtitle = null;
     _texture = null;
-    _explanation = null;
-    _bottom = null;
     _info = null;
   }
 
@@ -57,20 +49,8 @@ public class InfoWindowLoader {
       if (checkString(_code)) {
         foreach (XmlNode attr in infoNode){
           switch (attr.Name){
-            case InfoWindowXMLTags.TITLE:
-              _title = attr.InnerText;
-              break;
-            case InfoWindowXMLTags.SUBTITLE:
-              _subtitle = attr.InnerText;
-              break;
             case InfoWindowXMLTags.TEXTURE:
               _texture = attr.InnerText;
-              break;
-            case InfoWindowXMLTags.EXPLANATION:
-              _explanation = attr.InnerText;
-              break;
-            case InfoWindowXMLTags.BOTTOM:
-              _bottom = attr.InnerText;
               break;
             case InfoWindowXMLTags.NEXT:
               _next = attr.InnerText;
@@ -81,15 +61,11 @@ public class InfoWindowLoader {
           }
         }
         if(
-          checkString(_title)
-          && checkString(_subtitle)
-          && checkString(_texture)
-          && checkString(_explanation)
-          && checkString(_bottom)
+             checkString(_texture)
           && checkString(_next)
           )
         {
-          _info = new StandardInfoWindowInfo(_code, _title, _subtitle, _texture, _explanation, _bottom, _next);
+          _info = new StandardInfoWindowInfo(_code, _texture, _next);
         }
         if(null != _info)
         {

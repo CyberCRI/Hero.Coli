@@ -80,6 +80,11 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
   }
 
+  public static void OnLanguageChanged()
+  {
+    _instance.OnBioBricksChanged();
+  }
+
   private static int getIndex(BioBrick brick)
   {
     int idx;
@@ -247,6 +252,12 @@ public class CraftZoneManager : MonoBehaviour {
 
   public Device getCurrentDevice() {
     return _currentDevice;
+  }
+
+  public static bool isOpenable()
+  {
+    //FIXME doesn't work with test null != _instance._currentDevice
+    return 0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count;
   }
 
   void Start()

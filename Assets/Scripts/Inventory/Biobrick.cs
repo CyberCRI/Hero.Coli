@@ -28,6 +28,8 @@ public abstract class BioBrick: DNABit
   {
     _type = type;
   }
+
+  public abstract BioBrick copy();
 }
 
 public class PromoterBrick : BioBrick
@@ -50,7 +52,16 @@ public class PromoterBrick : BioBrick
 		_beta = beta;
 		_formula = formula;
   }
+
+  public PromoterBrick(PromoterBrick p) : this(p._name, p._beta, p._formula)
+  {
+  }
 	
+  public override BioBrick copy()
+  {
+    return new PromoterBrick(this);
+  }
+
   public override string ToString ()
   {
 	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}]", _name, _beta, _formula);
@@ -74,6 +85,15 @@ class RBSBrick : BioBrick
 		_RBSFactor = RBSFactor;
   }
 	
+  public RBSBrick(RBSBrick r) : this(r._name, r._RBSFactor)
+  {
+  }
+
+  public override BioBrick copy()
+  {
+      return new RBSBrick(this);
+  }
+
   public override string ToString ()
   {
 	return string.Format ("[RBSBrick: name: {0}, RBSFactor: {1}]", _name, _RBSFactor);
@@ -96,6 +116,15 @@ class GeneBrick : BioBrick
     _name = name;
 		_proteinName = proteinName;
   }
+
+  public GeneBrick(GeneBrick g) : this(g._name, g._proteinName)
+  {
+  }
+
+  public override BioBrick copy()
+  {
+      return new GeneBrick(this);
+  }
 	
   public override string ToString ()
   {
@@ -105,7 +134,7 @@ class GeneBrick : BioBrick
 
 class TerminatorBrick : BioBrick
 {
-  private float _terminatorFactor;
+  protected float _terminatorFactor;
 
   public void setTerminatorFactor(float v) { _terminatorFactor = v; }
   public float getTerminatorFactor() { return _terminatorFactor; }
@@ -118,6 +147,15 @@ class TerminatorBrick : BioBrick
   {
     _name = name;
 		_terminatorFactor = terminatorFactor;
+  }
+
+  public TerminatorBrick(TerminatorBrick t) : this(t._name, t._terminatorFactor)
+  {
+  }
+
+  public override BioBrick copy()
+  {
+    return new TerminatorBrick(this);
   }
 	
   public override string ToString ()

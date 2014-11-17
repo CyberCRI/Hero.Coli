@@ -108,10 +108,10 @@ A Device will transcript all the operon and so increase concentration of molecul
 In order to do this, it needs this parameters:
 
                 - Beta -> maximal production rate
-                - Terminator factor -> between 0-1 that describe the probability that the terminator stop the transcription
+                - Terminator factor -> between 0-1 that describes the probability that the terminator stop the transcription
                 - formula -> the result value of the tree above
                 - Operon :      - The Molecule that is transcripted
-                                - The RBS factor (RBSf), between 0-1 that correspond to the RBS affinity with the ribosomes
+                                - The RBS factor (RBSf), between 0-1 that corresponds to the RBS affinity with the ribosomes
 
 To see how the calculus is done, refer you to the react() function of this class.
 
@@ -124,7 +124,7 @@ To see how the calculus is done, refer you to the react() function of this class
 public class PromoterReaction : IReaction
 {
   private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
-  private TreeNode<PromoterNodeData> _formula;          //! The formula describe in the detailled description
+  private TreeNode<PromoterNodeData> _formula;          //! The formula described in the detailed description
   protected float _beta;                                //! The maximal production of the promoter
 
   public void setBeta(float beta) { _beta = beta; }
@@ -164,7 +164,7 @@ public class PromoterReaction : IReaction
     \brief Checks that two reactions have the same PromoterReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     PromoterReaction promoter = reaction as PromoterReaction;
 
@@ -173,7 +173,7 @@ public class PromoterReaction : IReaction
     bool bformula = formulaEquals(_formula, promoter._formula);
     bool bbeta = (_beta == promoter._beta);
 
-    Logger.Log("PromoterReaction::CharacEquals"
+    Logger.Log("PromoterReaction::PartialEquals"
       +", bnullProm="+bnullProm
       +", btermFac="+btermFac
       +", bformula="+bformula
@@ -181,28 +181,12 @@ public class PromoterReaction : IReaction
       , Logger.Level.DEBUG);
 
     return (promoter != null)
+    && base.PartialEquals(reaction)
     && (_terminatorFactor == promoter._terminatorFactor)
     //&& _formula.Equals(promoter._formula)
     && formulaEquals(_formula, promoter._formula)
     && (_beta == promoter._beta);
-  }
-  /*
-  protected override bool CharacEquals(IReaction reaction)
-  {
-    PromoterReaction promoter = reaction as PromoterReaction;
-    if (promoter != null)
-    {
-      PromoterReaction copy = new PromoterReaction(promoter);
-      copy.setName(_name);
-      copy.setMedium(_medium);
-      
-      bool res = Equals(copy);
-      return res;
-    }
-    return false;
-
-  }
-  */
+   }
 
   /*!
     \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
@@ -480,8 +464,38 @@ A PromoterReaction should respect this syntax:
           break;
       }
     }
-    return b;
+    return b && hasValidData();
   }
+
+    public override bool hasValidData()
+    {        
+      bool valid = base.hasValidData()
+          && 0 <= _terminatorFactor                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
+          && 1 >= _terminatorFactor
+          && null != _formula;                           //! The formula described in the detailed description
+      
+      if(valid)
+      {
+        if(0 == _beta)                                 //! The maximal production of the promoter
+        {
+          Logger.Log ("PromoterReaction::hasValidData please check that you really intended a max production rate (beta) of 0 " +
+                      "for promoter reaction "+this.getName()
+                      , Logger.Level.WARN);
+        }
+      }
+      else
+      {
+            Logger.Log(
+                 "PromoterReaction::hasValidData base.hasValidData()="+(base.hasValidData())
+                +" & 0 <= _terminatorFactor="+(0 <= _terminatorFactor)
+                +" & 1 >= _terminatorFactor="+(1 >= _terminatorFactor)
+                +" & null != _formula="+(null != _formula)
+                +" => valid="+valid
+                , Logger.Level.ERROR
+                );
+      }
+      return valid;
+    }
 
 
   public override string ToString ()

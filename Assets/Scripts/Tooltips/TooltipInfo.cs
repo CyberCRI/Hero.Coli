@@ -18,6 +18,7 @@ public class TooltipInfo
   public string _energyConsumption;
   public string _explanation;
 
+  //TODO replace "type" of type string by type enum
   public TooltipInfo(
     string code,
     string title,
@@ -60,7 +61,7 @@ public class TooltipInfo
       _background = TooltipManager.getBioBrickBackground();
       _tooltipType = TooltipManager.TooltipType.BIOBRICK;
     }
-  }
+   }
 
   public override string ToString ()
   {

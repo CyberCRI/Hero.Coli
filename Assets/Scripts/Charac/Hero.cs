@@ -115,11 +115,12 @@ public class Hero : MonoBehaviour {
       _lifeManager.regen(Time.deltaTime);
       _energy = _medium.getEnergy()/_maxMediumEnergy;
 
-      if (Input.GetKey(KeyCode.R))
+      if (GameStateController.isShortcutKey("KEY.LIFE"))
       {
 		    _lifeManager.addVariation(1f);
       }
-      if (Input.GetKey(KeyCode.F)) {
+      if (GameStateController.isShortcutKey("KEY.ENERGY"))
+      {
         setEnergy(1f);
       }
 

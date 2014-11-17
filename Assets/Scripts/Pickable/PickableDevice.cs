@@ -17,11 +17,8 @@ public abstract class PickableDevice : PickableItem {
     Logger.Log("PickableDevice::addTo "+_dnaBit, Logger.Level.DEBUG);
     foreach(BioBrick brick in _dnaBit.getExpressionModules().First.Value.getBioBricks())
     {
-      Logger.Log("PickableDevice::addTo brick "+brick, Logger.Level.TRACE);
       AvailableBioBricksManager.get().addAvailableBioBrick(brick, false);
     }
-
-    Logger.Log("PickableDevice::addTo device "+_dnaBit, Logger.Level.DEBUG);
     Inventory.get().askAddDevice(_dnaBit);
   }
 }

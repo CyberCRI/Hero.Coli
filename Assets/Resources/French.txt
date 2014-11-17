@@ -1,0 +1,264 @@
+MAIN.LANGUAGE=French
+
+KEY.PAUSE=P
+KEY.LIFE=V
+KEY.ENERGY=E
+KEY.INVENTORY=I
+KEY.CRAFTING=C
+
+KEY.MOV.PLUS=D
+KEY.MOV.MINUS=F
+KEY.AMPI.PLUS=A
+KEY.AMPI.MINUS=Z
+KEY.FLUO1.PLUS=G
+KEY.FLUO1.MINUS=H
+KEY.AMPR.PLUS=Q
+KEY.AMPR.MINUS=S
+KEY.FLUO2.PLUS=R
+KEY.FLUO2.MINUS=T
+KEY.BL.ON=B
+KEY.BL.OFF=N
+
+BRICK.PRCONS=Promoteur constitutif
+BRICK.PRLACI=pLac
+BRICK.PRTETR=pTet
+BRICK.RBS1=RBS Moyen
+BRICK.RBS2=RBS Faible
+BRICK.FLUO1=Vert - GFP
+BRICK.FLUO2=Rouge - mCherry
+BRICK.MOV=Régulateur maître des flagelles
+BRICK.AMPR=Cassette de résistance à l'ampicilline
+BRICK.DTER=Terminateur double
+
+MOL.IPTG=IPTG
+MOL.aTc=aTc tétracycline
+MOL.FLUO1=GFP
+MOL.FLUO2=mCherry
+MOL.MOV=FlhDC
+MOL.AMPR=Béta-lactamase
+MOL.REPR1=lacI
+MOL.REPR2=tetR
+MOL.AMPI=Ampicilline
+MOL.AMPI*=Acide pénicilloïque
+
+DEVICE.FLUO1=Fluorescence verte
+DEVICE.FLUO2=Fluorescence rouge
+DEVICE.MOV=Hyperflagellation
+DEVICE.AMPR=Résistance à l'ampicilline
+DEVICE.REPR1=Inhibition au LacI
+DEVICE.REPR2=Inhibition au TetR
+DEVICE.SUFMED=(moyen)
+DEVICE.SUFLOW=(faible)
+DEVICE.PREREG=(Régulé) 
+
+INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
+INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre première construction génétique!
+INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Elle permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Continuer" pour ouvrir l'inventaire et injecter cette construction dans Cellia.
+INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
+INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
+INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
+INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur 'Continuer' pour ouvrir l'interface de construction.
+INFO.PICKEDUPGFP.TITLE=CONSTRUCTION TROUVÉE !
+INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé une nouvelle construction génétique !
+INFO.PICKEDUPGFP.EXPLANATION=Cette construction contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
+INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Continuer" pour injecter cette construction dans Cellia.
+INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
+INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
+INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
+INFO.RFP.BOTTOM=La BioBrique du gène RFP sera présente dans une prochaine version du jeu !
+
+MODAL.RESTARTGAME.TITLE=RECOMMENCER ?
+MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vous sûr ?
+
+GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
+GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15
+GUI.BUTTON.RESTART=RECOMMENCER
+GUI.BUTTON.INVENTORY=Inventaire
+GUI.BUTTON.CRAFTING=Construction
+GUI.BUTTON.VALIDATE=OK
+GUI.BUTTON.CANCEL=Annuler
+GUI.MEDIUMINFO.TITLE=INFOS MEDIUM
+GUI.CELLINFO.TITLE=INFOS CELLIA
+GUI.INVENTORY.TITLE=INVENTAIRE
+GUI.INVENTORY.EQUIPED=ÉQUIPÉ
+GUI.EQUIPED.TITLE=CONSTRUCTIONS ÉQUIPÉES
+GUI.PAUSE.LABEL=Pause
+
+CRAFT.TITLE.LABEL=INTERFACE DE CONSTRUCTION
+
+CRAFT.PROCESS.EQUIP=Inventaire
+CRAFT.PROCESS.CRAFT=assembler
+
+CRAFT.ASSEMBLY.TITLE=Table de Construction
+CRAFT.ASSEMBLY.TIP=Pour fabriquer vos constructions génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Assemblez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
+CRAFT.ASSEMBLY.1ST=Promoteur
+CRAFT.ASSEMBLY.2ND=RBS
+CRAFT.ASSEMBLY.3RD=Gène
+CRAFT.ASSEMBLY.4TH=Terminateur
+
+CRAFT.FINALIZATION.TITLE=Résultat
+
+CRAFT.FINALIZATION.SUCCESS=Nouvelle construction génétique !
+CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de construction est déjà utilisé !
+CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déjà connu.
+CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette construction est déjà connue !
+CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de la construction s'affiche ici.
+
+CRAFT.BANK.TITLE=Banque de BioBriques
+CRAFT.BANK.PROMOTER=Promoteur
+CRAFT.BANK.RBS=RBS
+CRAFT.BANK.GENE=Gène
+CRAFT.BANK.TERMINATOR=Terminateur
+CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
+
+CRAFT.RECIPES.TITLE=Constructions
+CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour mettre ses BioBriques sur la table.
+
+TUTORIAL.INTRODUCTION1.NANOBOTLABEL=C'est vous !
+TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, votre amie !
+TUTORIAL.INTRODUCTION1.WELCOMETITLE=Bienvenue dans Hero.coli
+TUTORIAL.INTRODUCTION1.PART1=Dans ce monde, des machines intelligentes et des êtres vivants assurent ensemble l'harmonie et l'équilibre de leur planète.
+TUTORIAL.INTRODUCTION1.PART2=Vous êtes un petit robot habitant cette planète.
+TUTORIAL.INTRODUCTION1.PART3=Votre meilleure amie Cellia est une bactérie vivant dans un environnement aquatique.
+TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
+
+TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous allez aider votre amie bactérie à sortir de ce labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
+TUTORIAL.INTRODUCTION2.PART2=Cependant sur votre chemin vous devrez remporter différentes épreuves avant de trouver la sortie.
+TUTORIAL.INTRODUCTION2.PART3=Pour cette mission vous devrez modifier l'ADN de Cellia pour remporter ces épreuves.
+TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION
+TUTORIAL.INTRODUCTION2.BOTTOM=Cliquez pour entrer dans Cellia, vous pourrez la contrôler avec le clic gauche.
+
+TUTORIAL.END.TITLE=VICTOIRE !
+TUTORIAL.END.EXPLANATION=Merci d'avoir joué, nous espérons que vous avez aimé ce jeu. N'oubliez pas de dire ce que vous en avez pensé, surtout si vous voulez nous aider à le développer !
+TUTORIAL.END.SUBTITLE=Vous avez fini le jeu, félicitations !
+TUTORIAL.END.BOTTOM=Recommencez en cliquant sur le bouton.
+
+TOOLTIP.MAIN.LENGTH=Longueur :
+TOOLTIP.MAIN.REFERENCE=Référence :
+TOOLTIP.MAIN.ENERGYCONSUMPTION=Consommation énergétique :
+TOOLTIP.MAIN.DEVICETYPE=Construction
+TOOLTIP.MAIN.BIOBRICKTYPE=BioBrique
+
+TOOLTIP.B_AMPR.TITLE=Gène de Résistance à l'Ampicilline
+TOOLTIP.B_AMPR.SUBTITLE=Fonction : permet de résister aux antibiotiques de type ampicilline.
+TOOLTIP.B_AMPR.LENGTH=943bp
+TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
+TOOLTIP.B_AMPR.EXPLANATION=Séquence codant pour le béta-lactamase, une enzyme qui catalyze l'hydrolyse des pénicillines.
+
+TOOLTIP.B_DTER.TITLE=Terminateur 1
+TOOLTIP.B_DTER.SUBTITLE=Fonction : marque la fin d'une séquence de BioBriques pour former une construction valide.
+TOOLTIP.B_DTER.LENGTH=129bp
+TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
+TOOLTIP.B_DTER.EXPLANATION=Terminateur fort de séquence de transcription - Terminateur double.
+
+TOOLTIP.B_FLUO1.TITLE=Gène de la GFP
+TOOLTIP.B_FLUO1.SUBTITLE=Fonction : exhibe une fluorescence vert vif quand exposée à une lumière allant du bleu à l'ultraviolet.
+TOOLTIP.B_FLUO1.CUSTOMFIELD=Paramètres de\nfluorescence :
+TOOLTIP.B_FLUO1.CUSTOMVALUE=Émission max : 511nm\nExcitation max : 501nm
+TOOLTIP.B_FLUO1.LENGTH=716bp
+TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
+TOOLTIP.B_FLUO1.EXPLANATION=Séquence codant pour la protéine de fluorescence verte (GFP).
+
+TOOLTIP.B_MOV.TITLE=Opéron d'Hyperflagellation
+TOOLTIP.B_MOV.SUBTITLE=Fonction : augmente le nombre de flagelles et donc la vitesse de déplacement.
+TOOLTIP.B_MOV.LENGTH=932bp
+TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.B_MOV.EXPLANATION=Opéron maître de FlhDC qui produit un facteur de transcription hexamérique activant la synthèse de flagelles.
+
+TOOLTIP.B_PRCONS.TITLE=Promoteur pCons
+TOOLTIP.B_PRCONS.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence en toute circonstance.
+TOOLTIP.B_PRCONS.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRCONS.CUSTOMVALUE=Aucune
+TOOLTIP.B_PRCONS.LENGTH=48bp
+TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
+TOOLTIP.B_PRCONS.EXPLANATION=Promoteur constitutif (toujours activé).
+
+TOOLTIP.B_PRLACI.TITLE=Promoteur pLac
+TOOLTIP.B_PRLACI.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence ; activité inhibée par 'CAP' et 'LacI'.
+TOOLTIP.B_PRLACI.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
+TOOLTIP.B_PRLACI.LENGTH=200bp
+TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
+TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites de fixation de 'CAP' et 'LacI'.
+
+TOOLTIP.B_PRTETR.TITLE=Promoteur pTet
+TOOLTIP.B_PRTETR.SUBTITLE=Fonction : entraîne l'expression des gènes en aval ; activité inhibée par 'TetR'.
+TOOLTIP.B_PRTETR.CUSTOMFIELD=Régulation :
+TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --
+TOOLTIP.B_PRTETR.LENGTH=54bp
+TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)
+TOOLTIP.B_PRTETR.EXPLANATION=Promoteur couplé avec deux séquences se liant à tetR.
+
+TOOLTIP.B_RBS1.TITLE=RBS Moyen
+TOOLTIP.B_RBS1.SUBTITLE=Fonction : détermine le niveau d'expression du gène en aval.
+TOOLTIP.B_RBS1.CUSTOMFIELD=Niveau d'expression :
+TOOLTIP.B_RBS1.CUSTOMVALUE=23%
+TOOLTIP.B_RBS1.LENGTH=943bp
+TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
+TOOLTIP.B_RBS1.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction moyenne faible.
+
+TOOLTIP.B_RBS2.TITLE=RBS Faible
+TOOLTIP.B_RBS2.SUBTITLE=Fonction : détermine le niveau d'expression de gènes en aval.
+TOOLTIP.B_RBS2.CUSTOMFIELD=Niveau d'expression :
+TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
+TOOLTIP.B_RBS2.LENGTH=14bp
+TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
+TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.
+
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).title=Fluorescence verte (faible)
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).subtitle=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).length=1101bp
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).reference=Stanford University
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).energyConsumption=XXX
+TOOLTIP.D_GREEN_FLUORESCENCE_(LOW).explanation=Niveau d'expression constant à 12,6% du gène codant pour la protéine vert fluorescent (GFP).
+
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).TITLE=Fluorescence verte (moyen)
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).LENGTH=1101bp
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).REFERENCE=Stanford University
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_GREEN_FLUORESCENCE_(MED).EXPLANATION=Niveau d'expression constant à 23% du gène codant pour la protéine vert fluorescent (GFP).
+
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).TITLE=Hyperflagellation (faible)
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).TITLE=Hyperflagellation (moyen)
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).LENGTH=1122bp
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).TITLE=(Régulé) Fluorescence verte (faible)
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).LENGTH=1101bp
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).REFERENCE=Stanford University
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% du gène codant pour la protéine vert fluorescent (GFP).
+
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).TITLE=(Régulé) Fluorescence verte (moyen)
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).LENGTH=1101bp
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).REFERENCE=Stanford University
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_GREEN_FLUORESCENCE_(MED).EXPLANATION=Niveau d'expression régulé, à 23% du gène codant pour la protéine vert fluorescent (GFP).
+
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).TITLE=(Régulé) Hyperflagellation (faible)
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).LENGTH=1122bp
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(LOW).EXPLANATION=Niveau d'expression régulé, à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).TITLE=(Régulé) hyperflagellation (moyen)
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).LENGTH=1122bp
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).ENERGYCONSUMPTION=XXX
+TOOLTIP.D_REGULATED_HYPERFLAGELLATION_(MED).EXPLANATION=Niveau d'expression régulé, à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+

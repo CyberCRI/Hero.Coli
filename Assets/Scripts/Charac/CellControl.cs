@@ -168,17 +168,6 @@ public class CellControl : MonoBehaviour{
 
     _targetPosition = transform.position;
 
-   /* absoluteWASDButton = GameObject.Find("AbsoluteWASDButton").GetComponent<AbsoluteWASDButton>();
-    leftClickToMoveButton = GameObject.Find("LeftClickToMoveButton").GetComponent<LeftClickToMoveButton>();
-    relativeWASDButton = GameObject.Find("RelativeWASDButton").GetComponent<RelativeWASDButton>();
-    rightClickToMoveButton = GameObject.Find("RightClickToMoveButton").GetComponent<RightClickToMoveButton>();
-    selectedControlTypeSprite = GameObject.Find ("SelectedControlTypeSprite").GetComponent<UISprite>();*/
-
-//    absoluteWASDButton.cellControl = this;
-//    leftClickToMoveButton.cellControl = this;
-//    relativeWASDButton.cellControl = this;
-//    rightClickToMoveButton.cellControl = this;
-
     switchControlTypeToAbsoluteWASDAndLeftClickToMove();
 	}
   
@@ -214,12 +203,7 @@ public class CellControl : MonoBehaviour{
           break;
       }
       commonUpdate();
-    }
-    
-    //if(Input.GetKeyDown(KeyCode.Space)) {
-    //  switchControlTypeTo((ControlType)(((int)_currentControlType + 1) % 5));
-    //}
-    
+    }    
   }
 
   private void switchControlTypeTo(ControlType newControlType) {

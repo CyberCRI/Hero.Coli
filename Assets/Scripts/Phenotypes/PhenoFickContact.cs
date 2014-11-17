@@ -11,6 +11,11 @@ using System;
  */
 public class PhenoFickContact : Phenotype {
 
+  public VectrosityPanel vectroPanel;
+  public GraphMoleculeList graphMoleculeList;
+  private int _vectroPanelInitMediumId = 2;
+  private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
+
   //! Called at the beginning
   public override void StartPhenotype()
   {
@@ -18,19 +23,13 @@ public class PhenoFickContact : Phenotype {
 
   public override void UpdatePhenotype()
   {
-    //Logger.Log("PhenoFickContact", Logger.Level.ONSCREEN);
+      //Logger.Log("PhenoFickContact", Logger.Level.ONSCREEN);
   }
-
-  public VectrosityPanel vectroPanel;
-  public MoleculeDebug moleculeDebug;
-  private int _vectroPanelInitMediumId = 2;
-  private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
 
   private void configureExternalDisplays(int mediumId)
   {
-	
-	vectroPanel.setMedium(mediumId);
-    moleculeDebug.setMediumId(mediumId);
+	  vectroPanel.setMedium(mediumId);
+    graphMoleculeList.setMediumId(mediumId);
   }
 
   void OnTriggerEnter(Collider collider)
@@ -57,10 +56,10 @@ public class PhenoFickContact : Phenotype {
     int mediumId = PM.MediumId;
     Medium medium = ReactionEngine.getMediumFromId(mediumId, _reactionEngine.getMediumList());
     if (medium == null)
-      {
-        Logger.Log("PhenoFickContact::OnTriggerEnter The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
-        return ;
-      }
+    {
+      Logger.Log("PhenoFickContact::OnTriggerEnter The medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.", Logger.Level.WARN);
+      return ;
+    }
     
     float surface = Math.Min(PM.Size, PMext.Size);
     Fick fick = _reactionEngine.getFick();

@@ -56,6 +56,11 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 		Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
 
 	}
+
+  protected void OnLanguageChanged()
+  {
+    _label.text = GameplayNames.getBrickRealName(_biobrick.getName());
+  }
 	
 	public new static string getSpriteName(BioBrick brick) {
 		return brick.getName();

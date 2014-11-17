@@ -4,35 +4,45 @@ using System.Collections.Generic;
 
 public class EquipedDisplayedDevice : DisplayedDevice {
   private LinkedList<GenericDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<GenericDisplayedBioBrick>();
-
-	
-  private static GameObject           equipedDevice = null;
+    	
+  private static GameObject           equipedDevice;
   private static GameObject           tinyBioBrickIcon;
   private static GameObject           tinyBioBrickIcon2;
-  private float                       _tinyIconVerticalShift = 0.0f;
+  private static float                _tinyIconVerticalShift = 0.0f;
   private static float                _width = 0.0f;
 
   private static string               _equipedDeviceButtonPrefabPosString = "EquipedDeviceButtonPrefabPos";
   private static string               _tinyBioBrickPosString              = "TinyBioBrickIconPrefabPos";
   private static string               _tinyBioBrickPosString2             = _tinyBioBrickPosString + "2";
 
+  private bool                        _displayBricks;
+  private bool                        _isEquipScreen;
+
+
+  public EquipedDeviceCloseButton closeButton;
+
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
-
-    initIfNecessary();
-
-    foreach(GenericDisplayedBioBrick brick in _currentDisplayedBricks)
-    {
-      brick.gameObject.SetActive(true);
-    }
+    createBioBricksIfNecessary();
+    updateVisibility();
   }
 
   void OnDisable() {
     Logger.Log("EquipedDisplayedDevice::OnDisable "+_device, Logger.Level.TRACE);
+    setBricksVisibilityTo(false);
+  }
+
+  protected void setBricksVisibilityTo(bool visible)
+  {
     foreach(GenericDisplayedBioBrick brick in _currentDisplayedBricks)
     {
-      brick.gameObject.SetActive(false);
+      brick.gameObject.SetActive(visible);
     }
+  }
+
+  protected void updateVisibility()
+  {
+    setBricksVisibilityTo(_displayBricks);
   }
 
   protected override void OnPress(bool isPressed) {
@@ -43,49 +53,71 @@ public class EquipedDisplayedDevice : DisplayedDevice {
         Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
         return;
       }
-	    if (_devicesDisplayer.IsEquipScreen()) {
-        TooltipManager.displayTooltip();
-	      _devicesDisplayer.askRemoveEquipedDevice(_device);
-	    }
+      askRemoveDevice();
 	  }
   }
 
-
+  public void askRemoveDevice()
+  {        
+    //if (_devicesDisplayer.IsEquipScreen()) {
+      TooltipManager.displayTooltip();
+      _devicesDisplayer.askRemoveEquipedDevice(_device);
+    //}
+  }
 
   void initIfNecessary() {
-    if(equipedDevice == null) {
-      //equipedDevice = GameObject.Find(_equipedDeviceButtonPrefabPosString);
+    Logger.Log("EquipedDisplayedDevice::initIfNecessary starts", Logger.Level.INFO);
+    if(
+        (null == equipedDevice)
+        || (null == tinyBioBrickIcon)
+        || (null == tinyBioBrickIcon2)
+        || (0 == _tinyIconVerticalShift)
+        || (0 == _width)
+      ) 
+    {
 			equipedDevice = DevicesDisplayer.get().equipedDevice;
-    //  tinyBioBrickIcon = GameObject.Find (_tinyBioBrickPosString);
+
 			tinyBioBrickIcon = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos;
 			tinyBioBrickIcon2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos2;
-
     }
-    if(_tinyIconVerticalShift == 0.0f)
+    
+    if(null != tinyBioBrickIcon)
     {
-      _tinyIconVerticalShift = (tinyBioBrickIcon.transform.localPosition - equipedDevice.transform.localPosition).y;
-      _width = tinyBioBrickIcon2.transform.localPosition.x - tinyBioBrickIcon.transform.localPosition.x;
+      if(null != equipedDevice)
+      {
+        _tinyIconVerticalShift = (tinyBioBrickIcon.transform.localPosition - equipedDevice.transform.localPosition).y;
+      }
+      if (null != tinyBioBrickIcon2)
+      {  
+        _width = tinyBioBrickIcon2.transform.localPosition.x - tinyBioBrickIcon.transform.localPosition.x;
+        tinyBioBrickIcon.SetActive(false);
+        tinyBioBrickIcon2.SetActive(false);
+      }
+      Logger.Log("EquipedDisplayedDevice::initIfNecessary ends", Logger.Level.INFO);
     }
   }
 
-  void displayBioBricks() {
-    Logger.Log("EquipedDisplayedDevice::displayBioBricks", Logger.Level.DEBUG);
+  void createBioBricksIfNecessary() {
+    Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary", Logger.Level.DEBUG);
     initIfNecessary();
-    if(_device != null)
+    if(0 == _currentDisplayedBricks.Count)
     {
-      //add biobricks
-      int index = 0;
-      foreach (ExpressionModule module in _device.getExpressionModules())
+      if(_device != null)
       {
-        foreach(BioBrick brick in module.getBioBricks())
+        //add biobricks
+        int index = 0;
+        foreach (ExpressionModule module in _device.getExpressionModules())
         {
-          GenericDisplayedBioBrick dbbrick = TinyBioBrickIcon.Create(transform, getNewPosition(index), null, brick);
-          _currentDisplayedBricks.AddLast(dbbrick);
-          index++;
+          foreach(BioBrick brick in module.getBioBricks())
+          {
+            GenericDisplayedBioBrick dbbrick = TinyBioBrickIcon.Create(transform, getNewPosition(index), null, brick);
+            _currentDisplayedBricks.AddLast(dbbrick);
+            index++;
+          }
         }
+      } else {
+        Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary _device == null", Logger.Level.WARN);
       }
-    } else {
-      Logger.Log("EquipedDisplayedDevice::displayBioBricks _device == null", Logger.Level.WARN);
     }
   }
 
@@ -101,12 +133,51 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     }
   }
 
+  public void setDisplayBricks(bool display)
+  {
+    _displayBricks = display;
+    updateVisibility();
+  }
+    
+  protected override void OnHover(bool isOver)
+  {
+    Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    base.OnHover(isOver);
+    
+    if(null != closeButton && !_devicesDisplayer.IsEquipScreen())
+    {
+      //TODO fix interaction with Update
+      closeButton.gameObject.SetActive(isOver);
+    }
+  }
+
+  void Update () {
+    bool newIsEquipScreen = _devicesDisplayer.IsEquipScreen();
+    if(null != closeButton)
+    {
+      if(_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+      {
+        closeButton.gameObject.SetActive(false);
+      }
+      else
+      {
+        if(!_isEquipScreen && _isEquipScreen != newIsEquipScreen)
+        {
+          //TODO fix interaction with OnHover
+          closeButton.gameObject.SetActive(true);
+        }
+      }
+    }
+    _isEquipScreen = newIsEquipScreen;
+
+    //no-hover version
+    //closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
+  }
+
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDevice::Start", Logger.Level.TRACE);
-
-    initIfNecessary();
-
-    displayBioBricks();
+    createBioBricksIfNecessary();
+    updateVisibility();
   }
 }

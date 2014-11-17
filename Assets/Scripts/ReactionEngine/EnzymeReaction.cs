@@ -90,10 +90,11 @@ public class EnzymeReaction : IReaction
     \brief Checks that two reactions have the same EnzymeReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     EnzymeReaction enzyme = reaction as EnzymeReaction;
     return (enzyme != null)
+    && base.PartialEquals(reaction)
     && (_substrate == enzyme._substrate)
     && (_enzyme    == enzyme._enzyme)
     && (_Kcat      == enzyme._Kcat)
@@ -224,6 +225,8 @@ public class EnzymeReaction : IReaction
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
       return ;
+
+    //TODO introduce delta t here instead of 1f
     float delta = execEnzymeReaction(molecules) * 1f;
 
     float energyCoef;
@@ -318,7 +321,48 @@ public class EnzymeReaction : IReaction
             break;
         }
       }
-      return b;
+      return b && hasValidData();
+    }
+
+    
+    public override bool hasValidData()
+    {
+      bool valid = base.hasValidData()
+        && !string.IsNullOrEmpty(_substrate)            //!< The substrate of the reaction
+        && !string.IsNullOrEmpty(_enzyme)               //!< The enzyme of the reaction
+      //protected float _Kcat;                  //!< Reaction constant of enzymatic reaction
+        && !string.IsNullOrEmpty(_effector);            //!< The effector of the reaction
+      //protected float _alpha;                 //!< Alpha descriptor of the effector
+      //protected float _beta;                  //!< Beta descriptor of the effector
+      //protected float _Km;                    //!< Affinity coefficient between substrate and enzyme
+      //protected float _Ki;                    //!< Affinity coefficient between effector and enzyme;
+      if(valid)
+      {
+        if((0 == _alpha)
+           || (0 == _Ki)
+           || (0 == _Km))
+        {
+          //TODO check also _Kcat, _beta
+          Logger.Log ("EnzymeReaction::hasValidData please check values of "
+            + "alpha="+_alpha
+            + ", Ki="+_Ki
+            + ", Km="+_Km
+            +" for reaction "+this.getName()
+            , Logger.Level.WARN);
+        }
+      }
+      else
+      {
+        Logger.Log(
+                "EnzymeReaction::hasValidData base.hasValidData()="+base.hasValidData()
+                +" & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
+                +" & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
+                +" & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
+                +" => valid="+valid
+                , Logger.Level.ERROR
+                );
+      }
+      return valid;
     }
 
     private delegate void  StrSetter(string dst);
@@ -332,10 +376,10 @@ public class EnzymeReaction : IReaction
    */
     private bool loadEnzymeString(string value, StrSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-            return false;
-        setter(value);
-        return true;    
+      if (String.IsNullOrEmpty(value))
+        return false;
+      setter(value);
+      return true;    
     }
     
     /*!
@@ -345,13 +389,14 @@ public class EnzymeReaction : IReaction
    */
     private bool loadEnzymeFloat(string value, FloatSetter setter)
     {
-        if (String.IsNullOrEmpty(value))
-        {
-            Debug.Log("Error: Empty productionMax field");
-            return false;
-        }
-        setter(float.Parse(value.Replace(",", ".")));
-        return true;    
+      if (String.IsNullOrEmpty(value))
+      {
+        Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty productionMax field"
+                       , Logger.Level.ERROR);
+        return false;
+      }
+      setter(float.Parse(value.Replace(",", ".")));
+      return true;    
     }
     
     /*!
@@ -366,7 +411,11 @@ public class EnzymeReaction : IReaction
         if (attr.Name == "name")
         {
           if (String.IsNullOrEmpty(attr.InnerText))
-            Debug.Log("Warning : Empty name field in Enzyme Reaction definition");
+          {
+            Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty name field in Enzyme Reaction definition"
+                               , Logger.Level.ERROR);
+            return false;
+          }
           Product prod = new Product();
           prod.setName(node.InnerText);
           addProduct(prod);
