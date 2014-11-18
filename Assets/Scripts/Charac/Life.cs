@@ -23,6 +23,7 @@ public class Life : MonoBehaviour {
 	private float _lifeRegen;
 	private float _variation;
 
+	private bool _suddenDeath = false;
 	//Constructor
 	public Life(float life, float lifeRegen)
 	{
@@ -55,6 +56,10 @@ public class Life : MonoBehaviour {
     _life = life;
   }
 
+	public void setSuddenDeath(bool b) {
+		_suddenDeath = b;
+	}
+
 	public float getVariation()
 	{
 		return _variation;
@@ -63,8 +68,9 @@ public class Life : MonoBehaviour {
 	public void applyVariation()
 	{
 		_life += _variation;
-		if(_life  <= 0f) _life = 0f;
+		if(_life  <= 0f || _suddenDeath) _life = 0f;
 		else if(_life  >= _lifeMax) _life = _lifeMax;
+
 
 		ResetVariation();
 	}
@@ -73,6 +79,8 @@ public class Life : MonoBehaviour {
 	public void ResetVariation()
 	{
 		_variation = 0f;
+		if(_suddenDeath)
+			_suddenDeath = false;
 	}
 
   public void regen(float deltaTime)

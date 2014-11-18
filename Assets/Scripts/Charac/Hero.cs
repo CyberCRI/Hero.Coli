@@ -26,7 +26,7 @@ public class Hero : MonoBehaviour {
   private bool _pause;
 	private bool _isAlive;
 
-
+	public Life getLifeManager () {return _lifeManager;}
 
 	public void Pause(bool pause)
 	{
@@ -37,6 +37,10 @@ public class Hero : MonoBehaviour {
 	{
 	  return _pause;
 	}
+
+
+	public Medium getMedium() { return _medium;}
+	public bool getIsAlive() { return _isAlive;}
 
 
 	//getter and setter for energy
