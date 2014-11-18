@@ -8,10 +8,13 @@ using System.Collections;
 
 public class WorldLinkManager : MonoBehaviour {
 
+    public MineManager mineManager;
+
 	// Use this for initialization
 	void Start () {
 
     GameObject perso = GameObject.Find ("Perso");
+    mineManager.hero = perso.GetComponent<Hero>();
 
 		//tuto End
 		EndGameCollider endGameCollider = GameObject.Find("TutoEnd").GetComponent<EndGameCollider>();

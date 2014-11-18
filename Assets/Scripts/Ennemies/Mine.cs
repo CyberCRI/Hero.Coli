@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Mine : MonoBehaviour {
@@ -7,8 +7,9 @@ public class Mine : MonoBehaviour {
 	private bool _changed = false;
 	private float _x;
 	private float _z;
-	private float _id;
+	//private float _id;
 
+    //FIXME
 	private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive
 	private float _concentrationTreshold = 2f;
 
@@ -32,7 +33,7 @@ public class Mine : MonoBehaviour {
 
 	public void setChanged(bool b) { 
 		if (b == true)
-			SceneManager3.mineChanged += 1;
+			MineManager.mineChanged += 1;
 		_changed = b;
 	}
 
@@ -40,9 +41,9 @@ public class Mine : MonoBehaviour {
 
 	public float getX() {return _x;}
 	public float getZ() {return _z;}
-	public float getId() {return _id;}
+	//public float getId() {return _id;}
 
-	public void setId(float f) {_id = f;}
+	//public void setId(float f) {_id = f;}
 
 	// Use this for initialization
 	void Start () {
@@ -55,9 +56,7 @@ public class Mine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
-		AutoReset();
-
+		autoReset();
 	
 		detection ();
 
@@ -138,11 +137,11 @@ public class Mine : MonoBehaviour {
 	}
 
 
-	public void AutoReset()
+	public void autoReset()
 	{
-		if(SceneManager3.isReseting && _changed)
+		if(MineManager.isReseting && _changed)
 		{
-			GameObject.Find ("SceneManager").GetComponent<SceneManager3>().resetSelectedMine(_id, gameObject);
+			GameObject.Find("SceneManager").GetComponent<MineManager>().resetSelectedMine(_id, gameObject);
 		}
 	}
 
