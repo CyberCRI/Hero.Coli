@@ -141,7 +141,7 @@ public class Mine : MonoBehaviour {
 	{
 		if(MineManager.isReseting && _changed)
 		{
-			GameObject.Find("SceneManager").GetComponent<MineManager>().resetSelectedMine(_id, gameObject);
+			GameObject.Find("SceneManager").GetComponent<MineManager>().resetSelectedMine(gameObject);
 		}
 	}
 
