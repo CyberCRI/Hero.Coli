@@ -40,7 +40,7 @@ public class Hero : MonoBehaviour {
 
 
 	public Medium getMedium() { return _medium;}
-	public bool getIsAlive() { return _isAlive;}
+	public bool isAlive() { return _isAlive;}
 
 
 	//getter and setter for energy
@@ -242,8 +242,11 @@ public class Hero : MonoBehaviour {
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
 				box.resetPos();
 			}
+
+        Debug.LogError("MINEMANAGER RESETTING");
+      MineManager.isReseting = true;
 		    
-		    if (_spawn01 == true) {
+		  if (_spawn01 == true) {
 				GameObject respawn01 = GameObject.Find("Checkpoint01");
 				gameObject.transform.position = respawn01.transform.position;
 			}

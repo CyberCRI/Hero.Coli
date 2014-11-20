@@ -3,12 +3,30 @@ using System.Collections;
 using System.Xml;
 
 public class MineManager : MonoBehaviour {
+    
+    
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "MineManager";
+    private static MineManager _instance;
+    public static MineManager get() {
+        if(_instance == null) {
+            Logger.Log("MineManager::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find(gameObjectName).GetComponent<MineManager>();
+        }
+        return _instance;
+    }
+    void Awake()
+    {
+        Logger.Log("MineManager::Awake", Logger.Level.DEBUG);
+        _instance = this;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
 	//public TextAsset sceneFilePath3;
 	public GameObject mine;
 
 	public static bool isReseting;
-	public static int mineChanged;
+	public static int detonatedMines;
 
 	public Hero hero;
 
@@ -21,42 +39,33 @@ public class MineManager : MonoBehaviour {
   {
       if(null == hero)
       {
+        Logger.Log("MineManager::safeGetPerso null == hero");
         hero = GameObject.Find("Perso").GetComponent<Hero>();
       }
       return hero;
   }
-	
-	// Update is called once per frame
-	void Update () {
 
-		resetMines();
-	
-  	}
-
-	public void resetMines() {		
-    if (safeGetPerso().getIsAlive() == false)
-		{
-			isReseting = true;
-		}
-	}
+    public static void detonate(Mine mine)
+    {
+        detonatedMines++;
+    }
 
 	//public void resetSelectedMine(float id, GameObject target)
-  public void resetSelectedMine(GameObject target)
+  public static void resetSelectedMine(GameObject target)
 	{
-		float x = target.transform.position.x;
+		float x = target.transform.position.x; 
 		float z = target.transform.position.z;
 	
 		iTween.Stop(target, true);
 		Destroy(target);
 
-		GameObject go = (GameObject) Instantiate(mine, new Vector3(x,0,z),Quaternion.identity);
-		//go.GetComponent<Mine>().setId(id);
+		Instantiate(_instance.mine, new Vector3(x,0,z),Quaternion.identity);
 
-		mineChanged -= 1;
+		detonatedMines--;
 
-		if (isReseting && mineChanged == 0)
+    if (isReseting && detonatedMines == 0)
     {
-			isReseting = false;
+      isReseting = false;
     }
   }
 }

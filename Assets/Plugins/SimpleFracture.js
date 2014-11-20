@@ -41,7 +41,7 @@ function OnCollisionEnter (collision : Collision) {
 			FractureAtPoint(point,vec);
 		
 
-			transform.parent.GetComponent("Mine").setChanged(true);
+			transform.parent.GetComponent("Mine").detonate();
 			
 			collision.gameObject.GetComponent("Hero").getLifeManager().setSuddenDeath(true);
 		}

@@ -4,10 +4,10 @@ using System.Collections;
 public class Mine : MonoBehaviour {
 
 
-	private bool _changed = false;
+	private bool _detonated = false;
 	private float _x;
 	private float _z;
-	//private float _id;
+  public string mineName;
 
     //FIXME
 	private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive
@@ -31,13 +31,13 @@ public class Mine : MonoBehaviour {
 		);
 
 
-	public void setChanged(bool b) { 
-		if (b == true)
-			MineManager.mineChanged += 1;
-		_changed = b;
+	public void detonate() {
+    Debug.LogError(mineName+" detonates");
+    MineManager.detonate(this);
+		_detonated = true;
 	}
 
-	public bool getChanged() { return _changed;}
+	public bool isDetonated() { return _detonated;}
 
 	public float getX() {return _x;}
 	public float getZ() {return _z;}
@@ -64,20 +64,17 @@ public class Mine : MonoBehaviour {
 
 		if(transform.FindChild("Point light"))
 		{
-			if(_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == false)
+			if(_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
 			{
 				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
 			}
 
 			//end the red light of the mine
-			else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting() == true)
+			else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
 			{
 				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
 			}
 		}
-
-
-
 	}
 
 	void detection() {
@@ -130,7 +127,7 @@ public class Mine : MonoBehaviour {
 
 	}
 	public void stopAnimation() {
-		if(_changed)
+		if(_detonated)
 		{
 			iTween.Stop(transform.FindChild("Point light").gameObject);
 		}
@@ -139,9 +136,10 @@ public class Mine : MonoBehaviour {
 
 	public void autoReset()
 	{
-		if(MineManager.isReseting && _changed)
+		if(MineManager.isReseting && _detonated)
 		{
-			GameObject.Find("SceneManager").GetComponent<MineManager>().resetSelectedMine(gameObject);
+      Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
+      MineManager.resetSelectedMine(gameObject);
 		}
 	}
 
