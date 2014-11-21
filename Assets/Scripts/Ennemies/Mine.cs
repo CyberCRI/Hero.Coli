@@ -139,7 +139,7 @@ public class Mine : MonoBehaviour {
 		if(MineManager.isReseting && _detonated)
 		{
       Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
-      MineManager.resetSelectedMine(gameObject);
+      MineManager.resetSelectedMine(this);
 		}
 	}
 
