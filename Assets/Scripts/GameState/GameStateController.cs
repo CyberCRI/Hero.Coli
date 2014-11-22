@@ -80,10 +80,10 @@ public class GameStateController : MonoBehaviour {
 
 	void Awake() {
     _instance = this;
+        //take into account order of loading to know which LinkManager shall ask which one
 		Application.LoadLevelAdditive("Interface1.0");
 		Application.LoadLevelAdditive("Bacterium1.0");
 		Application.LoadLevelAdditive("World1.0");
-		Application.LoadLevelAdditive("test-Challenge3-Vincent");
 	}
 	// Use this for initialization
 	void Start () {

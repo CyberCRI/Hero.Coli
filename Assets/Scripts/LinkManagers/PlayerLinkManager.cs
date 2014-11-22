@@ -6,12 +6,14 @@ using System.Collections;
  * This class creates the links between the Player's Scene, classes and GameObject and the other scenes
  * */
 
-public class LinkManager : MonoBehaviour {
+public class PlayerLinkManager : MonoBehaviour {
+
+    public static string persoGameObjectName = "Perso";
 
 	// Use this for initialization
 	void Awake () {
 
-    GameObject perso = GameObject.Find("Perso");
+    GameObject perso = GameObject.Find(persoGameObjectName);
 		Hero hero = perso.GetComponent<Hero>();
 		PhenoFickContact pheno = perso.GetComponent<PhenoFickContact>();
     GUITransitioner guiTransitioner = GUITransitioner.get ();
@@ -20,7 +22,7 @@ public class LinkManager : MonoBehaviour {
 		//Cellcontrol connection
     guiTransitioner.control = cellControl;
 
-    InterfaceLinkManager interfaceLinkManager = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>();
+    InterfaceLinkManager interfaceLinkManager = GameObject.Find(InterfaceLinkManager.interfaceLinkManagerGameObjectName).GetComponent<InterfaceLinkManager>();
     cellControl.absoluteWASDButton = interfaceLinkManager.absoluteWASDButton;
     cellControl.leftClickToMoveButton = interfaceLinkManager.leftClickToMoveButton;
     cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;
