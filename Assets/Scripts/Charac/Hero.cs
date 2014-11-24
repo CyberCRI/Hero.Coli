@@ -26,6 +26,9 @@ public class Hero : MonoBehaviour {
   private bool _pause;
 	private bool _isAlive;
 
+  //respawn
+  private GameObject _lastCheckpoint = null;
+
 	public Life getLifeManager () {return _lifeManager;}
 
 	public void Pause(bool pause)
@@ -152,6 +155,13 @@ public class Hero : MonoBehaviour {
     }
 	}
 
+  void setCurrentRespawnPoint(Collider col)
+  {
+      if(null != col.gameObject.GetComponent<RespawnPoint>())
+      {
+          _lastCheckpoint = col.gameObject;
+      }
+  }
 
  	void OnTriggerEnter(Collider collision)
  	{
@@ -161,73 +171,14 @@ public class Hero : MonoBehaviour {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
     }
+    else
+    {
+      setCurrentRespawnPoint(collision);
+    }
   }
 
-
-	private bool _spawn01 = false;
-	private bool _spawn02 = false;
-	private bool _spawn03 = false;
-	private bool _spawn04 = false;
-	private bool _spawn05 = false;
-	private bool _spawn06 = false;
-	private bool _spawn07 = false;
-	private bool _spawn08 = false;
-
  	void OnTriggerExit(Collider col) {
- 		switch(col.name) {
-	      	case "Checkpoint01":
-		        _spawn01 = true;
-		        break;
-	      	case "Checkpoint02":
-		        _spawn01 = false;
-		        _spawn02 = true;
-		        break;
-	       	case "Checkpoint03":
-	       		_spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = true;
-		        break;
-		    case "Checkpoint04":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = true;
-		        break;
-		    case "Checkpoint05":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = true;
-		        break;
-		    case "Checkpoint06":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = true;
-		        break;
-		    case "Checkpoint07":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = false;
-		        _spawn07 = true;
-		        break;
-		    case "Checkpoint08":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = false;
-		        _spawn07 = false;
-		        _spawn08 = true;
-		        break;
-	 	}
+    setCurrentRespawnPoint(col);
  	}
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
@@ -243,45 +194,17 @@ public class Hero : MonoBehaviour {
 				box.resetPos();
 			}
 
-        Debug.LogError("MINEMANAGER RESETTING");
+      Debug.LogError("MINEMANAGER RESETTING");
       MineManager.isReseting = true;
-		    
-		  if (_spawn01 == true) {
-				GameObject respawn01 = GameObject.Find("Checkpoint01");
-				gameObject.transform.position = respawn01.transform.position;
-			}
-			else if (_spawn02 == true) {
-				GameObject respawn02 = GameObject.Find("Checkpoint02");
-				gameObject.transform.position = respawn02.transform.position;
-			}
-			else if (_spawn03 == true) {
-				GameObject respawn03 = GameObject.Find("Checkpoint03");
-				gameObject.transform.position = respawn03.transform.position;
-			}
-			else if (_spawn04 == true) {
-				GameObject respawn04 = GameObject.Find("Checkpoint04");
-				gameObject.transform.position = respawn04.transform.position;
-			}
-			else if (_spawn05 == true) {
-				GameObject respawn05 = GameObject.Find("Checkpoint05");
-				gameObject.transform.position = respawn05.transform.position;
-			}
-			else if (_spawn06 == true) {
-				GameObject respawn06 = GameObject.Find("Checkpoint06");
-				gameObject.transform.position = respawn06.transform.position;
-			}
-			else if (_spawn07 == true) {
-				GameObject respawn07 = GameObject.Find("Checkpoint07");
-				gameObject.transform.position = respawn07.transform.position;
-			}
-			else if (_spawn08 == true) {
-				GameObject respawn08 = GameObject.Find("Checkpoint08");
-				gameObject.transform.position = respawn08.transform.position;
-			}
-		
-        _isAlive = true;
-        cc.reset();
-        setLife(1f);
+
+      if(null != _lastCheckpoint)
+      {
+          gameObject.transform.position = _lastCheckpoint.transform.position;
+      }
+  	
+      _isAlive = true;
+      cc.reset();
+      setLife(1f);
 	}	
 
 }
