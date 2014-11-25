@@ -180,16 +180,53 @@ public class Hero : MonoBehaviour {
  	void OnTriggerExit(Collider col) {
     setCurrentRespawnPoint(col);
  	}
+
+    static float _disappearingTimeS = 2.0f;
+    static float _respawnTimeS = 3.0f;
+    static private float _baseScale = 145.4339f;
+    static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
+    static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
+    
+    private Hashtable _optionsIn = iTween.Hash(
+        "scale", _baseScaleVector,
+        "time", 0.8f,
+        "easetype", iTween.EaseType.easeOutElastic
+        );
+    
+    private Hashtable _optionsOut = iTween.Hash(
+        "scale", _reducedScaleVector,
+        "time",_disappearingTimeS,
+        "easetype", iTween.EaseType.easeInQuint
+        );
+    private Hashtable _optionsInAlpha = iTween.Hash(
+        "alpha", 1.0f,
+        "time", 0.8f,
+        "easetype", iTween.EaseType.easeOutElastic
+        );
+    
+    private Hashtable _optionsOutAlpha = iTween.Hash(
+        "alpha", 0.0f,
+        "time",_disappearingTimeS,
+        "easetype", iTween.EaseType.easeInQuint
+        );
+
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
 
 	    CellControl cc = GetComponent<CellControl>();
 	    cc.enabled = false;
 
-	    yield return new WaitForSeconds(2F);
+      iTween.ScaleTo(this.gameObject, _optionsOut);
+      iTween.FadeTo(this.gameObject, _optionsOutAlpha);
 
-		    cc.enabled = true;
-			
+      //gameObject.renderer.material.
+
+      yield return new WaitForSeconds(_respawnTimeS);
+
+      iTween.ScaleTo(this.gameObject, _optionsIn);
+      iTween.FadeTo(this.gameObject, _optionsInAlpha);
+
+		  cc.enabled = true;			
 			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
 				box.resetPos();
 			}
