@@ -28,6 +28,7 @@ public class Hero : MonoBehaviour {
 
   //respawn
   private GameObject _lastCheckpoint = null;
+  private GameObject _lastNewCell = null;
 
 	public Life getLifeManager () {return _lifeManager;}
 
@@ -157,10 +158,26 @@ public class Hero : MonoBehaviour {
 
   void setCurrentRespawnPoint(Collider col)
   {
-      if(null != col.gameObject.GetComponent<RespawnPoint>())
+      if(null != col.gameObject.GetComponent<RespawnPoint>()
+           && (null == _lastCheckpoint
+            || _lastCheckpoint.name != col.gameObject.name))
       {
           _lastCheckpoint = col.gameObject;
+          duplicateCell();
       }
+  }
+
+  void duplicateCell()
+  {
+      if(null != _lastNewCell)
+      {
+          Destroy (_lastNewCell);
+      }
+      _lastNewCell = (GameObject)Instantiate(this.gameObject);
+      Destroy(_lastNewCell.GetComponent<Hero>());
+      Destroy(_lastNewCell.GetComponent<CellControl>());
+      Destroy(_lastNewCell.GetComponent<PhysicalMedium>());
+      _lastNewCell.transform.position = transform.position;
   }
 
  	void OnTriggerEnter(Collider collision)
