@@ -178,6 +178,15 @@ public class Hero : MonoBehaviour {
       Destroy(_lastNewCell.GetComponent<CellControl>());
       Destroy(_lastNewCell.GetComponent<PhysicalMedium>());
       _lastNewCell.transform.position = transform.position;
+      _lastNewCell.rigidbody.isKinematic = true;
+        //TODO set slow animation
+        //TODO change appearance to make it different from playable bacterium: maybe remove eyes?
+        //TODO put animation when bacterium becomes playable, then divide cell
+      iTween.FadeTo(_lastNewCell, _optionsDuplicatedAlpha);
+      foreach(Animation a in _lastNewCell.GetComponentsInChildren<Animation>())
+      {
+          a.Stop();
+      }
   }
 
  	void OnTriggerEnter(Collider collision)
@@ -224,6 +233,12 @@ public class Hero : MonoBehaviour {
     private Hashtable _optionsOutAlpha = iTween.Hash(
         "alpha", 0.0f,
         "time",_disappearingTimeS,
+        "easetype", iTween.EaseType.easeInQuint
+        );
+    
+    private Hashtable _optionsDuplicatedAlpha = iTween.Hash(
+        "alpha", 0.7f,
+        "time", 1.0f,
         "easetype", iTween.EaseType.easeInQuint
         );
 
