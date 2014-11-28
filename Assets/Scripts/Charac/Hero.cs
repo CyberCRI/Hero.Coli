@@ -171,22 +171,35 @@ public class Hero : MonoBehaviour {
   {
       if(null != _lastNewCell)
       {
-          Destroy (_lastNewCell);
+        Destroy (_lastNewCell);
       }
+
       _lastNewCell = (GameObject)Instantiate(this.gameObject);
+
+      //TODO find systematic way of doing this
       Destroy(_lastNewCell.GetComponent<Hero>());
       Destroy(_lastNewCell.GetComponent<CellControl>());
       Destroy(_lastNewCell.GetComponent<PhysicalMedium>());
+      Destroy(_lastNewCell.GetComponent<PhenoSpeed>());
+      Destroy(_lastNewCell.GetComponent<PhenoLight>());
+      Destroy(_lastNewCell.GetComponent<PhenoToxic>());
+      Destroy(_lastNewCell.GetComponent<PhenoFickContact>());
+      Destroy(_lastNewCell.GetComponent<BlackLight>());
+
+      SwimAnimator newCellSwimAnimator = (SwimAnimator)_lastNewCell.GetComponent<SwimAnimator>();
+      newCellSwimAnimator.setSpeed(0);
+
       _lastNewCell.transform.position = transform.position;
+      //_lastNewCell.transform.localPosition = transform.parent.transform.localPosition;
+      //_lastNewCell.transform.position = transform.parent.transform.position;
+
+      _lastNewCell.transform.localScale = transform.localScale;
+      //_lastNewCell.transform.rotation = transform.rotation;
       _lastNewCell.rigidbody.isKinematic = true;
         //TODO set slow animation
         //TODO change appearance to make it different from playable bacterium: maybe remove eyes?
         //TODO put animation when bacterium becomes playable, then divide cell
       iTween.FadeTo(_lastNewCell, _optionsDuplicatedAlpha);
-      foreach(Animation a in _lastNewCell.GetComponentsInChildren<Animation>())
-      {
-          a.Stop();
-      }
   }
 
  	void OnTriggerEnter(Collider collision)

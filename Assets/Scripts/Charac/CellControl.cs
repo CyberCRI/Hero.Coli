@@ -7,7 +7,6 @@ public class CellControl : MonoBehaviour{
 	public float baseMoveSpeed;
 	public float rotationSpeed;
   public float relativeRotationSpeed;
-	public List<Animation> anims;
   public Hero hero;
   public float moveEnergyCost;
   public float currentMoveSpeed;
@@ -147,16 +146,14 @@ public class CellControl : MonoBehaviour{
     }
   }
 
-  private void setSpeed() {   
+  private void setSpeed()
+  {
     //SetSpeed
     float speed = _inputMovement.sqrMagnitude + 0.3f;
-    Animation[] anims = GetComponentsInChildren<Animation>();
-    foreach(Animation anim in anims) {
-      foreach (AnimationState state in anim) {
-        state.speed = speed;
-      }
-    }
-  }
+    //TODO put variable for this
+    SwimAnimator animator = (SwimAnimator)gameObject.GetComponent<SwimAnimator>();
+    animator.setSpeed(speed);
+   }
 
   private void updateEnergy(Vector3 moveAmount) {
     float cost = moveAmount.sqrMagnitude*moveEnergyCost;
@@ -164,6 +161,7 @@ public class CellControl : MonoBehaviour{
   }
 	
 	void Start (){
+    
     gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
     _targetPosition = transform.position;
