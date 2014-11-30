@@ -178,8 +178,7 @@ public class Hero : MonoBehaviour {
       _lastNewCell = (GameObject)Instantiate(this.gameObject);
 
       SavedCell savedCell = (SavedCell)_lastNewCell.AddComponent<SavedCell>();
-      savedCell.playableCell = this;
-      savedCell.lastCheckpointPosition = _lastCheckpoint.transform.position;
+      savedCell.initialize(this, _lastCheckpoint.transform.position);
   }
 
  	void OnTriggerEnter(Collider collision)
