@@ -38,7 +38,7 @@ public class SavedCell : MonoBehaviour {
         newCellSwimAnimator.setSpeed(0);
 
         _cellCollider = (CapsuleCollider)GetComponent<CapsuleCollider>();
-        _cellCollider.enabled = false;
+        _cellCollider.isTrigger = true;
         
         transform.position = playableCell.transform.position;
         //transform.position = _lastCheckpointPosition;
@@ -61,9 +61,9 @@ public class SavedCell : MonoBehaviour {
 	}
 
   void OnTriggerExit(Collider col) {
-    if(!_cellCollider.enabled && (null != col.GetComponent<Hero>()))
+    if(_cellCollider.isTrigger && (null != col.GetComponent<Hero>()))
     {
-      _cellCollider.enabled = true;
+      _cellCollider.isTrigger = false;
     }
   }
 }
