@@ -257,6 +257,7 @@ public class Hero : MonoBehaviour {
          SavedCell savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
          savedCell.resetCollisionState();
          gameObject.transform.position = _lastNewCell.transform.position;
+         gameObject.transform.rotation = _lastNewCell.transform.rotation;
       }
   	
       _isAlive = true;
