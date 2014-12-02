@@ -28,17 +28,13 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<PhenoLight>());
         Destroy(GetComponent<PhenoToxic>());
         Destroy(GetComponent<PhenoFickContact>());
-        Destroy(GetComponent<BlackLight>());
-        
+        Destroy(GetComponent<BlackLight>());        
         Destroy(GetComponent<Rigidbody>());
-        //rigidbody.isKinematic = true;
 
+        resetCollisionState();
         
         SwimAnimator newCellSwimAnimator = (SwimAnimator)GetComponent<SwimAnimator>();
         newCellSwimAnimator.setSpeed(0);
-
-        _cellCollider = (CapsuleCollider)GetComponent<CapsuleCollider>();
-        _cellCollider.isTrigger = true;
         
         transform.position = playableCell.transform.position;
         //transform.position = _lastCheckpointPosition;
@@ -50,15 +46,14 @@ public class SavedCell : MonoBehaviour {
         iTween.FadeTo(gameObject, _optionsDuplicatedAlpha);
   }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	public void resetCollisionState()
+  {
+    if (null == _cellCollider)
+    {
+      _cellCollider = (CapsuleCollider)GetComponent<CapsuleCollider>();
+    }
+    _cellCollider.isTrigger = true;
+  }
 
   void OnTriggerExit(Collider col) {
     if(_cellCollider.isTrigger && (null != col.GetComponent<Hero>()))

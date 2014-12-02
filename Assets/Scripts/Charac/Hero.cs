@@ -30,6 +30,35 @@ public class Hero : MonoBehaviour {
   private GameObject _lastCheckpoint = null;
   private GameObject _lastNewCell = null;
 
+  static float _disappearingTimeS = 2.0f;
+  static float _respawnTimeS = 3.0f;
+  static private float _baseScale = 145.4339f;
+  static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
+  static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
+
+  private Hashtable _optionsIn = iTween.Hash(
+      "scale", _baseScaleVector,
+      "time", 0.8f,
+      "easetype", iTween.EaseType.easeOutElastic
+      );
+
+  private Hashtable _optionsOut = iTween.Hash(
+      "scale", _reducedScaleVector,
+      "time",_disappearingTimeS,
+      "easetype", iTween.EaseType.easeInQuint
+      );
+  private Hashtable _optionsInAlpha = iTween.Hash(
+      "alpha", 1.0f,
+      "time", 0.8f,
+      "easetype", iTween.EaseType.easeOutElastic
+      );
+
+  private Hashtable _optionsOutAlpha = iTween.Hash(
+      "alpha", 0.0f,
+      "time",_disappearingTimeS,
+      "easetype", iTween.EaseType.easeInQuint
+      );
+
 	public Life getLifeManager () {return _lifeManager;}
 
 	public void Pause(bool pause)
@@ -197,36 +226,7 @@ public class Hero : MonoBehaviour {
 
  	void OnTriggerExit(Collider col) {
     setCurrentRespawnPoint(col);
- 	}
-
-    static float _disappearingTimeS = 2.0f;
-    static float _respawnTimeS = 3.0f;
-    static private float _baseScale = 145.4339f;
-    static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
-    static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
-    
-    private Hashtable _optionsIn = iTween.Hash(
-        "scale", _baseScaleVector,
-        "time", 0.8f,
-        "easetype", iTween.EaseType.easeOutElastic
-        );
-    
-    private Hashtable _optionsOut = iTween.Hash(
-        "scale", _reducedScaleVector,
-        "time",_disappearingTimeS,
-        "easetype", iTween.EaseType.easeInQuint
-        );
-    private Hashtable _optionsInAlpha = iTween.Hash(
-        "alpha", 1.0f,
-        "time", 0.8f,
-        "easetype", iTween.EaseType.easeOutElastic
-        );
-    
-    private Hashtable _optionsOutAlpha = iTween.Hash(
-        "alpha", 0.0f,
-        "time",_disappearingTimeS,
-        "easetype", iTween.EaseType.easeInQuint
-        );
+  	}
 
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
@@ -252,9 +252,11 @@ public class Hero : MonoBehaviour {
       Debug.LogError("MINEMANAGER RESETTING");
       MineManager.isReseting = true;
 
-      if(null != _lastCheckpoint)
+      if(null != _lastNewCell)
       {
-        gameObject.transform.position = _lastCheckpoint.transform.position;
+         SavedCell savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
+         savedCell.resetCollisionState();
+         gameObject.transform.position = _lastNewCell.transform.position;
       }
   	
       _isAlive = true;
