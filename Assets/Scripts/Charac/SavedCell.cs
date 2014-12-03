@@ -46,13 +46,24 @@ public class SavedCell : MonoBehaviour {
         iTween.FadeTo(gameObject, _optionsDuplicatedAlpha);
   }
 
+    private void safeInitCollider()
+    {
+        if (null == _cellCollider)
+        {
+            _cellCollider = (CapsuleCollider)GetComponent<CapsuleCollider>();
+        }
+    }
+
 	public void resetCollisionState()
   {
-    if (null == _cellCollider)
-    {
-      _cellCollider = (CapsuleCollider)GetComponent<CapsuleCollider>();
-    }
-    _cellCollider.isTrigger = true;
+    safeInitCollider();
+    setCollidable(false);
+  }
+
+  public void setCollidable(bool collidable)
+  {
+    safeInitCollider();
+    _cellCollider.isTrigger = !collidable;
   }
 
   void OnTriggerExit(Collider col) {

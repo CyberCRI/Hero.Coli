@@ -32,6 +32,7 @@ public class Hero : MonoBehaviour {
 
   static float _disappearingTimeS = 2.0f;
   static float _respawnTimeS = 3.0f;
+  static float _popEffectTimeS = 1.0f;
   static private float _baseScale = 145.4339f;
   static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
   static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
@@ -226,43 +227,63 @@ public class Hero : MonoBehaviour {
 
  	void OnTriggerExit(Collider col) {
     setCurrentRespawnPoint(col);
-  	}
+  }
 
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
 
-	    CellControl cc = GetComponent<CellControl>();
-	    cc.enabled = false;
+        CellControl cc = GetComponent<CellControl>();
 
-      iTween.ScaleTo(this.gameObject, _optionsOut);
-      iTween.FadeTo(this.gameObject, _optionsOutAlpha);
+        //1. death effect
+        deathCoroutine(cc);
+                                    
+        yield return new WaitForSeconds(_respawnTimeS);
+    
+        //1. respawn effect
+        yield return StartCoroutine( respawnCoroutine(cc) );
+        
+    }	
+    
+    void deathCoroutine(CellControl cc)
+    {
+        cc.enabled = false;
+        
+        iTween.ScaleTo(gameObject, _optionsOut);
+        iTween.FadeTo(gameObject, _optionsOutAlpha);        
+    }
+    
+    IEnumerator respawnCoroutine(CellControl cc)
+    {
+        iTween.ScaleTo(gameObject, _optionsIn);
+        iTween.FadeTo(gameObject, _optionsInAlpha);
+        
+        cc.enabled = true;      
+        foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
+            box.resetPos();
+        }
 
-      //gameObject.renderer.material.
+        MineManager.isReseting = true;
 
-      yield return new WaitForSeconds(_respawnTimeS);
 
-      iTween.ScaleTo(this.gameObject, _optionsIn);
-      iTween.FadeTo(this.gameObject, _optionsInAlpha);
+        SavedCell savedCell = null;
+        if(null != _lastNewCell)
+        {
+            savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
+            savedCell.resetCollisionState();
+            gameObject.transform.position = _lastNewCell.transform.position;
+            gameObject.transform.rotation = _lastNewCell.transform.rotation;
+        }
+        
+        _isAlive = true;
+        cc.reset();
+        setLife(1f);
 
-		  cc.enabled = true;			
-			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
-				box.resetPos();
-			}
-
-      Debug.LogError("MINEMANAGER RESETTING");
-      MineManager.isReseting = true;
-
-      if(null != _lastNewCell)
-      {
-         SavedCell savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
-         savedCell.resetCollisionState();
-         gameObject.transform.position = _lastNewCell.transform.position;
-         gameObject.transform.rotation = _lastNewCell.transform.rotation;
-      }
-  	
-      _isAlive = true;
-      cc.reset();
-      setLife(1f);
-	}	
-
+        yield return new WaitForSeconds(_popEffectTimeS);
+        popEffectCoroutine(savedCell);
+    }
+    
+    void popEffectCoroutine(SavedCell savedCell)
+    {
+        savedCell.setCollidable(true);
+    }
 }
