@@ -7,9 +7,10 @@ public class SavedCell : MonoBehaviour {
   private Hero _playableCell;
   private CapsuleCollider _cellCollider;
   private Vector3 _lastCheckpointPosition;
+    private float _waitAnimationSpeed = 0.1f;
 
   private Hashtable _optionsDuplicatedAlpha = iTween.Hash(
-      "alpha", 0.7f,
+      "alpha", 0.4f,
       "time", 1.0f,
       "easetype", iTween.EaseType.easeInQuint
       );
@@ -34,7 +35,7 @@ public class SavedCell : MonoBehaviour {
         resetCollisionState();
         
         SwimAnimator newCellSwimAnimator = (SwimAnimator)GetComponent<SwimAnimator>();
-        newCellSwimAnimator.setSpeed(0);
+        newCellSwimAnimator.setSpeed(_waitAnimationSpeed);
         
         transform.position = playableCell.transform.position;
         //transform.position = _lastCheckpointPosition;

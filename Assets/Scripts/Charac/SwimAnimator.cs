@@ -8,6 +8,7 @@ public class SwimAnimator : MonoBehaviour {
 
   public void setSpeed(float speed)
   {
+    safeInitAnims();
     foreach(Animation anim in anims) {
       foreach (AnimationState state in anim) {
         state.speed = speed;
@@ -20,9 +21,12 @@ public class SwimAnimator : MonoBehaviour {
     anims = new List<Animation>();
   }
 
-	// Use this for initialization
-	void Start () {
-    anims = new List<Animation>(GetComponentsInChildren<Animation>());
+	void safeInitAnims() {
+    if(0 == anims.Count)
+    {
+      Debug.LogError("SwimAnimator initializing anims");
+      anims = new List<Animation>(GetComponentsInChildren<Animation>());
+    }
 	}
 	
 	// Update is called once per frame
