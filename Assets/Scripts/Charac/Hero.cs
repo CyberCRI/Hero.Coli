@@ -209,6 +209,8 @@ public class Hero : MonoBehaviour {
 
       SavedCell savedCell = (SavedCell)_lastNewCell.AddComponent<SavedCell>();
       savedCell.initialize(this, _lastCheckpoint.transform.position);
+
+      StartCoroutine(popEffectCoroutine(savedCell));
   }
 
  	void OnTriggerEnter(Collider collision)
@@ -235,16 +237,16 @@ public class Hero : MonoBehaviour {
         CellControl cc = GetComponent<CellControl>();
 
         //1. death effect
-        deathCoroutine(cc);
+        deathEffect(cc);
                                     
         yield return new WaitForSeconds(_respawnTimeS);
     
         //1. respawn effect
-        yield return StartCoroutine( respawnCoroutine(cc) );
+        respawnCoroutine(cc);
         
     }	
     
-    void deathCoroutine(CellControl cc)
+    void deathEffect(CellControl cc)
     {
         cc.enabled = false;
         
@@ -252,7 +254,7 @@ public class Hero : MonoBehaviour {
         iTween.FadeTo(gameObject, _optionsOutAlpha);        
     }
     
-    IEnumerator respawnCoroutine(CellControl cc)
+    void respawnCoroutine(CellControl cc)
     {
         iTween.ScaleTo(gameObject, _optionsIn);
         iTween.FadeTo(gameObject, _optionsInAlpha);
@@ -278,12 +280,12 @@ public class Hero : MonoBehaviour {
         cc.reset();
         setLife(1f);
 
-        yield return new WaitForSeconds(_popEffectTimeS);
-        popEffectCoroutine(savedCell);
+        StartCoroutine(popEffectCoroutine(savedCell));
     }
     
-    void popEffectCoroutine(SavedCell savedCell)
+    IEnumerator popEffectCoroutine(SavedCell savedCell)
     {
+        yield return new WaitForSeconds(_popEffectTimeS);
         savedCell.setCollidable(true);
     }
 }
