@@ -20,6 +20,8 @@ public class CellControl : MonoBehaviour{
 
   private bool _pause;
   private Vector3 _inputMovement;
+  private SwimAnimator _swimAnimator;
+
   /* 
    * Click to move variables
    */
@@ -151,8 +153,11 @@ public class CellControl : MonoBehaviour{
     //SetSpeed
     float speed = _inputMovement.sqrMagnitude + 0.3f;
     //TODO put variable for this
-    SwimAnimator animator = (SwimAnimator)gameObject.GetComponent<SwimAnimator>();
-    animator.setSpeed(speed);
+    if(null == _swimAnimator)
+    {
+      _swimAnimator = (SwimAnimator)gameObject.GetComponent<SwimAnimator>();
+    }
+    _swimAnimator.setSpeed(speed);
    }
 
   private void updateEnergy(Vector3 moveAmount) {

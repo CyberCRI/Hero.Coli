@@ -41,6 +41,7 @@ public class PhenoSpeed : Phenotype
 	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
+    gameObject.GetComponent<SwimAnimator>().safeInitAnims();
     set1Flagella();
 		initMoleculePhenotype();
 	}

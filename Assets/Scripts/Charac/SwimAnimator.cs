@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class SwimAnimator : MonoBehaviour {
 
-  private List<Animation> anims = new List<Animation>();
+  public List<Animation> anims = new List<Animation>();
 
   public void setSpeed(float speed)
   {
@@ -16,21 +16,11 @@ public class SwimAnimator : MonoBehaviour {
     }
   }
 
-  void Awake()
-  {
-    anims = new List<Animation>();
-  }
-
-	void safeInitAnims() {
+	public void safeInitAnims() {
     if(0 == anims.Count)
     {
-      Debug.LogError("SwimAnimator initializing anims");
+      Debug.LogError("SwimAnimator::safeInitAnims initializing anims");
       anims = new List<Animation>(GetComponentsInChildren<Animation>());
     }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
