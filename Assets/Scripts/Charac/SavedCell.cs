@@ -4,10 +4,8 @@ using System.Collections;
 public class SavedCell : MonoBehaviour {
 
   private Rigidbody _rigidbody;
-  private Hero _playableCell;
   private CapsuleCollider _cellCollider;
-  private Vector3 _lastCheckpointPosition;
-    private float _waitAnimationSpeed = 0.1f;
+  private float _waitAnimationSpeed = 0.1f;
 
   private Hashtable _optionsDuplicatedAlpha = iTween.Hash(
       "alpha", 0.4f,
@@ -17,9 +15,6 @@ public class SavedCell : MonoBehaviour {
 
     public void initialize (Hero playableCell, Vector3 checkpointPosition)
     {
-        _playableCell = playableCell;
-        _lastCheckpointPosition = checkpointPosition;
-
         //TODO find systematic way of doing this
 
         Destroy(GetComponent<Hero>());
@@ -38,7 +33,6 @@ public class SavedCell : MonoBehaviour {
         newCellSwimAnimator.setSpeed(_waitAnimationSpeed);
         
         transform.position = playableCell.transform.position;
-        //transform.position = _lastCheckpointPosition;
         transform.localScale = playableCell.transform.localScale;
 
         //TODO set slow animation
