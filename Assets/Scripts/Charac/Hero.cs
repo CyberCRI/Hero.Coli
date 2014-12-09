@@ -36,7 +36,8 @@ public class Hero : MonoBehaviour {
   static private float _baseScale = 145.4339f;
   static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
   static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
-
+  private List<GameObject> _flagels = new List<GameObject>();
+        
   private Hashtable _optionsIn = iTween.Hash(
       "scale", _baseScaleVector,
       "time", 0.8f,
@@ -59,6 +60,8 @@ public class Hero : MonoBehaviour {
       "time",_disappearingTimeS,
       "easetype", iTween.EaseType.easeInQuint
       );
+
+
 
 	public Life getLifeManager () {return _lifeManager;}
 
@@ -237,25 +240,48 @@ public class Hero : MonoBehaviour {
         CellControl cc = GetComponent<CellControl>();
 
         //1. death effect
-        deathEffect(cc);
-                                    
-        yield return new WaitForSeconds(_respawnTimeS);
+        yield return StartCoroutine(deathEffectCoroutine(cc));
     
         //1. respawn effect
         respawnCoroutine(cc);
         
     }	
     
-    void deathEffect(CellControl cc)
+    IEnumerator deathEffectCoroutine(CellControl cc)
     {
         cc.enabled = false;
         
         iTween.ScaleTo(gameObject, _optionsOut);
-        iTween.FadeTo(gameObject, _optionsOutAlpha);        
+        iTween.FadeTo(gameObject, _optionsOutAlpha);  
+
+        _flagels = new List<GameObject>();
+        foreach (Transform child in transform)
+        {
+            if(child.name == "FBX_flagelPlayer" && child.gameObject.activeSelf)
+            {
+                _flagels.Add(child.gameObject);
+            }
+        }
+
+        float elapsed = 0.0f;
+        for(int i=0; i<_flagels.Count; i++)
+        {
+            float random = UnityEngine.Random.Range(0.0f,1.0f);
+            yield return new WaitForSeconds(random*_respawnTimeS/_flagels.Count);
+            _flagels[i].SetActive(false);
+            elapsed += random;
+        }
+        yield return new WaitForSeconds((_flagels.Count-elapsed)*_respawnTimeS/_flagels.Count);
     }
     
     void respawnCoroutine(CellControl cc)
     {
+        foreach(GameObject flagel in _flagels)
+        {
+            flagel.SetActive(true);
+        }
+        _flagels.Clear();
+
         iTween.ScaleTo(gameObject, _optionsIn);
         iTween.FadeTo(gameObject, _optionsInAlpha);
         
