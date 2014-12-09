@@ -36,7 +36,7 @@ public class Hero : MonoBehaviour {
   static private float _baseScale = 145.4339f;
   static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
   static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
-  private List<GameObject> _flagels = new List<GameObject>();
+  private List<GameObject> _flagella = new List<GameObject>();
         
   private Hashtable _optionsIn = iTween.Hash(
       "scale", _baseScaleVector,
@@ -254,33 +254,53 @@ public class Hero : MonoBehaviour {
         iTween.ScaleTo(gameObject, _optionsOut);
         iTween.FadeTo(gameObject, _optionsOutAlpha);  
 
-        _flagels = new List<GameObject>();
+        _flagella = new List<GameObject>();
+        int maxWaitSequences = _flagella.Count+1;
+
         foreach (Transform child in transform)
         {
             if(child.name == "FBX_flagelPlayer" && child.gameObject.activeSelf)
             {
-                _flagels.Add(child.gameObject);
+                _flagella.Add(child.gameObject);
             }
         }
 
         float elapsed = 0.0f;
-        for(int i=0; i<_flagels.Count; i++)
+        for(int i=0; i<_flagella.Count; i++)
         {
+            //to make flagella disappear
             float random = UnityEngine.Random.Range(0.0f,1.0f);
-            yield return new WaitForSeconds(random*_respawnTimeS/_flagels.Count);
-            _flagels[i].SetActive(false);
+            yield return new WaitForSeconds(random*_respawnTimeS/maxWaitSequences);
+            _flagella[i].SetActive(false);
             elapsed += random;
         }
-        yield return new WaitForSeconds((_flagels.Count-elapsed)*_respawnTimeS/_flagels.Count);
+
+        //to make eyes and body disappear
+        float lastRandom = UnityEngine.Random.Range(0.0f,1.0f);
+        yield return new WaitForSeconds(lastRandom*_respawnTimeS/maxWaitSequences);
+        elapsed += lastRandom;        
+        enableEyes(false);
+            
+        yield return new WaitForSeconds((maxWaitSequences-elapsed)*_respawnTimeS/maxWaitSequences);
+    }
+
+    private void enableEyes(bool enable)
+    {
+        foreach(MeshRenderer mr in transform.FindChild("FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.enabled = enable;
+        }
     }
     
     void respawnCoroutine(CellControl cc)
     {
-        foreach(GameObject flagel in _flagels)
+        enableEyes(true);
+        
+        foreach(GameObject flagellum in _flagella)
         {
-            flagel.SetActive(true);
+            flagellum.SetActive(true);
         }
-        _flagels.Clear();
+        _flagella.Clear();
 
         iTween.ScaleTo(gameObject, _optionsIn);
         iTween.FadeTo(gameObject, _optionsInAlpha);
