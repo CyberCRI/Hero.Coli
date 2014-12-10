@@ -26,6 +26,43 @@ public class Hero : MonoBehaviour {
   private bool _pause;
 	private bool _isAlive;
 
+  //respawn
+  private GameObject _lastCheckpoint = null;
+  private GameObject _lastNewCell = null;
+
+  static float _disappearingTimeS = 2.0f;
+  static float _respawnTimeS = 3.0f;
+  static float _popEffectTimeS = 1.0f;
+  static private float _baseScale = 145.4339f;
+  static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
+  static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
+  private List<GameObject> _flagella = new List<GameObject>();
+        
+  private Hashtable _optionsIn = iTween.Hash(
+      "scale", _baseScaleVector,
+      "time", 0.8f,
+      "easetype", iTween.EaseType.easeOutElastic
+      );
+
+  private Hashtable _optionsOut = iTween.Hash(
+      "scale", _reducedScaleVector,
+      "time",_disappearingTimeS,
+      "easetype", iTween.EaseType.easeInQuint
+      );
+  private Hashtable _optionsInAlpha = iTween.Hash(
+      "alpha", 1.0f,
+      "time", 0.8f,
+      "easetype", iTween.EaseType.easeOutElastic
+      );
+
+  private Hashtable _optionsOutAlpha = iTween.Hash(
+      "alpha", 0.0f,
+      "time",_disappearingTimeS,
+      "easetype", iTween.EaseType.easeInQuint
+      );
+
+
+
 	public Life getLifeManager () {return _lifeManager;}
 
 	public void Pause(bool pause)
@@ -152,6 +189,36 @@ public class Hero : MonoBehaviour {
     }
 	}
 
+  void setCurrentRespawnPoint(Collider col)
+  {
+      if(null != col.gameObject.GetComponent<RespawnPoint>()
+           && (null == _lastCheckpoint
+            || _lastCheckpoint.name != col.gameObject.name))
+      {
+          _lastCheckpoint = col.gameObject;
+          duplicateCell();
+      }
+  }
+
+  //TODO divide by 2 the chemicals
+  void duplicateCell()
+  {
+      if(null != _lastNewCell)
+      {
+        Destroy (_lastNewCell);
+      }
+      else
+      {
+        ModalManager.setModal("FirstCheckpoint");
+      }
+
+      _lastNewCell = (GameObject)Instantiate(this.gameObject);
+
+      SavedCell savedCell = (SavedCell)_lastNewCell.AddComponent<SavedCell>();
+      savedCell.initialize(this, _lastCheckpoint.transform.position);
+
+      StartCoroutine(popEffectCoroutine(savedCell));
+  }
 
  	void OnTriggerEnter(Collider collision)
  	{
@@ -161,127 +228,114 @@ public class Hero : MonoBehaviour {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
     }
+    else
+    {
+      setCurrentRespawnPoint(collision);
+    }
   }
 
-
-	private bool _spawn01 = false;
-	private bool _spawn02 = false;
-	private bool _spawn03 = false;
-	private bool _spawn04 = false;
-	private bool _spawn05 = false;
-	private bool _spawn06 = false;
-	private bool _spawn07 = false;
-	private bool _spawn08 = false;
-
  	void OnTriggerExit(Collider col) {
- 		switch(col.name) {
-	      	case "Checkpoint01":
-		        _spawn01 = true;
-		        break;
-	      	case "Checkpoint02":
-		        _spawn01 = false;
-		        _spawn02 = true;
-		        break;
-	       	case "Checkpoint03":
-	       		_spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = true;
-		        break;
-		    case "Checkpoint04":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = true;
-		        break;
-		    case "Checkpoint05":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = true;
-		        break;
-		    case "Checkpoint06":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = true;
-		        break;
-		    case "Checkpoint07":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = false;
-		        _spawn07 = true;
-		        break;
-		    case "Checkpoint08":
-		        _spawn01 = false;
-		        _spawn02 = false;
-		        _spawn03 = false;
-		        _spawn04 = false;
-		        _spawn05 = false;
-		        _spawn06 = false;
-		        _spawn07 = false;
-		        _spawn08 = true;
-		        break;
-	 	}
- 	}
+    setCurrentRespawnPoint(col);
+  }
+
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
 
-	    CellControl cc = GetComponent<CellControl>();
-	    cc.enabled = false;
+        CellControl cc = GetComponent<CellControl>();
 
-	    yield return new WaitForSeconds(2F);
+        //1. death effect
+        yield return StartCoroutine(deathEffectCoroutine(cc));
+    
+        //1. respawn effect
+        respawnCoroutine(cc);
+        
+    }	
+    
+    IEnumerator deathEffectCoroutine(CellControl cc)
+    {
+        cc.enabled = false;
+        
+        iTween.ScaleTo(gameObject, _optionsOut);
+        iTween.FadeTo(gameObject, _optionsOutAlpha);  
 
-		    cc.enabled = true;
-			
-			foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
-				box.resetPos();
-			}
+        _flagella = new List<GameObject>();
+        int maxWaitSequences = _flagella.Count+1;
 
-        Debug.LogError("MINEMANAGER RESETTING");
-      MineManager.isReseting = true;
-		    
-		  if (_spawn01 == true) {
-				GameObject respawn01 = GameObject.Find("Checkpoint01");
-				gameObject.transform.position = respawn01.transform.position;
-			}
-			else if (_spawn02 == true) {
-				GameObject respawn02 = GameObject.Find("Checkpoint02");
-				gameObject.transform.position = respawn02.transform.position;
-			}
-			else if (_spawn03 == true) {
-				GameObject respawn03 = GameObject.Find("Checkpoint03");
-				gameObject.transform.position = respawn03.transform.position;
-			}
-			else if (_spawn04 == true) {
-				GameObject respawn04 = GameObject.Find("Checkpoint04");
-				gameObject.transform.position = respawn04.transform.position;
-			}
-			else if (_spawn05 == true) {
-				GameObject respawn05 = GameObject.Find("Checkpoint05");
-				gameObject.transform.position = respawn05.transform.position;
-			}
-			else if (_spawn06 == true) {
-				GameObject respawn06 = GameObject.Find("Checkpoint06");
-				gameObject.transform.position = respawn06.transform.position;
-			}
-			else if (_spawn07 == true) {
-				GameObject respawn07 = GameObject.Find("Checkpoint07");
-				gameObject.transform.position = respawn07.transform.position;
-			}
-			else if (_spawn08 == true) {
-				GameObject respawn08 = GameObject.Find("Checkpoint08");
-				gameObject.transform.position = respawn08.transform.position;
-			}
-		
+        foreach (Transform child in transform)
+        {
+            if(child.name == "FBX_flagelPlayer" && child.gameObject.activeSelf)
+            {
+                _flagella.Add(child.gameObject);
+            }
+        }
+
+        float elapsed = 0.0f;
+        for(int i=0; i<_flagella.Count; i++)
+        {
+            //to make flagella disappear
+            float random = UnityEngine.Random.Range(0.0f,1.0f);
+            yield return new WaitForSeconds(random*_respawnTimeS/maxWaitSequences);
+            _flagella[i].SetActive(false);
+            elapsed += random;
+        }
+
+        //to make eyes and body disappear
+        float lastRandom = UnityEngine.Random.Range(0.0f,1.0f);
+        yield return new WaitForSeconds(lastRandom*_respawnTimeS/maxWaitSequences);
+        elapsed += lastRandom;        
+        enableEyes(false);
+            
+        yield return new WaitForSeconds((maxWaitSequences-elapsed)*_respawnTimeS/maxWaitSequences);
+    }
+
+    private void enableEyes(bool enable)
+    {
+        foreach(MeshRenderer mr in transform.FindChild("FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.enabled = enable;
+        }
+    }
+    
+    void respawnCoroutine(CellControl cc)
+    {
+        enableEyes(true);
+        
+        foreach(GameObject flagellum in _flagella)
+        {
+            flagellum.SetActive(true);
+        }
+        _flagella.Clear();
+
+        iTween.ScaleTo(gameObject, _optionsIn);
+        iTween.FadeTo(gameObject, _optionsInAlpha);
+        
+        cc.enabled = true;      
+        foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
+            box.resetPos();
+        }
+
+        MineManager.isReseting = true;
+
+
+        SavedCell savedCell = null;
+        if(null != _lastNewCell)
+        {
+            savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
+            savedCell.resetCollisionState();
+            gameObject.transform.position = _lastNewCell.transform.position;
+            gameObject.transform.rotation = _lastNewCell.transform.rotation;
+        }
+        
         _isAlive = true;
         cc.reset();
         setLife(1f);
-	}	
 
+        StartCoroutine(popEffectCoroutine(savedCell));
+    }
+    
+    IEnumerator popEffectCoroutine(SavedCell savedCell)
+    {
+        yield return new WaitForSeconds(_popEffectTimeS);
+        savedCell.setCollidable(true);
+    }
 }
