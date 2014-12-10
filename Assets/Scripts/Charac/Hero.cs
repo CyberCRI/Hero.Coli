@@ -207,6 +207,10 @@ public class Hero : MonoBehaviour {
       {
         Destroy (_lastNewCell);
       }
+      else
+      {
+        ModalManager.setModal("FirstCheckpoint");
+      }
 
       _lastNewCell = (GameObject)Instantiate(this.gameObject);
 
