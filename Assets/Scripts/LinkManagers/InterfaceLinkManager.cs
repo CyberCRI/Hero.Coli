@@ -7,6 +7,8 @@ using System.Collections;
 
 public class InterfaceLinkManager : MonoBehaviour {
 
+  public static string interfaceLinkManagerGameObjectName = "InterfaceLinkManager";
+
 	public Fade fade;
 	public TooltipPanel biobrickTooltipPanel,deviceTooltipPanel;
 	public GameObject inventoryDevicePrefab;

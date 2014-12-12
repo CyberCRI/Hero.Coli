@@ -48,6 +48,7 @@ public class ModalManager : MonoBehaviour {
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {
       StandardInfoWindowInfo info;
+      //TODO set case-insensitive
       if(!_instance._loadedModalWindows.TryGetValue(code, out info))
       {
           Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);

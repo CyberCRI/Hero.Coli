@@ -40,7 +40,6 @@ public class Medium : LoadableFromXmlImpl
 
     
   //TODO refactor interactions out of medium
-  private string _shortkeyPrefix = "KEY.";
   private string _shortkeyPlusSuffix = ".PLUS";
   private string _shortkeyMinusSuffix = ".MINUS";
 
@@ -383,14 +382,14 @@ public class Medium : LoadableFromXmlImpl
   //TODO refactor interactions out of medium
   private void manageMoleculeConcentrationWithKey(String molecule)
   {
-    if (GameStateController.isShortcutKey(_shortkeyPrefix+molecule+_shortkeyPlusSuffix))
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+molecule+_shortkeyPlusSuffix))
     {
       if (_enableSequential)
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
       else
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
     }
-    if (GameStateController.isShortcutKey(_shortkeyPrefix+molecule+_shortkeyMinusSuffix))
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+molecule+_shortkeyMinusSuffix))
     {
       if (_enableSequential)
         ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(- 10f);
