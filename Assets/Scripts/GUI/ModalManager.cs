@@ -35,7 +35,9 @@ public class ModalManager : MonoBehaviour {
 
   public UISprite infoSprite;
   public UIButton validateButton;
+  public UIButton centeredValidateButton;
   private string _validateButtonClass;
+  public UIButton cancelButton;
 
   private GameObject _currentModalElement;
   private float _previousZ;
@@ -43,7 +45,7 @@ public class ModalManager : MonoBehaviour {
   private static string _genericPrefix = "MODAL.";
   private static string _genericTitle = ".TITLE";
   private static string _genericExplanation = ".EXPLANATION";
-    
+  private static string _quitModalClassName = "QuitModalWindow";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {
@@ -75,7 +77,12 @@ public class ModalManager : MonoBehaviour {
     
     Logger.Log("ModalManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
   }
-  
+    
+  private static bool needsCancelButton(string validateButtonClassName)
+  {
+      return (validateButtonClassName != _quitModalClassName);
+  }
+
   private static bool fillInFieldsFromCode(string code)
   {      
     StandardInfoWindowInfo info = retrieveFromDico(code);
@@ -88,8 +95,37 @@ public class ModalManager : MonoBehaviour {
       _instance.infoSprite.spriteName = info._texture;
       _instance.explanationLabel.text = Localization.Localize(generic+_genericExplanation);
 
-      _instance.validateButton.gameObject.AddComponent(info._next);
-      _instance._validateButtonClass = info._next;
+      if(!string.IsNullOrEmpty(info._next))
+      {
+                Debug.LogError("ModalManager::fillInFieldsFromCode needsCancelButton?");
+        if(needsCancelButton(info._next))
+        {
+                    Debug.LogError("ModalManager::fillInFieldsFromCode needsCancelButton");
+          _instance.validateButton.gameObject.SetActive(true);
+          _instance.cancelButton.gameObject.SetActive(true);
+          _instance.centeredValidateButton.gameObject.SetActive(false);
+
+          _instance.validateButton.gameObject.AddComponent(info._next);
+          _instance._validateButtonClass = info._next;
+                    Debug.LogError("ModalManager::fillInFieldsFromCode deactivated centetered validate button; activated validate and cancel buttons");
+        }
+        else
+        {
+                    Debug.LogError("ModalManager::fillInFieldsFromCode !needsCancelButton");
+                    
+          _instance.validateButton.gameObject.SetActive(false);
+          _instance.cancelButton.gameObject.SetActive(false);
+          _instance.centeredValidateButton.gameObject.SetActive(true);
+
+          _instance.centeredValidateButton.gameObject.AddComponent(info._next);
+          _instance._validateButtonClass = info._next;
+                    Debug.LogError("ModalManager::fillInFieldsFromCode deactivated cancel and validate buttons; activated centered validate button");
+        }
+      }
+      else
+      {
+        return false;
+      }
       
       return true;
     }
@@ -143,6 +179,7 @@ public class ModalManager : MonoBehaviour {
       if(!string.IsNullOrEmpty(_instance._validateButtonClass))
       {
         Object.Destroy(_instance.validateButton.GetComponent(_instance._validateButtonClass));
+        Object.Destroy(_instance.centeredValidateButton.GetComponent(_instance._validateButtonClass));
         _instance._validateButtonClass = null;
       }
       _instance._currentModalElement.SetActive(false);
