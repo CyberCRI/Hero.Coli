@@ -97,29 +97,23 @@ public class ModalManager : MonoBehaviour {
 
       if(!string.IsNullOrEmpty(info._next))
       {
-                Debug.LogError("ModalManager::fillInFieldsFromCode needsCancelButton?");
         if(needsCancelButton(info._next))
         {
-                    Debug.LogError("ModalManager::fillInFieldsFromCode needsCancelButton");
           _instance.validateButton.gameObject.SetActive(true);
           _instance.cancelButton.gameObject.SetActive(true);
           _instance.centeredValidateButton.gameObject.SetActive(false);
 
           _instance.validateButton.gameObject.AddComponent(info._next);
           _instance._validateButtonClass = info._next;
-                    Debug.LogError("ModalManager::fillInFieldsFromCode deactivated centetered validate button; activated validate and cancel buttons");
         }
         else
-        {
-                    Debug.LogError("ModalManager::fillInFieldsFromCode !needsCancelButton");
-                    
+        {                    
           _instance.validateButton.gameObject.SetActive(false);
           _instance.cancelButton.gameObject.SetActive(false);
           _instance.centeredValidateButton.gameObject.SetActive(true);
 
           _instance.centeredValidateButton.gameObject.AddComponent(info._next);
           _instance._validateButtonClass = info._next;
-                    Debug.LogError("ModalManager::fillInFieldsFromCode deactivated cancel and validate buttons; activated centered validate button");
         }
       }
       else
