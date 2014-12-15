@@ -9,11 +9,5 @@ public class ModalRestart : ModalButton {
     }
     //FIXME usefulness?
     base.OnPress(isPressed);
-  }
-    
-  public void press()
-  {
-    Logger.Log("ModalRestart::press()", Logger.Level.INFO);
-    OnPress(true);
-  }
+   }
 }
