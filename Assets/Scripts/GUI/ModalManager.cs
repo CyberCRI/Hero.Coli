@@ -182,4 +182,46 @@ public class ModalManager : MonoBehaviour {
       _instance._currentModalElement = null;
     }
   }
+
+    // manages key presses on modal windows
+    //
+    // for generic modal windows:
+    // enter: validate
+    // escape: cancel
+    public static GameState manageKeyPresses()
+    {
+        if((Input.GetKeyDown(KeyCode.Escape) || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
+        {
+            ModalManager.unsetModal();
+            return GameState.Game;
+        }
+        else
+        {
+            if(null != _instance._currentModalElement)
+            {
+                if(Input.GetKeyDown(KeyCode.Return))
+                {
+                    if(_instance.validateButton.gameObject.activeInHierarchy)
+                    {
+                        ModalButton button = (ModalButton)_instance.validateButton.gameObject.GetComponent(_instance._validateButtonClass);
+                        button.press();
+                    }
+                    else if(_instance.centeredValidateButton.gameObject.activeInHierarchy)
+                    {
+                        ModalButton button = (ModalButton)_instance.centeredValidateButton.gameObject.GetComponent(_instance._validateButtonClass);
+                        button.press();
+                    }
+                }
+                else if(Input.GetKeyDown(KeyCode.Escape))
+                {   
+                    if(_instance.cancelButton.gameObject.activeInHierarchy)
+                    {
+                        CancelModal button = _instance.cancelButton.gameObject.GetComponent<CancelModal>();
+                        button.press();
+                    }
+                }
+            }
+        }
+        return GameState.Pause;
+    }
 }

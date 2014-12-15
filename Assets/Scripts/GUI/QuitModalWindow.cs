@@ -9,4 +9,10 @@ public class QuitModalWindow : ModalButton {
     }
     base.OnPress(isPressed);
   }
+
+  public override void press()
+  {
+    Logger.Log("QuitModalWindow::press()", Logger.Level.INFO);
+    OnPress(true);
+  }
 }

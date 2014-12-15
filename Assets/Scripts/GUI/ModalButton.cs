@@ -8,4 +8,10 @@ public class ModalButton : MonoBehaviour {
       ModalManager.unsetModal();
     }
   }
+    
+  public virtual void press()
+  {
+    Logger.Log("ModalButton::press()", Logger.Level.INFO);
+    OnPress(true);
+  }
 }

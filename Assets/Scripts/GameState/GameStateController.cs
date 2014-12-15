@@ -26,17 +26,17 @@ public class GameStateController : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   public static string keyPrefix = "KEY.";
-  private static string _inventoryKey = keyPrefix+"INVENTORY";
-  private static string _craftingKey = keyPrefix+"CRAFTING";
-  private static string _pauseKey = keyPrefix+"PAUSE";
+  public static string _inventoryKey = keyPrefix+"INVENTORY";
+  public static string _craftingKey = keyPrefix+"CRAFTING";
+  public static string _pauseKey = keyPrefix+"PAUSE";
 
 
   private GameState _gameState;
   public GUITransitioner gUITransitioner;
   public Fade fadeSprite;
   public GameObject intro, end, pauseIndicator;
-  private int _pausesStacked = 0;
-  public int getPausesInStackCount(){
+  private static int _pausesStacked = 0;
+  public static int getPausesInStackCount(){
     return _pausesStacked;
   }
   public int pushPauseInStack()
@@ -147,10 +147,19 @@ public class GameStateController : MonoBehaviour {
         switch(gUITransitioner._currentScreen)
         {
           case GUITransitioner.GameScreen.screen1:
-            if ((Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey)) && (0 == getPausesInStackCount()))
+            GameState newState = ModalManager.manageKeyPresses();
+            if(GameState.Pause != newState)
+            {
+                changeState(newState);
+            }
+            if((Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey)) && (0 == getPausesInStackCount()))
             {
               ModalManager.unsetModal();
               changeState(GameState.Game);
+            }
+            else
+            {
+                ModalManager.manageKeyPresses();
             }
             break;
           case GUITransitioner.GameScreen.screen2:
