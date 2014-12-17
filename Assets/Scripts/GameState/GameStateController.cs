@@ -36,6 +36,10 @@ public class GameStateController : MonoBehaviour {
   public Fade fadeSprite;
   public GameObject intro, end, pauseIndicator;
   private static int _pausesStacked = 0;
+    private static void resetPauseStack()
+    {
+        _pausesStacked = 0;
+    }
   public static int getPausesInStackCount(){
     return _pausesStacked;
   }
@@ -88,6 +92,7 @@ public class GameStateController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_gameState = GameState.Start;
+    resetPauseStack();
 		pushPauseInStack();
     
     I18n.changeLanguageTo(I18n.Language.French);
@@ -228,6 +233,7 @@ public class GameStateController : MonoBehaviour {
 
   public static void restart()
   {
+    Logger.Log ("GameStateController::restart", Logger.Level.INFO);
     Application.LoadLevel("Master-Demo-0.1");
   }
 	
