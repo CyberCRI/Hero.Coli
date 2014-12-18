@@ -49,6 +49,7 @@ public class ModalManager : MonoBehaviour {
   private static string _genericTitle = ".TITLE";
   private static string _genericExplanation = ".EXPLANATION";
   private static string _quitModalClassName = "QuitModalWindow";
+  private static string _cancelModalClassName = "CancelModal";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {
@@ -201,33 +202,62 @@ public class ModalManager : MonoBehaviour {
     // escape: cancel
     public static GameState manageKeyPresses()
     {
+        //equivalent to: "consumed action", "did something", and so on
+        bool keyPressedEventConsumed = false;
+
+        //getting out of Pause
         if((Input.GetKeyDown(KeyCode.Escape) || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
         {
             ModalManager.unsetModal();
             return GameState.Game;
         }
         else
+            //pressing "validate" or "cancel" buttons
         {
             if(null != _instance._currentModalElement)
             {
                 if(Input.GetKeyDown(KeyCode.Return))
                 {
-                    if(_instance._validateButton.gameObject.activeInHierarchy)
-                    {
-                        ModalButton button = (ModalButton)_instance._validateButton.gameObject.GetComponent(_instance._validateButtonClass);
-                        button.press();
-                    }
+                    keyPressedEventConsumed = manageValidateButton();
                 }
                 else if(Input.GetKeyDown(KeyCode.Escape))
                 {   
-                    if(_instance._cancelButton.gameObject.activeInHierarchy)
-                    {
-                        CancelModal button = _instance._cancelButton.gameObject.GetComponent<CancelModal>();
-                        button.press();
-                    }
+                    keyPressedEventConsumed = manageCancelButton();
+                }
+
+                if(!keyPressedEventConsumed)
+                {
+                    return manageInfoWindows();
                 }
             }
         }
-        return GameState.Pause;
+        return GameState.None;
     }
+
+    private static GameState manageInfoWindows()
+    {
+        return InfoWindowManager.manageKeyPresses();
+    }
+    
+    private static bool manageValidateButton()
+    {
+        return manageModalButton(_instance._validateButton, _instance._validateButtonClass);
+    }
+    
+    private static bool manageCancelButton()
+    {
+        return manageModalButton(_instance._cancelButton, _cancelModalClassName);
+    }
+
+    private static bool manageModalButton(UIButton modalButton, string modalButtonClass)
+    {        
+        if(modalButton && modalButton.gameObject.activeInHierarchy)
+        {
+            ModalButton button = (ModalButton)modalButton.gameObject.GetComponent(modalButtonClass);
+            button.press();
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -6,7 +6,8 @@ public enum GameState{
 	Start,
 	Game,
 	Pause,
-	End
+	End,
+  None
 }
 
 public class GameStateController : MonoBehaviour {
@@ -153,18 +154,9 @@ public class GameStateController : MonoBehaviour {
         {
           case GUITransitioner.GameScreen.screen1:
             GameState newState = ModalManager.manageKeyPresses();
-            if(GameState.Pause != newState)
+            if(GameState.None != newState && GameState.Pause != newState)
             {
                 changeState(newState);
-            }
-            if((Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey)) && (0 == getPausesInStackCount()))
-            {
-              ModalManager.unsetModal();
-              changeState(GameState.Game);
-            }
-            else
-            {
-                ModalManager.manageKeyPresses();
             }
             break;
           case GUITransitioner.GameScreen.screen2:
