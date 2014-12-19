@@ -200,7 +200,7 @@ public class ModalManager : MonoBehaviour {
     // for generic modal windows:
     // enter: validate
     // escape: cancel
-    public static GameState manageKeyPresses()
+    public static GameStateTarget manageKeyPresses()
     {
         //equivalent to: "consumed action", "did something", and so on
         bool keyPressedEventConsumed = false;
@@ -209,7 +209,7 @@ public class ModalManager : MonoBehaviour {
         if((Input.GetKeyDown(KeyCode.Escape) || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
         {
             ModalManager.unsetModal();
-            return GameState.Game;
+            return GameStateTarget.Game;
         }
         else
             //pressing "validate" or "cancel" buttons
@@ -229,12 +229,17 @@ public class ModalManager : MonoBehaviour {
                 {
                     return manageInfoWindows();
                 }
+                else
+                {
+                    //keyPressedEventConsumed but no specific game state was specified as target
+                    return GameStateTarget.NoTarget;
+                }
             }
         }
-        return GameState.None;
+        return GameStateTarget.NoAction;
     }
 
-    private static GameState manageInfoWindows()
+    private static GameStateTarget manageInfoWindows()
     {
         return InfoWindowManager.manageKeyPresses();
     }

@@ -158,7 +158,7 @@ public class InfoWindowManager : MonoBehaviour {
     return action;
   }
 
-    public static GameState manageKeyPresses()
+    public static GameStateTarget manageKeyPresses()
     {
         if(Input.GetKeyDown(KeyCode.Escape)
            || Input.GetKeyDown(KeyCode.Space)
@@ -166,8 +166,9 @@ public class InfoWindowManager : MonoBehaviour {
           )
         {
             next();
+            return GameStateTarget.NoTarget;
         }
-        return GameState.None;
+        return GameStateTarget.NoAction;
     }
 }
 
