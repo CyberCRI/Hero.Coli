@@ -49,8 +49,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
   private static LinkedList<GeneBrick>            _availableGenes       = new LinkedList<GeneBrick>();
   private static LinkedList<TerminatorBrick>      _availableTerminators = new LinkedList<TerminatorBrick>();
   */
-  private static LinkedList<BioBrick>             _allBioBricks       = new LinkedList<BioBrick>();
-  private static LinkedList<BioBrick>             _availableBioBricks = new LinkedList<BioBrick>();
+  private static LinkedList<BioBrick>             _allBioBricks      ;
+  private static LinkedList<BioBrick>             _availableBioBricks;
 
   //visual, clickable biobrick catalog
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
@@ -59,6 +59,8 @@ public class AvailableBioBricksManager : MonoBehaviour {
   LinkedList<AvailableDisplayedBioBrick>  _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
 
   private void initialize() {
+    Logger.Log("AvailableBioBricksManager::initialize()", Logger.Level.INFO);
+    _allBioBricks = new LinkedList<BioBrick>();
     _availableBioBricks = new LinkedList<BioBrick>();
 
     _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
@@ -266,42 +268,52 @@ public class AvailableBioBricksManager : MonoBehaviour {
     }
   }
  
-  private void loadAllBioBricks() {
-    Logger.Log("AvailableBioBricksManager::loadAllBioBricks", Logger.Level.DEBUG);
-    loadBioBricks(_allBioBrickFiles, _allBioBricks);
-  }
-
-  private void loadBioBricks(string[] inputFiles, LinkedList<BioBrick> destination)
-  {
-    //load biobricks from xml
-    BioBrickLoader bLoader = new BioBrickLoader();
-
-    //_availableBioBricks   = new LinkedList<BioBrick>();
-    string files = "";
-
-    foreach (string file in inputFiles) {
-      Logger.Log("AvailableBioBricksManager::loadBioBricks loads biobrick file "+file, Logger.Level.TRACE);
-      LinkedListExtensions.AppendRange<BioBrick>(destination, bLoader.loadBioBricksFromFile(file));
-      if(!string.IsNullOrEmpty(files)) {
-        files += ", ";
-      }
-      files += file;
+    private void loadAllBioBricks() {
+        Logger.Log("AvailableBioBricksManager::loadAllBioBricks", Logger.Level.DEBUG);
+        loadBioBricks(_allBioBrickFiles, _allBioBricks);
+        Logger.Log("AvailableBioBricksManager::loadAllBioBricks _allBioBricks="+_allBioBricks.Count, Logger.Level.INFO);
     }
-    Logger.Log("AvailableBioBricksManager::loadBioBricks loaded "+files, Logger.Level.DEBUG);
-  }
+
+    private void loadBioBricks(string[] inputFiles, LinkedList<BioBrick> destination)
+    {
+        Logger.Log("AvailableBioBricksManager::loadBioBricks", Logger.Level.INFO);
+        //load biobricks from xml
+        BioBrickLoader bLoader = new BioBrickLoader();
+
+        //_availableBioBricks   = new LinkedList<BioBrick>();
+        string files = "";
+
+        foreach (string file in inputFiles) {
+            Logger.Log("AvailableBioBricksManager::loadBioBricks loads biobrick file "+file, Logger.Level.DEBUG);
+            LinkedList<BioBrick> bb = bLoader.loadBioBricksFromFile(file);
+            Logger.Log("AvailableBioBricksManager::loadBioBricks appended bb="+bb.Count.ToString()+" from file "+file, Logger.Level.DEBUG);
+            LinkedListExtensions.AppendRange<BioBrick>(destination, bb);
+            if(!string.IsNullOrEmpty(files)) {
+                files += ", ";
+            }
+            files += file;
+        }
+        Logger.Log("AvailableBioBricksManager::loadBioBricks loaded "+files+" so that destination="+destination.Count, Logger.Level.DEBUG);
+    }
    
-  public LinkedList<BioBrick> getAvailableBioBricks() {
-    Logger.Log("AvailableBioBricksManager::getAvailableBioBricks", Logger.Level.DEBUG);
-    if(_availableBioBricks == null || _availableBioBricks.Count == 0) {
-      loadAvailableBioBricks();
+
+    public LinkedList<BioBrick> getAvailableBioBricks() {
+        string availableBB = null == _availableBioBricks?"null":_availableBioBricks.Count.ToString();
+        Logger.Log("AvailableBioBricksManager::getAvailableBioBricks with initial _availableBioBricks="+availableBB, Logger.Level.DEBUG);
+        if(_availableBioBricks == null || _availableBioBricks.Count == 0) {
+            loadAvailableBioBricks();
+        }
+        Logger.Log("AvailableBioBricksManager::getAvailableBioBricks returns "+_availableBioBricks.Count+" elements", Logger.Level.DEBUG);
+        return _availableBioBricks;
     }
-    return _availableBioBricks;
-  }
 	
-  private void loadAvailableBioBricks() {
-    Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.DEBUG);
-    loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
-  }
+
+    private void loadAvailableBioBricks() {
+        Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.INFO);
+        loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
+        Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks="+_availableBioBricks.Count, Logger.Level.DEBUG);
+    }
+
 
   // Use this for initialization
   void Start () {

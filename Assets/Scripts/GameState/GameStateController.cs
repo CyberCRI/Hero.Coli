@@ -167,34 +167,36 @@ public class GameStateController : MonoBehaviour {
     void Update () {
         switch(_gameState){
 
-        	case GameState.Start:
-        fadeSprite.gameObject.SetActive(true);
-        	  intro.SetActive(true);
-        end.SetActive(false);
-        changeState(GameState.Pause);
-        break;
-        	
-        	case GameState.Game:
+            case GameState.Start:
+                fadeSprite.gameObject.SetActive(true);
+                intro.SetActive(true);
+                end.SetActive(false);
+                changeState(GameState.Pause);
+                break;
+
+            case GameState.Game:
                 //pause
-        if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
-        {
-          ModalManager.setModal(pauseIndicator, false);
-          changeState(GameState.Pause);
-        } 
+                if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
+                {
+                    ModalManager.setModal(pauseIndicator, false);
+                    changeState(GameState.Pause);
+                } 
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-        else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
-        {
-          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-        }
+                else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                {
+                    Logger.Log("GameStateController::Update inventory key pressed", Logger.Level.INFO);
+                    gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+                }
                 //crafting
-        else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
-        {
-          gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
-        }
-        	  break;
-        	
-        	case GameState.Pause:
+                else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+                {
+                    Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
+                    gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                }
+                break;
+
+            case GameState.Pause:
                 GameStateTarget newState = ModalManager.manageKeyPresses();
                 if(GameStateTarget.NoAction != newState)
                 {
@@ -215,20 +217,24 @@ public class GameStateController : MonoBehaviour {
                         case GUITransitioner.GameScreen.screen2:
                             if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
                             {
+                                Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
                                 gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                             }
                             else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
                             {
+                                Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
                                 gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                             }
                             break;
                         case GUITransitioner.GameScreen.screen3:
                             if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                             {
+                                Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
                                 gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                             }
                             else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
                             {
+                                Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
                                 gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                             }
                             break;
