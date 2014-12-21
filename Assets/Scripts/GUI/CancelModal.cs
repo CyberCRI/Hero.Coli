@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CancelModal : MonoBehaviour {
-  void OnPress(bool isPressed) {
+public class CancelModal : ModalButton {
+  protected override void OnPress(bool isPressed) {
     if(isPressed) {
       Logger.Log("CancelModal::OnPress()", Logger.Level.INFO);
 

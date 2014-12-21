@@ -130,7 +130,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILabel>();
     modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILabel>();
     modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
-    modalManager.validateButton = genericModalWindow.transform.FindChild("ValidateButton").GetComponent<UIButton>();
+    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").GetComponent<UIButton>();
+    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").GetComponent<UIButton>();
+    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").GetComponent<UIButton>();
 
 
 		//DeviceInventory

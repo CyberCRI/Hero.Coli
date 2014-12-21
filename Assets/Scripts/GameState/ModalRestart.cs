@@ -9,5 +9,5 @@ public class ModalRestart : ModalButton {
     }
     //FIXME usefulness?
     base.OnPress(isPressed);
-  }
+   }
 }

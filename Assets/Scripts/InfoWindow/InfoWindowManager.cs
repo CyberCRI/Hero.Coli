@@ -157,5 +157,18 @@ public class InfoWindowManager : MonoBehaviour {
     _instance._actions.TryGetValue(next, out action);
     return action;
   }
+
+    public static GameStateTarget manageKeyPresses()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)
+           || Input.GetKeyDown(KeyCode.Space)
+           || Input.GetKeyDown(KeyCode.Return)
+          )
+        {
+            next();
+            return GameStateTarget.NoTarget;
+        }
+        return GameStateTarget.NoAction;
+    }
 }
 

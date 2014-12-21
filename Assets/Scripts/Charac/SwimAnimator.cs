@@ -19,7 +19,7 @@ public class SwimAnimator : MonoBehaviour {
 	public void safeInitAnims() {
     if(0 == anims.Count)
     {
-      Debug.LogError("SwimAnimator::safeInitAnims initializing anims");
+      Logger.Log("SwimAnimator::safeInitAnims initializing anims", Logger.Level.INFO);
       anims = new List<Animation>(GetComponentsInChildren<Animation>());
     }
 	}
