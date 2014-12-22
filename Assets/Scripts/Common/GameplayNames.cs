@@ -19,12 +19,14 @@ public class GameplayNames
     return Localization.Localize("DEVICE."+code);
   }
 
+    //TODO check use
   public static string generateRealNameFromBricks(Device device)
   {
     LinkedList<BioBrick> bricks = device.getExpressionModules().First.Value.getBioBricks();
     return generateRealNameFromBricks(bricks);
   }
 
+    //TODO check use
   public static string generateRealNameFromBricks(LinkedList<BioBrick> bricks)
   {
     string prefix = "";

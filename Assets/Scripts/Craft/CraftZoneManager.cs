@@ -226,29 +226,32 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // utilities
 
-  private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
-    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
-    if(bricks.Count != 4)
-    {
-      Logger.Log("CraftZoneManager::getDeviceFromBricks not enough bricks", Logger.Level.TRACE);
-      return null;
+    private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
+        Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
+
+        if(!ExpressionModule.isBioBricksSequenceValid(bricks))
+        {
+            Logger.Log("CraftZoneManager::getDeviceFromBricks invalid biobricks sequence", Logger.Level.TRACE);
+            return null;
+        }
+
+        ExpressionModule module = new ExpressionModule("test", bricks);
+        LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+        modules.AddLast(module);
+
+        //TODO replace real name by internal name
+        Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
+        if(device != null)
+        {
+            Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);
+        }
+        else
+        {
+            Logger.Log ("CraftZoneManager::getDeviceFromBricks device==null with bricks="+Logger.ToString<BioBrick>(bricks)
+                        , Logger.Level.WARN);
+        }
+        return device;
     }
-    ExpressionModule module = new ExpressionModule("test", bricks);
-    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
-    modules.AddLast(module);
-    //Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
-    Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
-    if(device != null)
-    {
-      Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);
-    }
-    else
-    {
-      Logger.Log ("CraftZoneManager::getDeviceFromBricks device==null with bricks="+Logger.ToString<BioBrick>(bricks)
-        , Logger.Level.WARN);
-    }
-    return device;
-  }
 
   public Device getCurrentDevice() {
     return _currentDevice;

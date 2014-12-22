@@ -165,162 +165,105 @@ public class Device: DNABit
   }
 
 
-  private LinkedList<PromoterProperties> getPromoterReactions()
-  {
-    Logger.Log("Device::getPromoterReactions() starting... device="+this, Logger.Level.TRACE);
-
-    //cf issue #224
-    //previously:
-    //LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
-    //caused early deletion problem
-    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
-    foreach(ExpressionModule module in _modules)
+    private LinkedList<PromoterProperties> getPromoterReactions()
     {
-      modules.AddLast(new ExpressionModule(module));
+        Logger.Log("Device::getPromoterReactions() starting... device="+this, Logger.Level.TRACE);
+
+        //cf issue #224
+        //previously:
+        //LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>(_modules);
+        //caused early deletion problem
+        LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+        foreach(ExpressionModule module in _modules)
+        {
+            modules.AddLast(new ExpressionModule(module));
+        }
+
+        LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
+        PromoterProperties reaction;
+        Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
+
+        foreach (ExpressionModule em in modules)
+        {
+            Logger.Log("Device::getPromoterReactions() analyzing em="+em, Logger.Level.TRACE);
+            reaction = getPromoterReaction(em, em.GetHashCode());
+            if (reaction != null)
+                reactions.AddLast(reaction);
+        }
+        if (reactions.Count == 0)
+            return null;
+        return reactions;
     }
 
-    LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
-    PromoterProperties reaction;
-    Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count, Logger.Level.TRACE);
+    public LinkedList<IReaction> getReactions() {
+        Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
+		
+        LinkedList<IReaction> reactions = new LinkedList<IReaction>();	
+        LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
+        foreach (PromoterProperties promoterProps in props) {
+            Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
+            reactions.AddLast(PromoterReaction.buildPromoterFromProps(promoterProps));
+        }
+		
+        Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions), Logger.Level.INFO);
+        return reactions;
+    }
 
-    foreach (ExpressionModule em in modules)
+    private static bool isValid(LinkedList<ExpressionModule> modules)
     {
-      Logger.Log("Device::getPromoterReactions() analyzing em="+em, Logger.Level.TRACE);
-      reaction = getPromoterReaction(em, em.GetHashCode());
-      if (reaction != null)
-        reactions.AddLast(reaction);
-      }
-    if (reactions.Count == 0)
-      return null;
-    return reactions;
-  }
+        if(null == modules)
+        {
+            Logger.Log("Device::isValid null==modules", Logger.Level.DEBUG);
+            return false;
+        }
 
-  public LinkedList<IReaction> getReactions() {
-    Logger.Log ("Device::getReactions(); device="+this, Logger.Level.TRACE);
-		
-    LinkedList<IReaction> reactions = new LinkedList<IReaction>();	
-    LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
-    foreach (PromoterProperties promoterProps in props) {
-      Logger.Log("Device::getReactions() adding prop "+promoterProps, Logger.Level.TRACE);
-      reactions.AddLast(PromoterReaction.buildPromoterFromProps(promoterProps));
-    }
-		
-	Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions), Logger.Level.INFO);
-    return reactions;
-  }
+        if(0 == modules.Count)
+        {
+            Logger.Log("Device::isValid 0==modules.Count", Logger.Level.DEBUG);
+            return false;
+        }
 
-
-  private static bool checkPromoter(BioBrick b)
-  {
-    return (b.getType() == BioBrick.Type.PROMOTER);
-  }
-
-  private static bool checkRBS(BioBrick b)
-  {
-    return (b.getType() == BioBrick.Type.RBS);
-  }
-
-  private static bool checkGene(BioBrick b)
-  {
-    return (b.getType() == BioBrick.Type.GENE);
-  }
-
-  private static bool checkTerminator(BioBrick b)
-  {
-    return (b.getType() == BioBrick.Type.TERMINATOR);
-  }  
-
-  private static bool checkRBSGene(LinkedList<BioBrick> list)
-  {
-    if (list == null)
-      return false;
-    if (list.Count == 0 || list.First.Value == null)
-      return false;
-    if (checkRBS(list.First.Value) == false)
-      return false;
-    list.RemoveFirst();
-    if (list.Count == 0 || list.First.Value == null)
-      return false;
-    if (checkGene(list.First.Value) == false)
-      return false;
-    list.RemoveFirst();
-    return true;
-  }
-
-  private static bool checkOperon(LinkedList<BioBrick> bricks)
-  {
-    bool b = false;
-
-    while (checkRBSGene(bricks))
-      b = true;
-    return b;
-  }
-
-  private static bool checkModuleValidity(ExpressionModule module)
-  {
-    Logger.Log("Device::checkModuleValidity("+module.ToString()+")", Logger.Level.TRACE);
-    if (module == null) {
-      Logger.Log("Device::checkModuleValidity failed (module == null)", Logger.Level.WARN);
-      return false;
+        foreach (ExpressionModule em in modules)
+            if (!em.isValid())
+        {
+            Logger.Log("Device::isValid module "+em+" is invalid", Logger.Level.WARN);
+            return false;
+        }
+        return true;
     }
 
-    LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(module.getBioBricks());
-    if (bricks == null) {
-      Logger.Log("Device::checkModuleValidity failed (bricks == null)", Logger.Level.WARN);
-      return false;
-    }
-    if (bricks.Count == 0 || bricks.First.Value == null) {
-      Logger.Log("Device::checkModuleValidity failed (bricks.Count == 0 || bricks.First.Value == null)", Logger.Level.WARN);
-      return false;
-    }
-    if (checkPromoter(bricks.First.Value) == false) {
-      Logger.Log("Device::checkModuleValidity failed (checkPromoter(bricks.First.Value) == false)", Logger.Level.WARN);
-      return false;
-    }
-    bricks.RemoveFirst();
+    public static Device buildDevice(LinkedList<BioBrick> bricks)
+    {
+        Logger.Log("Device::buildDevice(bricks) with bricks="+bricks, Logger.Level.INFO);
 
-    if (checkOperon(bricks) == false) {
-      Logger.Log("Device::checkModuleValidity failed (checkOperon(bricks) == false)", Logger.Level.WARN);
-      return false;
+        ExpressionModule em = new ExpressionModule(bricks);
+        return buildDevice(em);
     }
 
-    bool b1 = (bricks.Count == 0);
-    bool b2 = (bricks.First.Value == null);
-    bool b3 = (checkTerminator(bricks.First.Value) == false);
-    if (b1 || b2 || b3) {
-      if (b1) Logger.Log("Device::checkModuleValidity failed (bricks.Count == 0) = true", Logger.Level.WARN);
-      if (b2) Logger.Log("Device::checkModuleValidity failed (bricks.First.Value != null) = true", Logger.Level.WARN);
-      if (b3) Logger.Log("Device::checkModuleValidity failed (checkTerminator(bricks.First.Value) == false) = true", Logger.Level.WARN);
-      return false;
+    public static Device buildDevice(ExpressionModule em)
+    {
+        Logger.Log("Device::buildDevice(em) with em="+em+")", Logger.Level.INFO);
+        LinkedList<ExpressionModule> ems = new LinkedList<ExpressionModule>();
+        ems.AddLast(em);
+        return buildDevice(em.getName(), ems);
     }
-    bricks.RemoveFirst();
-    if (bricks.Count != 0) {
-      Logger.Log("Device::checkModuleValidity failed (bricks.Count != 0)", Logger.Level.WARN);
-      return false;
+
+    //warning: can lead to same devices but with different names
+    public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
+    {
+        Logger.Log("Device::buildDevice(name, modules) with name="+name, Logger.Level.INFO);
+        if (!isValid(modules))
+        {
+            Logger.Log("Device::buildDevice failed: modules==null or modules are invalid", Logger.Level.WARN);
+            return null;
+        }
+
+        Device device = new Device(name, modules);
+        Logger.Log("Device::buildDevice returns "+device, Logger.Level.INFO);
+        return device;
     }
-    return true;
-  }
 
-  private static bool checkDeviceValidity(LinkedList<ExpressionModule> modules)
-  {
-    foreach (ExpressionModule em in modules)
-      if (checkModuleValidity(em) == false)
-        return false;
-    return true;
-  }
-
-  public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
-  {
-    if (modules == null || checkDeviceValidity(modules) == false) {
-      Logger.Log("Device::buildDevice FAIL", Logger.Level.WARN);
-      return null;
-	  }
-
-    Device device = new Device(name, modules);
-    Logger.Log("Device::buildDevice returns "+device, Logger.Level.INFO);
-    return device;
-  }
-
+    //copy factory
   public static Device buildDevice(Device device)
   {
     if (device == null)
