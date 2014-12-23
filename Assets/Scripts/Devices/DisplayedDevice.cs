@@ -191,7 +191,7 @@ public class DisplayedDevice : DisplayedElement {
       Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
     }
     Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
-    displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    displayedDeviceScript._device = Device.buildDevice(device);
     if(displayedDeviceScript._device==null)
     {
       Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);

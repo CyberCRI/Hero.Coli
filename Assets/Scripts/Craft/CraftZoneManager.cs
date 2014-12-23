@@ -239,8 +239,7 @@ public class CraftZoneManager : MonoBehaviour {
         LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
         modules.AddLast(module);
 
-        //TODO replace real name by internal name
-        Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
+        Device device = Device.buildDevice(modules);
         if(device != null)
         {
             Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);

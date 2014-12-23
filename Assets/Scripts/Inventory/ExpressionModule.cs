@@ -6,9 +6,12 @@ public class ExpressionModule
 {
     private string                _name;
     private LinkedList<BioBrick>  _bioBricks;
+    private static string _invalidEMName = "invalidEMName";
+    
+    public string displayedName { get; set; }
+    private string _internalName;
+    public string getInternalName() { return _internalName; }
 
-    public string getName() { return _name; }
-    public void setName(string v) { _name = v; }
     public LinkedList<BioBrick> getBioBricks() { return _bioBricks; }
 
     public int getSize()
@@ -20,10 +23,51 @@ public class ExpressionModule
         return sum;
     }
 
+    //generates internal name from biobricks sequence
+    public string generateInternalName()
+    {
+        Logger.Log("ExpressionModule::generateName(bricks)", Logger.Level.INFO);
+        return generateNameFromBioBricksSequence(_bioBricks);
+    }
+
+    private static string generateNameFromBioBricksSequence(LinkedList<BioBrick> bricks)
+    {
+        Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks)", Logger.Level.INFO);
+
+        if(isBioBricksSequenceValid(bricks))
+        {
+            string name = "";
+            string separator = ":";
+
+            LinkedList<BioBrick> bb = new LinkedList<BioBrick>(bricks);
+            while(1 != bb.Count)
+            {
+                name+=bb.First.Value.getName()+separator;
+                bb.RemoveFirst();
+            }
+            name+=bb.First.Value.getName()+separator;
+            Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks) returns "+name, Logger.Level.ERROR);
+            return name;
+        }
+        else
+        {
+            Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks) was provided incorrect BioBrick sequence", Logger.Level.WARN);
+            return _invalidEMName;
+        }
+    }
+
     //TODO generate name from BioBricks sequence
     public ExpressionModule(LinkedList<BioBrick> bricks)
     {
-        new ExpressionModule("test", bricks);
+        Logger.Log("ExpressionModule::ExpressionModule(bricks)", Logger.Level.INFO);
+        if(isBioBricksSequenceValid(bricks))
+        {
+            new ExpressionModule("test", bricks);
+        }
+        else
+        {
+            Logger.Log("ExpressionModule::ExpressionModule(bricks) failed", Logger.Level.WARN);
+        }
     }
 
     public ExpressionModule(string name, LinkedList<BioBrick> bricks)

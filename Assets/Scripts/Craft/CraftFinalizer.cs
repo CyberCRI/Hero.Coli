@@ -58,19 +58,19 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice("+device+", "+status+")", Logger.Level.TRACE);
   }
 
-  public void randomRename() {
-    Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
-    Device currentDevice = _craftZoneManager.getCurrentDevice();
-    string newName = Inventory.get().getAvailableDeviceName();
-    Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
-    if(newDevice != null){
-      Logger.Log("CraftFinalizer::randomRename _craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
-      _craftZoneManager.setDevice(newDevice);
-    } else {
-      Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
-        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
+    public void randomRename() {
+        Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
+        Device currentDevice = _craftZoneManager.getCurrentDevice();
+        string newName = Inventory.get().getAvailableDeviceDisplayedName();
+        Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
+        if(newDevice != null){
+            Logger.Log("CraftFinalizer::randomRename _craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
+            _craftZoneManager.setDevice(newDevice);
+        } else {
+            Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
+                       +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
+        }
     }
-  }
 
   void Start()
   {

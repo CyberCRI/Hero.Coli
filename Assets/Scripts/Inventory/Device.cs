@@ -4,43 +4,75 @@ using UnityEngine;
 
 public class Device: DNABit
 {
-  private static float                  _energyPerBasePair = 0.005f;
+    //TODO load that value from file
+    private static float                  _energyPerBasePair = 0.005f;
 
-  private static int                    _idCounter;
-  private int                           _id;
-  private string                        _name;
-  private LinkedList<ExpressionModule>	_modules;
+    private static int                    _idCounter;
+    private int                           _id;
 
-  public string getName() { return _name; }
-  public void setName(string v) { _name = v; }
-  public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
+    public string displayedName { get; set; }
+    private string _internalName;
+    public string getInternalName() { return _internalName; }
 
-  public int getSize()
-  {
-    int sum = 0;
+    private LinkedList<ExpressionModule>	_modules;
+    public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
 
-    foreach (ExpressionModule em in _modules)
-      sum += em.getSize();
-    return sum;
-  }
+    public int getSize()
+    {
+        int sum = 0;
 
-  private void idInit()
-  {
-    _id = _idCounter;
-    _idCounter += 1;
-  }
+        foreach (ExpressionModule em in _modules)
+            sum += em.getSize();
+        return sum;
+    }
+
+    private void idInit()
+    {
+        _id = _idCounter;
+        _idCounter += 1;
+    }
   
-  private Device()
-  {
-    idInit();
-  }
+    private Device()
+    {
+        idInit();
+    }
+
+    private static string generateInternalName(LinkedList<ExpressionModule> modules)
+    {
+        Logger.Log("Device::generateInternalName(modules="+Logger.ToString(modules)+")", Logger.Level.INFO);
+
+        string name = "";
+
+        //TODO extract this
+        string separator = "+";
+
+        if(isValid(modules))
+        {
+            LinkedList<ExpressionModule> ems = new LinkedList<ExpressionModule>(modules);
+            while(1 != ems.Count)
+            {
+                name += ems.First.Value.getInternalName() + separator;
+                ems.RemoveFirst();
+            }
+            Logger.Log("Device::generateInternalName returns "+name, Logger.Level.ERROR);
+            name += ems.First.Value.getInternalName();
+            return name;
+        }
+        else
+        {
+            Logger.Log("Device::generateInternalName got invalid expression modules sequence", Logger.Level.WARN);
+            return "";
+        }
+    }
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
     Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")", Logger.Level.DEBUG);
 
     idInit();
-    _name = name;
+    displayedName = name;
+    _internalName = generateInternalName(modules);
+
     _modules = new LinkedList<ExpressionModule>();
     foreach (ExpressionModule em in modules)
     {
@@ -83,7 +115,7 @@ public class Device: DNABit
 
   public override string ToString ()
   {		
-		return string.Format ("[Device: id : {0}, name: {1}, [ExpressionModules: {2}]", _id, _name, Logger.ToString(_modules));
+		return string.Format ("[Device: id : {0}, name: {1}, [ExpressionModules: {2}]", _id, displayedName, Logger.ToString(_modules));
   }
 
   private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
@@ -146,7 +178,8 @@ public class Device: DNABit
 
     LinkedList<BioBrick> bricks = em.getBioBricks();
 
-    prom.name = _name + id;
+        //TODO fix this: create good properties' name
+    prom.name = _internalName + id;
     PromoterBrick p = bricks.First.Value as PromoterBrick;
     prom.formula = p.getFormula();
     prom.beta = p.getBeta();
@@ -243,9 +276,21 @@ public class Device: DNABit
     public static Device buildDevice(ExpressionModule em)
     {
         Logger.Log("Device::buildDevice(em) with em="+em+")", Logger.Level.INFO);
-        LinkedList<ExpressionModule> ems = new LinkedList<ExpressionModule>();
-        ems.AddLast(em);
-        return buildDevice(em.getName(), ems);
+        LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+        modules.AddLast(em);
+        return buildDevice(em.getInternalName(), modules);
+    }
+
+    public static Device buildDevice(LinkedList<ExpressionModule> modules)
+    {
+        Logger.Log("Device::buildDevice(modules)", Logger.Level.INFO);
+        if(!isValid(modules))
+        {
+            Logger.Log("Device::buildDevice(modules) failed: modules==null or modules are invalid", Logger.Level.WARN);
+            return null;
+        }
+        //TODO take into account all modules in device name
+        return buildDevice(modules.First.Value.getInternalName(), modules);
     }
 
     //warning: can lead to same devices but with different names
@@ -254,7 +299,7 @@ public class Device: DNABit
         Logger.Log("Device::buildDevice(name, modules) with name="+name, Logger.Level.INFO);
         if (!isValid(modules))
         {
-            Logger.Log("Device::buildDevice failed: modules==null or modules are invalid", Logger.Level.WARN);
+            Logger.Log("Device::buildDevice(name, modules) failed: modules==null or modules are invalid", Logger.Level.WARN);
             return null;
         }
 
@@ -271,7 +316,7 @@ public class Device: DNABit
       Logger.Log("Device::buildDevice device == null", Logger.Level.WARN);
       return null;
     }
-    return buildDevice(device.getName(), device._modules);
+    return buildDevice(device.getInternalName(), device._modules);
   }
 	
 	//helper for simple devices
