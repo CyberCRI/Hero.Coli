@@ -7,10 +7,18 @@ public class ExpressionModule
     private string                _name;
     private LinkedList<BioBrick>  _bioBricks;
     private static string _invalidEMName = "invalidEMName";
-    
+
+    //TODO factorize code with Device's
     public string displayedName { get; set; }
     private string _internalName;
-    public string getInternalName() { return _internalName; }
+    public string getInternalName() {
+        Logger.Log("ExpressionModule::getInternalName()", Logger.Level.DEBUG);
+        if(string.IsNullOrEmpty(_internalName))
+        {
+            _internalName = generateInternalName();
+        }
+        return _internalName;
+    }
 
     public LinkedList<BioBrick> getBioBricks() { return _bioBricks; }
 
@@ -24,15 +32,15 @@ public class ExpressionModule
     }
 
     //generates internal name from biobricks sequence
-    public string generateInternalName()
+    private string generateInternalName()
     {
-        Logger.Log("ExpressionModule::generateName(bricks)", Logger.Level.INFO);
-        return generateNameFromBioBricksSequence(_bioBricks);
+        Logger.Log("ExpressionModule::generateName(bricks)", Logger.Level.DEBUG);
+        return generateInternalName(_bioBricks);
     }
 
-    private static string generateNameFromBioBricksSequence(LinkedList<BioBrick> bricks)
+    private static string generateInternalName(LinkedList<BioBrick> bricks)
     {
-        Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks)", Logger.Level.INFO);
+        Logger.Log("ExpressionModule::generateInternalName(bricks)", Logger.Level.INFO);
 
         if(isBioBricksSequenceValid(bricks))
         {
@@ -45,13 +53,12 @@ public class ExpressionModule
                 name+=bb.First.Value.getName()+separator;
                 bb.RemoveFirst();
             }
-            name+=bb.First.Value.getName()+separator;
-            Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks) returns "+name, Logger.Level.ERROR);
+            name+=bb.First.Value.getName();
             return name;
         }
         else
         {
-            Logger.Log("ExpressionModule::generateNameFromBioBricksSequence(bricks) was provided incorrect BioBrick sequence", Logger.Level.WARN);
+            Logger.Log("ExpressionModule::generateInternalName(bricks) was provided incorrect BioBrick sequence", Logger.Level.WARN);
             return _invalidEMName;
         }
     }

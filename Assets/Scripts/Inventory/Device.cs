@@ -10,9 +10,17 @@ public class Device: DNABit
     private static int                    _idCounter;
     private int                           _id;
 
+    //TODO factorize code with ExpressionModule's
     public string displayedName { get; set; }
     private string _internalName;
-    public string getInternalName() { return _internalName; }
+    public string getInternalName() {
+        Logger.Log("ExpressionModule::getInternalName()", Logger.Level.DEBUG);
+        if(string.IsNullOrEmpty(_internalName))
+        {
+            _internalName = generateInternalName();
+        }
+        return _internalName;
+    }
 
     private LinkedList<ExpressionModule>	_modules;
     public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
@@ -36,6 +44,13 @@ public class Device: DNABit
     {
         idInit();
     }
+    
+    //generates internal name from expression modules sequence
+    private string generateInternalName()
+    {
+        Logger.Log("Device::generateName(bricks)", Logger.Level.DEBUG);
+        return generateInternalName(_modules);
+    }
 
     private static string generateInternalName(LinkedList<ExpressionModule> modules)
     {
@@ -51,10 +66,10 @@ public class Device: DNABit
             LinkedList<ExpressionModule> ems = new LinkedList<ExpressionModule>(modules);
             while(1 != ems.Count)
             {
-                name += ems.First.Value.getInternalName() + separator;
+                string toAppend = ems.First.Value.getInternalName() + separator;
+                name += toAppend;
                 ems.RemoveFirst();
             }
-            Logger.Log("Device::generateInternalName returns "+name, Logger.Level.ERROR);
             name += ems.First.Value.getInternalName();
             return name;
         }
@@ -76,9 +91,7 @@ public class Device: DNABit
     _modules = new LinkedList<ExpressionModule>();
     foreach (ExpressionModule em in modules)
     {
-      Logger.Log("Device::Device(...) treats em="+em, Logger.Level.WARN);
       _modules.AddLast(new ExpressionModule(em));
-      Logger.Log("Device::Device() now _modules="+Logger.ToString(_modules), Logger.Level.WARN);
     }
   }
 
