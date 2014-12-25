@@ -212,7 +212,9 @@ public class ReactionEngine : MonoBehaviour {
     return null;
   }
 	
-  public ArrayList getMoleculesFromMedium(int id) {
+    public ArrayList getMoleculesFromMedium(int id) {
+        //"warn" parameter is true to indicate that there is no such Medium
+        //as the one needed to get molecules
     Medium medium = LinkedListExtensions.Find<Medium>(
             _mediums
             , m => m.getId() == id

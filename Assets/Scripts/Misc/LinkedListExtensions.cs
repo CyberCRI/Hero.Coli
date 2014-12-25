@@ -76,7 +76,7 @@ public static class LinkedListExtensions
   }
 
 
-  public static T Find<T>(LinkedList<T> list, Predicate<T> predicate, bool warn = true, string debugMsg = "") {
+  public static T Find<T>(LinkedList<T> list, Predicate<T> predicate, bool warn = false, string debugMsg = "") {
     foreach (T t in list) {
       if (predicate(t)) {
         return t;
