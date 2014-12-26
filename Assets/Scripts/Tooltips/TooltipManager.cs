@@ -245,6 +245,7 @@ public class TooltipManager : MonoBehaviour {
 
   private static string localizeIfExists(string code)
   {
+        //TODO get rid of warnings from Localization
     string localization = Localization.Localize(code);
     string res = localization == code ? "" : localization;
     return res;

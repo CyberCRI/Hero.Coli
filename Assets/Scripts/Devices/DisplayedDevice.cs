@@ -217,7 +217,7 @@ public class DisplayedDevice : DisplayedElement {
 
   protected virtual void OnHover(bool isOver)
   {
-    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.INFO);
     TooltipManager.displayTooltip(isOver, _device, transform.position);
   }
 
