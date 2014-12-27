@@ -372,8 +372,10 @@ public class Device: DNABit
 	}
 
   public bool hasSameBricks(Device device) {
-    if(device._modules.Count != _modules.Count) {
-      Logger.Log("Device::hasSameBricks("+device+") of "+this+" differ on count: "+device._modules.Count+"≠"+_modules.Count, Logger.Level.TRACE);
+        Logger.Log("Device::hasSameBricks("+device+") of this="+this, Logger.Level.ERROR);
+
+        if(device._modules.Count != _modules.Count) {
+      Logger.Log("Device::hasSameBricks(device) returns false on count: "+device._modules.Count+"≠"+_modules.Count, Logger.Level.ERROR);
       return false;
     }
 
@@ -382,16 +384,17 @@ public class Device: DNABit
 
     while(enumerator1.MoveNext() && enumerator2.MoveNext()) {
       if(!enumerator1.Current.hasSameBricks(enumerator2.Current)) {
-        Logger.Log("Device::hasSameBricks("+device+") of "+this+" differ on "+enumerator1.Current+"≠"+enumerator2.Current, Logger.Level.TRACE);
+        Logger.Log("Device::hasSameBricks(device) returns false on "+enumerator1.Current+"≠"+enumerator2.Current, Logger.Level.ERROR);
         return false;
       }
     }
-    Logger.Log("Device::hasSameBricks("+device+") of "+this+" coincide", Logger.Level.TRACE);
+    Logger.Log("Device::hasSameBricks(device) returns true", Logger.Level.ERROR);
     return true;
   }
 
   public override bool Equals(System.Object obj)
   {
+        Logger.Log("Device::Equals", Logger.Level.ERROR);
     if (obj == null)
     {
       return false;

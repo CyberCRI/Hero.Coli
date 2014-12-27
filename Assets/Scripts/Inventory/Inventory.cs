@@ -143,8 +143,8 @@ public class Inventory : DeviceContainer
             return AddingResult.FAILURE_DEFAULT;
         } else {
             //TODO test BioBricks equality (cf next line)
-            //if (_devices.Exists(d => d.Equals(device))) {
-            if (_devices.Exists(d => d.getInternalName() == device.getInternalName()))
+            if (_devices.Exists(d => d.Equals(device)))
+            //if (_devices.Exists(d => d.getInternalName() == device.getInternalName()))
             {
                 if (_devices.Exists(d => d.hasSameBricks(device)))
                 {

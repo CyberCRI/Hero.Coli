@@ -13,8 +13,8 @@ public class InventoryDevice : MonoBehaviour {
             _device = inventoriedDisplayedDevice._device;
         }
         //TODO test BioBricks equality (cf next line)
-        //bool exists = Equipment.get().exists (d => d.Equals(_device));
-        bool exists = Equipment.get().exists (d => d.getInternalName() == _device.getInternalName());
+        bool exists = Equipment.get().exists (d => d.Equals(_device));
+        //bool exists = Equipment.get().exists (d => d.getInternalName() == _device.getInternalName());
 
         equipedMask.SetActive(exists);
     }

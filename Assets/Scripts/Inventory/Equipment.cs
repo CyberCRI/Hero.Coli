@@ -54,8 +54,8 @@ public class Equipment : DeviceContainer
     }
 
         //TODO test BioBricks equality (cf next line)
-        //if(_devices.Exists(d => d.Equals(copy)))
-    if(_devices.Exists(d => d.getInternalName() == copy.getInternalName()))
+        if(_devices.Exists(d => d.Equals(copy)))
+    //if(_devices.Exists(d => d.getInternalName() == copy.getInternalName()))
     {
       Logger.Log("Equipment::askAddDevice device already present", Logger.Level.INFO);
       return AddingResult.FAILURE_SAME_DEVICE;
@@ -95,8 +95,8 @@ public class Equipment : DeviceContainer
     Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
 
         //TODO test BioBricks equality (cf next line)
-        //_devices.RemoveAll(d => d.Equals(device));
-    _devices.RemoveAll(d => d.getInternalName() == device.getInternalName());
+        _devices.RemoveAll(d => d.Equals(device));
+    //_devices.RemoveAll(d => d.getInternalName() == device.getInternalName());
     
 
     safeGetDisplayer().removeEquipedDevice(device);

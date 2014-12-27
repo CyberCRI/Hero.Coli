@@ -197,8 +197,8 @@ public class GraphMoleculeList : MonoBehaviour {
     public void removeDeviceAndMoleculesComponent(Device device)
     {
         //TODO test BioBricks equality (cf next line)
-        //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
-        EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getInternalName() == device.getInternalName());
+        EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
+        //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getInternalName() == device.getInternalName());
         if(null != eddwm)
         {
             displayMoleculeInList(eddwm);
