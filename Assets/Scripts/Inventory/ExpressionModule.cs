@@ -105,10 +105,8 @@ public class ExpressionModule
   }
 
     public bool hasSameBricks(ExpressionModule module) {
-        Logger.Log("ExpressionModule::hasSameBricks("+module+") of "+this, Logger.Level.ERROR);
 
         if(module._bioBricks.Count != _bioBricks.Count) {
-            Logger.Log("ExpressionModule::hasSameBricks(module) returns false on count: "+module._bioBricks.Count+"≠"+_bioBricks.Count, Logger.Level.ERROR);
             return false;
         }
 
@@ -117,11 +115,9 @@ public class ExpressionModule
 
         while(enumerator1.MoveNext() && enumerator2.MoveNext()) {
             if(!enumerator1.Current.Equals(enumerator2.Current)) {
-                Logger.Log("ExpressionModule::hasSameBricks(module) returns false on "+enumerator1.Current+"≠"+enumerator2.Current, Logger.Level.ERROR);
                 return false;
             }
         }
-        Logger.Log("ExpressionModule::hasSameBricks(module) returns true", Logger.Level.ERROR);
         return true;
     }
 

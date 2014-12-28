@@ -34,33 +34,21 @@ public abstract class BioBrick: DNABit
     
     public override bool Equals(System.Object obj)
     {
-        Logger.Log("BioBrick::Equals", Logger.Level.ERROR);
         if (obj == null)
         {
-            Logger.Log("BioBrick::Equals returns false: obj == null", Logger.Level.ERROR);
             return false;
         }
         
         BioBrick b = obj as BioBrick;
         if ((System.Object)b == null)
         {
-            Logger.Log("BioBrick::Equals returns false: obj is no BioBrick", Logger.Level.ERROR);
             return false;
         }
 
         bool result;
 
-        //check type
-        result = (this._type == b._type);
-        if(!result)
-            Logger.Log("BioBrick::Equals returns false on type: "+this._type+"≠"+b._type, Logger.Level.ERROR);
-
-        //check name
-        result &= (this._name == b._name);
-        if(!result)
-            Logger.Log("BioBrick::Equals returns false on name: "+this._name+"≠"+b._name, Logger.Level.ERROR);
-        else
-            Logger.Log("BioBrick::Equals returns true", Logger.Level.ERROR);
+        //check type, name, length
+        result = (this._type == b._type) && (this._name == b._name) && (this._size == b._size);
 
         return result;
     }
