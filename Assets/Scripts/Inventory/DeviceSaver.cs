@@ -26,7 +26,7 @@ public class DeviceSaver {
       foreach (Device device in devices)
       {
         writer.WriteStartElement(BioBricksXMLTags.DEVICE);
-        writer.WriteAttributeString(BioBricksXMLTags.ID, device.getName());
+        writer.WriteAttributeString(BioBricksXMLTags.ID, device.getInternalName());
         foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
         {
           writer.WriteStartElement(BioBricksXMLTags.BIOBRICK);

@@ -119,36 +119,36 @@ public class AvailableBioBricksManager : MonoBehaviour {
     return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => (b.getType() == type));
   }
 
-  public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
-  {
-    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.INFO);
-    string bbName = brick.getName();
-    if ((null != brick)
-     && (null == LinkedListExtensions.Find<BioBrick>(
-                  _availableBioBricks
-                  , b => b.getName() == bbName
-                  , true
-                  , " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")"
-                 )
-       ))
-    // TODO deeper safety check
-    // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")")
+    public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
     {
-      Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") will _availableBioBricks.AddLast("+brick+")", Logger.Level.INFO);
+        Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+")", Logger.Level.INFO);
+        string bbName = brick.getName();
+        if ((null != brick)
+            && (null == LinkedListExtensions.Find<BioBrick>(
+            _availableBioBricks
+            , b => b.getName() == bbName
+            , false
+            , " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")"
+            )
+            ))
+            // TODO deeper safety check
+            // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")")
+        {
+            Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") will _availableBioBricks.AddLast("+brick+")", Logger.Level.INFO);
 
-      _availableBioBricks.AddLast(brick);
-      if(updateView)
-      {
-        updateDisplayedBioBricks();
-      }
-      return true;
+            _availableBioBricks.AddLast(brick);
+            if(updateView)
+            {
+                updateDisplayedBioBricks();
+            }
+            return true;
+        }
+        else
+        {
+            Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") fail", Logger.Level.INFO);
+            return false;
+        }    
     }
-    else
-    {
-    Logger.Log("AvailableBioBricksManager::addAvailableBioBrick("+brick+") fail", Logger.Level.INFO);
-    return false;
-    }    
-  }
 
   public void OnPanelEnabled()
   {
@@ -204,69 +204,69 @@ public class AvailableBioBricksManager : MonoBehaviour {
     return resultBrick;
   }
 
-  public void displayPromoters() {
-    Logger.Log("AvailableBioBricksManager::displayPromoters", Logger.Level.TRACE);
-    switchTo(_displayableAvailablePromoters);
-  }
-  public void displayRBS() {
-    Logger.Log("AvailableBioBricksManager::displayRBS", Logger.Level.TRACE);
-    switchTo(_displayableAvailableRBS);
-  }
-  public void displayGenes() {
-    Logger.Log("AvailableBioBricksManager::displayGenes", Logger.Level.TRACE);
-    switchTo(_displayableAvailableGenes);
-  }
-  public void displayTerminators() {
-    Logger.Log("AvailableBioBricksManager::displayTerminators", Logger.Level.TRACE);
-    switchTo(_displayableAvailableTerminators);
-  }
-  private void switchTo(LinkedList<AvailableDisplayedBioBrick> list) {
-    string listToString = "list=[";
-    foreach(AvailableDisplayedBioBrick brick in list) {
-      listToString += brick.ToString()+", ";
+    public void displayPromoters() {
+        Logger.Log("AvailableBioBricksManager::displayPromoters", Logger.Level.TRACE);
+        switchTo(_displayableAvailablePromoters);
     }
-    listToString += "]";
-    Logger.Log("AvailableBioBricksManager::switchTo("+listToString+")", Logger.Level.TRACE);
-    display(_displayedBioBricks, false);
-    _displayedBioBricks.Clear();
-    _displayedBioBricks.AppendRange(list);
-    display(_displayedBioBricks, true);
-  }
+    public void displayRBS() {
+        Logger.Log("AvailableBioBricksManager::displayRBS", Logger.Level.TRACE);
+        switchTo(_displayableAvailableRBS);
+    }
+    public void displayGenes() {
+        Logger.Log("AvailableBioBricksManager::displayGenes", Logger.Level.TRACE);
+        switchTo(_displayableAvailableGenes);
+    }
+    public void displayTerminators() {
+        Logger.Log("AvailableBioBricksManager::displayTerminators", Logger.Level.TRACE);
+        switchTo(_displayableAvailableTerminators);
+    }
+    private void switchTo(LinkedList<AvailableDisplayedBioBrick> list) {
+        string listToString = "list=[";
+        foreach(AvailableDisplayedBioBrick brick in list) {
+            listToString += brick.ToString()+", ";
+        }
+        listToString += "]";
+        Logger.Log("AvailableBioBricksManager::switchTo("+listToString+")", Logger.Level.TRACE);
+        display(_displayedBioBricks, false);
+        _displayedBioBricks.Clear();
+        _displayedBioBricks.AppendRange(list);
+        display(_displayedBioBricks, true);
+    }
 
-  private void display(LinkedList<AvailableDisplayedBioBrick> bricks, bool enabled) {
-    foreach (AvailableDisplayedBioBrick brick in bricks) {
-      brick.display(enabled);
+    private void display(LinkedList<AvailableDisplayedBioBrick> bricks, bool enabled) {
+        foreach (AvailableDisplayedBioBrick brick in bricks) {
+            brick.display(enabled);
+        }
     }
-  }
    
-  public LinkedList<BioBrick> getAllBioBricks() {
-    Logger.Log("AvailableBioBricksManager::getAllBioBricks", Logger.Level.DEBUG);
-    if(_allBioBricks == null || _allBioBricks.Count == 0) {
-      loadAllBioBricks();
+    public LinkedList<BioBrick> getAllBioBricks() {
+        Logger.Log("AvailableBioBricksManager::getAllBioBricks", Logger.Level.DEBUG);
+        if(_allBioBricks == null || _allBioBricks.Count == 0) {
+            loadAllBioBricks();
+        }
+        return _allBioBricks;
     }
-    return _allBioBricks;
-  }
 
-  public BioBrick getBioBrickFromAll(string brickName)
-  {
-    Logger.Log("AvailableBioBricksManager::getBioBrickFromAll", Logger.Level.DEBUG);
-    if(_allBioBricks == null || _allBioBricks.Count == 0) {
-      _instance.loadAllBioBricks();
-    }
-    BioBrick brick = LinkedListExtensions.Find<BioBrick>(
+    public BioBrick getBioBrickFromAll(string brickName)
+    {
+        Logger.Log("AvailableBioBricksManager::getBioBrickFromAll", Logger.Level.DEBUG);
+        if(_allBioBricks == null || _allBioBricks.Count == 0) {
+            _instance.loadAllBioBricks();
+        }
+        BioBrick brick = LinkedListExtensions.Find<BioBrick>(
             _allBioBricks
             , b => (b.getName() == brickName)
-            , true
+            , false
             , "AvailableBioBricksManager::getBioBrickFromAll("+brickName+")"
             );
-    if(brick != null) {
-      Logger.Log("AvailableBioBricksManager::getBioBrickFromAll found "+brick, Logger.Level.TRACE);
-      return brick;
-    } else {
-      Logger.Log("AvailableBioBricksManager::getBioBrickFromAll failed to find brick with name "+brickName+"!", Logger.Level.WARN);
-      return null;
+        if(brick != null) {
+            Logger.Log("AvailableBioBricksManager::getBioBrickFromAll found "+brick, Logger.Level.TRACE);
+            return brick;
+        } else {
+            Logger.Log("AvailableBioBricksManager::getBioBrickFromAll failed to find brick with name "+brickName+"!", Logger.Level.WARN);
+            return null;
+        }
     }
-  }
  
     private void loadAllBioBricks() {
         Logger.Log("AvailableBioBricksManager::loadAllBioBricks", Logger.Level.DEBUG);
@@ -315,9 +315,9 @@ public class AvailableBioBricksManager : MonoBehaviour {
     }
 
 
-  // Use this for initialization
-  void Start () {
-    Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
-    displayPromoters();
-  }
+    // Use this for initialization
+    void Start () {
+        Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
+        displayPromoters();
+    }
 }

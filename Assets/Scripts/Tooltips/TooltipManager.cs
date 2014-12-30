@@ -131,7 +131,7 @@ public class TooltipManager : MonoBehaviour {
 
   public static bool displayTooltip(bool isOver, Device device, Vector3 pos)
   {
-    string code = (null == device)?null:_devicePrefix+device.getName();
+    string code = (null == device)?null:_devicePrefix+device.getInternalName();
     return displayTooltip(isOver, code, pos);
   }
 
@@ -245,6 +245,7 @@ public class TooltipManager : MonoBehaviour {
 
   private static string localizeIfExists(string code)
   {
+        //TODO get rid of warnings from Localization
     string localization = Localization.Localize(code);
     string res = localization == code ? "" : localization;
     return res;

@@ -194,27 +194,27 @@ public class GraphMoleculeList : MonoBehaviour {
     return res;
   }
 
-  public void removeDeviceAndMoleculesComponent(Device device)
-  {
-    //TODO fix Equals method
-    //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
-    EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getName() == device.getName());
-    if(null != eddwm)
+    public void removeDeviceAndMoleculesComponent(Device device)
     {
-      displayMoleculeInList(eddwm);
+        //TODO test BioBricks equality (cf next line)
+        EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.Equals(device));
+        //EquipedDisplayedDeviceWithMolecules eddwm = _equipedDevices.Find(elt => elt.device.getInternalName() == device.getInternalName());
+        if(null != eddwm)
+        {
+            displayMoleculeInList(eddwm);
 
-      int startIndex = _equipedDevices.IndexOf(eddwm);
-      _equipedDevices.Remove(eddwm);
-      Destroy(eddwm.gameObject);
+            int startIndex = _equipedDevices.IndexOf(eddwm);
+            _equipedDevices.Remove(eddwm);
+            Destroy(eddwm.gameObject);
 
-      positionDeviceAndMoleculeComponents(0);
-      setUnfoldingListBackgroundScale();
+            positionDeviceAndMoleculeComponents(0);
+            setUnfoldingListBackgroundScale();
+        }
+        else
+        {
+            Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
+        }
     }
-    else
-    {
-      Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
-    }
-  }
 
   bool isAlreadyDisplayedInADevice(string moleculeCodeName)
   {
