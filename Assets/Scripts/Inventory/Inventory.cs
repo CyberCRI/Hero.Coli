@@ -135,29 +135,33 @@ public class Inventory : DeviceContainer
 		}
   }
 
-  public AddingResult canAddDevice(Device device) {
-    Logger.Log("Inventory::canAddDevice("+device+") with _devices="+Logger.ToString<Device>(_devices), Logger.Level.TRACE);
+    public AddingResult canAddDevice(Device device) {
+        Logger.Log("Inventory::canAddDevice("+device+") with _devices="+Logger.ToString<Device>(_devices), Logger.Level.TRACE);
 
-    if(device == null) {
-      Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
-      return AddingResult.FAILURE_DEFAULT;
-    } else {
-      if (_devices.Exists(d => d.getName() == device.getName())) {
-        if (_devices.Exists(d => d.hasSameBricks(device))) {
-          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE",Logger.Level.TRACE);
-          return AddingResult.FAILURE_SAME_DEVICE;
+        if(device == null) {
+            Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
+            return AddingResult.FAILURE_DEFAULT;
         } else {
-          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME",Logger.Level.TRACE);
-          return AddingResult.FAILURE_SAME_NAME;
+            //TODO test BioBricks equality (cf next line)
+            if (_devices.Exists(d => d.Equals(device)))
+            //if (_devices.Exists(d => d.getInternalName() == device.getInternalName()))
+            {
+                if (_devices.Exists(d => d.hasSameBricks(device)))
+                {
+                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE",Logger.Level.TRACE);
+                    return AddingResult.FAILURE_SAME_DEVICE;
+                } else {
+                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME",Logger.Level.TRACE);
+                    return AddingResult.FAILURE_SAME_NAME;
+                }
+            } else if (_devices.Exists(d => d.hasSameBricks(device))) {
+                Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS",Logger.Level.TRACE);
+                return AddingResult.FAILURE_SAME_BRICKS;
+            } else {
+                Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS",Logger.Level.TRACE);
+                return AddingResult.SUCCESS;
+            }
         }
-      } else if (_devices.Exists(d => d.hasSameBricks(device))) {
-        Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS",Logger.Level.TRACE);
-        return AddingResult.FAILURE_SAME_BRICKS;
-      } else {
-        Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS",Logger.Level.TRACE);
-        return AddingResult.SUCCESS;
-      }
-    }
   }
 
   public override AddingResult askAddDevice(Device device) {
@@ -185,23 +189,24 @@ public class Inventory : DeviceContainer
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
   }
 
-  public string getAvailableDeviceName() {
-    Logger.Log("Inventory::getAvailableDeviceName()", Logger.Level.TRACE);
-    bool taken;
-    string currentName;
-    int number = _devices.Count;
-    do {
-      currentName = _genericDeviceNamePrefix+number;
-      taken = _devices.Exists(d => (d.getName() == currentName));
-      if(taken){
-        number++;
-      } else {
+    //
+    public string getAvailableDeviceDisplayedName() {
+        Logger.Log("Inventory::getAvailableDeviceDisplayedName()", Logger.Level.TRACE);
+        bool taken;
+        string currentName;
+        int number = _devices.Count;
+        do {
+            currentName = _genericDeviceNamePrefix+number;
+            taken = _devices.Exists(d => (d.displayedName == currentName));
+            if(taken){
+                number++;
+            } else {
+                return currentName;
+            }
+        } while (taken);
+        Logger.Log("Inventory::getAvailableDeviceDisplayedName() returns "+currentName, Logger.Level.TRACE);
         return currentName;
-      }
-    } while (taken);
-    Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.TRACE);
-    return currentName;
-  }
+    }
 	
   void loadDevices() {
 	LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();

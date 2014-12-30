@@ -29,7 +29,7 @@ public class Equipment : DeviceContainer
 	}
 
   private void addToReactionEngine(Device device) {
-    Logger.Log("Equipment::addToReactionEngine reactions from device "+device.getName()+" ("+device.ToString ()+")", Logger.Level.TRACE);
+    Logger.Log("Equipment::addToReactionEngine reactions from device "+device.getInternalName()+" ("+device.ToString ()+")", Logger.Level.TRACE);
 
     LinkedList<IReaction> reactions = device.getReactions();
     Logger.Log("Equipment::addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions)+" from "+device, Logger.Level.INFO);
@@ -52,7 +52,10 @@ public class Equipment : DeviceContainer
       Logger.Log("Equipment::askAddDevice copy == null", Logger.Level.WARN);
       return AddingResult.FAILURE_DEFAULT;
     }
-    if(_devices.Exists(d => d.getName() == copy.getName()))
+
+        //TODO test BioBricks equality (cf next line)
+        if(_devices.Exists(d => d.Equals(copy)))
+    //if(_devices.Exists(d => d.getInternalName() == copy.getInternalName()))
     {
       Logger.Log("Equipment::askAddDevice device already present", Logger.Level.INFO);
       return AddingResult.FAILURE_SAME_DEVICE;
@@ -90,7 +93,12 @@ public class Equipment : DeviceContainer
   public override void removeDevice(Device device)
   {
     Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
-    _devices.RemoveAll(d => d.getName() == device.getName());
+
+        //TODO test BioBricks equality (cf next line)
+        _devices.RemoveAll(d => d.Equals(device));
+    //_devices.RemoveAll(d => d.getInternalName() == device.getInternalName());
+    
+
     safeGetDisplayer().removeEquipedDevice(device);
     removeFromReactionEngine(device);
   }

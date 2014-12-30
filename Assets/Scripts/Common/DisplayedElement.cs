@@ -31,7 +31,7 @@ public class DisplayedElement : MonoBehaviour {
     + ", spriteName="+spriteName+nullSpriteName
     + ", prefab="+prefab
 	+ ")"
-    , Logger.Level.WARN
+    , Logger.Level.INFO
     );
 
     GameObject newElement = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;

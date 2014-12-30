@@ -30,6 +30,28 @@ public abstract class BioBrick: DNABit
   }
 
   public abstract BioBrick copy();
+    
+    
+    public override bool Equals(System.Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        
+        BioBrick b = obj as BioBrick;
+        if ((System.Object)b == null)
+        {
+            return false;
+        }
+
+        bool result;
+
+        //check type, name, length
+        result = (this._type == b._type) && (this._name == b._name) && (this._size == b._size);
+
+        return result;
+    }
 }
 
 public class PromoterBrick : BioBrick
@@ -57,10 +79,16 @@ public class PromoterBrick : BioBrick
   {
   }
 	
-  public override BioBrick copy()
-  {
-    return new PromoterBrick(this);
-  }
+    public override BioBrick copy()
+    {
+        return new PromoterBrick(this);
+    }
+
+    public override bool Equals(System.Object obj)
+    {
+        PromoterBrick pb = (PromoterBrick) obj;
+        return base.Equals(obj) && (_beta == pb._beta) && (_formula == pb._formula);
+    }
 
   public override string ToString ()
   {
@@ -89,10 +117,16 @@ class RBSBrick : BioBrick
   {
   }
 
-  public override BioBrick copy()
-  {
-      return new RBSBrick(this);
-  }
+    public override BioBrick copy()
+    {
+        return new RBSBrick(this);
+    }
+    
+    public override bool Equals(System.Object obj)
+    {
+        RBSBrick rbsb = (RBSBrick) obj;
+        return base.Equals(obj) && (_RBSFactor == rbsb._RBSFactor);
+    }
 
   public override string ToString ()
   {
@@ -121,10 +155,16 @@ class GeneBrick : BioBrick
   {
   }
 
-  public override BioBrick copy()
-  {
-      return new GeneBrick(this);
-  }
+    public override BioBrick copy()
+    {
+        return new GeneBrick(this);
+    }
+    
+    public override bool Equals(System.Object obj)
+    {
+        GeneBrick gb = (GeneBrick) obj;
+        return base.Equals(obj) && (_proteinName == gb._proteinName);
+    }
 	
   public override string ToString ()
   {
@@ -153,10 +193,16 @@ class TerminatorBrick : BioBrick
   {
   }
 
-  public override BioBrick copy()
-  {
-    return new TerminatorBrick(this);
-  }
+    public override BioBrick copy()
+    {
+        return new TerminatorBrick(this);
+    }
+    
+    public override bool Equals(System.Object obj)
+    {
+        TerminatorBrick tb = (TerminatorBrick) obj;
+        return base.Equals(obj) && (_terminatorFactor == tb._terminatorFactor);
+    }
 	
   public override string ToString ()
   {

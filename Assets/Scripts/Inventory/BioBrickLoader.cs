@@ -153,7 +153,6 @@ public class BioBrickLoader {
           Logger.Log("BioBrickLoader::loadBioBricksFromFile Error : missing attribute id in BioBrick node", Logger.Level.WARN);
         }
     }
-        Debug.LogError("BioBrickLoader::loadBioBricksFromFile loaded "+resultBioBricks.Count+" elements");
     return resultBioBricks;
   }
 

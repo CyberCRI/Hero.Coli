@@ -141,7 +141,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     
   protected override void OnHover(bool isOver)
   {
-    Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.INFO);
     base.OnHover(isOver);
     
     if(null != closeButton && !_devicesDisplayer.IsEquipScreen())

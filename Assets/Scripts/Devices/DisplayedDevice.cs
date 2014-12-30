@@ -191,7 +191,7 @@ public class DisplayedDevice : DisplayedElement {
       Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
     }
     Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
-    displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    displayedDeviceScript._device = Device.buildDevice(device);
     if(displayedDeviceScript._device==null)
     {
       Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);
@@ -217,7 +217,7 @@ public class DisplayedDevice : DisplayedElement {
 
   protected virtual void OnHover(bool isOver)
   {
-    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.WARN);
+    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.INFO);
     TooltipManager.displayTooltip(isOver, _device, transform.position);
   }
 

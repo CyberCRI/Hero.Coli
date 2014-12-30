@@ -63,6 +63,8 @@ public class DeviceLoader {
               //find brick in existing bricks
               string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
               Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
+                        //"warn" parameter is true to indicate that there is no such BioBrick
+                        //as the one mentioned in the xml file of the device
                         brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
                                                                     , b => (b.getName() == brickName)
                                                                     , true
