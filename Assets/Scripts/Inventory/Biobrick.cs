@@ -86,7 +86,7 @@ public class PromoterBrick : BioBrick
 
     public override bool Equals(System.Object obj)
     {
-        PromoterBrick pb = (PromoterBrick) obj;
+        PromoterBrick pb = obj as PromoterBrick;
         return base.Equals(obj) && (_beta == pb._beta) && (_formula == pb._formula);
     }
 
@@ -124,7 +124,7 @@ class RBSBrick : BioBrick
     
     public override bool Equals(System.Object obj)
     {
-        RBSBrick rbsb = (RBSBrick) obj;
+        RBSBrick rbsb = obj as RBSBrick;
         return base.Equals(obj) && (_RBSFactor == rbsb._RBSFactor);
     }
 
@@ -162,7 +162,7 @@ class GeneBrick : BioBrick
     
     public override bool Equals(System.Object obj)
     {
-        GeneBrick gb = (GeneBrick) obj;
+        GeneBrick gb = obj as GeneBrick;
         return base.Equals(obj) && (_proteinName == gb._proteinName);
     }
 	
@@ -200,7 +200,7 @@ class TerminatorBrick : BioBrick
     
     public override bool Equals(System.Object obj)
     {
-        TerminatorBrick tb = (TerminatorBrick) obj;
+        TerminatorBrick tb = obj as TerminatorBrick;
         return base.Equals(obj) && (_terminatorFactor == tb._terminatorFactor);
     }
 	
