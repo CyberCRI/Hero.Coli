@@ -34,13 +34,15 @@ public class ModalManager : MonoBehaviour {
   public UILabel explanationLabel;
 
   public UISprite infoSprite;
-  public UIButton genericValidateButton;
-  public UIButton genericCenteredValidateButton;
+  public GameObject genericValidateButton;
+    public GameObject genericCenteredValidateButton;
   private string _validateButtonClass;
-  public UIButton genericCancelButton;
+    public GameObject genericCancelButton;
+    //TODO custom cancel button class
+  //private string _cancelButtonClass;
 
-  private UIButton _validateButton;
-  private UIButton _cancelButton;
+    private GameObject _validateButton;
+    private GameObject _cancelButton;
 
   private GameObject _currentModalElement;
   private float _previousZ;
@@ -139,7 +141,11 @@ public class ModalManager : MonoBehaviour {
         }
     }
 
-  public static void setModal(GameObject guiComponent, bool lockPause = true)
+    //TODO custom cancel button class
+    public static void setModal(GameObject guiComponent, bool lockPause = true, 
+                                GameObject validateButton = null, string validateButtonClass = null
+                                //,GameObject cancelButton = null, string cancelButtonClass = null
+                                )
   {
     if(null != guiComponent)
     {
@@ -150,6 +156,11 @@ public class ModalManager : MonoBehaviour {
 
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
+
+      _instance._validateButton = validateButton;
+      _instance._validateButtonClass = validateButtonClass;
+      //_instance._cancelButton = cancelButton;
+      //_instance._cancelButtonClass = cancelButtonClass;
 
       if(lockPause)
       {
@@ -254,11 +265,12 @@ public class ModalManager : MonoBehaviour {
         return manageModalButton(_instance._cancelButton, _cancelModalClassName);
     }
 
-    private static bool manageModalButton(UIButton modalButton, string modalButtonClass)
+    private static bool manageModalButton(GameObject modalButton, string modalButtonClass)
     {        
-        if(modalButton && modalButton.gameObject.activeInHierarchy)
+        if(modalButton && modalButton.activeInHierarchy)
         {
-            ModalButton button = (ModalButton)modalButton.gameObject.GetComponent(modalButtonClass);
+            //TODO check need for getting component with class name "modalButtonClass"
+            ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
             button.press();
             return true;
         }

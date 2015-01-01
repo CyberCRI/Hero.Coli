@@ -86,6 +86,12 @@ public class InterfaceLinkManager : MonoBehaviour {
     pauseIndicator.SetActive(false);
     genericModalWindow.SetActive(false);
 
+    //initialization of intro panels
+    ContinueButton cb = introduction1.GetComponent<ContinueButton>();
+    cb.nextInfoPanel = introduction2;
+    cb.nextInfoPanelContinueClass = "StartGameButton";
+    cb.nextInfoPanelContinue = introduction2.GetComponent(cb.nextInfoPanelContinueClass).gameObject;
+
 		//CraftFinalizer
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;
 
@@ -130,9 +136,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILabel>();
     modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILabel>();
     modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
-    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").GetComponent<UIButton>();
-    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").GetComponent<UIButton>();
-    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").GetComponent<UIButton>();
+    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
+    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
+    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
 
 
 		//DeviceInventory

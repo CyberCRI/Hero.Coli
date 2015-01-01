@@ -169,7 +169,7 @@ public class GameStateController : MonoBehaviour {
 
             case GameState.Start:
                 fadeSprite.gameObject.SetActive(true);
-                intro.SetActive(true);
+                ModalManager.setModal(intro, true);
                 end.SetActive(false);
                 changeState(GameState.Pause);
                 break;
