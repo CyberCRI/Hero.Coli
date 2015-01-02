@@ -4,18 +4,24 @@ using System.Collections;
 public class ContinueButton : ModalButton
 {
   
+    public GameObject parentPanel;
     public GameObject nextInfoPanel;
-    public GameObject nextInfoPanelContinue;
-    public string nextInfoPanelContinueClass;
-
+    public StartGameButton nextInfoPanelContinue;
     public GameStateController gameStateController;
   
     protected override void OnPress (bool isPressed)
     {
         if (isPressed) {
             Logger.Log ("ContinueButton::OnPress()", Logger.Level.INFO);
-            ModalManager.setModal(nextInfoPanel, true, nextInfoPanelContinue, nextInfoPanelContinueClass);
-            gameObject.transform.parent.gameObject.SetActive (false);
+
+            parentPanel = gameObject.transform.parent.gameObject;
+
+            //TODO manage stack of modal elements in ModalManager
+            //ModalManager.unsetModal(parentPanel);
+            ModalManager.unsetModal ();
+            gameStateController.tryUnlockPause ();
+
+            ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().Name);
         }
     }
 }

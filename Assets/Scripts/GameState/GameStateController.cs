@@ -49,50 +49,48 @@ public class GameStateController : MonoBehaviour {
     public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
     public GameObject intro, end, pauseIndicator;
+    public ContinueButton introContinueButton;
     private static int _pausesStacked = 0;
-    private static void resetPauseStack()
+    private static void resetPauseStack ()
     {
         _pausesStacked = 0;
     }
-    public static int getPausesInStackCount(){
-    return _pausesStacked;
-    }
-    public int pushPauseInStack()
+    public static int getPausesInStackCount ()
     {
-    _pausesStacked++;
-        Logger.Log("pushPauseInStack() returns "+_pausesStacked, Logger.Level.INFO);
-    return _pausesStacked;
+        return _pausesStacked;
     }
-    public int popPauseInStack()
+    private int pushPauseInStack ()
     {
-        Logger.Log("popPauseInStack() starts with _pausesStacked=="+_pausesStacked, Logger.Level.DEBUG);
-    if(_pausesStacked > 0)
-    {
-      _pausesStacked--;
+        _pausesStacked++;
+        Logger.Log ("pushPauseInStack() returns " + _pausesStacked, Logger.Level.INFO);
+        return _pausesStacked;
     }
-    else
+    public int popPauseInStack ()
     {
-      Logger.Log("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
-      _pausesStacked = 0;
+        Logger.Log ("popPauseInStack() starts with _pausesStacked==" + _pausesStacked, Logger.Level.DEBUG);
+        if (_pausesStacked > 0) {
+            _pausesStacked--;
+        } else {
+            Logger.Log ("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
+            _pausesStacked = 0;
+        }
+        Logger.Log ("popPauseInStack() returns _pausesStacked==" + _pausesStacked, Logger.Level.INFO);
+        return _pausesStacked;
     }
-        Logger.Log("popPauseInStack() returns _pausesStacked=="+_pausesStacked, Logger.Level.INFO);
-    return _pausesStacked;
-    }
-    public void tryUnlockPause()
+    public void tryUnlockPause ()
     {
-        Logger.Log("tryUnlockPause() with previous pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
-    if(0 == popPauseInStack())
-    {
-      changeState(GameState.Game);
+        Logger.Log ("tryUnlockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        if (0 == popPauseInStack ()) {
+            changeState (GameState.Game);
+        }
+        Logger.Log ("tryUnlockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
     }
-        Logger.Log("tryUnlockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
-    }
-    public void tryLockPause()
+    public void tryLockPause ()
     {
-        Logger.Log("tryLockPause() with previous pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
-    pushPauseInStack();
-    changeState(GameState.Pause);
-        Logger.Log("tryLockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
+        Logger.Log ("tryLockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        pushPauseInStack ();
+        changeState (GameState.Pause);
+        Logger.Log ("tryLockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
     }
 
 
@@ -107,7 +105,6 @@ public class GameStateController : MonoBehaviour {
     void Start () {
     	_gameState = GameState.Start;
     resetPauseStack();
-    	pushPauseInStack();
 
     I18n.changeLanguageTo(I18n.Language.French);
     Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
@@ -169,9 +166,9 @@ public class GameStateController : MonoBehaviour {
 
             case GameState.Start:
                 fadeSprite.gameObject.SetActive(true);
-                ModalManager.setModal(intro, true);
+                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
                 end.SetActive(false);
-                changeState(GameState.Pause);
+
                 break;
 
             case GameState.Game:
@@ -250,6 +247,8 @@ public class GameStateController : MonoBehaviour {
                 fadeSprite.gameObject.SetActive(true);
                 fadeSprite.FadeIn();
                 gUITransitioner.Pause(true);
+
+                //TODO same as intro panels: use ModalManager
                 pushPauseInStack();
                 end.SetActive(true);
                 break;	

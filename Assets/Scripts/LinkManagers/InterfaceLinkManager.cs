@@ -69,28 +69,28 @@ public class InterfaceLinkManager : MonoBehaviour {
 		guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
 		guiTransitioner.craftScreen = craftScreenPanel;
 
-
-		//GameStateController
-    gameStateController.intro = introduction1;
-		gameStateController.fadeSprite = fade;
-		gameStateController.end = end;
-    gameStateController.pauseIndicator = pauseIndicator;
-
 		//Object with GameStateController 
-		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
-		okButton2.GetComponent<StartGameButton>().gameStateController = gameStateController;
+    ContinueButton cb = okButton1.GetComponent<ContinueButton>();
+    StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
+		cb.gameStateController = gameStateController;
+		sgb.gameStateController = gameStateController;
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
     introduction2.SetActive(false);
     end.SetActive(false);
     pauseIndicator.SetActive(false);
     genericModalWindow.SetActive(false);
+        
+    //GameStateController
+    gameStateController.intro = introduction1;
+    gameStateController.introContinueButton = cb;
+    gameStateController.fadeSprite = fade;
+    gameStateController.end = end;
+    gameStateController.pauseIndicator = pauseIndicator;
 
     //initialization of intro panels
-    ContinueButton cb = introduction1.GetComponent<ContinueButton>();
     cb.nextInfoPanel = introduction2;
-    cb.nextInfoPanelContinueClass = "StartGameButton";
-    cb.nextInfoPanelContinue = introduction2.GetComponent(cb.nextInfoPanelContinueClass).gameObject;
+    cb.nextInfoPanelContinue = sgb;
 
 		//CraftFinalizer
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;

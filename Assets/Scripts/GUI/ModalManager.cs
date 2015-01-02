@@ -184,6 +184,7 @@ public class ModalManager : MonoBehaviour {
     }
   }
 
+    //TODO manage stack of modal elements
     public static void unsetModal()
     {
         if(null != _instance._currentModalElement)
