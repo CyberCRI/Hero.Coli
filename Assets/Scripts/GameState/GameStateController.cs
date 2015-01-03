@@ -50,6 +50,7 @@ public class GameStateController : MonoBehaviour {
     public Fade fadeSprite;
     public GameObject intro, end, pauseIndicator;
     public ContinueButton introContinueButton;
+    public RestartButton endRestartButton;
     private static int _pausesStacked = 0;
     private static void resetPauseStack ()
     {
@@ -244,13 +245,14 @@ public class GameStateController : MonoBehaviour {
         	
             case GameState.End:
                 gUITransitioner.TerminateGraphs();
-                fadeSprite.gameObject.SetActive(true);
-                fadeSprite.FadeIn();
+
+                //TODO merge fadeSprite with Modal background
+                //fadeSprite.gameObject.SetActive(true);
+                //fadeSprite.FadeIn();
+
                 gUITransitioner.Pause(true);
 
-                //TODO same as intro panels: use ModalManager
-                pushPauseInStack();
-                end.SetActive(true);
+                ModalManager.setModal(end, true, endRestartButton.gameObject, endRestartButton.GetType().Name);
                 break;	
 
             default:

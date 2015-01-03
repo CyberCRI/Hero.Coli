@@ -29,11 +29,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
   public GameObject tutorialPanels;
 
-  public GameObject introduction1;
-  public GameObject introduction2;
-  public GameObject okButton1;
-  public GameObject okButton2;
-  public GameObject end, pauseIndicator;
+  public GameObject introduction1, introduction2, okButton1, okButton2, end, endRestartButton, pauseIndicator;
 
   public CellControlButton absoluteWASDButton;
   public CellControlButton leftClickToMoveButton;
@@ -74,19 +70,38 @@ public class InterfaceLinkManager : MonoBehaviour {
     StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
 		cb.gameStateController = gameStateController;
 		sgb.gameStateController = gameStateController;
-    tutorialPanels.SetActive (true);
-    introduction1.SetActive(false);
-    introduction2.SetActive(false);
-    end.SetActive(false);
-    pauseIndicator.SetActive(false);
-    genericModalWindow.SetActive(false);
         
     //GameStateController
     gameStateController.intro = introduction1;
     gameStateController.introContinueButton = cb;
     gameStateController.fadeSprite = fade;
-    gameStateController.end = end;
-    gameStateController.pauseIndicator = pauseIndicator;
+        gameStateController.end = end;
+        RestartButton rb = endRestartButton.GetComponent<RestartButton>();
+        gameStateController.endRestartButton = rb;
+        if(null==gameStateController.endRestartButton)
+        {
+            Debug.LogError("InterfaceLinkManager::Awake FAIL null==gameStateController.endRestartButton");
+        }
+        else
+        {
+            Debug.LogError("InterfaceLinkManager::Awake WIN null!=gameStateController.endRestartButton");
+        }
+        if(null==gameStateController.endRestartButton)
+        {
+            Debug.LogError("InterfaceLinkManager::Awake FAIL null==gameStateController.endRestartButton");
+        }
+        else
+        {
+            Debug.LogError("InterfaceLinkManager::Awake WIN null!=gameStateController.endRestartButton");
+    }
+        tutorialPanels.SetActive (true);
+        introduction1.SetActive(false);
+        introduction2.SetActive(false);
+        end.SetActive(false);
+        pauseIndicator.SetActive(false);
+        genericModalWindow.SetActive(false);
+        
+        gameStateController.pauseIndicator = pauseIndicator;
 
     //initialization of intro panels
     cb.nextInfoPanel = introduction2;
