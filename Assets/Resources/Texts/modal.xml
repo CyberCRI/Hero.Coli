@@ -7,4 +7,9 @@
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
+  <info code="EndRestartGame">
+    <texture>i_end</texture>
+    <next>ModalRestart</next>
+    <cancel>BackToEndPanel</cancel>
+  </info>
 </infoList>

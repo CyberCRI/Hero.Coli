@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RestartButton : MonoBehaviour
+public class RestartButton : ModalButton
 {
-    void OnPress (bool isPressed)
+    protected override void OnPress (bool isPressed)
     {
         if (isPressed) {
             Logger.Log ("RestartButton::OnPress()", Logger.Level.INFO);

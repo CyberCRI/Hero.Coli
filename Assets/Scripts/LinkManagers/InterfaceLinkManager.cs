@@ -75,33 +75,18 @@ public class InterfaceLinkManager : MonoBehaviour {
     gameStateController.intro = introduction1;
     gameStateController.introContinueButton = cb;
     gameStateController.fadeSprite = fade;
-        gameStateController.end = end;
-        RestartButton rb = endRestartButton.GetComponent<RestartButton>();
-        gameStateController.endRestartButton = rb;
-        if(null==gameStateController.endRestartButton)
-        {
-            Debug.LogError("InterfaceLinkManager::Awake FAIL null==gameStateController.endRestartButton");
-        }
-        else
-        {
-            Debug.LogError("InterfaceLinkManager::Awake WIN null!=gameStateController.endRestartButton");
-        }
-        if(null==gameStateController.endRestartButton)
-        {
-            Debug.LogError("InterfaceLinkManager::Awake FAIL null==gameStateController.endRestartButton");
-        }
-        else
-        {
-            Debug.LogError("InterfaceLinkManager::Awake WIN null!=gameStateController.endRestartButton");
-    }
-        tutorialPanels.SetActive (true);
-        introduction1.SetActive(false);
-        introduction2.SetActive(false);
-        end.SetActive(false);
-        pauseIndicator.SetActive(false);
-        genericModalWindow.SetActive(false);
-        
-        gameStateController.pauseIndicator = pauseIndicator;
+    gameStateController.end = end;
+    RestartButton rb = endRestartButton.GetComponent<RestartButton>();
+    gameStateController.endRestartButton = rb;
+
+    tutorialPanels.SetActive (true);
+    introduction1.SetActive(false);
+    introduction2.SetActive(false);
+    end.SetActive(false);
+    pauseIndicator.SetActive(false);
+    genericModalWindow.SetActive(false);
+    
+    gameStateController.pauseIndicator = pauseIndicator;
 
     //initialization of intro panels
     cb.nextInfoPanel = introduction2;

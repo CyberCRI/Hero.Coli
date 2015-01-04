@@ -35,11 +35,10 @@ public class ModalManager : MonoBehaviour {
 
   public UISprite infoSprite;
   public GameObject genericValidateButton;
-    public GameObject genericCenteredValidateButton;
+  public GameObject genericCenteredValidateButton;
   private string _validateButtonClass;
-    public GameObject genericCancelButton;
-    //TODO custom cancel button class
-  //private string _cancelButtonClass;
+  public GameObject genericCancelButton;
+  private string _cancelButtonClass;  
 
     private GameObject _validateButton;
     private GameObject _cancelButton;
@@ -51,6 +50,7 @@ public class ModalManager : MonoBehaviour {
   private static string _genericTitle = ".TITLE";
   private static string _genericExplanation = ".EXPLANATION";
   private static string _quitModalClassName = "QuitModalWindow";
+  //the class of the component attached to the cancel button of the ModalWindow
   private static string _cancelModalClassName = "CancelModal";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
@@ -110,6 +110,18 @@ public class ModalManager : MonoBehaviour {
                     _instance.genericCenteredValidateButton.gameObject.SetActive(false);
 
                     _instance.genericValidateButton.gameObject.AddComponent(info._next);
+
+                    if(!string.IsNullOrEmpty(info._cancel))
+                    {
+                        Object.Destroy(_instance.genericCancelButton.GetComponent(_instance._cancelButtonClass));
+                        _instance.genericCancelButton.gameObject.AddComponent(info._cancel);
+                        _instance._cancelButtonClass = info._cancel;
+                    }
+                    else
+                    {
+                        _instance._cancelButtonClass = null;
+                    }
+
                     _instance._validateButtonClass = info._next;
 
                     _instance._validateButton = _instance.genericValidateButton;
@@ -142,9 +154,10 @@ public class ModalManager : MonoBehaviour {
     }
 
     //TODO custom cancel button class
-    public static void setModal(GameObject guiComponent, bool lockPause = true, 
-                                GameObject validateButton = null, string validateButtonClass = null
-                                //,GameObject cancelButton = null, string cancelButtonClass = null
+    public static void setModal(GameObject guiComponent,
+                                bool lockPause = true, 
+                                GameObject validateButton = null, string validateButtonClass = null,
+                                GameObject cancelButton = null, string cancelButtonClass = null
                                 )
   {
     if(null != guiComponent)
@@ -157,10 +170,12 @@ public class ModalManager : MonoBehaviour {
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
 
+      //TODO check usefulness
+      //if(null!=validateButton) {
       _instance._validateButton = validateButton;
       _instance._validateButtonClass = validateButtonClass;
-      //_instance._cancelButton = cancelButton;
-      //_instance._cancelButtonClass = cancelButtonClass;
+      _instance._cancelButton = cancelButton;
+      _instance._cancelButtonClass = cancelButtonClass;
 
       if(lockPause)
       {
@@ -194,17 +209,33 @@ public class ModalManager : MonoBehaviour {
 
             if(!string.IsNullOrEmpty(_instance._validateButtonClass))
             {
-                Object.Destroy(_instance.genericValidateButton.GetComponent(_instance._validateButtonClass));
-                Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(_instance._validateButtonClass));
-                _instance._validateButtonClass = null;
-                _instance._validateButton = null;
-                _instance._cancelButton = null;
+                resetGenericValidateButtons();
+                resetGenericCancelButton();
             }
             _instance._currentModalElement.SetActive(false);
             _instance.modalBackground.SetActive(false);
 
             _instance._currentModalElement = null;
         }
+    }
+
+    public static void resetGenericValidateButtons()
+    {
+        Object.Destroy(_instance.genericValidateButton.GetComponent(_instance._validateButtonClass));
+        Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(_instance._validateButtonClass));
+        _instance._validateButtonClass = null;
+        _instance._validateButton = null;
+    }
+
+    public static void resetGenericCancelButton()
+    {
+        if(!string.IsNullOrEmpty(_instance._cancelButtonClass))
+        {
+            Object.Destroy(_instance.genericCancelButton.GetComponent(_instance._cancelButtonClass));
+            _instance.genericCancelButton.AddComponent(_cancelModalClassName);
+        }
+        _instance._cancelButtonClass = null;
+        _instance._cancelButton = null;
     }
 
     // manages key presses on modal windows
@@ -258,16 +289,19 @@ public class ModalManager : MonoBehaviour {
     
     private static bool manageValidateButton()
     {
+        Debug.LogWarning("ModalManager::manageValidateButton()");
         return manageModalButton(_instance._validateButton, _instance._validateButtonClass);
     }
     
     private static bool manageCancelButton()
     {
-        return manageModalButton(_instance._cancelButton, _cancelModalClassName);
+        Debug.LogWarning("ModalManager::manageCancelButton()");
+        return manageModalButton(_instance._cancelButton, _instance._cancelButtonClass);
     }
 
     private static bool manageModalButton(GameObject modalButton, string modalButtonClass)
     {        
+        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1})", modalButton.name, modalButtonClass));
         if(modalButton && modalButton.activeInHierarchy)
         {
             //TODO check need for getting component with class name "modalButtonClass"

@@ -11,12 +11,16 @@ public class InfoWindowLoader {
   private string _code;
   private string _texture;
   private string _next;
+  private string _cancel;
 
   private StandardInfoWindowInfo _info;
 
   private void reinitVars() {
     _code = null;
     _texture = null;
+    _next = null;
+    _cancel = null;
+        
     _info = null;
   }
 
@@ -54,6 +58,9 @@ public class InfoWindowLoader {
               break;
             case InfoWindowXMLTags.NEXT:
               _next = attr.InnerText;
+                break;
+            case InfoWindowXMLTags.CANCEL:
+              _cancel = attr.InnerText;
               break;
             default:
                 Logger.Log("InfoWindowLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
@@ -63,9 +70,10 @@ public class InfoWindowLoader {
         if(
              checkString(_texture)
           && checkString(_next)
+          //_cancel is optional, therefore no need to check it
           )
         {
-          _info = new StandardInfoWindowInfo(_code, _texture, _next);
+          _info = new StandardInfoWindowInfo(_code, _texture, _next, _cancel);
         }
         if(null != _info)
         {
