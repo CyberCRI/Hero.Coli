@@ -129,8 +129,9 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static void next()
   {
-    ModalManager.unsetModal();
-    _instance.gameStateController.tryUnlockPause();
+        Debug.LogWarning("InfoWindowManager::next()");
+    //ModalManager.unsetModal();
+    //_instance.gameStateController.tryUnlockPause();
 
     switch(_instance.nextAction)
     {
@@ -149,6 +150,8 @@ public class InfoWindowManager : MonoBehaviour {
         Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
         break;
     }
+
+        Debug.LogWarning("InfoWindowManager::next() done");
   }
 
   public static NextAction getFromString(string next)
@@ -165,6 +168,7 @@ public class InfoWindowManager : MonoBehaviour {
            || Input.GetKeyDown(KeyCode.Return)
           )
         {
+            Debug.LogWarning("InfoWindowManager::manageKeyPresses() - key pressed");
             next();
             return GameStateTarget.NoTarget;
         }

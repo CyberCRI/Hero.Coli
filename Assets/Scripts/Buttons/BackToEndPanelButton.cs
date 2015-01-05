@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BackToEndPanel : ModalButton
+public class BackToEndPanelButton : ModalButton
 {
     protected override void OnPress (bool isPressed)
     {
         if (isPressed) {
-            Logger.Log ("BackToEndPanel::OnPress()", Logger.Level.INFO);
+            Logger.Log ("BackToEndPanelButton::OnPress()", Logger.Level.INFO);
             GameStateController gsc = GameStateController.get ();
             ModalManager.setModal(gsc.end, true, gsc.endRestartButton.gameObject, gsc.endRestartButton.GetType().Name);
         }

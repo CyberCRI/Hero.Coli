@@ -176,6 +176,7 @@ public class GameStateController : MonoBehaviour {
                 //pause
                 if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
                 {
+                    Debug.LogWarning("GameStateController::Update - Escape/Pause key pressed");
                     ModalManager.setModal(pauseIndicator, false);
                     changeState(GameState.Pause);
                 } 

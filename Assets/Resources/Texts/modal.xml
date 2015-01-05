@@ -10,6 +10,6 @@
   <info code="EndRestartGame">
     <texture>i_end</texture>
     <next>ModalRestart</next>
-    <cancel>BackToEndPanel</cancel>
+    <cancel>BackToEndPanelButton</cancel>
   </info>
 </infoList>
