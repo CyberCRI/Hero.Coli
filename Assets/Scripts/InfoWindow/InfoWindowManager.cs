@@ -56,6 +56,11 @@ public class InfoWindowManager : MonoBehaviour {
     {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT}
   };
 
+    public static bool hasActivePanel()
+    {
+        return _instance.infoPanel.activeInHierarchy;
+    }
+
   public static bool displayInfoWindow(string code)
   {
     if(fillInFieldsFromCode(code))
