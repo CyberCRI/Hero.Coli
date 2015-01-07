@@ -318,7 +318,16 @@ public class ModalManager : MonoBehaviour {
                 if (Input.GetKeyDown (KeyCode.Return)) {
                     keyPressedEventConsumed = manageValidateButton ();
                 } else if (Input.GetKeyDown (KeyCode.Escape)) {   
-                    keyPressedEventConsumed = manageCancelButton ();
+                    if(null!=_instance._cancelButton)
+                    {
+                        keyPressedEventConsumed = manageCancelButton ();
+                    }
+                    else
+                    {
+                        keyPressedEventConsumed = manageValidateButton ();
+                    }   
+                } else if (Input.GetKeyDown (KeyCode.Space) && (null==_instance._cancelButton)) {   
+                    keyPressedEventConsumed = manageValidateButton ();
                 }
 
                 if (!keyPressedEventConsumed) {
@@ -360,16 +369,17 @@ public class ModalManager : MonoBehaviour {
     }
 
     private static bool manageModalButton(GameObject modalButton, string modalButtonClass)
-    {        
-        string buttonName = null==modalButton?"null":modalButton.name;
-        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1})", buttonName, modalButtonClass));
-        if(modalButton && modalButton.activeInHierarchy)
+    {
+        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1})", modalButton, modalButtonClass));
+        if(null!=modalButton && modalButton.activeInHierarchy)
         {
             //TODO check need for getting component with class name "modalButtonClass"
             ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
             button.press();
+            Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns true", modalButton, modalButtonClass));
             return true;
         }
+        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns false", modalButton, modalButtonClass));
         return false;
     }
 
