@@ -205,6 +205,11 @@ public class ModalManager : MonoBehaviour {
         }
     }
 
+    public static bool isCancelButtonActive()
+    {
+        return (null!=_instance._cancelButton) && _instance._cancelButton.gameObject.activeInHierarchy;
+    }
+
     //TODO custom cancel button class
     public static void setModal(GameObject guiComponent,
                                 bool lockPause = true, 
@@ -304,45 +309,44 @@ public class ModalManager : MonoBehaviour {
     // escape: cancel
     public static GameStateTarget manageKeyPresses ()
     {
-        //equivalent to: "consumed action", "did something", and so on
-        bool keyPressedEventConsumed = false;
+        if (Input.anyKeyDown) {
+            //equivalent to: "consumed action", "did something", and so on
+            bool keyPressedEventConsumed = false;
 
-        //getting out of Pause
-        if ((Input.GetKeyDown (KeyCode.Escape) || GameStateController.isShortcutKeyDown (GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount ())) {
-            ModalManager.unsetModal ();
-            return GameStateTarget.Game;
-        } else {
-            //pressing "validate" or "cancel" buttons
-            if (null != _instance._currentModalElement) {
-                //Modal windows key presses
-                if (Input.GetKeyDown (KeyCode.Return)) {
-                    keyPressedEventConsumed = manageValidateButton ();
-                } else if (Input.GetKeyDown (KeyCode.Escape)) {   
-                    if(null!=_instance._cancelButton)
-                    {
-                        keyPressedEventConsumed = manageCancelButton ();
-                    }
-                    else
-                    {
+            //getting out of Pause
+            if ((Input.GetKeyDown (KeyCode.Escape) || GameStateController.isShortcutKeyDown (GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount ())) {
+                ModalManager.unsetModal ();
+                return GameStateTarget.Game;
+            } else {
+                //pressing "validate" or "cancel" buttons
+                if (null != _instance._currentModalElement) {
+                    //Modal windows key presses
+                    if (Input.GetKeyDown (KeyCode.Return)) {
                         keyPressedEventConsumed = manageValidateButton ();
-                    }   
-                } else if (Input.GetKeyDown (KeyCode.Space) && (null==_instance._cancelButton)) {   
-                    keyPressedEventConsumed = manageValidateButton ();
-                }
-
-                if (!keyPressedEventConsumed) {
-                    //no action was performed yet
-                    if (InfoWindowManager.hasActivePanel ()) {
-                        //info windows key presses
-                        return manageInfoWindows ();
-                    } else {
-                        //no action was performed at all
-                        return GameStateTarget.NoAction;
+                    } else if (Input.GetKeyDown (KeyCode.Escape)) {   
+                        if (isCancelButtonActive ()) {
+                            keyPressedEventConsumed = manageCancelButton ();
+                        } else {
+                            keyPressedEventConsumed = manageValidateButton ();
+                        }   
+                    } else if (Input.GetKeyDown (KeyCode.Space) && (!isCancelButtonActive ())) {   
+                        keyPressedEventConsumed = manageValidateButton ();
                     }
-                } else {
-                    Debug.LogWarning ("ModalManager::manageKeyPresses no need for manageInfoWindows()");
-                    //keyPressedEventConsumed but no specific game state was specified as target
-                    return GameStateTarget.NoTarget;
+
+                    if (!keyPressedEventConsumed) {
+                        //no action was performed yet
+                        if (InfoWindowManager.hasActivePanel ()) {
+                            //info windows key presses
+                            return manageInfoWindows ();
+                        } else {
+                            //no action was performed at all
+                            return GameStateTarget.NoAction;
+                        }
+                    } else {
+                        Debug.LogWarning ("ModalManager::manageKeyPresses no need for manageInfoWindows()");
+                        //keyPressedEventConsumed but no specific game state was specified as target
+                        return GameStateTarget.NoTarget;
+                    }
                 }
             }
         }
@@ -357,7 +361,7 @@ public class ModalManager : MonoBehaviour {
     
     private static bool manageValidateButton()
     {
-        Debug.LogWarning("ModalManager::manageValidateButton()");
+        Debug.LogWarning(string.Format("ModalManager::manageValidateButton() with vb={0} and vbc={1}", _instance._validateButton, _instance._validateButtonClass));
         return manageModalButton(_instance._validateButton, _instance._validateButtonClass);
     }
     
