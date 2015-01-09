@@ -46,11 +46,12 @@ public class GameStateController : MonoBehaviour {
 
 
     private GameState _gameState;
-    public GUITransitioner gUITransitioner;
+    private bool endManaged = false;
+        public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
-    public GameObject intro, end, pauseIndicator;
+    public GameObject intro, endWindow, pauseIndicator;
     public ContinueButton introContinueButton;
-    public RestartButton endRestartButton;
+    public EndRestartButton endRestartButton;
     private static int _pausesStacked = 0;
     private static void resetPauseStack ()
     {
@@ -168,7 +169,7 @@ public class GameStateController : MonoBehaviour {
             case GameState.Start:
                 fadeSprite.gameObject.SetActive(true);
                 ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
-                end.SetActive(false);
+                endWindow.SetActive(false);
 
                 break;
 
@@ -245,22 +246,24 @@ public class GameStateController : MonoBehaviour {
                 break;
         	
             case GameState.End:
-                gUITransitioner.TerminateGraphs();
 
-                //TODO merge fadeSprite with Modal background
-                //fadeSprite.gameObject.SetActive(true);
-                //fadeSprite.FadeIn();
+                if(!endManaged) {
+                    endManaged = true;
+                    gUITransitioner.TerminateGraphs();
 
-                gUITransitioner.Pause(true);
+                    //TODO merge fadeSprite with Modal background
+                    //fadeSprite.gameObject.SetActive(true);
+                    //fadeSprite.FadeIn();
 
-                ModalManager.setModal(end, true, endRestartButton.gameObject, endRestartButton.GetType().Name);
+                    gUITransitioner.Pause(true);
+                }
                 break;	
 
             default:
                 break;
         }
     }
-	
+    
     public void changeState(GameState newState){
         _gameState = newState;
         Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);

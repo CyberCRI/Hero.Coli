@@ -75,9 +75,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     gameStateController.intro = introduction1;
     gameStateController.introContinueButton = cb;
     gameStateController.fadeSprite = fade;
-    gameStateController.end = end;
-    RestartButton rb = endRestartButton.GetComponent<RestartButton>();
-    gameStateController.endRestartButton = rb;
+    gameStateController.endWindow = end;
+    EndRestartButton erb = endRestartButton.GetComponent<EndRestartButton>();
+    gameStateController.endRestartButton = erb;
 
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
