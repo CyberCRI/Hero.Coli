@@ -248,14 +248,15 @@ public class GameStateController : MonoBehaviour {
             case GameState.End:
 
                 if(!endManaged) {
+                    Debug.LogWarning("REACHED GAMESTATE.END with endManaged="+endManaged);
                     endManaged = true;
                     gUITransitioner.TerminateGraphs();
 
                     //TODO merge fadeSprite with Modal background
-                    //fadeSprite.gameObject.SetActive(true);
-                    //fadeSprite.FadeIn();
+                    fadeSprite.gameObject.SetActive(true);
+                    fadeSprite.FadeIn();
 
-                    gUITransitioner.Pause(true);
+                    //gUITransitioner.Pause(true);
                 }
                 break;	
 
@@ -266,7 +267,7 @@ public class GameStateController : MonoBehaviour {
     
     public void changeState(GameState newState){
         _gameState = newState;
-        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);
+        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.WARN);
 		
         switch(_gameState){
             case GameState.Start:

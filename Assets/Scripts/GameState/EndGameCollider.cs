@@ -4,8 +4,8 @@ using System.Collections;
 public class EndGameCollider : MonoBehaviour
 {
   
-    public GameObject infoPanel, hero;
-    public EndRestartButton infoPanelRestartButton;
+    public GameObject endInfoPanel, hero;
+    public EndRestartButton endInfoPanelRestartButton;
     public GameStateController gameStateController;
     private bool alreadyDisplayed;
     // Use this for initialization
@@ -21,25 +21,18 @@ public class EndGameCollider : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        Logger.Log ("EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + alreadyDisplayed.ToString ());
+        Logger.Log ("EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + alreadyDisplayed.ToString (), Logger.Level.WARN);
         if (alreadyDisplayed == false) {
             if (other == hero.GetComponent<Collider> ()) {
             
                 gameStateController.changeState (GameState.End);
 
-                alreadyDisplayed = true;
+                ModalManager.setModal (
+                    endInfoPanel, true, 
+                    endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().Name);
 
-                StartCoroutine (WaitFade (2000f));
+                alreadyDisplayed = true;
             }
         }
-    }
-    
-    IEnumerator WaitFade (float waitTime)
-    {
-        // do stuff before waitTime
-        
-        yield return new WaitForSeconds (waitTime);
-        
-        ModalManager.setModal (infoPanel, true, infoPanelRestartButton.gameObject, infoPanelRestartButton.GetType ().Name);
     }
 }

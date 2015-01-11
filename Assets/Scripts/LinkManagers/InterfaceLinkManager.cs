@@ -29,7 +29,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 
   public GameObject tutorialPanels;
 
-  public GameObject introduction1, introduction2, okButton1, okButton2, end, endRestartButton, pauseIndicator;
+  public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
+  public EndRestartButton endRestartButton;
 
   public CellControlButton absoluteWASDButton;
   public CellControlButton leftClickToMoveButton;
