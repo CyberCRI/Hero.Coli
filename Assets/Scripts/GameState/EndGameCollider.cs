@@ -24,15 +24,15 @@ public class EndGameCollider : MonoBehaviour
         Logger.Log ("EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + alreadyDisplayed.ToString (), Logger.Level.WARN);
         if (alreadyDisplayed == false) {
             if (other == hero.GetComponent<Collider> ()) {
-            
-                gameStateController.changeState (GameState.End);
-
-                ModalManager.setModal (
-                    endInfoPanel, true, 
-                    endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().Name);
-
                 alreadyDisplayed = true;
+                gameStateController.triggerEnd(this);
             }
         }
+    }
+
+    public void displayEndMessage()
+    {
+        Debug.LogWarning("EndGameCollider:displayEndMessage");
+        ModalManager.setModal (endInfoPanel, true, endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().Name);
     }
 }

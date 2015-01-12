@@ -46,8 +46,7 @@ public class GameStateController : MonoBehaviour {
 
 
     private GameState _gameState;
-    private bool endManaged = false;
-        public GUITransitioner gUITransitioner;
+    public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
     public GameObject intro, endWindow, pauseIndicator;
     public ContinueButton introContinueButton;
@@ -246,23 +245,36 @@ public class GameStateController : MonoBehaviour {
                 break;
         	
             case GameState.End:
-
-                if(!endManaged) {
-                    Debug.LogWarning("REACHED GAMESTATE.END with endManaged="+endManaged);
-                    endManaged = true;
-                    gUITransitioner.TerminateGraphs();
-
-                    //TODO merge fadeSprite with Modal background
-                    fadeSprite.gameObject.SetActive(true);
-                    fadeSprite.FadeIn();
-
-                    //gUITransitioner.Pause(true);
-                }
                 break;	
 
             default:
                 break;
         }
+    }
+
+    public void triggerEnd(EndGameCollider egc)
+    {
+        gUITransitioner.TerminateGraphs();
+
+        //TODO merge fadeSprite with Modal background
+        fadeSprite.gameObject.SetActive(true);
+        fadeSprite.FadeIn();
+        
+        //gUITransitioner.Pause(true);
+
+        Debug.LogWarning("GameStateController WILL CALL WAITFADE");
+        StartCoroutine (waitFade (2f, egc));
+
+    }
+
+    private IEnumerator waitFade (float waitTime, EndGameCollider egc)
+    {
+        // do stuff before waitTime
+        Debug.LogWarning("GameStateController WAITFADE BEFORE");
+        yield return new WaitForSeconds (waitTime);
+        Debug.LogWarning("GameStateController WAITFADE AFTER");
+        egc.displayEndMessage();
+        changeState (GameState.End);
     }
     
     public void changeState(GameState newState){
