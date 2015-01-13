@@ -7,10 +7,10 @@ public class BackToEndPanelButton : ModalButton
     {
         if (isPressed) {
             Logger.Log ("BackToEndPanelButton::OnPress()", Logger.Level.INFO);
+            Debug.LogWarning("BackToEndPanelButton::OnPress");
             GameStateController gsc = GameStateController.get ();
             ModalManager.setModal(gsc.endWindow, true, gsc.endRestartButton.gameObject, gsc.endRestartButton.GetType().Name);
+            Debug.LogWarning("BackToEndPanelButton::OnPress - DONE");
         }
-        //FIXME usefulness?
-        base.OnPress (isPressed);
     }
 }

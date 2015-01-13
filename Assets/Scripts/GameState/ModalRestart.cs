@@ -9,7 +9,5 @@ public class ModalRestart : ModalButton
             Logger.Log ("ModalRestart::OnPress()", Logger.Level.INFO);
             GameStateController.restart ();
         }
-        //FIXME usefulness?
-        base.OnPress (isPressed);
     }
 }
