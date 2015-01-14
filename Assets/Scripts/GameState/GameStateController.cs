@@ -163,6 +163,14 @@ public class GameStateController : MonoBehaviour {
 	
 	// Update is called once per frame
     void Update () {
+
+        //TODO remove this
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.LogWarning("pressed shortcut to teleport Cellia to the end of the game");
+            GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
+        }
+
         switch(_gameState){
 
             case GameState.Start:
