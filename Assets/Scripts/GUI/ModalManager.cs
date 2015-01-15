@@ -413,6 +413,10 @@ public class ModalManager : MonoBehaviour {
                         return GameStateTarget.NoTarget;
                     }
                 }
+                else
+                {
+                    Debug.LogWarning("ModalManager::manageKeyPresses no current modal");
+                }
             }
         }
         return GameStateTarget.NoAction;
@@ -420,7 +424,7 @@ public class ModalManager : MonoBehaviour {
 
     private static GameStateTarget manageInfoWindows()
     {
-
+        Logger.Log("ModalManager::manageInfoWindows", Logger.Level.INFO);
         return InfoWindowManager.manageKeyPresses();
     }
     

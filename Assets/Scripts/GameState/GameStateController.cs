@@ -282,7 +282,6 @@ public class GameStateController : MonoBehaviour {
         yield return new WaitForSeconds (waitTime);
         Debug.LogWarning("GameStateController WAITFADE AFTER");
         egc.displayEndMessage();
-        changeState (GameState.End);
     }
     
     public void changeState(GameState newState){
