@@ -2,34 +2,42 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class PickableItem : MonoBehaviour {
-  protected DNABit _dnaBit;
-  public GameObject toDestroy;
-
-  public DNABit getDNABit()
-  {
-    return _dnaBit;
-  }
-
-  protected abstract void addTo();
-
-  public void pickUp()
-  {
-    List<IPickable> pickables;
-    Tools.GetInterfaces<IPickable>(out pickables, gameObject);
-    foreach(IPickable pickable in pickables)
+public abstract class PickableItem : MonoBehaviour
+{
+    protected DNABit _dnaBit;
+    public GameObject toDestroy;
+    
+    protected abstract DNABit produceDNABit ();
+    protected abstract void addTo ();
+    
+    void Awake ()
     {
-      pickable.OnPickedUp();
+        _dnaBit = produceDNABit ();
     }
-		
-    addTo();
-    if(toDestroy)
+
+    public DNABit getDNABit ()
     {
-      Destroy(toDestroy);
+        if (null == _dnaBit) {
+            Logger.Log ("PickableItem::getDNABit() - null == _dnaBit => produceDNABit", Logger.Level.DEBUG);
+            _dnaBit = produceDNABit ();
+        }
+        return _dnaBit;
     }
-    else
+
+    public void pickUp ()
     {
-      Destroy(gameObject);
+        Logger.Log ("PickableItem::pickUp ()", Logger.Level.DEBUG);
+        List<IPickable> pickables;
+        Tools.GetInterfaces<IPickable> (out pickables, gameObject);
+        foreach (IPickable pickable in pickables) {
+            pickable.OnPickedUp ();
+        }
+    
+        addTo ();
+        if (toDestroy) {
+            Destroy (toDestroy);
+        } else {
+            Destroy (gameObject);
+        }
     }
-  }
 }

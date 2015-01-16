@@ -4,7 +4,7 @@ using System.Collections;
 public class PickableBioBrickRef : PickableBioBrick {
   public string bioBrickName;
 
-  protected override BioBrick produceBioBrick()
+  protected override DNABit produceDNABit()
   {
     return AvailableBioBricksManager.get().getBioBrickFromAll(bioBrickName);
   }
