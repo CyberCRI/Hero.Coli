@@ -169,6 +169,7 @@ public class GameStateController : MonoBehaviour {
         {
             Debug.LogWarning("pressed shortcut to teleport Cellia to the end of the game");
             GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
+            GameObject.Find("Perso").transform.localPosition = Vector3.zero;
         }
 
         switch(_gameState){
