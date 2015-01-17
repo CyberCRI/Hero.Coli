@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuitModalWindow : ModalButton {
-  protected override void OnPress(bool isPressed) {
-    if(isPressed) {
-      Logger.Log("QuitModalWindow::OnPress()", Logger.Level.INFO);
-      GameStateController.get().tryUnlockPause();
+//ModalButton inheritor that quits modal window when isPressed is true,
+//contrary to CancelModal
+public class QuitModalWindow : ModalButton
+{
+    public override void press ()
+    {
+        Logger.Log ("QuitModalWindow::press()", Logger.Level.INFO);
+        GameStateController.get ().tryUnlockPause ();
+        ModalManager.unsetModal ();
     }
-    base.OnPress(isPressed);
-  }
 }

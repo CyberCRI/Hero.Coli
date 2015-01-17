@@ -9,19 +9,17 @@ public class ContinueButton : ModalButton
     public StartGameButton nextInfoPanelContinue;
     public GameStateController gameStateController;
   
-    protected override void OnPress (bool isPressed)
+    public override void press ()
     {
-        if (isPressed) {
-            Logger.Log ("ContinueButton::OnPress()", Logger.Level.INFO);
+        Logger.Log ("ContinueButton::press()", Logger.Level.INFO);
 
-            parentPanel = gameObject.transform.parent.gameObject;
+        parentPanel = gameObject.transform.parent.gameObject;
 
-            //TODO manage stack of modal elements in ModalManager
-            //ModalManager.unsetModal(parentPanel);
-            ModalManager.unsetModal ();
-            gameStateController.tryUnlockPause ();
+        //TODO manage stack of modal elements in ModalManager
+        //ModalManager.unsetModal(parentPanel);
+        ModalManager.unsetModal ();
+        gameStateController.tryUnlockPause ();
 
-            ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().Name);
-        }
+        ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().Name);
     }
 }

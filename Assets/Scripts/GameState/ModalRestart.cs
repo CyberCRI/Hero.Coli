@@ -3,11 +3,9 @@ using System.Collections;
 
 public class ModalRestart : ModalButton
 {
-    protected override void OnPress (bool isPressed)
+    public override void press ()
     {
-        if (isPressed) {
-            Logger.Log ("ModalRestart::OnPress()", Logger.Level.INFO);
-            GameStateController.restart ();
-        }
+        Logger.Log ("ModalRestart::press()", Logger.Level.INFO);
+        GameStateController.restart ();
     }
 }

@@ -6,16 +6,14 @@ public class GenericDisplayModalButton : ModalButton
     public bool unsetModal;
     public string modalCode;
 
-    protected override void OnPress (bool isPressed)
+    public override void press ()
     {
-        if (isPressed) {
-            Logger.Log ("GenericDisplayModalButton::OnPress() with modalCode=" + modalCode, Logger.Level.INFO);
+        Logger.Log ("GenericDisplayModalButton::press() with modalCode=" + modalCode, Logger.Level.INFO);
             
-            //TODO manage stack of modal elements in ModalManager
-            if (unsetModal) {
-                ModalManager.unsetModal ();
-            }
-            ModalManager.setModal (modalCode);
+        //TODO manage stack of modal elements in ModalManager
+        if (unsetModal) {
+            ModalManager.unsetModal ();
         }
+        ModalManager.setModal (modalCode);
     }
 }

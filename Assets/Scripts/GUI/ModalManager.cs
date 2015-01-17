@@ -111,7 +111,7 @@ public class ModalManager : MonoBehaviour {
         string usedCancelClass = string.IsNullOrEmpty(cancelClass)?_cancelModalClassName:cancelClass;
 
         //if(usedCancelClass != _instance._cancelButtonClass) {
-            Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}!=_instance._cancelButtonClass={2})",
+        Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}; _instance._cancelButtonClass={2})",
                                            cancelClass, 
                                            usedCancelClass, 
                                            _instance._cancelButtonClass));
@@ -448,9 +448,13 @@ public class ModalManager : MonoBehaviour {
         {
             //TODO check need for getting component with class name "modalButtonClass"
             ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
-            button.press();
-            Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns true", modalButton, modalButtonClass));
-            return true;
+            if(null != button) {
+                button.press();
+                Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns true", modalButton, modalButtonClass));
+                return true;
+            } else {
+                Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) - button does not have required component!", modalButton, modalButtonClass));
+            }
         }
         Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns false", modalButton, modalButtonClass));
         return false;
