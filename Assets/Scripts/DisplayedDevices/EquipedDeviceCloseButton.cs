@@ -22,7 +22,7 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
     }
     else
     {
-      Debug.LogWarning("EquipedDeviceCloseButton::OnPress null==device");
+            Logger.Log("EquipedDeviceCloseButton::OnPress null==device", Logger.Level.WARN);
     }
   }
 

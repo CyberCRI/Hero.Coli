@@ -106,43 +106,33 @@ public class ModalManager : MonoBehaviour {
     //sets the current component of the cancel button to the one class given as string parameter
     private static void prepareGenericCancelButton(string cancelClass)
     {
-        Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0})", cancelClass));
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0})", cancelClass), Logger.Level.TRACE);
 
         string usedCancelClass = string.IsNullOrEmpty(cancelClass)?_cancelModalClassName:cancelClass;
 
-        //if(usedCancelClass != _instance._cancelButtonClass) {
-        Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}; _instance._cancelButtonClass={2})",
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}; _instance._cancelButtonClass={2})",
                                            cancelClass, 
                                            usedCancelClass, 
-                                           _instance._cancelButtonClass));
-            //Object.Destroy(_instance.genericCancelButton.GetComponent(_instance._cancelButtonClass));
+                                           _instance._cancelButtonClass), Logger.Level.INFO);
 
             _instance._cancelButtonClass = usedCancelClass;
             safeAddComponent(_instance.genericCancelButton, usedCancelClass);
-            
-        /*
-        }
-        else
-        {
-            Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}==_instance._cancelButtonClass)",
-                                           cancelClass, usedCancelClass));
-        }
-        */
+          
         //defensive programming
-        Debug.LogWarning(string.Format("ModalManager::prepareGenericCancelButton({0}) - set _instance._cancelButton to {1}", cancelClass, _instance.genericCancelButton.name));
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0}) - set _instance._cancelButton to {1}", cancelClass, _instance.genericCancelButton.name), Logger.Level.TRACE);
         _instance._cancelButton = _instance.genericCancelButton;
     }
 
     //sets the cancel button to its initial state
     private static void resetGenericCancelButton()
     {
-        Debug.LogWarning("ModalManager::resetGenericCancelButton");
+        Logger.Log("ModalManager::resetGenericCancelButton", Logger.Level.INFO);
         prepareGenericCancelButton(_cancelModalClassName);
     }
 
   private static bool fillInFieldsFromCode(string code)
   {
-        Debug.LogWarning("ModalManager::fillInFieldsFromCode("+code+")");
+        Logger.Log("ModalManager::fillInFieldsFromCode("+code+")", Logger.Level.INFO);
         StandardInfoWindowInfo info = retrieveFromDico(code);
     
         if(null != info)
@@ -157,8 +147,6 @@ public class ModalManager : MonoBehaviour {
             {
                 if(needsCancelButton(info._next))
                 {
-                    Debug.LogWarning("ModalManager::fillInFieldsFromCode - needs cancel button");
-
                     //affect class of action after validation
                     _instance._validateButtonClass = info._next;
 
@@ -172,13 +160,9 @@ public class ModalManager : MonoBehaviour {
 
                     //update cancel button component if necessary
                     prepareGenericCancelButton(info._cancel);
-
-                    Debug.LogWarning("ModalManager::fillInFieldsFromCode - needs cancel button - DONE");
                 }
                 else
                 {      
-                    Debug.LogWarning("ModalManager::fillInFieldsFromCode - doesn't need cancel button");
-
                     //affect class of action after validation
                     _instance._validateButtonClass = info._next;
 
@@ -192,8 +176,6 @@ public class ModalManager : MonoBehaviour {
 
                     //reset cancel button - isActive is used to test whether the button should respond to keys or not
                     resetGenericCancelButton();
-
-                    Debug.LogWarning("ModalManager::fillInFieldsFromCode - doesn't need cancel button - DONE");
                 }
 
                 //add class for action after validation
@@ -201,23 +183,21 @@ public class ModalManager : MonoBehaviour {
             }
             else
             {
-                Debug.LogWarning("ModalManager::fillInFieldsFromCode("+code+") - no next action");
                 return false;
             }
       
-            Debug.LogWarning("ModalManager::fillInFieldsFromCode("+code+") - DONE");
             return true;
         }
         else
         {
-            Debug.LogWarning("ModalManager::fillInFieldsFromCode("+code+") - no info");
+            Logger.Log("ModalManager::fillInFieldsFromCode("+code+") - no info", Logger.Level.WARN);
             return false;
         }
     }
 
     private static void safeAddComponent(GameObject button, string modalClass)
     {
-        Debug.LogWarning(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass));
+        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.INFO);
         removeAllModalButtonClasses(button);
         button.AddComponent(modalClass);
     }
@@ -229,27 +209,28 @@ public class ModalManager : MonoBehaviour {
 
     private static void prepareButton(GameObject button, string modalButtonClass)
     {        
-        Debug.LogWarning(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass));
+        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.INFO);
         if(null!=button) {
             if(!string.IsNullOrEmpty(modalButtonClass)) {
                 if(null==button.GetComponent(modalButtonClass)) {
                     safeAddComponent(button, modalButtonClass);
                 }
                 if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
-                    Debug.LogError(string.Format ("ModalManager::setModal error: couldn't get ModalButton component from {0} with class={1}",
-                                                  button, modalButtonClass));
+                    Logger.Log (string.Format ("ModalManager::setModal error: couldn't get ModalButton component from {0} with class={1}",
+                                                  button, modalButtonClass)
+                                ,Logger.Level.ERROR);
                 }
             }
         }
         else
         {
-            Debug.LogWarning("ModalManager::prepareButton: null==button");
+            Logger.Log("ModalManager::prepareButton: null==button", Logger.Level.WARN);
         }
     }
     
     private static void setValidateButton(GameObject vb, string vbClass)
     {
-        Debug.LogWarning(string.Format("ModalManager::setValidateButton({0},{1})", vb, vbClass));
+        Logger.Log(string.Format("ModalManager::setValidateButton({0},{1})", vb, vbClass), Logger.Level.INFO);
         if(null!=vb && !string.IsNullOrEmpty(vbClass)) {
             prepareButton(vb, vbClass);
         }
@@ -259,7 +240,7 @@ public class ModalManager : MonoBehaviour {
     
     private static void setCancelButton(GameObject cb, string cbClass)
     {
-        Debug.LogWarning(string.Format("ModalManager::setCancelButton({0},{1})", cb, cbClass));
+        Logger.Log(string.Format("ModalManager::setCancelButton({0},{1})", cb, cbClass), Logger.Level.INFO);
         if(null!=cb && !string.IsNullOrEmpty(cbClass)) {
             prepareButton(cb, cbClass);
         }
@@ -280,11 +261,11 @@ public class ModalManager : MonoBehaviour {
 
         //hide previous modal component
         if(null != _instance._currentModalElement) {
-            Debug.LogError(string.Format("ModalManager::setModal there was previous modal element {0}!", _instance._currentModalElement));
+            Logger.Log(string.Format("ModalManager::setModal there was previous modal element {0}!", _instance._currentModalElement), Logger.Level.DEBUG);
             unsetModal(true);
         }
         
-        Debug.LogWarning(string.Format("ModalManager::setModal({0},{1},{2},{3},{4},{5}) - set _instance._cancelButton to {6}", 
+        Logger.Log(string.Format("ModalManager::setModal({0},{1},{2},{3},{4},{5}) - set _instance._cancelButton to {6}", 
                                        guiComponent,
                                        lockPause,
                                        validateButton,
@@ -292,7 +273,7 @@ public class ModalManager : MonoBehaviour {
                                        cancelButton,
                                        cancelButtonClass,
                                        cancelButton
-                                       ));
+                                       ), Logger.Level.INFO);
     if(null != guiComponent)
     {
       Vector3 position = guiComponent.transform.localPosition;
@@ -300,7 +281,6 @@ public class ModalManager : MonoBehaviour {
       guiComponent.transform.localPosition = new Vector3(position.x, position.y, _instance.foregroundZ);
       _instance._currentModalElement = guiComponent;
 
-            Debug.LogError("_instance._currentModalElement.SetActive(true);");
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
 
@@ -316,10 +296,9 @@ public class ModalManager : MonoBehaviour {
   
   public static bool setModal(string code, bool lockPause = true)
   {
-        Debug.LogWarning("ModalManager::setModal("+code+")");
+        Logger.Log("ModalManager::setModal("+code+")", Logger.Level.INFO);
     if(null != _instance.genericModalWindow && fillInFieldsFromCode(code))
     {
-            Debug.LogWarning("ModalManager::setModal("+code+") - setup ok");
         setModal(_instance.genericModalWindow,
                      lockPause,
                      _instance._validateButton,
@@ -350,7 +329,7 @@ public class ModalManager : MonoBehaviour {
                 resetGenericValidateButtons();
                 resetGenericCancelButton();
             }
-            Debug.LogError("_instance._currentModalElement.SetActive(false);");
+
             _instance._currentModalElement.SetActive(false);
             _instance.modalBackground.SetActive(backgroundActive);
 
@@ -379,7 +358,7 @@ public class ModalManager : MonoBehaviour {
 
             //getting out of Pause
             if ((Input.GetKeyDown (KeyCode.Escape) || GameStateController.isShortcutKeyDown (GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount ())) {
-                Debug.LogError("getting out of pause");
+                Logger.Log("getting out of pause", Logger.Level.DEBUG);
                 ModalManager.unsetModal ();
                 return GameStateTarget.Game;
             } else {
@@ -408,14 +387,14 @@ public class ModalManager : MonoBehaviour {
                             return GameStateTarget.NoAction;
                         }
                     } else {
-                        Debug.LogWarning ("ModalManager::manageKeyPresses no need for manageInfoWindows()");
+                        Logger.Log ("ModalManager::manageKeyPresses no need for manageInfoWindows()", Logger.Level.DEBUG);
                         //keyPressedEventConsumed but no specific game state was specified as target
                         return GameStateTarget.NoTarget;
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("ModalManager::manageKeyPresses no current modal");
+                    Logger.Log("ModalManager::manageKeyPresses no current modal", Logger.Level.DEBUG);
                 }
             }
         }
@@ -430,34 +409,32 @@ public class ModalManager : MonoBehaviour {
     
     private static bool manageValidateButton()
     {
-        Debug.LogWarning(string.Format("ModalManager::manageValidateButton() with vb={0} and vbc={1}", _instance._validateButton, _instance._validateButtonClass));
+        Logger.Log(string.Format("ModalManager::manageValidateButton() with vb={0} and vbc={1}", _instance._validateButton, _instance._validateButtonClass), Logger.Level.INFO);
         return manageModalButton(_instance._validateButton, _instance._validateButtonClass);
     }
     
     private static bool manageCancelButton()
     {
         //string cancelButtonDebug = null == _instance._cancelButton?"null":_instance._cancelButton;
-        Debug.LogWarning(string.Format("ModalManager::manageCancelButton() with cb={0} and cbc={1}", _instance._cancelButton, _instance._cancelButtonClass));
+        Logger.Log(string.Format("ModalManager::manageCancelButton() with cb={0} and cbc={1}", _instance._cancelButton, _instance._cancelButtonClass), Logger.Level.INFO);
         return manageModalButton(_instance._cancelButton, _instance._cancelButtonClass);
     }
 
     private static bool manageModalButton(GameObject modalButton, string modalButtonClass)
     {
-        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1})", modalButton, modalButtonClass));
+        Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1})", modalButton, modalButtonClass), Logger.Level.INFO);
         if(null!=modalButton && modalButton.activeInHierarchy)
         {
             //TODO check need for getting component with class name "modalButtonClass"
             ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
             if(null != button) {
                 button.press();
-                Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns true", modalButton, modalButtonClass));
                 return true;
             } else {
-                Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) - button does not have required component!", modalButton, modalButtonClass));
+                Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1}) - button does not have required component!", modalButton, modalButtonClass), Logger.Level.WARN);
             }
         }
-        Debug.LogWarning(string.Format("ModalManager::manageModalButton({0}, {1}) returns false", modalButton, modalButtonClass));
+        Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1}) returns false", modalButton, modalButtonClass), Logger.Level.DEBUG);
         return false;
     }
-
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -167,7 +167,7 @@ public class GameStateController : MonoBehaviour {
         //TODO remove this
         if(Input.GetKeyDown(KeyCode.W))
         {
-            Debug.LogWarning("pressed shortcut to teleport Cellia to the end of the game");
+            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
             GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
             GameObject.Find("Perso").transform.localPosition = Vector3.zero;
         }
@@ -185,7 +185,7 @@ public class GameStateController : MonoBehaviour {
                 //pause
                 if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
                 {
-                    Debug.LogWarning("GameStateController::Update - Escape/Pause key pressed");
+                    Logger.Log("GameStateController::Update - Escape/Pause key pressed", Logger.Level.DEBUG);
                     ModalManager.setModal(pauseIndicator, false);
                     changeState(GameState.Pause);
                 } 
@@ -268,10 +268,7 @@ public class GameStateController : MonoBehaviour {
         //TODO merge fadeSprite with Modal background
         fadeSprite.gameObject.SetActive(true);
         fadeSprite.FadeIn();
-        
-        //gUITransitioner.Pause(true);
 
-        Debug.LogWarning("GameStateController WILL CALL WAITFADE");
         StartCoroutine (waitFade (2f, egc));
 
     }
@@ -279,15 +276,13 @@ public class GameStateController : MonoBehaviour {
     private IEnumerator waitFade (float waitTime, EndGameCollider egc)
     {
         // do stuff before waitTime
-        Debug.LogWarning("GameStateController WAITFADE BEFORE");
         yield return new WaitForSeconds (waitTime);
-        Debug.LogWarning("GameStateController WAITFADE AFTER");
         egc.displayEndMessage();
     }
     
     public void changeState(GameState newState){
         _gameState = newState;
-        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.WARN);
+        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.DEBUG);
 		
         switch(_gameState){
             case GameState.Start:

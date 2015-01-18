@@ -21,7 +21,7 @@ public class EndGameCollider : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        Logger.Log ("EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + alreadyDisplayed.ToString (), Logger.Level.WARN);
+        Logger.Log ("EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + alreadyDisplayed.ToString (), Logger.Level.INFO);
         if (alreadyDisplayed == false) {
             if (other == hero.GetComponent<Collider> ()) {
                 alreadyDisplayed = true;
@@ -32,7 +32,7 @@ public class EndGameCollider : MonoBehaviour
 
     public void displayEndMessage()
     {
-        Debug.LogWarning("EndGameCollider:displayEndMessage");
+        Logger.Log("EndGameCollider:displayEndMessage", Logger.Level.INFO);
         ModalManager.setModal (endInfoPanel, true, endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().Name);
     }
 }
