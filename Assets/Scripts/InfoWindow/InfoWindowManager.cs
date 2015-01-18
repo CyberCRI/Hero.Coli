@@ -56,6 +56,11 @@ public class InfoWindowManager : MonoBehaviour {
     {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT}
   };
 
+    public static bool hasActivePanel()
+    {
+        return _instance.infoPanel.activeInHierarchy;
+    }
+
   public static bool displayInfoWindow(string code)
   {
     if(fillInFieldsFromCode(code))
@@ -127,29 +132,29 @@ public class InfoWindowManager : MonoBehaviour {
     Logger.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
   }
 
-  public static void next()
-  {
-    ModalManager.unsetModal();
-    _instance.gameStateController.tryUnlockPause();
-
-    switch(_instance.nextAction)
+  public static void next ()
     {
-      case NextAction.GOTOWORLD:
-        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        break;
-      case NextAction.GOTOEQUIP:
-        Logger.Log("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
-        GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
-        break;
-      case NextAction.GOTOCRAFT:
-        Logger.Log("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
-        GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
-        break;
-      default:
-        Logger.Log("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
-        break;
+        Logger.Log ("InfoWindowManager::next()", Logger.Level.INFO);
+        ModalManager.unsetModal ();
+        _instance.gameStateController.tryUnlockPause ();
+
+        switch (_instance.nextAction) {
+            case NextAction.GOTOWORLD:
+                Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
+                break;
+            case NextAction.GOTOEQUIP:
+                Logger.Log ("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
+                GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen2);
+                break;
+            case NextAction.GOTOCRAFT:
+                Logger.Log ("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
+                GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen3);
+                break;
+            default:
+                Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
+                break;
+        }
     }
-  }
 
   public static NextAction getFromString(string next)
   {
@@ -165,6 +170,7 @@ public class InfoWindowManager : MonoBehaviour {
            || Input.GetKeyDown(KeyCode.Return)
           )
         {
+            Logger.Log("InfoWindowManager::manageKeyPresses() - key pressed", Logger.Level.DEBUG);
             next();
             return GameStateTarget.NoTarget;
         }

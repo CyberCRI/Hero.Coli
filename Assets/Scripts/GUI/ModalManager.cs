@@ -34,13 +34,19 @@ public class ModalManager : MonoBehaviour {
   public UILabel explanationLabel;
 
   public UISprite infoSprite;
-  public UIButton genericValidateButton;
-  public UIButton genericCenteredValidateButton;
-  private string _validateButtonClass;
-  public UIButton genericCancelButton;
 
-  private UIButton _validateButton;
-  private UIButton _cancelButton;
+  //pointers to buttons on the generic modal window
+  public GameObject genericValidateButton;
+  public GameObject genericCenteredValidateButton;
+  public GameObject genericCancelButton;
+
+  //pointers to whatever buttons are used to validate/cancel
+  //(nb: no choice on cancel buttons yet)
+  private GameObject _validateButton;
+  private GameObject _cancelButton;
+  //names of classes of aforementioned buttons
+  private string _validateButtonClass;
+  private string _cancelButtonClass;  
 
   private GameObject _currentModalElement;
   private float _previousZ;
@@ -49,6 +55,7 @@ public class ModalManager : MonoBehaviour {
   private static string _genericTitle = ".TITLE";
   private static string _genericExplanation = ".EXPLANATION";
   private static string _quitModalClassName = "QuitModalWindow";
+  //the class of the component attached to the cancel button of the ModalWindow
   private static string _cancelModalClassName = "CancelModal";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
@@ -87,8 +94,45 @@ public class ModalManager : MonoBehaviour {
       return (validateButtonClassName != _quitModalClassName);
   }
 
+    private static void removeAllModalButtonClasses(GameObject button)
+    {
+        ModalButton[] components = button.GetComponents<ModalButton>();
+        foreach(ModalButton component in components)
+        {
+            Object.Destroy(component);
+        }
+    }
+
+    //sets the current component of the cancel button to the one class given as string parameter
+    private static void prepareGenericCancelButton(string cancelClass)
+    {
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0})", cancelClass), Logger.Level.TRACE);
+
+        string usedCancelClass = string.IsNullOrEmpty(cancelClass)?_cancelModalClassName:cancelClass;
+
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0}) = (usedCancelClass={1}; _instance._cancelButtonClass={2})",
+                                           cancelClass, 
+                                           usedCancelClass, 
+                                           _instance._cancelButtonClass), Logger.Level.INFO);
+
+            _instance._cancelButtonClass = usedCancelClass;
+            safeAddComponent(_instance.genericCancelButton, usedCancelClass);
+          
+        //defensive programming
+        Logger.Log(string.Format("ModalManager::prepareGenericCancelButton({0}) - set _instance._cancelButton to {1}", cancelClass, _instance.genericCancelButton.name), Logger.Level.TRACE);
+        _instance._cancelButton = _instance.genericCancelButton;
+    }
+
+    //sets the cancel button to its initial state
+    private static void resetGenericCancelButton()
+    {
+        Logger.Log("ModalManager::resetGenericCancelButton", Logger.Level.INFO);
+        prepareGenericCancelButton(_cancelModalClassName);
+    }
+
   private static bool fillInFieldsFromCode(string code)
-  {      
+  {
+        Logger.Log("ModalManager::fillInFieldsFromCode("+code+")", Logger.Level.INFO);
         StandardInfoWindowInfo info = retrieveFromDico(code);
     
         if(null != info)
@@ -103,28 +147,39 @@ public class ModalManager : MonoBehaviour {
             {
                 if(needsCancelButton(info._next))
                 {
-                    _instance.genericValidateButton.gameObject.SetActive(true);
-                    _instance.genericCancelButton.gameObject.SetActive(true);
-                    _instance.genericCenteredValidateButton.gameObject.SetActive(false);
-
-                    _instance.genericValidateButton.gameObject.AddComponent(info._next);
+                    //affect class of action after validation
                     _instance._validateButtonClass = info._next;
 
+                    //choose validation button
                     _instance._validateButton = _instance.genericValidateButton;
-                    _instance._cancelButton = _instance.genericCancelButton;
+
+                    //set active buttons according to 'validate/cancel' pattern
+                    _instance.genericValidateButton.gameObject.SetActive(true);
+                    _instance.genericCenteredValidateButton.gameObject.SetActive(false);
+                    _instance.genericCancelButton.gameObject.SetActive(true);
+
+                    //update cancel button component if necessary
+                    prepareGenericCancelButton(info._cancel);
                 }
                 else
-                {                    
-                    _instance.genericValidateButton.gameObject.SetActive(false);
-                    _instance.genericCancelButton.gameObject.SetActive(false);
-                    _instance.genericCenteredValidateButton.gameObject.SetActive(true);
-
-                    _instance.genericCenteredValidateButton.gameObject.AddComponent(info._next);
+                {      
+                    //affect class of action after validation
                     _instance._validateButtonClass = info._next;
-                    
+
+                    //choose validation button button
                     _instance._validateButton = _instance.genericCenteredValidateButton;
-                    _instance._cancelButton = null;
+                    
+                    //set active buttons according to 'validate' pattern
+                    _instance.genericValidateButton.gameObject.SetActive(false);
+                    _instance.genericCenteredValidateButton.gameObject.SetActive(true);
+                    _instance.genericCancelButton.gameObject.SetActive(false);
+
+                    //reset cancel button - isActive is used to test whether the button should respond to keys or not
+                    resetGenericCancelButton();
                 }
+
+                //add class for action after validation
+                safeAddComponent(_instance._validateButton, _instance._validateButtonClass);
             }
             else
             {
@@ -135,12 +190,90 @@ public class ModalManager : MonoBehaviour {
         }
         else
         {
+            Logger.Log("ModalManager::fillInFieldsFromCode("+code+") - no info", Logger.Level.WARN);
             return false;
         }
     }
 
-  public static void setModal(GameObject guiComponent, bool lockPause = true)
-  {
+    private static void safeAddComponent(GameObject button, string modalClass)
+    {
+        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.INFO);
+        removeAllModalButtonClasses(button);
+        button.AddComponent(modalClass);
+    }
+
+    public static bool isCancelButtonActive()
+    {
+        return (null!=_instance._cancelButton) && _instance._cancelButton.gameObject.activeInHierarchy;
+    }
+
+    private static void prepareButton(GameObject button, string modalButtonClass)
+    {        
+        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.INFO);
+        if(null!=button) {
+            if(!string.IsNullOrEmpty(modalButtonClass)) {
+                if(null==button.GetComponent(modalButtonClass)) {
+                    safeAddComponent(button, modalButtonClass);
+                }
+                if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
+                    Logger.Log (string.Format ("ModalManager::setModal error: couldn't get ModalButton component from {0} with class={1}",
+                                                  button, modalButtonClass)
+                                ,Logger.Level.ERROR);
+                }
+            }
+        }
+        else
+        {
+            Logger.Log("ModalManager::prepareButton: null==button", Logger.Level.WARN);
+        }
+    }
+    
+    private static void setValidateButton(GameObject vb, string vbClass)
+    {
+        Logger.Log(string.Format("ModalManager::setValidateButton({0},{1})", vb, vbClass), Logger.Level.INFO);
+        if(null!=vb && !string.IsNullOrEmpty(vbClass)) {
+            prepareButton(vb, vbClass);
+        }
+        _instance._validateButton = vb;
+        _instance._validateButtonClass = vbClass;
+    }
+    
+    private static void setCancelButton(GameObject cb, string cbClass)
+    {
+        Logger.Log(string.Format("ModalManager::setCancelButton({0},{1})", cb, cbClass), Logger.Level.INFO);
+        if(null!=cb && !string.IsNullOrEmpty(cbClass)) {
+            prepareButton(cb, cbClass);
+        }
+        _instance._cancelButton = cb;
+        _instance._cancelButtonClass = cbClass;
+    }
+
+    //Sets a guiComponent as Modal
+    //Can handle custom validate and cancel buttons
+    //as long as they inherit ModalButton
+    //Adds ModalButton components to GameObjects if they don't have them beforehand
+    public static void setModal(GameObject guiComponent,
+                                bool lockPause = true, 
+                                GameObject validateButton = null, string validateButtonClass = null,
+                                GameObject cancelButton = null, string cancelButtonClass = null
+                                )
+    {
+
+        //hide previous modal component
+        if(null != _instance._currentModalElement) {
+            Logger.Log(string.Format("ModalManager::setModal there was previous modal element {0}!", _instance._currentModalElement), Logger.Level.DEBUG);
+            unsetModal(true);
+        }
+        
+        Logger.Log(string.Format("ModalManager::setModal({0},{1},{2},{3},{4},{5}) - set _instance._cancelButton to {6}", 
+                                       guiComponent,
+                                       lockPause,
+                                       validateButton,
+                                       validateButtonClass,
+                                       cancelButton,
+                                       cancelButtonClass,
+                                       cancelButton
+                                       ), Logger.Level.INFO);
     if(null != guiComponent)
     {
       Vector3 position = guiComponent.transform.localPosition;
@@ -151,6 +284,9 @@ public class ModalManager : MonoBehaviour {
       _instance._currentModalElement.SetActive(true);
       _instance.modalBackground.SetActive(true);
 
+      setValidateButton(validateButton, validateButtonClass);
+      setCancelButton(cancelButton, cancelButtonClass);
+
       if(lockPause)
       {
         GameStateController.get().tryLockPause();
@@ -160,9 +296,16 @@ public class ModalManager : MonoBehaviour {
   
   public static bool setModal(string code, bool lockPause = true)
   {
+        Logger.Log("ModalManager::setModal("+code+")", Logger.Level.INFO);
     if(null != _instance.genericModalWindow && fillInFieldsFromCode(code))
     {
-        setModal(_instance.genericModalWindow, lockPause);
+        setModal(_instance.genericModalWindow,
+                     lockPause,
+                     _instance._validateButton,
+                     _instance._validateButtonClass,
+                     _instance._cancelButton,
+                     _instance._cancelButtonClass
+                     );
         
         return true;
     }
@@ -173,7 +316,8 @@ public class ModalManager : MonoBehaviour {
     }
   }
 
-    public static void unsetModal()
+    //TODO manage stack of modal elements
+    public static void unsetModal(bool backgroundActive = false)
     {
         if(null != _instance._currentModalElement)
         {
@@ -182,17 +326,23 @@ public class ModalManager : MonoBehaviour {
 
             if(!string.IsNullOrEmpty(_instance._validateButtonClass))
             {
-                Object.Destroy(_instance.genericValidateButton.GetComponent(_instance._validateButtonClass));
-                Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(_instance._validateButtonClass));
-                _instance._validateButtonClass = null;
-                _instance._validateButton = null;
-                _instance._cancelButton = null;
+                resetGenericValidateButtons();
+                resetGenericCancelButton();
             }
+
             _instance._currentModalElement.SetActive(false);
-            _instance.modalBackground.SetActive(false);
+            _instance.modalBackground.SetActive(backgroundActive);
 
             _instance._currentModalElement = null;
         }
+    }
+
+    public static void resetGenericValidateButtons()
+    {
+        Object.Destroy(_instance.genericValidateButton.GetComponent(_instance._validateButtonClass));
+        Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(_instance._validateButtonClass));
+        _instance._validateButtonClass = null;
+        _instance._validateButton = null;
     }
 
     // manages key presses on modal windows
@@ -200,39 +350,51 @@ public class ModalManager : MonoBehaviour {
     // for generic modal windows:
     // enter: validate
     // escape: cancel
-    public static GameStateTarget manageKeyPresses()
+    public static GameStateTarget manageKeyPresses ()
     {
-        //equivalent to: "consumed action", "did something", and so on
-        bool keyPressedEventConsumed = false;
+        if (Input.anyKeyDown) {
+            //equivalent to: "consumed action", "did something", and so on
+            bool keyPressedEventConsumed = false;
 
-        //getting out of Pause
-        if((Input.GetKeyDown(KeyCode.Escape) || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
-        {
-            ModalManager.unsetModal();
-            return GameStateTarget.Game;
-        }
-        else
-            //pressing "validate" or "cancel" buttons
-        {
-            if(null != _instance._currentModalElement)
-            {
-                if(Input.GetKeyDown(KeyCode.Return))
-                {
-                    keyPressedEventConsumed = manageValidateButton();
-                }
-                else if(Input.GetKeyDown(KeyCode.Escape))
-                {   
-                    keyPressedEventConsumed = manageCancelButton();
-                }
+            //getting out of Pause
+            if ((Input.GetKeyDown (KeyCode.Escape) || GameStateController.isShortcutKeyDown (GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount ())) {
+                Logger.Log("getting out of pause", Logger.Level.DEBUG);
+                ModalManager.unsetModal ();
+                return GameStateTarget.Game;
+            } else {
+                //pressing "validate" or "cancel" buttons
+                if (null != _instance._currentModalElement) {
+                    //Modal windows key presses
+                    if (Input.GetKeyDown (KeyCode.Return)) {
+                        keyPressedEventConsumed = manageValidateButton ();
+                    } else if (Input.GetKeyDown (KeyCode.Escape)) {   
+                        if (isCancelButtonActive ()) {
+                            keyPressedEventConsumed = manageCancelButton ();
+                        } else {
+                            keyPressedEventConsumed = manageValidateButton ();
+                        }   
+                    } else if (Input.GetKeyDown (KeyCode.Space) && (!isCancelButtonActive ())) {   
+                        keyPressedEventConsumed = manageValidateButton ();
+                    }
 
-                if(!keyPressedEventConsumed)
-                {
-                    return manageInfoWindows();
+                    if (!keyPressedEventConsumed) {
+                        //no action was performed yet
+                        if (InfoWindowManager.hasActivePanel ()) {
+                            //info windows key presses
+                            return manageInfoWindows ();
+                        } else {
+                            //no action was performed at all
+                            return GameStateTarget.NoAction;
+                        }
+                    } else {
+                        Logger.Log ("ModalManager::manageKeyPresses no need for manageInfoWindows()", Logger.Level.DEBUG);
+                        //keyPressedEventConsumed but no specific game state was specified as target
+                        return GameStateTarget.NoTarget;
+                    }
                 }
                 else
                 {
-                    //keyPressedEventConsumed but no specific game state was specified as target
-                    return GameStateTarget.NoTarget;
+                    Logger.Log("ModalManager::manageKeyPresses no current modal", Logger.Level.DEBUG);
                 }
             }
         }
@@ -241,28 +403,38 @@ public class ModalManager : MonoBehaviour {
 
     private static GameStateTarget manageInfoWindows()
     {
+        Logger.Log("ModalManager::manageInfoWindows", Logger.Level.INFO);
         return InfoWindowManager.manageKeyPresses();
     }
     
     private static bool manageValidateButton()
     {
+        Logger.Log(string.Format("ModalManager::manageValidateButton() with vb={0} and vbc={1}", _instance._validateButton, _instance._validateButtonClass), Logger.Level.INFO);
         return manageModalButton(_instance._validateButton, _instance._validateButtonClass);
     }
     
     private static bool manageCancelButton()
     {
-        return manageModalButton(_instance._cancelButton, _cancelModalClassName);
+        //string cancelButtonDebug = null == _instance._cancelButton?"null":_instance._cancelButton;
+        Logger.Log(string.Format("ModalManager::manageCancelButton() with cb={0} and cbc={1}", _instance._cancelButton, _instance._cancelButtonClass), Logger.Level.INFO);
+        return manageModalButton(_instance._cancelButton, _instance._cancelButtonClass);
     }
 
-    private static bool manageModalButton(UIButton modalButton, string modalButtonClass)
-    {        
-        if(modalButton && modalButton.gameObject.activeInHierarchy)
+    private static bool manageModalButton(GameObject modalButton, string modalButtonClass)
+    {
+        Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1})", modalButton, modalButtonClass), Logger.Level.INFO);
+        if(null!=modalButton && modalButton.activeInHierarchy)
         {
-            ModalButton button = (ModalButton)modalButton.gameObject.GetComponent(modalButtonClass);
-            button.press();
-            return true;
+            //TODO check need for getting component with class name "modalButtonClass"
+            ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
+            if(null != button) {
+                button.press();
+                return true;
+            } else {
+                Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1}) - button does not have required component!", modalButton, modalButtonClass), Logger.Level.WARN);
+            }
         }
+        Logger.Log(string.Format("ModalManager::manageModalButton({0}, {1}) returns false", modalButton, modalButtonClass), Logger.Level.DEBUG);
         return false;
     }
-
 }

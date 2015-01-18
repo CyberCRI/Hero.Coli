@@ -6,6 +6,7 @@ public static class InfoWindowXMLTags {
     CODE = "code",
     TEXTURE = "texture",
     NEXT = "next",
+    CANCEL = "cancel",
     WORLD = "world",
     EQUIP = "equip",
     CRAFT = "craft";

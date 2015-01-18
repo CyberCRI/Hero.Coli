@@ -6,7 +6,7 @@ public class PickablePromoter : PickableBioBrick {
   public float beta;
   public string formula;
 
-  protected override BioBrick produceBioBrick()
+    protected override DNABit produceDNABit()
   {
     return new PromoterBrick(bioBrickName, beta, formula);
   }

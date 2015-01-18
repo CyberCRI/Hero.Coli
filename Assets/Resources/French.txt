@@ -72,6 +72,8 @@ MODAL.RESTARTGAME.TITLE=RECOMMENCER ?
 MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vous sûr ?
 MODAL.FIRSTCHECKPOINT.TITLE=PREMIER CHECKPOINT !
 MODAL.FIRSTCHECKPOINT.EXPLANATION=Si votre bactérie meurt vous recommencerez à partir de sa dernière division !
+MODAL.ENDRESTARTGAME.TITLE=RECOMMENCER ?
+MODAL.ENDRESTARTGAME.EXPLANATION=Cliquez pour commencer une nouvelle partie !
 
 GUI.MEDIUMINFOSTATICINFO.LABELS=température:\npH:\napport énergétique:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n\n15

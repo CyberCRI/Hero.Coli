@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -20,13 +20,14 @@ public class WorldLinkManager : MonoBehaviour {
 		EndGameCollider endGameCollider = GameObject.Find("TutoEnd").GetComponent<EndGameCollider>();
     endGameCollider.hero = perso;
 		endGameCollider.gameStateController = GameStateController.get ();
-    endGameCollider.infoPanel = GameStateController.get().end;
-
-    //tuto End
+    endGameCollider.endInfoPanel = GameStateController.get().endWindow;
+    endGameCollider.endInfoPanelRestartButton = GameStateController.get ().endRestartButton;
+            
+            //tuto End
     InfoWindowCollisionTrigger tutoRFP = GameObject.Find("TutoRFP").GetComponent<InfoWindowCollisionTrigger>();
     tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider>();
 
-		Logger.Log ("EndGameCollider.infoPanel"+endGameCollider.infoPanel,Logger.Level.INFO);
+		Logger.Log ("EndGameCollider.infoPanel"+endGameCollider.endInfoPanel,Logger.Level.INFO);
 	
 	}
 

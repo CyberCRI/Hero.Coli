@@ -21,7 +21,7 @@ public class PickableDeviceGeneric4Bricks : PickableDevice {
 
   public string deviceName;
 
-  protected override Device produceDevice()
+  protected override DNABit produceDNABit()
   {
     PromoterBrick prom = new PromoterBrick(promoterName, promoterBeta, promoterFormula);
     RBSBrick rbs = new RBSBrick(rbsName, rbsFactor);

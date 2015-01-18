@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PickableDeviceTest : PickableDevice {
-  protected override Device produceDevice()
+    protected override DNABit produceDNABit()
   {
     PromoterBrick prom = new PromoterBrick("PromY2", 75f, "[0.01,2]Y");
     RBSBrick rbs = new RBSBrick("RBS3", 3.0f);

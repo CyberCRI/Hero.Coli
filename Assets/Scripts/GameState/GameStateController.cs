@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -48,51 +48,50 @@ public class GameStateController : MonoBehaviour {
     private GameState _gameState;
     public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
-    public GameObject intro, end, pauseIndicator;
+    public GameObject intro, endWindow, pauseIndicator;
+    public ContinueButton introContinueButton;
+    public EndRestartButton endRestartButton;
     private static int _pausesStacked = 0;
-    private static void resetPauseStack()
+    private static void resetPauseStack ()
     {
         _pausesStacked = 0;
     }
-    public static int getPausesInStackCount(){
-    return _pausesStacked;
-    }
-    public int pushPauseInStack()
+    public static int getPausesInStackCount ()
     {
-    _pausesStacked++;
-        Logger.Log("pushPauseInStack() returns "+_pausesStacked, Logger.Level.INFO);
-    return _pausesStacked;
+        return _pausesStacked;
     }
-    public int popPauseInStack()
+    private int pushPauseInStack ()
     {
-        Logger.Log("popPauseInStack() starts with _pausesStacked=="+_pausesStacked, Logger.Level.DEBUG);
-    if(_pausesStacked > 0)
-    {
-      _pausesStacked--;
+        _pausesStacked++;
+        Logger.Log ("pushPauseInStack() returns " + _pausesStacked, Logger.Level.INFO);
+        return _pausesStacked;
     }
-    else
+    public int popPauseInStack ()
     {
-      Logger.Log("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
-      _pausesStacked = 0;
+        Logger.Log ("popPauseInStack() starts with _pausesStacked==" + _pausesStacked, Logger.Level.DEBUG);
+        if (_pausesStacked > 0) {
+            _pausesStacked--;
+        } else {
+            Logger.Log ("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
+            _pausesStacked = 0;
+        }
+        Logger.Log ("popPauseInStack() returns _pausesStacked==" + _pausesStacked, Logger.Level.INFO);
+        return _pausesStacked;
     }
-        Logger.Log("popPauseInStack() returns _pausesStacked=="+_pausesStacked, Logger.Level.INFO);
-    return _pausesStacked;
-    }
-    public void tryUnlockPause()
+    public void tryUnlockPause ()
     {
-        Logger.Log("tryUnlockPause() with previous pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
-    if(0 == popPauseInStack())
-    {
-      changeState(GameState.Game);
+        Logger.Log ("tryUnlockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        if (0 == popPauseInStack ()) {
+            changeState (GameState.Game);
+        }
+        Logger.Log ("tryUnlockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
     }
-        Logger.Log("tryUnlockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
-    }
-    public void tryLockPause()
+    public void tryLockPause ()
     {
-        Logger.Log("tryLockPause() with previous pausesStacked="+_pausesStacked, Logger.Level.DEBUG);
-    pushPauseInStack();
-    changeState(GameState.Pause);
-        Logger.Log("tryLockPause() with final pausesStacked="+_pausesStacked, Logger.Level.INFO);
+        Logger.Log ("tryLockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        pushPauseInStack ();
+        changeState (GameState.Pause);
+        Logger.Log ("tryLockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
     }
 
 
@@ -107,7 +106,6 @@ public class GameStateController : MonoBehaviour {
     void Start () {
     	_gameState = GameState.Start;
     resetPauseStack();
-    	pushPauseInStack();
 
     I18n.changeLanguageTo(I18n.Language.French);
     Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
@@ -165,19 +163,29 @@ public class GameStateController : MonoBehaviour {
 	
 	// Update is called once per frame
     void Update () {
+
+        //TODO remove this
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
+            GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
+            GameObject.Find("Perso").transform.localPosition = Vector3.zero;
+        }
+
         switch(_gameState){
 
             case GameState.Start:
                 fadeSprite.gameObject.SetActive(true);
-                intro.SetActive(true);
-                end.SetActive(false);
-                changeState(GameState.Pause);
+                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                endWindow.SetActive(false);
+
                 break;
 
             case GameState.Game:
                 //pause
                 if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
                 {
+                    Logger.Log("GameStateController::Update - Escape/Pause key pressed", Logger.Level.DEBUG);
                     ModalManager.setModal(pauseIndicator, false);
                     changeState(GameState.Pause);
                 } 
@@ -246,22 +254,35 @@ public class GameStateController : MonoBehaviour {
                 break;
         	
             case GameState.End:
-                gUITransitioner.TerminateGraphs();
-                fadeSprite.gameObject.SetActive(true);
-                fadeSprite.FadeIn();
-                gUITransitioner.Pause(true);
-                pushPauseInStack();
-                end.SetActive(true);
                 break;	
 
             default:
                 break;
         }
     }
-	
+
+    public void triggerEnd(EndGameCollider egc)
+    {
+        gUITransitioner.TerminateGraphs();
+
+        //TODO merge fadeSprite with Modal background
+        fadeSprite.gameObject.SetActive(true);
+        fadeSprite.FadeIn();
+
+        StartCoroutine (waitFade (2f, egc));
+
+    }
+
+    private IEnumerator waitFade (float waitTime, EndGameCollider egc)
+    {
+        // do stuff before waitTime
+        yield return new WaitForSeconds (waitTime);
+        egc.displayEndMessage();
+    }
+    
     public void changeState(GameState newState){
         _gameState = newState;
-        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.INFO);
+        Logger.Log("GameStateController::StateChange _gameState="+_gameState, Logger.Level.DEBUG);
 		
         switch(_gameState){
             case GameState.Start:

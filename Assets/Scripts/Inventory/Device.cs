@@ -306,7 +306,6 @@ public class Device: DNABit
         return buildDevice(modules.First.Value.getInternalName(), modules);
     }
 
-    //warning: can lead to same devices but with different names
     public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
     {
         Logger.Log("Device::buildDevice(name, modules) with name="+name, Logger.Level.INFO);

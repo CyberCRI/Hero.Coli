@@ -29,11 +29,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 
   public GameObject tutorialPanels;
 
-  public GameObject introduction1;
-  public GameObject introduction2;
-  public GameObject okButton1;
-  public GameObject okButton2;
-  public GameObject end, pauseIndicator;
+  public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
+  public EndRestartButton endRestartButton;
 
   public CellControlButton absoluteWASDButton;
   public CellControlButton leftClickToMoveButton;
@@ -69,22 +66,32 @@ public class InterfaceLinkManager : MonoBehaviour {
 		guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
 		guiTransitioner.craftScreen = craftScreenPanel;
 
-
-		//GameStateController
-    gameStateController.intro = introduction1;
-		gameStateController.fadeSprite = fade;
-		gameStateController.end = end;
-    gameStateController.pauseIndicator = pauseIndicator;
-
 		//Object with GameStateController 
-		okButton1.GetComponent<ContinueButton>().gameStateController = gameStateController;
-		okButton2.GetComponent<StartGameButton>().gameStateController = gameStateController;
+    ContinueButton cb = okButton1.GetComponent<ContinueButton>();
+    StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
+		cb.gameStateController = gameStateController;
+		sgb.gameStateController = gameStateController;
+        
+    //GameStateController
+    gameStateController.intro = introduction1;
+    gameStateController.introContinueButton = cb;
+    gameStateController.fadeSprite = fade;
+    gameStateController.endWindow = end;
+    EndRestartButton erb = endRestartButton.GetComponent<EndRestartButton>();
+    gameStateController.endRestartButton = erb;
+
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
     introduction2.SetActive(false);
     end.SetActive(false);
     pauseIndicator.SetActive(false);
     genericModalWindow.SetActive(false);
+    
+    gameStateController.pauseIndicator = pauseIndicator;
+
+    //initialization of intro panels
+    cb.nextInfoPanel = introduction2;
+    cb.nextInfoPanelContinue = sgb;
 
 		//CraftFinalizer
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;
@@ -130,9 +137,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILabel>();
     modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILabel>();
     modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
-    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").GetComponent<UIButton>();
-    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").GetComponent<UIButton>();
-    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").GetComponent<UIButton>();
+    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
+    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
+    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
 
 
 		//DeviceInventory
