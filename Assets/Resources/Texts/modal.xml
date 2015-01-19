@@ -1,0 +1,15 @@
+<infoList>
+  <info code="RestartGame">
+    <texture>i_end</texture>
+    <next>ModalRestart</next>
+  </info>  
+  <info code="FirstCheckpoint">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="EndRestartGame">
+    <texture>i_end</texture>
+    <next>ModalRestart</next>
+    <cancel>BackToEndPanelButton</cancel>
+  </info>
+</infoList>

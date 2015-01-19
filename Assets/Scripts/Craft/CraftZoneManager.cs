@@ -33,7 +33,7 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   private LinkedList<BioBrick>              _currentBioBricks = new LinkedList<BioBrick>();
-  private LinkedList<DisplayedBioBrick>     _currentDisplayedBricks = new LinkedList<DisplayedBioBrick>();
+  private LinkedList<CraftZoneDisplayedBioBrick>     _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
   private Device                            _currentDevice = null;
 
   private PromoterBrick                     _promoter;
@@ -50,8 +50,8 @@ public class CraftZoneManager : MonoBehaviour {
   private int _width = 118;
 
 
-  public LinkedList<DisplayedBioBrick> getCurrentDisplayedBricks() {
-    return new LinkedList<DisplayedBioBrick>(_currentDisplayedBricks);
+  public LinkedList<CraftZoneDisplayedBioBrick> getCurrentDisplayedBricks() {
+    return new LinkedList<CraftZoneDisplayedBioBrick>(_currentDisplayedBricks);
   }
 
   private Vector3 getNewPosition(int index ) {
@@ -80,29 +80,68 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
   }
 
+  public static void OnLanguageChanged()
+  {
+    _instance.OnBioBricksChanged();
+  }
+
+  private static int getIndex(BioBrick brick)
+  {
+    int idx;
+    switch(brick.getType())
+      {
+        case BioBrick.Type.PROMOTER:
+          idx = 0;
+          break;
+        case BioBrick.Type.RBS:
+          idx = 1;
+          break;
+        case BioBrick.Type.GENE:
+          idx = 2;
+          break;
+        case BioBrick.Type.TERMINATOR:
+          idx = 3;
+          break;
+      default:
+        idx = 0;
+        Logger.Log("CraftZoneManager getIndex unknown type "+brick.getType(), Logger.Level.WARN);
+        break;
+      }
+    return idx;
+  }
+
   private void displayBioBricks() {
     Logger.Log("CraftZoneManager::displayBioBricks() with _currentBioBricks="+Logger.ToString<BioBrick>(_currentBioBricks), Logger.Level.TRACE);
     removePreviousDisplayedBricks();
 
     //add new biobricks
-    int index = 0;
+    //int index = 0;
     foreach (BioBrick brick in _currentBioBricks) {
       Logger.Log("CraftZoneManager::displayBioBricks brick="+brick, Logger.Level.TRACE);
-      _currentDisplayedBricks.AddLast(DisplayedBioBrick.Create(assemblyZonePanel.transform, getNewPosition(index), null, brick));
-      index++;
+      _currentDisplayedBricks.AddLast(
+        CraftZoneDisplayedBioBrick.Create(
+          assemblyZonePanel.transform,
+          getNewPosition(getIndex(brick)),
+          null,
+          brick
+        )
+      );
+      //index++;
     }
 
+    /*
     //set to true to initialize the "last hovered biobrick" info window
     bool initializeHovered = false;
     if(initializeHovered) {
       lastHoveredInfoManager.setHoveredBioBrick(_currentBioBricks.First.Value);
     }
+    */
   }
 
   private void removePreviousDisplayedBricks() {
     Logger.Log("CraftZoneManager::removePreviousDisplayedBricks()", Logger.Level.TRACE);
     //remove all previous biobricks
-    foreach (DisplayedBioBrick brick in _currentDisplayedBricks) {
+    foreach (CraftZoneDisplayedBioBrick brick in _currentDisplayedBricks) {
       Destroy(brick.gameObject);
     }
     _currentDisplayedBricks.Clear();
@@ -121,10 +160,34 @@ public class CraftZoneManager : MonoBehaviour {
 
   public void replaceWithBioBrick(BioBrick brick) {
     Logger.Log("CraftZoneManager::replaceWithBioBrick("+brick+")", Logger.Level.TRACE);
-    BioBrick toReplace = findFirstBioBrick(brick.getType());
-    LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(toReplace);
-    _currentBioBricks.AddAfter(toReplaceNode, brick);
-    _currentBioBricks.Remove(toReplace);
+    insertOrdered(brick);
+    OnBioBricksChanged();
+  }
+
+  private void insertOrdered(BioBrick toInsert)
+  {
+    foreach(BioBrick brick in _currentBioBricks)
+    {
+      if(brick.getType() > toInsert.getType())
+      {
+        LinkedListNode<BioBrick> afterNode = _currentBioBricks.Find(brick);
+        _currentBioBricks.AddBefore(afterNode, toInsert);
+        return;
+      }
+      else if(brick.getType() == toInsert.getType())
+      {
+        LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
+        _currentBioBricks.AddAfter(toReplaceNode, toInsert);
+        _currentBioBricks.Remove(brick);
+        return;
+      }
+    }
+    _currentBioBricks.AddLast(toInsert);
+  }
+
+  public void removeBioBrick(BioBrick brick) {
+    Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
+    _currentBioBricks.Remove(brick);
     OnBioBricksChanged();
   }
 
@@ -134,12 +197,14 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /*
   public void askSetDevice(Device device) {
     Logger.Log("CraftZoneManager::askSetDevice("+device+")", Logger.Level.TRACE);
     if(_currentDevice == null) {
       setDevice(device);
     }
   }
+  */
 
   public void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
@@ -147,38 +212,58 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
 
     _currentBioBricks.Clear();
-    _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+    if(device != null)
+    {
+      _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+    }
     displayBioBricks();
   }
 
   public void displayDevice() {
-    Logger.Log("CraftZoneManager::displayDevice() with _currentDevice="+_currentDevice+")", Logger.Level.TRACE);
     craftFinalizer.setDisplayedDevice(_currentDevice);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // utilities
 
-  private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
-    Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
-    ExpressionModule module = new ExpressionModule("test", bricks);
-    LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
-    modules.AddLast(module);
-    //Device device = Device.buildDevice(Inventory.get().getAvailableDeviceName(), modules);
-    Device device = Device.buildDevice(GameplayNames.generateRealNameFromBricks(bricks), modules);
-    if(device != null)
-    {
-      Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);
+    private Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
+        Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
+
+        if(!ExpressionModule.isBioBricksSequenceValid(bricks))
+        {
+            Logger.Log("CraftZoneManager::getDeviceFromBricks invalid biobricks sequence", Logger.Level.TRACE);
+            return null;
+        }
+
+        ExpressionModule module = new ExpressionModule("test", bricks);
+        LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
+        modules.AddLast(module);
+
+        Device device = Device.buildDevice(modules);
+        if(device != null)
+        {
+            Logger.Log("CraftZoneManager::getDeviceFromBricks produced "+device, Logger.Level.TRACE);
+        }
+        else
+        {
+            Logger.Log ("CraftZoneManager::getDeviceFromBricks device==null with bricks="+Logger.ToString<BioBrick>(bricks)
+                        , Logger.Level.WARN);
+        }
+        return device;
     }
-    else
-    {
-      Logger.Log ("CraftZoneManager::getDeviceFromBricks device==null with bricks="+Logger.ToString<BioBrick>(bricks)
-        , Logger.Level.WARN);
-    }
-    return device;
-  }
 
   public Device getCurrentDevice() {
     return _currentDevice;
+  }
+
+  public static bool isOpenable()
+  {
+    //FIXME doesn't work with test null != _instance._currentDevice
+    return 0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count;
+  }
+
+  void Start()
+  {
+    displayDevice();
   }
 }

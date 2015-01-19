@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<devices>
+  <!--device id="hyperfl_l"-->
+  <device id="Hyperflagellation (low)">
+    <brick id="PRCONS"/>
+    <brick id="RBS2"/>
+    <brick id="MOV"/>
+    <brick id="DTER"/>
+  </device>
+  <!--device id="gfp_m"-->
+  <device id="Green fluorescence (med)">
+    <!--brick id="PRLACI"/-->
+    <brick id="PRCONS"/>
+    <brick id="RBS1"/>
+    <brick id="FLUO1"/>
+    <brick id="DTER"/>
+  </device>
+  <!--device id="ampiR_m"-->
+  <device id="Ampicillin resistance (med)">
+    <!--brick id="PRTETR"/-->
+    <brick id="PRCONS"/>
+    <brick id="RBS1"/>
+    <brick id="AMPR"/>
+    <brick id="DTER"/>
+  </device>
+  <!--device id="hyperfl_m"-->
+  <device id="Hyperflagellation (med)">
+    <brick id="PRCONS"/>
+    <brick id="RBS1"/>
+    <brick id="MOV"/>
+    <brick id="DTER"/>
+  </device>
+</devices>

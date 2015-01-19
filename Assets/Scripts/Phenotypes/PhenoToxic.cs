@@ -10,14 +10,24 @@ using System;
  */
 public class PhenoToxic : Phenotype {
 
-  private Molecule _mol;
   public Hero hero;
+	private string _toxicName = "AMPI";
+
+    private Molecule _mol;  
+    //TODO extract to config file
+    private float _K0 = 0.01f;
+    private float _cc0 = 170f;
 
   //! Called at the beginning
   public override void StartPhenotype()
   {
-	_mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
+		initMoleculePhenotype();
   }
+
+	public void initMoleculePhenotype()
+	{
+		_mol = ReactionEngine.getMoleculeFromName (_toxicName, _molecules);
+	}
 
   /*!
     \brief This function is called as Update in Monobehaviour.
@@ -30,13 +40,26 @@ public class PhenoToxic : Phenotype {
 		//the molecule considered toxic is the "AMPI" molecule
 		if(_mol == null)
 		{
-		  _mol = ReactionEngine.getMoleculeFromName ("AMPI", _molecules);
+			initMoleculePhenotype();
 		  if (_mol == null)
-			return ;
-		}
-		float intensity = Phenotype.hill (_mol.getConcentration(), 50f, 1f, 0.0f, 0.01f);
+      {
+        Logger.Log("_mol == null", Logger.Level.ONSCREEN);
+        return ;
+      }
+     		}
+		float intensity = _K0*(Mathf.Exp(_mol.getConcentration()/_cc0)-1);
 		hero.subLife(intensity);
   }
+
+
+
+  public void CancelPhenotype() {
+    Logger.Log("PhenoToxic::CancelPhenotype", Logger.Level.WARN);
+    _mol.setConcentration(0f);
+  }
+
+
+  
 	
   //DEBUG
   /*

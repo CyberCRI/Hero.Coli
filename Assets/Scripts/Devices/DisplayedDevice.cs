@@ -5,25 +5,44 @@ using System.Collections.Generic;
 public class DisplayedDevice : DisplayedElement {
 
   // static stuff
-  private static string equipedPrefabURI = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
-  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
-  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDeviceButtonPrefab";
+
+  private static string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  public static string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+
+  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
+  
+  //private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
+  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
+  
+
+  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
   private static string baseDeviceTextureString = "device_";
   private static string quality256 = "256x256_";
   private static string quality80 = "80x80_";
-  private static string qualityDefault = "";
+  private static string quality64 = "64x64_";
+  private static string qualityDefault = "64x64_";
+  private const float levelLow = .126f;
+  private const float levelMed = .23f;
+  private const float levelLThreshold = levelLow * 0.75f;
+  private const float levelLMThreshold = ( levelLow + levelMed ) / 2;
+  private const float levelMThreshold = levelMed * 1.25f;
+  private static string levelDefaultPostfix = "";
+  private static string levelLowPostfix = "_low";
+  private static string levelMedPostfix = "_med";
   private static string defaultTexture = "default";
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
   {
     {"FLUO1", "fluo"},
-    //{"FLUO2", "fluo"},
+    // TODO fix this to have specific red fluorescence icon
+    {"FLUO2", "fluo"},
     {"MOV", "speed"},
-    {"ANTIBIO", "resist"}
+    {"AMPR", "resist"}
     //{"REPR1", ?},
     //{"REPR2", ?},
   };
+
 
   private static string getTextureName(string proteinName)
   {
@@ -33,6 +52,37 @@ public class DisplayedDevice : DisplayedElement {
       texture = defaultTexture;
     }
     return texture;
+  }
+
+  private static string getLevelPostfix(Device device)
+  {
+    string postfix;
+    if(device == null)
+    {
+      postfix = levelDefaultPostfix;
+    }
+    else
+    {
+      float expressionLevel = device.getExpressionLevel();
+  
+      if(expressionLevel < levelLThreshold)
+      {
+        postfix = levelDefaultPostfix;
+      }
+      else if (expressionLevel < levelLMThreshold)
+      {
+        postfix = levelLowPostfix;
+      }
+      else if (expressionLevel < levelMThreshold)
+      {
+        postfix = levelMedPostfix;
+      }
+      else
+      {
+        postfix = levelDefaultPostfix;
+      }
+    }
+    return postfix;
   }
 
   public Device                       _device;
@@ -57,10 +107,13 @@ public class DisplayedDevice : DisplayedElement {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
+            Logger.Log("DisplayedDevice: will create Equiped "+equipedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(equipedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
+            Logger.Log("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(inventoriedPrefabURI);
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
+            Logger.Log("DisplayedDevice: will create Listed "+listedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(listedPrefabURI);
     } else {
       Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);
@@ -91,7 +144,10 @@ public class DisplayedDevice : DisplayedElement {
   public static string getTextureName(Device device)
   {
     string usedSpriteName = baseDeviceTextureString;
-    switch (DevicesDisplayer.getTextureQuality())
+
+    DevicesDisplayer.TextureQuality quality = DevicesDisplayer.getTextureQuality();
+
+    switch (quality)
     {
       case DevicesDisplayer.TextureQuality.HIGH:
         usedSpriteName += quality256;
@@ -99,11 +155,26 @@ public class DisplayedDevice : DisplayedElement {
       case DevicesDisplayer.TextureQuality.NORMAL:
         usedSpriteName += quality80;
         break;
+      case DevicesDisplayer.TextureQuality.LOW:
+        usedSpriteName += quality64;
+        break;
       default:
         usedSpriteName += qualityDefault;
         break;
     }
-    usedSpriteName += getTextureName(device.getFirstGeneProteinName());
+
+    if(null == device)
+    {
+      usedSpriteName += getTextureName("");
+    }
+    else
+    {
+      usedSpriteName += getTextureName(device.getFirstGeneProteinName());
+    }
+
+    if(quality == DevicesDisplayer.TextureQuality.LOW)
+      usedSpriteName += getLevelPostfix(device);
+
     Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
     return usedSpriteName;
   }
@@ -120,7 +191,7 @@ public class DisplayedDevice : DisplayedElement {
       Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
     }
     Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
-    displayedDeviceScript._device = Device.buildDevice(device.getName(), device.getExpressionModules());
+    displayedDeviceScript._device = Device.buildDevice(device);
     if(displayedDeviceScript._device==null)
     {
       Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);
@@ -144,9 +215,15 @@ public class DisplayedDevice : DisplayedElement {
     Logger.Log("DisplayedDevice::OnPress "+_id+" device="+_device, Logger.Level.INFO);
   }
 
-  void OnHover(bool isOver)
+  protected virtual void OnHover(bool isOver)
   {
-    Logger.Log("DisplayedDevice::OnHover("+isOver+")", Logger.Level.DEBUG);
-    TooltipManager.tooltip(isOver, _device, transform.position);
+    Logger.Log("DisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.INFO);
+    TooltipManager.displayTooltip(isOver, _device, transform.position);
+  }
+
+  //TODO remove tooltip only if tooltip was about this displayed device
+  protected virtual void OnDestroy()
+  {
+    TooltipManager.displayTooltip();
   }
 }

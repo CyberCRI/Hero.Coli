@@ -3,29 +3,33 @@ using System.Collections;
 
 public class CraftFinalizationButton : MonoBehaviour {
   public CraftFinalizer craftFinalizer;
-  private UIImageButton _button;
+  private UIButton _button;
 
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("CraftFinalizationButton::OnPress()", Logger.Level.INFO);
+      Logger.Log("CraftFinalizationButton::OnPress()", Logger.Level.DEBUG);
       craftFinalizer.finalizeCraft();
     }
   }
 
   public void setEnabled(bool enabled) {
     if(_button == null) {
-      _button = GetComponent<UIImageButton>();
+      _button = GetComponent<UIButton>();
     }
-    Logger.Log("CraftFinalizationButton::setEnabled("+enabled+") starts with _button.isEnabled="+_button.enabled, Logger.Level.TRACE);
+		//Logger.Log ("bool enabled ====>"+enabled,Logger.Level.WARN);
     _button.enabled = enabled;
-    Logger.Log("CraftFinalizationButton::setEnabled("+enabled+") ends with _button.isEnabled="+_button.enabled, Logger.Level.TRACE);
+    if(enabled)
+      gameObject.GetComponentInChildren<UISprite>().alpha = 1f;
+    else{
+			transform.Find("Background").GetComponent<UISprite>().alpha = 0.5f;
+      //gameObject.GetComponentInChildren<UISprite>().alpha = 0.5f;
+		}
   }
 
   // Use this for initialization
   void Start () {
-    Logger.Log("CraftFinalizationButton::Start", Logger.Level.TRACE);
     if(_button == null) {
-      _button = GetComponent<UIImageButton>();
+      _button = GetComponent<UIButton>();
     }
     //hack to correctly initialize button state
     setEnabled(!_button.enabled);

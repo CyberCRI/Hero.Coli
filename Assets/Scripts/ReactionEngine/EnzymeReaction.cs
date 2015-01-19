@@ -2,13 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 
 /*!
-  \brief This class represent an EnzymeReaction and can be loaded by the ReactionEngine class
-  \author Pierre COLLET
+  \brief This class represents an EnzymeReaction and can be loaded by the ReactionEngine class
+  
   \sa EnzymeReaction
  */
-public class EnzymeReactionProprieties
+public class EnzymeReactionProperties
 {
   public string name;
   public string substrate;
@@ -37,8 +38,8 @@ In this simulation we have used a model that can describe enzymes kinetics (Mich
  as well as common models of enzyme inhibition and activation by other molecules (different from the substrate).
 The following scheme is a generalized model of inhibition that can describe competitive,
  uncompetitive, mixed and non-competitive inhibition, as well as heterotropic activation.
- \author Pierre COLLET
- \mail pierre.collet91@gmail.com
+ 
+ 
  */
 public class EnzymeReaction : IReaction
 {
@@ -89,10 +90,11 @@ public class EnzymeReaction : IReaction
     \brief Checks that two reactions have the same EnzymeReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     EnzymeReaction enzyme = reaction as EnzymeReaction;
     return (enzyme != null)
+    && base.PartialEquals(reaction)
     && (_substrate == enzyme._substrate)
     && (_enzyme    == enzyme._enzyme)
     && (_Kcat      == enzyme._Kcat)
@@ -105,11 +107,11 @@ public class EnzymeReaction : IReaction
 
 
   /*!
-    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProprieties
+    \brief This function build a new EnzymeReaction based on the given EnzymeReactionProperties
     \param props The proprities class
     \return This function return a new EnzymeReaction or null if props is null.
    */
-  public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProprieties props)
+  public static IReaction       buildEnzymeReactionFromProps(EnzymeReactionProperties props)
   {
     if (props == null)
       return null;
@@ -178,17 +180,39 @@ public class EnzymeReaction : IReaction
         if (effector != null)
           effectorConcentration = effector.getConcentration();
       }
+    if (_alpha == 0)
+    {
+      _alpha = 0.0000000001f;
+      Logger.Log("_alpha == 0", Logger.Level.WARN);
+    }
     if (_Ki == 0)
+    {
       _Ki = 0.0000000001f;
+      Logger.Log("_Ki == 0", Logger.Level.WARN);
+    }
     if (_Km == 0)
+    {
       _Km = 0.0000000001f;
-    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)))
-      / (1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / (_alpha * _Km * _Ki)));
+      Logger.Log("_Km == 0", Logger.Level.WARN);
+    }
+
+    float denominator = _alpha * _Km * _Ki;
+
+
+    float bigDenominator = 1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / denominator);
+    if(bigDenominator == 0)
+    {
+      Logger.Log("big denominator == 0", Logger.Level.WARN);
+      return 0;
+    }
+
+    float v = ((Vmax * (substrate.getConcentration() / _Km)) + (_beta * Vmax * substrate.getConcentration() * effectorConcentration / denominator))
+      / bigDenominator;
     return v;
   }
 
   /*!
-    \brief this fonction execute all the enzyme reactions
+    \brief this function execute all the enzyme reactions
     \details It's call execEnzymeReaction and substract to the substrate concentration what this function return.
     This function also add this returned value to all the producted molecules.
     \param molecules The list of molecules
@@ -201,18 +225,20 @@ public class EnzymeReaction : IReaction
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
       return ;
+
+    //TODO introduce delta t here instead of 1f
     float delta = execEnzymeReaction(molecules) * 1f;
 
     float energyCoef;
     float energyCostTot;    
     if (delta > 0f && _energyCost > 0f && enableEnergy)
-      {
-        energyCostTot = _energyCost * delta;
-        energyCoef = _medium.getEnergy() / energyCostTot;
-        if (energyCoef > 1f)
-          energyCoef = 1f;
-        _medium.subEnergy(energyCostTot);
-      }
+    {
+      energyCostTot = _energyCost * delta;
+      energyCoef = _medium.getEnergy() / energyCostTot;
+      if (energyCoef > 1f)
+        energyCoef = 1f;
+      _medium.subEnergy(energyCostTot);
+    }
     else
       energyCoef = 1f;
 
@@ -223,12 +249,178 @@ public class EnzymeReaction : IReaction
     else
       substrate.subNewConcentration(delta);
     foreach (Product pro in _products)
-      {
-        Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-        if (enableSequential)
-          mol.addConcentration(delta);
-        else
-          mol.addNewConcentration(delta);
-      }
+    {
+      Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+      if (enableSequential)
+        mol.addConcentration(delta);
+      else
+        mol.addNewConcentration(delta);
+    }
   }
+
+    // loading
+    /*
+        An enzymatic reaction should be declared by respecting this convention:
+
+        <enzyme>
+          <name>ER</name>                   -> Name of the reaction
+          <EnergyCost>0</EnergyCost>        -> Energy cost of the reaction
+          <substrate>X</substrate>          -> Substrate molecule's name
+          <enzyme>E</enzyme>                -> Enzyme molecule's name
+          <Kcat>10</Kcat>                   -> Reaction constant of enzymatic reaction
+          <effector>False</effector>        -> The name of the effector (or false if there is no effector)
+          <alpha>1000</alpha>               -> Competitive parameter (see EnzymeReaction class for more infos)
+          <beta>0</beta>                    -> Activation or inhibition character of the effector (see EnzymeReaction class for more infos)
+          <Km>0.5</Km>                      -> Affinity between substrate and enzyme
+          <Ki>0.05</Ki>                     -> Affinity between effector and enzyme
+          <Products>
+            <name>X*</name>                 -> Molecule's name of the product
+          </Products>
+        </enzyme>
+    */
+
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+      bool b = true;
+      foreach (XmlNode attr in node)
+      {
+        switch (attr.Name)
+        {
+          case "name":
+            b = b && loadEnzymeString(attr.InnerText, setName);
+            break;
+          case "substrate":
+            b = b && loadEnzymeString(attr.InnerText, setSubstrate);
+            break;
+          case "enzyme":
+            b = b && loadEnzymeString(attr.InnerText, setEnzyme);
+            break;
+          case "Kcat":
+            b = b && loadEnzymeFloat(attr.InnerText, setKcat);
+            break;
+          case "effector":
+            b = b && loadEnzymeString(attr.InnerText, setEffector);
+            break;
+          case "alpha":
+            b = b && loadEnzymeFloat(attr.InnerText, setAlpha);
+            break;
+          case "EnergyCost":
+            b = b && loadEnzymeFloat(attr.InnerText, setEnergyCost);
+            break;
+          case "beta":
+            b = b && loadEnzymeFloat(attr.InnerText, setBeta);
+            break;
+          case "Km":
+            b = b && loadEnzymeFloat(attr.InnerText, setKm);
+            break;
+          case "Ki":
+            b = b && loadEnzymeFloat(attr.InnerText, setKi);
+            break;
+          case "Products":
+            b = b && loadEnzymeReactionProducts(attr);
+            break;
+        }
+      }
+      return b && hasValidData();
+    }
+
+    
+    public override bool hasValidData()
+    {
+      bool valid = base.hasValidData()
+        && !string.IsNullOrEmpty(_substrate)            //!< The substrate of the reaction
+        && !string.IsNullOrEmpty(_enzyme)               //!< The enzyme of the reaction
+      //protected float _Kcat;                  //!< Reaction constant of enzymatic reaction
+        && !string.IsNullOrEmpty(_effector);            //!< The effector of the reaction
+      //protected float _alpha;                 //!< Alpha descriptor of the effector
+      //protected float _beta;                  //!< Beta descriptor of the effector
+      //protected float _Km;                    //!< Affinity coefficient between substrate and enzyme
+      //protected float _Ki;                    //!< Affinity coefficient between effector and enzyme;
+      if(valid)
+      {
+        if((0 == _alpha)
+           || (0 == _Ki)
+           || (0 == _Km))
+        {
+          //TODO check also _Kcat, _beta
+          Logger.Log ("EnzymeReaction::hasValidData please check values of "
+            + "alpha="+_alpha
+            + ", Ki="+_Ki
+            + ", Km="+_Km
+            +" for reaction "+this.getName()
+            , Logger.Level.WARN);
+        }
+      }
+      else
+      {
+        Logger.Log(
+                "EnzymeReaction::hasValidData base.hasValidData()="+base.hasValidData()
+                +" & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
+                +" & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
+                +" & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
+                +" => valid="+valid
+                , Logger.Level.ERROR
+                );
+      }
+      return valid;
+    }
+
+    private delegate void  StrSetter(string dst);
+    private delegate void  FloatSetter(float dst);
+    
+    
+    /*!
+    \brief Load and parse a string and give it to the given setter
+    \param value The string to parse and load
+    \param setter The delegate setter
+   */
+    private bool loadEnzymeString(string value, StrSetter setter)
+    {
+      if (String.IsNullOrEmpty(value))
+        return false;
+      setter(value);
+      return true;    
+    }
+    
+    /*!
+    \brief Load and parse a string and give it to the given setter
+    \param value The string to parse and load
+    \param setter The delegate setter
+   */
+    private bool loadEnzymeFloat(string value, FloatSetter setter)
+    {
+      if (String.IsNullOrEmpty(value))
+      {
+        Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty productionMax field"
+                       , Logger.Level.ERROR);
+        return false;
+      }
+      setter(float.Parse(value.Replace(",", ".")));
+      return true;    
+    }
+    
+    /*!
+    \brief Load products of an enzymatic reaction
+    \param node The xml node to load
+    \return Return always true
+   */
+    private bool loadEnzymeReactionProducts(XmlNode node)
+    {
+      foreach (XmlNode attr in node)
+      {
+        if (attr.Name == "name")
+        {
+          if (String.IsNullOrEmpty(attr.InnerText))
+          {
+            Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty name field in Enzyme Reaction definition"
+                               , Logger.Level.ERROR);
+            return false;
+          }
+          Product prod = new Product();
+          prod.setName(node.InnerText);
+          addProduct(prod);
+        }
+      }
+      return true;
+    }
 }

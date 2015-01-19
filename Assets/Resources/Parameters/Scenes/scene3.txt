@@ -1,0 +1,12 @@
+<Scene3>
+  <Mine>
+    <id>0</id>
+    <x>12</x>
+    <z>80</z>
+  </Mine>
+  <Mine>
+    <id>1</id>
+    <x>15</x>
+    <z>70</z>
+  </Mine>
+</Scene3>

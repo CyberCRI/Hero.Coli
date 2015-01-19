@@ -26,10 +26,8 @@ public class I18nLoader {
   {
     Logger.Log("I18nLoader::loadFromFile("+filePath+")", Logger.Level.INFO);
 
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+    
     XmlNodeList translations = xmlDoc.GetElementsByTagName(I18nXMLTags.ITEM);
 
     reinitVars();

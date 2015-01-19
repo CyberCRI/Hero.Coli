@@ -5,7 +5,7 @@ public class PickableTerminator : PickableBioBrick {
   public string bioBrickName;
   public float terminatorFactor;
 
-  protected override BioBrick produceBioBrick()
+    protected override DNABit produceDNABit()
   {
     return new TerminatorBrick(bioBrickName, terminatorFactor);
   }

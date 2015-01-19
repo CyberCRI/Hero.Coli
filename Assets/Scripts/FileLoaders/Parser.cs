@@ -10,7 +10,7 @@ using System.Text;
 /*!
   \brief This class create token from PromoterReaction formula
   \details The tokens list should be given to the PromoterParser in order to parse the string
-  \author Pierre COLLET
+  
   \sa PromoterParser
  */
 public class PromoterLexer
@@ -36,7 +36,7 @@ public class PromoterLexer
   /*!
     \brief This struct is a token.
     \details It contain a string and the corresponding eToken
-    \author Pierre COLLET
+    
    */
   public struct Token
   {
@@ -145,8 +145,8 @@ public class PromoterLexer
 }
 
 /*!
-  \brief This class is the node of the synthax tree of the promoter formula
-  \author Pierre COLLET
+  \brief This class is the node of the syntax tree of the promoter formula
+  
  */
 public class PromoterNodeData
 {
@@ -167,7 +167,7 @@ public class PromoterNodeData
   \brief This class parse a promoter formula
   \details For more information about the grammar, see PromoterReaction class
   \sa PromoterReaction
-  \author Pierre COLLET
+  
  */
 public class PromoterParser
 {
@@ -182,11 +182,11 @@ public class PromoterParser
     CONSTANT,           //!< Constants node (example [2.1,1])
     WORD,               //!< WORD node
     NUM,                //!< Number node
-    BOOL                //!< Booleen node (T or F)
+    BOOL                //!< Boolean node (T or F)
   }
 
 
-  LinkedList<PromoterLexer.Token>     _restoreList;     //!< The trash bin of token wich serve to restore token list
+  LinkedList<PromoterLexer.Token>     _restoreList;     //!< The trash bin of token which serve to restore token list
   int                   _restoreStatus;                 //!< The state of the parsing
 
   //! Default Constructor
@@ -241,7 +241,7 @@ public class PromoterParser
   /*!
     \brief Parse the formula
     \param tokenList The list of tokens to parse
-    \return Return the synthax tree or null if the parsing fail
+    \return Return the syntax tree or null if the parsing fail
    */
   public TreeNode<PromoterNodeData>     ParseFormula(LinkedList<PromoterLexer.Token> tokenList)
   {
@@ -605,7 +605,7 @@ public class PromoterParser
 
   /*!
     \brief This function pretty print the tree for debugging.
-    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \details The syntax of this pretty print function can be given to dot (graphiz)
     \param node The root of the tree
     \param str The string where to append the text
    */
@@ -628,9 +628,9 @@ public class PromoterParser
 
   /*!
     \brief This function pretty print the tree for debugging.
-    \details The synthax of this pretty print function can be given to dot (graphiz)
+    \details The syntax of this pretty print function can be given to dot (graphiz)
     \param tree The tree to pretty print
-    \return Return a string that contain the text
+    \return Return a string that contains the text
   */
   public string PPTree(TreeNode<PromoterNodeData> tree)
   {

@@ -47,7 +47,8 @@ public class PotionsDisplayer : MonoBehaviour {
 		}
 		*/
 	}
-	
+
+  /*
 	// Update is called once per frame
 	void Update () {
 		
@@ -69,4 +70,5 @@ public class PotionsDisplayer : MonoBehaviour {
 			_timeAtLastFrame = _timeAtCurrentFrame;
 		}
 	}
+ */
 }

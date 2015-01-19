@@ -19,6 +19,7 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
+
 # ============ #
 # OS generated #
 # ============ #
@@ -31,3 +32,21 @@ Icon?
 ehthumbs.db
 Thumbs.db
 /Build/
+
+# ============== #
+# game generated #
+# ============== #
+Assets/Resources/Parameters/Devices/exported.txt
+
+# ================ #
+# Proprietary code #
+# ================ #
+Assets/NGUI
+Assets/Plugins/Vectrosity.dll
+Assets/Plugins/Vectrosity.dll.meta
+Assets/Scripts/Graphs/VectrosityPanel.cs
+Assets/Scripts/Graphs/VectrosityPanel.cs.meta
+Assets/Scripts/Graphs/VectrosityPanel.prefab
+Assets/Scripts/Graphs/VectrosityPanel.prefab.meta
+Temp/bin/Debug/Vectrosity.dll
+

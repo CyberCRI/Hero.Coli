@@ -30,14 +30,12 @@ public class DeviceLoader {
 
   public LinkedList<Device> loadDevicesFromFile(string filePath)
   {
-    Logger.Log("DeviceLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
-
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
+    Logger.Log("DeviceLoader::loadDevicesFromFile("+filePath+")", Logger.Level.INFO);
 
     LinkedList<Device> resultDevices = new LinkedList<Device>();
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+    
     XmlNodeList deviceList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.DEVICE);
 
     reinitVars();
@@ -65,7 +63,13 @@ public class DeviceLoader {
               //find brick in existing bricks
               string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
               Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
-              brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => (b.getName() == brickName));
+                        //"warn" parameter is true to indicate that there is no such BioBrick
+                        //as the one mentioned in the xml file of the device
+                        brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
+                                                                    , b => (b.getName() == brickName)
+                                                                    , true
+                                                                    , " DeviceLoader::loadDevicesFromFile("+filePath+")"
+                                                                      );
               if(brick != null) {
                 Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
                 deviceBricks.AddLast(brick);
@@ -104,7 +108,7 @@ public class DeviceLoader {
   }
 
   private static void logCurrentBioBrick(string type){
-    Logger.Log("DeviceLoader::loadBioBricksFromFile type="+type, Logger.Level.TRACE);
+    Logger.Log("DeviceLoader::logCurrentBioBrick type="+type, Logger.Level.TRACE);
   }
 
   private bool checkString(string toCheck) {

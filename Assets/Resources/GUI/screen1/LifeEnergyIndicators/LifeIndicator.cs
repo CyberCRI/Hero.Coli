@@ -13,16 +13,24 @@ public class LifeIndicator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TODO trigger this after resize
-		hero = GameObject.Find ("Perso").GetComponent<Hero>();
+
+		if (GameObject.Find ("Perso") != null)
+		{
+			hero = GameObject.Find ("Perso").GetComponent<Hero>();
+			hero.setLife(startLife);
+		}
 		_lifeValueLabel = GameObject.Find("LifeValue").GetComponent<UILabel>();
 		_lifeValue = maxLife;
 		
-		hero.setLife(startLife);
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		_lifeValue = (int)(hero.getLife()*maxLife);
-		_lifeValueLabel.text = _lifeValue.ToString();
+		if(hero != null)
+		{
+			_lifeValue = Mathf.CeilToInt(hero.getLife()*maxLife);
+			_lifeValueLabel.text = _lifeValue.ToString();
+		}
 	}
 }

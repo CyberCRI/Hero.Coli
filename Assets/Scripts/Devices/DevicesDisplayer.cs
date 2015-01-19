@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
+//TODO adapt script for Device/Molecules pair in new interface
 public class DevicesDisplayer : MonoBehaviour {
 
 
@@ -26,10 +26,11 @@ public class DevicesDisplayer : MonoBehaviour {
   public enum TextureQuality {
     HIGH,
     NORMAL,
-	DEFAULT
+    LOW,
+    DEFAULT
   }
 
-  private static TextureQuality textureQuality = TextureQuality.DEFAULT;
+  private static TextureQuality textureQuality = TextureQuality.LOW;
 
   public static TextureQuality getTextureQuality()
   {
@@ -37,8 +38,8 @@ public class DevicesDisplayer : MonoBehaviour {
   }
 
   public enum DeviceType {
-	Equiped,
-	Inventoried,
+    Equiped,
+    Inventoried,
     Listed
   }
 	
@@ -51,13 +52,17 @@ public class DevicesDisplayer : MonoBehaviour {
   static private float _inventoriedWidth = 54.0f;
   static private float _inventoriedHeight = 70.0f;
   static private float _listedInventoriedHeight = 20.0f;
+  static private float _listedInventoriedWidth = 70.0f;
 
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
 
+  public GraphMoleculeList graphMoleculeList;
+
   public GameObject equipedDevice;
   public GameObject equipedDevice2;
+
   public GameObject inventoryDevice;
   public GameObject listedInventoryDevice;
 
@@ -84,8 +89,7 @@ public class DevicesDisplayer : MonoBehaviour {
       return;
     }
 
-    //TODO replace hashing
-		bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice.GetHashCode() == device.GetHashCode()));
+    bool alreadyInventoried = (_inventoriedDevices.Exists(inventoriedDevice => inventoriedDevice._device == device));
 		if(!alreadyInventoried) {
       // ADD TO EQUIPABLE DEVICES
 			Vector3 localPosition = getNewPosition(DeviceType.Inventoried);
@@ -108,20 +112,25 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
       parent = listedInventoryPanel.transform;
       Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
-      ListedDevice newListedDevice =
+      DisplayedDevice newListedDevice =
         ListedDevice.Create(
           parent
           , localPosition
+          , null
           , device
           , this
+          , DevicesDisplayer.DeviceType.Listed
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
 
+      /*
       if(_listedInventoriedDevices.Count == 1) {
-        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.TRACE);
+        Logger.Log("DevicesDisplayer::addInventoriedDevice: only 1 listed device", Logger.Level.);
         CraftZoneManager.get().askSetDevice(device);
       }
+      */
+      
 		} else {
 			Logger.Log("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried="+alreadyInventoried, Logger.Level.WARN);
 		}
@@ -136,8 +145,8 @@ public class DevicesDisplayer : MonoBehaviour {
     {
       Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
     }
-		bool alreadyEquiped = (!_equipedDevices.Exists(equipedDevice => equipedDevice._device.GetHashCode() == device.GetHashCode())); 
-		if(alreadyEquiped) { 
+		bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
+		if(newEquiped) { 
 			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
 			UnityEngine.Transform parent = equipPanel.transform;
 
@@ -151,8 +160,11 @@ public class DevicesDisplayer : MonoBehaviour {
           DevicesDisplayer.DeviceType.Equiped
         );
 			_equipedDevices.Add(newDevice);
+
+      graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
+
 		} else {
-			Logger.Log("addDevice failed: alreadyEquiped="+alreadyEquiped, Logger.Level.TRACE);
+			Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
 		}
 	}
 
@@ -171,17 +183,18 @@ public class DevicesDisplayer : MonoBehaviour {
 
 
 	public bool IsScreen(int screen) {
+    SafeGetTransitioner();
 		return (((transitioner._currentScreen == GUITransitioner.GameScreen.screen1) && (screen == 1))
 			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen2) && (screen == 2))
 			|| ((transitioner._currentScreen == GUITransitioner.GameScreen.screen3) && (screen == 3)));
 	}
 	
 	public bool IsEquipScreen() {
-		return (transitioner._currentScreen == GUITransitioner.GameScreen.screen2);
+		return (SafeGetTransitioner()._currentScreen == GUITransitioner.GameScreen.screen2);
 	}
 	
 	public void UpdateScreen(){
-		Logger.Log("DevicesDisplayer::UpdateScreen " + transitioner._currentScreen, Logger.Level.TRACE);
+		Logger.Log("DevicesDisplayer::UpdateScreen " + SafeGetTransitioner()._currentScreen, Logger.Level.TRACE);
 		if(IsScreen(1)) {
 			inventoryPanel.gameObject.SetActive(false);
       listedInventoryPanel.gameObject.SetActive(false);
@@ -202,18 +215,24 @@ public class DevicesDisplayer : MonoBehaviour {
     if(deviceType == DeviceType.Equiped) {
       if(idx == -1) idx = _equipedDevices.Count;
       res = equipedDevice.transform.localPosition + new Vector3(0.0f, -idx*_equipedHeight, -0.1f);
-    } else if(deviceType == DeviceType.Inventoried) {
+    }
+    else if(deviceType == DeviceType.Inventoried)
+    {
       if(idx == -1) idx = _inventoriedDevices.Count;
       res = inventoryDevice.transform.localPosition + new Vector3((idx%1)*_inventoriedWidth, -(idx/1)*_inventoriedHeight, -0.1f);
-    } else if(deviceType == DeviceType.Listed) {
+    }
+    else if(deviceType == DeviceType.Listed)
+    {
       if(idx == -1) idx = _listedInventoriedDevices.Count;
-      res = listedInventoryDevice.transform.localPosition + new Vector3(0.0f, -idx*_listedInventoriedHeight, -0.1f);
+      res = listedInventoryDevice.transform.localPosition + new Vector3(idx*_listedInventoriedWidth, 0.0f, -0.1f);
       Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
         +", idx="+idx
         +", localPosition="+listedInventoryDevice.transform.localPosition
         +", res="+res
         );
-    } else {
+    }
+    else
+    {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
       res = new Vector3();
     }
@@ -252,6 +271,7 @@ public class DevicesDisplayer : MonoBehaviour {
 
   public void removeEquipedDevice(Device toRemove) {
     removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
+    graphMoleculeList.removeDeviceAndMoleculesComponent(toRemove);
   }
 
   public void removeInventoriedDevice(Device toRemove) {
@@ -299,16 +319,26 @@ public class DevicesDisplayer : MonoBehaviour {
      }
    }
   }
-  
+
+  private GUITransitioner SafeGetTransitioner()
+  {
+    if(null == transitioner)
+    {
+      transitioner = GUITransitioner.get();
+    }
+    return transitioner;
+  }
+
   void Start () {
 	  Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
 
-    transitioner = GUITransitioner.get();
+    SafeGetTransitioner();
 	  inventoryPanel.gameObject.SetActive(false);
-
-    if(equipedDevice == null) {
-      equipedDevice = GameObject.Find ("EquipedDeviceButtonPrefabPos");
-      equipedDevice2 = GameObject.Find ("EquipedDeviceButtonPrefabPos2");
+    if(null == equipedDevice) {
+      Logger.Log("DevicesDisplayer::Start null==equipedDevice", Logger.Level.WARN);
+            
+      equipedDevice = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice;
+      equipedDevice2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice2;
     }
     if(_equipedHeight == 0.0f)
     {
@@ -316,5 +346,11 @@ public class DevicesDisplayer : MonoBehaviour {
     }
     equipedDevice.SetActive(false);
     equipedDevice2.SetActive(false);
+    inventoryDevice.SetActive (false);
+    if(null == equipPanel)
+    {
+      equipPanel = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevicesSlotsPanel;
+    }
+    equipPanel.gameObject.SetActive(false);
   }
 }

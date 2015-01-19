@@ -16,6 +16,16 @@ public abstract class DeviceContainer : MonoBehaviour {
 
   protected List<Device> _devices = new List<Device>();
   protected static DevicesDisplayer _displayer;
+
+  public bool contains(Device device)
+  {
+    return _devices.Exists(d => d.Equals(device));
+  }
+
+  public bool exists(System.Predicate<Device> predicate)
+  {
+    return _devices.Exists(predicate);
+  }
 	
   public void UpdateData(List<Device> added, List<Device> removed, List<Device> edited) {
     Logger.Log("DeviceContainer::UpdateData("
@@ -42,7 +52,7 @@ public abstract class DeviceContainer : MonoBehaviour {
   abstract public void editDevice(Device device);
 
  // Use this for initialization
- protected void Start () {
+ protected virtual void Start () {
    Logger.Log("DeviceContainer::Start()", Logger.Level.TRACE);
    _displayer = safeGetDisplayer();
  }

@@ -1,7 +1,7 @@
 /*!
   \brief This class is a simple binary tree
-  \author Pierre COLLET
-  \mail pierre.collet91@gmail.com
+  
+  
  */
 public class TreeNode<T>
 {

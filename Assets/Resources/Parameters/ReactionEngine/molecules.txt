@@ -1,0 +1,54 @@
+<Document>  
+  <molecules id="CelliaMolecules">
+    <molecule type="other">
+      <name>FLUO1</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.085</degradationRate>
+    </molecule>
+    <molecule type="other">
+      <name>FLUO2</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.085</degradationRate>
+    </molecule>
+    <molecule type="other">
+      <name>MOV</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.33</degradationRate>
+    </molecule>
+    <molecule type="enzyme">
+      <name>AMPR</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.1</degradationRate>
+    </molecule>
+    <molecule type="other">
+      <name>REPR1</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+    </molecule>
+    <molecule type="other">
+      <name>REPR2</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+    </molecule>    
+    <molecule type="other">
+      <name>AMPI</name>
+      <description></description>
+      <concentration>0</concentration>
+      <degradationRate>0.05</degradationRate>
+      <FickFactor>1</FickFactor>
+    </molecule>
+    <molecule type="other">
+      <name>AMPI*</name>
+      <description></description>
+      <concentration>0</concentration>
+      <!-- degradationRate was 0.01 in previous versions -->
+      <degradationRate>0.2</degradationRate>
+    </molecule>
+  </molecules>
+</Document>

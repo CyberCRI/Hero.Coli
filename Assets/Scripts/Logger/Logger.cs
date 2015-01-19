@@ -11,11 +11,43 @@ using System.Collections.Generic;
  \mail raphael.goujet@gmail.com 
  */
 public class Logger : MonoBehaviour {
-  private static Logger _singleton = null;
-  public bool interactiveDebug = true;
+    private static Logger _internalSingleton;
+    private static Logger _singleton {
+      get {
+        if(_internalSingleton == null)
+        {
+          _internalSingleton = GameObject.Find("Logger").GetComponent<Logger>();
+          switch(_internalSingleton.logLevelIdx)
+          {
+            case 0: _level = Level.ALL;
+            break;
+            case 1: _level = Level.ONSCREEN;
+            break;
+            case 2: _level = Level.INTERACTIVE;
+            break;
+            case 3: _level = Level.TRACE;
+            break;
+            case 4: _level = Level.DEBUG;
+            break;
+            case 5: _level = Level.INFO;
+            break;
+            case 6: _level = Level.TEMP;
+            break;
+            case 7: _level = Level.WARN;
+            break;
+            case 8: _level = Level.ERROR;
+            break;
+          }
+        }
+        return _internalSingleton;
+      }
+    }
+
+  //TODO fix interactive mode by making this field static
+  //public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
   public int logLevelIdx;
-
+  
 /*!
  \brief log levels
  \details
@@ -41,28 +73,32 @@ public class Logger : MonoBehaviour {
     ERROR         // 8 only for crashes or events threatening the program flow
   }
   private static Level _level = Level.INFO; // initialized in Awake()
+
+  /*
   private static Level _previousLevel;
 	
   private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
   private float _deltaTime = 0f;	
   private float _deltaTimeThreshold = 0.2f;
+  */
 	
   private List<string> _messages = new List<string>();
 	
   public static bool isLevel(Level level) {
-	return level == _level;
+    return level == _level;
   }	
-	
+
   public static bool isInteractive() {
-    return (_singleton != null) && _singleton.interactiveDebug;
-  }	
+    //return (_singleton != null) && _singleton.interactiveDebug;
+    return false;
+  }
 
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-	if(level == Level.ONSCREEN) {
-	  pushMessage(debugMsg);
-	} else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+    if(level == Level.ONSCREEN) {
+      pushMessage(debugMsg);
+    } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
       string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
       if (level == Level.WARN || level == Level.TEMP) {
         Debug.LogWarning(timedMsg);
@@ -74,12 +110,58 @@ public class Logger : MonoBehaviour {
     }
   }
 
+  //TODO optimize
   public static string ToString<T>(ICollection<T> objects, string separator = defaultSeparator) {
-    T[] array = new T[objects.Count];
-    objects.CopyTo(array, 0);
-    return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
+    if(null != objects && 0 != objects.Count)
+    {
+      T[] array = new T[objects.Count];
+      objects.CopyTo(array, 0);
+      return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
+    }
+    else
+    {
+      return "null";
+    }
   }
-	
+
+  public static string EnumerableToString<T>(IEnumerable<T> objects, string separator = defaultSeparator) {
+    if(null != objects)
+    {
+      string result = "";
+      foreach(T elt in objects)
+      {
+        if(!string.IsNullOrEmpty(result))
+        {
+          result += ", ";
+        }
+        result += elt.ToString();
+      }
+      return result;
+    }
+    else
+    {
+        return "null";
+    }
+  }
+    
+  public static string ToString<T>(string typeName, ICollection objects, string separator = defaultSeparator)
+  {
+    string resultString = "";
+    if(null != objects)
+    {
+      foreach(object obj in objects)
+      {
+        if(!string.IsNullOrEmpty(resultString))
+        {
+          resultString += ", ";
+        }
+        resultString += ((T)obj).ToString();
+      }
+    }
+    resultString = typeName+"s["+resultString+"]";
+    return resultString;
+  }
+
   public static string ToString<T>(TreeNode<T> tree, string separator = defaultSeparator) {
 		if(tree==null) {
 			return "";
@@ -110,53 +192,54 @@ public class Logger : MonoBehaviour {
     }
     return beginString + middleString + endString;
   }
+
+  public static string ToString(System.Xml.XmlNode node, int indentation = 0)
+  {
+    using (var sw = new System.IO.StringWriter())
+    {
+      using (var xw = new System.Xml.XmlTextWriter(sw))
+      {
+        xw.Formatting = System.Xml.Formatting.Indented;
+        xw.Indentation = indentation;
+        node.WriteContentTo(xw);
+      }
+      return sw.ToString();
+    }
+  }
+
+    public static string ToString(System.Xml.XmlNodeList list, int indentation = 0)
+    {
+        string result = "";
+        foreach(System.Xml.XmlNode node in list)
+        {
+            result += ToString(node, indentation);
+        }
+
+        result = "XmlNodeList[" + result + "]";
+        return result;
+    }
+
 	
   private static void pushMessage(string msg) {
-	_singleton._messages.Add(msg);
+    _singleton._messages.Add(msg);
   }
 	
   public static List<string> popAllMessages() {
-	List<string> copy = new List<string>(_singleton._messages);
-	_singleton._messages.Clear();
-	return copy;
+    List<string> copy = new List<string>(_singleton._messages);
+    _singleton._messages.Clear();
+    return copy;
   }
-	
-  public void Awake() {
-	if(_singleton == null) {
-	  _singleton = this;
-	  switch(logLevelIdx) {
-		case 0: _level = Level.ALL;
-			break;
-		case 1: _level = Level.ONSCREEN;
-			break;
-		case 2: _level = Level.INTERACTIVE;
-			break;
-		case 3: _level = Level.TRACE;
-			break;
-		case 4: _level = Level.DEBUG;
-			break;
-		case 5: _level = Level.INFO;
-			break;
-    case 6: _level = Level.TEMP;
-      break;
-    case 7: _level = Level.WARN;
-      break;
-		case 8: _level = Level.ERROR;
-			break;
-	  }
-	  _previousLevel = _level;
-	}
-  }
-	
+
+  /*
   public void Update() {
-	_timeAtCurrentFrame = Time.realtimeSinceStartup;
+    _timeAtCurrentFrame = Time.realtimeSinceStartup;
     _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
 	
-	if(_deltaTime > _deltaTimeThreshold) {
+    if(_deltaTime > _deltaTimeThreshold) {
       if (Input.GetKey(KeyCode.J)) {
         interactiveDebug = !interactiveDebug;
-		Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
-		_timeAtLastFrame = _timeAtCurrentFrame;
+        Logger.Log("Logger::Update press J interactiveDebug="+interactiveDebug, Logger.Level.WARN);
+        _timeAtLastFrame = _timeAtCurrentFrame;
       }
       if (Input.GetKey(KeyCode.H)) {
 		if(_level == Level.TRACE) {
@@ -168,6 +251,7 @@ public class Logger : MonoBehaviour {
 		Logger.Log("Logger::Update press H _level="+_level, Logger.Level.WARN);
 		_timeAtLastFrame = _timeAtCurrentFrame;
       }
-	}
+    }
   }
+  */
 }

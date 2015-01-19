@@ -14,7 +14,8 @@ public static class LinkedListExtensions
   public static void AppendRange<T>(this LinkedList<T> source,
                                     IEnumerable<T> items)
   {
-    foreach (T item in items)
+    if(null != items)
+      foreach (T item in items)
         source.AddLast(item);
   }
 
@@ -75,18 +76,27 @@ public static class LinkedListExtensions
   }
 
 
-  public static T Find<T>(LinkedList<T> list, Predicate<T> predicate) {
+  public static T Find<T>(LinkedList<T> list, Predicate<T> predicate, bool warn = false, string debugMsg = "") {
     foreach (T t in list) {
       if (predicate(t)) {
         return t;
       }
     }
-    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!", Logger.Level.WARN);
+    Logger.Level level = Logger.Level.DEBUG;
+    if(warn)
+    {
+      level = Logger.Level.WARN;
+    }
+    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!"+debugMsg, level);
     return default(T);
   }
 
   public static bool Equals<T>(LinkedList<T> list1, LinkedList<T> list2)
   {
+    if(list1 == null || list2 == null) return false;
+
+    if(list1.Count != list2.Count) return false;
+
     LinkedListNode<T> it1 = list1.First;
     LinkedListNode<T> it2 = list2.First;
 

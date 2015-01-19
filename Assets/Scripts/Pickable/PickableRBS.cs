@@ -5,7 +5,7 @@ public class PickableRBS : PickableBioBrick {
   public string bioBrickName;
   public float rbsFactor;
 
-  protected override BioBrick produceBioBrick()
+    protected override DNABit produceDNABit()
   {
     return new RBSBrick(bioBrickName, rbsFactor);
   }

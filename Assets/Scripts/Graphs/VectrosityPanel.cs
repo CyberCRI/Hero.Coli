@@ -22,6 +22,7 @@ public class VectrosityPanel : MonoBehaviour {
   private float height = 800;
 
   private ReactionEngine _reactionEngine;
+  private LinkedList<Medium> _mediums;
   public int _mediumId;
 	
   private List<Line> _lines = new List<Line>(); 
@@ -31,23 +32,47 @@ public class VectrosityPanel : MonoBehaviour {
   public void setPause(bool paused) {
 	  _paused = paused;
   }
-	
-  // Use this for initialization
-  void Start () {
-  	infos = new PanelInfos();
-  	refreshInfos();
-  	
-  	VectorLine.SetCamera3D(GUICam);
-  	
-  	_lines = new List<Line>();
-  
-    _reactionEngine = ReactionEngine.get();
-  
-    LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-    if (mediums == null)
-      return ;
-  
-    Medium medium = ReactionEngine.getMediumFromId(_mediumId, mediums);
+
+  public int getMediumId()
+  {
+    return _mediumId;
+  }
+
+  private bool safeLazyInit()
+  {
+    if(null==_reactionEngine)
+      _reactionEngine = ReactionEngine.get();
+
+    if(_reactionEngine != null)
+    {
+      if(null==_mediums)
+      {
+        _mediums = _reactionEngine.getMediumList();
+      }
+      if(null==_mediums)
+      {
+        Logger.Log ("VectrosityPanel::safeLazyInit failed to get mediums", Logger.Level.WARN);
+        return false;
+      }
+    }
+    else
+    {
+      Logger.Log ("VectrosityPanel::safeLazyInit failed to get ReactionEngine", Logger.Level.WARN);
+      return false;
+    }
+
+    return true;
+  }
+
+  public void setMedium(int mediumId)
+  {
+
+    if(!safeLazyInit())
+      return;
+
+    _mediumId = mediumId;
+
+    Medium medium = ReactionEngine.getMediumFromId(_mediumId, _mediums);
     if (medium == null)
     {
       Debug.Log("Can't find the given medium (" + _mediumId + ")");
@@ -57,11 +82,32 @@ public class VectrosityPanel : MonoBehaviour {
     _molecules = medium.getMolecules();
     if (_molecules == null)
       return ;
-  
+
+    Line line;
     foreach (Molecule m in _molecules)
-      _lines.Add(new Line(width, height, infos, m.getName()));
+    {
+      line = _lines.Find(l => l.name == m.getName());
+      if(null == line)
+      {
+        _lines.Add(new Line(width, height, infos, m.getName()));
+      }
+    }
   
-  	drawLines(true);
+    drawLines(true);
+  }
+	
+  // Use this for initialization
+  void Start () {
+  	infos = new PanelInfos();
+  	refreshInfos();
+  	
+  	VectorLine.SetCamera3D(GUICam);
+  
+    safeLazyInit();
+
+    _lines = new List<Line>();
+
+    setMedium(_mediumId);
   }
 	
   // Update is called once per frame
@@ -91,15 +137,17 @@ public class VectrosityPanel : MonoBehaviour {
   void drawLines(bool resize) {
     if (_molecules == null)
       return ;
-    foreach(Line line in _lines){
+    foreach(Line line in _lines)
+    {
       Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
-      if(resize) line.resize();
-	  if(!_paused) {
+      if(resize)
+        line.resize();
+      if(!_paused) {
         if (m != null)
           line.addPoint(m.getConcentration());
         else
-          line.addPoint();
-	  }
+          line.addPoint(0f);
+      }
       line.redraw();
     }
   }

@@ -9,7 +9,7 @@ using UnityEngine;
   of production of ATP.
   This class only create ATP without consuming anything else. If you want to implement the
   real reactions you can create a new reaction that inherit from IReaction class.
-  \author Pierre COLLET
+  
  */
 public class ATPProducer : IReaction
 {
@@ -34,10 +34,11 @@ public class ATPProducer : IReaction
     \brief Checks that two reactions have the same ATPProducer field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     ATPProducer producer = reaction as ATPProducer;
     return (producer != null)
+    && base.PartialEquals(reaction)
     && (_production == producer._production);
   }
 
@@ -48,5 +49,21 @@ public class ATPProducer : IReaction
   public override void react(ArrayList molecules)
   {
     _medium.addEnergy(_production * _reactionSpeed * ReactionEngine.reactionsSpeed);
+  }
+  
+
+  public override bool hasValidData()
+  {
+    bool valid = base.hasValidData();
+    if(valid)
+    {
+      if(0 == _production)
+      {
+        Logger.Log ("Degradation::hasValidData please check that you really intended a production rate of 0 " +
+                      "for energy producer "+this.getName()
+                      , Logger.Level.WARN);
+      }
+    }
+    return valid;
   }
 }

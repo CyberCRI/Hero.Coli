@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 //!
 /*!
- *  \brief     The main class that compute all the reactions.
- *  \details     This class initialize from files and execute all the reactions.
+ *  \brief     The main class that computes all the reactions.
+ *  \details     This class initializes from files and execute all the reactions.
  The reactions that are currently implemented are :
 
  - Degradation
@@ -15,8 +15,8 @@ using System.Collections.Generic;
  - Enzyme reaction with effectors (EnzymeReaction)
  - Promoter expressions (Promoter)
 
-   \author    Pierre COLLET
-   \mail pierre.collet91@gmail.com
+   
+   
  */
 public class ReactionEngine : MonoBehaviour {
 
@@ -31,37 +31,29 @@ public class ReactionEngine : MonoBehaviour {
     return _instance;
   }
 
-  private Fick _fick;                                   //!< The Fick class that manage molecules diffusions between medium
-  private ActiveTransport       _activeTransport;       //!< The class that manage Active transport reactions.
-  private LinkedList<Medium>    _mediums;               //!< The list that contain all the mediums
-  private LinkedList<ReactionsSet> _reactionsSets;      //!< The list that contain the reactions sets
-  private LinkedList<MoleculesSet> _moleculesSets;      //!< The list that contain the molecules sets
+  private Fick _fick;                                   //!< The Fick class that manages molecules diffusions between medium
+  private ActiveTransport       _activeTransport;       //!< The class that manages Active transport reactions.
+  private LinkedList<Medium>    _mediums;               //!< The list that contains all the mediums
+  private LinkedList<ReactionSet> _reactionsSets;      //!< The list that contains the reactions sets
+  private LinkedList<MoleculeSet> _moleculesSets;      //!< The list that contains the molecules sets
   public string[]      _mediumsFiles;                   //!< all the medium files
-  public string[]      _reactionsFiles;                 //!< all the reactions files
-  public string[]      _moleculesFiles;                 //!< all the molecules files
+  public string[]      _reactionsFiles;                 //!< all the reaction files
+  public string[]      _moleculesFiles;                 //!< all the molecule files
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
   public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
-  public static float  reactionsSpeed = 0.9f;           //!< Global reactions speed
+  public static float  reactionsSpeed = 0.9f;           //!< Global reaction speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
   public bool enableNoise;                              //!< Add Noise in each Reaction
-  public bool enableEnergy;                             //!< Enable energy consomation
-  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in middles
-  public bool enableShufflingMediumOrder;               //!< Randomize middles computation order
+  public bool enableEnergy;                             //!< Enable energy consumption
+  public bool enableShufflingReactionOrder;             //!< Randomize reaction computation order in mediums
+  public bool enableShufflingMediumOrder;               //!< Randomize medium computation order
 	
   private bool _paused;                                 //!< Simulation state
-	
-	
-  //debug
-  public bool _debug;
-  private float _timeAtLastDebug = 0f;
-  private float _timeAtCurrentFrame = 0f;
-  private float _deltaTime = 0f;
-  private float _deltaTimeThreshold = 0.5f;
 
   public Fick getFick() { return _fick; }
   
   /*!
-    \brief Add an IReaction to a medium
+    \brief Adds an IReaction to a medium
     \param mediumId The medium ID.
     \param reaction The reaction to add.
    */
@@ -76,9 +68,9 @@ public class ReactionEngine : MonoBehaviour {
 	}
 	
 	/*TODO FIXME USEFULNESS?/////////////////////////////////////////////////////////////////////
-	ReactionsSet reactionsSet = null;
+	ReactionSet reactionsSet = null;
 	string medName = med.getName()+"Reactions";
-	foreach (ReactionsSet rs in _reactionsSets) {
+	foreach (ReactionSet rs in _reactionsSets) {
 	  if (rs.id == medName) reactionsSet = rs;
 	}
 	if (reactionsSet != null) {
@@ -144,21 +136,24 @@ public class ReactionEngine : MonoBehaviour {
   */
   public static Molecule        getMoleculeFromName(string name, ArrayList molecules)
   {
-    foreach (Molecule mol in molecules)
-      if (mol.getName() == name)
-        return mol;
+    if(null != molecules)
+    {
+      foreach (Molecule mol in molecules)
+        if (mol.getName() == name)
+          return mol;
+    }
     return null;
   }
 
-//! Return the ReactionsSet reference corresponding to the given id
+//! Return the ReactionSet reference corresponding to the given id
   /*!
-      \param id The id of the ReactionsSet
-      \param list The list of ReactionsSet where to search in
+      \param id The id of the ReactionSet
+      \param list The list of ReactionSet where to search in
   */
-  public static ReactionsSet    getReactionsSetFromId(string id, LinkedList<ReactionsSet> list)
+  public static ReactionSet    getReactionSetFromId(string id, LinkedList<ReactionSet> list)
   {
-    foreach (ReactionsSet reactSet in list)
-      if (reactSet.id == id)
+    foreach (ReactionSet reactSet in list)
+      if (reactSet.getStringId() == id)
         return reactSet;
     return null;
   }
@@ -168,7 +163,7 @@ public class ReactionEngine : MonoBehaviour {
       \param mol Molecule to match.
       \param list Molecule list where to search in.
   */
-  public static bool    isMoleculeIsDuplicated(Molecule mol, ArrayList list)
+  public static bool    isMoleculeDuplicated(Molecule mol, ArrayList list)
   {
     foreach (Molecule mol2 in list)
       if (mol2.getName() == mol.getName())
@@ -185,40 +180,47 @@ public class ReactionEngine : MonoBehaviour {
     return _mediums;
   }
 
-  //! Return an ArrayList that contain all the differents molecules an list of MoleculesSet
+  //! Return an ArrayList that contains all the differents molecules from a list of MoleculeSet
   /*!
-      \param list the list of MoleculesSet
+      \param list the list of MoleculeSet
   */
-  public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculesSet> list)
+  public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculeSet> list)
   {
+
     ArrayList molecules = new ArrayList();
 
     
-    foreach (MoleculesSet molSet in list)
+    foreach (MoleculeSet molSet in list)
       {
         foreach (Molecule mol in molSet.molecules)
-          if (!isMoleculeIsDuplicated(mol, molecules))
+          if (!isMoleculeDuplicated(mol, molecules))
             molecules.Add(mol);
       }
     return molecules;
   }
 
-  //! Return the MoleculesSet of a list of MoleculesSet corresponding to an id
+  //! Return the MoleculeSet of a list of MoleculeSet corresponding to an id
   /*!
-    \param id The id of the MoleculesSet
-    \param list The list of MoleculesSet
+    \param id The id of the MoleculeSet
+    \param list The list of MoleculeSet
   */
-  public static MoleculesSet    getMoleculesSetFromId(string id, LinkedList<MoleculesSet> list)
+  public static MoleculeSet    getMoleculeSetFromId(string id, LinkedList<MoleculeSet> list)
   {
-    foreach (MoleculesSet molSet in list)
-      if (molSet.id == id)
+    foreach (MoleculeSet molSet in list)
+      if (molSet.getStringId() == id)
         return molSet;
     return null;
   }
 	
-  public ArrayList getMoleculesFromMedium(int id) {
-    Medium medium = LinkedListExtensions.Find<Medium>(_mediums, m => m.getId() == id);
-	if (medium != null) {
+    public ArrayList getMoleculesFromMedium(int id) {
+        //"warn" parameter is true to indicate that there is no such Medium
+        //as the one needed to get molecules
+    Medium medium = LinkedListExtensions.Find<Medium>(
+            _mediums
+            , m => m.getId() == id
+            , true
+            , " RE::getMoleculesFromMedium("+id+")");
+		if (medium != null) {
 	  return medium.getMolecules();
 	} else {
 	  return null;
@@ -231,31 +233,58 @@ public class ReactionEngine : MonoBehaviour {
     _instance = this;
 
     FileLoader fileLoader = new FileLoader();
-    _reactionsSets = new LinkedList<ReactionsSet>();
-    _moleculesSets = new LinkedList<MoleculesSet>();
+    _reactionsSets = new LinkedList<ReactionSet>();
+    _moleculesSets = new LinkedList<MoleculeSet>();
     _mediums = new LinkedList<Medium>();
     
-    foreach (string file in _reactionsFiles)
-      LinkedListExtensions.AppendRange<ReactionsSet>(_reactionsSets, fileLoader.loadReactionsFromFile(file));
-    foreach (string file in _moleculesFiles)
-      LinkedListExtensions.AppendRange<MoleculesSet>(_moleculesSets, fileLoader.loadMoleculesFromFile(file));
 
-    MediumLoader mediumLoader = new MediumLoader();
+		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
+    foreach (string file in _reactionsFiles)
+		{
+			LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file,"reactions");
+      if(null != lr)
+        LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
+		}
+    foreach (string file in _moleculesFiles)
+		{
+      Logger.Log("ReactionEngine::Awake() loading molecules from file", Logger.Level.DEBUG);
+
+			LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file,"molecules");
+      if(null != lm)
+			  LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
+
+            Logger.Log("ReactionEngine::Awake() loading molecules from file done"
+                       +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
+                       , Logger.Level.DEBUG);
+		}
+    
     foreach (string file in _mediumsFiles)
-      LinkedListExtensions.AppendRange<Medium>(_mediums, mediumLoader.loadMediumsFromFile(file));
+		{
+      LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file,"Medium");
+      if(null != lmed)
+			  LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
+		}
+
     foreach (Medium medium in _mediums)
-      {
-        medium.Init(_reactionsSets, _moleculesSets);
-        medium.enableSequential(enableSequential);
-        medium.enableNoise(enableNoise);
-        medium.enableEnergy(enableEnergy);
-        medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
-      }
+    {
+      medium.Init(_reactionsSets, _moleculesSets);
+      medium.enableSequential(enableSequential);
+      medium.enableNoise(enableNoise);
+      medium.enableEnergy(enableEnergy);
+      medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+    }
+
+        Logger.Log("ReactionEngine::Awake() FickReactions starting", Logger.Level.INFO);
 
     _fick = new Fick();
     _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
-    _activeTransport = new ActiveTransport();
+
+        Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.INFO);
+
+    _activeTransport = new ActiveTransport();        
     _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
+
+        Logger.Log("ReactionEngine::Awake() done", Logger.Level.INFO);
   }
 	
   //TODO manage reaction speed for smooth pausing
@@ -271,41 +300,22 @@ public class ReactionEngine : MonoBehaviour {
   //! This function is called at each frame
   public void Update()
   {		
-	if(_paused) {
-	  Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
-	} else {
-	  _fick.react();
+	  if(_paused) {
+	    Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
+	  } else {
+	    _fick.react();
       if (enableShufflingMediumOrder)
         LinkedListExtensions.Shuffle<Medium>(_mediums);
+
       foreach (Medium medium in _mediums)
         medium.Update();
-	  Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
+
+	    Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
       if (!enableSequential) {
         foreach (Medium medium in _mediums)
           medium.updateMoleculesConcentrations();
-		Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
-	  }
-	  
-	  //TODO REMOVE
-	  if(_debug) {
-	  	_timeAtCurrentFrame = Time.realtimeSinceStartup;
-	      _deltaTime = _timeAtCurrentFrame - _timeAtLastDebug;
-	  		
-	  	bool debug = (_deltaTime > _deltaTimeThreshold);
-	  	if(debug) {
-	  		_timeAtLastDebug = _timeAtCurrentFrame;
-	  		//debug
-	  		foreach (Medium medium in _mediums)
-	  		  medium.Log();
-	  	}
-	  }
-			
-	  if (Input.GetKey(KeyCode.U)) {
-	    //dump all reactions
-		Logger.Log("ReactionEngine::Update Press U reactions="+getReactionsSetFromId("CelliaReactions", _reactionsSets)
-					, Logger.Level.WARN
-					);	
+		    Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
       }
-	}
+	  }
   }
 }

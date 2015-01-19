@@ -6,6 +6,7 @@ public class Inventory : DeviceContainer
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   public static string gameObjectName = "DeviceInventory";
+	public InventoryAnimator animator;
   private static Inventory _instance;
   public static Inventory get() {
     if(_instance == null) {
@@ -14,21 +15,37 @@ public class Inventory : DeviceContainer
     }
     return _instance;
   }
+
+  public static bool isOpenable()
+  {
+    return 0 != _instance._devices.Count;
+  }
+
   void Awake()
   {
     Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
+		_deviceAdded = false;
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  private string[] _deviceFiles = new string[]{};
-  //private string[] _deviceFiles = new string[]{ "Assets/Data/devices.txt"};
-  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices.xml", Inventory.SaveFilePath };
-  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices.xml", Inventory.SaveFilePath };
+  /* array of file paths from which the devices available by default from start will be loaded */
+
+  //private string[] _deviceFiles = new string[]{};
+  private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePath };
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePath };
 	
-  public static string SaveFilePath = "Assets/Data/raph/userDevices.xml";
+  private string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.txt";
 
   private string _genericDeviceNamePrefix = "device";
+
+	private bool _deviceAdded;
+
+	public bool getDeviceAdded() {return _deviceAdded;}
+	public void setDeviceAdded(bool b) {_deviceAdded = b;}
+
 
   private static string[] proteinsIn = new string[]{
     "Collagen",
@@ -110,31 +127,41 @@ public class Inventory : DeviceContainer
     Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
     _displayer.addInventoriedDevice(copy);
     Logger.Log("Inventory::addDevice("+device+"), count after="+_devices.Count, Logger.Level.TRACE);
+
+		if (animator.isPlaying ==false)
+		{
+			_deviceAdded = true;
+			animator.Play();
+		}
   }
 
-  public AddingResult canAddDevice(Device device) {
-    Logger.Log("Inventory::canAddDevice("+device+") with _devices="+Logger.ToString<Device>(_devices), Logger.Level.TRACE);
+    public AddingResult canAddDevice(Device device) {
+        Logger.Log("Inventory::canAddDevice("+device+") with _devices="+Logger.ToString<Device>(_devices), Logger.Level.TRACE);
 
-    if(device == null) {
-      Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
-      return AddingResult.FAILURE_DEFAULT;
-    } else {
-      if (_devices.Exists(d => d.getName() == device.getName())) {
-        if (_devices.Exists(d => d.hasSameBricks(device))) {
-          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE",Logger.Level.TRACE);
-          return AddingResult.FAILURE_SAME_DEVICE;
+        if(device == null) {
+            Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT",Logger.Level.WARN);
+            return AddingResult.FAILURE_DEFAULT;
         } else {
-          Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME",Logger.Level.TRACE);
-          return AddingResult.FAILURE_SAME_NAME;
+            //TODO test BioBricks equality (cf next line)
+            if (_devices.Exists(d => d.Equals(device)))
+            //if (_devices.Exists(d => d.getInternalName() == device.getInternalName()))
+            {
+                if (_devices.Exists(d => d.hasSameBricks(device)))
+                {
+                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE",Logger.Level.TRACE);
+                    return AddingResult.FAILURE_SAME_DEVICE;
+                } else {
+                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME",Logger.Level.TRACE);
+                    return AddingResult.FAILURE_SAME_NAME;
+                }
+            } else if (_devices.Exists(d => d.hasSameBricks(device))) {
+                Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS",Logger.Level.TRACE);
+                return AddingResult.FAILURE_SAME_BRICKS;
+            } else {
+                Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS",Logger.Level.TRACE);
+                return AddingResult.SUCCESS;
+            }
         }
-      } else if (_devices.Exists(d => d.hasSameBricks(device))) {
-        Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS",Logger.Level.TRACE);
-        return AddingResult.FAILURE_SAME_BRICKS;
-      } else {
-        Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS",Logger.Level.TRACE);
-        return AddingResult.SUCCESS;
-      }
-    }
   }
 
   public override AddingResult askAddDevice(Device device) {
@@ -145,7 +172,7 @@ public class Inventory : DeviceContainer
       addDevice(device);
 
       //DeviceSaver dSaver = new DeviceSaver();
-      //dSaver.saveDevicesToFile(_devices, SaveFilePath);
+      //dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
@@ -162,23 +189,24 @@ public class Inventory : DeviceContainer
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
   }
 
-  public string getAvailableDeviceName() {
-    Logger.Log("Inventory::getAvailableDeviceName()", Logger.Level.TRACE);
-    bool taken;
-    string currentName;
-    int number = _devices.Count;
-    do {
-      currentName = _genericDeviceNamePrefix+number;
-      taken = _devices.Exists(d => (d.getName() == currentName));
-      if(taken){
-        number++;
-      } else {
+    //
+    public string getAvailableDeviceDisplayedName() {
+        Logger.Log("Inventory::getAvailableDeviceDisplayedName()", Logger.Level.TRACE);
+        bool taken;
+        string currentName;
+        int number = _devices.Count;
+        do {
+            currentName = _genericDeviceNamePrefix+number;
+            taken = _devices.Exists(d => (d.displayedName == currentName));
+            if(taken){
+                number++;
+            } else {
+                return currentName;
+            }
+        } while (taken);
+        Logger.Log("Inventory::getAvailableDeviceDisplayedName() returns "+currentName, Logger.Level.TRACE);
         return currentName;
-      }
-    } while (taken);
-    Logger.Log("Inventory::getAvailableDeviceName() returns "+currentName, Logger.Level.TRACE);
-    return currentName;
-  }
+    }
 	
   void loadDevices() {
 	LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
@@ -194,7 +222,7 @@ public class Inventory : DeviceContainer
     UpdateData(devices, new List<Device>(), new List<Device>());
   }
 	
-  void Start() {
+  protected override void Start() {
     base.Start();
     Logger.Log("Inventory::Start()", Logger.Level.DEBUG);
     loadDevices();

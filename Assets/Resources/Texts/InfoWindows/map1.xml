@@ -1,0 +1,18 @@
+<infoList>
+  <info code="PickedUpHyperflagellation">
+    <texture>i_hyperflagellation</texture>
+    <next>equip</next>
+  </info>
+  <info code="PickedUpRBS">
+    <texture>i_rbs</texture>
+    <next>craft</next>
+  </info>
+  <info code="PickedUpGFP">
+    <texture>i_gfp</texture>
+    <next>equip</next>
+  </info>
+  <info code="RFP">
+    <texture>t_rfp_needed</texture>
+    <next>world</next>
+  </info>
+</infoList>

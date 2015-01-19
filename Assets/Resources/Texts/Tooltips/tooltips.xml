@@ -1,0 +1,70 @@
+<tooltipList>
+  <tooltip code="b_AMPR">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_DTER">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO1">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_MOV">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_PRCONS">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_PRLACI">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_PRTETR">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_RBS1">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_RBS2">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="d_PRCONS:RBS2:FLUO1:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-gfp-low</illustration>
+  </tooltip>
+  <tooltip code="d_PRCONS:RBS1:FLUO1:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-gfp-med</illustration>
+  </tooltip>
+  <tooltip code="d_PRCONS:RBS2:MOV:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-speed-low</illustration>
+  </tooltip>
+  <tooltip code="d_PRCONS:RBS1:MOV:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-speed-med</illustration>
+  </tooltip>
+  <tooltip code="d_PRLACI:RBS2:FLUO1:DTER">
+    <type>Device</type>
+    <illustration>pic_d_plac-gfp-low</illustration>
+  </tooltip>
+  <tooltip code="d_PRLACI:RBS1:FLUO1:DTER">
+    <type>Device</type>
+    <illustration>pic_d_plac-gfp-med</illustration>
+  </tooltip>
+  <tooltip code="d_PRLACI:RBS2:MOV:DTER">
+    <type>Device</type>
+    <illustration>pic_d_plac-speed-low</illustration>
+  </tooltip>
+  <tooltip code="d_PRLACI:RBS1:MOV:DTER">
+    <type>Device</type>
+    <illustration>pic_d_plac-speed-med</illustration>
+  </tooltip>
+</tooltipList>

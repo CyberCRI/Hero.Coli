@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class PickableDeviceRef4Bricks : PickableDevice {
 
-  private LinkedList<BioBrick> _allBioBricks = new LinkedList<BioBrick>();
-
   public string promoterName;
   public string rbsName;
   public string geneName;
@@ -15,7 +13,7 @@ public class PickableDeviceRef4Bricks : PickableDevice {
 
   public string deviceName;
 
-  protected override Device produceDevice()
+  protected override DNABit produceDNABit()
   {
     LinkedList<BioBrick> deviceBricks = new LinkedList<BioBrick>();
     string[] bricks = new string[]{promoterName, rbsName, geneName, terminatorName};
@@ -24,15 +22,22 @@ public class PickableDeviceRef4Bricks : PickableDevice {
     {
       BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(brickName);
       if(brick != null) {
-        Logger.Log("PickableDeviceRef4Bricks::produceDevice successfully added brick "+brick, Logger.Level.TRACE);
         deviceBricks.AddLast(brick);
       } else {
-        Logger.Log("PickableDeviceRef4Bricks::produceDevice failed to add brick with name "+brickName+"!", Logger.Level.WARN);
+        Logger.Log("PickableDeviceRef4Bricks::produceDNABit failed to add brick with name "+brickName+"!", Logger.Level.WARN);
       }
     }
-    ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
-    LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
-    deviceModules.AddLast(deviceModule);
-    return Device.buildDevice(deviceName, deviceModules);
+
+        if(ExpressionModule.isBioBricksSequenceValid(deviceBricks))
+        {
+            ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
+            LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
+            deviceModules.AddLast(deviceModule);
+            Device result = Device.buildDevice(deviceName, deviceModules);
+            return result;
+        } else {
+            Logger.Log("PickableDeviceRef4Bricks::produceDNABit failed to produce DNABit - BioBrick sequence is incorrect: list="+Logger.ToString<BioBrick>(deviceBricks), Logger.Level.WARN);
+            return null;
+        }
   }
 }

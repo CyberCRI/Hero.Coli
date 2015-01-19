@@ -2,13 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 
 /*!
-  \brief This class represent an Allostery reaction and can be loaded by the ReactionEngine class.
-  \author Pierre COLLET
+  \brief This class represents an Allostery reaction and can be loaded by the ReactionEngine class.
+  
   \sa Allostery
  */
-public class AllosteryProprieties
+public class AllosteryProperties
 {
   public string name;
   public string effector;
@@ -33,6 +34,7 @@ Allosteric regulations allow the design of control loops within the cell's
 activity (such as feedback or feedforward from upstream substrates).
 In this simulation, the allosteric reaction between a protein (P.) and its effector (E)
  produces a new product (complex PE), and consumes the reactants (P and E).
+ //TODO check next sentence
 The complex PE can therefore be designed in order to have increased or decreased activity that the protein P.
 
         P + E -> PE (consume P (protein) and E(enzyme) in order to produce PE (product))
@@ -57,15 +59,15 @@ See example of definition :
          <products>LacI*</products>
         </allostery>
 
-    \attention All the molecules use in this reaction should be defined in a reaction file
-    \author    Pierre COLLET
-    \mail      pierre.collet91@gmail.com
+    \attention All the molecules used in this reaction should be defined in a reaction file
+    
+    
  */
 public class Allostery : IReaction
 {
   private string _effector;             //! The name of the effector
   private float _K;                     //! The binding affinity between the effector and the protein
-  private int _n;                       //! Stepness of the HillFunction
+  private int _n;                       //! Steepness of the HillFunction
   private string _protein;              //! The name of the protein
   private string _product;              //! The name of the product
 
@@ -99,39 +101,26 @@ public class Allostery : IReaction
     \brief Checks that two reactions have the same Allostery field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool CharacEquals(IReaction reaction)
+  protected override bool PartialEquals(IReaction reaction)
   {
     Allostery allostery = reaction as Allostery;
     return (allostery != null)
+    && base.PartialEquals(reaction) 
     && (_effector   == allostery._effector)
     && (_K          == allostery._K)
     && (_n          == allostery._n)
     && (_protein    == allostery._protein)
     && (_product    == allostery._product);
   }
-  /*
-  protected override bool CharacEquals(IReaction reaction)
-  {
-    Allostery allostery = reaction as Allostery;
-    if (allostery != null)
-    {
-      Allostery copy = new Allostery(allostery);
-      copy.setName(_name);
-      return Equals(copy);
-    }
-    return false;
-  }
-  */
 
-
-  //FIXME : Create fonction that create prop with this reaction
+  //FIXME : Create function that create prop with this reaction
 
   /*!
-    \brief This function create a new Allostery reaction from an AllosteryProprieties
-    \param props Proprieties of the reaction
+    \brief This function create a new Allostery reaction from an AllosteryProperties
+    \param props Properties of the reaction
     \return This function return a new Allostery reaction or null if props is null
    */
-  public static IReaction       buildAllosteryFromProps(AllosteryProprieties props)
+  public static IReaction       buildAllosteryFromProps(AllosteryProperties props)
   {
     if (props == null)
       return null;
@@ -150,7 +139,7 @@ public class Allostery : IReaction
   }
 
   //! \brief Do all the allostery reaction for one tick
-  /*! \details This function do this calculus :
+  /*! \details This function does this computation:
    
        delta = ( ([E] / K)^n ) / ( 1 + (([E] / K)^n) ) * [P]
        [P] -= delta
@@ -216,4 +205,118 @@ public class Allostery : IReaction
           }
       }
   }
+
+
+    //loading
+    /*
+      An allostery reaction's declaration should respect this syntax:
+
+    <allostery>
+      <name>inhibitLacI</name>
+      <effector>IPTG</effector>
+      <EnergyCost>0.3</EnergyCost>
+      <K>0.1</K>
+      <n>2</n>
+      <protein>LacI</protein>
+      <products>LacI*</products>
+    </allostery>
+     */ 
+
+    public override bool tryInstantiateFromXml(XmlNode node)
+    {
+      bool b = true;
+      foreach (XmlNode attr in node)
+      {
+        switch (attr.Name)
+        {
+          case "name":
+            b = b && loadAllosteryString(attr.InnerText, setName);
+            break;
+          case "effector":
+            b = b && loadAllosteryString(attr.InnerText, setEffector);
+            break;
+          case "K":
+            b = b && loadAllosteryFloat(attr.InnerText, setK);
+            break;
+          case "EnergyCost":
+            b = b && loadAllosteryFloat(attr.InnerText, setEnergyCost);
+            break;
+          case "n":
+            setN(Convert.ToInt32(attr.InnerText));
+            break;
+          case "protein":
+            b = b && loadAllosteryString(attr.InnerText, setProtein);
+            break;
+          case "products":
+            b = b && loadAllosteryString(attr.InnerText, setProduct);
+            break;
+        }
+      }
+        //TODO method that checks IReaction's loading
+        // + method that checks child classes loading
+        //done for Allostery, should do the same for other reactions
+        b = b && hasValidData();
+
+        if(b)
+        {
+            Logger.Log ("Allostery::tryInstantiateFromXml success"
+                        , Logger.Level.DEBUG);
+            return true;
+        }
+        else
+        {
+            Logger.Log ("Allostery::tryInstantiateFromXml failed"
+                        , Logger.Level.ERROR);
+            return false;
+        }
+    }
+
+    public override bool hasValidData()
+    {
+        return base.hasValidData() &&
+            !string.IsNullOrEmpty(_effector)               //! The name of the effector
+            //TODO private float _K;                       //! The binding affinity between the effector and the protein
+            && (0 != _n) //TODO better check               //! Steepness of the HillFunction
+            && !string.IsNullOrEmpty(_protein)             //! The name of the protein
+            && !string.IsNullOrEmpty(_product);            //! The name of the product
+    }
+    
+    private delegate void  StrSetter(string dst);
+    private delegate void  FloatSetter(float dst);
+    
+    /*!
+\brief This function load and parse a string and give it to the given setter
+\param value The string to parse and load
+\param setter The delegate setter
+\return Return true is success false otherwise
+  */
+    private bool loadAllosteryString(string value, StrSetter setter)
+    {
+      if (String.IsNullOrEmpty(value))
+      {
+        Logger.Log ("Allostery::loadAllosteryString empty name field"
+          , Logger.Level.ERROR);
+        return false;
+      }
+      setter(value);
+      return true;    
+    }
+    
+    /*!
+\brief This function load and parse a string and give it to the given setter
+\param value The string to parse and load
+\param setter The delegate setter
+\return Return true is success false otherwise
+  */
+    private bool loadAllosteryFloat(string value, FloatSetter setter)
+    {
+      if (String.IsNullOrEmpty(value))
+        {
+            Logger.Log ("Allostery::loadAllosteryString empty productionMax field"
+                        , Logger.Level.ERROR);
+        return false;
+      }
+      setter(float.Parse(value.Replace(",", ".")));
+      return true;    
+    }
 }

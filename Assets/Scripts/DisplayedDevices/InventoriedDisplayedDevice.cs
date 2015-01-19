@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-class InventoriedDisplayedDevice : DisplayedDevice {
+public class InventoriedDisplayedDevice : DisplayedDevice {
 	
 	void OnEnable() {
 		Logger.Log("InventoriedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
@@ -16,8 +16,23 @@ class InventoriedDisplayedDevice : DisplayedDevice {
         Logger.Log("InventoriedDisplayedDevice::OnPress _device==null", Logger.Level.WARN);
         return;
       }
+
 			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
-      Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.INFO);
+      Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.DEBUG);
+      if(DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
+         || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
+      {
+          _devicesDisplayer.askRemoveEquipedDevice(_device);
+      }
+
+			//pointer Animation
+
+			if(gameObject.transform.FindChild("tutorialArrow(Clone)"))
+			{
+				ArrowAnimation.Delete("InventoryDevicesSlotsPanel");
+				GUITransitioner.get ().arrowManager.isInventoryAnimPlaying = false;
+			}
+
 		}
 	}
 

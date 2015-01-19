@@ -22,6 +22,7 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
+  public InventoryAnimator animator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -43,15 +44,21 @@ public class GUITransitioner : MonoBehaviour {
 	};
 	
 	
-	public GameObject _mainCameraObject;
-	private cameraFollow _mainCameraFollow;
+	//public GameObject _mainCameraObject;
+  public BoundCamera mainBoundCamera;
 	
-	public GameObject _worldScreen;
-	public GameObject _craftScreen;
+	public GameObject worldScreen;
+	public GameObject craftScreen;
 	private DevicesDisplayer _devicesDisplayer;
-	public VectrosityPanel _celliaGraph;
-	public VectrosityPanel _roomGraph;
-	
+
+
+	public VectrosityPanel celliaGraph;
+	public VectrosityPanel roomGraph;
+
+  public Hero hero;
+  public CellControl control;
+
+	public ArrowAnimationManager arrowManager;		//Manager for the arrow Animation
 	
 	// Use this for initialization
 	void Start () {
@@ -68,40 +75,51 @@ public class GUITransitioner : MonoBehaviour {
 		_currentScreen = GameScreen.screen1;
 		
 		_timeAtLastFrame = Time.realtimeSinceStartup;
+
+		arrowManager = new ArrowAnimationManager();
 	}
 	
 	
 	private void SetScreen1(bool active) {
 		if(active) ZoomOut();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
+		//_craftScreen.SetActive(!active);
 	}
 	
 	private void SetScreen2(bool active) {
 		if(active) ZoomIn();
-		_worldScreen.SetActive(active);
+		worldScreen.SetActive(active);
 	}
 	
 	private void SetScreen3(bool active) {
-		_craftScreen.SetActive(active);
+		craftScreen.SetActive(active);
 	}
 	
+  /*
+   * "Defensive programming" method
+   * Cannot work during Awake
 	private void checkCamera() {
-		if(_mainCameraFollow == null) {
-			_mainCameraFollow = _mainCameraObject.GetComponent<cameraFollow>() as cameraFollow;
+		if(_mainBoundCamera == null) {
+			_mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>() as BoundCamera;
 		}
 	}
+ */ 
 	
 	private void ZoomIn() {
-		checkCamera();
-		_mainCameraFollow.SetZoom(true);
+		//checkCamera();
+		mainBoundCamera.SetZoom(true);
+		//Logger.Log("main camera"+_mainBoundCamera, Logger.Level.WARN);
 	}
 
 	private void ZoomOut() {
-		checkCamera();
-		_mainCameraFollow.SetZoom(false);
+		//checkCamera();
+		mainBoundCamera.SetZoom(false);
 	}
 		
-	
+  public void TerminateGraphs() {
+  	roomGraph.gameObject.SetActive(false);
+    celliaGraph.gameObject.SetActive(false);
+  }
   public void Pause(bool pause) {
     _pauseTransition = !pause;
     if(_reactionEngine == null)
@@ -113,9 +131,11 @@ public class GUITransitioner : MonoBehaviour {
 	  if(pause) {
 	    Time.timeScale = 0;
     }
-		
-	_celliaGraph.setPause(pause);
-	_roomGraph.setPause(pause);
+	roomGraph.setPause(pause);
+    celliaGraph.setPause(pause);
+  
+    hero.Pause(pause);
+    control.Pause(pause);
   }
 
   public void GoToScreen(GameScreen destination) {
@@ -142,13 +162,16 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(false);
          SetScreen1(true);
        }
-       Pause(false);
+       GameStateController.get().tryUnlockPause();
        ZoomOut();
        _currentScreen = GameScreen.screen1;
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen2) {
+			if(animator.isPlaying == true)
+			{
+				animator.reset();
+			}
       if(_currentScreen == GameScreen.screen1) {
          Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
          //1 -> 2
@@ -156,6 +179,7 @@ public class GUITransitioner : MonoBehaviour {
          //add inventory device, deviceID
          //remove graphs
          //move devices and potions?
+         GameStateController.get().tryLockPause();
        } else if(_currentScreen == GameScreen.screen3) {
         Logger.Log("GUITransitioner::GoToScreen 3->2", Logger.Level.INFO);
          //3 -> 2
@@ -170,10 +194,8 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen2(true);
        }
        
-       Pause(true);
        ZoomIn();
        _currentScreen = GameScreen.screen2;      
-       _devicesDisplayer.UpdateScreen();
 
 
     } else if (destination == GameScreen.screen3) {
@@ -186,6 +208,7 @@ public class GUITransitioner : MonoBehaviour {
          //move devices and potions?
          SetScreen1(false);
          SetScreen3(true);
+         GameStateController.get().tryLockPause();
          
        } else if(_currentScreen == GameScreen.screen2) {
         Logger.Log("GUITransitioner::GoToScreen 2->3", Logger.Level.INFO);
@@ -196,15 +219,15 @@ public class GUITransitioner : MonoBehaviour {
          SetScreen3(true);
          
        } 
-       Pause(true);
        ZoomIn();         
        _currentScreen = GameScreen.screen3;
-       _devicesDisplayer.UpdateScreen();
-
 
     } else {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
     }
+
+    _devicesDisplayer.UpdateScreen();
+    TooltipManager.displayTooltip();
   }
 
   public void SwitchScreen(GameScreen alternate1, GameScreen alternate2) {
@@ -217,6 +240,8 @@ public class GUITransitioner : MonoBehaviour {
       Logger.Log ("GuiTransitioner::SwitchScreen("+alternate1+","+alternate2+"): error: unmanaged alternate", Logger.Level.WARN);
     }
   }
+
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -234,6 +259,8 @@ public class GUITransitioner : MonoBehaviour {
 			}
       _timeAtLastFrame = _timeAtCurrentFrame;
 		}
+
+		arrowManager.launchAnimation ();
 	}
 	
 	void LateUpdate () {

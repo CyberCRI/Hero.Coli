@@ -21,7 +21,7 @@ public class PickableDeviceGeneric4Bricks : PickableDevice {
 
   public string deviceName;
 
-  protected override Device produceDevice()
+  protected override DNABit produceDNABit()
   {
     PromoterBrick prom = new PromoterBrick(promoterName, promoterBeta, promoterFormula);
     RBSBrick rbs = new RBSBrick(rbsName, rbsFactor);
@@ -30,6 +30,8 @@ public class PickableDeviceGeneric4Bricks : PickableDevice {
 
     LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(new List<BioBrick>(){prom, rbs, gene, term});
     ExpressionModule module = new ExpressionModule(expressionModuleName, bricks);
-    return Device.buildDevice(deviceName, new LinkedList<ExpressionModule>(new List<ExpressionModule>(){module}));
+        
+        Device result = Device.buildDevice(deviceName, new LinkedList<ExpressionModule>(new List<ExpressionModule>(){module}));
+        return result;
   }
 }

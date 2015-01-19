@@ -43,12 +43,10 @@ public class BioBrickLoader {
   {
     Logger.Log("BioBrickLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
 
-    MemoryStream ms = Tools.getEncodedFileContent(filePath);
-
     LinkedList<BioBrick> resultBioBricks = new LinkedList<BioBrick>();
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(ms);
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+    
     XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.BIOBRICK);
 
     foreach (XmlNode bioBrickNode in bioBrickList)
