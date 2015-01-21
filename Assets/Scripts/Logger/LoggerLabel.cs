@@ -9,7 +9,7 @@ public class LoggerLabel : MonoBehaviour {
 
     public void setActive (bool activate)
     {
-        Debug.LogWarning("LoggerLabel::setActive("+activate+")");
+        Logger.Log("LoggerLabel::setActive("+activate+")", Logger.Level.WARN);
         if(null != loggerGUIComponentRoot) {
             loggerGUIComponentRoot.SetActive(activate);
         }
