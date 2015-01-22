@@ -40,6 +40,8 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject modalBackground;
   public GameObject genericModalWindow;
 
+    public LoggerLabel loggerGUIComponent;
+
 	//public Camera _uicamera;
 
 
@@ -157,5 +159,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
 		tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
 		tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
+
+        Logger.get ().loggerGUIComponent = loggerGUIComponent;
   }
 }

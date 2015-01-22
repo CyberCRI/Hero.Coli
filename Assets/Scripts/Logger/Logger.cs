@@ -43,10 +43,16 @@ public class Logger : MonoBehaviour {
       }
     }
 
+    public static Logger get()
+    {
+        return Logger._singleton;
+    }
+
   //TODO fix interactive mode by making this field static
   //public bool interactiveDebug = true;
   public const string defaultSeparator = ", ";
   public int logLevelIdx;
+    public LoggerLabel loggerGUIComponent;
   
 /*!
  \brief log levels
@@ -229,6 +235,18 @@ public class Logger : MonoBehaviour {
     _singleton._messages.Clear();
     return copy;
   }
+
+    public void Update ()
+    {
+        if (0 != _singleton._messages.Count) {
+            if(null != loggerGUIComponent && !loggerGUIComponent.gameObject.activeInHierarchy) {
+                loggerGUIComponent.setActive (true);
+            }
+            loggerGUIComponent.treatMessages ();
+        } else if (0 == _singleton._messages.Count && null != loggerGUIComponent && loggerGUIComponent.gameObject.activeInHierarchy) {
+            loggerGUIComponent.setActive (false);
+        }
+    }
 
   /*
   public void Update() {
