@@ -120,23 +120,25 @@ public class GUITransitioner : MonoBehaviour {
   	roomGraph.gameObject.SetActive(false);
     celliaGraph.gameObject.SetActive(false);
   }
-  public void Pause(bool pause) {
-    _pauseTransition = !pause;
-    if(_reactionEngine == null)
+
+    public void Pause (bool pause)
     {
-	    _reactionEngine = ReactionEngine.get();
+        _pauseTransition = !pause;
+        if (_reactionEngine == null) {
+            _reactionEngine = ReactionEngine.get ();
+        }
+        _reactionEngine.Pause (pause);
+        _timeScale = pause ? 0 : 1;
+        if (pause) {
+            Time.timeScale = 0;
+        }
+
+        roomGraph.setPause (pause);
+        celliaGraph.setPause (pause);  
+        hero.Pause (pause);
+        control.Pause (pause);
+        BigBadGuy.paused = pause;
     }
-    _reactionEngine.Pause(pause);
-	  _timeScale = pause?0:1;
-	  if(pause) {
-	    Time.timeScale = 0;
-    }
-	roomGraph.setPause(pause);
-    celliaGraph.setPause(pause);
-  
-    hero.Pause(pause);
-    control.Pause(pause);
-  }
 
   public void GoToScreen(GameScreen destination) {
     Logger.Log("GUITransitioner::GoToScreen("+destination+")");
