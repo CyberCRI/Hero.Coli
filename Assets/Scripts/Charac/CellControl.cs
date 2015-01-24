@@ -121,7 +121,7 @@ public class CellControl : MonoBehaviour{
     _targetPosition = transform.position;
   }
 
-  private void stopMovement() {        
+  public void stopMovement() {        
     _inputMovement = Vector3.zero;
     cancelMouseMove();
     setSpeed();
