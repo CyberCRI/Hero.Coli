@@ -7,7 +7,6 @@ public class BigBadGuy : MonoBehaviour
     public int life = 50;
     public float shrinkSpeed = 3;
     public Hero hero;
-    public static bool paused;
     private float step;
     //TODO extract to config file
     private float _dpt = 0.5f;
@@ -16,13 +15,23 @@ public class BigBadGuy : MonoBehaviour
     void Awake ()
     {
         _iTP = this.gameObject.GetComponent<iTweenPath> ();
+        EnemiesManager.register(this);
     }
 
     void Start ()
     {
         step = transform.localScale.x / life;
     }
-  
+    
+    public void Pause (bool isPause)
+    {
+        if (isPause && null != _iTP && _iTP.IsInvoking ()) {
+            iTween.Pause (gameObject);
+        } else if (!isPause && null != _iTP && !_iTP.IsInvoking ()) {
+            iTween.Resume (gameObject);
+        }
+    }
+
     void OnParticleCollision (GameObject obj)
     {
         AmpicillinCollider collider = obj.GetComponent<AmpicillinCollider> ();
@@ -33,6 +42,7 @@ public class BigBadGuy : MonoBehaviour
             life--;
       
             if (life == 0) {
+                EnemiesManager.unregister(this);
                 Destroy (gameObject);
             }
         }
@@ -47,16 +57,5 @@ public class BigBadGuy : MonoBehaviour
                 hero.subLife (_dpt);
             }
         }
-    }
-
-    void Update ()
-    {
-        //TODO do that in Property set paused
-        if (paused && null != _iTP && _iTP.IsInvoking ()) {
-            iTween.Pause (gameObject);
-        } else if (!paused && null != _iTP && !_iTP.IsInvoking ()) {
-            iTween.Resume (gameObject);
-        }
-    }
-  
+    }  
 }

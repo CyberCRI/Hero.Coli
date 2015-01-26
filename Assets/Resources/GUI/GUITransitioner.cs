@@ -137,7 +137,7 @@ public class GUITransitioner : MonoBehaviour {
         celliaGraph.setPause (pause);  
         hero.Pause (pause);
         control.Pause (pause);
-        BigBadGuy.paused = pause;
+        EnemiesManager.Paused = pause;
     }
 
   public void GoToScreen(GameScreen destination) {
