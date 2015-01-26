@@ -31,7 +31,7 @@ public class Hero : MonoBehaviour {
   private GameObject _lastNewCell = null;
 
 
-  static float _respawnTimeS = 2.0f;
+  static float _respawnTimeS = 1.5f;
   static float _disappearingTimeSRatio = 0.9f;
   static float _disappearingTimeS = _disappearingTimeSRatio*_respawnTimeS;
     static float _popEffectTimeS = 1.0f;
