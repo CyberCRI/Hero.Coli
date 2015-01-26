@@ -30,9 +30,11 @@ public class Hero : MonoBehaviour {
   private GameObject _lastCheckpoint = null;
   private GameObject _lastNewCell = null;
 
-  static float _disappearingTimeS = 2.0f;
-  static float _respawnTimeS = 3.0f;
-  static float _popEffectTimeS = 1.0f;
+
+  static float _respawnTimeS = 2.0f;
+  static float _disappearingTimeSRatio = 0.9f;
+  static float _disappearingTimeS = _disappearingTimeSRatio*_respawnTimeS;
+    static float _popEffectTimeS = 1.0f;
   static private float _baseScale = 145.4339f;
   static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
   static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
@@ -162,7 +164,9 @@ public class Hero : MonoBehaviour {
       }
 
       // dammage in case of low energy
-      if (_energy <= 0.05f)   _lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
+      if (_energy <= 0.05f) {
+                _lifeManager.addVariation(- Time.deltaTime * _lowEnergyDpt);
+            }
 
 
 		  // Life animation when life is reducing
@@ -243,12 +247,7 @@ public class Hero : MonoBehaviour {
 
         CellControl cc = GetComponent<CellControl>();
 
-        //1. death effect
-        yield return StartCoroutine(deathEffectCoroutine(cc));
-    
-        //1. respawn effect
-        respawnCoroutine(cc);
-        
+        yield return StartCoroutine(deathEffectCoroutine(cc));        
     }	
     
     IEnumerator deathEffectCoroutine(CellControl cc)
@@ -259,7 +258,6 @@ public class Hero : MonoBehaviour {
         iTween.FadeTo(gameObject, _optionsOutAlpha);  
 
         _flagella = new List<GameObject>();
-        int maxWaitSequences = _flagella.Count+1;
 
         foreach (Transform child in transform)
         {
@@ -268,9 +266,17 @@ public class Hero : MonoBehaviour {
                 _flagella.Add(child.gameObject);
             }
         }
-
+        
+        //1 wait sequence between flagella, pair of eyes disappearances
+        //therefore #flagella + #pairs of eyes - 1
+        int maxWaitSequences = _flagella.Count;
+        
+        //fractional elapsed time
+        // 0<elapsed<maxWaitSequences
         float elapsed = 0.0f;
-        for(int i=0; i<_flagella.Count; i++)
+
+        _flagella[0].SetActive(false);
+        for(int i=1; i<_flagella.Count; i++)
         {
             //to make flagella disappear
             float random = UnityEngine.Random.Range(0.0f,1.0f);
@@ -279,13 +285,15 @@ public class Hero : MonoBehaviour {
             elapsed += random;
         }
 
-        //to make eyes and body disappear
+        //to make eyes disappear
         float lastRandom = UnityEngine.Random.Range(0.0f,1.0f);
         yield return new WaitForSeconds(lastRandom*_respawnTimeS/maxWaitSequences);
         elapsed += lastRandom;        
         enableEyes(false);
-            
+
         yield return new WaitForSeconds((maxWaitSequences-elapsed)*_respawnTimeS/maxWaitSequences);
+        
+        respawnCoroutine(cc);
     }
 
     private void enableEyes(bool enable)

@@ -169,7 +169,18 @@ public class GameStateController : MonoBehaviour {
         {
             Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
             GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
-            GameObject.Find("Perso").transform.localPosition = Vector3.zero;
+            GameObject perso = GameObject.Find("Perso");
+            perso.transform.localPosition = Vector3.zero;
+            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
+            perso.GetComponent<CellControl>().stopMovement();
+        } else if(Input.GetKeyDown(KeyCode.X))
+        {
+            Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
+            GameObject.Find("Player").transform.position = new Vector3(500, 0, 637);
+            GameObject perso = GameObject.Find("Perso");
+            perso.transform.localPosition = Vector3.zero;
+            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
+            perso.GetComponent<CellControl>().stopMovement();
         }
 
         switch(_gameState){
