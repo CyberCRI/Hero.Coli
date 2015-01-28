@@ -231,12 +231,12 @@ TOOLTIP.D_PRCONS:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).TITLE=Hyperflagellation (moyen)
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).SUBTITLE=Équipé : augmente la vitesse de déplacement.
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).LENGTH=1122bp
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).ENERGYCONSUMPTION=XXX
-TOOLTIP.D_HYPERFLAGELLATION_(MOYEN).EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.TITLE=Hyperflagellation (moyen)
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.SUBTITLE=Équipé : augmente la vitesse de déplacement.
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.LENGTH=1122bp
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
 
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.TITLE=(Régulé) Fluorescence verte (faible)
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
