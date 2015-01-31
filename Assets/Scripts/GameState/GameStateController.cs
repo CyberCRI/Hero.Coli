@@ -39,10 +39,17 @@ public class GameStateController : MonoBehaviour {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static string _masterScene = "Master-Demo-0.1";
+    public static string _adventureLevel1 = "World1.0";
+    public static string _sandboxLevel1 = "Sandbox-0.1";
+    public static string _interfaceScene = "Interface1.0";
+    public static string _bacteriumScene = "Bacterium1.0";
+
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
     public static string _craftingKey = keyPrefix+"CRAFTING";
     public static string _pauseKey = keyPrefix+"PAUSE";
+    public static string _sandboxKey = keyPrefix+"SANDBOX";
 
 
     private GameState _gameState;
@@ -98,9 +105,9 @@ public class GameStateController : MonoBehaviour {
     void Awake() {
     _instance = this;
         //take into account order of loading to know which LinkManager shall ask which one
-    	Application.LoadLevelAdditive("Interface1.0");
-    	Application.LoadLevelAdditive("Bacterium1.0");
-    	Application.LoadLevelAdditive("World1.0");
+    	Application.LoadLevelAdditive(_interfaceScene);
+    	Application.LoadLevelAdditive(_bacteriumScene);
+    	Application.LoadLevelAdditive(_adventureLevel1);
     }
     // Use this for initialization
     void Start () {
@@ -213,6 +220,10 @@ public class GameStateController : MonoBehaviour {
                     Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
                     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                 }
+                else if(isShortcutKeyDown(_sandboxKey))
+                {
+                    Application.LoadLevel(_sandboxLevel1);
+                }
                 break;
 
             case GameState.Pause:
@@ -320,7 +331,7 @@ public class GameStateController : MonoBehaviour {
     public static void restart()
     {
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
-        Application.LoadLevel("Master-Demo-0.1");
+        Application.LoadLevel(_masterScene);
     }
 	
 }
