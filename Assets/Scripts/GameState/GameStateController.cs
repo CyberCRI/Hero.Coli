@@ -44,6 +44,7 @@ public class GameStateController : MonoBehaviour {
     public static string _sandboxLevel1 = "Sandbox-0.1";
     public static string _interfaceScene = "Interface1.0";
     public static string _bacteriumScene = "Bacterium1.0";
+    public string _currentLevel = _adventureLevel1;
 
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
@@ -103,11 +104,13 @@ public class GameStateController : MonoBehaviour {
 
 
     void Awake() {
-    _instance = this;
+        _instance = this;
         //take into account order of loading to know which LinkManager shall ask which one
-    	Application.LoadLevelAdditive(_interfaceScene);
-    	Application.LoadLevelAdditive(_bacteriumScene);
-    	Application.LoadLevelAdditive(_adventureLevel1);
+        Application.LoadLevelAdditive(_interfaceScene);
+        Application.LoadLevelAdditive(_bacteriumScene);
+        Application.LoadLevelAdditive(_currentLevel);
+
+        UnityEngine.Object.DontDestroyOnLoad(this.gameObject);
     }
     // Use this for initialization
     void Start () {
@@ -222,7 +225,8 @@ public class GameStateController : MonoBehaviour {
                 }
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
-                    Application.LoadLevel(_sandboxLevel1);
+                    _currentLevel = _sandboxLevel1;
+                    restart();
                 }
                 break;
 
@@ -333,5 +337,4 @@ public class GameStateController : MonoBehaviour {
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
         Application.LoadLevel(_masterScene);
     }
-	
 }
