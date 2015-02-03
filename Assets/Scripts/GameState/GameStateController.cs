@@ -240,8 +240,25 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
 
             case GameState.Start:
-                fadeSprite.gameObject.SetActive(true);
-                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                //TODO put this code into a separate implementation of a "Level" interface
+                //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
+                //so that those modals don't appear on every level
+                //Also: put specific interface elements into level scene and then move them to interface hierarchy
+
+                //TODO remove this temporary hack
+                if(_currentLevel == _adventureLevel1)
+                {
+                    fadeSprite.gameObject.SetActive(true);
+                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                }
+                else if(_currentLevel == _sandboxLevel1)
+                {
+                    changeState(GameState.Game);
+                }
+                else
+                {
+                    Debug.LogError("unknown _currentLevel="+_currentLevel);
+                }
                 endWindow.SetActive(false);
 
                 break;
