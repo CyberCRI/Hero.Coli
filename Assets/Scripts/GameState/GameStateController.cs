@@ -31,7 +31,7 @@ public class GameStateController : MonoBehaviour {
     public static GameStateController get() {
     	if (_instance == null)
     	{
-    		Logger.Log("GameStateController::get was badly initialized", Logger.Level.WARN);
+    		Logger.Log("GameStateController::get was badly initialized", Logger.Level.ERROR);
     		_instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
     	}
 
@@ -45,6 +45,7 @@ public class GameStateController : MonoBehaviour {
     public static string _interfaceScene = "Interface1.0";
     public static string _bacteriumScene = "Bacterium1.0";
     public string _currentLevel = _adventureLevel1;
+    public static string _currentLevelKey = "GameStateController.currentLevel";
 
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
@@ -60,6 +61,68 @@ public class GameStateController : MonoBehaviour {
     public ContinueButton introContinueButton;
     public EndRestartButton endRestartButton;
     private static int _pausesStacked = 0;
+
+
+    void Awake() {
+        Debug.LogError("AWAKE with hashcode="+this.gameObject.GetHashCode());
+        Debug.LogError("AWAKE 0 _currentLevel = "+_currentLevel);
+        if(null != _instance)
+        {
+            Debug.LogError("GameStateController::Awake null != instance");
+        }
+
+        Debug.LogError("AWAKE 1");
+        _instance = this;
+        Debug.LogError("AWAKE 2");
+
+        
+        //get data from previous instance
+        //other solution: make all fields static
+        //other solution: fix initialization through LinkManagers
+        //that automatically take new GameStateController object
+        //and leave old GameStateController object with old dead links to destroyed objects
+        string storedLevel = null;
+        if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
+        {
+            Debug.LogError("GameStateController::Awake storedLevel="+storedLevel);
+            _instance._currentLevel = storedLevel;
+        }
+        else
+        {
+            Debug.LogError("GameStateController::Awake no storedLevel");
+        }
+        Debug.LogError("AWAKE 3");
+        loadLevels();
+        Debug.LogError("AWAKE 4");
+
+
+
+        Debug.LogError("AWAKE 5 final _currentLevel = "+_currentLevel);
+    }
+
+    // Use this for initialization
+    void Start () {
+        Debug.LogError("START with hashcode="+this.gameObject.GetHashCode());
+        Debug.LogError("START 1");
+        _gameState = GameState.Start;
+        Debug.LogError("START 2");
+        resetPauseStack();
+        Debug.LogError("START 3");
+        I18n.changeLanguageTo(I18n.Language.French);
+        Debug.LogError("START 4");
+        Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
+        Debug.LogError("START 5");
+        Debug.LogError("START _currentLevel = "+_currentLevel);
+    }
+    
+    private static void loadLevels()
+    {
+        Debug.LogError("LOADLEVELS _instance._currentLevel="+_instance._currentLevel);
+        //take into account order of loading to know which LinkManager shall ask which one
+        Application.LoadLevelAdditive(_interfaceScene);
+        Application.LoadLevelAdditive(_bacteriumScene);
+        Application.LoadLevelAdditive(_instance._currentLevel);
+    }
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;
@@ -100,25 +163,6 @@ public class GameStateController : MonoBehaviour {
         pushPauseInStack ();
         changeState (GameState.Pause);
         Logger.Log ("tryLockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
-    }
-
-
-    void Awake() {
-        _instance = this;
-        //take into account order of loading to know which LinkManager shall ask which one
-        Application.LoadLevelAdditive(_interfaceScene);
-        Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(_currentLevel);
-
-        UnityEngine.Object.DontDestroyOnLoad(this.gameObject);
-    }
-    // Use this for initialization
-    void Start () {
-    	_gameState = GameState.Start;
-    resetPauseStack();
-
-    I18n.changeLanguageTo(I18n.Language.French);
-    Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
 
     //TODO optimize for frequent calls & refactor out of GameStateController
@@ -225,7 +269,9 @@ public class GameStateController : MonoBehaviour {
                 }
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
+                    Debug.LogError("PRESSED K => BEFORE _currentLevel = "+_currentLevel);
                     _currentLevel = _sandboxLevel1;
+                    Debug.LogError("PRESSED K => AFTER _currentLevel = "+_currentLevel);
                     restart();
                 }
                 break;
@@ -334,7 +380,21 @@ public class GameStateController : MonoBehaviour {
 
     public static void restart()
     {
+        Debug.LogError("RESTART with hashcode="+_instance.gameObject.GetHashCode());
+        Debug.LogError("RESTART before LoadLevel _instance._currentLevel="+_instance._currentLevel);
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
         Application.LoadLevel(_masterScene);
+        Debug.LogError("RESTART after LoadLevel _instance._currentLevel="+_instance._currentLevel);
+
+        //saving level name into MemoryManager
+        //because GameStateController current instance will be destroyed during restart
+        //whereas MemoryManager won't
+        MemoryManager.get ().addData(_currentLevelKey, _instance._currentLevel);
+
+        Debug.LogError("RESTART DONE with hashcode="+_instance.gameObject.GetHashCode());
+    }
+
+    void OnDestroy() {
+        Debug.LogError("GAMESTATECONTROLLER DESTROYED");
     }
 }
