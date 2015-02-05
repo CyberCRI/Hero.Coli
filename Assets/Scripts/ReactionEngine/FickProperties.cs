@@ -31,7 +31,7 @@ public class FickProperties : LoadableFromXmlImpl
   //! \param node The XML node
     public override bool tryInstantiateFromXml(XmlNode node)
   {
-        Logger.Log("FickLoader.tryInstantiateFromXml("+node+") will load", Logger.Level.DEBUG);
+        Logger.Log("FickProperties.tryInstantiateFromXml("+node+") will load", Logger.Level.DEBUG);
 
     foreach (XmlNode attr in node)
     {
@@ -73,7 +73,7 @@ public class FickProperties : LoadableFromXmlImpl
       }
     }
 
-        Logger.Log("FickLoader.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
+        Logger.Log("FickProperties.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
     return true;
   }
 }

@@ -4,8 +4,8 @@ using System.Collections;
 
 
 /*!
- *  \brief     The class that manage all the diffusions reactions using Fick model.
- *  \details   This class initializes from files and execute all the FickReaction.
+ *  \brief     The class that manages all the diffusion reactions using Fick model.
+ *  \details   This class initializes from files and executes all the FickReaction.
  *  
  *  
  */
@@ -75,45 +75,44 @@ public class Fick : XmlLoaderImpl
       }
   }
 
-  //! Load the diffusions reactions from a array of files and a Mediums list
+  //! Load the diffusion reactions from an array of files and a Medium list
   /*!
       \param files Array of files which contain information about diffusion reaction.
-      \param mediums The list of all the medium.
+      \param mediums The list of all the mediums.
 
-      This function load the diffusions reactions based on Fick model. It take a Array of file paths
+      This function loads the diffusion reactions based on Fick model. It takes an Array of file paths
       and a list of Medium that should contain all the mediums of the simulation.
-      This function create the list of all the reactions between each Medium which exist and initialize their parameters to 0.
+      This function creates the list of all the reactions between all Medium which exist and initialize their parameters to 0.
       Only the reactions explicitly defined in files are initialized to the values explicited in files.
       If a parameter of a fick reaction is not specified in files then this parameter will be equal to 0.
     */
-  public void           loadFicksReactionsFromFiles(string[] files, LinkedList<Medium> mediums)
+  public void loadFicksReactionsFromFiles (string[] files, LinkedList<Medium> mediums)
     {
         Logger.Log ("Fick::loadFicksReactionsFromFiles("
-                    +Logger.EnumerableToString<string>(files)
-                    +") starts"
-                    ,Logger.Level.INFO);
-    LinkedList<FickProperties> propsList = new LinkedList<FickProperties>();
-    LinkedList<FickProperties> newPropList;
+            + Logger.EnumerableToString<string> (files)
+            + ") starts"
+                    , Logger.Level.INFO);
+        LinkedList<FickProperties> propsList = new LinkedList<FickProperties> ();
+        LinkedList<FickProperties> newPropList;
 
-    foreach (string file in files)
-      {
-			newPropList = loadObjectsFromFile<FickProperties>(file,"ficks");
-        if (newPropList != null)
-          LinkedListExtensions.AppendRange<FickProperties>(propsList, newPropList);
-      }
-    _reactions = FickReaction.getFickReactionsFromMediumList(mediums);
-    finalizeFickReactionFromProps(propsList, _reactions);
+        foreach (string file in files) {
+            newPropList = loadObjectsFromFile<FickProperties> (file, "ficks");
+            if (newPropList != null)
+                LinkedListExtensions.AppendRange<FickProperties> (propsList, newPropList);
+        }
+        _reactions = FickReaction.getFickReactionsFromMediumList (mediums);
+        finalizeFickReactionFromProps (propsList, _reactions);
         
         Logger.Log ("Fick::loadFicksReactionsFromFiles("
-                    +Logger.EnumerableToString<string>(files)
-                    +") starts"
-                    ,Logger.Level.INFO);
-   }
+            + Logger.EnumerableToString<string> (files)
+            + ") starts"
+                    , Logger.Level.INFO);
+    }
 
-  //! This function is called at each frame and do all the reaction of type FickReactiono.
-  public void react()
-  {
-    foreach (FickReaction fr in _reactions)
-      fr.react(null);
-  }
+    //! This function is called at each frame and does all the reactions of type FickReaction.
+    public void react ()
+    {
+        foreach (FickReaction fr in _reactions)
+            fr.react (null);
+    }
 }
