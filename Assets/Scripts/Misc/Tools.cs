@@ -69,4 +69,22 @@ class Tools
       }
     }
   }
+
+
+    public static bool safeGetBool(string boolString)
+    {
+        if(string.IsNullOrEmpty(boolString))
+        {
+            Logger.Log("Tools::safeGetBool null string as bool", Logger.Level.WARN);
+            return false;
+        }
+        if(boolString.ToLower() != "false"
+           && boolString.ToLower() != "true")
+        {
+            Logger.Log("Tools::safeGetBool unknwon string "+boolString+" as bool", Logger.Level.WARN);
+            return false;
+        }
+        
+        return (boolString.ToLower() == "true");
+    }
 }

@@ -20,10 +20,13 @@ public class MemoryManager : MonoBehaviour {
     {
         Logger.Log("MemoryManager::Awake", Logger.Level.DEBUG);
         _instance = this;
+        loadLevelData(inputFiles, _loadedLevelInfo);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
-
+    
+    public string[] inputFiles;
     private Dictionary<string, string> _savedData = new Dictionary<string, string>();
+    private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
 
     public bool addData(string key, string value)
     {
@@ -41,6 +44,38 @@ public class MemoryManager : MonoBehaviour {
     public bool tryGetData(string key, out string value)
     {
         return _savedData.TryGetValue(key, out value);
+    }
+
+    private void loadLevelData(string[] inputFiles, Dictionary<string, LevelInfo> dico)
+    {      
+        FileLoader loader = new FileLoader();
+    
+        foreach (string file in inputFiles)
+        {
+            LinkedList<LevelInfo> lis = loader.loadObjectsFromFile<LevelInfo>(file,LevelInfoXMLTags.INFOLIST);
+            if(null != lis)
+            {
+                foreach( LevelInfo li in lis)
+                {
+                    dico.Add(li.code, li);
+                }
+            }
+
+        }
+        
+        Logger.Log("ModalManager::loadDataIntoDico loaded ", Logger.Level.DEBUG);
+    }
+    
+    private static LevelInfo retrieveFromDico(string code)
+    {
+        LevelInfo info;
+        //TODO set case-insensitive
+        if(!_instance._loadedLevelInfo.TryGetValue(code, out info))
+        {
+            Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
+            info = null;
+        }
+        return info;
     }
 
     void Start()
