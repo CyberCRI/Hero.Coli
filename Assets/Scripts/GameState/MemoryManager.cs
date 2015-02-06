@@ -78,6 +78,21 @@ public class MemoryManager : MonoBehaviour {
         return info;
     }
 
+    public bool tryGetCurrentLevelInfo(out LevelInfo levelInfo)
+    {
+        levelInfo = null;
+        string currentLevelCode;
+        if(tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+        {
+            return _loadedLevelInfo.TryGetValue(currentLevelCode, out levelInfo);
+        }
+        else
+        {
+            Logger.Log("MemoryManager::tryGetCurrentLevelInfo failed to provide data; GameStateController._currentLevelKey="+GameStateController._currentLevelKey, Logger.Level.WARN);
+            return false;
+        }
+    }
+
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
