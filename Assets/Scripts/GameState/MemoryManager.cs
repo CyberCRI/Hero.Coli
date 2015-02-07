@@ -20,7 +20,9 @@ public class MemoryManager : MonoBehaviour {
     {
         Logger.Log("MemoryManager::Awake", Logger.Level.DEBUG);
         _instance = this;
+        Debug.LogError("MemoryManager::Awake loadLevelData before");
         loadLevelData(inputFiles, _loadedLevelInfo);
+        Debug.LogError("MemoryManager::Awake loadLevelData after");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
     
