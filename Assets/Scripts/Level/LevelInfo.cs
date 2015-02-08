@@ -18,10 +18,16 @@ public class LevelInfo : LoadableFromXmlImpl
         {
             switch (attr.Name)
             {
+                case LevelInfoXMLTags.CODE:
+                    Debug.LogError("CODE "+attr.InnerText+"spotted");
+                    code = attr.InnerText;
+                    break;
                 case LevelInfoXMLTags.AREALLBIOBRICKSAVAILABLE:
+                    Debug.LogError("AREALLBIOBRICKSAVAILABLE "+attr.InnerText+"spotted");
                     areAllBioBricksAvailable = Tools.safeGetBool(attr.InnerText);
                     break;
                 case LevelInfoXMLTags.AREALLDEVICESAVAILABLE:
+                    Debug.LogError("AREALLDEVICESAVAILABLE "+attr.InnerText+"spotted");
                     areAllDevicesAvailable = Tools.safeGetBool(attr.InnerText);
                     break;
                 default:
@@ -36,6 +42,6 @@ public class LevelInfo : LoadableFromXmlImpl
     
     public override string ToString ()
     {
-        return string.Format ("[LevelInfo _code: {0}, _areAllBricksAvailable: {1}, _areAllDevicesAvailable: {2}]", code, areAllBioBricksAvailable, areAllDevicesAvailable);
+        return string.Format ("[LevelInfo code: {0}, areAllBricksAvailable: {1}, areAllDevicesAvailable: {2}]", code, areAllBioBricksAvailable, areAllDevicesAvailable);
     }
 }

@@ -50,15 +50,19 @@ public class MemoryManager : MonoBehaviour {
 
     private void loadLevelData(string[] inputFiles, Dictionary<string, LevelInfo> dico)
     {      
+        Debug.LogError("MemoryManager::loadLevelData starts");
         FileLoader loader = new FileLoader();
     
         foreach (string file in inputFiles)
         {
+            Debug.LogError("MemoryManager::loadLevelData processing file="+file);
             LinkedList<LevelInfo> lis = loader.loadObjectsFromFile<LevelInfo>(file,LevelInfoXMLTags.INFOLIST);
             if(null != lis)
             {
+                Debug.LogError("MemoryManager::loadLevelData null != lis");
                 foreach( LevelInfo li in lis)
                 {
+                    Debug.LogError("MemoryManager::loadLevelData adding li="+li);
                     dico.Add(li.code, li);
                 }
             }
@@ -66,6 +70,7 @@ public class MemoryManager : MonoBehaviour {
         }
         
         Logger.Log("ModalManager::loadDataIntoDico loaded ", Logger.Level.DEBUG);
+        Debug.LogError("MemoryManager::loadLevelData ends");
     }
     
     private static LevelInfo retrieveFromDico(string code)

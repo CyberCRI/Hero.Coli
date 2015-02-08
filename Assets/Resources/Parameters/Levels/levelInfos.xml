@@ -1,9 +1,11 @@
 <infoList>
   <info id="adventure1">
+    <code>aventure1</code>
     <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
     <areAllDevicesAvailable>false</areAllDevicesAvailable>
   </info>
   <info id="sandbox1">
+    <code>sandbox1</code>
     <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
     <areAllDevicesAvailable>true</areAllDevicesAvailable>
   </info>
