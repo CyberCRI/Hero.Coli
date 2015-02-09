@@ -8,32 +8,41 @@ public class LevelInfo : LoadableFromXmlImpl
     public bool areAllBioBricksAvailable {get; set;}
     public bool areAllDevicesAvailable {get; set;}
 
+    public override string getTag() { return LevelInfoXMLTags.INFO; }
+
     //! Create from an XML node a LevelInfo.
     //! \param node The XML node
     public override bool tryInstantiateFromXml(XmlNode node)
     {
         Logger.Log("LevelInfo.tryInstantiateFromXml("+node+") will load", Logger.Level.DEBUG);
-        
-        foreach (XmlNode attr in node)
+
+        if(node.Name == getTag())
         {
-            switch (attr.Name)
+            foreach (XmlNode attr in node)
             {
-                case LevelInfoXMLTags.CODE:
-                    Debug.LogError("CODE "+attr.InnerText+"spotted");
-                    code = attr.InnerText;
-                    break;
-                case LevelInfoXMLTags.AREALLBIOBRICKSAVAILABLE:
-                    Debug.LogError("AREALLBIOBRICKSAVAILABLE "+attr.InnerText+"spotted");
-                    areAllBioBricksAvailable = Tools.safeGetBool(attr.InnerText);
-                    break;
-                case LevelInfoXMLTags.AREALLDEVICESAVAILABLE:
-                    Debug.LogError("AREALLDEVICESAVAILABLE "+attr.InnerText+"spotted");
-                    areAllDevicesAvailable = Tools.safeGetBool(attr.InnerText);
-                    break;
-                default:
-                    Logger.Log("LevelInfoLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
-                    break;
+                switch (attr.Name)
+                {
+                    case LevelInfoXMLTags.CODE:
+                        Debug.LogError("CODE "+attr.InnerText+"spotted");
+                        code = attr.InnerText;
+                        break;
+                    case LevelInfoXMLTags.AREALLBIOBRICKSAVAILABLE:
+                        Debug.LogError("AREALLBIOBRICKSAVAILABLE "+attr.InnerText+"spotted");
+                        areAllBioBricksAvailable = Tools.safeGetBool(attr.InnerText);
+                        break;
+                    case LevelInfoXMLTags.AREALLDEVICESAVAILABLE:
+                        Debug.LogError("AREALLDEVICESAVAILABLE "+attr.InnerText+"spotted");
+                        areAllDevicesAvailable = Tools.safeGetBool(attr.InnerText);
+                        break;
+                    default:
+                        Logger.Log("LevelInfo::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
+                        break;
+                }
             }
+        }
+        else
+        {
+            Debug.LogError("LevelInfo::tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'");
         }
         
         Logger.Log("LevelInfo.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
