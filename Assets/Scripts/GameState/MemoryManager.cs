@@ -35,6 +35,8 @@ public class MemoryManager : MonoBehaviour {
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
+            //TODO manage everything here
+            GameStateController.setAndSaveLevelName(GameStateController._adventureLevel1);
         }
         Debug.LogError("MemoryManager::Awake loadLevelData after");
     }
@@ -50,6 +52,15 @@ public class MemoryManager : MonoBehaviour {
         {
             return false;
         }
+    }
+
+    public bool addOrUpdateData(string key, string value)
+    {
+        if(_savedData.ContainsKey(key))
+        {
+            _savedData.Remove(key);
+        }
+        return addData(key, value);
     }
 
     public bool tryGetData(string key, out string value)
@@ -101,6 +112,7 @@ public class MemoryManager : MonoBehaviour {
         string currentLevelCode;
         if(tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
         {
+            Debug.LogError("MemoryManager::tryGetCurrentLevelInfo currentLevelCode="+currentLevelCode);
             return _loadedLevelInfo.TryGetValue(currentLevelCode, out levelInfo);
         }
         else
