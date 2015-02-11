@@ -12,7 +12,15 @@ public class MemoryManager : MonoBehaviour {
         {
             Logger.Log("MemoryManager::get was badly initialized", Logger.Level.ERROR);
             _instance = GameObject.Find(gameObjectName).GetComponent<MemoryManager>();
-            _instance.initializeIfNecessary();
+            if(null != _instance)
+            {
+                DontDestroyOnLoad(_instance.gameObject);
+                _instance.initializeIfNecessary();
+            }
+            else
+            {
+                Logger.Log("MemoryManager::get couldn't find game object", Logger.Level.ERROR);
+            }
         }
         
         return _instance;
@@ -20,8 +28,7 @@ public class MemoryManager : MonoBehaviour {
     void Awake()
     {
         Logger.Log("MemoryManager::Awake", Logger.Level.DEBUG);
-        _instance = this;
-        initializeIfNecessary();
+        MemoryManager.get ();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -31,12 +38,14 @@ public class MemoryManager : MonoBehaviour {
 
     private void initializeIfNecessary(bool onlyIfEmpty = true)
     {
-        Debug.LogError("MemoryManager::Awake loadLevelData before");
+        Debug.LogError("MemoryManager::Awake loadLevelData before with onlyIfEmpty="+onlyIfEmpty+" & _loadedLevelInfo.Count="+_loadedLevelInfo.Count); //_loadedLevelInfo.Count==0
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
+            Debug.LogError("MemoryManager::Awake loadLevelData BEFORE _loadedLevelInfo.Count="+_loadedLevelInfo.Count);
             loadLevelData(inputFiles, _loadedLevelInfo);
+            Debug.LogError("MemoryManager::Awake loadLevelData AFTER _loadedLevelInfo.Count="+_loadedLevelInfo.Count);
             //TODO manage everything here
-            GameStateController.setAndSaveLevelName(GameStateController._adventureLevel1);
+            GameStateController.get ().setAndSaveLevelName(GameStateController._adventureLevel1);
         }
         Debug.LogError("MemoryManager::Awake loadLevelData after");
     }
@@ -56,6 +65,7 @@ public class MemoryManager : MonoBehaviour {
 
     public bool addOrUpdateData(string key, string value)
     {
+        Debug.LogError("MemoryManager::addOrUpdateData("+key+", "+value+")");
         if(_savedData.ContainsKey(key))
         {
             _savedData.Remove(key);
@@ -71,7 +81,7 @@ public class MemoryManager : MonoBehaviour {
 
     private void loadLevelData(string[] inputFiles, Dictionary<string, LevelInfo> dico)
     {      
-        Debug.LogError("MemoryManager::loadLevelData starts");
+        Debug.LogError("MemoryManager::loadLevelData starts with dico.Count="+dico.Count);
         FileLoader loader = new FileLoader();
     
         foreach (string file in inputFiles)
@@ -90,14 +100,15 @@ public class MemoryManager : MonoBehaviour {
 
         }
         
-        Logger.Log("ModalManager::loadDataIntoDico loaded ", Logger.Level.DEBUG);
-        Debug.LogError("MemoryManager::loadLevelData ends");
+        Logger.Log("ModalManager::loadLevelData loaded ", Logger.Level.DEBUG);
+        Debug.LogError("MemoryManager::loadLevelData ends with dico.Count="+dico.Count);
     }
     
     private static LevelInfo retrieveFromDico(string code)
     {
         LevelInfo info;
         //TODO set case-insensitive
+        Debug.LogError("MemoryManager::retrieveFromDico("+code+") with _instance._loadedLevelInfo.Count="+_instance._loadedLevelInfo.Count);
         if(!_instance._loadedLevelInfo.TryGetValue(code, out info))
         {
             Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
@@ -118,12 +129,24 @@ public class MemoryManager : MonoBehaviour {
         else
         {
             Logger.Log("MemoryManager::tryGetCurrentLevelInfo failed to provide data; GameStateController._currentLevelKey="+GameStateController._currentLevelKey, Logger.Level.WARN);
+
+            //defensive code
+            Debug.LogError("NO CURRENT LEVEL INFO; WILL INSERT DEFAULT");
+            GameStateController.get ().setAndSaveLevelName(GameStateController._adventureLevel1);
+
             return false;
         }
     }
 
+
+
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        Debug.LogError("MemoryManager::Start");
+    }
+
+    void OnDestroy()
+    {
+        Debug.LogError("MemoryManager::ONDESTROY");
     }
 }

@@ -48,7 +48,45 @@ public class GameStateController : MonoBehaviour {
     //replace by:
     //string storedLevel = null;
     //if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
-    public string _currentLevel = _sandboxLevel1;
+    private string _currentLevel;
+    //TODO
+    //{ get; set;};// = _sandboxLevel1;
+
+    private void setCurrentLevel(string currentLevel, string cause = "default")
+    {
+        if(!string.IsNullOrEmpty(cause))
+        {
+            Debug.LogError("GameStateController::setCurrentLevel by "+cause);
+        }
+        _currentLevel = currentLevel;
+    }
+
+    public string getCurrentLevel ()
+    {
+        Debug.LogError("GameStateController::getCurrentLevel...");
+        if(null == _currentLevel)
+        {
+            Debug.LogError("GameStateController::getCurrentLevel null == _currentLevel...");
+            //LevelInfo levelInfo = null;
+            string currentLevelCode = null;
+            //if(MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo))
+            if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+            {
+                Debug.LogError("GameStateController::getCurrentLevel null == _currentLevel => set memorized level...");
+                //_currentLevel = levelInfo.code;
+                setCurrentLevel(currentLevelCode, "getCurrentLevel");
+            }
+            else
+            {
+                Debug.LogError("GameStateController::getCurrentLevel null == _currentLevel => default level...");
+                //default level
+                setAndSaveLevelName(_adventureLevel1);
+            }
+        }
+        Debug.LogError("GameStateController::getCurrentLevel returns _currentLevel="+_currentLevel);
+        return _currentLevel;
+    }
+
     public static string _currentLevelKey = "GameStateController.currentLevel";
 
     public static string keyPrefix = "KEY.";
@@ -69,7 +107,7 @@ public class GameStateController : MonoBehaviour {
 
     void Awake() {
         Debug.LogError("AWAKE with hashcode="+this.gameObject.GetHashCode());
-        Debug.LogError("AWAKE 0 _currentLevel = "+_currentLevel);
+        Debug.LogError("AWAKE 0 _currentLevel = "+getCurrentLevel());
         if(null != _instance)
         {
             Debug.LogError("GameStateController::Awake null != instance");
@@ -86,22 +124,24 @@ public class GameStateController : MonoBehaviour {
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
         string storedLevel = null;
+        /*
         if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
         {
-            Debug.LogError("GameStateController::Awake storedLevel="+storedLevel);
+            Debug.LogError("GameStateController::Awake _instance._currentLevel:=storedLevel="+storedLevel);
             _instance._currentLevel = storedLevel;
         }
         else
         {
             Debug.LogError("GameStateController::Awake no storedLevel, default _instance._currentLevel="+_instance._currentLevel);
         }
+        */
         Debug.LogError("AWAKE 3");
         loadLevels();
         Debug.LogError("AWAKE 4");
 
 
 
-        Debug.LogError("AWAKE 5 final _currentLevel = "+_currentLevel);
+        Debug.LogError("AWAKE 5 final _currentLevel = "+getCurrentLevel());
     }
 
     // Use this for initialization
@@ -116,16 +156,16 @@ public class GameStateController : MonoBehaviour {
         Debug.LogError("START 4");
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
         Debug.LogError("START 5");
-        Debug.LogError("START _currentLevel = "+_currentLevel);
+        Debug.LogError("START _currentLevel = "+getCurrentLevel());
     }
     
-    private static void loadLevels()
+    private void loadLevels()
     {
-        Debug.LogError("LOADLEVELS _instance._currentLevel="+_instance._currentLevel);
+        Debug.LogError("LOADLEVELS _instance._currentLevel="+getCurrentLevel());
         //take into account order of loading to know which LinkManager shall ask which one
         Application.LoadLevelAdditive(_interfaceScene);
         Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(_instance._currentLevel);
+        Application.LoadLevelAdditive(getCurrentLevel());
     }
     private static void resetPauseStack ()
     {
@@ -250,18 +290,18 @@ public class GameStateController : MonoBehaviour {
                 //Also: put specific interface elements into level scene and then move them to interface hierarchy
 
                 //TODO remove this temporary hack
-                if(_currentLevel == _adventureLevel1)
+                if(getCurrentLevel() == _adventureLevel1)
                 {
                     fadeSprite.gameObject.SetActive(true);
                     ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
                 }
-                else if(_currentLevel == _sandboxLevel1)
+                else if(getCurrentLevel() == _sandboxLevel1)
                 {
                     changeState(GameState.Game);
                 }
                 else
                 {
-                    Debug.LogError("unknown _currentLevel="+_currentLevel);
+                    Debug.LogError("unknown _currentLevel="+getCurrentLevel());
                 }
                 endWindow.SetActive(false);
 
@@ -290,9 +330,9 @@ public class GameStateController : MonoBehaviour {
                 }
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
-                    Debug.LogError("PRESSED K => BEFORE _currentLevel = "+_currentLevel);
+                    Debug.LogError("PRESSED K => BEFORE _currentLevel = "+getCurrentLevel());
                     setAndSaveLevelName(_sandboxLevel1);
-                    Debug.LogError("PRESSED K => AFTER _currentLevel = "+_currentLevel);
+                    Debug.LogError("PRESSED K => AFTER _currentLevel = "+getCurrentLevel());
                     restart();
                 }
                 break;
@@ -399,7 +439,7 @@ public class GameStateController : MonoBehaviour {
         }
     }
 
-    public static void setAndSaveLevelName(string levelName)
+    public void setAndSaveLevelName(string levelName)
     {
         if(_adventureLevel1 != levelName
            && _sandboxLevel1 != levelName)
@@ -412,7 +452,7 @@ public class GameStateController : MonoBehaviour {
             //saving level name into MemoryManager
             //because GameStateController current instance will be destroyed during restart
             //whereas MemoryManager won't
-            _instance._currentLevel = levelName;
+            setCurrentLevel(levelName, "setAndSaveLevelName");
             MemoryManager.get ().addOrUpdateData(_currentLevelKey, levelName);
         }
     }
@@ -420,13 +460,12 @@ public class GameStateController : MonoBehaviour {
     public static void restart()
     {
         Debug.LogError("RESTART with hashcode="+_instance.gameObject.GetHashCode());
-        Debug.LogError("RESTART before LoadLevel _instance._currentLevel="+_instance._currentLevel);
+        Debug.LogError("RESTART before LoadLevel _instance._currentLevel="+_instance.getCurrentLevel());
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
         Application.LoadLevel(_masterScene);
-        Debug.LogError("RESTART after LoadLevel _instance._currentLevel="+_instance._currentLevel);
+        Debug.LogError("RESTART after LoadLevel _instance._currentLevel="+_instance.getCurrentLevel());
 
-        setAndSaveLevelName(_instance._currentLevel);
-
+        //setAndSaveLevelName(_instance._currentLevel);
         Debug.LogError("RESTART DONE with hashcode="+_instance.gameObject.GetHashCode());
     }
 

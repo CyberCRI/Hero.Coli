@@ -6,7 +6,7 @@
   </info>
   <info id="sandbox1">
     <code>Sandbox-0.1</code>
-    <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
-    <areAllDevicesAvailable>true</areAllDevicesAvailable>
+    <areAllBioBricksAvailable>true</areAllBioBricksAvailable>
+    <areAllDevicesAvailable>false</areAllDevicesAvailable>
   </info>
 </infoList>
