@@ -23,15 +23,12 @@ public class LevelInfo : LoadableFromXmlImpl
                 switch (attr.Name)
                 {
                     case LevelInfoXMLTags.CODE:
-                        Debug.LogError("CODE "+attr.InnerText+"spotted");
                         code = attr.InnerText;
                         break;
                     case LevelInfoXMLTags.AREALLBIOBRICKSAVAILABLE:
-                        Debug.LogError("AREALLBIOBRICKSAVAILABLE "+attr.InnerText+"spotted");
                         areAllBioBricksAvailable = Tools.safeGetBool(attr.InnerText);
                         break;
                     case LevelInfoXMLTags.AREALLDEVICESAVAILABLE:
-                        Debug.LogError("AREALLDEVICESAVAILABLE "+attr.InnerText+"spotted");
                         areAllDevicesAvailable = Tools.safeGetBool(attr.InnerText);
                         break;
                     default:
@@ -42,7 +39,7 @@ public class LevelInfo : LoadableFromXmlImpl
         }
         else
         {
-            Debug.LogError("LevelInfo::tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'");
+            Logger.Log("LevelInfo::tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'", Logger.Level.WARN);
         }
         
         Logger.Log("LevelInfo.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
