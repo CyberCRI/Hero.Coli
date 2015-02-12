@@ -20,12 +20,12 @@ public abstract class XmlLoader
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" will load from "+filePath
-                    , Logger.Level.ERROR);
+                    , Logger.Level.INFO);
 		
 		objectList = loadObjects <T>(objectNodeLists);
         
         Logger.Log ("XmlLoader::loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath
-                    , Logger.Level.ERROR);
+                    , Logger.Level.INFO);
 
 		return objectList;
 

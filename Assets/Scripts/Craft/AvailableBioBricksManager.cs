@@ -311,12 +311,9 @@ public class AvailableBioBricksManager : MonoBehaviour {
     private void loadAvailableBioBricks() {
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.INFO);
         LevelInfo levelInfo = null;
-        Debug.LogError("AvailableBioBricksManager::loadAvailableBioBricks");
         MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo);
-        Debug.LogError("AvailableBioBricksManager::loadAvailableBioBricks levelInfo="+levelInfo);
         if(null != levelInfo && levelInfo.areAllBioBricksAvailable)
         {
-            Debug.LogError("AvailableBioBricksManager::loadAvailableBioBricks null != levelInfo && levelInfo.areAllBioBricksAvailable");
             //load all biobricks
             //loadBioBricks(_allBioBrickFiles, _availableBioBricks);
             //or just copy them
@@ -328,7 +325,6 @@ public class AvailableBioBricksManager : MonoBehaviour {
         else
         {
             //default behavior
-            Debug.LogError("AvailableBioBricksManager::loadAvailableBioBricks default behavior");
             loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
         }
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks="+_availableBioBricks.Count, Logger.Level.DEBUG);
