@@ -39,10 +39,54 @@ public class GameStateController : MonoBehaviour {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static string _masterScene = "Master-Demo-0.1";
+    public static string _adventureLevel1 = "World1.0";
+    public static string _sandboxLevel1 = "Sandbox-0.1";
+    public static string _interfaceScene = "Interface1.0";
+    public static string _bacteriumScene = "Bacterium1.0";
+    //TODO refactor use of this variable
+    //replace by:
+    //string storedLevel = null;
+    //if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
+    private string _currentLevel;
+    private void setCurrentLevel(string currentLevel, string cause = null)
+    {
+        if(!string.IsNullOrEmpty(cause))
+        {
+            Logger.Log("GameStateController::setCurrentLevel by "+cause, Logger.Level.DEBUG);
+        }
+        else
+        {
+            Logger.Log("GameStateController::setCurrentLevel", Logger.Level.DEBUG);
+        }
+        _currentLevel = currentLevel;
+    }
+    public string getCurrentLevel ()
+    {
+        Logger.Log("GameStateController::getCurrentLevel", Logger.Level.DEBUG);
+        if(null == _currentLevel)
+        {
+            string currentLevelCode = null;
+            if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+            {
+                setCurrentLevel(currentLevelCode, "getCurrentLevel");
+            }
+            else
+            {
+                //default level
+                setAndSaveLevelName(_adventureLevel1);
+            }
+        }
+        return _currentLevel;
+    }
+
+    public static string _currentLevelKey = "GameStateController.currentLevel";
+
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
     public static string _craftingKey = keyPrefix+"CRAFTING";
     public static string _pauseKey = keyPrefix+"PAUSE";
+    public static string _sandboxKey = keyPrefix+"SANDBOX";
 
 
     private GameState _gameState;
@@ -52,6 +96,31 @@ public class GameStateController : MonoBehaviour {
     public ContinueButton introContinueButton;
     public EndRestartButton endRestartButton;
     private static int _pausesStacked = 0;
+
+
+    void Awake() {
+        Logger.Log("GameStateController::Awake", Logger.Level.INFO);
+        GameStateController.get ();
+        loadLevels();
+    }
+
+    // Use this for initialization
+    void Start () {
+        Logger.Log("GameStateController::Start", Logger.Level.INFO);
+        _gameState = GameState.Start;
+        resetPauseStack();
+        I18n.changeLanguageTo(I18n.Language.French);
+        Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
+    }
+    
+    private void loadLevels()
+    {
+        Logger.Log("GameStateController::loadLevels", Logger.Level.INFO);
+        //take into account order of loading to know which LinkManager shall ask which one
+        Application.LoadLevelAdditive(_interfaceScene);
+        Application.LoadLevelAdditive(_bacteriumScene);
+        Application.LoadLevelAdditive(getCurrentLevel());
+    }
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;
@@ -92,23 +161,6 @@ public class GameStateController : MonoBehaviour {
         pushPauseInStack ();
         changeState (GameState.Pause);
         Logger.Log ("tryLockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
-    }
-
-
-    void Awake() {
-    _instance = this;
-        //take into account order of loading to know which LinkManager shall ask which one
-    	Application.LoadLevelAdditive("Interface1.0");
-    	Application.LoadLevelAdditive("Bacterium1.0");
-    	Application.LoadLevelAdditive("World1.0");
-    }
-    // Use this for initialization
-    void Start () {
-    	_gameState = GameState.Start;
-    resetPauseStack();
-
-    I18n.changeLanguageTo(I18n.Language.French);
-    Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
 
     //TODO optimize for frequent calls & refactor out of GameStateController
@@ -186,8 +238,25 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
 
             case GameState.Start:
-                fadeSprite.gameObject.SetActive(true);
-                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                //TODO put this code into a separate implementation of a "Level" interface
+                //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
+                //so that those modals don't appear on every level
+                //Also: put specific interface elements into level scene and then move them to interface hierarchy
+
+                //TODO remove this temporary hack
+                if(getCurrentLevel() == _adventureLevel1)
+                {
+                    fadeSprite.gameObject.SetActive(true);
+                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                }
+                else if(getCurrentLevel() == _sandboxLevel1)
+                {
+                    changeState(GameState.Game);
+                }
+                else
+                {
+                    Logger.Log("GameStateController::Update unknown currentLevel="+getCurrentLevel(), Logger.Level.WARN);
+                }
                 endWindow.SetActive(false);
 
                 break;
@@ -212,6 +281,21 @@ public class GameStateController : MonoBehaviour {
                 {
                     Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
                     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                }
+                else if(isShortcutKeyDown(_sandboxKey))
+                {
+                    Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
+                    string destination = _sandboxLevel1;
+                    string currentLevelCode = null;
+                    if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+                    {
+                        if(destination == currentLevelCode)
+                        {
+                            destination = _adventureLevel1;
+                        }
+                    }
+                    setAndSaveLevelName(destination);
+                    restart();
                 }
                 break;
 
@@ -317,10 +401,38 @@ public class GameStateController : MonoBehaviour {
         }
     }
 
+    public void setAndSaveLevelName(string levelName)
+    {
+        if(_adventureLevel1 != levelName
+           && _sandboxLevel1 != levelName)
+        {
+            Logger.Log("GameStateController::setAndSaveLevelName bad level name="+levelName, Logger.Level.WARN);
+        }
+        else
+        {
+            //saving level name into MemoryManager
+            //because GameStateController current instance will be destroyed during restart
+            //whereas MemoryManager won't
+            setCurrentLevel(levelName, "setAndSaveLevelName");
+            MemoryManager.get ().addOrUpdateData(_currentLevelKey, levelName);
+        }
+    }
+
     public static void restart()
     {
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
-        Application.LoadLevel("Master-Demo-0.1");
+        //TODO reload scene but reset all of its components without using MemoryManager
+        //note: ways to transfer data from one scene to another
+        //get data from previous instance
+        //other solution: make all fields static
+        //other solution: fix initialization through LinkManagers
+        //that automatically take new GameStateController object
+        //and leave old GameStateController object with old dead links to destroyed objects
+        Application.LoadLevel(_masterScene);
+
     }
-	
+
+    void OnDestroy() {
+        Logger.Log("GameStateController::OnDestroy", Logger.Level.DEBUG);
+    }
 }

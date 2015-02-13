@@ -1,0 +1,12 @@
+<infoList>
+  <info id="adventure1">
+    <code>World1.0</code>
+    <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
+    <areAllDevicesAvailable>false</areAllDevicesAvailable>
+  </info>
+  <info id="sandbox1">
+    <code>Sandbox-0.1</code>
+    <areAllBioBricksAvailable>true</areAllBioBricksAvailable>
+    <areAllDevicesAvailable>false</areAllDevicesAvailable>
+  </info>
+</infoList>

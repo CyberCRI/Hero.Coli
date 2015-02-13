@@ -310,7 +310,23 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
     private void loadAvailableBioBricks() {
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.INFO);
-        loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
+        LevelInfo levelInfo = null;
+        MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo);
+        if(null != levelInfo && levelInfo.areAllBioBricksAvailable)
+        {
+            //load all biobricks
+            //loadBioBricks(_allBioBrickFiles, _availableBioBricks);
+            //or just copy them
+            foreach(BioBrick bb in _allBioBricks)
+            {
+                _availableBioBricks.AddLast(bb);
+            }
+        }
+        else
+        {
+            //default behavior
+            loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
+        }
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks="+_availableBioBricks.Count, Logger.Level.DEBUG);
     }
 
