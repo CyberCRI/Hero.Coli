@@ -285,7 +285,16 @@ public class GameStateController : MonoBehaviour {
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
                     Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
-                    setAndSaveLevelName(_sandboxLevel1);
+                    string destination = _sandboxLevel1;
+                    string currentLevelCode = null;
+                    if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+                    {
+                        if(destination == currentLevelCode)
+                        {
+                            destination = _adventureLevel1;
+                        }
+                    }
+                    setAndSaveLevelName(destination);
                     restart();
                 }
                 break;
