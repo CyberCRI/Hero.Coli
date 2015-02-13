@@ -15,6 +15,7 @@ var instantiateOnBreak : GameObject;
 var totalMassIfStatic = 1.0;
 private var joints : Joint[];
 
+/*
 //-------------------------------------------------------------------
 function Start () {
 	if (rigidbody) {
@@ -259,3 +260,4 @@ function Update() {
 
 	deletePieces() ;
 }
+*/
