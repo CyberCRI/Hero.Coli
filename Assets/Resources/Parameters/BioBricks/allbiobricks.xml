@@ -1,24 +1,62 @@
 <bricks>
+  <!--PROMOTERS-->
   <brick id="PRCONS" size="48" type="promoter">
     <beta>100</beta>
     <formula>T</formula>
   </brick>
+
+  <!--LacI promoter: induced by IPTG (inhibits lacI), inhibited by lacI/CAP proteins-->
   <brick id="PRLACI" size="200" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR1</formula>
+    <formula>![0.01,2]REPR1|[0.01,2]IPTG</formula>
   </brick>
+  <!--TetR promoter: induced by aTc (inhibits tetR), inhibited by tetR-->
   <brick id="PRTETR" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR2</formula>
+    <formula>![0.01,2]REPR2|[0.01,2]aTc</formula>
   </brick>
-  
+
+  <!--pBAD strong multi-->
+  <brick id="PRBAD1" size="130" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]ARAC|[0.01,2]LARA</formula>
+  </brick>
+  <!--pBAD medium multi-->
+  <brick id="PRBAD2" size="130" type="promoter">
+    <beta>75</beta>
+    <formula>![0.005,2]ARAC|[0.005,2]LARA</formula>
+  </brick>
+  <!--pBAD weak multi-->
+  <brick id="PRBAD3" size="130" type="promoter">
+    <beta>75</beta>
+    <formula>![0.001,2]ARAC|[0.001,2]LARA</formula>
+  </brick>
+
+  <!--pR promoter from bacteriophage lambda repressible-->
+  <!--BBa_R0051-->
+  <brick id="PRLAMB" size="54" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]REPR3|![0.01,2]REPR4</formula>
+  </brick>
+  <!--glucose promoter: induced by carbon starvation (cAMP-cAMP receptor protein complex), inhibited by glucose (less cAMP)-->
+  <brick id="PRGLUC" size="131" type="promoter">
+    <beta>75</beta>
+    <formula>![0.01,2]GLUCOSE</formula>
+  </brick>  
+  <!--PROMOTERS-->
+
+
+  <!--RBS-->
   <brick id="RBS1" size="13" type="rbs">
     <rbsFactor>0.23</rbsFactor>
   </brick>
   <brick id="RBS2" size="14" type="rbs">
     <rbsFactor>0.126</rbsFactor>
   </brick>
+  <!--RBS-->
   
+
+  <!--GENES-->
   <brick id="FLUO1" size="716" type="gene">
     <protein>FLUO1</protein>
   </brick>
@@ -31,14 +69,51 @@
   <brick id="AMPR" size="943" type="gene">
     <protein>AMPR</protein>
   </brick>
-  <!--brick id="REPR1" size="1153" type="gene">
+
+  <!--LacI repressor from lac operon, LacI protein, IPTG binds to lacI-->
+  <brick id="REPR1" size="1153" type="gene">
     <protein>REPR1</protein>
   </brick>
+  <!--TetR repressor from TetR operon, TetR protein, aTc binds to tetR-->
   <brick id="REPR2" size="657" type="gene">
     <protein>REPR2</protein>
-  </brick-->
-  
+  </brick>
+  <!--cI repressor from bacteriophage lambda modified with an LVA tail for rapid degradation of the protein-->
+  <!--BBa_C0051-->
+  <brick id="REPR3" size="711" type="gene">
+    <protein>REPR3</protein>
+  </brick>
+  <!--Temperature sensible cl repressor - loses binding efficiency with the cI promoter between 35 and 42 degrees C-->
+  <!--BBa_K098997-->
+  <brick id="REPR4" size="714" type="gene">
+    <protein>REPR4</protein>
+  </brick>
+  <!--IPTG protein, binds to (inhibits) LacI-->
+  <brick id="IPTG" size="1" type="gene">
+    <protein>IPTG</protein>
+  </brick>
+  <!--aTc protein, binds to (inhibits) TetR-->
+  <brick id="aTc" size="1153" type="gene">
+    <protein>aTc</protein>
+  </brick>
+  <!--araC, inhibited by L-arabinose-->
+  <brick id="ARAC" size="1" type="gene">
+    <protein>ARAC</protein>
+  </brick>
+  <!--L-arabinose, inhibits araC-->
+  <brick id="LARA" size="1" type="gene">
+    <protein>LARA</protein>
+  </brick>
+  <!--glucose, inhibits PRGLUC-->
+  <brick id="GLUCOSE" size="1153" type="gene">
+    <protein>GLUCOSE</protein>
+  </brick>
+  <!--GENES-->
+
+
+  <!--TERMINATORS-->
   <brick id="DTER" size="129" type="terminator">
     <terminatorFactor>1.0</terminatorFactor>
   </brick>
+  <!--TERMINATORS-->
 </bricks>
