@@ -32,15 +32,20 @@ BRICK.AMPR=Ampicillin resistance cassette
 BRICK.DTER=Double terminator
 
 MOL.IPTG=IPTG
-MOL.aTc=aTc tetracycline
+MOL.ATC=aTc tetracycline
 MOL.FLUO1=GFP
-MOL.FLUO2=Red - mCherry
+MOL.FLUO2=red - mCherry
 MOL.MOV=FlhDC
-MOL.AMPR=Beta-lactamase
+MOL.AMPR=beta-lactamase
 MOL.REPR1=lacI
 MOL.REPR2=tetR
-MOL.AMPI=Ampicillin
-MOL.AMPI*=Penicilloic acid
+MOL.REPR3=cI
+MOL.REPR4=heat-sensible cI
+MOL.AMPI=ampicillin
+MOL.AMPI*=penicilloic acid
+MOL.ARAC=araC
+MOL.LARA=L-arabinose
+MOL.GLUCOSE=glucose
 
 DEVICE.FLUO1=Green fluorescence
 DEVICE.FLUO2=Red fluorescence

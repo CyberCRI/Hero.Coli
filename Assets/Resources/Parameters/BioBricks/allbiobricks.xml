@@ -13,7 +13,7 @@
   <!--TetR promoter: induced by aTc (inhibits tetR), inhibited by tetR-->
   <brick id="PRTETR" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR2|[0.01,2]aTc</formula>
+    <formula>![0.01,2]REPR2|[0.01,2]ATC</formula>
   </brick>
 
   <!--pBAD strong multi-->
@@ -83,7 +83,7 @@
   <brick id="REPR3" size="711" type="gene">
     <protein>REPR3</protein>
   </brick>
-  <!--Temperature sensible cl repressor - loses binding efficiency with the cI promoter between 35 and 42 degrees C-->
+  <!--Temperature sensible cI repressor - loses binding efficiency with the cI promoter between 35 and 42 degrees C-->
   <!--BBa_K098997-->
   <brick id="REPR4" size="714" type="gene">
     <protein>REPR4</protein>
@@ -93,8 +93,8 @@
     <protein>IPTG</protein>
   </brick>
   <!--aTc protein, binds to (inhibits) TetR-->
-  <brick id="aTc" size="1153" type="gene">
-    <protein>aTc</protein>
+  <brick id="ATC" size="1153" type="gene">
+    <protein>ATC</protein>
   </brick>
   <!--araC, inhibited by L-arabinose-->
   <brick id="ARAC" size="1" type="gene">
