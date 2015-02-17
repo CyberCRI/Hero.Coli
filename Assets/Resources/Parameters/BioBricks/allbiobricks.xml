@@ -104,10 +104,6 @@
   <brick id="LARA" size="1" type="gene">
     <protein>LARA</protein>
   </brick>
-  <!--glucose, inhibits PRGLUC-->
-  <brick id="GLUCOSE" size="1153" type="gene">
-    <protein>GLUCOSE</protein>
-  </brick>
   <!--GENES-->
 
 
