@@ -1,17 +1,13 @@
 <tooltipList>
-  <tooltip code="b_AMPR">
+  <tooltip code="b_PRBAD1">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
-  <tooltip code="b_DTER">
+  <tooltip code="b_PRBAD2">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
-  <tooltip code="b_FLUO1">
-    <type>BioBrick</type>
-    <illustration>tuto_intro-01</illustration>
-  </tooltip>
-  <tooltip code="b_MOV">
+  <tooltip code="b_PRBAD3">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
@@ -19,7 +15,15 @@
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
+  <tooltip code="b_PRGLUC">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
   <tooltip code="b_PRLACI">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_PRLAMB">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
@@ -32,6 +36,58 @@
     <illustration>tuto_intro-01</illustration>
   </tooltip>
   <tooltip code="b_RBS2">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_AMPR">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_ARAC">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_ATC">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO1">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO2">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_IPTG">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_LARA">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_MOV">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_REPR1">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_REPR2">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_REPR3">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_REPR4">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_DTER">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
