@@ -87,11 +87,11 @@
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
     </molecule>
-    <molecule type="other">
+    <!--molecule type="other">
       <name>GLUCOSE</name>
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
-    </molecule>
+    </molecule-->
   </molecules>
 </Document>
