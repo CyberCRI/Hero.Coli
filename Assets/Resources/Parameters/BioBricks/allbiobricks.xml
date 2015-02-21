@@ -8,11 +8,13 @@
   <!--LacI promoter: induced by IPTG (inhibits lacI), inhibited by lacI/CAP proteins-->
   <brick id="PRLACI" size="200" type="promoter">
     <beta>75</beta>
+    <!--instead, put reaction REPR1+IPTG->REPR1*-->
     <formula>![0.01,2]REPR1|[0.01,2]IPTG</formula>
   </brick>
   <!--TetR promoter: induced by aTc (inhibits tetR), inhibited by tetR-->
   <brick id="PRTETR" size="54" type="promoter">
     <beta>75</beta>
+    <!--instead, put reaction REPR2+ATC->REPR2*-->
     <formula>![0.01,2]REPR2|[0.01,2]ATC</formula>
   </brick>
 
@@ -39,10 +41,10 @@
     <formula>![0.01,2]REPR3|![0.01,2]REPR4</formula>
   </brick>
   <!--glucose promoter: induced by carbon starvation (cAMP-cAMP receptor protein complex), inhibited by glucose (less cAMP)-->
-  <brick id="PRGLUC" size="131" type="promoter">
+  <!--brick id="PRGLUC" size="131" type="promoter">
     <beta>75</beta>
     <formula>![0.01,2]GLUCOSE</formula>
-  </brick>  
+  </brick-->
   <!--PROMOTERS-->
 
 
