@@ -32,12 +32,15 @@ public class Inventory : DeviceContainer
   /* array of file paths from which the devices available by default from start will be loaded */
 
   //private string[] _deviceFiles = new string[]{};
-  private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePath };
+
+    //old device files
   //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePath };
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePath };
 	
-  private string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.txt";
+  private string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.xml";
 
   private string _genericDeviceNamePrefix = "device";
 
@@ -171,8 +174,8 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
-      //DeviceSaver dSaver = new DeviceSaver();
-      //dSaver.saveDevicesToFile(_devices, _saveFilePath);
+      DeviceSaver dSaver = new DeviceSaver();
+      dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
