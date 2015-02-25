@@ -40,7 +40,7 @@ public class Inventory : DeviceContainer
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePath };
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePath };
 	
-  private static string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.xml";
+  private static string _saveFilePath = "Parameters/Devices/exported";
 
   private string _genericDeviceNamePrefix = "device";
 
@@ -175,6 +175,7 @@ public class Inventory : DeviceContainer
       addDevice(device);
 
             //uncomment to save user-created devices
+            //TODO FIXME uncommenting this entails bugs on loading devices from _saveFilePath
       //DeviceSaver dSaver = new DeviceSaver();
       //dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {

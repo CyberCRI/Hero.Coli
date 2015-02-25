@@ -182,12 +182,11 @@ public class ExpressionModule
     //checks for basic BioBrick sequence (4 bricks)
     public static bool isBioBricksSequenceValid(LinkedList<BioBrick> bioBricksToCheck)
     {
-        LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBricksToCheck);
-        
-        if (bricks == null) {
-            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (bricks == null)", Logger.Level.DEBUG);
+        if (bioBricksToCheck == null) {
+            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (bioBricksToCheck == null)", Logger.Level.DEBUG);
             return false;
         }
+        LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBricksToCheck);
         if (bricks.Count == 0 || bricks.First.Value == null) {
             Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (bricks.Count == 0 || bricks.First.Value == null)", Logger.Level.DEBUG);
             return false;

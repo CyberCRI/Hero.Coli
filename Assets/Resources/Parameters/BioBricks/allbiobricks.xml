@@ -9,36 +9,36 @@
   <brick id="PRLACI" size="200" type="promoter">
     <beta>75</beta>
     <!--instead, put reaction REPR1+IPTG->REPR1*-->
-    <formula>![0.01,2]REPR1</formula>
+    <formula>![0.01,2]REPR1|[0.01,2]IPTG</formula>
   </brick>
   <!--TetR promoter: induced by aTc (inhibits tetR), inhibited by tetR-->
   <brick id="PRTETR" size="54" type="promoter">
     <beta>75</beta>
     <!--instead, put reaction REPR2+ATC->REPR2*-->
-    <formula>![0.01,2]REPR2</formula>
+    <formula>![0.01,2]REPR2|[0.01,2]ATC</formula>
   </brick>
 
   <!--pBAD strong multi-->
   <brick id="PRBAD1" size="130" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]ARAC|[0.01,2]LARA</formula>
+    <formula>![0.01,2]ARAC*[0.01,2]LARA</formula>
   </brick>
   <!--pBAD medium multi-->
   <brick id="PRBAD2" size="130" type="promoter">
     <beta>75</beta>
-    <formula>![0.005,2]ARAC|[0.005,2]LARA</formula>
+    <formula>![0.005,2]ARAC*[0.005,2]LARA</formula>
   </brick>
   <!--pBAD weak multi-->
   <brick id="PRBAD3" size="130" type="promoter">
     <beta>75</beta>
-    <formula>![0.001,2]ARAC|[0.001,2]LARA</formula>
+    <formula>![0.001,2]ARAC*[0.001,2]LARA</formula>
   </brick>
 
   <!--pR promoter from bacteriophage lambda repressible-->
   <!--BBa_R0051-->
   <brick id="PRLAMB" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR3</formula>
+    <formula>![0.01,2]REPR3*![0.01,2]REPR4</formula>
   </brick>
   <!--glucose promoter: induced by carbon starvation (cAMP-cAMP receptor protein complex), inhibited by glucose (less cAMP)-->
   <!--brick id="PRGLUC" size="131" type="promoter">
