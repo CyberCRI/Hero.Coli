@@ -171,14 +171,33 @@ public class EnzymeReaction : IReaction
   {
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     Molecule enzyme = ReactionEngine.getMoleculeFromName(_enzyme, molecules);
+
+        if(null == substrate)
+        {
+            Logger.Log("EnzymeReaction::react couldn't find substrate '"+_substrate+"'", Logger.Level.WARN);
+            return 0;
+        }
+        if(null == enzyme)
+        {
+            Logger.Log("EnzymeReaction::react couldn't find enzyme '"+_enzyme+"'", Logger.Level.WARN);
+            return 0;
+        }
+
+
     float Vmax = _Kcat * enzyme.getConcentration();
     float effectorConcentration = 0;
 
     if (_effector != "False")
       {
-        Molecule effector = ReactionEngine.getMoleculeFromName(_effector, molecules);
-        if (effector != null)
-          effectorConcentration = effector.getConcentration();
+            Molecule effector = ReactionEngine.getMoleculeFromName(_effector, molecules);
+            if (effector != null)
+            {
+                effectorConcentration = effector.getConcentration();
+            }
+            else
+            {
+                Logger.Log("EnzymeReaction::react couldn't find effector '"+_effector+"'", Logger.Level.WARN);
+            }
       }
     if (_alpha == 0)
     {
@@ -224,7 +243,10 @@ public class EnzymeReaction : IReaction
     
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
-      return ;
+        {
+            Logger.Log("EnzymeReaction::react couldn't find substrate '"+_substrate+"'", Logger.Level.WARN);
+            return ;
+        }
 
     //TODO introduce delta t here instead of 1f
     float delta = execEnzymeReaction(molecules) * 1f;
@@ -248,15 +270,27 @@ public class EnzymeReaction : IReaction
       substrate.subConcentration(delta);
     else
       substrate.subNewConcentration(delta);
-    foreach (Product pro in _products)
-    {
-      Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-      if (enableSequential)
-        mol.addConcentration(delta);
-      else
-        mol.addNewConcentration(delta);
+
+        foreach (Product pro in _products)
+        {
+            Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+            if(null != mol)
+            {
+                if (enableSequential)
+                {
+                    mol.addConcentration(delta);
+                }
+                else
+                {
+                    mol.addNewConcentration(delta);
+                }
+            }
+            else
+            {
+                Logger.Log("EnzymeReaction::react couldn't find product '"+pro.getName()+"'", Logger.Level.WARN);
+            }
+        }
     }
-  }
 
     // loading
     /*
@@ -391,7 +425,7 @@ public class EnzymeReaction : IReaction
     {
       if (String.IsNullOrEmpty(value))
       {
-        Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty productionMax field"
+        Logger.Log("EnzymeReaction::loadEnzymeFloat : Empty productionMax field"
                        , Logger.Level.ERROR);
         return false;
       }

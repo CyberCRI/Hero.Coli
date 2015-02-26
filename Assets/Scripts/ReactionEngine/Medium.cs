@@ -373,8 +373,10 @@ public class Medium : LoadableFromXmlImpl
         {
             manageMoleculeConcentrationWithKey("AMPI");
             manageMoleculeConcentrationWithKey("AMPR");
+            manageMoleculeConcentrationWithKey("ATC");
             manageMoleculeConcentrationWithKey("FLUO1");
             manageMoleculeConcentrationWithKey("FLUO2");
+            manageMoleculeConcentrationWithKey("IPTG");
             manageMoleculeConcentrationWithKey("MOV");
             manageMoleculeConcentrationWithKey("REPR1");
             manageMoleculeConcentrationWithKey("REPR2");

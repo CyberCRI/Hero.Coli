@@ -93,5 +93,17 @@
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
     </molecule-->
+    <molecule type="other">
+      <name>REPR1*</name>
+      <description>LacI+IPTG complex</description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+    </molecule>
+    <molecule type="other">
+      <name>REPR2*</name>
+      <description>TetR+aTc complex</description>
+      <concentration>0</concentration>
+      <degradationRate>0.2</degradationRate>
+    </molecule>
   </molecules>
 </Document>
