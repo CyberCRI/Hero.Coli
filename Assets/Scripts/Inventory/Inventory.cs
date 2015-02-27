@@ -226,6 +226,23 @@ public class Inventory : DeviceContainer
 			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
     UpdateData(devices, new List<Device>(), new List<Device>());
   }
+
+    public void switchDeviceKnowledge()
+    {
+        if(0 == _devices.Count)
+        {
+            Logger.Log("Inventory::switchDeviceKnowledge calls loadDevices", Logger.Level.DEBUG);
+            loadDevices();
+        } else {
+            Logger.Log("Inventory::switchDeviceKnowledge calls forgetDevices", Logger.Level.DEBUG);
+            forgetDevices();
+        }
+    }
+
+    private void forgetDevices() {
+        Logger.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), "+Logger.ToString<Device>(_devices)+"), List())", Logger.Level.INFO);
+        UpdateData(new List<Device>(), _devices, new List<Device>());
+    }
 	
   protected override void Start() {
     base.Start();
