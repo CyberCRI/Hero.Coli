@@ -37,15 +37,19 @@ public abstract class DeviceContainer : MonoBehaviour {
       askAddDevice(device);
     }
     Logger.Log("DeviceContainer::UpdateData added done", Logger.Level.TRACE);
-    foreach (Device device in removed ) {
-      removeDevice(device);
-    }
+    removeDevices(removed);
     Logger.Log("DeviceContainer::UpdateData removed done", Logger.Level.TRACE);
     foreach (Device device in edited ) {
       editDevice(device);
     }
     Logger.Log("DeviceContainer::UpdateData edited done", Logger.Level.TRACE);
   }
+
+    public void removeDevices(List<Device> toRemove)
+    {
+        Logger.Log("DeviceContainer::removeDevices", Logger.Level.DEBUG);
+        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
+    }
   
   abstract public AddingResult askAddDevice(Device device);
   abstract public void removeDevice(Device device);
