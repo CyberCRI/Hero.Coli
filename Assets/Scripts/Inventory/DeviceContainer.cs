@@ -44,15 +44,10 @@ public abstract class DeviceContainer : MonoBehaviour {
     }
     Logger.Log("DeviceContainer::UpdateData edited done", Logger.Level.TRACE);
   }
-
-    public void removeDevices(List<Device> toRemove)
-    {
-        Logger.Log("DeviceContainer::removeDevices", Logger.Level.DEBUG);
-        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
-    }
   
   abstract public AddingResult askAddDevice(Device device);
   abstract public void removeDevice(Device device);
+  abstract public void removeDevices(List<Device> devices);
   abstract public void editDevice(Device device);
 
  // Use this for initialization

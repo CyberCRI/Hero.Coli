@@ -189,7 +189,18 @@ public class Inventory : DeviceContainer
     safeGetDisplayer().removeInventoriedDevice(device);
   }
 
-  public override void editDevice(Device device) {
+    public override void removeDevices(List<Device> toRemove)
+    {
+        Logger.Log("Inventory::removeDevices", Logger.Level.INFO);
+
+        foreach(Device device in toRemove)
+        {
+            safeGetDisplayer().removeInventoriedDevice(device);
+        }
+        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
+    }
+    
+    public override void editDevice(Device device) {
     //TODO
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
   }
@@ -213,19 +224,17 @@ public class Inventory : DeviceContainer
         return currentName;
     }
 	
-  void loadDevices() {
-	LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
-    List<Device> devices = new List<Device>();
+    void loadDevices() {
+        LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
+        List<Device> devices = new List<Device>();
 
-    DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
-    foreach (string file in _deviceFiles) {
-      Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
-      devices.AddRange(dLoader.loadDevicesFromFile(file));
+        DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+        foreach (string file in _deviceFiles) {
+            Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
+            devices.AddRange(dLoader.loadDevicesFromFile(file));
+        }
+        UpdateData(devices, new List<Device>(), new List<Device>());
     }
-    Logger.Log("Inventory::loadDevices calls inventory.UpdateData(List("
-			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
-    UpdateData(devices, new List<Device>(), new List<Device>());
-  }
 
     public void switchDeviceKnowledge()
     {
