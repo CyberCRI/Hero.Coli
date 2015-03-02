@@ -1,56 +1,100 @@
 MAIN.LANGUAGE=English
 
 KEY.PAUSE=P
-KEY.LIFE=L
+KEY.LIFE=R
 KEY.ENERGY=E
 KEY.INVENTORY=I
 KEY.CRAFTING=C
 KEY.SANDBOX=K
+KEY.FORGETDEVICES=Tab
 
-KEY.MOV.PLUS=M
-KEY.MOV.MINUS=J
-KEY.AMPI.PLUS=V
-KEY.AMPI.MINUS=F
-KEY.FLUO1.PLUS=G
-KEY.FLUO1.MINUS=H
+KEY.AMPI.MINUS=Q
+KEY.AMPI.PLUS=S
+KEY.AMPR.MINUS=Q
 KEY.AMPR.PLUS=Y
-KEY.AMPR.MINUS=U
-KEY.FLUO2.PLUS=R
-KEY.FLUO2.MINUS=T
-KEY.BL.ON=B
+KEY.ATC.MINUS=Q
+KEY.ATC.PLUS=A
 KEY.BL.OFF=N
+KEY.BL.ON=B
+KEY.FLUO1.MINUS=Q
+KEY.FLUO1.PLUS=U
+KEY.FLUO2.MINUS=Q
+KEY.FLUO2.PLUS=O
+KEY.IPTG.MINUS=Q
+KEY.IPTG.PLUS=Z
+KEY.MOV.MINUS=Q
+KEY.MOV.PLUS=T
+KEY.REPR1.MINUS=F
+KEY.REPR1.PLUS=D
+KEY.REPR2.MINUS=H
+KEY.REPR2.PLUS=G
+KEY.REPR3.MINUS=M
+KEY.REPR3.PLUS=J
+KEY.REPR4.MINUS=M
+KEY.REPR4.PLUS=L
 
-BRICK.PRCONS=Constitutive promoter
+
+BRICK.PRBAD1=pBAD strong
+BRICK.PRBAD2=pBAD medium
+BRICK.PRBAD3=pBAD weak
+BRICK.PRCONS=constitutive promoter
+BRICK.PRGLUC=glucose promoter
 BRICK.PRLACI=pLac
+BRICK.PRLAMB=pLambda
 BRICK.PRTETR=pTet
-BRICK.RBS1=Medium RBS
-BRICK.RBS2=Low RBS
-BRICK.FLUO1=Green - GFP
-BRICK.FLUO2=Red - mCherry
-BRICK.MOV=Flagella master regulator
-BRICK.AMPR=Ampicillin resistance cassette
-BRICK.DTER=Double terminator
 
-MOL.IPTG=IPTG
-MOL.aTc=aTc tetracycline
+BRICK.RBS1=medium RBS
+BRICK.RBS2=low RBS
+
+BRICK.AMPR=ampicillin resistance cassette
+BRICK.ARAC=araC
+BRICK.ATC=aTc
+BRICK.FLUO1=green - GFP
+BRICK.FLUO2=red - mCherry
+BRICK.IPTG=IPTG
+BRICK.LARA=l-arabinose
+BRICK.MOV=flagella master regulator
+BRICK.REPR1=lacI
+BRICK.REPR2=tetR
+BRICK.REPR3=cI
+BRICK.REPR4=heat-sensible cI
+
+BRICK.DTER=double terminator
+
+
+MOL.AMPI*=penicilloic acid
+MOL.AMPI=ampicillin
+MOL.AMPR=beta-lactamase
+MOL.ARAC=araC
+MOL.ATC=aTc tetracycline
 MOL.FLUO1=GFP
-MOL.FLUO2=Red - mCherry
+MOL.FLUO2=mCherry
+MOL.GLUCOSE=glucose
+MOL.IPTG=IPTG
+MOL.LARA=L-arabinose
 MOL.MOV=FlhDC
-MOL.AMPR=Beta-lactamase
 MOL.REPR1=lacI
 MOL.REPR2=tetR
-MOL.AMPI=Ampicillin
-MOL.AMPI*=Penicilloic acid
+MOL.REPR3=cI
+MOL.REPR4=heat-sensible cI
+MOL.REPR1*=lacI+IPTG
+MOL.REPR2*=tetR+aTc
 
-DEVICE.FLUO1=Green fluorescence
-DEVICE.FLUO2=Red fluorescence
-DEVICE.MOV=Hyperflagellation
-DEVICE.AMPR=Ampicillin resistance
-DEVICE.REPR1=LacI inhibition
-DEVICE.REPR2=TetR inhibition
-DEVICE.SUFMED= (med)
+DEVICE.AMPR=ampicillin resistance
+DEVICE.ARAC=araC
+DEVICE.ATC=aTc
+DEVICE.FLUO1=green fluorescence
+DEVICE.FLUO2=red fluorescence
+DEVICE.IPTG=IPTG
+DEVICE.LARA=l-arabinose
+DEVICE.MOV=hyperflagellation
+DEVICE.PREREG=regulated 
+DEVICE.REPR1=lacI
+DEVICE.REPR2=tetR
+DEVICE.REPR3=cI
+DEVICE.REPR4=heat-sensible cI
 DEVICE.SUFLOW= (low)
-DEVICE.PREREG=Regulated 
+DEVICE.SUFMED= (med)
 
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
@@ -146,31 +190,31 @@ TOOLTIP.MAIN.ENERGYCONSUMPTION=Energy consumption:
 TOOLTIP.MAIN.DEVICETYPE=Device
 TOOLTIP.MAIN.BIOBRICKTYPE=BioBrick
 
-TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Gene
-TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.
-TOOLTIP.B_AMPR.LENGTH=943bp
-TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
-TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.
 
-TOOLTIP.B_DTER.TITLE=Terminator 1
-TOOLTIP.B_DTER.SUBTITLE=Use: necessary to determine the end of a device.
-TOOLTIP.B_DTER.LENGTH=129bp
-TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
-TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double terminator.
 
-TOOLTIP.B_FLUO1.TITLE=GFP Gene
-TOOLTIP.B_FLUO1.SUBTITLE=Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.
-TOOLTIP.B_FLUO1.CUSTOMFIELD=Fluorescence\nparameters:
-TOOLTIP.B_FLUO1.CUSTOMVALUE=Emission max: 511nm\nExcitation max: 501nm
-TOOLTIP.B_FLUO1.LENGTH=716bp
-TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
-TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein coding sequence.
+TOOLTIP.B_PRBAD1.TITLE=pBad Promoter, strong
+TOOLTIP.B_PRBAD1.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
+TOOLTIP.B_PRBAD1.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRBAD1.CUSTOMVALUE=l-arabinose ++\naraC --
+TOOLTIP.B_PRBAD1.LENGTH=-
+TOOLTIP.B_PRBAD1.REFERENCE=-
+TOOLTIP.B_PRBAD1.EXPLANATION=-
 
-TOOLTIP.B_MOV.TITLE=Hyperflagellation Operon
-TOOLTIP.B_MOV.SUBTITLE=Use: increases the number of flagella and consequently the motility speed.
-TOOLTIP.B_MOV.LENGTH=932bp
-TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.B_MOV.EXPLANATION=FlhDC master operon that produces an hexameric transcription factor activating flagella synthesis.
+TOOLTIP.B_PRBAD2.TITLE=pBad Promoter, medium
+TOOLTIP.B_PRBAD2.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
+TOOLTIP.B_PRBAD2.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRBAD2.CUSTOMVALUE=l-arabinose ++\naraC --
+TOOLTIP.B_PRBAD2.LENGTH=-
+TOOLTIP.B_PRBAD2.REFERENCE=-
+TOOLTIP.B_PRBAD2.EXPLANATION=-
+
+TOOLTIP.B_PRBAD3.TITLE=pBad Promoter, weak
+TOOLTIP.B_PRBAD3.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
+TOOLTIP.B_PRBAD3.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRBAD3.CUSTOMVALUE=l-arabinose ++\naraC --
+TOOLTIP.B_PRBAD3.LENGTH=-
+TOOLTIP.B_PRBAD3.REFERENCE=-
+TOOLTIP.B_PRBAD3.EXPLANATION=-
 
 TOOLTIP.B_PRCONS.TITLE=pCons Promoter
 TOOLTIP.B_PRCONS.SUBTITLE=Use: initiates expression of downstream genes in all circumstances.
@@ -180,6 +224,14 @@ TOOLTIP.B_PRCONS.LENGTH=48bp
 TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
 TOOLTIP.B_PRCONS.EXPLANATION=Constitutive promoter (constantly ON).
 
+TOOLTIP.B_PRGLUC.TITLE=glucose promoter
+TOOLTIP.B_PRGLUC.SUBTITLE=Use: inhibited by glucose, induced by carbon starvation.
+TOOLTIP.B_PRGLUC.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRGLUC.CUSTOMVALUE=glucose --\ncarbon --
+TOOLTIP.B_PRGLUC.LENGTH=-
+TOOLTIP.B_PRGLUC.REFERENCE=-
+TOOLTIP.B_PRGLUC.EXPLANATION=-
+
 TOOLTIP.B_PRLACI.TITLE=pLac Promoter
 TOOLTIP.B_PRLACI.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'CAP' and 'LacI'.
 TOOLTIP.B_PRLACI.CUSTOMFIELD=Regulation:
@@ -188,6 +240,14 @@ TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
 TOOLTIP.B_PRLACI.EXPLANATION=Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.
 
+TOOLTIP.B_PRLAMB.TITLE=lambda promoter
+TOOLTIP.B_PRLAMB.SUBTITLE=Use: pR promoter from bacteriophage lambda repressible
+TOOLTIP.B_PRLAMB.CUSTOMFIELD=Regulation:
+TOOLTIP.B_PRLAMB.CUSTOMVALUE=cI --
+TOOLTIP.B_PRLAMB.LENGTH=-
+TOOLTIP.B_PRLAMB.REFERENCE=-
+TOOLTIP.B_PRLAMB.EXPLANATION=-
+
 TOOLTIP.B_PRTETR.TITLE=pTet Promoter
 TOOLTIP.B_PRTETR.SUBTITLE=Use: initiates expression of downstream genes; activity inhibited by 'TetR'.
 TOOLTIP.B_PRTETR.CUSTOMFIELD=Regulation:
@@ -195,6 +255,7 @@ TOOLTIP.B_PRTETR.CUSTOMVALUE=TetR --
 TOOLTIP.B_PRTETR.LENGTH=54bp
 TOOLTIP.B_PRTETR.REFERENCE=iGEM (BBa_R0040)
 TOOLTIP.B_PRTETR.EXPLANATION=Promoter coupled with two tetR binding sequences.
+
 
 TOOLTIP.B_RBS1.TITLE=Medium RBS
 TOOLTIP.B_RBS1.SUBTITLE=Use: determines the level of expression of downstream gene.
@@ -211,6 +272,92 @@ TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
 TOOLTIP.B_RBS2.EXPLANATION=Ribosome Binding Site sequence with weak translation initialization.
+
+
+TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Gene
+TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.
+TOOLTIP.B_AMPR.LENGTH=943bp
+TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
+TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.
+
+TOOLTIP.B_ARAC.TITLE=araC Gene
+TOOLTIP.B_ARAC.SUBTITLE=-
+TOOLTIP.B_ARAC.LENGTH=-
+TOOLTIP.B_ARAC.REFERENCE=-
+TOOLTIP.B_ARAC.EXPLANATION=-
+
+TOOLTIP.B_ATC.TITLE=aTc Gene
+TOOLTIP.B_ATC.SUBTITLE=-
+TOOLTIP.B_ATC.LENGTH=-
+TOOLTIP.B_ATC.REFERENCE=-
+TOOLTIP.B_ATC.EXPLANATION=-
+
+TOOLTIP.B_FLUO1.TITLE=GFP Gene
+TOOLTIP.B_FLUO1.SUBTITLE=Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.
+TOOLTIP.B_FLUO1.CUSTOMFIELD=Fluorescence\nparameters:
+TOOLTIP.B_FLUO1.CUSTOMVALUE=Emission max: 511nm\nExcitation max: 501nm
+TOOLTIP.B_FLUO1.LENGTH=716bp
+TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
+TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein coding sequence.
+
+TOOLTIP.B_FLUO2.TITLE=RFP Gene
+TOOLTIP.B_FLUO2.SUBTITLE=-
+TOOLTIP.B_FLUO2.CUSTOMFIELD=-
+TOOLTIP.B_FLUO2.CUSTOMVALUE=-
+TOOLTIP.B_FLUO2.LENGTH=-
+TOOLTIP.B_FLUO2.REFERENCE=-
+TOOLTIP.B_FLUO2.EXPLANATION=-
+
+TOOLTIP.B_IPTG.TITLE=IPTG
+TOOLTIP.B_IPTG.SUBTITLE=-
+TOOLTIP.B_IPTG.LENGTH=-
+TOOLTIP.B_IPTG.REFERENCE=-
+TOOLTIP.B_IPTG.EXPLANATION=-
+
+TOOLTIP.B_LARA.TITLE=l-arabinose
+TOOLTIP.B_LARA.SUBTITLE=-
+TOOLTIP.B_LARA.LENGTH=-
+TOOLTIP.B_LARA.REFERENCE=-
+TOOLTIP.B_LARA.EXPLANATION=-
+
+TOOLTIP.B_MOV.TITLE=Hyperflagellation Operon
+TOOLTIP.B_MOV.SUBTITLE=Use: increases the number of flagella and consequently the motility speed.
+TOOLTIP.B_MOV.LENGTH=932bp
+TOOLTIP.B_MOV.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.B_MOV.EXPLANATION=FlhDC master operon that produces an hexameric transcription factor activating flagella synthesis.
+
+TOOLTIP.B_REPR1.TITLE=LacI
+TOOLTIP.B_REPR1.SUBTITLE=-
+TOOLTIP.B_REPR1.LENGTH=-
+TOOLTIP.B_REPR1.REFERENCE=-
+TOOLTIP.B_REPR1.EXPLANATION=-
+
+TOOLTIP.B_REPR2.TITLE=TetR
+TOOLTIP.B_REPR2.SUBTITLE=-
+TOOLTIP.B_REPR2.LENGTH=-
+TOOLTIP.B_REPR2.REFERENCE=-
+TOOLTIP.B_REPR2.EXPLANATION=-
+
+TOOLTIP.B_REPR3.TITLE=cI
+TOOLTIP.B_REPR3.SUBTITLE=-
+TOOLTIP.B_REPR3.LENGTH=-
+TOOLTIP.B_REPR3.REFERENCE=-
+TOOLTIP.B_REPR3.EXPLANATION=-
+
+TOOLTIP.B_REPR4.TITLE=heat-sensible cI
+TOOLTIP.B_REPR4.SUBTITLE=-
+TOOLTIP.B_REPR4.LENGTH=-
+TOOLTIP.B_REPR4.REFERENCE=-
+TOOLTIP.B_REPR4.EXPLANATION=-
+
+
+TOOLTIP.B_DTER.TITLE=Terminator 1
+TOOLTIP.B_DTER.SUBTITLE=Use: necessary to determine the end of a device.
+TOOLTIP.B_DTER.LENGTH=129bp
+TOOLTIP.B_DTER.REFERENCE=iGEM (BBa_B0015)
+TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double terminator.
+
+
 
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.title=Green fluorescence (low)
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.subtitle=Equipped: your bacterium becomes green fluorescent when exposed to blue light.

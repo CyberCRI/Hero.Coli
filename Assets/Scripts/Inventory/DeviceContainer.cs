@@ -37,9 +37,7 @@ public abstract class DeviceContainer : MonoBehaviour {
       askAddDevice(device);
     }
     Logger.Log("DeviceContainer::UpdateData added done", Logger.Level.TRACE);
-    foreach (Device device in removed ) {
-      removeDevice(device);
-    }
+    removeDevices(removed);
     Logger.Log("DeviceContainer::UpdateData removed done", Logger.Level.TRACE);
     foreach (Device device in edited ) {
       editDevice(device);
@@ -49,6 +47,7 @@ public abstract class DeviceContainer : MonoBehaviour {
   
   abstract public AddingResult askAddDevice(Device device);
   abstract public void removeDevice(Device device);
+  abstract public void removeDevices(List<Device> devices);
   abstract public void editDevice(Device device);
 
  // Use this for initialization

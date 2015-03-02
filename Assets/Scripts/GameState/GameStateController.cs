@@ -87,6 +87,7 @@ public class GameStateController : MonoBehaviour {
     public static string _craftingKey = keyPrefix+"CRAFTING";
     public static string _pauseKey = keyPrefix+"PAUSE";
     public static string _sandboxKey = keyPrefix+"SANDBOX";
+    public static string _forgetDevicesKey = keyPrefix+"FORGETDEVICES";
 
 
     private GameState _gameState;
@@ -296,6 +297,10 @@ public class GameStateController : MonoBehaviour {
                     }
                     setAndSaveLevelName(destination);
                     restart();
+                }
+                else if(isShortcutKeyDown(_forgetDevicesKey))
+                {
+                    Inventory.get ().switchDeviceKnowledge();
                 }
                 break;
 

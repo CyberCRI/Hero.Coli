@@ -90,22 +90,30 @@ public class Equipment : DeviceContainer
     //  , Logger.Level.TRACE);
   }
 
-  public override void removeDevice(Device device)
-  {
-    Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
-
-        //TODO test BioBricks equality (cf next line)
+    public override void removeDevice(Device device)
+    {
+        Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
         _devices.RemoveAll(d => d.Equals(device));
-    //_devices.RemoveAll(d => d.getInternalName() == device.getInternalName());
+        safeGetDisplayer().removeEquipedDevice(device);
+        removeFromReactionEngine(device);
+    }
+  
     
-
-    safeGetDisplayer().removeEquipedDevice(device);
-    removeFromReactionEngine(device);
-  }
-
-  public override void editDevice(Device device) {
+    public override void removeDevices(List<Device> toRemove)
+    {
+        Logger.Log("Equipment::removeDevices", Logger.Level.INFO);
+        
+        foreach(Device device in toRemove)
+        {
+            safeGetDisplayer().removeEquipedDevice(device);
+            removeFromReactionEngine(device);
+        }
+        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
+    }
+    
+    public override void editDevice(Device device) {
     //TODO
-    Debug.Log("Equipment::editeDevice NOT IMPLEMENTED");
+    Debug.LogError("Equipment::editeDevice NOT IMPLEMENTED");
   }
 
   new void Start()

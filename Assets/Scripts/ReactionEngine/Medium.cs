@@ -367,17 +367,23 @@ public class Medium : LoadableFromXmlImpl
       }
     }
 
-    //TODO improve check that it's the medium of the hero bacterium Cellia
-    //TODO refactor interactions out of medium
-    if (_name == "Cellia")
-    {
-      manageMoleculeConcentrationWithKey("MOV");
-      manageMoleculeConcentrationWithKey("AMPI");
-      manageMoleculeConcentrationWithKey("FLUO1");
-      manageMoleculeConcentrationWithKey("AMPR");
-      manageMoleculeConcentrationWithKey("FLUO2");
+        //TODO improve check that it's the medium of the hero bacterium Cellia
+        //TODO refactor interactions out of medium
+        if (_name == "Cellia")
+        {
+            manageMoleculeConcentrationWithKey("AMPI");
+            manageMoleculeConcentrationWithKey("AMPR");
+            manageMoleculeConcentrationWithKey("ATC");
+            manageMoleculeConcentrationWithKey("FLUO1");
+            manageMoleculeConcentrationWithKey("FLUO2");
+            manageMoleculeConcentrationWithKey("IPTG");
+            manageMoleculeConcentrationWithKey("MOV");
+            manageMoleculeConcentrationWithKey("REPR1");
+            manageMoleculeConcentrationWithKey("REPR2");
+            manageMoleculeConcentrationWithKey("REPR3");
+            manageMoleculeConcentrationWithKey("REPR4");
+        }
     }
-  }
 
   //TODO refactor interactions out of medium
   private void manageMoleculeConcentrationWithKey(String molecule)

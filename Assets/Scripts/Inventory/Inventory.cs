@@ -32,12 +32,15 @@ public class Inventory : DeviceContainer
   /* array of file paths from which the devices available by default from start will be loaded */
 
   //private string[] _deviceFiles = new string[]{};
-  private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePath };
+
+    //old device files
   //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePath };
   //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePath };
 	
-  private string _saveFilePath = "Assets/Resources/Parameters/Devices/exported.txt";
+  private static string _saveFilePath = "Parameters/Devices/exported";
 
   private string _genericDeviceNamePrefix = "device";
 
@@ -171,6 +174,8 @@ public class Inventory : DeviceContainer
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
+            //uncomment to save user-created devices
+            //TODO FIXME uncommenting this entails bugs on loading devices from _saveFilePath
       //DeviceSaver dSaver = new DeviceSaver();
       //dSaver.saveDevicesToFile(_devices, _saveFilePath);
     } else {
@@ -184,7 +189,18 @@ public class Inventory : DeviceContainer
     safeGetDisplayer().removeInventoriedDevice(device);
   }
 
-  public override void editDevice(Device device) {
+    public override void removeDevices(List<Device> toRemove)
+    {
+        Logger.Log("Inventory::removeDevices", Logger.Level.INFO);
+
+        foreach(Device device in toRemove)
+        {
+            safeGetDisplayer().removeInventoriedDevice(device);
+        }
+        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
+    }
+    
+    public override void editDevice(Device device) {
     //TODO
     Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
   }
@@ -208,19 +224,34 @@ public class Inventory : DeviceContainer
         return currentName;
     }
 	
-  void loadDevices() {
-	LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
-    List<Device> devices = new List<Device>();
+    void loadDevices() {
+        LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
+        List<Device> devices = new List<Device>();
 
-    DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
-    foreach (string file in _deviceFiles) {
-      Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
-      devices.AddRange(dLoader.loadDevicesFromFile(file));
+        DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+        foreach (string file in _deviceFiles) {
+            Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
+            devices.AddRange(dLoader.loadDevicesFromFile(file));
+        }
+        UpdateData(devices, new List<Device>(), new List<Device>());
     }
-    Logger.Log("Inventory::loadDevices calls inventory.UpdateData(List("
-			+Logger.ToString<Device>(devices)+"), List(), List())", Logger.Level.TRACE);
-    UpdateData(devices, new List<Device>(), new List<Device>());
-  }
+
+    public void switchDeviceKnowledge()
+    {
+        if(0 == _devices.Count)
+        {
+            Logger.Log("Inventory::switchDeviceKnowledge calls loadDevices", Logger.Level.DEBUG);
+            loadDevices();
+        } else {
+            Logger.Log("Inventory::switchDeviceKnowledge calls forgetDevices", Logger.Level.DEBUG);
+            forgetDevices();
+        }
+    }
+
+    private void forgetDevices() {
+        Logger.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), "+Logger.ToString<Device>(_devices)+"), List())", Logger.Level.INFO);
+        UpdateData(new List<Device>(), _devices, new List<Device>());
+    }
 	
   protected override void Start() {
     base.Start();
