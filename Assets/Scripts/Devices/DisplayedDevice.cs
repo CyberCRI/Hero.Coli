@@ -34,13 +34,22 @@ public class DisplayedDevice : DisplayedElement {
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
   {
-    {"FLUO1", "fluo"},
-    // TODO fix this to have specific red fluorescence icon
-    {"FLUO2", "fluo"},
-    {"MOV", "speed"},
-    {"AMPR", "resist"}
-    //{"REPR1", ?},
-    //{"REPR2", ?},
+        {"AMPR", "resist"},
+        {"ARAC", "arac"},
+        {"ATC", "atc"},
+        {"FLUO1", "fluo1"},
+        {"FLUO2", "fluo2"},
+        {"FLUO3", "fluo3"},
+        {"FLUO4", "fluo4"},
+        {"FLUO5", "fluo5"},
+        {"FLUO6", "fluo6"},
+        {"IPTG", "iptg"},
+        {"LARA", "lara"},
+        {"MOV", "speed"},
+        {"REPR1", "laci"},
+        {"REPR2", "tetr"},
+        {"REPR3", "ci"},
+        {"REPR4", "thci"}
   };
 
 

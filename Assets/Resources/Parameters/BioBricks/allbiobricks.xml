@@ -65,6 +65,18 @@
   <brick id="FLUO2" size="714" type="gene">
     <protein>FLUO2</protein>
   </brick>
+  <brick id="FLUO3" size="720" type="gene">
+    <protein>FLUO3</protein>
+  </brick>
+  <brick id="FLUO4" size="769" type="gene">
+    <protein>FLUO4</protein>
+  </brick>
+  <brick id="FLUO5" size="723" type="gene">
+    <protein>FLUO5</protein>
+  </brick>
+  <brick id="FLUO6" size="720" type="gene">
+    <protein>FLUO6</protein>
+  </brick>
   <brick id="MOV" size="932" type="gene">
     <protein>MOV</protein>
   </brick>
