@@ -199,7 +199,7 @@ public class ModalManager : MonoBehaviour {
     {
         Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.INFO);
         removeAllModalButtonClasses(button);
-        button.AddComponent(modalClass);
+        UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(button, "Assets/Scripts/GUI/ModalManager.cs (202,9)", modalClass);
     }
 
     public static bool isCancelButtonActive()

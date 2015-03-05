@@ -41,9 +41,9 @@ public class PhenoLight : Phenotype {
       float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
       float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
-      phenoLight.light.intensity = intensity;
+      phenoLight.GetComponent<Light>().intensity = intensity;
       if(colliderActivated)
-        ((SphereCollider)phenoLight.collider).radius = colRadius;
+        ((SphereCollider)phenoLight.GetComponent<Collider>()).radius = colRadius;
     }
   }
 	
@@ -52,9 +52,9 @@ public class PhenoLight : Phenotype {
 			//return;
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
 		if(null != lm && col.gameObject != null){
-			phenoLight.light.enabled = true;
+			phenoLight.GetComponent<Light>().enabled = true;
 			colliderActivated = true;
-			phenoLight.light.color = lm.colorTo;
+			phenoLight.GetComponent<Light>().color = lm.colorTo;
       fluorescenceProtein = lm.protein;
 		}
  	}
@@ -62,8 +62,8 @@ public class PhenoLight : Phenotype {
 	void OnTriggerExit(Collider col){
 		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
 		if(null != lm && col.gameObject != null){
-			phenoLight.light.enabled = false;
-			((SphereCollider)phenoLight.collider).radius = 0;
+			phenoLight.GetComponent<Light>().enabled = false;
+			((SphereCollider)phenoLight.GetComponent<Collider>()).radius = 0;
 			colliderActivated = false;
       fluorescenceProtein = "";
 		}

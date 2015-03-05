@@ -17,12 +17,12 @@ public class Fade : MonoBehaviour {
 	public void FadeOut(){
 			TweenColor.Begin(blackSprite,7,new Color(0,0,0,0));
       //TODO don't enable instantly, enable after a few seconds
-      gameObject.collider.enabled = false;
+      gameObject.GetComponent<Collider>().enabled = false;
 	}
 	
 	public void FadeIn(){
 			TweenColor.Begin(blackSprite,0.5f,new Color(0,0,0,1));
-      gameObject.collider.enabled = true;
+      gameObject.GetComponent<Collider>().enabled = true;
 	}
 
 }

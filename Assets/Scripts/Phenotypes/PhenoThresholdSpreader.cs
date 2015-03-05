@@ -34,7 +34,7 @@ public class PhenoThresholdSpreader : Phenotype {
     if (mol == null)
       return ;
     if (mol.getConcentration() >= Threshold && gameObject.GetComponent("ParticleSystem") == null)
-      gameObject.AddComponent("ParticleSystem");
+      gameObject.AddComponent<ParticleSystem>();
     else if (mol.getConcentration() < Threshold && gameObject.GetComponent("ParticleSystem") != null)
       Destroy(gameObject.GetComponent("ParticleSystem"));
 //       Instantiate(prefab, new Vector3(GetComponent.Transform.x, GetComponent.Transform.y, GetComponent.Transform.z), Quaternion.identity);
