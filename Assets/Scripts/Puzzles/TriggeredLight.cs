@@ -18,7 +18,7 @@ public class TriggeredLight : TriggeredBehaviour {
 	public override void triggerStart(){
 		iTween.Stop(gameObject);
 		iTween.ValueTo(gameObject, iTween.Hash(
-			"from", light.intensity,
+			"from", GetComponent<Light>().intensity,
 			"to", maxIntensity,
 			"speed", tweenSpeed,
 			"easetype", iTween.EaseType.easeInQuint,
@@ -32,13 +32,13 @@ public class TriggeredLight : TriggeredBehaviour {
 	}
 	
 	private void updateLight(float val){
-		light.intensity = val;
+		GetComponent<Light>().intensity = val;
 	}
 	
 	public override void triggerExit(){
 		iTween.Stop(gameObject);
 		iTween.ValueTo(gameObject, iTween.Hash(
-			"from", light.intensity,
+			"from", GetComponent<Light>().intensity,
 			"to", 0,
 			"speed", tweenSpeed,
 			"easetype", iTween.EaseType.easeInOutQuad,
@@ -58,7 +58,7 @@ public class TriggeredLight : TriggeredBehaviour {
 		float distance = Vector3.Magnitude (transform.parent.position - GameObject.Find("Perso").transform.position);
 
 		//intensity increase when the player get near :: max 9 * maxIntensity
-		light.intensity = maxIntensity * (1f + 8f*(light.range - distance)/light.range);
+		GetComponent<Light>().intensity = maxIntensity * (1f + 8f*(GetComponent<Light>().range - distance)/GetComponent<Light>().range);
 
 	}
 

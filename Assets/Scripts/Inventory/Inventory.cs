@@ -184,10 +184,11 @@ public class Inventory : DeviceContainer
     return addingResult;
   }
 
-  public override void removeDevice(Device device) {
-    _devices.Remove(device);
-    safeGetDisplayer().removeInventoriedDevice(device);
-  }
+    public override void removeDevice(Device device) {
+        _devices.Remove(device);
+        safeGetDisplayer().removeInventoriedDevice(device);
+        safeGetDisplayer().removeListedDevice(device);
+    }
 
     public override void removeDevices(List<Device> toRemove)
     {

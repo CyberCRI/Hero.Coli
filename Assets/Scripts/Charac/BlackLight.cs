@@ -39,7 +39,7 @@ public class BlackLight : MonoBehaviour {
 	void Start () {
 	
 		_directionalLight = GameObject.Find("Directional light").GetComponent<Light>();
-		_initialIntensity = _directionalLight.light.intensity;
+		_initialIntensity = _directionalLight.GetComponent<Light>().intensity;
 
 		_camera = transform.parent.FindChild("Main Camera").GetComponent<Camera>();
 		_initialBackground = _camera.backgroundColor;
@@ -74,11 +74,11 @@ public class BlackLight : MonoBehaviour {
 
 		_spotLightBL.AddComponent<Light>();
 
-		_spotLightBL.light.type = LightType.Spot;
-		_spotLightBL.light.range = _range;
-		_spotLightBL.light.spotAngle = _angle;
-		_spotLightBL.light.intensity = 0f;
-		_spotLightBL.light.color = Color.white;
+		_spotLightBL.GetComponent<Light>().type = LightType.Spot;
+		_spotLightBL.GetComponent<Light>().range = _range;
+		_spotLightBL.GetComponent<Light>().spotAngle = _angle;
+		_spotLightBL.GetComponent<Light>().intensity = 0f;
+		_spotLightBL.GetComponent<Light>().color = Color.white;
 
 		//Add backGroundSpotlight
 		 _backGroundSpotlight = new GameObject();
@@ -90,11 +90,11 @@ public class BlackLight : MonoBehaviour {
 		
 		_backGroundSpotlight.AddComponent<Light>();
 		
-		_backGroundSpotlight.light.type = LightType.Spot;
-		_backGroundSpotlight.light.range = _bkRange;
-		_backGroundSpotlight.light.spotAngle = _bkAngle;
-		_backGroundSpotlight.light.intensity = 0;
-		_backGroundSpotlight.light.color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
+		_backGroundSpotlight.GetComponent<Light>().type = LightType.Spot;
+		_backGroundSpotlight.GetComponent<Light>().range = _bkRange;
+		_backGroundSpotlight.GetComponent<Light>().spotAngle = _bkAngle;
+		_backGroundSpotlight.GetComponent<Light>().intensity = 0;
+		_backGroundSpotlight.GetComponent<Light>().color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
 
 
 	}
@@ -124,7 +124,7 @@ public class BlackLight : MonoBehaviour {
 		{
 			if(child.name.Contains("Fog") && child.FindChild("plane"))
 			{
-				child.FindChild("plane").renderer.material.shader = Shader.Find("Transparent/Diffuse");
+				child.FindChild("plane").GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
 			}
 		}
 
@@ -140,8 +140,8 @@ public class BlackLight : MonoBehaviour {
 		{
 			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, Color.black, 3*Time.deltaTime);
 			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, 0f, 3*Time.deltaTime);
-			_spotLightBL.light.intensity = Mathf.Lerp(_spotLightBL.light.intensity, _intensity, 1.5f*Time.deltaTime);
-			_backGroundSpotlight.light.intensity = Mathf.Lerp(_backGroundSpotlight.light.intensity, _bkIntensity, 3*Time.deltaTime);
+			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, _intensity, 1.5f*Time.deltaTime);
+			_backGroundSpotlight.GetComponent<Light>().intensity = Mathf.Lerp(_backGroundSpotlight.GetComponent<Light>().intensity, _bkIntensity, 3*Time.deltaTime);
 			//when finished
 			if (_camera.backgroundColor == Color.black)
 				_isCreating = false;
@@ -151,7 +151,7 @@ public class BlackLight : MonoBehaviour {
 		{
 			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, _initialBackground, 1.5f*Time.deltaTime);
 			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, _initialIntensity, 1.5f*Time.deltaTime);
-			_spotLightBL.light.intensity = Mathf.Lerp(_spotLightBL.light.intensity, 0f, 3f*Time.deltaTime);
+			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, 0f, 3f*Time.deltaTime);
 			//when finished
 			if (_camera.backgroundColor == _initialBackground)
 			{

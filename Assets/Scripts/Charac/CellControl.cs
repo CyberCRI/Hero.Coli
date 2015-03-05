@@ -140,7 +140,7 @@ public class CellControl : MonoBehaviour{
 
       Vector3 moveAmount = _inputMovement * currentMoveSpeed;
       
-      this.collider.attachedRigidbody.AddForce(moveAmount);
+      this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);
       
       updateEnergy(moveAmount);
 

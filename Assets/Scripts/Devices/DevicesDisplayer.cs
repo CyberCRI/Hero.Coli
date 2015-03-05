@@ -278,6 +278,10 @@ public class DevicesDisplayer : MonoBehaviour {
     removeDevice(DevicesDisplayer.DeviceType.Inventoried, toRemove);
   }
 
+    public void removeListedDevice(Device toRemove) {
+        removeDevice(DevicesDisplayer.DeviceType.Listed, toRemove);    
+    }
+
   public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
     List<DisplayedDevice> devices;
     DisplayedDevice found;

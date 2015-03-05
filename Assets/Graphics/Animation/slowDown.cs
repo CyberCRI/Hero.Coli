@@ -8,6 +8,6 @@ public class slowDown : MonoBehaviour {
 	
 	void Update(){
 		percentage = Mathf.Clamp(percentage, 0f, 500f);
-		animation[animName].speed = percentage / 100f;
+		GetComponent<Animation>()[animName].speed = percentage / 100f;
 	}
 }
