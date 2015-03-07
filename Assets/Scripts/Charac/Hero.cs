@@ -51,10 +51,12 @@ public class Hero : MonoBehaviour {
       "time",_disappearingTimeS,
       "easetype", iTween.EaseType.easeInQuint
       );
+
   private Hashtable _optionsInAlpha = iTween.Hash(
       "alpha", 1.0f,
       "time", 0.8f,
       "easetype", iTween.EaseType.easeOutElastic
+        //"includechildren", false
       );
 
   private Hashtable _optionsOutAlpha = iTween.Hash(
@@ -249,13 +251,34 @@ public class Hero : MonoBehaviour {
 
         yield return StartCoroutine(deathEffectCoroutine(cc));        
     }	
+
+    public static void safeFadeTo(GameObject toFade, Hashtable fadeOptions) {
+        //TODO find most robust method
+        //GameObject body = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(). .transform.FindChild("body_perso");
+        //GameObject body = gameObject.transform.FindChild("body_perso").gameObject;
+        GameObject body = toFade.transform.FindChild("body_perso").transform.FindChild("body_perso").gameObject;
+        if(null != body)
+        {
+            iTween.FadeTo(body, fadeOptions);
+        }
+        GameObject dna = toFade.transform.FindChild("dna_perso").transform.FindChild("body_perso").gameObject;
+        if(null != dna)
+        {
+            iTween.FadeTo(dna, fadeOptions);
+        }
+    }
+
+    private void safeFadeTo(Hashtable hash) {
+        safeFadeTo(gameObject, hash);
+    }
     
     IEnumerator deathEffectCoroutine(CellControl cc)
     {
         cc.enabled = false;
         
         iTween.ScaleTo(gameObject, _optionsOut);
-        iTween.FadeTo(gameObject, _optionsOutAlpha);  
+
+        safeFadeTo(_optionsOutAlpha);  
 
         _flagella = new List<GameObject>();
 
@@ -315,7 +338,7 @@ public class Hero : MonoBehaviour {
         _flagella.Clear();
 
         iTween.ScaleTo(gameObject, _optionsIn);
-        iTween.FadeTo(gameObject, _optionsInAlpha);
+        safeFadeTo(_optionsInAlpha);  
         
         cc.enabled = true;      
         foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox))) {
@@ -344,6 +367,8 @@ public class Hero : MonoBehaviour {
     IEnumerator popEffectCoroutine(SavedCell savedCell)
     {
         yield return new WaitForSeconds(_popEffectTimeS);
-        savedCell.setCollidable(true);
+        if(null != savedCell) {
+            savedCell.setCollidable(true);
+        }
     }
 }
