@@ -369,6 +369,8 @@ public class Hero : MonoBehaviour {
         yield return new WaitForSeconds(_popEffectTimeS);
         if(null != savedCell) {
             savedCell.setCollidable(true);
+        } else {
+            Logger.Log("Hero::popEffectCoroutine unexpected null savedCell", Logger.Level.WARN);
         }
     }
 }
