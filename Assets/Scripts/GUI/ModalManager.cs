@@ -54,9 +54,12 @@ public class ModalManager : MonoBehaviour {
   private static string _genericPrefix = "MODAL.";
   private static string _genericTitle = ".TITLE";
   private static string _genericExplanation = ".EXPLANATION";
-  private static string _quitModalClassName = "QuitModalWindow";
+    private static string _quitModalClassName = "QuitModalWindow"+completeNameSuffix;
   //the class of the component attached to the cancel button of the ModalWindow
-  private static string _cancelModalClassName = "CancelModal";
+    private static string _cancelModalClassName = "CancelModal"+completeNameSuffix;
+    
+    //TODO find a (more) robust method
+    public static string completeNameSuffix = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {
@@ -78,6 +81,9 @@ public class ModalManager : MonoBehaviour {
     
     foreach (string file in inputFiles) {
       foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
+        info._next = string.IsNullOrEmpty(info._next)?info._next:info._next+completeNameSuffix;
+        info._cancel = string.IsNullOrEmpty(info._cancel)?info._cancel:info._cancel+completeNameSuffix;
+                Debug.LogError("ModalManager::loadDataIntoDico loaded info="+info);
         dico.Add(info._code, info);
       }
       if(!string.IsNullOrEmpty(loadedFiles)) {
@@ -197,9 +203,26 @@ public class ModalManager : MonoBehaviour {
 
     private static void safeAddComponent(GameObject button, string modalClass)
     {
-        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.INFO);
+        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.ERROR);
         removeAllModalButtonClasses(button);
-        UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(button, "Assets/Scripts/GUI/ModalManager.cs (202,9)", modalClass);
+
+        System.Type modalType = System.Type.GetType(modalClass);
+        if(null != modalType) {
+            Debug.Log("ModalManager::safeAddComponent null != modalType n°1 modalClass='"+modalClass+"'");
+            button.AddComponent(modalType);
+        } else {
+            Debug.Log("ModalManager::safeAddComponent null == modalType with '"+modalClass+"'");
+            modalType = System.Type.GetType(modalClass+completeNameSuffix);
+            if(null != modalType) {
+                button.AddComponent(modalType);
+                Debug.Log("ModalManager::safeAddComponent GOT IT, was '"+modalClass+"'");
+            }
+        }
+
+        //UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(button, "Assets/Scripts/GUI/ModalManager.cs", modalClass);
+        //button.AddComponent(Type.GetType(modalClass, modalClass));
+        //button.AddComponent<modalClass>();
+        //UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(button, "Assets/Scripts/GUI/ModalManager.cs (202,9)", modalClass);
     }
 
     public static bool isCancelButtonActive()
@@ -209,18 +232,26 @@ public class ModalManager : MonoBehaviour {
 
     private static void prepareButton(GameObject button, string modalButtonClass)
     {        
-        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.INFO);
+        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.ERROR);
         if(null!=button) {
             if(!string.IsNullOrEmpty(modalButtonClass)) {
-                if(null==button.GetComponent(modalButtonClass)) {
+                //if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
+                if(null==button.GetComponent(System.Type.GetType(modalButtonClass))) {
+                    Debug.LogError(string.Format("ModalManager::prepareButton null==button.GetComponent(...) n°1 => safeAddComponent(button, {0})", modalButtonClass));
                     safeAddComponent(button, modalButtonClass);
                 }
-                if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
-                    Logger.Log (string.Format ("ModalManager::setModal error: couldn't get ModalButton component from {0} with class={1}",
+                //if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
+                if(null==button.GetComponent(System.Type.GetType(modalButtonClass))) {
+                    Logger.Log (string.Format ("ModalManager::prepareButton error: couldn't get ModalButton component from {0} with class={1}",
                                                   button, modalButtonClass)
                                 ,Logger.Level.ERROR);
+                } else {
+                    Debug.LogError(string.Format("ModalManager::prepareButton successful adding of class {0}", modalButtonClass));
                 }
-            }
+
+            } else {
+                Debug.LogError("ModalManager::prepareButton string.IsNullOrEmpty(modalButtonClass)");
+            } 
         }
         else
         {
@@ -339,8 +370,8 @@ public class ModalManager : MonoBehaviour {
 
     public static void resetGenericValidateButtons()
     {
-        Object.Destroy(_instance.genericValidateButton.GetComponent(_instance._validateButtonClass));
-        Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(_instance._validateButtonClass));
+        Object.Destroy(_instance.genericValidateButton.GetComponent(System.Type.GetType(_instance._validateButtonClass)));
+        Object.Destroy(_instance.genericCenteredValidateButton.GetComponent(System.Type.GetType(_instance._validateButtonClass)));
         _instance._validateButtonClass = null;
         _instance._validateButton = null;
     }
@@ -426,7 +457,7 @@ public class ModalManager : MonoBehaviour {
         if(null!=modalButton && modalButton.activeInHierarchy)
         {
             //TODO check need for getting component with class name "modalButtonClass"
-            ModalButton button = (ModalButton)modalButton.GetComponent(modalButtonClass);
+            ModalButton button = (ModalButton)modalButton.GetComponent(System.Type.GetType(modalButtonClass));
             if(null != button) {
                 button.press();
                 return true;
