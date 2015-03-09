@@ -83,7 +83,6 @@ public class ModalManager : MonoBehaviour {
       foreach (StandardInfoWindowInfo info in iwLoader.loadInfoFromFile(file)) {
         info._next = string.IsNullOrEmpty(info._next)?info._next:info._next+completeNameSuffix;
         info._cancel = string.IsNullOrEmpty(info._cancel)?info._cancel:info._cancel+completeNameSuffix;
-                Debug.LogError("ModalManager::loadDataIntoDico loaded info="+info);
         dico.Add(info._code, info);
       }
       if(!string.IsNullOrEmpty(loadedFiles)) {
@@ -203,19 +202,16 @@ public class ModalManager : MonoBehaviour {
 
     private static void safeAddComponent(GameObject button, string modalClass)
     {
-        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.ERROR);
+        Logger.Log(string.Format("ModalManager::safeAddComponent({0},{1})", button, modalClass), Logger.Level.INFO);
         removeAllModalButtonClasses(button);
 
         System.Type modalType = System.Type.GetType(modalClass);
         if(null != modalType) {
-            Debug.Log("ModalManager::safeAddComponent null != modalType n°1 modalClass='"+modalClass+"'");
             button.AddComponent(modalType);
         } else {
-            Debug.Log("ModalManager::safeAddComponent null == modalType with '"+modalClass+"'");
             modalType = System.Type.GetType(modalClass+completeNameSuffix);
             if(null != modalType) {
                 button.AddComponent(modalType);
-                Debug.Log("ModalManager::safeAddComponent GOT IT, was '"+modalClass+"'");
             }
         }
 
@@ -232,12 +228,11 @@ public class ModalManager : MonoBehaviour {
 
     private static void prepareButton(GameObject button, string modalButtonClass)
     {        
-        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.ERROR);
+        Logger.Log(string.Format("ModalManager::prepareButton({0},{1})", button, modalButtonClass), Logger.Level.INFO);
         if(null!=button) {
             if(!string.IsNullOrEmpty(modalButtonClass)) {
                 //if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
                 if(null==button.GetComponent(System.Type.GetType(modalButtonClass))) {
-                    Debug.LogError(string.Format("ModalManager::prepareButton null==button.GetComponent(...) n°1 => safeAddComponent(button, {0})", modalButtonClass));
                     safeAddComponent(button, modalButtonClass);
                 }
                 //if(null==(ModalButton)button.GetComponent(modalButtonClass)) {
@@ -246,16 +241,16 @@ public class ModalManager : MonoBehaviour {
                                                   button, modalButtonClass)
                                 ,Logger.Level.ERROR);
                 } else {
-                    Debug.LogError(string.Format("ModalManager::prepareButton successful adding of class {0}", modalButtonClass));
+                    Logger.Log(string.Format("ModalManager::prepareButton successful adding of class {0}", modalButtonClass), Logger.Level.DEBUG);
                 }
 
             } else {
-                Debug.LogError("ModalManager::prepareButton string.IsNullOrEmpty(modalButtonClass)");
+                Logger.Log("ModalManager::prepareButton string.IsNullOrEmpty(modalButtonClass)", Logger.Level.WARN);
             } 
         }
         else
         {
-            Logger.Log("ModalManager::prepareButton: null==button", Logger.Level.WARN);
+            Logger.Log("ModalManager::prepareButton null==button", Logger.Level.WARN);
         }
     }
     
