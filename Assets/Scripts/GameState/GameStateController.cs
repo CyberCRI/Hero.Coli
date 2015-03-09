@@ -110,7 +110,7 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start", Logger.Level.INFO);
         _gameState = GameState.Start;
         resetPauseStack();
-        I18n.changeLanguageTo(I18n.Language.French);
+        I18n.changeLanguageTo(I18n.Language.English);
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
