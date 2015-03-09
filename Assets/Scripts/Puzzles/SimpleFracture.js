@@ -15,6 +15,10 @@ var instantiateOnBreak : GameObject;
 var totalMassIfStatic = 1.0;
 private var joints : Joint[];
 
+//TODO update all deprecated calls to GetComponent
+// either GetComponent(short name)
+//or GetComponent(System.GetType(assembly name))
+
 /*
 //-------------------------------------------------------------------
 function Start () {

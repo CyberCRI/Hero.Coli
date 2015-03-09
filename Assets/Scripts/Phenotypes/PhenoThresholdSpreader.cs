@@ -33,6 +33,7 @@ public class PhenoThresholdSpreader : Phenotype {
 
     if (mol == null)
       return ;
+        Debug.LogError("deprecated GetComponent calls");
     if (mol.getConcentration() >= Threshold && gameObject.GetComponent("ParticleSystem") == null)
       gameObject.AddComponent<ParticleSystem>();
     else if (mol.getConcentration() < Threshold && gameObject.GetComponent("ParticleSystem") != null)
