@@ -33,6 +33,6 @@ public class EndGameCollider : MonoBehaviour
     public void displayEndMessage()
     {
         Logger.Log("EndGameCollider:displayEndMessage", Logger.Level.INFO);
-        ModalManager.setModal (endInfoPanel, true, endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().Name);
+        ModalManager.setModal (endInfoPanel, true, endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().AssemblyQualifiedName);
     }
 }

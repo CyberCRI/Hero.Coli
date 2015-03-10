@@ -20,6 +20,6 @@ public class ContinueButton : ModalButton
         ModalManager.unsetModal ();
         gameStateController.tryUnlockPause ();
 
-        ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().Name);
+        ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().AssemblyQualifiedName);
     }
 }

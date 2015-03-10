@@ -27,7 +27,7 @@ public class PushableBox : MonoBehaviour {
     if (col.collider){
       lazySafeGetCellControl(col);
       if(_control && _control.currentMoveSpeed >= minSpeed){
-        rigidbody.constraints = canPush;
+        GetComponent<Rigidbody>().constraints = canPush;
       }
     }
   }
@@ -36,18 +36,18 @@ public class PushableBox : MonoBehaviour {
     if (col.collider){
       lazySafeGetCellControl(col);
       if(_control)
-        rigidbody.constraints = noPush;
+        GetComponent<Rigidbody>().constraints = noPush;
     }
   }
 
   void OnCollisionStay(Collision col)
   {
-    if(rigidbody.constraints != canPush)
+    if(GetComponent<Rigidbody>().constraints != canPush)
     {
       if (col.collider){
         lazySafeGetCellControl(col);
         if(_control && _control.currentMoveSpeed >= minSpeed){
-          rigidbody.constraints = canPush;
+          GetComponent<Rigidbody>().constraints = canPush;
         }
       }
     }

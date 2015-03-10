@@ -95,7 +95,7 @@ static public class NGUITools
 
 			if (mListener != null)
 			{
-				AudioSource source = mListener.audio;
+				AudioSource source = mListener.GetComponent<AudioSource>();
 				if (source == null) source = mListener.gameObject.AddComponent<AudioSource>();
 				source.pitch = pitch;
 				source.PlayOneShot(clip, volume);

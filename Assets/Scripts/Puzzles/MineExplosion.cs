@@ -49,10 +49,10 @@ public class MineExplosion : MonoBehaviour {
 
     //-------------------------------------------------------------------
     void  Start (){
-        if (rigidbody) {
+        if (GetComponent<Rigidbody>()) {
             ArrayList temp = new ArrayList();
             foreach(Joint joint in FindObjectsOfType(typeof(Joint))) {
-                if (joint.connectedBody == rigidbody) {
+                if (joint.connectedBody == GetComponent<Rigidbody>()) {
                     temp.Add(joint);
                     joints = (Joint[])temp.ToArray(typeof(Joint));
                 }
@@ -118,8 +118,8 @@ public class MineExplosion : MonoBehaviour {
             Plane plane = new Plane(vec-sub,Vector3.Scale(Random.insideUnitSphere,GetComponent<MeshFilter>().mesh.bounds.size)*randomOffset+point);
             // create the clone
             GameObject newObject = (GameObject) Instantiate(gameObject,transform.position,transform.rotation);
-            if (rigidbody) {
-                newObject.rigidbody.velocity = rigidbody.velocity;
+            if (GetComponent<Rigidbody>()) {
+                newObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
             }
             // arrays of the verts
             Vector3[] vertsA = gameObject.GetComponent<MeshFilter>().mesh.vertices;
@@ -177,7 +177,7 @@ public class MineExplosion : MonoBehaviour {
                 }
                 // if we weren't using a convexhull, the pieces colliders won't work right. It's best for everyone if we just remove them.
                 else {
-                    Destroy(collider);
+                    Destroy(GetComponent<Collider>());
                     Destroy(gameObject,1);
                 }
                 // smartjoints will allow joints to function properly.
@@ -205,7 +205,7 @@ public class MineExplosion : MonoBehaviour {
                     if (0 != joints.Length){
                         for (int i=0;i<joints.Length;i++){
                             if (joints[i] && plane.GetSide(transform.worldToLocalMatrix.MultiplyPoint(joints[i].transform.position))) {
-                                joints[i].connectedBody = newObject.rigidbody;
+                                joints[i].connectedBody = newObject.GetComponent<Rigidbody>();
                                 List<Joint> temp = new List<Joint>(joints);
                                 temp.RemoveAt(i);
                                 temp.CopyTo(joints);
@@ -234,16 +234,16 @@ public class MineExplosion : MonoBehaviour {
                     }
                 }
                 // if the script is attached to a static object, make it dynamic. If not, divide the mass up.
-                if (!rigidbody) {
+                if (!GetComponent<Rigidbody>()) {
                     gameObject.AddComponent<Rigidbody>();
                     newObject.AddComponent<Rigidbody>();
-                    rigidbody.mass = totalMassIfStatic;
-                    newObject.rigidbody.mass = totalMassIfStatic;
+                    GetComponent<Rigidbody>().mass = totalMassIfStatic;
+                    newObject.GetComponent<Rigidbody>().mass = totalMassIfStatic;
                 }
-                gameObject.rigidbody.mass *= 0.5f;
-                newObject.rigidbody.mass *= 0.5f;
-                gameObject.rigidbody.centerOfMass = transform.worldToLocalMatrix.MultiplyPoint3x4(gameObject.collider.bounds.center);
-                newObject.rigidbody.centerOfMass = transform.worldToLocalMatrix.MultiplyPoint3x4(newObject.collider.bounds.center);
+                gameObject.GetComponent<Rigidbody>().mass *= 0.5f;
+                newObject.GetComponent<Rigidbody>().mass *= 0.5f;
+                gameObject.GetComponent<Rigidbody>().centerOfMass = transform.worldToLocalMatrix.MultiplyPoint3x4(gameObject.GetComponent<Collider>().bounds.center);
+                newObject.GetComponent<Rigidbody>().centerOfMass = transform.worldToLocalMatrix.MultiplyPoint3x4(newObject.GetComponent<Collider>().bounds.center);
 
                 newObject.GetComponent<MineExplosion>().Fracture(point,force,iterations);
 
@@ -269,20 +269,20 @@ public class MineExplosion : MonoBehaviour {
     private float UsedMass ( Collision collision  ){
         float mass = 1;
         if (collision.rigidbody) {
-        if (rigidbody) {
-                if (collision.rigidbody.mass < rigidbody.mass) {
+        if (GetComponent<Rigidbody>()) {
+                if (collision.rigidbody.mass < GetComponent<Rigidbody>().mass) {
                     mass = collision.rigidbody.mass;
                 }
                 else {
-                    mass = rigidbody.mass;
+                    mass = GetComponent<Rigidbody>().mass;
                 }
         }
             else {
                 mass = collision.rigidbody.mass;
             }
         }
-        else if (rigidbody) {
-        mass = rigidbody.mass;
+        else if (GetComponent<Rigidbody>()) {
+        mass = GetComponent<Rigidbody>().mass;
         }
         return mass;
     }
