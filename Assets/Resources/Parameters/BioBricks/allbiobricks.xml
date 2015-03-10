@@ -99,9 +99,9 @@
   </brick>
   <!--Temperature sensible cI repressor - loses binding efficiency with the cI promoter between 35 and 42 degrees C-->
   <!--BBa_K098997-->
-  <brick id="REPR4" size="714" type="gene">
+  <!--brick id="REPR4" size="714" type="gene">
     <protein>REPR4</protein>
-  </brick>
+  </brick-->
   <!--IPTG protein, binds to (inhibits) LacI-->
   <brick id="IPTG" size="1" type="gene">
     <protein>IPTG</protein>

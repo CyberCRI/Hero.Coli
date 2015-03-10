@@ -67,12 +67,12 @@
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
     </molecule>
-    <molecule type="other">
+    <!--molecule type="other">
       <name>REPR4</name>
       <description>temperature-sensible cI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
-    </molecule>
+    </molecule-->
     <molecule type="other">
       <name>AMPI</name>
       <description></description>
