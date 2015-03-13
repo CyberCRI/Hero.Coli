@@ -38,7 +38,8 @@
   <!--BBa_R0051-->
   <brick id="PRLAMB" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR3*![0.01,2]REPR4</formula>
+    <!--formula>![0.01,2]REPR3*![0.01,2]REPR4</formula-->
+    <formula>![0.01,2]REPR3</formula>
   </brick>
   <!--glucose promoter: induced by carbon starvation (cAMP-cAMP receptor protein complex), inhibited by glucose (less cAMP)-->
   <!--brick id="PRGLUC" size="131" type="promoter">
