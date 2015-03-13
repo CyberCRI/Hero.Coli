@@ -69,4 +69,102 @@
       </operon>
     </promoter>
   </reactions>
+  <reactions id="04_REPR1_Reactions">
+    <promoter>
+      <name>REPR1PROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>REPR1</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="05_REPR2_Reactions">
+    <promoter>
+      <name>REPR2PROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>REPR2</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="06_REPR3_Reactions">
+    <promoter>
+      <name>REPR3PROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>REPR3</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="07_IPTG_Reactions">
+    <promoter>
+      <name>IPTGPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>IPTG</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="08_ATC_Reactions">
+    <promoter>
+      <name>ATCPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>ATC</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="09_ARAC_Reactions">
+    <promoter>
+      <name>ARACPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>ARAC</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="10_LARA_Reactions">
+    <promoter>
+      <name>LARAPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>LARA</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
 </Document>
