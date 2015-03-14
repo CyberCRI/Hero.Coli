@@ -111,30 +111,30 @@ public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
 
     protected abstract T construct(XmlNode node);
 
-  //warning: assumes that node contains correct information
-  protected override void innerInstantiateFromXml(XmlNode node)
-  {
-        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml("+Logger.ToString(node)+")"
-                    +" with elementCollection="+Logger.ToString<T>("T", elementCollection)
+    //warning: assumes that node contains correct information
+    protected override void innerInstantiateFromXml (XmlNode node)
+    {
+        Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml(" + Logger.ToString (node) + ")"
+            + " with elementCollection=" + Logger.ToString<T> ("T", elementCollection)
                 , Logger.Level.DEBUG);
     
-    otherInitialize(node);
+        otherInitialize (node);
             
-    elementCollection = new ArrayList();
+        elementCollection = new ArrayList ();
     
-    foreach (XmlNode eltNode in node)
-    {
-      T elt = construct(eltNode);
-      if(elt.tryInstantiateFromXml(eltNode))
-      {
-        elementCollection.Add(elt);
-      }
-      else
-      {
-        Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from "+Logger.ToString(eltNode), Logger.Level.WARN);
-      }
+        foreach (XmlNode eltNode in node) {
+            if (XMLTags.COMMENT != eltNode.Name) {
+                T elt = construct (eltNode);
+                if (elt.tryInstantiateFromXml (eltNode)) {
+                    elementCollection.Add (elt);
+                } else {
+                    Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from " + Logger.ToString (eltNode), Logger.Level.WARN);
+                }
+            } else {
+                Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml found comment", Logger.Level.DEBUG);
+            }
+        }
     }
-  }
 }
 
 public class CompoundLoadableFromXmlImplWithNew<T> : CompoundLoadableFromXmlImpl<T>
