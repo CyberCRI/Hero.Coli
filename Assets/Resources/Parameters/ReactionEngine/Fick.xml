@@ -5,4 +5,46 @@
     <P>0.05</P>
     <surface>0.000</surface>
   </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>4</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>5</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>6</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>7</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>8</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>9</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
+  <fickProp>
+    <MediumId1>1</MediumId1>
+    <MediumId2>10</MediumId2>
+    <P>0.05</P>
+    <surface>0.000</surface>
+  </fickProp>
 </ficks>

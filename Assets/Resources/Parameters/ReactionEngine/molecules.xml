@@ -54,24 +54,28 @@
       <description>LacI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>REPR2</name>
       <description>TetR</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>REPR3</name>
       <description>cI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <!--molecule type="other">
       <name>REPR4</name>
       <description>temperature-sensible cI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule-->
     <molecule type="other">
       <name>AMPI</name>
@@ -92,24 +96,28 @@
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>ATC</name>
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>ARAC</name>
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <molecule type="other">
       <name>LARA</name>
       <description></description>
       <concentration>0</concentration>
       <degradationRate>0.05</degradationRate>
+      <FickFactor>1</FickFactor>
     </molecule>
     <!--molecule type="other">
       <name>GLUCOSE</name>
