@@ -61,6 +61,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
   private void initialize() {
     Logger.Log("AvailableBioBricksManager::initialize()", Logger.Level.INFO);
     _allBioBricks = new LinkedList<BioBrick>();
+    loadAllBioBricksIfNecessary();
     _availableBioBricks = new LinkedList<BioBrick>();
 
     _displayableAvailablePromoters   = new LinkedList<AvailableDisplayedBioBrick>();
@@ -241,20 +242,25 @@ public class AvailableBioBricksManager : MonoBehaviour {
    
     public LinkedList<BioBrick> getAllBioBricks() {
         Logger.Log("AvailableBioBricksManager::getAllBioBricks", Logger.Level.DEBUG);
-        if(_allBioBricks == null || _allBioBricks.Count == 0) {
-            loadAllBioBricks();
-        }
+
+        loadAllBioBricksIfNecessary();
+
         return _allBioBricks;
+    }
+
+    private void loadAllBioBricksIfNecessary()
+    {
+        if(_allBioBricks == null || _allBioBricks.Count == 0) {
+            _instance.loadAllBioBricks();
+        }
     }
 
     public BioBrick getBioBrickFromAll(string brickName)
     {
         Logger.Log("AvailableBioBricksManager::getBioBrickFromAll", Logger.Level.DEBUG);
-        if(_allBioBricks == null || _allBioBricks.Count == 0) {
-            _instance.loadAllBioBricks();
-        }
+
         BioBrick brick = LinkedListExtensions.Find<BioBrick>(
-            _allBioBricks
+            getAllBioBricks()
             , b => (b.getName() == brickName)
             , false
             , "AvailableBioBricksManager::getBioBrickFromAll("+brickName+")"
@@ -317,7 +323,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
             //load all biobricks
             //loadBioBricks(_allBioBrickFiles, _availableBioBricks);
             //or just copy them
-            foreach(BioBrick bb in _allBioBricks)
+            foreach(BioBrick bb in getAllBioBricks())
             {
                 _availableBioBricks.AddLast(bb);
             }

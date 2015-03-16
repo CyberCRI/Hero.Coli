@@ -9,4 +9,9 @@
     <areAllBioBricksAvailable>true</areAllBioBricksAvailable>
     <areAllDevicesAvailable>false</areAllDevicesAvailable>
   </info>
+  <info id="sandbox2">
+    <code>Sandbox-0.2</code>
+    <areAllBioBricksAvailable>true</areAllBioBricksAvailable>
+    <areAllDevicesAvailable>false</areAllDevicesAvailable>
+  </info>
 </infoList>
