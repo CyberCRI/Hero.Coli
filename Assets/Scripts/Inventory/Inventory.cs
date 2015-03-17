@@ -253,7 +253,7 @@ public class Inventory : DeviceContainer
         Logger.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), "+Logger.ToString<Device>(_devices)+"), List())", Logger.Level.INFO);
         foreach(Device device in _devices)
         {
-            _displayer.removeEquipedDevice(device);
+            _displayer.askRemoveEquipedDevice(device);
             _displayer.removeListedDevice(device);
             _displayer.removeInventoriedDevice(device);
         }
