@@ -282,47 +282,54 @@ public class DevicesDisplayer : MonoBehaviour {
         removeDevice(DevicesDisplayer.DeviceType.Listed, toRemove);    
     }
 
-  public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove) {
-    List<DisplayedDevice> devices;
-    DisplayedDevice found;
-    if(type == DevicesDisplayer.DeviceType.Equiped) {
-      devices = _equipedDevices;
-    } else {
-      devices = _inventoriedDevices;
+    public void removeDevice (DevicesDisplayer.DeviceType type, Device toRemove)
+    {
+        List<DisplayedDevice> devices;
+        DisplayedDevice found;
+        if (type == DevicesDisplayer.DeviceType.Equiped) {
+            devices = _equipedDevices;
+        } else if (type == DevicesDisplayer.DeviceType.Inventoried) {
+            devices = _inventoriedDevices;
+        } else if (type == DevicesDisplayer.DeviceType.Listed) {
+            devices = _listedInventoriedDevices;
+        } else {
+            Logger.Log ("DevicesDisplayer::removeDevice unknown type="+type, Logger.Level.WARN);
+            devices = new List<DisplayedDevice>();
+        }
+        found = devices.Find (device => device._device.Equals (toRemove));
+
+        if (found != null) {
+            removeDevice (found, devices, type);
+        } else {
+            Logger.Log ("removeDevice(type=" + type + ", toRemove=" + toRemove + ") found no matching device", Logger.Level.WARN);
+        }
     }
-    found = devices.Find(device => device._device.Equals(toRemove));
 
-    if (found != null) {
-      removeDevice(found, devices, type);
-    } else {
-      Logger.Log("removeDevice(type="+type+", toRemove="+toRemove+") found no matching device", Logger.Level.WARN);
+    private void removeDevice (DisplayedDevice toRemove, List<DisplayedDevice> devices, DeviceType deviceType)
+    {
+        if (toRemove != null) {
+            int startIndex = devices.IndexOf (toRemove);
+
+            //debug
+            int count = deviceType == DeviceType.Equiped ? _equipedDevices.Count : (deviceType == DeviceType.Inventoried ? _inventoriedDevices.Count : _listedInventoriedDevices.Count);
+            string source = deviceType == DeviceType.Equiped ? "equipment" : (deviceType == DeviceType.Inventoried ? "inventory" : "listed");
+            Logger.Log ("removeDevice(" + toRemove + ", devices, " + deviceType + ") of index " + startIndex + " from " + source + " of count " + count, Logger.Level.TRACE);
+
+            devices.Remove (toRemove);
+            toRemove.Remove ();
+
+            //debug
+            count = deviceType == DeviceType.Equiped ? _equipedDevices.Count : (deviceType == DeviceType.Inventoried ? _inventoriedDevices.Count : _listedInventoriedDevices.Count);
+            Logger.Log ("removeDevice(" + toRemove + ", devices, " + deviceType + ") from "+source+" of count " + count + " done", Logger.Level.TRACE);
+
+            //redraw
+            for (int idx = startIndex; idx < devices.Count; idx++) {
+                Vector3 newLocalPosition = getNewPosition (deviceType, idx);
+                Logger.Log ("removeDevice(" + toRemove + ", devices, " + deviceType + ") redrawing idx " + idx + " at position " + newLocalPosition, Logger.Level.TRACE);
+                devices [idx].Redraw (newLocalPosition);
+            }
+        }
     }
- }
-
-  private void removeDevice(DisplayedDevice toRemove, List<DisplayedDevice> devices, DeviceType deviceType) {
-   if(toRemove != null) {
-     int startIndex = devices.IndexOf(toRemove);
-
-     if(deviceType == DeviceType.Equiped) {
-       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from equipment of count "+_equipedDevices.Count, Logger.Level.TRACE);
-     } else {
-       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") of index "+startIndex+" from inventory of count "+_inventoriedDevices.Count, Logger.Level.TRACE);
-     }
-
-     devices.Remove(toRemove);
-     toRemove.Remove();
-     if(deviceType == DeviceType.Equiped) {
-       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") from equipment of count "+_equipedDevices.Count+" done", Logger.Level.TRACE);
-     } else {
-       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") from inventory of count "+_inventoriedDevices.Count+" done", Logger.Level.TRACE);
-     }
-     for(int idx = startIndex; idx < devices.Count; idx++) {
-       Vector3 newLocalPosition = getNewPosition(deviceType, idx);
-       Logger.Log("removeDevice("+toRemove+", devices, "+deviceType+") redrawing idx "+idx+" at position "+newLocalPosition, Logger.Level.TRACE);
-       devices[idx].Redraw(newLocalPosition);
-     }
-   }
-  }
 
   private GUITransitioner SafeGetTransitioner()
   {
