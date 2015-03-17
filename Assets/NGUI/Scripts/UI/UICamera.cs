@@ -310,7 +310,7 @@ public class UICamera : MonoBehaviour
 	/// Caching is always preferable for performance.
 	/// </summary>
 
-	public Camera cachedCamera { get { if (mCam == null) mCam = camera; return mCam; } }
+	public Camera cachedCamera { get { if (mCam == null) mCam = GetComponent<Camera>(); return mCam; } }
 
 	/// <summary>
 	/// The object hit by the last Raycast that was the result of a mouse or touch event.

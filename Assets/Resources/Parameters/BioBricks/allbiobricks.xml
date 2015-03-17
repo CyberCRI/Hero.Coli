@@ -38,7 +38,8 @@
   <!--BBa_R0051-->
   <brick id="PRLAMB" size="54" type="promoter">
     <beta>75</beta>
-    <formula>![0.01,2]REPR3*![0.01,2]REPR4</formula>
+    <!--formula>![0.01,2]REPR3*![0.01,2]REPR4</formula-->
+    <formula>![0.01,2]REPR3</formula>
   </brick>
   <!--glucose promoter: induced by carbon starvation (cAMP-cAMP receptor protein complex), inhibited by glucose (less cAMP)-->
   <!--brick id="PRGLUC" size="131" type="promoter">
@@ -65,6 +66,18 @@
   <brick id="FLUO2" size="714" type="gene">
     <protein>FLUO2</protein>
   </brick>
+  <brick id="FLUO3" size="720" type="gene">
+    <protein>FLUO3</protein>
+  </brick>
+  <brick id="FLUO4" size="769" type="gene">
+    <protein>FLUO4</protein>
+  </brick>
+  <brick id="FLUO5" size="723" type="gene">
+    <protein>FLUO5</protein>
+  </brick>
+  <brick id="FLUO6" size="720" type="gene">
+    <protein>FLUO6</protein>
+  </brick>
   <brick id="MOV" size="932" type="gene">
     <protein>MOV</protein>
   </brick>
@@ -87,9 +100,9 @@
   </brick>
   <!--Temperature sensible cI repressor - loses binding efficiency with the cI promoter between 35 and 42 degrees C-->
   <!--BBa_K098997-->
-  <brick id="REPR4" size="714" type="gene">
+  <!--brick id="REPR4" size="714" type="gene">
     <protein>REPR4</protein>
-  </brick>
+  </brick-->
   <!--IPTG protein, binds to (inhibits) LacI-->
   <brick id="IPTG" size="1" type="gene">
     <protein>IPTG</protein>

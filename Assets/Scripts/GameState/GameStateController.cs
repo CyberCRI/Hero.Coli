@@ -42,6 +42,7 @@ public class GameStateController : MonoBehaviour {
     public static string _masterScene = "Master-Demo-0.1";
     public static string _adventureLevel1 = "World1.0";
     public static string _sandboxLevel1 = "Sandbox-0.1";
+    public static string _sandboxLevel2 = "Sandbox-0.2";
     public static string _interfaceScene = "Interface1.0";
     public static string _bacteriumScene = "Bacterium1.0";
     //TODO refactor use of this variable
@@ -110,7 +111,7 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start", Logger.Level.INFO);
         _gameState = GameState.Start;
         resetPauseStack();
-        I18n.changeLanguageTo(I18n.Language.French);
+        I18n.changeLanguageTo(I18n.Language.English);
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
@@ -250,7 +251,7 @@ public class GameStateController : MonoBehaviour {
                     fadeSprite.gameObject.SetActive(true);
                     ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
                 }
-                else if(getCurrentLevel() == _sandboxLevel1)
+                else if(getCurrentLevel() == _sandboxLevel1 || getCurrentLevel() == _sandboxLevel2)
                 {
                     changeState(GameState.Game);
                 }
@@ -286,7 +287,7 @@ public class GameStateController : MonoBehaviour {
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
                     Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
-                    string destination = _sandboxLevel1;
+                    string destination = _sandboxLevel2;
                     string currentLevelCode = null;
                     if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
                     {
@@ -409,7 +410,8 @@ public class GameStateController : MonoBehaviour {
     public void setAndSaveLevelName(string levelName)
     {
         if(_adventureLevel1 != levelName
-           && _sandboxLevel1 != levelName)
+           && _sandboxLevel1 != levelName
+           && _sandboxLevel2 != levelName)
         {
             Logger.Log("GameStateController::setAndSaveLevelName bad level name="+levelName, Logger.Level.WARN);
         }

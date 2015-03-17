@@ -167,20 +167,20 @@ public class VectrosityPanel : MonoBehaviour {
   		infos.padding = padding;
   		changed = true;
   	}
-  	if(infos.panelDimensions != collider.bounds.size){
-  		infos.panelDimensions = collider.bounds.size;
+  	if(infos.panelDimensions != GetComponent<Collider>().bounds.size){
+  		infos.panelDimensions = GetComponent<Collider>().bounds.size;
   		changed = true;
   	}
 		
   	if(
-		infos.panelPos.x != collider.bounds.center.x - infos.panelDimensions.x/2 
-	 || infos.panelPos.y != collider.bounds.center.y - infos.panelDimensions.y/2 
-	 || infos.panelPos.z != collider.bounds.center.z
+		infos.panelPos.x != GetComponent<Collider>().bounds.center.x - infos.panelDimensions.x/2 
+	 || infos.panelPos.y != GetComponent<Collider>().bounds.center.y - infos.panelDimensions.y/2 
+	 || infos.panelPos.z != GetComponent<Collider>().bounds.center.z
 	  ){
   		infos.panelPos = new Vector3(
-  			collider.bounds.center.x - infos.panelDimensions.x/2,
-  			collider.bounds.center.y - infos.panelDimensions.y/2,
-  			collider.bounds.center.z);
+  			GetComponent<Collider>().bounds.center.x - infos.panelDimensions.x/2,
+  			GetComponent<Collider>().bounds.center.y - infos.panelDimensions.y/2,
+  			GetComponent<Collider>().bounds.center.z);
   		changed = true;
   	}
   	

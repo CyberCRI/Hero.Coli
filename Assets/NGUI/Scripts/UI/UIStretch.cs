@@ -50,7 +50,7 @@ public class UIStretch : MonoBehaviour
 	
 	void Awake () 
 	{ 
-		mAnim = animation; 
+		mAnim = GetComponent<Animation>(); 
 		mRect = new Rect();
 		mTrans = transform;
 	}

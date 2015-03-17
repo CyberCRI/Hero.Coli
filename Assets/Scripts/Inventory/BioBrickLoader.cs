@@ -83,6 +83,8 @@ public class BioBrickLoader {
                 case BioBricksXMLTags.FORMULA:
                   formula = attr.InnerText;
                   break;
+                case XMLTags.COMMENT:
+                  break;
                 default:
                     logUnknownAttr(attr, BioBricksXMLTags.PROMOTER);
                   break;
@@ -98,7 +100,9 @@ public class BioBrickLoader {
               switch (attr.Name){
                 case BioBricksXMLTags.RBSFACTOR:
                   rbsfactor = attr.InnerText;
-                  break;
+                    break;
+                case XMLTags.COMMENT:
+                    break;
                 default:
                   logUnknownAttr(attr, BioBricksXMLTags.RBS);
                   break;
@@ -114,7 +118,9 @@ public class BioBrickLoader {
               switch (attr.Name){
                 case BioBricksXMLTags.PROTEIN:
                   protein = attr.InnerText;
-                  break;
+                    break;
+                case XMLTags.COMMENT:
+                    break;
                 default:
                   logUnknownAttr(attr, BioBricksXMLTags.GENE);
                   break;
@@ -130,7 +136,9 @@ public class BioBrickLoader {
               switch (attr.Name){
                 case BioBricksXMLTags.TERMINATORFACTOR:
                   terminatorfactor = attr.InnerText;
-                  break;
+                    break;
+                case XMLTags.COMMENT:
+                    break;
                 default:
                     logUnknownAttr(attr, BioBricksXMLTags.TERMINATOR);
                   break;

@@ -19,7 +19,7 @@ public class ForceFlowParticle : MonoBehaviour {
 	void OnParticleCollision(GameObject obj){
     Hero cellia = obj.GetComponent<Hero>();
     if(cellia){
-      Rigidbody body = cellia.rigidbody;
+      Rigidbody body = cellia.GetComponent<Rigidbody>();
       if (body){
         Vector3 push = this.transform.rotation * new Vector3(0,0,1);
         body.AddForce((push * force));

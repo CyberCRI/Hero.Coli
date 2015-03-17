@@ -166,7 +166,7 @@ public class Molecule : LoadableFromXmlImpl
                   break;
                 }
                 //TODO add this case to all tryInstantiateFromXml implementations
-                case "#comment":
+                case XMLTags.COMMENT:
                   break;
                 default:
                 {
@@ -197,7 +197,7 @@ public class Molecule : LoadableFromXmlImpl
                       case "FickFactor":
                           setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
                           break;
-                      case "#comment":
+                      case XMLTags.COMMENT:
                           break;
                       default:
                           Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"

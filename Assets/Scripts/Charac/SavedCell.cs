@@ -38,7 +38,7 @@ public class SavedCell : MonoBehaviour {
         //TODO set slow animation
         //TODO change appearance to make it different from playable bacterium: maybe remove eyes?
         //TODO put animation when bacterium becomes playable, then divide cell
-        iTween.FadeTo(gameObject, _optionsDuplicatedAlpha);
+        Hero.safeFadeTo(gameObject, _optionsDuplicatedAlpha);
   }
 
     private void safeInitCollider()
