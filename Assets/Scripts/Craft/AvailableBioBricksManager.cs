@@ -31,6 +31,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
   //width of a displayed BioBrick
   //set in Unity editor
   public int _width;
+  public int _bricksPerRow;
 
   // the panel on which the BioBricks will be drawn
   public GameObject bioBricksPanel;
@@ -158,10 +159,9 @@ public class AvailableBioBricksManager : MonoBehaviour {
   }
 
   public Vector3 getNewPosition(int index) {
-    int bricksPerRow = 4;
     return availableBioBrick.transform.localPosition + new Vector3(
-      (index%bricksPerRow)*_width,
-      -(index/bricksPerRow)*_width,
+      (index%_bricksPerRow)*_width,
+      -(index/_bricksPerRow)*_width,
       -0.1f);
   }
 
