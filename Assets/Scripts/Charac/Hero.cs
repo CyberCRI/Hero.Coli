@@ -190,6 +190,7 @@ public class Hero : MonoBehaviour {
  		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
 			  _isAlive = false;
+        MemoryManager.get ().sendEvent("death");
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
@@ -203,6 +204,7 @@ public class Hero : MonoBehaviour {
       {
           _lastCheckpoint = col.gameObject;
           duplicateCell();
+          MemoryManager.get ().sendEvent("reached:"+_lastCheckpoint.name);
       }
   }
 

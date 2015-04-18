@@ -60,23 +60,35 @@ public class MemoryManager : MonoBehaviour {
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
             Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.INFO);
-            createEvent(switchModeEventType);
+            string currentLevelName = "?";
+            LevelInfo levelInfo;
+            bool success = tryGetCurrentLevelInfo(out levelInfo);
+            if(success && null != levelInfo)
+            {
+                currentLevelName = levelInfo.code;
+            }
+            createEvent(switchModeEventType+currentLevelName);
         } else {
             createPlayer (www => trackStart(www));
         }
     }
 
-    public void sendCompletionEvent()
+    public void sendEvent(string eventCode)
     {
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
-            Logger.Log ("MemoryManager::sendCompletionEvent player already identified - pID="+pID, Logger.Level.INFO);
-            createEvent(completedEventType);
+            Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
+            createEvent(eventCode);
         } else {
-            Logger.Log ("MemoryManager::sendCompletionEvent no registered player!", Logger.Level.WARN);
+            Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.WARN);
         }
+    }
+
+    public void sendCompletionEvent()
+    {
+        sendEvent(completedEventType);
     }
 
     private void initializeIfNecessary(bool onlyIfEmpty = true)
@@ -185,10 +197,10 @@ public class MemoryManager : MonoBehaviour {
     private string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     private string playerID = "\"b5ab445a-56c9-4c5b-a6d0-86e8a286cd81\"";
     
-    private string createPlayerEventType = "\"newPlayer\"";
-    private string startEventType = "\"start\"";
-    private string switchModeEventType = "\"switch\"";
-    private string completedEventType = "\"completed\"";
+    private string createPlayerEventType = "newplayer";
+    private string startEventType = "start";
+    private string switchModeEventType = "switched:";
+    private string completedEventType = "completed";
     
     void setPlayerID (string pID)
     {
@@ -204,7 +216,7 @@ public class MemoryManager : MonoBehaviour {
         
         string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
             "\"player\":" + playerID + "," +
-                "\"type\":"+eventType+"}";
+                "\"type\":\""+eventType+"\"}";
         byte[] pData = System.Text.Encoding.ASCII.GetBytes (ourPostData.ToCharArray ());
         Debug.Log("StartCoroutine...");
         StartCoroutine (RedMetricsManager.POST (url, pData, headers, value => wwwLogger(value)));
