@@ -60,13 +60,27 @@ public class MemoryManager : MonoBehaviour {
         MemoryManager.get ();
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        Debug.LogError("Start: tryGetPID="+tryGetPID+", pID="+pID);
+        Debug.LogError("sendStartEvent: tryGetPID="+tryGetPID+", pID="+pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
-            Logger.Log ("MemoryManager::Start player already identified - pID="+pID, Logger.Level.ERROR);
+            Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.ERROR);
             createEvent(switchModeEventType);
         } else {
             createPlayer (www => trackStart(www));
+        }
+    }
+
+    public void sendCompletionEvent()
+    {
+        string pID = null;
+        bool tryGetPID = tryGetData(_playerDataKey, out pID);
+        Debug.LogError("sendCompletionEvent: tryGetPID="+tryGetPID+", pID="+pID);
+        if(tryGetPID && !string.IsNullOrEmpty(pID))
+        {
+            Logger.Log ("MemoryManager::sendCompletionEvent player already identified - pID="+pID, Logger.Level.ERROR);
+            createEvent(completedEventType);
+        } else {
+            Debug.LogWarning("no registered player!");
         }
     }
 
@@ -179,6 +193,7 @@ public class MemoryManager : MonoBehaviour {
     private string createPlayerEventType = "\"newPlayer\"";
     private string startEventType = "\"start\"";
     private string switchModeEventType = "\"switch\"";
+    private string completedEventType = "\"completed\"";
     
     void setPlayerID (string pID)
     {
