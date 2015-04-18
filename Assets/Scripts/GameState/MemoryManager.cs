@@ -14,7 +14,6 @@ public class MemoryManager : MonoBehaviour {
             _instance = GameObject.Find(gameObjectName).GetComponent<MemoryManager>();
             if(null != _instance)
             {
-                Debug.LogError("MemoryManager::get() found instance! null != _instance");
                 DontDestroyOnLoad(_instance.gameObject);
                 _instance.initializeIfNecessary();
             }
@@ -22,30 +21,28 @@ public class MemoryManager : MonoBehaviour {
             {
                 Logger.Log("MemoryManager::get couldn't find game object", Logger.Level.ERROR);
             }
-        } else {
-            Logger.Log("MemoryManager::get _instance was not null!", Logger.Level.ERROR);
         }
         return _instance;
     }
     void Awake()
     {
-        Debug.LogError("MemoryManager::Awake");
+        Logger.Log("MemoryManager::Awake", Logger.Level.INFO);
         antiDuplicateInitialization();
     }
 
     void Start ()
     {
-        Debug.LogError("MemoryManager::Start");
+        Logger.Log("MemoryManager::Start", Logger.Level.INFO);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     void antiDuplicateInitialization()
     {
         MemoryManager.get ();
-        Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.ERROR);
+        Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
         _instance.sendStartEvent();
         if(this != _instance) {
-            Debug.LogError("MemoryManager::antiDuplicateInitialization self-destruction");
+            Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
             Destroy(this.gameObject);
         }
     }
@@ -60,10 +57,9 @@ public class MemoryManager : MonoBehaviour {
         MemoryManager.get ();
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        Debug.LogError("sendStartEvent: tryGetPID="+tryGetPID+", pID="+pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
-            Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.ERROR);
+            Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.INFO);
             createEvent(switchModeEventType);
         } else {
             createPlayer (www => trackStart(www));
@@ -74,13 +70,12 @@ public class MemoryManager : MonoBehaviour {
     {
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        Debug.LogError("sendCompletionEvent: tryGetPID="+tryGetPID+", pID="+pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
-            Logger.Log ("MemoryManager::sendCompletionEvent player already identified - pID="+pID, Logger.Level.ERROR);
+            Logger.Log ("MemoryManager::sendCompletionEvent player already identified - pID="+pID, Logger.Level.INFO);
             createEvent(completedEventType);
         } else {
-            Debug.LogWarning("no registered player!");
+            Logger.Log ("MemoryManager::sendCompletionEvent no registered player!", Logger.Level.WARN);
         }
     }
 
@@ -229,9 +224,9 @@ public class MemoryManager : MonoBehaviour {
     private void wwwLogger (WWW www)
     {
         if (www.error == null) {
-            Logger.Log("MemoryManager::wwwLogger Success: " + www.text, Logger.Level.ERROR);
+            Logger.Log("MemoryManager::wwwLogger Success: " + www.text, Logger.Level.INFO);
         } else {
-            Logger.Log("MemoryManager::wwwLogger Error: " + www.error, Logger.Level.ERROR);
+            Logger.Log("MemoryManager::wwwLogger Error: " + www.error, Logger.Level.WARN);
         } 
     }
     
@@ -264,10 +259,6 @@ public class MemoryManager : MonoBehaviour {
         string pID = extractPID(www);
         setPlayerID(pID);
         addData(_playerDataKey, pID);
-        
-        bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        Debug.LogError("trackStart: tryGetPID="+tryGetPID+", pID="+pID);
-
         createEvent(startEventType);
     }
 }
