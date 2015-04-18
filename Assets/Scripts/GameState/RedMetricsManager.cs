@@ -39,14 +39,14 @@ public class RedMetricsManager
             
         while (!www.isDone) {
             elapsedTime += Time.deltaTime;
-            if (elapsedTime >= 10.0f)
+            if (elapsedTime >= 30.0f)
                 break;
             yield return null;
         }
             
         if (!www.isDone || !string.IsNullOrEmpty (www.error)) {
             string errmsg = string.IsNullOrEmpty (www.error) ? "timeout" : www.error;
-            Debug.LogError ("Load Failed: " + errmsg);
+            Logger.Log("RedMetricsManager::waitForWWW Error: Load Failed: " + errmsg, Logger.Level.WARN);
             callback (null);    // Pass null result.
             yield break;
         }

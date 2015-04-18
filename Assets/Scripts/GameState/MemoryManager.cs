@@ -184,9 +184,9 @@ public class MemoryManager : MonoBehaviour {
     private void wwwLogger (WWW www)
     {
         if (www.error == null) {
-            Debug.LogError ("Success: " + www.text);
+            Logger.Log("MemoryManager::wwwLogger Success: " + www.text, Logger.Level.INFO);
         } else {
-            Debug.LogError ("Error: " + www.error);
+            Logger.Log("MemoryManager::wwwLogger Error: " + www.error, Logger.Level.WARN);
         } 
     }
     
