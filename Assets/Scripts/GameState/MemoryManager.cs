@@ -69,7 +69,8 @@ public class MemoryManager : MonoBehaviour {
             }
             createEvent(switchModeEventType+currentLevelName);
         } else {
-            createPlayer (www => trackStart(www));
+            //createPlayer (www => trackStart(www));
+            testGet (www => trackStart(www));
         }
     }
 
@@ -204,7 +205,7 @@ public class MemoryManager : MonoBehaviour {
     
     void setPlayerID (string pID)
     {
-        Debug.Log("setPlayerID("+pID+")");
+        Debug.LogError("setPlayerID("+pID+")");
         playerID = pID;
     }
     
@@ -218,8 +219,8 @@ public class MemoryManager : MonoBehaviour {
             "\"player\":" + playerID + "," +
                 "\"type\":\""+eventType+"\"}";
         byte[] pData = System.Text.Encoding.ASCII.GetBytes (ourPostData.ToCharArray ());
-        Debug.Log("StartCoroutine...");
-        StartCoroutine (RedMetricsManager.POST (url, pData, headers, value => wwwLogger(value)));
+        Debug.LogError("StartCoroutine POST with data="+ourPostData+" ...");
+        StartCoroutine (RedMetricsManager.POST (url, pData, headers, value => wwwLogger(value, "createEvent("+eventType+")")));
     }
     
     private void createPlayer (System.Action<WWW> callback)
@@ -229,35 +230,48 @@ public class MemoryManager : MonoBehaviour {
         headers.Add ("Content-Type", "application/json");
         string ourPostData = "{\"type\":"+createPlayerEventType+"}";
         byte[] pData = System.Text.Encoding.ASCII.GetBytes (ourPostData.ToCharArray ());
-        Debug.Log("StartCoroutine...");
+        Debug.LogError("createPlayer: StartCoroutine POST with data="+ourPostData+" ...");
         StartCoroutine (RedMetricsManager.POST (url, pData, headers, callback));
     }
-    
-    private void wwwLogger (WWW www)
+
+    private void testGet(System.Action<WWW> callback)
     {
-        if (www.error == null) {
-            Logger.Log("MemoryManager::wwwLogger Success: " + www.text, Logger.Level.INFO);
+        Debug.LogError("testGet");
+        string url = redMetricsURL + redMetricsPlayer;
+        StartCoroutine (RedMetricsManager.GET (url, callback));
+    }
+    
+    private void wwwLogger (WWW www, string origin = "default")
+    {
+        if(null == www) {
+            Debug.LogError("MemoryManager::wwwLogger null == www from "+origin);
         } else {
-            Logger.Log("MemoryManager::wwwLogger Error: " + www.error, Logger.Level.WARN);
-        } 
+          if (www.error == null) {
+              //Logger.Log("MemoryManager::wwwLogger Success: " + www.text, Logger.Level.INFO);
+                Debug.LogError("MemoryManager::wwwLogger Success: " + www.text+" from "+origin);
+          } else {
+              //Logger.Log("MemoryManager::wwwLogger Error: " + www.error, Logger.Level.WARN);
+                Debug.LogError("MemoryManager::wwwLogger Error: " + www.error + " from "+origin);
+          } 
+        }
     }
     
     private string extractPID(WWW www)
     {
         string result = null;
-        wwwLogger(www);
+        wwwLogger(www, "extractPID");
         string trimmed = www.text.Trim ();
         string[] split1 = trimmed.Split('\n');
         foreach(string s1 in split1)
         {
-            Debug.Log(s1);
+            //Debug.Log(s1);
             if(s1.Length > 5)
             {
                 string[] split2 = s1.Trim ().Split(':');
                 foreach(string s2 in split2)
                 {
                     if(!s2.Equals("id")){
-                        Debug.Log ("id =? "+s2);
+                        //Debug.Log ("id =? "+s2);
                         result = s2;
                     }
                 }
@@ -268,7 +282,8 @@ public class MemoryManager : MonoBehaviour {
     
     private void trackStart(WWW www)
     {
-        string pID = extractPID(www);
+        Debug.LogError("trackStart: www =? null:"+(null == www));
+                       string pID = extractPID(www);
         setPlayerID(pID);
         addData(_playerDataKey, pID);
         createEvent(startEventType);

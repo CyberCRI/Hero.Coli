@@ -110,6 +110,7 @@ public class Logger : MonoBehaviour {
         Debug.LogWarning(timedMsg);
       } else if (level == Level.ERROR) {
         Debug.LogError(timedMsg);
+        Application.ExternalCall("DebugFromWebPlayerToBrowser", timedMsg);
       } else {
         Debug.Log(timedMsg);
       }
