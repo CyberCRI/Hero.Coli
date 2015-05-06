@@ -59,7 +59,7 @@ public class RedMetricsManager
             yield break;
         }
             
-        Logger.Log("waitForWWW: www good to ship!", Logger.Level.INFO);
+        Logger.Log("waitForWWW: www good to ship!", Logger.Level.ERROR);
         callback (www); // Pass retrieved result.
     }
 }

@@ -40,7 +40,7 @@ public class MemoryManager : MonoBehaviour {
     {
         MemoryManager.get ();
         Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
-        //_instance.sendStartEvent();
+        _instance.sendStartEvent();
         if(this != _instance) {
             Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
             Destroy(this.gameObject);
@@ -77,7 +77,6 @@ public class MemoryManager : MonoBehaviour {
 
     public void sendEvent(string eventCode)
     {
-        /*
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
@@ -87,7 +86,6 @@ public class MemoryManager : MonoBehaviour {
         } else {
             Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
         }
-        */
     }
 
     public void sendCompletionEvent()
@@ -216,8 +214,7 @@ public class MemoryManager : MonoBehaviour {
     {
         string url = redMetricsURL + redMetricsEvent;
         Dictionary<string, string> headers = new Dictionary<string, string> ();
-        headers.Add ("Content-Type", "application/json");
-        
+        headers.Add ("Content-Type", "application/json");        
         string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
             "\"player\":" + playerID + "," +
                 "\"type\":\""+eventType+"\"}";
@@ -250,7 +247,7 @@ public class MemoryManager : MonoBehaviour {
             Logger.Log("MemoryManager::wwwLogger null == www from "+origin, Logger.Level.ERROR);
         } else {
           if (www.error == null) {
-                Logger.Log("MemoryManager::wwwLogger Success: " + www.text + " from "+origin, Logger.Level.INFO);
+                Logger.Log("MemoryManager::wwwLogger Success: " + www.text + " from "+origin, Logger.Level.ERROR);
           } else {
                 Logger.Log("MemoryManager::wwwLogger Error: " + www.error + " from "+origin, Logger.Level.ERROR);
           } 
