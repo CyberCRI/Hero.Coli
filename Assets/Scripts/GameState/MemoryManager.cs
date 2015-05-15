@@ -67,7 +67,6 @@ public class MemoryManager : MonoBehaviour {
             {
                 currentLevelName = levelInfo.code;
             }
-            //createEvent(switchModeEventType+currentLevelName);
             sendEvent(switchModeEventType+currentLevelName);
         } else {
             createPlayer (www => trackStart(www));
@@ -82,7 +81,10 @@ public class MemoryManager : MonoBehaviour {
         if(tryGetPID && !string.IsNullOrEmpty(pID))
         {
             Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
-            createEvent(eventCode);
+            string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
+                "\"player\":" + playerID + "," +
+                    "\"type\":\""+eventCode+"\"}";
+            sendData(redMetricsEvent, ourPostData, value => wwwLogger(value, "sendEvent("+eventCode+")"));
         } else {
             Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
         }
@@ -210,28 +212,20 @@ public class MemoryManager : MonoBehaviour {
         playerID = pID;
     }
 
-    private void createEvent (string eventType)
+    private void sendData(string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
-        string url = redMetricsURL + redMetricsEvent;
+        string url = redMetricsURL + urlSuffix;
         Dictionary<string, string> headers = new Dictionary<string, string> ();
-        headers.Add ("Content-Type", "application/json");        
-        string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
-            "\"player\":" + playerID + "," +
-                "\"type\":\""+eventType+"\"}";
-        byte[] pData = System.Text.Encoding.ASCII.GetBytes (ourPostData.ToCharArray ());
-        Logger.Log("StartCoroutine POST with data="+ourPostData+" ...", Logger.Level.INFO);
-        StartCoroutine (RedMetricsManager.POST (url, pData, headers, value => wwwLogger(value, "createEvent("+eventType+")")));
+        headers.Add ("Content-Type", "application/json");
+        byte[] pData = System.Text.Encoding.ASCII.GetBytes (pDataString.ToCharArray ());
+        Logger.Log("MemoryManager::sendData StartCoroutine POST with data="+pDataString+" ...", Logger.Level.INFO);
+        StartCoroutine (RedMetricsManager.POST (url, pData, headers, callback));
     }
     
     private void createPlayer (System.Action<WWW> callback)
     {
-        string url = redMetricsURL + redMetricsPlayer;
-        Dictionary<string, string> headers = new Dictionary<string, string> ();
-        headers.Add ("Content-Type", "application/json");
         string ourPostData = "{\"type\":"+createPlayerEventType+"}";
-        byte[] pData = System.Text.Encoding.ASCII.GetBytes (ourPostData.ToCharArray ());
-        Logger.Log("createPlayer: StartCoroutine POST with data="+ourPostData+" ...", Logger.Level.INFO);
-        StartCoroutine (RedMetricsManager.POST (url, pData, headers, callback));
+        sendData(redMetricsPlayer, ourPostData, callback);
     }
 
     private void testGet(System.Action<WWW> callback)
@@ -284,7 +278,6 @@ public class MemoryManager : MonoBehaviour {
         string pID = extractPID(www);
         setPlayerID(pID);
         addData(_playerDataKey, pID);
-        //createEvent(startEventType);
         sendEvent(startEventType);
     }
 }
