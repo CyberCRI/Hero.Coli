@@ -95,6 +95,11 @@ public class MemoryManager : MonoBehaviour {
         sendEvent(completedEventType);
     }
 
+    public void sendToWebPage(string msg)
+    {
+        Application.ExternalCall("DebugFromWebPlayerToBrowser", msg);
+    }
+
     private void initializeIfNecessary(bool onlyIfEmpty = true)
     {
         Logger.Log("MemoryManager::initializeIfNecessary", Logger.Level.DEBUG);
