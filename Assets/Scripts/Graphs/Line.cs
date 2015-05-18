@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Vectrosity;
 /*!
  \brief This behaviour class manages the line drawing on a basic 2D shape
- \author Yann LEFLOUR
- \mail yleflour@gmail.com
  \sa PanelInfo
  \sa VectrosityPanel
 */

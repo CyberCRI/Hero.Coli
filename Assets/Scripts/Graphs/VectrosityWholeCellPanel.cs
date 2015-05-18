@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Vectrosity;
 /*!
- \brief This behaviour class manages the line drawing on a basic 2D shape
+ \brief This behaviour class manages the line drawing on a basic 2D shape from WholeCell sim data
  \sa PanelInfo
  \sa Line
 */
-public class VectrosityPanel : MonoBehaviour {
+public class VectrosityWholeCellPanel : MonoBehaviour {
 	
   public Camera GUICam; //!< The Isometric camera which will display the layer
   public bool draw = true; //!< Toggles drawing of the lines
@@ -19,25 +19,30 @@ public class VectrosityPanel : MonoBehaviour {
   private int width = 200;
   private float height = 800;
 
-  private ReactionEngine _reactionEngine;
-  private LinkedList<Medium> _mediums;
-  public int _mediumId;
+  //private ReactionEngine _reactionEngine;
+  public WholeCell wholeCell;
+  //private LinkedList<Medium> _mediums;
+  //public int _mediumId;
 	
   private List<Line> _lines = new List<Line>(); 
-  private ArrayList _molecules;
+    //TODO replace _molecules by _variables
+  //private ArrayList _molecules;
+  private List<WholeCellVariable> _variables;
   private bool _paused = false;
 	
   public void setPause(bool paused) {
 	  _paused = paused;
   }
 
-  public int getMediumId()
-  {
-    return _mediumId;
-  }
+  //public int getMediumId()
+  //{
+  //  return _mediumId;
+  //}
 
+    /*
   private bool safeLazyInit()
   {
+
     if(null==_reactionEngine)
       _reactionEngine = ReactionEngine.get();
 
@@ -49,22 +54,23 @@ public class VectrosityPanel : MonoBehaviour {
       }
       if(null==_mediums)
       {
-        Logger.Log ("VectrosityPanel::safeLazyInit failed to get mediums", Logger.Level.WARN);
+        Logger.Log ("VectrosityWholeCellPanel::safeLazyInit failed to get mediums", Logger.Level.WARN);
         return false;
       }
     }
     else
     {
-      Logger.Log ("VectrosityPanel::safeLazyInit failed to get ReactionEngine", Logger.Level.WARN);
+      Logger.Log ("VectrosityWholeCellPanel::safeLazyInit failed to get ReactionEngine", Logger.Level.WARN);
       return false;
     }
 
     return true;
   }
+    */
 
   public void setMedium(int mediumId)
   {
-
+        /*
     if(!safeLazyInit())
       return;
 
@@ -80,8 +86,10 @@ public class VectrosityPanel : MonoBehaviour {
     _molecules = medium.getMolecules();
     if (_molecules == null)
       return ;
-
+*/
     Line line;
+        _lines.Add(new Line(width, height, infos, "test"));
+        /*
     foreach (Molecule m in _molecules)
     {
       line = _lines.Find(l => l.name == m.getName());
@@ -90,6 +98,7 @@ public class VectrosityPanel : MonoBehaviour {
         _lines.Add(new Line(width, height, infos, m.getName()));
       }
     }
+    */
   
     drawLines(true);
   }
@@ -101,11 +110,11 @@ public class VectrosityPanel : MonoBehaviour {
   	
   	VectorLine.SetCamera3D(GUICam);
   
-    safeLazyInit();
+    //safeLazyInit();
 
     _lines = new List<Line>();
 
-    setMedium(_mediumId);
+    //setMedium(_mediumId);
   }
 	
   // Update is called once per frame
@@ -115,14 +124,14 @@ public class VectrosityPanel : MonoBehaviour {
   }
 	
   void OnDisable() {
-    Logger.Log("VectrosityPanel::OnDisable "+identifier, Logger.Level.TRACE);
+    Logger.Log("VectrosityWholeCellPanel::OnDisable "+identifier, Logger.Level.TRACE);
 	  foreach(Line line in _lines) {
 	    line.vectorline.active = false;
 	  }
   }
 	
   void OnEnable() {
-    Logger.Log("VectrosityPanel::OnEnable "+identifier, Logger.Level.TRACE);
+    Logger.Log("VectrosityWholeCellPanel::OnEnable "+identifier, Logger.Level.TRACE);
 	  foreach(Line line in _lines) {
 	    line.vectorline.active = true;
 	  }
@@ -133,17 +142,17 @@ public class VectrosityPanel : MonoBehaviour {
    * \param resize If true will resize the lines first
   */
   void drawLines(bool resize) {
-    if (_molecules == null)
-      return ;
+    //if (_molecules == null)
+    //  return ;
     foreach(Line line in _lines)
     {
-      Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
+      //Molecule m = ReactionEngine.getMoleculeFromName(line.name, _molecules);
       if(resize)
         line.resize();
       if(!_paused) {
-        if (m != null)
-          line.addPoint(m.getConcentration());
-        else
+        //if (m != null)
+        //  line.addPoint(m.getConcentration());
+        //else
           line.addPoint(0f);
       }
       line.redraw();

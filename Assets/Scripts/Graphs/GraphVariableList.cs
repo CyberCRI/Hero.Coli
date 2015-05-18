@@ -2,23 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GraphMoleculeList : MonoBehaviour {
+public class GraphVariableList : MonoBehaviour {
 
-	private ReactionEngine   _reactionEngine;
-	public int               mediumId;
+	//private ReactionEngine   _reactionEngine;
+	//public int               mediumId;
+  public WholeCell         wholeCell;
 	public UILabel           namesLabel;
   public UILabel           valuesLabel;
 	public bool              displayAll;
-  public GameObject        unfoldingMoleculeList;
+  public GameObject        unfoldingVariableList;
 
-  public GameObject        equipedWithMoleculesDeviceDummy;
-  public GameObject        equipmentDeviceDummy;
-  public GameObject        equipedDeviceDummy;
+  //public GameObject        equipedWithMoleculesDeviceDummy;
+  //public GameObject        equipmentDeviceDummy;
+  //public GameObject        equipedDeviceDummy;
     
   public string            debugName;
 
   private int               pixelsPerMoleculeLine = 15;
-  private int               pixelsPerDeviceLine = 80;
+  //private int               pixelsPerDeviceLine = 80;
       
   public UILabel           topLabels;
   public UILabel           topValues;
@@ -26,16 +27,18 @@ public class GraphMoleculeList : MonoBehaviour {
   public Vector3           topValuesShift;
   public Vector3           currentHeight;
 
-  private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
-  private int                           _displayedListMoleculesCount = 0;
-  private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
-  private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
+  private LinkedList<DisplayedVariable> _displayedVariables = new LinkedList<DisplayedVariable>();
+  private int                           _displayedListVariablesCount = 0;
+  private LinkedList<DisplayedVariable> _toRemove = new LinkedList<DisplayedVariable>();
+  //private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
+    /*
   public void setMediumId(int newMediumId)
   {
     mediumId = newMediumId;
   }
+
 
   void safeInitialization()
   {
@@ -53,69 +56,73 @@ public class GraphMoleculeList : MonoBehaviour {
       equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
     }
   }
+    */
 
   void Awake()
   {
     currentHeight = Vector3.zero;
-    unfoldingMoleculeList.transform.localScale = new Vector3(unfoldingMoleculeList.transform.localScale.x, 20, unfoldingMoleculeList.transform.localScale.z);
-    _initialScale = unfoldingMoleculeList.transform.localScale;
+    unfoldingVariableList.transform.localScale = new Vector3(unfoldingVariableList.transform.localScale.x, 20, unfoldingVariableList.transform.localScale.z);
+    _initialScale = unfoldingVariableList.transform.localScale;
   }
    
   void Start() {
-    _reactionEngine = ReactionEngine.get();
+    //_reactionEngine = ReactionEngine.get();
 
-    safeInitialization();
+    //safeInitialization();
     
+        /*
     if(null != equipedWithMoleculesDeviceDummy)
     {
       equipedWithMoleculesDeviceDummy.SetActive(false);
     }
     else
     {
-      Logger.Log("GraphMoleculeList::Start failed safeInitialization ", Logger.Level.WARN);
+      Logger.Log("GraphVariableList::Start failed safeInitialization ", Logger.Level.WARN);
     }
+    */
   }
 
-  private void resetMoleculeList()
+  private void resetVariableList()
   {
-    foreach(DisplayedMolecule molecule in _displayedMolecules)
+    foreach(DisplayedVariable variable in _displayedVariables)
     {
-      molecule.reset();
+      variable.reset();
     }
   }
 
-  private void removeUnusedMolecules()
+  private void removeUnusedVariables()
   {
     _toRemove.Clear();
-    foreach(DisplayedMolecule molecule in _displayedMolecules)
+    foreach(DisplayedVariable variable in _displayedVariables)
     {
-      if(!molecule.isUpdated())
+      if(!variable.isUpdated())
       {
-        _toRemove.AddLast(molecule);
+        _toRemove.AddLast(variable);
       }
     }
-    foreach(DisplayedMolecule molecule in _toRemove)
+    foreach(DisplayedVariable variable in _toRemove)
     {
-      _displayedMolecules.Remove(molecule);
-      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
-      {
-        _displayedListMoleculesCount--;
-      }
+      _displayedVariables.Remove(variable);
+      //if(variable.getDisplayType() == DisplayedVariable.DisplayType.MOLECULELIST)
+      //{
+        _displayedListVariablesCount--;
+      //}
     }
   }
 
   //TODO iTween this
   void setUnfoldingListBackgroundScale()
   {
-    currentHeight = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
-    unfoldingMoleculeList.transform.localScale = _initialScale + currentHeight;
+    currentHeight = Vector3.up * (pixelsPerMoleculeLine * _displayedListVariablesCount /*+ pixelsPerDeviceLine * _equipedDevices.Count*/);
+    unfoldingVariableList.transform.localScale = _initialScale + currentHeight;
   }
 
+    /*
   public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
   {
     if(equipedDeviceScript == null)
     {
-      Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
+      Logger.Log ("GraphVariableList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
     }
     else
     {
@@ -156,12 +163,12 @@ public class GraphMoleculeList : MonoBehaviour {
         int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);
 
-        //search if there's already in the cell a molecule that this device produces
-        foreach(DisplayedMolecule molecule in _displayedMolecules)
+        //search if there's already in the cell a variable that this device produces
+        foreach(DisplayedVariable variable in _displayedVariables)
         {
-          if(molecule.getCodeName() == eddwm.device.getFirstGeneProteinName())
+          if(variable.getCodeName() == eddwm.device.getFirstGeneProteinName())
           {
-            displayMoleculeInDevice(molecule, eddwm);
+            displayMoleculeInDevice(variable, eddwm);
           }
         }
 
@@ -175,25 +182,30 @@ public class GraphMoleculeList : MonoBehaviour {
       }
     }
   }
+  */
 
   Vector3 getNewPosition(int index = -1) {
     Vector3 res;
     int idx = index;
+
+        /*
     if(idx == -1)
     {
       idx = _equipedDevices.Count;
     }
+    */
     
-    res = equipedWithMoleculesDeviceDummy.transform.localPosition
-            + new Vector3(
+    res = /*equipedWithMoleculesDeviceDummy.transform.localPosition
+            +*/ new Vector3(
                 0.0f,
-                -_displayedListMoleculesCount*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
+                -_displayedListVariablesCount*pixelsPerMoleculeLine /*-idx*pixelsPerDeviceLine*/,
                 -0.1f
                 );
     
     return res;
   }
 
+    /*
     public void removeDeviceAndMoleculesComponent(Device device)
     {
         //TODO test BioBricks equality (cf next line)
@@ -212,54 +224,63 @@ public class GraphMoleculeList : MonoBehaviour {
         }
         else
         {
-            Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
+            Logger.Log("GraphVariableList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
         }
     }
+    */
 
+    /*
   bool isAlreadyDisplayedInADevice(string moleculeCodeName)
   {
     return null != _equipedDevices.Find(equiped => equiped.device.getFirstGeneProteinName() == moleculeCodeName);
   }
+  */
 
+    /*
   void displayMoleculeInList(EquipedDisplayedDeviceWithMolecules eddwm)
   {
     string moleculeCodeName = eddwm.device.getFirstGeneProteinName();
     if(isAlreadyDisplayedInADevice(moleculeCodeName))
     {
-      _displayedMolecules.Remove(eddwm.getDisplayedMolecule());
+      _displayedVariables.Remove(eddwm.getDisplayedMolecule());
     }
     else
     {
       eddwm.releaseMoleculeDisplay();
-      _displayedListMoleculesCount++;
+      _displayedListVariablesCount++;
     }
   }
-    
-  //change a display type of a molecule from molecule list to deviceWithMolecules list
-  void displayMoleculeInDevice(DisplayedMolecule molecule, EquipedDisplayedDeviceWithMolecules eddwm)
-  {
-      if((molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
-         || !isAlreadyDisplayedInADevice(molecule.getCodeName()))
-      {
-          _displayedListMoleculesCount--;
-      }
-      eddwm.addDisplayedMolecule(molecule);
-  }
+  */
 
-    //TODO check usefulness
+    /*
+  //change a display type of a variable from variable list to deviceWithMolecules list
+  void displayMoleculeInDevice(DisplayedVariable variable, EquipedDisplayedDeviceWithMolecules eddwm)
+  {
+      if((variable.getDisplayType() == DisplayedVariable.DisplayType.MOLECULELIST)
+         || !isAlreadyDisplayedInADevice(variable.getCodeName()))
+      {
+          _displayedListVariablesCount--;
+      }
+      eddwm.addDisplayedMolecule(variable);
+  }
+  */
+
+    /*
   void updateDisplayedListMoleculesCount()
   {
     int res = 0;
-    foreach(DisplayedMolecule molecule in _displayedMolecules)
+    foreach(DisplayedVariable variable in _displayedVariables)
     {
-      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
-      {
+      //if(variable.getDisplayType() == DisplayedVariable.DisplayType.MOLECULELIST)
+      //{
           res++;
-      }
+      //}
     }
-    _displayedListMoleculesCount = res;
+    _displayedListVariablesCount = res;
    }
+   */
 
+    /*
   //unused but works
   void shiftDeviceAndMoleculeComponents(int removedIndex)
   {
@@ -276,44 +297,45 @@ public class GraphMoleculeList : MonoBehaviour {
       _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
     }
   }
+*/
 
 	// Update is called once per frame
 	void Update()
   {
         
-    int previousListedCount = _displayedListMoleculesCount;
-    int previousTotalCount = _displayedMolecules.Count;
+    int previousListedCount = _displayedListVariablesCount;
+    int previousTotalCount = _displayedVariables.Count;
 
-    resetMoleculeList();
+    resetVariableList();
 
 		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
-		foreach(System.Object molecule in molecules) {
-      Molecule castMolecule = (Molecule)molecule;
+		foreach(System.Object variable in molecules) {
+      Molecule castMolecule = (Molecule)variable;
       string realName = castMolecule.getRealName();
       string codeName = castMolecule.getName();
 			float concentration = castMolecule.getConcentration();
       if(displayAll || (0 != concentration))
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(
-                    _displayedMolecules
+        DisplayedVariable found = LinkedListExtensions.Find(
+                    _displayedVariables
                     , m => m.getCodeName() == codeName
                     , false
-                    , " GraphMoleculeList::Update()"
+                    , " GraphVariableList::Update()"
                     );
         if(null != found)
         {
           found.update(concentration);
         }
         else
-        //molecule is not displayed yet
+        //variable is not displayed yet
         {
-          DisplayedMolecule created = new DisplayedMolecule(codeName, realName, concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
+          DisplayedVariable created = new DisplayedVariable(codeName, realName, concentration, DisplayedVariable.DisplayType.MOLECULELIST);
 
-          //search if molecule should be displayed in a Device/molecule component
+          //search if variable should be displayed in a Device/variable component
           List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == codeName);
           if(containers.Count != 0)
           {                        
-            created.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
+            created.setDisplayType(DisplayedVariable.DisplayType.DEVICEMOLECULELIST);
             foreach(EquipedDisplayedDeviceWithMolecules container in containers)
             {
               container.addDisplayedMolecule(created);
@@ -321,18 +343,18 @@ public class GraphMoleculeList : MonoBehaviour {
           }
           else
           {
-            _displayedListMoleculesCount++;
+            _displayedListVariablesCount++;
           }
-          //anyway add it to molecule list
-          _displayedMolecules.AddLast(created);
+          //anyway add it to variable list
+          _displayedVariables.AddLast(created);
         }
       }
 		}
 
-    removeUnusedMolecules();
+    removeUnusedVariables();
 
-    if(_displayedMolecules.Count != previousTotalCount
-       || previousListedCount != _displayedListMoleculesCount)
+    if(_displayedVariables.Count != previousTotalCount
+       || previousListedCount != _displayedListVariablesCount)
     {
       //rearrange devices
       positionDeviceAndMoleculeComponents();
@@ -341,11 +363,11 @@ public class GraphMoleculeList : MonoBehaviour {
 		string namesToDisplay = "";
     string valuesToDisplay = "";
 
-		foreach(DisplayedMolecule molecule in _displayedMolecules) {
-      if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+		foreach(DisplayedVariable variable in _displayedVariables) {
+      if(variable.getDisplayType() == DisplayedVariable.DisplayType.MOLECULELIST)
       {
-          namesToDisplay+=molecule.getRealName()+":\n";
-          valuesToDisplay+=molecule.getVal()+"\n";
+          namesToDisplay+=variable.getRealName()+":\n";
+          valuesToDisplay+=variable.getVal()+"\n";
       }
 		}
 		if(!string.IsNullOrEmpty(namesToDisplay)) {

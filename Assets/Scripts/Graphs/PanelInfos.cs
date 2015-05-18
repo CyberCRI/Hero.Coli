@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections;
 /*!
  \brief This behaviour class manages the line drawing on a basic 2D shape
- \author Yann LEFLOUR
- \mail yleflour@gmail.com
  \sa VectrosityPanel
  \sa Line
 */

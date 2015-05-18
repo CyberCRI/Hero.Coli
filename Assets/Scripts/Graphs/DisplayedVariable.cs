@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DisplayedMolecule
+public class DisplayedVariable
 {
     private string _codeName;
     private string _realName;
     private string _val;
     private bool _updated;
-    private DisplayType _displayType;
+    //private DisplayType _displayType;
     
+    /*
     public enum DisplayType {
-        MOLECULELIST,
-        DEVICEMOLECULELIST
+      MOLECULELIST,
+      DEVICEMOLECULELIST
     }
+    */
     
     public string getCodeName()
     {
@@ -34,31 +36,32 @@ public class DisplayedMolecule
         return _val;
     }
     
+    /*
     public DisplayType getDisplayType()
     {
-        return _displayType;
+      return _displayType;
     }
-    
+
     public void setDisplayType(DisplayType displayType)
     {
-        _displayType = displayType;
+      _displayType = displayType;
     }
-    
+    */
     public bool isUpdated()
     {
         return _updated;
     }
     
-    public DisplayedMolecule(string codeName, string realName, string val, DisplayType displayType = DisplayType.MOLECULELIST)
+    public DisplayedVariable(string codeName, string realName, string val/*, DisplayType displayType = DisplayType.MOLECULELIST*/)
     {
         _updated = true;
         _codeName = codeName;
         _realName = realName;
         _val = val;
-        _displayType = displayType;
+        //_displayType = displayType;
     }
     
-    public DisplayedMolecule(string codeName, string realName, float val, DisplayType displayType = DisplayType.MOLECULELIST) : this(codeName, realName, val.ToString(), displayType)
+    public DisplayedVariable(string codeName, string realName, float val/*,DisplayType displayType = DisplayType.MOLECULELIST*/) : this(codeName, realName, val.ToString()/*, displayType*/)
     {
     }
     
@@ -80,6 +83,7 @@ public class DisplayedMolecule
     
     public void OnLanguageChanged()
     {
-        _realName = GameplayNames.getMoleculeRealName(_codeName);
+        _realName = GameplayNames.getVariableRealName(_codeName);
     }
 }
+

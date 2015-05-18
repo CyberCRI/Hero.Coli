@@ -16,7 +16,12 @@ public class GameplayNames
 
   public static string getDeviceRealName(string code)
   {
-    return Localization.Localize("DEVICE."+code);
+  return Localization.Localize("DEVICE."+code);
+  }
+
+  public static string getVariableRealName(string code)
+  {
+      return Localization.Localize("VAR."+code);
   }
 
     //TODO check use

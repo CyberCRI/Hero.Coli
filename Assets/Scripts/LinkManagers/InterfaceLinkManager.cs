@@ -39,6 +39,8 @@ public class InterfaceLinkManager : MonoBehaviour {
   public UISprite selectedControlTypeSprite;
   public GameObject modalBackground;
   public GameObject genericModalWindow;
+  public VectrosityWholeCellPanel vWCPanel;
+  public GraphVariableList gvList;
 
     public LoggerLabel loggerGUIComponent;
 

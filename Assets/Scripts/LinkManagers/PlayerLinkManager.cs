@@ -34,6 +34,10 @@ public class PlayerLinkManager : MonoBehaviour {
     cellControl.relativeWASDButton.cellControl = cellControl;
     cellControl.rightClickToMoveButton.cellControl = cellControl;
 
+    //Whole Cell graphs
+    WholeCell wholeCell = perso.GetComponent<WholeCell>();
+    interfaceLinkManager.vWCPanel.wholeCell = wholeCell;
+    interfaceLinkManager.gvList.wholeCell = wholeCell;
 
 		//Hero connections
 		hero.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
