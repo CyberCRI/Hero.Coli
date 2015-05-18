@@ -19,12 +19,12 @@ public class WholeCell : MonoBehaviour {
     public List<WholeCellVariable> _variables = new List<WholeCellVariable>();
 
     void Start() {
-        r = new WholeCellVariable("ribosomes", 0);
-        e_t = new WholeCellVariable("t enzymes", 0);
-        e_m = new WholeCellVariable("m enzymes", 0);
-        q = new WholeCellVariable("hk proteins", 0);
-        s_i = new WholeCellVariable("internal nutrient", 0);
-        a = new WholeCellVariable("ATP", 0);
+        r = new WholeCellVariable("r", "ribosomes", 0);
+        e_t = new WholeCellVariable("e_t", "t enzymes", 0);
+        e_m = new WholeCellVariable("e_m", "m enzymes", 0);
+        q = new WholeCellVariable("q", "hk proteins", 0);
+        s_i = new WholeCellVariable("s_i", "internal nutrient", 0);
+        a = new WholeCellVariable("a", "ATP", 0);
 
         _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a};
     }
@@ -34,11 +34,13 @@ public class WholeCell : MonoBehaviour {
 }
 
 public class WholeCellVariable{
-    public string _name;
+    public string _codeName;
+    public string _realName;
     public float _value;
 
-    public WholeCellVariable(string name, float value){
-        _name = name;
+    public WholeCellVariable(string codeName, string realName, float value){
+        _codeName = codeName;
+        _realName = realName;
         _value = value;
     }
 }

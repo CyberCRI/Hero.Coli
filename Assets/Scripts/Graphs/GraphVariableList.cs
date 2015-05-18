@@ -308,13 +308,12 @@ public class GraphVariableList : MonoBehaviour {
 
     resetVariableList();
 
-		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
-		foreach(System.Object variable in molecules) {
-      Molecule castMolecule = (Molecule)variable;
-      string realName = castMolecule.getRealName();
-      string codeName = castMolecule.getName();
-			float concentration = castMolecule.getConcentration();
-      if(displayAll || (0 != concentration))
+    List<WholeCellVariable> variables = wholeCell._variables;
+		foreach(WholeCellVariable variable in variables) {
+      string realName = variable._realName;
+      string codeName = variable._codeName;
+			float value = variable._value;
+      if(displayAll || (0 != value))
       {
         DisplayedVariable found = LinkedListExtensions.Find(
                     _displayedVariables
@@ -324,28 +323,13 @@ public class GraphVariableList : MonoBehaviour {
                     );
         if(null != found)
         {
-          found.update(concentration);
+          found.update(value);
         }
         else
         //variable is not displayed yet
         {
-          DisplayedVariable created = new DisplayedVariable(codeName, realName, concentration, DisplayedVariable.DisplayType.MOLECULELIST);
-
-          //search if variable should be displayed in a Device/variable component
-          List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == codeName);
-          if(containers.Count != 0)
-          {                        
-            created.setDisplayType(DisplayedVariable.DisplayType.DEVICEMOLECULELIST);
-            foreach(EquipedDisplayedDeviceWithMolecules container in containers)
-            {
-              container.addDisplayedMolecule(created);
-            }
-          }
-          else
-          {
-            _displayedListVariablesCount++;
-          }
-          //anyway add it to variable list
+          DisplayedVariable created = new DisplayedVariable(codeName, realName, value);
+          _displayedListVariablesCount++;
           _displayedVariables.AddLast(created);
         }
       }
@@ -357,18 +341,15 @@ public class GraphVariableList : MonoBehaviour {
        || previousListedCount != _displayedListVariablesCount)
     {
       //rearrange devices
-      positionDeviceAndMoleculeComponents();
+      //positionDeviceAndMoleculeComponents();
     }
 		
 		string namesToDisplay = "";
     string valuesToDisplay = "";
 
 		foreach(DisplayedVariable variable in _displayedVariables) {
-      if(variable.getDisplayType() == DisplayedVariable.DisplayType.MOLECULELIST)
-      {
-          namesToDisplay+=variable.getRealName()+":\n";
-          valuesToDisplay+=variable.getVal()+"\n";
-      }
+      namesToDisplay+=variable.getRealName()+":\n";
+      valuesToDisplay+=variable.getVal()+"\n";
 		}
 		if(!string.IsNullOrEmpty(namesToDisplay)) {
 			namesToDisplay.Remove(namesToDisplay.Length-1, 1);
