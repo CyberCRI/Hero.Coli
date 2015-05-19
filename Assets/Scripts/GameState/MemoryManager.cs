@@ -55,6 +55,7 @@ public class MemoryManager : MonoBehaviour {
     private void sendStartEvent()
     {
         MemoryManager.get ();
+        sendToWebPage();
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
@@ -76,6 +77,13 @@ public class MemoryManager : MonoBehaviour {
 
     public void sendEvent(string eventCode)
     {
+        //TODO test on build type:
+        // if webplayer, then use Application.ExternalCall("rmConnect", json);
+        // else if standalone, then use WWW
+        // else ... ?
+
+        Application.ExternalCall("rmConnect", json);
+
         string pID = null;
         bool tryGetPID = tryGetData(_playerDataKey, out pID);
         if(tryGetPID && !string.IsNullOrEmpty(pID))
@@ -95,9 +103,10 @@ public class MemoryManager : MonoBehaviour {
         sendEvent(completedEventType);
     }
 
-    public void sendToWebPage(string msg)
+    public static void connect()
     {
-        Application.ExternalCall("DebugFromWebPlayerToBrowser", msg);
+        string json = "{\"gameVersionId\": "+gameVersion+"}";
+        Application.ExternalCall("rmConnect", json);
     }
 
     private void initializeIfNecessary(bool onlyIfEmpty = true)
@@ -203,7 +212,7 @@ public class MemoryManager : MonoBehaviour {
     private string redMetricsURL = "https://api.redmetrics.io/v1/";
     private string redMetricsEvent = "event";
     private string redMetricsPlayer = "player";
-    private string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
+    private static string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     private string playerID = "\"b5ab445a-56c9-4c5b-a6d0-86e8a286cd81\"";
     
     private string createPlayerEventType = "newplayer";
