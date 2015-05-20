@@ -40,7 +40,7 @@ public class Equipment : DeviceContainer
     }
   }
 
-  public override AddingResult askAddDevice(Device device) {
+  public override AddingResult askAddDevice(Device device, bool reportToRedMetrics = false) {
     if(device == null)
     {
       Logger.Log("Equipment::askAddDevice device == null", Logger.Level.WARN);

@@ -167,12 +167,16 @@ public class Inventory : DeviceContainer
         }
   }
 
-  public override AddingResult askAddDevice(Device device) {
+  public override AddingResult askAddDevice(Device device, bool reportToRedMetrics = false) {
     Logger.Log("Inventory::askAddDevice",Logger.Level.TRACE);
     AddingResult addingResult = canAddDevice(device);
     if(addingResult == AddingResult.SUCCESS){
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
+
+      if(reportToRedMetrics) {
+        MemoryManager.get ().sendEvent("craft", device.getInternalName());
+      }
 
             //uncomment to save user-created devices
             //TODO FIXME uncommenting this entails bugs on loading devices from _saveFilePath

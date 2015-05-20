@@ -45,7 +45,7 @@ public abstract class DeviceContainer : MonoBehaviour {
     Logger.Log("DeviceContainer::UpdateData edited done", Logger.Level.TRACE);
   }
   
-  abstract public AddingResult askAddDevice(Device device);
+  abstract public AddingResult askAddDevice(Device device, bool reportToRedMetrics = false);
   abstract public void removeDevice(Device device);
   abstract public void removeDevices(List<Device> devices);
   abstract public void editDevice(Device device);

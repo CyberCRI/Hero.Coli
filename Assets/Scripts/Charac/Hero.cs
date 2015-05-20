@@ -190,12 +190,17 @@ public class Hero : MonoBehaviour {
  		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
 			  _isAlive = false;
-        string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
-        MemoryManager.get ().sendEvent("death","",lastCheckpointName);
+        
+        MemoryManager.get ().sendEvent("death","",getLastCheckpointName());
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
 	}
+
+    public string getLastCheckpointName() {
+        string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
+        return lastCheckpointName;
+    }
 
   void setCurrentRespawnPoint(Collider col)
   {

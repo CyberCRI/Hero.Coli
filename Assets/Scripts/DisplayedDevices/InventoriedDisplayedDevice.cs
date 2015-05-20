@@ -24,6 +24,9 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
       {
           _devicesDisplayer.askRemoveEquipedDevice(_device);
       }
+      else {
+        MemoryManager.get ().sendEvent("equip", _device.getInternalName());
+      }
 
 			//pointer Animation
 

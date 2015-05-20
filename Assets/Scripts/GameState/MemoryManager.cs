@@ -47,6 +47,7 @@ public class MemoryManager : MonoBehaviour {
         }
     }
 
+    public Hero hero;
     public string[] inputFiles;
     private Dictionary<string, string> _savedData = new Dictionary<string, string>();
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
@@ -98,7 +99,7 @@ public class MemoryManager : MonoBehaviour {
     }
 
     private IEnumerator waitAndSendStart() {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(5.0f);
         sendEvent(startEventType);
     }
 
@@ -120,6 +121,10 @@ public class MemoryManager : MonoBehaviour {
         
         if(!string.IsNullOrEmpty(section)) {
             sectionPart = ",\"section\":\""+section+"\"";
+        } else {
+            if(null != hero) {
+                sectionPart = ",\"section\":\""+hero.getLastCheckpointName()+"\"";
+            }
         }
         
         if(!string.IsNullOrEmpty(coordinates)) {
@@ -156,6 +161,7 @@ public class MemoryManager : MonoBehaviour {
     
     // see github.com/CyberCri/RedMetrics.js
     // with type -> eventCode
+    //TODO list all eventCodes in one file
     public void sendEvent(string eventCode, string customData = null, string section = null, string coordinates = null)
     {
         //TODO test on build type:

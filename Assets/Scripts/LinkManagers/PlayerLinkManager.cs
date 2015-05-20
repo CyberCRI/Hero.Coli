@@ -51,6 +51,9 @@ public class PlayerLinkManager : MonoBehaviour {
 
 
 		//Main Camera
-      guiTransitioner.mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>();
-  	}
+    guiTransitioner.mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>();
+
+    //MemoryManager reporting
+    MemoryManager.get ().hero = hero;
+  }
 }
