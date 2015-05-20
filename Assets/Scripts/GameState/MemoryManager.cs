@@ -304,7 +304,8 @@ public class MemoryManager : MonoBehaviour {
     private string redMetricsURL = "https://api.redmetrics.io/v1/";
     private string redMetricsEvent = "event";
     private string redMetricsPlayer = "player";
-    private static string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
+    //private static string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
+    private static string gameVersion = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
     private static string defaultPlayerID = "\"b5ab445a-56c9-4c5b-a6d0-86e8a286cd81\"";
     private string playerID = defaultPlayerID;
         

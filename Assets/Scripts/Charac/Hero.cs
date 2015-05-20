@@ -244,6 +244,7 @@ public class Hero : MonoBehaviour {
     {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
+      MemoryManager.get ().sendEvent("pickUp", item.getDNABit().getInternalName());
     }
     else
     {
