@@ -40,7 +40,7 @@ public class MemoryManager : MonoBehaviour {
     {
         MemoryManager.get ();
         Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
-        _instance.sendStartEvent();
+        _instance.sendStartEvent(this != _instance);
         if(this != _instance) {
             Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
             Destroy(this.gameObject);
@@ -52,7 +52,7 @@ public class MemoryManager : MonoBehaviour {
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
     private string _playerDataKey = "player";
 
-    private void sendStartEvent()
+    private void sendStartEvent(bool switched)
     {
         Logger.Log ("MemoryManager::sendStartEvent", Logger.Level.INFO);
         
@@ -61,14 +61,18 @@ public class MemoryManager : MonoBehaviour {
         // management of game start for webplayer
         connect();
 
-        string currentLevelName = "?";
-        LevelInfo levelInfo;
-        bool success = tryGetCurrentLevelInfo(out levelInfo);
-        if(success && null != levelInfo)
-        {
-            currentLevelName = levelInfo.code;
+        if(switched) {
+          string currentLevelName = "?";
+          LevelInfo levelInfo;
+          bool success = tryGetCurrentLevelInfo(out levelInfo);
+          if(success && null != levelInfo)
+          {
+              currentLevelName = levelInfo.code;
+          }
+          sendEvent(switchModeEventType, currentLevelName);
+        } else {
+            StartCoroutine(waitAndSendStart());
         }
-        sendEvent(switchModeEventType, currentLevelName);
 
         // management of game start for standalone
         /*
@@ -91,6 +95,11 @@ public class MemoryManager : MonoBehaviour {
         }
         */
 
+    }
+
+    private IEnumerator waitAndSendStart() {
+        yield return new WaitForSeconds(2.0f);
+        sendEvent(startEventType);
     }
 
     private string innerCreateJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
@@ -155,7 +164,7 @@ public class MemoryManager : MonoBehaviour {
         // else ... ?
 
         string json = createJsonForRedMetricsJS(eventCode, customData, section, coordinates);
-        Logger.Log ("MemoryManager::sendEvent will rmPostEvent json="+json, Logger.Level.ERROR);
+        Logger.Log ("MemoryManager::sendEvent will rmPostEvent json="+json, Logger.Level.INFO);
         Application.ExternalCall("rmPostEvent", json);
 
         /*
