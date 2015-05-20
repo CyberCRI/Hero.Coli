@@ -308,7 +308,9 @@ public class GraphVariableList : MonoBehaviour {
 
     resetVariableList();
 
-    List<WholeCellVariable> variables = wholeCell._variables;
+    //List<WholeCellVariable> variables = wholeCell._variables;
+    List<WholeCellVariable> variables = wholeCell._displayedVariables;
+
 		foreach(WholeCellVariable variable in variables) {
       string realName = variable._realName;
       string codeName = variable._codeName;
