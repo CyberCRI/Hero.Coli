@@ -190,7 +190,8 @@ public class Hero : MonoBehaviour {
  		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
 			  _isAlive = false;
-        MemoryManager.get ().sendEvent("death");
+        string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
+        MemoryManager.get ().sendEvent("death","",lastCheckpointName);
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
@@ -204,7 +205,10 @@ public class Hero : MonoBehaviour {
       {
           _lastCheckpoint = col.gameObject;
           duplicateCell();
-          MemoryManager.get ().sendEvent("reached:"+_lastCheckpoint.name);
+
+          //RedMetrics reporting
+          //TODO put equiped devices in customData of sendEvent
+          MemoryManager.get ().sendEvent("reached","",_lastCheckpoint.name);
       }
   }
 
