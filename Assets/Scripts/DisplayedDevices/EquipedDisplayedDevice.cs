@@ -59,9 +59,9 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
   public void askRemoveDevice()
   {        
-    //if (_devicesDisplayer.IsEquipScreen()) {
+    //if (getDevicesDisplayer().IsEquipScreen()) {
       TooltipManager.displayTooltip();
-      _devicesDisplayer.askRemoveEquipedDevice(_device);
+      getDevicesDisplayer().askRemoveEquipedDevice(_device);
     //}
   }
 
@@ -144,7 +144,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     Logger.Log("EquipedDisplayedDevice::OnHover("+isOver+") with _device="+_device, Logger.Level.INFO);
     base.OnHover(isOver);
     
-    if(null != closeButton && !_devicesDisplayer.IsEquipScreen())
+    if(null != closeButton && !getDevicesDisplayer().IsEquipScreen())
     {
       //TODO fix interaction with Update
       closeButton.gameObject.SetActive(isOver);
@@ -152,7 +152,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
   }
 
   void Update () {
-    bool newIsEquipScreen = _devicesDisplayer.IsEquipScreen();
+    bool newIsEquipScreen = getDevicesDisplayer().IsEquipScreen();
     if(null != closeButton)
     {
       if(_isEquipScreen && _isEquipScreen != newIsEquipScreen)
@@ -171,7 +171,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     _isEquipScreen = newIsEquipScreen;
 
     //no-hover version
-    //closeButton.gameObject.SetActive(_devicesDisplayer.IsEquipScreen());    
+    //closeButton.gameObject.SetActive(getDevicesDisplayer().IsEquipScreen());    
   }
 
   // Use this for initialization

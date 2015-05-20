@@ -95,7 +95,16 @@ public class DisplayedDevice : DisplayedElement {
   }
 
   public Device                       _device;
+
+  //TODO "property" it
   protected static DevicesDisplayer   _devicesDisplayer;
+  protected static DevicesDisplayer getDevicesDisplayer() {
+    if(null==_devicesDisplayer) {
+      _devicesDisplayer = DevicesDisplayer.get();
+    }
+    return _devicesDisplayer;
+  }
+
   public DevicesDisplayer.DeviceType  _deviceType;
 
 	public static DisplayedDevice Create(

@@ -17,12 +17,12 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
         return;
       }
 
-			DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
+			DeviceContainer.AddingResult addingResult = getDevicesDisplayer().askAddEquipedDevice(_device);
       Logger.Log("InventoriedDisplayedDevice::OnPress() added device result="+addingResult+", "+getDebugInfos(), Logger.Level.DEBUG);
       if(DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
          || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
       {
-          _devicesDisplayer.askRemoveEquipedDevice(_device);
+          getDevicesDisplayer().askRemoveEquipedDevice(_device);
       }
 
 			//pointer Animation

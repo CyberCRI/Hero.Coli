@@ -35,7 +35,7 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
     }
     else
     {
-      gameObject.SetActive(_devicesDisplayer.IsEquipScreen());
+      gameObject.SetActive(getDevicesDisplayer().IsEquipScreen());
     }
   }
   */

@@ -49,7 +49,15 @@ public class GUITransitioner : MonoBehaviour {
 	
 	public GameObject worldScreen;
 	public GameObject craftScreen;
-	private DevicesDisplayer _devicesDisplayer;
+    
+    //TODO "property" it
+    protected static DevicesDisplayer   _devicesDisplayer;
+    protected static DevicesDisplayer getDevicesDisplayer() {
+        if(null==_devicesDisplayer) {
+            _devicesDisplayer = DevicesDisplayer.get();
+        }
+        return _devicesDisplayer;
+    }
 
 
 	public VectrosityPanel celliaGraph;
@@ -71,7 +79,7 @@ public class GUITransitioner : MonoBehaviour {
 		SetScreen1(true);
 		
 		
-		_devicesDisplayer.UpdateScreen();
+		getDevicesDisplayer().UpdateScreen();
 		_currentScreen = GameScreen.screen1;
 		
 		_timeAtLastFrame = Time.realtimeSinceStartup;
@@ -228,7 +236,7 @@ public class GUITransitioner : MonoBehaviour {
       Logger.Log("GuiTransitioner::GoToScreen("+destination+"): error: unmanaged destination", Logger.Level.ERROR);
     }
 
-    _devicesDisplayer.UpdateScreen();
+    getDevicesDisplayer().UpdateScreen();
     TooltipManager.displayTooltip();
   }
 
