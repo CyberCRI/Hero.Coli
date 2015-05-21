@@ -37,18 +37,18 @@ public class WholeCell : MonoBehaviour {
     //ribosomes
     public WholeCellVariable mr;
     //transporter enzyme
-    public WholeCellVariable me_t;
+    public WholeCellVariable mt;
     //metabolic enzyme
-    public WholeCellVariable me_m;
+    public WholeCellVariable mm;
     //housekeeping protein
     public WholeCellVariable mq;
     
     //ribosomes
     public WholeCellVariable cr;
     //transporter enzyme
-    public WholeCellVariable ce_t;
+    public WholeCellVariable ct;
     //metabolic enzyme
-    public WholeCellVariable ce_m;
+    public WholeCellVariable cm;
     //housekeeping protein
     public WholeCellVariable cq;
 
@@ -58,7 +58,13 @@ public class WholeCell : MonoBehaviour {
     
     // computation intermediaries
     // dilution
-    private float λ = 0;
+    private float λ = 0f;
+    // translation
+    private float νr = 0f;
+    private float νt = 0f;
+    private float νm = 0f;
+    private float νq = 0f;
+
 
 
     /////////////////////////////////////////
@@ -159,18 +165,18 @@ public class WholeCell : MonoBehaviour {
         q = new WholeCellVariable("q", "hk proteins", 1);
 
         mr = new WholeCellVariable("mr", "r free mRNA", 1000, dm, ωr, θr);
-        me_t = new WholeCellVariable("me_t", "t free mRNA", 100, dm, ωt, θnr);
-        me_m = new WholeCellVariable("me_m", "m free mRNA", 10, dm, ωm, θnr);
+        mt = new WholeCellVariable("mt", "t free mRNA", 100, dm, ωt, θnr);
+        mm = new WholeCellVariable("mm", "m free mRNA", 10, dm, ωm, θnr);
         mq = new WholeCellVariable("mq", "hk free mRNA", 1, dm, ωq, θnr);
         
         cr = new WholeCellVariable("cr", "r bound mRNA", 1);
-        ce_t = new WholeCellVariable("ce_t", "t bound mRNA", 1);
-        ce_m = new WholeCellVariable("ce_m", "m bound mRNA", 1);
+        ct = new WholeCellVariable("ct", "t bound mRNA", 1);
+        cm = new WholeCellVariable("cm", "m bound mRNA", 1);
         cq = new WholeCellVariable("cq", "hk bound mRNA", 1);
 
         //TODO change word variable => species
-        _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, me_t, me_m, mq, cr, ce_t, ce_m, cq};
-        _displayedVariables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, me_t, me_m, mq, cr, ce_t, ce_m, cq};
+        _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, mt, mm, mq, cr, ct, cm, cq};
+        _displayedVariables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, mt, mm, mq, cr, ct, cm, cq};
     }
 
     void Update() {
@@ -184,10 +190,37 @@ public class WholeCell : MonoBehaviour {
         {
             //reset
             variable._derivative = 0;
+        }
+        
+        if(computeTranslation){ // translation
+            νr = getTranslationRate(cr._value, nr);
+            νt = getTranslationRate(ct._value, nt);
+            νm = getTranslationRate(cm._value, nm);
+            νq = getTranslationRate(cq._value, nq);
 
+            a._derivative -= νr*nr + νt*nt + νm*nm + νq*nq;
+
+            r._derivative   += 2*νr + νt + νm + νq;
+            e_t._derivative += νt;
+            e_m._derivative += νm;
+            q._derivative   += νq;
+            
+            mr._derivative += νr;
+            mt._derivative += νt;
+            mm._derivative += νm;
+            mq._derivative += νq;
+            
+            cr._derivative -= νr;
+            ct._derivative -= νt;
+            cm._derivative -= νm;
+            cq._derivative -= νq;
+        }
+
+        foreach(WholeCellVariable variable in _variables)
+        {
             if(computeDilution){variable._derivative += -λ*variable._value;} // dilution
             if(computeDegradation){variable._derivative += -variable._degradation*variable._value;} // degradation
-            if(computeTranslation){}// translation
+            // translation is managed before this loop
             if(computeTranscription){variable._derivative += variable.getTranscription();} // transcription
             if(computeMetabolism){}// metabolism
             if(computeRibosomeBinding){}// ribosome binding
@@ -197,18 +230,25 @@ public class WholeCell : MonoBehaviour {
             // Time.deltaTime is in seconds
             float variation = variable._derivative*elapsedMinutes;
             variable._value += variation;
+
+            if(10e-10 > variable._value) { variable._value = 0f; }
         }
     }
 
+    private float getTranslationRate(float cx, float nx)
+    {
+        return cx * γ() / nx;
+    }
+
     void updateλ() {
-        float Rt = cr._value + ce_t._value + ce_m._value + cq._value;
-        λ = γ(a._value)*Rt/M;
+        float Rt = cr._value + ct._value + cm._value + cq._value;
+        λ = γ()*Rt/M;
 
         Logger.Log("lambda="+λ, Logger.Level.ONSCREEN);
     }
 
-    private float γ(float _a){
-        return γmax*_a/(Kγ+_a);
+    private float γ(){
+        return γmax*a._value/(Kγ+a._value);
     }
 }
 
