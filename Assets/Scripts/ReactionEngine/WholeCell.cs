@@ -21,6 +21,14 @@ public class WholeCell : MonoBehaviour {
     /// variables
     /// 
 
+    
+    //external nutrient
+    public WholeCellVariable s;
+    //internal nutrient
+    public WholeCellVariable s_i;
+    //energy, i.e. ATP
+    public WholeCellVariable a;
+
     //ribosomes
     public WholeCellVariable r;
     //transporter enzyme
@@ -29,10 +37,6 @@ public class WholeCell : MonoBehaviour {
     public WholeCellVariable e_m;
     //housekeeping protein
     public WholeCellVariable q;
-    //internal nutrient
-    public WholeCellVariable s_i;
-    //energy, i.e. ATP
-    public WholeCellVariable a;
     
     //ribosomes
     public WholeCellVariable mr;
@@ -64,8 +68,9 @@ public class WholeCell : MonoBehaviour {
     private float νt = 0f;
     private float νm = 0f;
     private float νq = 0f;
-
-
+    //metabolism
+    private float vimp = 0f;
+    private float vcat = 0f;
 
     /////////////////////////////////////////
     /// parameters (unit)
@@ -73,7 +78,7 @@ public class WholeCell : MonoBehaviour {
     
     // external nutrient ([molecs])
     // chosen relative to Kt
-    private static float s = 104f;
+    private static float s0 = 104f;
     
     // mRNA-degradation rate ([min−1 ])
     private static float dm = 0.1f;
@@ -98,13 +103,13 @@ public class WholeCell : MonoBehaviour {
     private static float Kγ = 7f;
     
     // max. nutrient import rate ([min−1 ])
-    private static float vt = 726f;
+    private static float vtmax = 726f;
     
     // nutrient import threshold ([molecs])
     private static float Kt = 1000f;
     
     // max. enzymatic rate ([min−1 ])
-    private static float vm = 5800f;
+    private static float vmmax = 5800f;
     
     // enzymatic threshold ([molecs/cell])
     private static float Km = 1000f;
@@ -155,8 +160,10 @@ public class WholeCell : MonoBehaviour {
 
     void Start() {
 
-        s_i = new WholeCellVariable("s_i", "internal nutrient", 500);
-        a = new WholeCellVariable("a", "ATP", 200);
+        s = new WholeCellVariable("s", "ext. nutrient", s0);
+        s._isInternal = false;
+        s_i = new WholeCellVariable("s_i", "int. nutrient", 1);
+        a = new WholeCellVariable("a", "ATP", 1);
         WholeCellVariable.a = a;
 
         r = new WholeCellVariable("r", "ribosomes", 1);
@@ -175,8 +182,8 @@ public class WholeCell : MonoBehaviour {
         cq = new WholeCellVariable("cq", "hk bound mRNA", 1);
 
         //TODO change word variable => species
-        _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, mt, mm, mq, cr, ct, cm, cq};
-        _displayedVariables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, mt, mm, mq, cr, ct, cm, cq};
+        _variables = new List<WholeCellVariable>(){s, s_i, a, r, e_t, e_m, q, mr, mt, mm, mq, cr, ct, cm, cq};
+        _displayedVariables = new List<WholeCellVariable>(){s, s_i, a, r, e_t, e_m, q, mr, mt, mm, mq, cr, ct, cm, cq};
     }
 
     void Update() {
@@ -189,7 +196,7 @@ public class WholeCell : MonoBehaviour {
         foreach(WholeCellVariable variable in _variables)
         {
             //reset
-            variable._derivative = 0;
+            variable._derivative = 0f;
         }
         
         if(computeTranslation){ // translation
@@ -198,7 +205,7 @@ public class WholeCell : MonoBehaviour {
             νm = getTranslationRate(cm._value, nm);
             νq = getTranslationRate(cq._value, nq);
 
-            a._derivative -= νr*nr + νt*nt + νm*nm + νq*nq;
+            a._derivative += -νr*nr -νt*nt -νm*nm -νq*nq;
 
             r._derivative   += 2*νr + νt + νm + νq;
             e_t._derivative += νt;
@@ -210,19 +217,30 @@ public class WholeCell : MonoBehaviour {
             mm._derivative += νm;
             mq._derivative += νq;
             
-            cr._derivative -= νr;
-            ct._derivative -= νt;
-            cm._derivative -= νm;
-            cq._derivative -= νq;
+            cr._derivative += -νr;
+            ct._derivative += -νt;
+            cm._derivative += -νm;
+            cq._derivative += -νq;
+        }
+
+        if(computeMetabolism){ // metabolism
+            // primary, raw resource import
+            vimp = getMichaelisMentenRate(e_t._value, s._value, vtmax, Kt);
+            // primary, raw resource catabolism into secondary, refined resource
+            vcat = getMichaelisMentenRate(e_m._value, s_i._value, vmmax, Km);
+
+            s._derivative += -vimp;
+            s_i._derivative += vimp - vcat;
+            a._derivative += ns * vcat;
         }
 
         foreach(WholeCellVariable variable in _variables)
         {
-            if(computeDilution){variable._derivative += -λ*variable._value;} // dilution
+            if(computeDilution && variable._isInternal){variable._derivative += -λ*variable._value;} // dilution
             if(computeDegradation){variable._derivative += -variable._degradation*variable._value;} // degradation
             // translation is managed before this loop
             if(computeTranscription){variable._derivative += variable.getTranscription();} // transcription
-            if(computeMetabolism){}// metabolism
+            // metabolism is managed before this loop
             if(computeRibosomeBinding){}// ribosome binding
 
 
@@ -233,6 +251,16 @@ public class WholeCell : MonoBehaviour {
 
             if(10e-10 > variable._value) { variable._value = 0f; }
         }
+    }
+
+    // TODO refactor with ReactionEngine's version
+    // e is the enzyme concentration
+    // s is the substrate concentration
+    // vmax is the maximum rate
+    // _K is the reaction constant
+    private float getMichaelisMentenRate(float e, float s, float vmax, float _K)
+    {
+        return e * (vmax*s)/(_K+s);
     }
 
     private float getTranslationRate(float cx, float nx)
@@ -278,12 +306,16 @@ public class WholeCellVariable {
     // metabolism
     public float _metabolism;
 
+    // dilution, only for internal species
+    public bool _isInternal;
+
 
     //derivative, as computation intermediary
     public float _derivative;
 
 
-    public WholeCellVariable(string codeName, string realName, float value,
+    public WholeCellVariable(string codeName, string realName,
+                             float value = 0f,
                              float degradation = 0f, 
                              float omega = 0f,
                              float theta = 0f,
@@ -306,6 +338,7 @@ public class WholeCellVariable {
         _metabolism = metabolism;
 
         _derivative = 0f;
+        _isInternal = true;
     }
 
     public float getTranscription() {
