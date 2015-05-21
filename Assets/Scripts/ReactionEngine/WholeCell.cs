@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class WholeCell : MonoBehaviour {
 
+    // to control the height of the associated graph
+    public float graphHeight;
+
     // enable/disable dilution computation
     public bool computeDilution;
     // enable/disable degradation computation
@@ -89,6 +92,22 @@ public class WholeCell : MonoBehaviour {
     // external nutrient ([molecs])
     // chosen relative to Kt
     public float s0 = 104f;
+
+    //other initial conditions (arbitrary)
+    public float s_i0 = 1f;
+    public float a0 = 1f;
+    public float r0 = 100f;
+    public float e_t0 = 1f;
+    public float e_m0 = 1f;
+    public float q0 = 1f;
+    public float mr0 = 10f;
+    public float mt0 = 10f;
+    public float mm0 = 10f;
+    public float mq0 = 10f;
+    public float cr0 = 1f;
+    public float ct0 = 1f;
+    public float cm0 = 1f;
+    public float cq0 = 1f;
     
     // mRNA-degradation rate ([min−1 ])
     public float dm = 0.1f;
@@ -174,7 +193,7 @@ public class WholeCell : MonoBehaviour {
     }
 
     void OnEnable() {
-        initialize ();
+        reset ();
     }
 
     private WholeCellVariable getNewWholeCellVariable(
@@ -201,30 +220,64 @@ public class WholeCell : MonoBehaviour {
         ωt = ωe;
         ωm = ωe;
 
+        
         s = getNewWholeCellVariable("s", "ext. nutrient", s0);
         s._isInternal = false;
-        s_i = getNewWholeCellVariable("s_i", "int. nutrient", 1);
-        a = getNewWholeCellVariable("a", "ATP", 1);
+        s_i = getNewWholeCellVariable("s_i", "int. nutrient", s_i0);
+        a = getNewWholeCellVariable("a", "ATP", a0);
         WholeCellVariable.a = a;
-
-        r = getNewWholeCellVariable("r", "ribosomes", 1);
-        e_t = getNewWholeCellVariable("e_t", "t enzymes", 1);
-        e_m = getNewWholeCellVariable("e_m", "m enzymes", 1);
-        q = getNewWholeCellVariable("q", "hk proteins", 1);
-
-        mr = getNewWholeCellVariable("mr", "r free mRNA", 1000, dm, ωr, θr);
-        mt = getNewWholeCellVariable("mt", "t free mRNA", 100, dm, ωt, θnr);
-        mm = getNewWholeCellVariable("mm", "m free mRNA", 10, dm, ωm, θnr);
-        mq = getNewWholeCellVariable("mq", "hk free mRNA", 1, dm, ωq, θnr);
         
-        cr = getNewWholeCellVariable("cr", "r bound mRNA", 1);
-        ct = getNewWholeCellVariable("ct", "t bound mRNA", 1);
-        cm = getNewWholeCellVariable("cm", "m bound mRNA", 1);
-        cq = getNewWholeCellVariable("cq", "hk bound mRNA", 1);
+        r = getNewWholeCellVariable("r", "ribosomes", r0);
+        e_t = getNewWholeCellVariable("e_t", "t enzymes", e_t0);
+        e_m = getNewWholeCellVariable("e_m", "m enzymes", e_m0);
+        q = getNewWholeCellVariable("q", "hk proteins", q0);
+        
+        mr = getNewWholeCellVariable("mr", "r free mRNA", mr0, dm, ωr, θr);
+        mt = getNewWholeCellVariable("mt", "t free mRNA", mt0, dm, ωt, θnr);
+        mm = getNewWholeCellVariable("mm", "m free mRNA", mm0, dm, ωm, θnr);
+        mq = getNewWholeCellVariable("mq", "hk free mRNA", mq0, dm, ωq, θnr);
+        
+        cr = getNewWholeCellVariable("cr", "r bound mRNA", cr0);
+        ct = getNewWholeCellVariable("ct", "t bound mRNA", ct0);
+        cm = getNewWholeCellVariable("cm", "m bound mRNA", cm0);
+        cq = getNewWholeCellVariable("cq", "hk bound mRNA", cq0);
 
         //TODO change word variable => species
         _variables = new List<WholeCellVariable>(){s, s_i, a, r, e_t, e_m, q, mr, mt, mm, mq, cr, ct, cm, cq};
         _displayedVariables = new List<WholeCellVariable>(){s, s_i, a, r, e_t, e_m, q, mr, mt, mm, mq, cr, ct, cm, cq};
+    }
+
+    void reset ()
+    {
+        if(null != s) {
+        
+            nt = nx;
+            nm = nx;
+            nq = nx;
+
+            ωt = ωe;
+            ωm = ωe;
+
+            s._value = s0;
+            s_i._value = s_i0;
+            a._value = a0;
+
+            r._value = r0;
+            e_t._value = e_t0;
+            e_m._value = e_m0;
+            q._value = q0;
+              
+            mr._value = mr0;
+            mt._value = mt0;
+            mm._value = mm0;
+            mq._value = mq0;
+              
+            cr._value = cr0;
+            ct._value = ct0;
+            cm._value = cm0;
+            cq._value = cq0;
+
+        }
     }
 
     void Update() {
@@ -277,12 +330,12 @@ public class WholeCell : MonoBehaviour {
 
         if(computeRibosomeBinding){ // ribosome binding
 
-            float factor1 = kb * r._value;
+            factor1 = kb * r._value;
 
-            float sumr = factor1 * mr._value - ku * cr._value;
-            float sumt = factor1 * mt._value - ku * ct._value;
-            float summ = factor1 * mm._value - ku * cm._value;
-            float sumq = factor1 * mq._value - ku * cq._value;
+            sumr = factor1 * mr._value - ku * cr._value;
+            sumt = factor1 * mt._value - ku * ct._value;
+            summ = factor1 * mm._value - ku * cm._value;
+            sumq = factor1 * mq._value - ku * cq._value;
 
             r._derivative += -sumr -sumt -summ -sumq;
 
