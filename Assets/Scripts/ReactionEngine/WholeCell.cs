@@ -4,6 +4,19 @@ using System.Collections.Generic;
 
 public class WholeCell : MonoBehaviour {
 
+    // enable/disable dilution computation
+    public bool computeDilution;
+    // enable/disable degradation computation
+    public bool computeDegradation;
+    // enable/disable translation computation
+    public bool computeTranslation;
+    // enable/disable transcription computation
+    public bool computeTranscription;
+    // enable/disable metabolism computation
+    public bool computeMetabolism;
+    // enable/disable ribosome binding computation
+    public bool computeRibosomeBinding;
+
     //////////////////////////////////////////////////
     /// variables
     /// 
@@ -38,9 +51,14 @@ public class WholeCell : MonoBehaviour {
     public WholeCellVariable ce_m;
     //housekeeping protein
     public WholeCellVariable cq;
-    
+
     public List<WholeCellVariable> _variables = new List<WholeCellVariable>();
     public List<WholeCellVariable> _displayedVariables = new List<WholeCellVariable>();
+    
+    
+    // computation intermediaries
+    // dilution
+    private float λ = 0;
 
 
     /////////////////////////////////////////
@@ -87,16 +105,16 @@ public class WholeCell : MonoBehaviour {
     
     // max. ribosome transcription rate ([molecs/min cell])
     // Obtained by parameter optimization
-    private static float wr = 930f;
+    private static float ωr = 930f;
     
     // max. enzyme transcription rate ([molecs/min cell])
     // Obtained by parameter optimization
-    private static float wx = 4.14f;
-    private static float we = wx, wt = wx, wm = wx;
+    private static float ωe = 4.14f;
+    private static float ωt = ωe, ωm = ωe;
     
     // max. q-transcription rate ([molecs/min cell])
     // Obtained by parameter optimization
-    private static float wq = 948.93f;
+    private static float ωq = 948.93f;
     
     // ribosome transcription threshold ([molecs/cell])
     // Obtained by parameter optimization
@@ -108,11 +126,11 @@ public class WholeCell : MonoBehaviour {
     
     // q-autoinhibition threshold ([molecs/cell])
     // Obtained by parameter optimization
-    private static float Kq = 152219f;
+    public static float Kq = 152219f;
     
     // q-autoinhibition Hill coeff. (none)
     // for steep auto-inhibition
-    private static float hq = 4f;
+    public static float hq = 4f;
     
     // mRNA-ribosome binding rate ([cell/min molecs])
     // near the diffusion limit
@@ -129,58 +147,84 @@ public class WholeCell : MonoBehaviour {
     private static float kcm = 0.00599f;
 
 
-
     void Start() {
 
-        s_i = new WholeCellVariable("s_i", "internal nutrient", 500, .002f);
-        a = new WholeCellVariable("a", "ATP", 200, .001f);
+        s_i = new WholeCellVariable("s_i", "internal nutrient", 500);
+        a = new WholeCellVariable("a", "ATP", 200);
+        WholeCellVariable.a = a;
 
-        r = new WholeCellVariable("r", "ribosomes", 10000, .05f, 100);
-        e_t = new WholeCellVariable("e_t", "t enzymes", 5000, .02f, 50);
-        e_m = new WholeCellVariable("e_m", "m enzymes", 2000, .01f, 20);
-        q = new WholeCellVariable("q", "hk proteins", 1000, .005f, 10);
+        r = new WholeCellVariable("r", "ribosomes", 1);
+        e_t = new WholeCellVariable("e_t", "t enzymes", 1);
+        e_m = new WholeCellVariable("e_m", "m enzymes", 1);
+        q = new WholeCellVariable("q", "hk proteins", 1);
 
-        mr = new WholeCellVariable("r", "ribosomes", 10000, .05f);
-        me_t = new WholeCellVariable("e_t", "t enzymes", 5000, .02f);
-        me_m = new WholeCellVariable("e_m", "m enzymes", 2000, .01f);
-        mq = new WholeCellVariable("q", "hk proteins", 1000, .005f);
-
+        mr = new WholeCellVariable("mr", "r free mRNA", 1000, dm, ωr, θr);
+        me_t = new WholeCellVariable("me_t", "t free mRNA", 100, dm, ωt, θnr);
+        me_m = new WholeCellVariable("me_m", "m free mRNA", 10, dm, ωm, θnr);
+        mq = new WholeCellVariable("mq", "hk free mRNA", 1, dm, ωq, θnr);
         
-        cr = new WholeCellVariable("r", "ribosomes", 10000, .05f);
-        ce_t = new WholeCellVariable("e_t", "t enzymes", 5000, .02f);
-        ce_m = new WholeCellVariable("e_m", "m enzymes", 2000, .01f);
-        cq = new WholeCellVariable("q", "hk proteins", 1000, .005f);
+        cr = new WholeCellVariable("cr", "r bound mRNA", 1);
+        ce_t = new WholeCellVariable("ce_t", "t bound mRNA", 1);
+        ce_m = new WholeCellVariable("ce_m", "m bound mRNA", 1);
+        cq = new WholeCellVariable("cq", "hk bound mRNA", 1);
 
-        _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, me_t, me_m, mq, cr, ce_t, ce_m, cq,};
-        _displayedVariables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a};
+        //TODO change word variable => species
+        _variables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, me_t, me_m, mq, cr, ce_t, ce_m, cq};
+        _displayedVariables = new List<WholeCellVariable>(){r, e_t, e_m, q, s_i, a, mr, me_t, me_m, mq, cr, ce_t, ce_m, cq};
     }
 
     void Update() {
-      foreach(WholeCellVariable variable in _variables)
+        
+        //update of computation intermediary variables
+        updateλ();
+        float elapsedMinutes = Time.deltaTime/60f;
+        Logger.Log("dt="+elapsedMinutes+"min", Logger.Level.ONSCREEN);
+
+        foreach(WholeCellVariable variable in _variables)
         {
-            // dilution
-            variable._value = (1-variable._dilution)*variable._value;
-            // degradation
-            variable._value = (1-variable._degradation)*variable._value;
-            // transcription
-            variable._value = variable._value + variable._transcription;
-      }
+            //reset
+            variable._derivative = 0;
+
+            if(computeDilution){variable._derivative += -λ*variable._value;} // dilution
+            if(computeDegradation){variable._derivative += -variable._degradation*variable._value;} // degradation
+            if(computeTranslation){}// translation
+            if(computeTranscription){variable._derivative += variable.getTranscription();} // transcription
+            if(computeMetabolism){}// metabolism
+            if(computeRibosomeBinding){}// ribosome binding
+
+
+            // derivative is in min-1
+            // Time.deltaTime is in seconds
+            float variation = variable._derivative*elapsedMinutes;
+            variable._value += variation;
+        }
+    }
+
+    void updateλ() {
+        float Rt = cr._value + ce_t._value + ce_m._value + cq._value;
+        λ = γ(a._value)*Rt/M;
+
+        Logger.Log("lambda="+λ, Logger.Level.ONSCREEN);
+    }
+
+    private float γ(float _a){
+        return γmax*_a/(Kγ+_a);
     }
 }
 
 public class WholeCellVariable {
+    public static WholeCellVariable a;
     public string _codeName;
     public string _realName;
     public float _value;
 
-    // dilution, aka lambda (ratio per second)
-    public float _dilution;
-
     // degradation (ratio per second)
     public float _degradation;
 
-    // transcription, aka omega (amount per second)
-    public float _transcription;
+    // max. transcription rate ([molecs/min cell]), used for the computation of transcription
+    public float _ω;
+    // transcription threshold ([molecs/cell]), used for the computation of transcription
+    public float _θ;
 
     // import (amount per second)
     public float _import;
@@ -194,10 +238,15 @@ public class WholeCellVariable {
     // metabolism
     public float _metabolism;
 
-    public WholeCellVariable(string codeName, string realName, float value, 
-                             float dilution, 
+
+    //derivative, as computation intermediary
+    public float _derivative;
+
+
+    public WholeCellVariable(string codeName, string realName, float value,
                              float degradation = 0f, 
-                             float transcription = 0f,
+                             float omega = 0f,
+                             float theta = 0f,
                              float import = 0f, 
                              float binding = 0f, 
                              float translation = 0f, 
@@ -208,12 +257,29 @@ public class WholeCellVariable {
         _realName = realName;
         _value = value;
 
-        _dilution = dilution;
         _degradation = degradation;
-        _transcription = transcription;
+        _ω = omega;
+        _θ = theta;
         _import = import;
         _binding = binding;
         _translation = translation;
         _metabolism = metabolism;
+
+        _derivative = 0f;
+    }
+
+    public float getTranscription() {
+        float result = 0f;
+        if(0 != _ω) {
+            // autoinhibition
+            float _Iq = 1f;
+            if(_codeName == "q") {
+                _Iq = 1f/(1f + Mathf.Pow(_value/WholeCell.Kq,WholeCell.hq));
+            }
+
+            result = _ω*a._value*_Iq/(_θ+a._value);
+        }
+        Logger.Log("_w"+_codeName+"="+result, Logger.Level.ONSCREEN);
+        return result;
     }
 }
