@@ -73,7 +73,7 @@ public class DisplayedVariable
     
     public void update(float val)
     {
-        update(val.ToString());
+        update(string.Format("{0:e2}", val));
     }
     
     public void reset()
