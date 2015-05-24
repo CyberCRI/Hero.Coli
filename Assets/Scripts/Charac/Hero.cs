@@ -191,7 +191,7 @@ public class Hero : MonoBehaviour {
 		  {
 			  _isAlive = false;
         
-        MemoryManager.get ().sendEvent("death","",getLastCheckpointName());
+        MemoryManager.get ().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
@@ -213,7 +213,7 @@ public class Hero : MonoBehaviour {
 
           //RedMetrics reporting
           //TODO put equiped devices in customData of sendEvent
-          MemoryManager.get ().sendEvent("reached","",_lastCheckpoint.name);
+          MemoryManager.get ().sendEvent(TrackingEvent.REACH, null, _lastCheckpoint.name);
       }
   }
 
@@ -244,7 +244,7 @@ public class Hero : MonoBehaviour {
     {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
-      MemoryManager.get ().sendEvent("pickUp", item.getDNABit().getInternalName());
+      MemoryManager.get ().sendEvent(TrackingEvent.PICKUP, item.getDNABit().getInternalName());
     }
     else
     {

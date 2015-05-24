@@ -70,7 +70,7 @@ public class MemoryManager : MonoBehaviour {
           {
               currentLevelName = levelInfo.code;
           }
-          sendEvent(switchModeEventType, currentLevelName);
+          sendEvent(TrackingEvent.SWITCH, currentLevelName);
         } else {
             StartCoroutine(waitAndSendStart());
         }
@@ -89,7 +89,7 @@ public class MemoryManager : MonoBehaviour {
             {
                 currentLevelName = levelInfo.code;
             }
-            sendEvent(switchModeEventType,currentLevelName);
+            sendEvent(TrackingEvent.SWITCH,currentLevelName);
         } else {
             createPlayer (www => trackStart(www));
             //testGet (www => trackStart(www));
@@ -100,7 +100,7 @@ public class MemoryManager : MonoBehaviour {
 
     private IEnumerator waitAndSendStart() {
         yield return new WaitForSeconds(5.0f);
-        sendEvent(startEventType);
+        sendEvent(TrackingEvent.START);
     }
 
     private string innerCreateJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
@@ -161,15 +161,14 @@ public class MemoryManager : MonoBehaviour {
     
     // see github.com/CyberCri/RedMetrics.js
     // with type -> eventCode
-    //TODO list all eventCodes in one file
-    public void sendEvent(string eventCode, string customData = null, string section = null, string coordinates = null)
+    public void sendEvent(TrackingEvent trackingEvent, string customData = null, string section = null, string coordinates = null)
     {
         //TODO test on build type:
         // if webplayer, then use Application.ExternalCall("rmConnect", json);
         // else if standalone, then use WWW
         // else ... ?
 
-        string json = createJsonForRedMetricsJS(eventCode, customData, section, coordinates);
+        string json = createJsonForRedMetricsJS(trackingEvent.ToString().ToLower(), customData, section, coordinates);
         Logger.Log ("MemoryManager::sendEvent will rmPostEvent json="+json, Logger.Level.INFO);
         Application.ExternalCall("rmPostEvent", json);
 
@@ -191,7 +190,7 @@ public class MemoryManager : MonoBehaviour {
 
     public void sendCompletionEvent()
     {
-        sendEvent(completedEventType);
+        sendEvent(TrackingEvent.COMPLETE);
     }
 
     public static void connect()
@@ -302,7 +301,6 @@ public class MemoryManager : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     private string redMetricsURL = "https://api.redmetrics.io/v1/";
-    private string redMetricsEvent = "event";
     private string redMetricsPlayer = "player";
     //private static string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     private static string gameVersion = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
@@ -310,9 +308,6 @@ public class MemoryManager : MonoBehaviour {
     private string playerID = defaultPlayerID;
         
     private string createPlayerEventType = "newplayer";
-    private string startEventType = "start";
-    private string switchModeEventType = "switched:";
-    private string completedEventType = "completed";
     
     void setPlayerID (string pID)
     {
@@ -386,6 +381,6 @@ public class MemoryManager : MonoBehaviour {
         string pID = extractPID(www);
         setPlayerID(pID);
         addData(_playerDataKey, pID);
-        sendEvent(startEventType);
+        sendEvent(TrackingEvent.START);
     }
 }
