@@ -297,6 +297,7 @@ public class GameStateController : MonoBehaviour {
                         }
                     }
                     setAndSaveLevelName(destination);
+                    MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
                     restart();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))

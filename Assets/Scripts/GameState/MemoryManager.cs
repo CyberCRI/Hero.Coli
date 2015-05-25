@@ -60,9 +60,9 @@ public class MemoryManager : MonoBehaviour {
         MemoryManager.get ();
 
         // management of game start for webplayer
-        connect();
-
         if(switched) {
+            //event is sent from somewhere else
+            /*
           string currentLevelName = "?";
           LevelInfo levelInfo;
           bool success = tryGetCurrentLevelInfo(out levelInfo);
@@ -71,7 +71,9 @@ public class MemoryManager : MonoBehaviour {
               currentLevelName = levelInfo.code;
           }
           sendEvent(TrackingEvent.SWITCH, currentLevelName);
+          */
         } else {
+            connect ();
             StartCoroutine(waitAndSendStart());
         }
 
@@ -122,7 +124,7 @@ public class MemoryManager : MonoBehaviour {
         if(!string.IsNullOrEmpty(section)) {
             sectionPart = ",\"section\":\""+section+"\"";
         } else {
-            if(null != hero) {
+            if(null != hero && !string.IsNullOrEmpty(hero.getLastCheckpointName())) {
                 sectionPart = ",\"section\":\""+hero.getLastCheckpointName()+"\"";
             }
         }

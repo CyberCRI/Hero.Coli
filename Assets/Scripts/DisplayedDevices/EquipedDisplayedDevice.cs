@@ -52,17 +52,20 @@ public class EquipedDisplayedDevice : DisplayedDevice {
       {
         Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
         return;
+      }      
+            if(_devicesDisplayer.IsEquipScreen()) {
+                if(askRemoveDevice())
+                {
+                    MemoryManager.get ().sendEvent(TrackingEvent.UNEQUIP, _device.getInternalName());
+                }
+            }
       }
-      askRemoveDevice();
-	  }
   }
 
-  public void askRemoveDevice()
+  public bool askRemoveDevice()
   {        
-    //if (_devicesDisplayer.IsEquipScreen()) {
-      TooltipManager.displayTooltip();
-      _devicesDisplayer.askRemoveEquipedDevice(_device);
-    //}
+        TooltipManager.displayTooltip();
+        return _devicesDisplayer.askRemoveEquipedDevice(_device);
   }
 
   void initIfNecessary() {
