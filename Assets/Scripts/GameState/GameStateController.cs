@@ -297,6 +297,7 @@ public class GameStateController : MonoBehaviour {
                         }
                     }
                     setAndSaveLevelName(destination);
+                    MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
                     restart();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))
@@ -364,6 +365,8 @@ public class GameStateController : MonoBehaviour {
 
     public void triggerEnd(EndGameCollider egc)
     {
+        MemoryManager.get ().sendCompletionEvent();
+
         gUITransitioner.TerminateGraphs();
 
         //TODO merge fadeSprite with Modal background
@@ -371,7 +374,6 @@ public class GameStateController : MonoBehaviour {
         fadeSprite.FadeIn();
 
         StartCoroutine (waitFade (2f, egc));
-
     }
 
     private IEnumerator waitFade (float waitTime, EndGameCollider egc)

@@ -278,8 +278,9 @@ public class DevicesDisplayer : MonoBehaviour {
 
 
 
-  public void askRemoveEquipedDevice(Device device) {
+  public bool askRemoveEquipedDevice(Device device) {
     Equipment.get().removeDevice(device);
+    return true;
   }
 	
 	public void removeDevice(int deviceID) {

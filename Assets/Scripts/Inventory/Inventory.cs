@@ -29,19 +29,22 @@ public class Inventory : DeviceContainer
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  /* array of file paths from which the devices available by default from start will be loaded */
+  /* array of file paths from which the devices available by default from start will be loaded,
+   * provided that the required BioBricks are available - cf. AvailableBioBricksManager
+   */
 
   //private string[] _deviceFiles = new string[]{};
-    //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
-    private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePath };
+    private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePathRead };
 
     //old device files
   //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
-  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePath };
-  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePath };
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePathRead };
+  //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePathRead };
 	
-  private static string _saveFilePath = "Parameters/Devices/exported";
-
+  private static string _saveFilePathRead = "Parameters/Devices/exported.xml";
+  private static string _saveFilePathWrite = "Assets/Resources/"+_saveFilePathRead;
+    
   private string _genericDeviceNamePrefix = "device";
 
 	private bool _deviceAdded;
@@ -167,17 +170,21 @@ public class Inventory : DeviceContainer
         }
   }
 
-  public override AddingResult askAddDevice(Device device) {
+  public override AddingResult askAddDevice(Device device, bool reportToRedMetrics = false) {
     Logger.Log("Inventory::askAddDevice",Logger.Level.TRACE);
     AddingResult addingResult = canAddDevice(device);
     if(addingResult == AddingResult.SUCCESS){
       Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device="+device,Logger.Level.INFO);
       addDevice(device);
 
+      if(reportToRedMetrics) {
+        MemoryManager.get ().sendEvent(TrackingEvent.CRAFT, device.getInternalName());
+      }
+
             //uncomment to save user-created devices
             //TODO FIXME uncommenting this entails bugs on loading devices from _saveFilePath
       //DeviceSaver dSaver = new DeviceSaver();
-      //dSaver.saveDevicesToFile(_devices, _saveFilePath);
+      //dSaver.saveDevicesToFile(_devices, _saveFilePathWrite);
     } else {
       Logger.Log("Inventory::askAddDevice: "+addingResult+", didn't add device="+device,Logger.Level.INFO);
     }
@@ -253,8 +260,11 @@ public class Inventory : DeviceContainer
         Logger.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), "+Logger.ToString<Device>(_devices)+"), List())", Logger.Level.INFO);
         foreach(Device device in _devices)
         {
+            //ask Equipment instead
             _displayer.askRemoveEquipedDevice(device);
+            //ask Crafting instead
             _displayer.removeListedDevice(device);
+            //ok
             _displayer.removeInventoriedDevice(device);
         }
         UpdateData(new List<Device>(), _devices, new List<Device>());

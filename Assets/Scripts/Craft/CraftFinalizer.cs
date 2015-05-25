@@ -30,7 +30,7 @@ public class CraftFinalizer : MonoBehaviour {
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
     Device currentDevice = _craftZoneManager.getCurrentDevice();
     if(currentDevice!=null){
-      Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice);
+      Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice, true);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
         _craftZoneManager.displayDevice();
       }
@@ -38,6 +38,8 @@ public class CraftFinalizer : MonoBehaviour {
     } else {
       Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.WARN);
     }
+
+        //TODO RedMetrics reporting
   }
 
   public void setDisplayedDevice(Device device){

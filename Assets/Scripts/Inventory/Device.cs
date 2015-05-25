@@ -13,7 +13,7 @@ public class Device: DNABit
     //TODO factorize code with ExpressionModule's
     public string displayedName { get; set; }
     private string _internalName;
-    public string getInternalName() {
+    public override string getInternalName() {
         Logger.Log("ExpressionModule::getInternalName()", Logger.Level.DEBUG);
         if(string.IsNullOrEmpty(_internalName))
         {

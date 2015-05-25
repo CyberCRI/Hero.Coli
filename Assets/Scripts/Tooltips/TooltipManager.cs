@@ -229,18 +229,20 @@ public class TooltipManager : MonoBehaviour {
     //TooltipManager.TooltipType _tooltipType;
     //string _illustration;
 
-    string root = _tooltipPrefix+coded._code.ToUpper().Replace(' ','_');
+        if(null != coded && !string.IsNullOrEmpty(coded._code)) {
+            string root = _tooltipPrefix+coded._code.ToUpper().Replace(' ','_');
 
-    coded._title = Localization.Localize(root+_titleSuffix);
-    coded._subtitle = Localization.Localize(root+_subtitleSuffix);            
-    coded._customField = localizeIfExists(root+_customFieldSuffix);
-    coded._customValue = localizeIfExists(root+_customValueSuffix);    
-    coded._length = Localization.Localize(root+_lengthSuffix);
-    coded._reference = Localization.Localize(root+_referenceSuffix);    
-    coded._energyConsumption = localizeIfExists(root+_energySuffix);
-    coded._explanation = Localization.Localize(root+_explanationSuffix);
+            coded._title = Localization.Localize(root+_titleSuffix);
+            coded._subtitle = Localization.Localize(root+_subtitleSuffix);            
+            coded._customField = localizeIfExists(root+_customFieldSuffix);
+            coded._customValue = localizeIfExists(root+_customValueSuffix);    
+            coded._length = Localization.Localize(root+_lengthSuffix);
+            coded._reference = Localization.Localize(root+_referenceSuffix);    
+            coded._energyConsumption = localizeIfExists(root+_energySuffix);
+            coded._explanation = Localization.Localize(root+_explanationSuffix);
+        }
 
-    return coded;
+        return coded;
   }
 
   private static string localizeIfExists(string code)

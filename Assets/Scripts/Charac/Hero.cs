@@ -190,10 +190,17 @@ public class Hero : MonoBehaviour {
  		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
 			  _isAlive = false;
+        
+        MemoryManager.get ().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
 	}
+
+    public string getLastCheckpointName() {
+        string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
+        return lastCheckpointName;
+    }
 
   void setCurrentRespawnPoint(Collider col)
   {
@@ -203,6 +210,10 @@ public class Hero : MonoBehaviour {
       {
           _lastCheckpoint = col.gameObject;
           duplicateCell();
+
+          //RedMetrics reporting
+          //TODO put equiped devices in customData of sendEvent
+          MemoryManager.get ().sendEvent(TrackingEvent.REACH, null, _lastCheckpoint.name);
       }
   }
 
@@ -233,6 +244,7 @@ public class Hero : MonoBehaviour {
     {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
+      MemoryManager.get ().sendEvent(TrackingEvent.PICKUP, item.getDNABit().getInternalName());
     }
     else
     {

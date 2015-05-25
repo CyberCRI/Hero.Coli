@@ -18,7 +18,10 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
   {
     if(null != device)
     {
-      device.askRemoveDevice();
+      if(device.askRemoveDevice())
+      {
+                MemoryManager.get ().sendEvent(TrackingEvent.UNEQUIP, device._device.getInternalName());
+      }
     }
     else
     {

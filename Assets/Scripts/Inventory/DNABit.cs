@@ -6,5 +6,10 @@ public class DNABit {
     {
         return "DNABit";
     }
+
+    public virtual string getInternalName ()
+    {
+        return ToString();
+    }
 };
 

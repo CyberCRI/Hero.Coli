@@ -20,6 +20,7 @@ public abstract class BioBrick: DNABit
 
   public void setName(string name) { _name = name; }
   public string getName() { return _name; }
+  public override string getInternalName () { return _name; }
   public void setSize(int size) { _size = size; }
   public int getSize() { return _size; }
   public Type getType() { return _type; }
