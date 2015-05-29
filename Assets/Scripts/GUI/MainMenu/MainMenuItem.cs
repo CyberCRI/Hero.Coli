@@ -3,7 +3,23 @@ using System.Collections;
 
 public class MainMenuItem : MonoBehaviour {
 
-    public string itemName;
+    private UILocalize _localize;
+    private string _itemName;
+    public string itemName {
+        get {
+            return _itemName;
+        }
+        set {
+            _itemName = value; 
+            _localize = null == _localize?gameObject.GetComponentInChildren<UILocalize>():_localize;
+            if(null == _localize) {
+                Logger.Log("no localize found", Logger.Level.WARN);
+            } else {
+                _localize.key = value;
+                _localize.Localize();
+            }
+        }
+    }
     public float hoverExpandingFactor = 1.2f;
     
     public void select() {
@@ -15,7 +31,7 @@ public class MainMenuItem : MonoBehaviour {
     }
 
     public virtual void click () {
-        Debug.LogWarning("clicked "+itemName);
+        Logger.Log("clicked "+itemName, Logger.Level.INFO);
     }
 
     void OnPress(bool isPressed) {
@@ -33,10 +49,10 @@ public class MainMenuItem : MonoBehaviour {
     private void initializeNameFromLocalizationKey() {
         UILocalize localize = gameObject.GetComponentInChildren<UILocalize>();
         if(null == localize) {
-            Debug.LogWarning("no localize found");
+            Logger.Log("no localize found", Logger.Level.WARN);
             itemName = gameObject.name;
         } else {
-            itemName = gameObject.GetComponentInChildren<UILocalize>().key;
+            itemName = localize.key;
         }
     }
 

@@ -12,7 +12,7 @@ public enum GameState{
 }
 
 //specifies which game state is to be set after a computation
-//Start, Game, Pause, End: GameState states as targets
+//Start, MainMenu, Game, Pause, End: GameState states as targets
 //NoTarget: no specific state is required
 //NoAction: no computation happened and therefore no state change shoud happen
 public enum GameStateTarget{
@@ -102,6 +102,7 @@ public class GameStateController : MonoBehaviour {
     public MainMenuManager mainMenu;
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
+    private GameState _stateBeforeMainMenu = GameState.Game;
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
@@ -228,7 +229,9 @@ public class GameStateController : MonoBehaviour {
             //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
             //so that those modals don't appear on every level
             //Also: put specific interface elements into level scene and then move them to interface hierarchy
-            
+
+            mainMenu.setResume ();
+
             //TODO remove this temporary hack
             if(getCurrentLevel() == _adventureLevel1)
             {
@@ -247,10 +250,17 @@ public class GameStateController : MonoBehaviour {
             _isGameLevelPrepared = true;
         }
     }
+    
+    
+    private void goToMainMenuFrom(GameState state) {
+        _stateBeforeMainMenu = state;
+        mainMenu.open ();
+        changeState(GameState.MainMenu);
+    }
 
-    public void resumeGame() {
-        MainMenuManager.get ().close();
-        changeState(GameState.Game);
+    public void leaveMainMenu() {
+        mainMenu.close ();
+        changeState(_stateBeforeMainMenu);
     }
 	
 	// Update is called once per frame
@@ -280,8 +290,8 @@ public class GameStateController : MonoBehaviour {
             case GameState.Start:
 
                 endWindow.SetActive(false);
-                mainMenu.open();
-                changeState(GameState.MainMenu);
+                mainMenu.setNewGame();
+                goToMainMenuFrom(GameState.Game);
                 break;
 
             case GameState.MainMenu:
@@ -291,6 +301,8 @@ public class GameStateController : MonoBehaviour {
                     mainMenu.selectNext ();
                 } else if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
                     mainMenu.getCurrentItem ().click ();
+                } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                    leaveMainMenu();
                 }
                 break;
 
@@ -299,12 +311,16 @@ public class GameStateController : MonoBehaviour {
                 prepareGameLevelIfNecessary();
 
                 //pause
-                if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
+                if (isShortcutKeyDown(_pauseKey))
                 {
                     Logger.Log("GameStateController::Update - Escape/Pause key pressed", Logger.Level.DEBUG);
                     ModalManager.setModal(pauseIndicator, false);
                     changeState(GameState.Pause);
-                } 
+                }
+                //main menu
+                else if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.Game);
+                }
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
                 else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
@@ -341,55 +357,64 @@ public class GameStateController : MonoBehaviour {
                 break;
 
             case GameState.Pause:
-                GameStateTarget newState = ModalManager.manageKeyPresses();
-                if(GameStateTarget.NoAction != newState)
-                {
-                    if(
-                        GameStateTarget.NoTarget != newState 
-                        && GameStateTarget.Pause != newState
-                        )
-                    {
-                        changeState(getStateFromTarget(newState));
-                    }
+                if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.Pause);
                 }
                 else
                 {
-                    switch(gUITransitioner._currentScreen)
-                    {
-                        case GUITransitioner.GameScreen.screen1:
-                            break;
-                        case GUITransitioner.GameScreen.screen2:
-                            if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
-                            {
-                                Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                            }
-                            else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
-                            {
-                                Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
-                            }
-                            break;
-                        case GUITransitioner.GameScreen.screen3:
-                            if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
-                            {
-                                Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-                            }
-                            else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
-                            {
-                                Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                            }
-                            break;
-                        default:
-                            Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
-                            break;
-                    }
+                  GameStateTarget newState = ModalManager.manageKeyPresses();
+                  if(GameStateTarget.NoAction != newState)
+                  {
+                      if(
+                          GameStateTarget.NoTarget != newState 
+                          && GameStateTarget.Pause != newState
+                          )
+                      {
+                          changeState(getStateFromTarget(newState));
+                      }
+                  }
+                  else
+                  {
+                      switch(gUITransitioner._currentScreen)
+                      {
+                          case GUITransitioner.GameScreen.screen1:
+                              break;
+                          case GUITransitioner.GameScreen.screen2:
+                              if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+                              {
+                                  Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                              }
+                              else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+                              {
+                                  Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                              }
+                              break;
+                          case GUITransitioner.GameScreen.screen3:
+                              if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                              {
+                                  Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+                              }
+                              else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return))
+                              {
+                                  Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                              }
+                              break;
+                          default:
+                              Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
+                              break;
+                      }
+                  }
                 }
                 break;
         	
             case GameState.End:
+                if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.End);
+                }
                 break;	
 
             default:
@@ -424,7 +449,11 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
             case GameState.Start:
                 break;
-			
+                
+            case GameState.MainMenu:
+                gUITransitioner.Pause(true);
+                break;
+                
             case GameState.Game:
                 gUITransitioner.Pause(false);
                 break;

@@ -26,6 +26,8 @@ public class MainMenuManager : MonoBehaviour
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     public MainMenuItem[] _items;
+    private static string newGameKey = "MENU.NEWGAME";
+    private static string resumeKey = "MENU.RESUME";
 
     //_currentIndex == -1 means nothing is selected
     private int _currentIndex = -1;
@@ -47,9 +49,9 @@ public class MainMenuManager : MonoBehaviour
     {
         if (isAnItemSelected ()) {
             _items [_currentIndex].deselect ();
-            Debug.LogWarning ("deselected item " + _currentIndex);
+            Logger.Log ("deselected item " + _currentIndex, Logger.Level.DEBUG);
         } else {
-            Debug.LogWarning ("couldn't deselect item " + _currentIndex);
+            Logger.Log ("couldn't deselect item " + _currentIndex, Logger.Level.WARN);
         }
         _currentIndex = -1;
     }
@@ -57,7 +59,7 @@ public class MainMenuManager : MonoBehaviour
     private bool selectItem (string name)
     {
         if (isAnItemSelected () && name == _items [_currentIndex].itemName) {
-            Debug.LogWarning ("item " + name + " was already selected");
+            Logger.Log ("item " + name + " was already selected", Logger.Level.DEBUG);
             return true;
         } else {
             for (int index = 0; index < _items.Length; index++) {
@@ -65,7 +67,7 @@ public class MainMenuManager : MonoBehaviour
                     deselect ();
                     _items [index].select ();
                     _currentIndex = index;
-                    Debug.LogWarning ("selected item " + index + " via its name '" + name + "'");
+                    Logger.Log ("selected item " + index + " via its name '" + name + "'", Logger.Level.DEBUG);
                     return true;
                 }
             }
@@ -80,7 +82,7 @@ public class MainMenuManager : MonoBehaviour
             deselect ();
             _items [normalizedIndex].select ();
             _currentIndex = normalizedIndex;
-            Debug.LogWarning ("selected item " + normalizedIndex);
+            Logger.Log ("selected item " + normalizedIndex, Logger.Level.DEBUG);
             return true;
         }
         return false;
@@ -88,20 +90,39 @@ public class MainMenuManager : MonoBehaviour
     
     public bool selectNext ()
     {
-        Debug.LogWarning ("selectNext");
+        Logger.Log ("selectNext", Logger.Level.INFO);
         return selectItem (_currentIndex + 1);
     }
 
     public bool selectPrevious ()
     {
-        Debug.LogWarning ("selectPrevious");
+        Logger.Log ("selectPrevious", Logger.Level.INFO);
         return selectItem (_currentIndex - 1);
     }
 
     public void onHover (MainMenuItem item)
     {
-        Debug.LogWarning (item.itemName + " onHover");
+        Logger.Log (item.itemName + " onHover", Logger.Level.DEBUG);
         selectItem (item.itemName);
+    }
+
+    public void replaceTextBy(string target, string replacement, string debug = "") {
+        for(int index = 0; index < _items.Length; index++) {
+            if(_items[index].itemName == target) {
+                _items[index].itemName = replacement;
+                Debug.LogError(debug+" BINGO at "+index+" with "+_items[index].itemName);
+                return;
+            }
+        }
+        Debug.LogError(debug+" FAIL");
+    }
+
+    public void setNewGame() {
+        replaceTextBy(resumeKey, newGameKey, "setNewGame");
+    }
+    
+    public void setResume() {
+        replaceTextBy(newGameKey, resumeKey, "setResume");
     }
 
     public void open() {
