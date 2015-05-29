@@ -35,6 +35,14 @@ public class MainMenuManager : MonoBehaviour
         return _currentIndex >= 0 && _currentIndex < _items.Length;
     }
 
+    public MainMenuItem getCurrentItem() {
+        if(isAnItemSelected()){
+            return _items[_currentIndex];
+        } else {
+            return null;
+        }
+    }
+
     private void deselect ()
     {
         if (isAnItemSelected ()) {
@@ -78,13 +86,13 @@ public class MainMenuManager : MonoBehaviour
         return false;
     }
     
-    private bool selectNext ()
+    public bool selectNext ()
     {
         Debug.LogWarning ("selectNext");
         return selectItem (_currentIndex + 1);
     }
 
-    private bool selectPrevious ()
+    public bool selectPrevious ()
     {
         Debug.LogWarning ("selectPrevious");
         return selectItem (_currentIndex - 1);
@@ -112,13 +120,6 @@ public class MainMenuManager : MonoBehaviour
   
     // Update is called once per frame
     void Update ()
-    {
-        if (Input.GetKeyUp (KeyCode.UpArrow)) {
-            selectPrevious ();
-        } else if (Input.GetKeyUp (KeyCode.DownArrow)) {
-            selectNext ();
-        } else if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
-            _items [_currentIndex].click ();
-        }
+       {
     }
 }

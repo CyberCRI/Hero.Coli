@@ -4,6 +4,7 @@ using System;
 
 public enum GameState{
     Start,
+    MainMenu,
     Game,
     Pause,
     End,
@@ -16,6 +17,7 @@ public enum GameState{
 //NoAction: no computation happened and therefore no state change shoud happen
 public enum GameStateTarget{
     Start,
+    MainMenu,
     Game,
     Pause,
     End,
@@ -97,8 +99,9 @@ public class GameStateController : MonoBehaviour {
     public GameObject intro, endWindow, pauseIndicator;
     public ContinueButton introContinueButton;
     public EndRestartButton endRestartButton;
+    public MainMenuManager mainMenu;
     private static int _pausesStacked = 0;
-
+    private bool _isGameLevelPrepared = false;
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
@@ -191,6 +194,9 @@ public class GameStateController : MonoBehaviour {
             case GameStateTarget.Start:
                 result = GameState.Start;
                 break;
+            case GameStateTarget.MainMenu:
+                result = GameState.MainMenu;
+                break;
             case GameStateTarget.Game:
                 result = GameState.Game;
                 break;
@@ -213,6 +219,38 @@ public class GameStateController : MonoBehaviour {
         }
 
         return result;
+    }
+
+    private void prepareGameLevelIfNecessary()
+    {
+        if(!_isGameLevelPrepared) {
+            //TODO put this code into a separate implementation of a "Level" interface
+            //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
+            //so that those modals don't appear on every level
+            //Also: put specific interface elements into level scene and then move them to interface hierarchy
+            
+            //TODO remove this temporary hack
+            if(getCurrentLevel() == _adventureLevel1)
+            {
+                fadeSprite.gameObject.SetActive(true);
+                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                changeState(GameState.Pause);
+            }
+            else if(getCurrentLevel() == _sandboxLevel1 || getCurrentLevel() == _sandboxLevel2)
+            {
+                //changeState(GameState.Game);
+            }
+            else
+            {
+                Logger.Log("GameStateController::Update unknown currentLevel="+getCurrentLevel(), Logger.Level.WARN);
+            }
+            _isGameLevelPrepared = true;
+        }
+    }
+
+    public void resumeGame() {
+        MainMenuManager.get ().close();
+        changeState(GameState.Game);
     }
 	
 	// Update is called once per frame
@@ -240,30 +278,26 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
 
             case GameState.Start:
-                //TODO put this code into a separate implementation of a "Level" interface
-                //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
-                //so that those modals don't appear on every level
-                //Also: put specific interface elements into level scene and then move them to interface hierarchy
 
-                //TODO remove this temporary hack
-                if(getCurrentLevel() == _adventureLevel1)
-                {
-                    fadeSprite.gameObject.SetActive(true);
-                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
-                }
-                else if(getCurrentLevel() == _sandboxLevel1 || getCurrentLevel() == _sandboxLevel2)
-                {
-                    changeState(GameState.Game);
-                }
-                else
-                {
-                    Logger.Log("GameStateController::Update unknown currentLevel="+getCurrentLevel(), Logger.Level.WARN);
-                }
                 endWindow.SetActive(false);
+                mainMenu.open();
+                changeState(GameState.MainMenu);
+                break;
 
+            case GameState.MainMenu:
+                if (Input.GetKeyUp (KeyCode.UpArrow)) {
+                    mainMenu.selectPrevious ();
+                } else if (Input.GetKeyUp (KeyCode.DownArrow)) {
+                    mainMenu.selectNext ();
+                } else if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
+                    mainMenu.getCurrentItem ().click ();
+                }
                 break;
 
             case GameState.Game:
+
+                prepareGameLevelIfNecessary();
+
                 //pause
                 if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
                 {
@@ -298,7 +332,7 @@ public class GameStateController : MonoBehaviour {
                     }
                     setAndSaveLevelName(destination);
                     MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
-                    restart();
+                    internalRestart();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))
                 {
@@ -429,6 +463,12 @@ public class GameStateController : MonoBehaviour {
 
     public static void restart()
     {
+        MemoryManager.get ().sendEvent(TrackingEvent.RESTART);
+        internalRestart();
+    }
+
+    private static void internalRestart()
+    {
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
         //TODO reload scene but reset all of its components without using MemoryManager
         //note: ways to transfer data from one scene to another
@@ -438,7 +478,6 @@ public class GameStateController : MonoBehaviour {
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
         Application.LoadLevel(_masterScene);
-
     }
 
     void OnDestroy() {

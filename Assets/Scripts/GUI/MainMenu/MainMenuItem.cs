@@ -14,7 +14,7 @@ public class MainMenuItem : MonoBehaviour {
         transform.localScale = new Vector3(transform.localScale.x/hoverExpandingFactor, transform.localScale.y/hoverExpandingFactor, transform.localScale.z);
     }
 
-    public virtual void click() {
+    public virtual void click () {
         Debug.LogWarning("clicked "+itemName);
     }
 

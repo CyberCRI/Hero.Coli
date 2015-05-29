@@ -40,6 +40,8 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject modalBackground;
   public GameObject genericModalWindow;
 
+    public MainMenuManager mainMenu;
+
     public LoggerLabel loggerGUIComponent;
 
 	//public Camera _uicamera;
@@ -81,7 +83,9 @@ public class InterfaceLinkManager : MonoBehaviour {
     gameStateController.endWindow = end;
     EndRestartButton erb = endRestartButton.GetComponent<EndRestartButton>();
     gameStateController.endRestartButton = erb;
+    gameStateController.mainMenu = mainMenu;
 
+    //TODO should be done in gameStateController instead
     tutorialPanels.SetActive (true);
     introduction1.SetActive(false);
     introduction2.SetActive(false);
@@ -90,6 +94,8 @@ public class InterfaceLinkManager : MonoBehaviour {
     genericModalWindow.SetActive(false);
     
     craftScreenPanel.SetActive(false);
+
+    mainMenu.open ();
     
     gameStateController.pauseIndicator = pauseIndicator;
 
