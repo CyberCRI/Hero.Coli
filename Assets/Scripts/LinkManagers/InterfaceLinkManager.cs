@@ -89,6 +89,8 @@ public class InterfaceLinkManager : MonoBehaviour {
     pauseIndicator.SetActive(false);
     genericModalWindow.SetActive(false);
     
+    craftScreenPanel.SetActive(false);
+    
     gameStateController.pauseIndicator = pauseIndicator;
 
     //initialization of intro panels
