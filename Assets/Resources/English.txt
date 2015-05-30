@@ -197,7 +197,7 @@ TUTORIAL.END.TITLE=YOU WON!
 TUTORIAL.END.EXPLANATION=Thanks for having played the game, we hope you enjoyed it.
 Dont forget to give some feedback, especially if you'd like to help and continue developing this game!
 TUTORIAL.END.SUBTITLE=You have completed the game, congratulations!
-TUTORIAL.END.BOTTOM=Try again by clicking on the button!
+TUTORIAL.END.BOTTOM=You can also try the sandbox mode to play with more BioBricks.
 
 TOOLTIP.MAIN.LENGTH=Length:
 TOOLTIP.MAIN.REFERENCE=Reference:

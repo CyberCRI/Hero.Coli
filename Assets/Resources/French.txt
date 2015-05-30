@@ -192,7 +192,7 @@ TUTORIAL.INTRODUCTION2.BOTTOM=Cliquez pour entrer dans Cellia, vous pourrez la c
 TUTORIAL.END.TITLE=VICTOIRE !
 TUTORIAL.END.EXPLANATION=Merci d'avoir joué, nous espérons que vous avez aimé ce jeu. N'oubliez pas de dire ce que vous en avez pensé, surtout si vous voulez nous aider à le développer !
 TUTORIAL.END.SUBTITLE=Vous avez fini le jeu, félicitations !
-TUTORIAL.END.BOTTOM=Recommencez en cliquant sur le bouton.
+TUTORIAL.END.BOTTOM=Vous pouvez aussi essayer le mode bac à sable pour jouer avec plus de BioBriques.
 
 TOOLTIP.MAIN.LENGTH=Longueur :
 TOOLTIP.MAIN.REFERENCE=Référence :

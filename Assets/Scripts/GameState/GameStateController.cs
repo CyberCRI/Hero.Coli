@@ -252,15 +252,19 @@ public class GameStateController : MonoBehaviour {
     }
     
     
-    private void goToMainMenuFrom(GameState state) {
+    public void goToMainMenuFrom(GameState state) {
         _stateBeforeMainMenu = state;
         mainMenu.open ();
         changeState(GameState.MainMenu);
     }
 
     public void leaveMainMenu() {
-        mainMenu.close ();
-        changeState(_stateBeforeMainMenu);
+        if(GameState.MainMenu == _stateBeforeMainMenu) {
+            GameStateController.restart ();
+        } else {
+            mainMenu.close ();
+            changeState(_stateBeforeMainMenu);
+        }
     }
 	
 	// Update is called once per frame
