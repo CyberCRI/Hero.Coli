@@ -111,18 +111,19 @@ DEVICE.REPR4=heat-sensible cI
 DEVICE.SUFLOW= (low)
 DEVICE.SUFMED= (med)
 
+INFO.GENERIC.NEXT=Next
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Continue" button, then equip the device in your Inventory.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the device in your Inventory.
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
 INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
-INFO.PICKEDUPRBS.BOTTOM=Go craft new devices in your crafting interface by clicking on the "Continue" button.
+INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
 INFO.PICKEDUPGFP.EXPLANATION=This device contains the gene controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
-INFO.PICKEDUPGFP.BOTTOM=Click on the "Continue" button and equip the device in your Inventory.
+INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
@@ -132,8 +133,6 @@ MODAL.RESTARTGAME.TITLE=RESTART GAME?
 MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?
 MODAL.FIRSTCHECKPOINT.TITLE=FIRST CHECKPOINT!
 MODAL.FIRSTCHECKPOINT.EXPLANATION=If your bacterium dies you'll restart from its last duplicate!
-MODAL.ENDRESTARTGAME.TITLE=RESTART GAME?
-MODAL.ENDRESTARTGAME.EXPLANATION=Click OK to start a new game!
 
 GUI.MEDIUMINFOSTATICINFO.LABELS=temperature:\npH:\nenergy input:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n15
@@ -198,6 +197,7 @@ TUTORIAL.END.EXPLANATION=Thanks for having played the game, we hope you enjoyed 
 Dont forget to give some feedback, especially if you'd like to help and continue developing this game!
 TUTORIAL.END.SUBTITLE=You have completed the game, congratulations!
 TUTORIAL.END.BOTTOM=You can also try the sandbox mode to play with more BioBricks.
+TUTORIAL.END.BUTTON=QUIT
 
 TOOLTIP.MAIN.LENGTH=Length:
 TOOLTIP.MAIN.REFERENCE=Reference:

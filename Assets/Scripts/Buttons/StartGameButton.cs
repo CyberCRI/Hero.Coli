@@ -4,7 +4,6 @@ using System.Collections;
 public class StartGameButton : ModalButton
 {
   
-    public GameStateController gameStateController;
     public Fade fadeSprite;
     public GameObject parentPanel;
 
@@ -16,6 +15,6 @@ public class StartGameButton : ModalButton
             //TODO manage stack of modal elements in ModalManager
             //ModalManager.unsetModal(parentPanel);
             ModalManager.unsetModal ();
-            gameStateController.tryUnlockPause ();
+            GameStateController.get ().tryUnlockPause ();
     }
 }

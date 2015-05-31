@@ -98,7 +98,7 @@ public class GameStateController : MonoBehaviour {
     public Fade fadeSprite;
     public GameObject intro, endWindow, pauseIndicator;
     public ContinueButton introContinueButton;
-    public EndRestartButton endRestartButton;
+    public EndMainMenuButton endMainMenuButton;
     public MainMenuManager mainMenu;
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
@@ -220,6 +220,13 @@ public class GameStateController : MonoBehaviour {
         }
 
         return result;
+    }
+
+    public void endGame()
+    {
+        _isGameLevelPrepared = false;
+        mainMenu.setNewGame();
+        goToMainMenuFrom(GameState.MainMenu);
     }
 
     private void prepareGameLevelIfNecessary()

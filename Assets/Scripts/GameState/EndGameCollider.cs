@@ -5,8 +5,7 @@ public class EndGameCollider : MonoBehaviour
 {
   
     public GameObject endInfoPanel, hero;
-    public EndRestartButton endInfoPanelRestartButton;
-    public GameStateController gameStateController;
+    public EndMainMenuButton endMainMenuButton;
     private bool alreadyDisplayed;
     // Use this for initialization
     void Start ()
@@ -25,7 +24,7 @@ public class EndGameCollider : MonoBehaviour
         if (alreadyDisplayed == false) {
             if (other == hero.GetComponent<Collider> ()) {
                 alreadyDisplayed = true;
-                gameStateController.triggerEnd(this);
+                GameStateController.get ().triggerEnd (this);
             }
         }
     }
@@ -33,6 +32,6 @@ public class EndGameCollider : MonoBehaviour
     public void displayEndMessage()
     {
         Logger.Log("EndGameCollider:displayEndMessage", Logger.Level.INFO);
-        ModalManager.setModal (endInfoPanel, true, endInfoPanelRestartButton.gameObject, endInfoPanelRestartButton.GetType ().AssemblyQualifiedName);
+        ModalManager.setModal (endInfoPanel, true, endMainMenuButton.gameObject, endMainMenuButton.GetType ().AssemblyQualifiedName);
     }
 }

@@ -30,7 +30,7 @@ public class InterfaceLinkManager : MonoBehaviour {
   public GameObject tutorialPanels;
 
   public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
-  public EndRestartButton endRestartButton;
+  public EndMainMenuButton endMainMenuButton;
 
   public CellControlButton absoluteWASDButton;
   public CellControlButton leftClickToMoveButton;
@@ -70,19 +70,16 @@ public class InterfaceLinkManager : MonoBehaviour {
 		guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
 		guiTransitioner.craftScreen = craftScreenPanel;
 
-		//Object with GameStateController 
     ContinueButton cb = okButton1.GetComponent<ContinueButton>();
     StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
-		cb.gameStateController = gameStateController;
-		sgb.gameStateController = gameStateController;
         
     //GameStateController
     gameStateController.intro = introduction1;
     gameStateController.introContinueButton = cb;
     gameStateController.fadeSprite = fade;
     gameStateController.endWindow = end;
-    EndRestartButton erb = endRestartButton.GetComponent<EndRestartButton>();
-    gameStateController.endRestartButton = erb;
+    EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
+    gameStateController.endMainMenuButton = emmb;
     gameStateController.mainMenu = mainMenu;
 
     //TODO should be done in gameStateController instead
