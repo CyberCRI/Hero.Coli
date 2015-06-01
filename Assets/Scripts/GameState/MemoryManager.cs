@@ -53,155 +53,6 @@ public class MemoryManager : MonoBehaviour {
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
     private string _playerDataKey = "player";
 
-    private void sendStartEvent(bool switched)
-    {
-        Logger.Log ("MemoryManager::sendStartEvent", Logger.Level.INFO);
-        
-        MemoryManager.get ();
-
-        // management of game start for webplayer
-        if(switched) {
-            //event is sent from somewhere else
-            /*
-          string currentLevelName = "?";
-          LevelInfo levelInfo;
-          bool success = tryGetCurrentLevelInfo(out levelInfo);
-          if(success && null != levelInfo)
-          {
-              currentLevelName = levelInfo.code;
-          }
-          sendEvent(TrackingEvent.SWITCH, currentLevelName);
-          */
-        } else {
-            connect ();
-            StartCoroutine(waitAndSendStart());
-        }
-
-        // management of game start for standalone
-        /*
-        string pID = null;
-        bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        if(tryGetPID && !string.IsNullOrEmpty(pID))
-        {
-            Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.INFO);
-            string currentLevelName = "?";
-            LevelInfo levelInfo;
-            bool success = tryGetCurrentLevelInfo(out levelInfo);
-            if(success && null != levelInfo)
-            {
-                currentLevelName = levelInfo.code;
-            }
-            sendEvent(TrackingEvent.SWITCH,currentLevelName);
-        } else {
-            createPlayer (www => trackStart(www));
-            //testGet (www => trackStart(www));
-        }
-        */
-
-    }
-
-    private IEnumerator waitAndSendStart() {
-        yield return new WaitForSeconds(5.0f);
-        sendEvent(TrackingEvent.START);
-    }
-
-    private string innerCreateJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
-    {
-        string eventCodePart = "", customDataPart = "", sectionPart = "", coordinatesPart = "";
-        
-        eventCodePart = "\"type\":\"";
-        if(string.IsNullOrEmpty(eventCode)) {
-            eventCodePart+="unknown";
-        } else {
-            eventCodePart+=eventCode;
-        }
-        eventCodePart+="\"";
-        
-        if(!string.IsNullOrEmpty(customData)) {
-            customDataPart = ",\"customData\":\""+customData+"\"";
-        }
-        
-        if(!string.IsNullOrEmpty(section)) {
-            sectionPart = ",\"section\":\""+section+"\"";
-        } else {
-            if(null != hero && !string.IsNullOrEmpty(hero.getLastCheckpointName())) {
-                sectionPart = ",\"section\":\""+hero.getLastCheckpointName()+"\"";
-            }
-        }
-        
-        if(!string.IsNullOrEmpty(coordinates)) {
-            coordinatesPart = ",\"coordinates\":\""+coordinates+"\"";
-        }
-        
-        return eventCodePart+customDataPart+sectionPart+coordinatesPart+"}";
-    }
-    
-    private string createJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
-    {
-        string jsonPrefix = "{\"gameVersion\":" + gameVersion + "," +
-            "\"player\":";
-        string jsonSuffix = innerCreateJsonForRedMetrics(eventCode, customData, section, coordinates);
-        
-        string pID = null;
-        bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        if(tryGetPID && !string.IsNullOrEmpty(pID))
-        {
-            Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
-
-        } else {
-            Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
-            pID = defaultPlayerID;
-        }
-        return jsonPrefix+pID+","+jsonSuffix;
-        //sendData(redMetricsEvent, ourPostData, value => wwwLogger(value, "sendEvent("+eventCode+")"));
-    }
-    
-    private string createJsonForRedMetricsJS(string eventCode, string customData, string section, string coordinates)
-    {
-        return "{"+innerCreateJsonForRedMetrics(eventCode, customData, section, coordinates);
-    }
-    
-    // see github.com/CyberCri/RedMetrics.js
-    // with type -> eventCode
-    public void sendEvent(TrackingEvent trackingEvent, string customData = null, string section = null, string coordinates = null)
-    {
-        //TODO test on build type:
-        // if webplayer, then use Application.ExternalCall("rmConnect", json);
-        // else if standalone, then use WWW
-        // else ... ?
-
-        string json = createJsonForRedMetricsJS(trackingEvent.ToString().ToLower(), customData, section, coordinates);
-        Logger.Log ("MemoryManager::sendEvent will rmPostEvent json="+json, Logger.Level.INFO);
-        Application.ExternalCall("rmPostEvent", json);
-
-        /*
-        string pID = null;
-        bool tryGetPID = tryGetData(_playerDataKey, out pID);
-        if(tryGetPID && !string.IsNullOrEmpty(pID))
-        {
-            Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
-            string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
-                "\"player\":" + playerID + "," +
-                    "\"type\":\""+eventCode+"\"}";
-            sendData(redMetricsEvent, ourPostData, value => wwwLogger(value, "sendEvent("+eventCode+")"));
-        } else {
-            Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
-        }
-        */
-    }
-
-    public void sendCompletionEvent()
-    {
-        sendEvent(TrackingEvent.COMPLETE);
-    }
-
-    public static void connect()
-    {
-        string json = "{\"gameVersionId\": "+gameVersion+"}";
-        Logger.Log ("MemoryManager::connect will rmConnect json="+json, Logger.Level.ERROR);
-        Application.ExternalCall("rmConnect", json);
-    }
-
     private void initializeIfNecessary(bool onlyIfEmpty = true)
     {
         Logger.Log("MemoryManager::initializeIfNecessary", Logger.Level.DEBUG);
@@ -384,5 +235,145 @@ public class MemoryManager : MonoBehaviour {
         setPlayerID(pID);
         addData(_playerDataKey, pID);
         sendEvent(TrackingEvent.START);
+    }
+    
+    private void sendStartEvent(bool switched)
+    {
+        Logger.Log ("MemoryManager::sendStartEvent", Logger.Level.INFO);
+        
+        MemoryManager.get ();
+        
+        // management of game start for webplayer
+        if(!switched) {
+            //switch event is sent from somewhere else
+            connect ();
+            StartCoroutine(waitAndSendStart());
+        }
+        
+        //TODO management of game start for standalone
+        //WARNING: switch event is sent from somewhere else
+        /*
+        string pID = null;
+        bool tryGetPID = tryGetData(_playerDataKey, out pID);
+        if(tryGetPID && !string.IsNullOrEmpty(pID))
+        {
+            Logger.Log ("MemoryManager::sendStartEvent player already identified - pID="+pID, Logger.Level.INFO);
+            string currentLevelName = "?";
+            LevelInfo levelInfo;
+            bool success = tryGetCurrentLevelInfo(out levelInfo);
+            if(success && null != levelInfo)
+            {
+                currentLevelName = levelInfo.code;
+            }
+            sendEvent(TrackingEvent.SWITCH,currentLevelName);
+        } else {
+            createPlayer (www => trackStart(www));
+            //testGet (www => trackStart(www));
+        }
+        */
+        
+    }
+    
+    private IEnumerator waitAndSendStart() {
+        yield return new WaitForSeconds(5.0f);
+        sendEvent(TrackingEvent.START);
+    }
+    
+    private string innerCreateJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
+    {
+        string eventCodePart = "", customDataPart = "", sectionPart = "", coordinatesPart = "";
+        
+        eventCodePart = "\"type\":\"";
+        if(string.IsNullOrEmpty(eventCode)) {
+            eventCodePart+="unknown";
+        } else {
+            eventCodePart+=eventCode;
+        }
+        eventCodePart+="\"";
+        
+        if(!string.IsNullOrEmpty(customData)) {
+            customDataPart = ",\"customData\":\""+customData+"\"";
+        }
+        
+        if(!string.IsNullOrEmpty(section)) {
+            sectionPart = ",\"section\":\""+section+"\"";
+        } else {
+            if(null != hero && !string.IsNullOrEmpty(hero.getLastCheckpointName())) {
+                sectionPart = ",\"section\":\""+hero.getLastCheckpointName()+"\"";
+            }
+        }
+        
+        if(!string.IsNullOrEmpty(coordinates)) {
+            coordinatesPart = ",\"coordinates\":\""+coordinates+"\"";
+        }
+        
+        return eventCodePart+customDataPart+sectionPart+coordinatesPart+"}";
+    }
+    
+    private string createJsonForRedMetrics(string eventCode, string customData, string section, string coordinates)
+    {
+        string jsonPrefix = "{\"gameVersion\":" + gameVersion + "," +
+            "\"player\":";
+        string jsonSuffix = innerCreateJsonForRedMetrics(eventCode, customData, section, coordinates);
+        
+        string pID = null;
+        bool tryGetPID = tryGetData(_playerDataKey, out pID);
+        if(tryGetPID && !string.IsNullOrEmpty(pID))
+        {
+            Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
+            
+        } else {
+            Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
+            pID = defaultPlayerID;
+        }
+        return jsonPrefix+pID+","+jsonSuffix;
+        //sendData(redMetricsEvent, ourPostData, value => wwwLogger(value, "sendEvent("+eventCode+")"));
+    }
+    
+    private string createJsonForRedMetricsJS(string eventCode, string customData, string section, string coordinates)
+    {
+        return "{"+innerCreateJsonForRedMetrics(eventCode, customData, section, coordinates);
+    }
+    
+    // see github.com/CyberCri/RedMetrics.js
+    // with type -> eventCode
+    public void sendEvent(TrackingEvent trackingEvent, string customData = null, string section = null, string coordinates = null)
+    {
+        //TODO test on build type:
+        // if webplayer, then use Application.ExternalCall("rmConnect", json);
+        // else if standalone, then use WWW
+        // else ... ?
+        
+        string json = createJsonForRedMetricsJS(trackingEvent.ToString().ToLower(), customData, section, coordinates);
+        Logger.Log ("MemoryManager::sendEvent will rmPostEvent json="+json, Logger.Level.INFO);
+        Application.ExternalCall("rmPostEvent", json);
+        
+        /*
+        //TODO management of game start for standalone
+        string pID = null;
+        bool tryGetPID = tryGetData(_playerDataKey, out pID);
+        if(tryGetPID && !string.IsNullOrEmpty(pID))
+        {
+            Logger.Log ("MemoryManager::sendEvent player already identified - pID="+pID, Logger.Level.INFO);
+            string ourPostData = "{\"gameVersion\":" + gameVersion + "," +
+                "\"player\":" + playerID + "," +
+                    "\"type\":\""+eventCode+"\"}";
+            sendData(redMetricsEvent, ourPostData, value => wwwLogger(value, "sendEvent("+eventCode+")"));
+        } else {
+            Logger.Log ("MemoryManager::sendEvent no registered player!", Logger.Level.ERROR);
+        }
+        */
+    }
+    
+    public void sendCompletionEvent()
+    {
+        sendEvent(TrackingEvent.COMPLETE);
+    }
+    
+    public static void connect()
+    {
+        string json = "{\"gameVersionId\": "+gameVersion+"}";
+        Logger.Log ("MemoryManager::connect will rmConnect json="+json, Logger.Level.ERROR);
+        Application.ExternalCall("rmConnect", json);
     }
 }

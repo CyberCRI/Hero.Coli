@@ -84,6 +84,9 @@ public class GameStateController : MonoBehaviour {
     }
 
     public static string _currentLevelKey = "GameStateController.currentLevel";
+    public static string _restartDirectionKey = "restartDirection";
+    public static string _goToGameCode = "goToGame";
+    //public static string _goToMenuCode = "goToMenu";
 
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
@@ -91,7 +94,6 @@ public class GameStateController : MonoBehaviour {
     public static string _pauseKey = keyPrefix+"PAUSE";
     public static string _sandboxKey = keyPrefix+"SANDBOX";
     public static string _forgetDevicesKey = keyPrefix+"FORGETDEVICES";
-
 
     private GameState _gameState;
     public GUITransitioner gUITransitioner;
@@ -266,8 +268,10 @@ public class GameStateController : MonoBehaviour {
     }
 
     public void leaveMainMenu() {
+        //restart
         if(GameState.MainMenu == _stateBeforeMainMenu) {
             GameStateController.restart ();
+        //resume or new game
         } else {
             mainMenu.close ();
             changeState(_stateBeforeMainMenu);
@@ -302,7 +306,15 @@ public class GameStateController : MonoBehaviour {
 
                 endWindow.SetActive(false);
                 mainMenu.setNewGame();
-                goToMainMenuFrom(GameState.Game);
+                string whereToGo;
+                if(MemoryManager.get ().tryGetData(_restartDirectionKey, out whereToGo)
+                   && !string.IsNullOrEmpty(whereToGo)
+                   && _goToGameCode == whereToGo)
+                {
+                    leaveMainMenu ();
+                } else {
+                    goToMainMenuFrom(GameState.Game);
+                }
                 break;
 
             case GameState.MainMenu:
@@ -350,7 +362,7 @@ public class GameStateController : MonoBehaviour {
                     Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
                     string destination = _sandboxLevel2;
                     string currentLevelCode = null;
-                    if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
+                    if(MemoryManager.get ().tryGetData(_currentLevelKey, out currentLevelCode))
                     {
                         if(destination == currentLevelCode)
                         {
@@ -517,6 +529,7 @@ public class GameStateController : MonoBehaviour {
         //other solution: fix initialization through LinkManagers
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
+        MemoryManager.get ().addOrUpdateData(_restartDirectionKey, _goToGameCode);
         Application.LoadLevel(_masterScene);
     }
 
