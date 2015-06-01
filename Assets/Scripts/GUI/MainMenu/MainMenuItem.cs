@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MainMenuItem : MonoBehaviour {
 
-    private UILocalize _localize;
+    protected UILocalize _localize;
     private string _itemName;
     public string itemName {
         get {
@@ -56,9 +56,13 @@ public class MainMenuItem : MonoBehaviour {
         }
     }
 
+  public virtual void initialize() {
+  }
+
 	// Use this for initialization
 	void Start () {
         initializeNameFromLocalizationKey();
+        initialize();
 	}
 	
 	// Update is called once per frame

@@ -360,18 +360,7 @@ public class GameStateController : MonoBehaviour {
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
                     Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
-                    string destination = _sandboxLevel2;
-                    string currentLevelCode = null;
-                    if(MemoryManager.get ().tryGetData(_currentLevelKey, out currentLevelCode))
-                    {
-                        if(destination == currentLevelCode)
-                        {
-                            destination = _adventureLevel1;
-                        }
-                    }
-                    setAndSaveLevelName(destination);
-                    MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
-                    internalRestart();
+                    goToOtherGameMode();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))
                 {
@@ -443,6 +432,23 @@ public class GameStateController : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    public void goToOtherGameMode()
+    {
+        Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
+        string destination = _sandboxLevel2;
+        string currentLevelCode = null;
+        if(MemoryManager.get ().tryGetData(_currentLevelKey, out currentLevelCode))
+        {
+            if(destination == currentLevelCode)
+            {
+                destination = _adventureLevel1;
+            }
+        }
+        setAndSaveLevelName(destination);
+        MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
+        internalRestart();
     }
 
     public void triggerEnd(EndGameCollider egc)
