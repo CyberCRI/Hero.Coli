@@ -27,8 +27,12 @@ public class PlayerLinkManager : MonoBehaviour {
     cellControl.leftClickToMoveButton = interfaceLinkManager.leftClickToMoveButton;
     cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;
     cellControl.rightClickToMoveButton = interfaceLinkManager.rightClickToMoveButton;
-    cellControl.selectedControlTypeSprite = interfaceLinkManager.selectedControlTypeSprite;
+    
+        //cellControl.selectedControlTypeSprite = interfaceLinkManager.selectedControlTypeSprite;
+        cellControl.selectedKeyboardControlTypeSprite = interfaceLinkManager.selectedKeyboardControlTypeSprite;
+        cellControl.selectedMouseControlTypeSprite = interfaceLinkManager.selectedMouseControlTypeSprite;
         
+        interfaceLinkManager.controlsArray.cellControl = cellControl;
     cellControl.absoluteWASDButton.cellControl = cellControl;
     cellControl.leftClickToMoveButton.cellControl = cellControl;
     cellControl.relativeWASDButton.cellControl = cellControl;

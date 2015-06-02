@@ -16,7 +16,8 @@ public class CellControl : MonoBehaviour{
   public CellControlButton leftClickToMoveButton;
   public CellControlButton relativeWASDButton;
   public CellControlButton rightClickToMoveButton;
-  public UISprite selectedControlTypeSprite;
+  public UISprite selectedMouseControlTypeSprite;
+  public UISprite selectedKeyboardControlTypeSprite;
 
   private bool _pause;
   private Vector3 _inputMovement;
@@ -29,15 +30,19 @@ public class CellControl : MonoBehaviour{
   private float _hitdist = 0.0f;
   private Vector3 _targetPosition;
   private bool _isFirstUpdate = false;
-    
-  private enum ControlType {
+
+  //*
+  public enum ControlType {
       RightClickToMove = 0,
       LeftClickToMove = 1,
       AbsoluteWASDAndLeftClickToMove = 2,
       AbsoluteWASD = 3,
       RelativeWASD = 4
   };
-  private ControlType _currentControlType = ControlType.AbsoluteWASDAndLeftClickToMove;
+  //*/
+  //private ControlType _currentControlType = ControlType.AbsoluteWASDAndLeftClickToMove;
+    private bool isLeftClickToMove = true;
+    private bool isAbsoluteWASD = true;
 
 
   public void Pause(bool pause)
@@ -166,6 +171,7 @@ public class CellControl : MonoBehaviour{
   }
 	
 	void Start (){
+    Debug.LogError("CellControl::Start isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
     
     gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
@@ -174,40 +180,52 @@ public class CellControl : MonoBehaviour{
     switchControlTypeToAbsoluteWASDAndLeftClickToMove();
 	}
   
-	void Update(){
+    void Update ()
+    {
 		//Keyboard controls
-		if(!_pause) {
+        if(!_pause) {
 
-      _inputMovement = Vector3.zero;
+            _inputMovement = Vector3.zero;
 
-      switch(_currentControlType) {
-        case ControlType.AbsoluteWASDAndLeftClickToMove:  
-            AbsoluteWASDUpdate();
-            if(!_isFirstUpdate) {
-                ClickToMoveUpdate(KeyCode.Mouse0);
-            } else { _isFirstUpdate = false; }
-            break;
-        case ControlType.LeftClickToMove:      
-          if(!_isFirstUpdate) {
-              ClickToMoveUpdate(KeyCode.Mouse0);
-          } else { _isFirstUpdate = false; }
-          break;
-        case ControlType.RightClickToMove:
-          ClickToMoveUpdate(KeyCode.Mouse1);
-          break;
-        case ControlType.AbsoluteWASD:
-          AbsoluteWASDUpdate();
-          break;
-        case ControlType.RelativeWASD:
-          RelativeWASDUpdate();
-          break;
+      //switch(_currentControlType) {
+        //case ControlType.AbsoluteWASDAndLeftClickToMove:  
+            if(isAbsoluteWASD && isLeftClickToMove) {
+                AbsoluteWASDUpdate();
+                if(!_isFirstUpdate) {
+                    ClickToMoveUpdate(KeyCode.Mouse0);
+                } else { _isFirstUpdate = false; }
+            } else {
+            //break;
+        //case ControlType.LeftClickToMove:      
+                if(isLeftClickToMove) {
+                    if(!_isFirstUpdate) {
+                        ClickToMoveUpdate(KeyCode.Mouse0);
+                    } else { _isFirstUpdate = false; }
+          //break;
+        //case ControlType.RightClickToMove:
+                } else {
+                    ClickToMoveUpdate(KeyCode.Mouse1);
+                    //break;
+                }
+                if(isAbsoluteWASD) {
+        //case ControlType.AbsoluteWASD:
+                    AbsoluteWASDUpdate();
+          //break;
+        //case ControlType.RelativeWASD:
+                } else {
+                    RelativeWASDUpdate();
+          //break;
+                }
+                /*
         default:
           AbsoluteWASDUpdate();
           break;
       }
-      commonUpdate();
-    }    
-  }
+      */
+                commonUpdate();
+            }
+        }    
+    }
 
   private void switchControlTypeTo(ControlType newControlType) {
     switch(newControlType) {
@@ -219,7 +237,7 @@ public class CellControl : MonoBehaviour{
         break;
       case ControlType.LeftClickToMove:
         switchControlTypeToLeftClickToMove();
-            break;
+        break;
       case ControlType.RelativeWASD:
         switchControlTypeToRelativeWASD();
         break;
@@ -230,7 +248,9 @@ public class CellControl : MonoBehaviour{
   }
     
   public void switchControlTypeToAbsoluteWASDAndLeftClickToMove() {
-    switchControlTypeTo(ControlType.AbsoluteWASDAndLeftClickToMove, absoluteWASDButton.transform.position);
+    //switchControlTypeTo(ControlType.AbsoluteWASDAndLeftClickToMove, absoluteWASDButton.transform.position);
+        switchControlTypeToLeftClickToMove();
+        switchControlTypeToAbsoluteWASD();
   }  
   public void switchControlTypeToRightClickToMove() {
     switchControlTypeTo(ControlType.RightClickToMove, rightClickToMoveButton.transform.position);
@@ -249,16 +269,60 @@ public class CellControl : MonoBehaviour{
   }
   
   private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
-    Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
+    //Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
+        Debug.LogError("before CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        if(ControlType.LeftClickToMove == newControlType) {
+            _isFirstUpdate = true;
+        }
 
-    if(ControlType.LeftClickToMove == newControlType) {
-      _isFirstUpdate = true;
-    }
+        switch(newControlType) {
+            case ControlType.AbsoluteWASDAndLeftClickToMove:
+                selectedKeyboardControlTypeSprite.transform.position = absoluteWASDButton.transform.position;
+                selectedMouseControlTypeSprite.transform.position = leftClickToMoveButton.transform.position;
+                isAbsoluteWASD = true;
+                isLeftClickToMove = true;
+                break;
+            case ControlType.AbsoluteWASD:
+                isAbsoluteWASD = true;
+                selectedKeyboardControlTypeSprite.transform.position = position;
+                break;
+            case ControlType.RelativeWASD:
+                isAbsoluteWASD = false;
+                selectedKeyboardControlTypeSprite.transform.position = position;
+                break;
+            case ControlType.LeftClickToMove:
+                isLeftClickToMove = true;
+                selectedMouseControlTypeSprite.transform.position = position;
+                break;
+            case ControlType.RightClickToMove:
+                isLeftClickToMove = false;
+                selectedMouseControlTypeSprite.transform.position = position;
+                break;
+            default:
+                break;
 
-    selectedControlTypeSprite.transform.position = position;
-    _targetPosition = transform.position;
-    _currentControlType = newControlType;
+        }
+
+        _targetPosition = transform.position;
+
+        Debug.LogError("after CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
   }
+
+    public void refreshControlType ()
+    {
+        Debug.LogError("before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        if(isLeftClickToMove){
+            switchControlTypeToLeftClickToMove ();
+        } else {
+            switchControlTypeToRightClickToMove ();
+        }
+        if(isAbsoluteWASD){
+            switchControlTypeToAbsoluteWASD ();
+        } else {
+            switchControlTypeToRelativeWASD ();
+        }
+        Debug.LogError("after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+    }
 
   void OnCollisionStay(Collision col) {
     if ((Vector3.zero != _inputMovement) && col.collider && (wallname == col.collider.name)){

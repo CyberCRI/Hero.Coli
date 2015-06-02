@@ -26,11 +26,19 @@ public class MainMenuManager : MonoBehaviour
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     public MainMenuItem[] _items;
+
+    public MainMenuItemArray mainMenuItems;
+    public MainMenuItemArray controlItems;
+
     public float verticalSpacing;
     private static string menuKeyPrefix = "MENU.";
     private static string newGameKey = menuKeyPrefix+"NEWGAME";
     private static string resumeKey = menuKeyPrefix+"RESUME";
     private static string restartKey = menuKeyPrefix+"RESTART";
+    public enum MainMenuScreen {
+        CONTROLS,
+        DEFAULT
+    }
 
     //_currentIndex == -1 means nothing is selected
     private int _currentIndex = -1;
@@ -61,6 +69,7 @@ public class MainMenuManager : MonoBehaviour
 
     private bool selectItem (string name)
     {
+        Logger.Log ("selectItem("+name+")", Logger.Level.DEBUG);
         if (isAnItemSelected () && name == _items [_currentIndex].itemName) {
             Logger.Log ("item " + name + " was already selected", Logger.Level.DEBUG);
             return true;
@@ -84,7 +93,7 @@ public class MainMenuManager : MonoBehaviour
         NONE
     }
 
-    private bool selectItem (int index, SelectionMode mode = SelectionMode.NONE)
+    private bool selectItem (int index, SelectionMode mode = SelectionMode.NEXT)
     {
         int previousIndex = index;
         int normalizedIndex;
@@ -184,8 +193,41 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void switchTo (MainMenuScreen screen) 
+    {
+        switch (screen) {
+            case MainMenuScreen.CONTROLS:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(true);
+                copyItemsFrom(controlItems);
+                selectItem(0);
+                break;
+            case MainMenuScreen.DEFAULT:
+            default:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(true);
+                controlItems.gameObject.SetActive(false);
+                copyItemsFrom(mainMenuItems);
+                selectItem(0);
+                break;
+        }
+    }
+
+    private void copyItemsFrom(MainMenuItemArray array)
+    {
+        Debug.LogError("copyItemsFrom with #items="+array._items.Length);
+        _items = new MainMenuItem[array._items.Length];
+        for(int index = 0; index < array._items.Length; index++)
+        {
+            _items[index] = array._items[index];
+        }
+        Debug.LogError("copyItemsFrom DONE");
+    }
+
     public void open() {
         this.gameObject.SetActive(true);
+        switchTo (MainMenuScreen.DEFAULT);
     }
 
     public void close() {
