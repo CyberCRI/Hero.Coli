@@ -7,6 +7,7 @@ public class ControlMainMenuItem : MainMenuItem {
     public GameObject controlIcon;
     public ControlsMainMenuItemArray controlsArray;
 
+    /*
     void Update ()
     {
         //TODO remove
@@ -14,6 +15,7 @@ public class ControlMainMenuItem : MainMenuItem {
             controlIcon.transform.position = this.gameObject.transform.position + offset;
         }
     }
+    */
 
     void OnEnable ()
     {

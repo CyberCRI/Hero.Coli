@@ -11,9 +11,13 @@ public class I18n {
 
     public static void changeLanguageTo(Language lang)
     {
-      Localization.instance.currentLanguage = lang.ToString();
+        Localization.instance.currentLanguage = lang.ToString();
 
-      CraftZoneManager.OnLanguageChanged();
-      //TooltipManager.OnLanguageChanged();
+        CraftZoneManager.OnLanguageChanged();
+        //TooltipManager.OnLanguageChanged();
+        
+        foreach(UILocalize localize in GameObject.FindObjectsOfType<UILocalize>()) {
+            localize.Localize();
+        }
     }
 }

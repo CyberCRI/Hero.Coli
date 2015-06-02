@@ -29,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
 
     public MainMenuItemArray mainMenuItems;
     public MainMenuItemArray controlItems;
+    public MainMenuItemArray languageItems;
 
     public float verticalSpacing;
     private static string menuKeyPrefix = "MENU.";
@@ -37,6 +38,7 @@ public class MainMenuManager : MonoBehaviour
     private static string restartKey = menuKeyPrefix+"RESTART";
     public enum MainMenuScreen {
         CONTROLS,
+        LANGUAGES,
         DEFAULT
     }
 
@@ -200,7 +202,16 @@ public class MainMenuManager : MonoBehaviour
                 deselect ();
                 mainMenuItems.gameObject.SetActive(false);
                 controlItems.gameObject.SetActive(true);
+                languageItems.gameObject.SetActive(false);
                 copyItemsFrom(controlItems);
+                selectItem(0);
+                break;
+            case MainMenuScreen.LANGUAGES:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(true);
+                copyItemsFrom(languageItems);
                 selectItem(0);
                 break;
             case MainMenuScreen.DEFAULT:
@@ -208,6 +219,7 @@ public class MainMenuManager : MonoBehaviour
                 deselect ();
                 mainMenuItems.gameObject.SetActive(true);
                 controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(false);
                 copyItemsFrom(mainMenuItems);
                 selectItem(0);
                 break;
