@@ -3,32 +3,61 @@ using System.Collections;
 
 public class ScaleLabelLengthMatcher : MonoBehaviour {
 
-  private int _padding = 10;
-  private UILabel _label;
-  private UISprite _bg;
-  private BoxCollider _collider;
+    private int _padding = 10;
+    private int _maxBGAccesses = 10;
+  
+    private UILabel _label;
+    private UISprite _bg;
+    private BoxCollider _collider;
+    
+    public UILabel label {
+        get{
+            if(null == _label) {
+                _label = gameObject.GetComponentInChildren<UILabel>();
+            }
+            return _label;
+        }
+    }
+    public UISprite bg {
+        get {
+            if(_maxBGAccesses > 0 && null == _bg) {
+                _maxBGAccesses--;
+                _bg = gameObject.GetComponentInChildren<UISprite>();
+            }
+            return _bg;
+        }
+    }
+    public BoxCollider boxCollider {
+        get {
+            if(null == _collider) {
+                _collider = gameObject.GetComponent<BoxCollider>();  
+            }
+            return _collider;
+        }
+    }
         
   public float factor;
   public float offset;
     
     // Use this for initialization
   void Start () {        
-    _label = gameObject.GetComponentInChildren<UILabel>();        
-    _bg = gameObject.GetComponentInChildren<UISprite>();
-    _collider = gameObject.GetComponent<BoxCollider>();	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-    _bg.transform.localScale = new Vector3(
-            _label.relativeSize.x*_label.transform.localScale.x+_padding, 
-            _bg.transform.localScale.y, 
-            _bg.transform.localScale.z);   
 
-    _collider.size = _bg.transform.localScale;
-    _collider.center = new Vector3(
-            _collider.size.x*factor+offset+Mathf.Sign(offset)*_label.transform.localScale.x, 
-            _collider.center.y,
-            _collider.center.z);
-  }
+        boxCollider.size = new Vector3(
+            label.relativeSize.x*label.transform.localScale.x+_padding, 
+            boxCollider.size.y, 
+            boxCollider.size.z);
+
+        boxCollider.center = new Vector3(
+            boxCollider.size.x*factor+offset+Mathf.Sign(offset)*label.transform.localScale.x, 
+            boxCollider.center.y,
+            boxCollider.center.z);
+
+        if(null != bg) {
+            bg.transform.localScale =  boxCollider.size;  
+        }
+    }
 }

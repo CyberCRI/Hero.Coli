@@ -3,6 +3,16 @@ using System.Collections;
 
 public class MainMenuItem : MonoBehaviour {
 
+    private bool _displayed = true;
+    public bool displayed {
+        get {
+            return _displayed;
+        }
+        set {
+            _displayed = value; 
+
+        }
+    }
     protected UILocalize _localize;
     private string _itemName;
     public string itemName {
@@ -21,6 +31,15 @@ public class MainMenuItem : MonoBehaviour {
         }
     }
     public float hoverExpandingFactor = 1.2f;
+    private UIAnchor _anchor;
+    public UIAnchor anchor {
+        get {
+            if(null == _anchor) {
+                _anchor = this.gameObject.GetComponent<UIAnchor>();
+            }
+            return _anchor;
+        }
+    }
     
     public void select() {
         transform.localScale = new Vector3(transform.localScale.x*hoverExpandingFactor, transform.localScale.y*hoverExpandingFactor, transform.localScale.z);
