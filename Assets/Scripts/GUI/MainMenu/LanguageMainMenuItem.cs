@@ -17,16 +17,7 @@ public class LanguageMainMenuItem : MainMenuItem {
         Logger.Log("clicked "+itemName, Logger.Level.INFO);
         languagesArray.selectLanguage(language);
     }
-    
-    /*
-    void Update ()
-    {
-        //TODO remove
-        if (null != languageIcon) {
-            languageIcon.transform.position = this.gameObject.transform.position + offset;
-        }
-    }
-    */
+
     public void updateSelection()
     {
         select (I18n.getCurrentLanguage()==language);

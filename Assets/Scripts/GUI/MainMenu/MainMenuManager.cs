@@ -64,7 +64,7 @@ public class MainMenuManager : MonoBehaviour
             _items [_currentIndex].deselect ();
             Logger.Log ("deselected item " + _currentIndex, Logger.Level.DEBUG);
         } else {
-            Logger.Log ("couldn't deselect item " + _currentIndex, Logger.Level.WARN);
+            Logger.Log ("no item selected: current index is " + _currentIndex, Logger.Level.WARN);
         }
         _currentIndex = -1;
     }

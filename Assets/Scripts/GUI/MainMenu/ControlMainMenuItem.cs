@@ -7,28 +7,13 @@ public class ControlMainMenuItem : MainMenuItem {
     public GameObject controlIcon;
     public ControlsMainMenuItemArray controlsArray;
 
-    /*
-    void Update ()
+    public void resetIcon(bool active)
     {
-        //TODO remove
+        string iconName = (null != controlIcon)?controlIcon.name:"(None)";
+        Debug.LogError("resetIcon("+active+") of "+gameObject.name+" with icon="+iconName);
         if (null != controlIcon) {
             controlIcon.transform.position = this.gameObject.transform.position + offset;
-        }
-    }
-    */
-
-    void OnEnable ()
-    {
-        if (null != controlIcon) {
-            controlIcon.transform.position = this.gameObject.transform.position + offset;
-            controlIcon.gameObject.SetActive(true);
-        }
-    }
-
-    void OnDisable ()
-    {
-        if (null != controlIcon) {
-            controlIcon.SetActive(false);
+            controlIcon.gameObject.SetActive(active);
         }
     }
 }

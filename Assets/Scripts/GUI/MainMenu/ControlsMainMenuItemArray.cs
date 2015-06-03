@@ -8,11 +8,33 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
     public GameObject selectedMouseControlSprite;
     public CellControl cellControl;
 
+    private void updateIconsPosition(bool active)
+    {
+        ControlMainMenuItem cmmi;
+        foreach(MainMenuItem item in _items) {
+            cmmi = item as ControlMainMenuItem;
+            if(null != cmmi) {
+                cmmi.resetIcon(active);
+            }
+        }
+    }
+
     void OnEnable ()
     {
-        Debug.LogError("Controls are visible");
-        cellControl.refreshControlType ();
+        //hide control selection sprites before moving them
+        selectedKeyboardControlSprite.SetActive(false);
+        selectedMouseControlSprite.SetActive(false);
+
+        //move control sprites
+        updateIconsPosition(true);
+
+        //show control sprites
         cellControlPanel.SetActive(true);
+
+        //select control
+        cellControl.refreshControlType ();
+
+        //show control selection sprites
         selectedKeyboardControlSprite.SetActive(true);
         selectedMouseControlSprite.SetActive(true);
     }
