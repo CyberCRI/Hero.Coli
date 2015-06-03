@@ -20,4 +20,15 @@ public class I18n {
             localize.Localize();
         }
     }
+
+    public static Language getCurrentLanguage()
+    {
+        string language = Localization.instance.currentLanguage.ToLower();
+        switch(language)
+        {
+            case "english": return Language.English;
+            case "french": return Language.French;
+            default: return Language.English;
+        }
+    }
 }
