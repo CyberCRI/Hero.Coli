@@ -7,7 +7,7 @@ public class LanguagesMainMenuItemArray : MainMenuItemArray {
 
     public void selectLanguage(I18n.Language language)
     {
-        I18n.changeLanguageTo(language);
+        MemoryManager.get ().configuration.language = language;
         LanguageMainMenuItem lmmi;
         foreach(MainMenuItem item in _items) {
             lmmi = item as LanguageMainMenuItem;

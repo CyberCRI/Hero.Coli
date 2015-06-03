@@ -28,8 +28,6 @@ public class PlayerLinkManager : MonoBehaviour {
     cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;
     cellControl.rightClickToMoveButton = interfaceLinkManager.rightClickToMoveButton;
     
-        //cellControl.selectedControlTypeSprite = interfaceLinkManager.selectedControlTypeSprite;
-        Debug.LogError("cellControl.selectedKeyboardControlTypeSprite initialized");
         cellControl.selectedKeyboardControlTypeSprite = interfaceLinkManager.selectedKeyboardControlTypeSprite;
         cellControl.selectedMouseControlTypeSprite = interfaceLinkManager.selectedMouseControlTypeSprite;
         

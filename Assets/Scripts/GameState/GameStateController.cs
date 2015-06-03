@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public enum GameState{
+public enum GameState
+{
     Start,
     MainMenu,
     Game,
@@ -15,7 +16,8 @@ public enum GameState{
 //Start, MainMenu, Game, Pause, End: GameState states as targets
 //NoTarget: no specific state is required
 //NoAction: no computation happened and therefore no state change shoud happen
-public enum GameStateTarget{
+public enum GameStateTarget
+{
     Start,
     MainMenu,
     Game,
@@ -42,52 +44,10 @@ public class GameStateController : MonoBehaviour {
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     public static string _masterScene = "Master-Demo-0.1";
-    public static string _adventureLevel1 = "World1.0";
-    public static string _sandboxLevel1 = "Sandbox-0.1";
-    public static string _sandboxLevel2 = "Sandbox-0.2";
     public static string _interfaceScene = "Interface1.0";
     public static string _bacteriumScene = "Bacterium1.0";
-    //TODO refactor use of this variable
-    //replace by:
-    //string storedLevel = null;
-    //if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
-    private string _currentLevel;
-    private void setCurrentLevel(string currentLevel, string cause = null)
-    {
-        if(!string.IsNullOrEmpty(cause))
-        {
-            Logger.Log("GameStateController::setCurrentLevel by "+cause, Logger.Level.DEBUG);
-        }
-        else
-        {
-            Logger.Log("GameStateController::setCurrentLevel", Logger.Level.DEBUG);
-        }
-        _currentLevel = currentLevel;
-    }
-    public string getCurrentLevel ()
-    {
-        Logger.Log("GameStateController::getCurrentLevel", Logger.Level.DEBUG);
-        if(null == _currentLevel)
-        {
-            string currentLevelCode = null;
-            if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
-            {
-                setCurrentLevel(currentLevelCode, "getCurrentLevel");
-            }
-            else
-            {
-                //default level
-                setAndSaveLevelName(_adventureLevel1);
-            }
-        }
-        return _currentLevel;
-    }
 
-    public static string _currentLevelKey = "GameStateController.currentLevel";
-    public static string _restartDirectionKey = "restartDirection";
-    public static string _goToGameCode = "goToGame";
-    //public static string _goToMenuCode = "goToMenu";
-
+   
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
     public static string _craftingKey = keyPrefix+"CRAFTING";
@@ -117,7 +77,6 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start", Logger.Level.INFO);
         _gameState = GameState.Start;
         resetPauseStack();
-        I18n.changeLanguageTo(I18n.Language.English);
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
@@ -127,7 +86,7 @@ public class GameStateController : MonoBehaviour {
         //take into account order of loading to know which LinkManager shall ask which one
         Application.LoadLevelAdditive(_interfaceScene);
         Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(getCurrentLevel());
+        Application.LoadLevelAdditive(MemoryManager.get ().configuration.getSceneName());
     }
     private static void resetPauseStack ()
     {
@@ -242,19 +201,17 @@ public class GameStateController : MonoBehaviour {
             mainMenu.setResume ();
 
             //TODO remove this temporary hack
-            if(getCurrentLevel() == _adventureLevel1)
-            {
-                fadeSprite.gameObject.SetActive(true);
-                ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
-                changeState(GameState.Pause);
-            }
-            else if(getCurrentLevel() == _sandboxLevel1 || getCurrentLevel() == _sandboxLevel2)
-            {
-                //changeState(GameState.Game);
-            }
-            else
-            {
-                Logger.Log("GameStateController::Update unknown currentLevel="+getCurrentLevel(), Logger.Level.WARN);
+            switch(MemoryManager.get ().configuration.getMode()) {
+                case GameConfiguration.GameMode.ADVENTURE:
+                    fadeSprite.gameObject.SetActive(true);
+                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                    changeState(GameState.Pause);
+                    break;
+                case GameConfiguration.GameMode.SANDBOX:
+                    break;
+                default:
+                    Logger.Log("GameStateController::Update unknown game mode="+MemoryManager.get ().configuration.getMode(), Logger.Level.WARN);
+                    break;
             }
             _isGameLevelPrepared = true;
         }
@@ -306,10 +263,7 @@ public class GameStateController : MonoBehaviour {
 
                 endWindow.SetActive(false);
                 mainMenu.setNewGame();
-                string whereToGo;
-                if(MemoryManager.get ().tryGetData(_restartDirectionKey, out whereToGo)
-                   && !string.IsNullOrEmpty(whereToGo)
-                   && _goToGameCode == whereToGo)
+                if(GameConfiguration.RestartBehavior.GAME == MemoryManager.get ().configuration.restartBehavior)
                 {
                     leaveMainMenu ();
                 } else {
@@ -359,7 +313,7 @@ public class GameStateController : MonoBehaviour {
                 }
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
-                    Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
+                    Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
                     goToOtherGameMode();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))
@@ -437,17 +391,13 @@ public class GameStateController : MonoBehaviour {
     public void goToOtherGameMode()
     {
         Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
-        string destination = _sandboxLevel2;
-        string currentLevelCode = null;
-        if(MemoryManager.get ().tryGetData(_currentLevelKey, out currentLevelCode))
-        {
-            if(destination == currentLevelCode)
-            {
-                destination = _adventureLevel1;
-            }
-        }
-        setAndSaveLevelName(destination);
-        MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
+        GameConfiguration.GameMap destination =
+            (MemoryManager.get ().configuration.gameMap == GameConfiguration.GameMap.ADVENTURE1) ?
+                GameConfiguration.GameMap.SANDBOX2 :
+                GameConfiguration.GameMap.ADVENTURE1;
+
+        setAndSaveLevelName(destination, "goToOtherGameMode");
+        MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination.ToString());
         internalRestart();
     }
 
@@ -501,23 +451,32 @@ public class GameStateController : MonoBehaviour {
         }
     }
 
-    public void setAndSaveLevelName(string levelName)
+    public void setAndSaveLevelName(GameConfiguration.GameMap newMap, string cause = null)
     {
-        if(_adventureLevel1 != levelName
-           && _sandboxLevel1 != levelName
-           && _sandboxLevel2 != levelName)
+        if(!string.IsNullOrEmpty(cause))
         {
-            Logger.Log("GameStateController::setAndSaveLevelName bad level name="+levelName, Logger.Level.WARN);
+            Logger.Log("GameStateController::setAndSaveLevelName by "+cause, Logger.Level.DEBUG);
         }
         else
         {
-            //saving level name into MemoryManager
-            //because GameStateController current instance will be destroyed during restart
-            //whereas MemoryManager won't
-            setCurrentLevel(levelName, "setAndSaveLevelName");
-            MemoryManager.get ().addOrUpdateData(_currentLevelKey, levelName);
+            Logger.Log("GameStateController::setAndSaveLevelName", Logger.Level.DEBUG);
         }
-    }
+
+        switch(newMap) {
+            case GameConfiguration.GameMap.ADVENTURE1:
+            case GameConfiguration.GameMap.SANDBOX1:
+            case GameConfiguration.GameMap.SANDBOX2:
+                //saving level name into MemoryManager
+                //because GameStateController current instance will be destroyed during restart
+                //whereas MemoryManager won't
+                MemoryManager.get().configuration.gameMap = newMap;
+                break;
+
+            default:
+                Logger.Log("GameStateController::setAndSaveLevelName unmanaged level="+newMap, Logger.Level.WARN);
+                break;
+        }
+    }  
 
     public static void restart()
     {
@@ -535,7 +494,8 @@ public class GameStateController : MonoBehaviour {
         //other solution: fix initialization through LinkManagers
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
-        MemoryManager.get ().addOrUpdateData(_restartDirectionKey, _goToGameCode);
+
+        MemoryManager.get ().configuration.restartBehavior = GameConfiguration.RestartBehavior.GAME;
         Application.LoadLevel(_masterScene);
     }
 

@@ -80,9 +80,9 @@ public class CraftZoneManager : MonoBehaviour {
     displayDevice();
   }
 
-  public static void OnLanguageChanged()
+  public void OnLanguageChanged()
   {
-    _instance.OnBioBricksChanged();
+    OnBioBricksChanged();
   }
 
   private static int getIndex(BioBrick brick)
@@ -220,7 +220,9 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public void displayDevice() {
-    craftFinalizer.setDisplayedDevice(_currentDevice);
+        if(null != craftFinalizer) {
+            craftFinalizer.setDisplayedDevice(_currentDevice);
+        }
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

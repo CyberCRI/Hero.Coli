@@ -14,7 +14,7 @@ public class BackToEndPanelButton : ModalButton
     public override void press ()
     {
         Logger.Log ("BackToEndPanelButton::press()", Logger.Level.INFO);
-        GameStateController gsc = GameStateController.get ();
+        //GameStateController gsc = GameStateController.get ();
         //ModalManager.setModal (gsc.endWindow, true, gsc.endRestartButton.gameObject, gsc.endRestartButton.GetType ().AssemblyQualifiedName);
     }
 }

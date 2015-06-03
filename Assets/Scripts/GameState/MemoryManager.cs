@@ -36,6 +36,17 @@ public class MemoryManager : MonoBehaviour {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    private GameConfiguration _configuration;
+    public GameConfiguration configuration {
+        get {
+            if(null == _configuration)
+            {
+                _configuration = new GameConfiguration();
+            }
+            return _configuration;
+        }
+    }
+
     void antiDuplicateInitialization()
     {
         MemoryManager.get ();
@@ -59,7 +70,7 @@ public class MemoryManager : MonoBehaviour {
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
-            GameStateController.get ().setAndSaveLevelName(GameStateController._adventureLevel1);
+            Logger.Log("MemoryManager::initializeIfNecessary initial game configuration="+configuration, Logger.Level.INFO);
         }
     }
 
@@ -127,19 +138,8 @@ public class MemoryManager : MonoBehaviour {
     public bool tryGetCurrentLevelInfo(out LevelInfo levelInfo)
     {
         Logger.Log("MemoryManager::tryGetCurrentLevelInfo", Logger.Level.DEBUG);
-        levelInfo = null;
-        string currentLevelCode;
-        if(tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
-        {
-            return _loadedLevelInfo.TryGetValue(currentLevelCode, out levelInfo);
-        }
-        else
-        {
-            //defensive code
-            GameStateController.get ().setAndSaveLevelName(GameStateController._adventureLevel1);
-
-            return false;
-        }
+        levelInfo = null;;
+        return _loadedLevelInfo.TryGetValue(MemoryManager.get ().configuration.getSceneName (), out levelInfo);
     }
 
     void OnDestroy()
