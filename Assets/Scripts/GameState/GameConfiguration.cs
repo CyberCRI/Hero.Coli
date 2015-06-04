@@ -25,43 +25,11 @@ public class GameConfiguration {
         SANDBOX
     }
 
-    private RestartBehavior _restartBehavior;
-    public RestartBehavior restartBehavior {
-        get {
-            Debug.LogError("restartBehavior accessed");
-            return _restartBehavior;
-        }
-        set {
-            _restartBehavior = value;
-            Debug.LogError("restartBehavior set to "+value);
-        }
-    }
-    
-    private GameMap _gameMap;
-    public GameMap gameMap {
-        get {
-            Debug.LogError("gameMap accessed");
-            return _gameMap;
-        }
-        set {
-            _gameMap = value;
-            Debug.LogError("gameMap set to "+value);
-        }
-    }
-
-    private I18n.Language _language;
-    public I18n.Language language {
-        get {
-            Debug.LogError("language accessed");
-            return _language;
-        }
-        set {
-            _language = value;
-            I18n.changeLanguageTo(value);
-            Debug.LogError("language set to "+value);
-        }
-    }
-
+    public RestartBehavior restartBehavior;
+    public GameMap gameMap;
+    public I18n.Language language;    
+    public bool isAbsoluteWASD;
+    public bool isLeftClickToMove;
 
     public GameConfiguration()
     {
@@ -69,6 +37,8 @@ public class GameConfiguration {
         restartBehavior = RestartBehavior.MAINMENU;
         gameMap = GameMap.ADVENTURE1;
         language = I18n.Language.English;
+        isAbsoluteWASD = true;
+        isLeftClickToMove = true;
     }
 
     public GameMode getMode() {

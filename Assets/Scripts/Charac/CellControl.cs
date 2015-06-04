@@ -3,6 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CellControl : MonoBehaviour{
+    
+    
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "Perso";
+    private static CellControl _instance;
+    public static CellControl get() {
+        if (_instance == null)
+        {
+            Logger.Log("CellControl::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find(gameObjectName).GetComponent<CellControl>();
+            if(null != _instance)
+            {
+                _instance.initializeIfNecessary();
+            }
+            else
+            {
+                Logger.Log("CellControl::get couldn't find game object", Logger.Level.ERROR);
+            }
+        }
+        return _instance;
+    }
+    void Awake()
+    {
+        Logger.Log("CellControl::Awake", Logger.Level.INFO);
+        CellControl.get();
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 	public float baseMoveSpeed;
 	public float rotationSpeed;
@@ -30,18 +59,39 @@ public class CellControl : MonoBehaviour{
   private Vector3 _targetPosition;
   private bool _isFirstUpdate = false;
 
-  //*
   public enum ControlType {
       RightClickToMove = 0,
       LeftClickToMove = 1,
       AbsoluteWASD = 2,
       RelativeWASD = 3
   };
-  //*/
-  //private ControlType _currentControlType = ControlType.AbsoluteWASDAndLeftClickToMove;
-    private bool isLeftClickToMove = true;
-    private bool isAbsoluteWASD = true;
 
+    private bool _isLeftClickToMove;
+    private bool isLeftClickToMove {
+        get {
+            return _isLeftClickToMove;
+        }
+        set {
+            _isLeftClickToMove = value;
+            MemoryManager.get().configuration.isLeftClickToMove = value;
+        }
+    }
+    private bool _isAbsoluteWASD;
+    private bool isAbsoluteWASD {
+        get {
+            return _isAbsoluteWASD;
+        }
+        set {
+            _isAbsoluteWASD = value;
+            MemoryManager.get().configuration.isAbsoluteWASD = value;
+        }
+    }
+
+    private void initializeIfNecessary()
+    {
+        _isAbsoluteWASD = MemoryManager.get ().configuration.isAbsoluteWASD;
+        _isLeftClickToMove = MemoryManager.get ().configuration.isLeftClickToMove;
+    }
 
   public void Pause(bool pause)
   {

@@ -13,6 +13,8 @@ public class I18n {
     {
         Localization.instance.currentLanguage = lang.ToString();
 
+        MemoryManager.get ().configuration.language = lang;
+
         CraftZoneManager.get ().OnLanguageChanged();
         //TooltipManager.OnLanguageChanged();
         
