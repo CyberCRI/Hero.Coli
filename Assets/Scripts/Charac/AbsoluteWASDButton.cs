@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AbsoluteWASDButton : CellControlButton {
+public class AbsoluteWASDButton : MonoBehaviour {
     
   private void OnPress(bool isPressed)
   {
-    if(isPressed && cellControl) {
+    if(isPressed) {
       Logger.Log("AbsoluteWASDButton::OnPress()", Logger.Level.INFO);
-      cellControl.switchControlTypeToAbsoluteWASD();
+      ControlsMainMenuItemArray.get ().switchControlTypeToAbsoluteWASD();
     }
   }
 }

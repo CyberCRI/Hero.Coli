@@ -279,7 +279,7 @@ public class GameStateController : MonoBehaviour {
                 } else if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
                     mainMenu.getCurrentItem ().click ();
                 } else if (Input.GetKeyDown(KeyCode.Escape)) {
-                    leaveMainMenu();
+                    mainMenu.escape();
                 }
                 break;
 

@@ -1,7 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ControlsMainMenuItemArray : MainMenuItemArray {
+public class ControlsMainMenuItemArray : MainMenuItemArray {    
+    
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "ControlsItems";
+    private static ControlsMainMenuItemArray _instance;
+    public static ControlsMainMenuItemArray get() {
+        if(_instance == null) {
+            Logger.Log("ControlsMainMenuItemArray::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find(gameObjectName).GetComponent<ControlsMainMenuItemArray>();
+        }
+        return _instance;
+    }
+    void Awake()
+    {
+        Logger.Log("ControlsMainMenuItemArray::Awake", Logger.Level.DEBUG);
+        _instance = this;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
     public GameObject cellControlPanel;
     public GameObject selectedKeyboardControlSprite;

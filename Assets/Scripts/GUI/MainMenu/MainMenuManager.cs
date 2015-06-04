@@ -237,6 +237,31 @@ public class MainMenuManager : MonoBehaviour
         Debug.LogError("copyItemsFrom DONE");
     }
 
+    public bool escape() {
+        Logger.Log("MainMenuManager::escape", Logger.Level.DEBUG);
+        BackMainMenuItem bmmi;
+        ResumeMainMenuItem rmmi;
+        foreach(MainMenuItem item in _items) {
+            bmmi = item as BackMainMenuItem;
+            if(null != bmmi) {
+                bmmi.click ();
+                return true;
+            } else {
+                rmmi = item as ResumeMainMenuItem;
+                if(null != rmmi) {
+                    if(resumeKey == rmmi.itemName) {
+                        rmmi.click ();
+                        return true;
+                    } else {                        
+                        return false;
+                    }
+                }
+            }
+        }
+        GameStateController.get ().leaveMainMenu();
+        return true;
+    }
+
     public void open() {
         this.gameObject.SetActive(true);
         switchTo (MainMenuScreen.DEFAULT);

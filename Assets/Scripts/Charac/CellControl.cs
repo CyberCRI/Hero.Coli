@@ -41,10 +41,10 @@ public class CellControl : MonoBehaviour{
   public float currentMoveSpeed;
   public string wallname;
 
-  public CellControlButton absoluteWASDButton;
-  public CellControlButton leftClickToMoveButton;
-  public CellControlButton relativeWASDButton;
-  public CellControlButton rightClickToMoveButton;
+  public AbsoluteWASDButton absoluteWASDButton;
+  public LeftClickToMoveButton leftClickToMoveButton;
+  public RelativeWASDButton relativeWASDButton;
+  public RightClickToMoveButton rightClickToMoveButton;
   public UISprite selectedMouseControlTypeSprite;
   public UISprite selectedKeyboardControlTypeSprite;
 
@@ -72,6 +72,7 @@ public class CellControl : MonoBehaviour{
             return _isLeftClickToMove;
         }
         set {
+            Debug.LogError("isLeftClickToMove is set to "+value);
             _isLeftClickToMove = value;
             MemoryManager.get().configuration.isLeftClickToMove = value;
         }
@@ -82,6 +83,7 @@ public class CellControl : MonoBehaviour{
             return _isAbsoluteWASD;
         }
         set {
+            Debug.LogError("isAbsoluteWASD is set to "+value);
             _isAbsoluteWASD = value;
             MemoryManager.get().configuration.isAbsoluteWASD = value;
         }
@@ -217,14 +219,23 @@ public class CellControl : MonoBehaviour{
   }
 	
 	void Start (){
-    Debug.LogError("CellControl::Start isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Debug.LogError("CellControl::Start isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        CellControl.get ();
+        
+        gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
+
+        _targetPosition = transform.position;
     
-    gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
-
-    _targetPosition = transform.position;
-
-        switchControlTypeToAbsoluteWASD();
-        switchControlTypeToLeftClickToMove();
+        if(isAbsoluteWASD) {
+            switchControlTypeToAbsoluteWASD();
+        } else {
+            switchControlTypeToRelativeWASD();
+        }
+        if(isLeftClickToMove) {
+            switchControlTypeToLeftClickToMove();
+        } else {
+            switchControlTypeToRightClickToMove();
+        }
 	}
   
     void Update ()

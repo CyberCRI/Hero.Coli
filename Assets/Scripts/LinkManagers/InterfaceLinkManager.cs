@@ -33,10 +33,10 @@ public class InterfaceLinkManager : MonoBehaviour {
   public EndMainMenuButton endMainMenuButton;
 
   public ControlsMainMenuItemArray controlsArray;
-  public CellControlButton absoluteWASDButton;
-  public CellControlButton leftClickToMoveButton;
-  public CellControlButton relativeWASDButton;
-  public CellControlButton rightClickToMoveButton;
+  public AbsoluteWASDButton absoluteWASDButton;
+  public LeftClickToMoveButton leftClickToMoveButton;
+  public RelativeWASDButton relativeWASDButton;
+  public RightClickToMoveButton rightClickToMoveButton;
   public UISprite selectedKeyboardControlTypeSprite;
   public UISprite selectedMouseControlTypeSprite;
   public GameObject modalBackground;
