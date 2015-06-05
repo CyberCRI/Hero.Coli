@@ -217,7 +217,10 @@ public class GameStateController : MonoBehaviour {
             _isGameLevelPrepared = true;
         }
     }
-    
+
+    public void goToMainMenu() {
+        goToMainMenuFrom(_gameState);
+    }
     
     public void goToMainMenuFrom(GameState state) {
         _stateBeforeMainMenu = state;
