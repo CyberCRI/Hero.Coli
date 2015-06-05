@@ -185,6 +185,7 @@ public class GameStateController : MonoBehaviour {
 
     public void endGame()
     {
+        Debug.LogError("endGame");
         _isGameLevelPrepared = false;
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
@@ -363,7 +364,7 @@ public class GameStateController : MonoBehaviour {
                                   Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
                                   gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                               }
-                              else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return))
+                              else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter))
                               {
                                   Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
                                   gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
@@ -477,6 +478,10 @@ public class GameStateController : MonoBehaviour {
                 break;
         }
     }  
+
+    public GameState getState() {
+        return _gameState;
+    }
 
     public static void restart()
     {

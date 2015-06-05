@@ -168,6 +168,7 @@ public class InfoWindowManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Escape)
            || Input.GetKeyDown(KeyCode.Space)
            || Input.GetKeyDown(KeyCode.Return)
+           || Input.GetKeyUp (KeyCode.KeypadEnter)
           )
         {
             Logger.Log("InfoWindowManager::manageKeyPresses() - key pressed", Logger.Level.DEBUG);

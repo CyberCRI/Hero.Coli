@@ -150,11 +150,11 @@ public class MainMenuManager : MonoBehaviour
         for(int index = 0; index < _items.Length; index++) {
             if(_items[index].itemName == target) {
                 _items[index].itemName = replacement;
-                Debug.LogError(debug+" BINGO at "+index+" with "+_items[index].itemName);
+                Debug.LogError(debug+" BINGO at "+index+" with "+_items[index].itemName+" with target="+target+" and replacement="+replacement);
                 return;
             }
         }
-        Debug.LogError(debug+" FAIL");
+        Debug.LogError(debug+" FAIL with target="+target+" and replacement="+replacement);
     }
 
     public void setNewGame() {
