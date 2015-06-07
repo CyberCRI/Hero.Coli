@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LeftClickToMoveButton : CellControlButton {
+public class LeftClickToMoveButton : MonoBehaviour {
     
   private void OnPress(bool isPressed)
   {
-    if(isPressed && cellControl) {
+    if(isPressed) {
       Logger.Log("LeftClickToMoveButton::OnPress()", Logger.Level.INFO);
-      cellControl.switchControlTypeToLeftClickToMove();
+      ControlsMainMenuItemArray.get ().switchControlTypeToLeftClickToMove();
     }
   }
 }

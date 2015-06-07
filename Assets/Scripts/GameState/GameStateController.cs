@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public enum GameState{
+public enum GameState
+{
     Start,
+    MainMenu,
     Game,
     Pause,
     End,
@@ -11,11 +13,13 @@ public enum GameState{
 }
 
 //specifies which game state is to be set after a computation
-//Start, Game, Pause, End: GameState states as targets
+//Start, MainMenu, Game, Pause, End: GameState states as targets
 //NoTarget: no specific state is required
 //NoAction: no computation happened and therefore no state change shoud happen
-public enum GameStateTarget{
+public enum GameStateTarget
+{
     Start,
+    MainMenu,
     Game,
     Pause,
     End,
@@ -40,49 +44,10 @@ public class GameStateController : MonoBehaviour {
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     public static string _masterScene = "Master-Demo-0.1";
-    public static string _adventureLevel1 = "World1.0";
-    public static string _sandboxLevel1 = "Sandbox-0.1";
-    public static string _sandboxLevel2 = "Sandbox-0.2";
     public static string _interfaceScene = "Interface1.0";
     public static string _bacteriumScene = "Bacterium1.0";
-    //TODO refactor use of this variable
-    //replace by:
-    //string storedLevel = null;
-    //if(MemoryManager.get ().tryGetData(_currentLevelKey, out storedLevel))
-    private string _currentLevel;
-    private void setCurrentLevel(string currentLevel, string cause = null)
-    {
-        if(!string.IsNullOrEmpty(cause))
-        {
-            Logger.Log("GameStateController::setCurrentLevel by "+cause, Logger.Level.DEBUG);
-        }
-        else
-        {
-            Logger.Log("GameStateController::setCurrentLevel", Logger.Level.DEBUG);
-        }
-        _currentLevel = currentLevel;
-    }
-    public string getCurrentLevel ()
-    {
-        Logger.Log("GameStateController::getCurrentLevel", Logger.Level.DEBUG);
-        if(null == _currentLevel)
-        {
-            string currentLevelCode = null;
-            if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
-            {
-                setCurrentLevel(currentLevelCode, "getCurrentLevel");
-            }
-            else
-            {
-                //default level
-                setAndSaveLevelName(_adventureLevel1);
-            }
-        }
-        return _currentLevel;
-    }
 
-    public static string _currentLevelKey = "GameStateController.currentLevel";
-
+   
     public static string keyPrefix = "KEY.";
     public static string _inventoryKey = keyPrefix+"INVENTORY";
     public static string _craftingKey = keyPrefix+"CRAFTING";
@@ -90,15 +55,16 @@ public class GameStateController : MonoBehaviour {
     public static string _sandboxKey = keyPrefix+"SANDBOX";
     public static string _forgetDevicesKey = keyPrefix+"FORGETDEVICES";
 
-
     private GameState _gameState;
     public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
     public GameObject intro, endWindow, pauseIndicator;
     public ContinueButton introContinueButton;
-    public EndRestartButton endRestartButton;
+    public EndMainMenuButton endMainMenuButton;
+    public MainMenuManager mainMenu;
     private static int _pausesStacked = 0;
-
+    private bool _isGameLevelPrepared = false;
+    private GameState _stateBeforeMainMenu = GameState.Game;
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
@@ -111,7 +77,6 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start", Logger.Level.INFO);
         _gameState = GameState.Start;
         resetPauseStack();
-        I18n.changeLanguageTo(I18n.Language.English);
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
@@ -121,7 +86,7 @@ public class GameStateController : MonoBehaviour {
         //take into account order of loading to know which LinkManager shall ask which one
         Application.LoadLevelAdditive(_interfaceScene);
         Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(getCurrentLevel());
+        Application.LoadLevelAdditive(MemoryManager.get ().configuration.getSceneName());
     }
     private static void resetPauseStack ()
     {
@@ -191,6 +156,9 @@ public class GameStateController : MonoBehaviour {
             case GameStateTarget.Start:
                 result = GameState.Start;
                 break;
+            case GameStateTarget.MainMenu:
+                result = GameState.MainMenu;
+                break;
             case GameStateTarget.Game:
                 result = GameState.Game;
                 break;
@@ -213,6 +181,62 @@ public class GameStateController : MonoBehaviour {
         }
 
         return result;
+    }
+
+    public void endGame()
+    {
+        Debug.LogError("endGame");
+        _isGameLevelPrepared = false;
+        mainMenu.setNewGame();
+        goToMainMenuFrom(GameState.MainMenu);
+    }
+
+    private void prepareGameLevelIfNecessary()
+    {
+        if(!_isGameLevelPrepared) {
+            //TODO put this code into a separate implementation of a "Level" interface
+            //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
+            //so that those modals don't appear on every level
+            //Also: put specific interface elements into level scene and then move them to interface hierarchy
+
+            mainMenu.setResume ();
+
+            //TODO remove this temporary hack
+            switch(MemoryManager.get ().configuration.getMode()) {
+                case GameConfiguration.GameMode.ADVENTURE:
+                    fadeSprite.gameObject.SetActive(true);
+                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                    changeState(GameState.Pause);
+                    break;
+                case GameConfiguration.GameMode.SANDBOX:
+                    break;
+                default:
+                    Logger.Log("GameStateController::Update unknown game mode="+MemoryManager.get ().configuration.getMode(), Logger.Level.WARN);
+                    break;
+            }
+            _isGameLevelPrepared = true;
+        }
+    }
+
+    public void goToMainMenu() {
+        goToMainMenuFrom(_gameState);
+    }
+    
+    public void goToMainMenuFrom(GameState state) {
+        _stateBeforeMainMenu = state;
+        mainMenu.open ();
+        changeState(GameState.MainMenu);
+    }
+
+    public void leaveMainMenu() {
+        //restart
+        if(GameState.MainMenu == _stateBeforeMainMenu) {
+            GameStateController.restart ();
+        //resume or new game
+        } else {
+            mainMenu.close ();
+            changeState(_stateBeforeMainMenu);
+        }
     }
 	
 	// Update is called once per frame
@@ -240,37 +264,44 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
 
             case GameState.Start:
-                //TODO put this code into a separate implementation of a "Level" interface
-                //with methods such as "OnStartState", "OnGameState(bool isPause)" and so on
-                //so that those modals don't appear on every level
-                //Also: put specific interface elements into level scene and then move them to interface hierarchy
 
-                //TODO remove this temporary hack
-                if(getCurrentLevel() == _adventureLevel1)
-                {
-                    fadeSprite.gameObject.SetActive(true);
-                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
-                }
-                else if(getCurrentLevel() == _sandboxLevel1 || getCurrentLevel() == _sandboxLevel2)
-                {
-                    changeState(GameState.Game);
-                }
-                else
-                {
-                    Logger.Log("GameStateController::Update unknown currentLevel="+getCurrentLevel(), Logger.Level.WARN);
-                }
                 endWindow.SetActive(false);
+                mainMenu.setNewGame();
+                if(GameConfiguration.RestartBehavior.GAME == MemoryManager.get ().configuration.restartBehavior)
+                {
+                    leaveMainMenu ();
+                } else {
+                    goToMainMenuFrom(GameState.Game);
+                }
+                break;
 
+            case GameState.MainMenu:
+                if (Input.GetKeyUp (KeyCode.UpArrow)) {
+                    mainMenu.selectPrevious ();
+                } else if (Input.GetKeyUp (KeyCode.DownArrow)) {
+                    mainMenu.selectNext ();
+                } else if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
+                    mainMenu.getCurrentItem ().click ();
+                } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                    mainMenu.escape();
+                }
                 break;
 
             case GameState.Game:
+
+                prepareGameLevelIfNecessary();
+
                 //pause
-                if (Input.GetKeyDown(KeyCode.Escape) || isShortcutKeyDown(_pauseKey))
+                if (isShortcutKeyDown(_pauseKey))
                 {
                     Logger.Log("GameStateController::Update - Escape/Pause key pressed", Logger.Level.DEBUG);
                     ModalManager.setModal(pauseIndicator, false);
                     changeState(GameState.Pause);
-                } 
+                }
+                //main menu
+                else if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.Game);
+                }
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
                 else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
@@ -286,19 +317,8 @@ public class GameStateController : MonoBehaviour {
                 }
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
-                    Logger.Log("GameStateController::Update sandbox key pressed from level="+getCurrentLevel(), Logger.Level.INFO);
-                    string destination = _sandboxLevel2;
-                    string currentLevelCode = null;
-                    if(MemoryManager.get ().tryGetData(GameStateController._currentLevelKey, out currentLevelCode))
-                    {
-                        if(destination == currentLevelCode)
-                        {
-                            destination = _adventureLevel1;
-                        }
-                    }
-                    setAndSaveLevelName(destination);
-                    MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination);
-                    restart();
+                    Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
+                    goToOtherGameMode();
                 }
                 else if(isShortcutKeyDown(_forgetDevicesKey))
                 {
@@ -307,60 +327,82 @@ public class GameStateController : MonoBehaviour {
                 break;
 
             case GameState.Pause:
-                GameStateTarget newState = ModalManager.manageKeyPresses();
-                if(GameStateTarget.NoAction != newState)
-                {
-                    if(
-                        GameStateTarget.NoTarget != newState 
-                        && GameStateTarget.Pause != newState
-                        )
-                    {
-                        changeState(getStateFromTarget(newState));
-                    }
+                if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.Pause);
                 }
                 else
                 {
-                    switch(gUITransitioner._currentScreen)
-                    {
-                        case GUITransitioner.GameScreen.screen1:
-                            break;
-                        case GUITransitioner.GameScreen.screen2:
-                            if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
-                            {
-                                Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                            }
-                            else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
-                            {
-                                Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
-                            }
-                            break;
-                        case GUITransitioner.GameScreen.screen3:
-                            if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
-                            {
-                                Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-                            }
-                            else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
-                            {
-                                Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
-                                gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                            }
-                            break;
-                        default:
-                            Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
-                            break;
-                    }
+                  GameStateTarget newState = ModalManager.manageKeyPresses();
+                  if(GameStateTarget.NoAction != newState)
+                  {
+                      if(
+                          GameStateTarget.NoTarget != newState 
+                          && GameStateTarget.Pause != newState
+                          )
+                      {
+                          changeState(getStateFromTarget(newState));
+                      }
+                  }
+                  else
+                  {
+                      switch(gUITransitioner._currentScreen)
+                      {
+                          case GUITransitioner.GameScreen.screen1:
+                              break;
+                          case GUITransitioner.GameScreen.screen2:
+                              if(isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+                              {
+                                  Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                              }
+                              else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+                              {
+                                  Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                              }
+                              break;
+                          case GUITransitioner.GameScreen.screen3:
+                              if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                              {
+                                  Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+                              }
+                              else if(isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter))
+                              {
+                                  Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
+                                  gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                              }
+                              break;
+                          default:
+                              Logger.Log("GameStateController::Update unknown screen "+gUITransitioner._currentScreen, Logger.Level.WARN);
+                              break;
+                      }
+                  }
                 }
                 break;
         	
             case GameState.End:
+                if (Input.GetKeyDown(KeyCode.Escape)) {
+                    goToMainMenuFrom(GameState.End);
+                }
                 break;	
 
             default:
                 break;
         }
+    }
+
+    public void goToOtherGameMode()
+    {
+        Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
+        GameConfiguration.GameMap destination =
+            (MemoryManager.get ().configuration.gameMap == GameConfiguration.GameMap.ADVENTURE1) ?
+                GameConfiguration.GameMap.SANDBOX2 :
+                GameConfiguration.GameMap.ADVENTURE1;
+
+        setAndSaveLevelName(destination, "goToOtherGameMode");
+        MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination.ToString());
+        internalRestart();
     }
 
     public void triggerEnd(EndGameCollider egc)
@@ -390,7 +432,11 @@ public class GameStateController : MonoBehaviour {
         switch(_gameState){
             case GameState.Start:
                 break;
-			
+                
+            case GameState.MainMenu:
+                gUITransitioner.Pause(true);
+                break;
+                
             case GameState.Game:
                 gUITransitioner.Pause(false);
                 break;
@@ -409,25 +455,44 @@ public class GameStateController : MonoBehaviour {
         }
     }
 
-    public void setAndSaveLevelName(string levelName)
+    public void setAndSaveLevelName(GameConfiguration.GameMap newMap, string cause = null)
     {
-        if(_adventureLevel1 != levelName
-           && _sandboxLevel1 != levelName
-           && _sandboxLevel2 != levelName)
+        if(!string.IsNullOrEmpty(cause))
         {
-            Logger.Log("GameStateController::setAndSaveLevelName bad level name="+levelName, Logger.Level.WARN);
+            Logger.Log("GameStateController::setAndSaveLevelName by "+cause, Logger.Level.DEBUG);
         }
         else
         {
-            //saving level name into MemoryManager
-            //because GameStateController current instance will be destroyed during restart
-            //whereas MemoryManager won't
-            setCurrentLevel(levelName, "setAndSaveLevelName");
-            MemoryManager.get ().addOrUpdateData(_currentLevelKey, levelName);
+            Logger.Log("GameStateController::setAndSaveLevelName", Logger.Level.DEBUG);
         }
+
+        switch(newMap) {
+            case GameConfiguration.GameMap.ADVENTURE1:
+            case GameConfiguration.GameMap.SANDBOX1:
+            case GameConfiguration.GameMap.SANDBOX2:
+                //saving level name into MemoryManager
+                //because GameStateController current instance will be destroyed during restart
+                //whereas MemoryManager won't
+                MemoryManager.get().configuration.gameMap = newMap;
+                break;
+
+            default:
+                Logger.Log("GameStateController::setAndSaveLevelName unmanaged level="+newMap, Logger.Level.WARN);
+                break;
+        }
+    }  
+
+    public GameState getState() {
+        return _gameState;
     }
 
     public static void restart()
+    {
+        MemoryManager.get ().sendEvent(TrackingEvent.RESTART);
+        internalRestart();
+    }
+
+    private static void internalRestart()
     {
         Logger.Log ("GameStateController::restart", Logger.Level.INFO);
         //TODO reload scene but reset all of its components without using MemoryManager
@@ -437,8 +502,9 @@ public class GameStateController : MonoBehaviour {
         //other solution: fix initialization through LinkManagers
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
-        Application.LoadLevel(_masterScene);
 
+        MemoryManager.get ().configuration.restartBehavior = GameConfiguration.RestartBehavior.GAME;
+        Application.LoadLevel(_masterScene);
     }
 
     void OnDestroy() {

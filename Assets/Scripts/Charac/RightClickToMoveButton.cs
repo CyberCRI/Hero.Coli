@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RightClickToMoveButton : CellControlButton {
+public class RightClickToMoveButton : MonoBehaviour {
     
   private void OnPress(bool isPressed)
   {
-    if(isPressed && cellControl) {
+    if(isPressed) {
       Logger.Log("RightClickToMoveButton::OnPress()", Logger.Level.INFO);
-      cellControl.switchControlTypeToRightClickToMove();
+      ControlsMainMenuItemArray.get ().switchControlTypeToRightClickToMove();
     }
   }
 }
