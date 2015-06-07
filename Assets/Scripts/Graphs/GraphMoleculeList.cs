@@ -153,7 +153,6 @@ public class GraphMoleculeList : MonoBehaviour {
 
         eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
 
-        int previousEquipedDevicesCount = _equipedDevices.Count;
         _equipedDevices.Add(eddwm);
 
         //search if there's already in the cell a molecule that this device produces
@@ -203,7 +202,6 @@ public class GraphMoleculeList : MonoBehaviour {
         {
             displayMoleculeInList(eddwm);
 
-            int startIndex = _equipedDevices.IndexOf(eddwm);
             _equipedDevices.Remove(eddwm);
             Destroy(eddwm.gameObject);
 

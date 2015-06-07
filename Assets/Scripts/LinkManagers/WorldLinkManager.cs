@@ -28,9 +28,8 @@ public class WorldLinkManager : MonoBehaviour
         //tuto End
         EndGameCollider endGameCollider = GameObject.Find ("TutoEnd").GetComponent<EndGameCollider> ();
         endGameCollider.hero = perso;
-        endGameCollider.gameStateController = GameStateController.get ();
         endGameCollider.endInfoPanel = GameStateController.get ().endWindow;
-        endGameCollider.endInfoPanelRestartButton = GameStateController.get ().endRestartButton;
+        endGameCollider.endMainMenuButton = GameStateController.get ().endMainMenuButton;
             
         //tuto End
         InfoWindowCollisionTrigger tutoRFP = GameObject.Find ("TutoRFP").GetComponent<InfoWindowCollisionTrigger> ();

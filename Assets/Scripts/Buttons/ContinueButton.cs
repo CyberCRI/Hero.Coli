@@ -7,7 +7,6 @@ public class ContinueButton : ModalButton
     public GameObject parentPanel;
     public GameObject nextInfoPanel;
     public StartGameButton nextInfoPanelContinue;
-    public GameStateController gameStateController;
   
     public override void press ()
     {
@@ -18,7 +17,7 @@ public class ContinueButton : ModalButton
         //TODO manage stack of modal elements in ModalManager
         //ModalManager.unsetModal(parentPanel);
         ModalManager.unsetModal ();
-        gameStateController.tryUnlockPause ();
+        GameStateController.get ().tryUnlockPause ();
 
         ModalManager.setModal (nextInfoPanel, true, nextInfoPanelContinue.gameObject, nextInfoPanelContinue.GetType ().AssemblyQualifiedName);
     }

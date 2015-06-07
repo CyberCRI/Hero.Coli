@@ -27,12 +27,11 @@ public class PlayerLinkManager : MonoBehaviour {
     cellControl.leftClickToMoveButton = interfaceLinkManager.leftClickToMoveButton;
     cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;
     cellControl.rightClickToMoveButton = interfaceLinkManager.rightClickToMoveButton;
-    cellControl.selectedControlTypeSprite = interfaceLinkManager.selectedControlTypeSprite;
+    
+        cellControl.selectedKeyboardControlTypeSprite = interfaceLinkManager.selectedKeyboardControlTypeSprite;
+        cellControl.selectedMouseControlTypeSprite = interfaceLinkManager.selectedMouseControlTypeSprite;
         
-    cellControl.absoluteWASDButton.cellControl = cellControl;
-    cellControl.leftClickToMoveButton.cellControl = cellControl;
-    cellControl.relativeWASDButton.cellControl = cellControl;
-    cellControl.rightClickToMoveButton.cellControl = cellControl;
+        interfaceLinkManager.controlsArray.cellControl = cellControl;
 
 
 		//Hero connections
