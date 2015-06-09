@@ -6,10 +6,6 @@ public class RedMetricsManager : MonoBehaviour
 {    
     
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    /// 
-    /// TODO make sure its game object is not destroyed during reload
-    /// either add component RedMetricsManager to MemoryManager game object
-    /// or create own RedMetricsManager game object that is not destroyed
     public static string gameObjectName = "RedMetricsManager";
     private static RedMetricsManager _instance;
     public static RedMetricsManager get() {
@@ -18,6 +14,7 @@ public class RedMetricsManager : MonoBehaviour
             _instance = GameObject.Find(gameObjectName).GetComponent<RedMetricsManager>();
             if(null != _instance)
             {
+                DontDestroyOnLoad(_instance.gameObject);
                 _instance.initializeIfNecessary();
             }
             else
@@ -30,7 +27,17 @@ public class RedMetricsManager : MonoBehaviour
     void Awake()
     {
         Logger.Log("RedMetricsManager::Awake", Logger.Level.INFO);
-        RedMetricsManager.get();
+        antiDuplicateInitialization();
+    }
+    
+    void antiDuplicateInitialization()
+    {
+        RedMetricsManager.get ();
+        Logger.Log("RedMetricsManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.ERROR);
+        if(this != _instance) {
+            Logger.Log("RedMetricsManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
+            Destroy(this.gameObject);
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

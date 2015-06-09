@@ -34,6 +34,17 @@ public class MemoryManager : MonoBehaviour {
     {
         Logger.Log("MemoryManager::Start", Logger.Level.INFO);
     }
+    
+    void antiDuplicateInitialization()
+    {
+        MemoryManager.get ();
+        Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
+        RedMetricsManager.get ().sendStartEvent(this != _instance);
+        if(this != _instance) {
+            Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
+            Destroy(this.gameObject);
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     private GameConfiguration _configuration;
@@ -44,17 +55,6 @@ public class MemoryManager : MonoBehaviour {
                 _configuration = new GameConfiguration();
             }
             return _configuration;
-        }
-    }
-
-    void antiDuplicateInitialization()
-    {
-        MemoryManager.get ();
-        Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
-        RedMetricsManager.get ().sendStartEvent(this != _instance);
-        if(this != _instance) {
-            Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
-            Destroy(this.gameObject);
         }
     }
 
