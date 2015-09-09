@@ -161,10 +161,6 @@ public class MemoryManager : MonoBehaviour {
     //v1.32
     public string gameVersion = "\"be209fe8-0ef3-4291-a5f4-c2b389f5d77d\"";    
     public string defaultPlayerID = "\"b5ab445a-56c9-4c5b-a6d0-86e8a286cd81\"";
-
-    public void sendEvent(TrackingEvent trackingEvent, string customData = null, string section = null, string coordinates = null) {
-        RedMetricsManager.get ().sendEvent(trackingEvent, customData, section, coordinates);
-    }
   
     public void sendCompletionEvent()
     {

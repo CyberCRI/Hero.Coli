@@ -23,11 +23,11 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
          || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
       {
         if(_devicesDisplayer.askRemoveEquipedDevice(_device)) {
-            MemoryManager.get ().sendEvent(TrackingEvent.UNEQUIP, _device.getInternalName());
+            RedMetricsManager.get ().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
         }
       }
       else {
-        MemoryManager.get ().sendEvent(TrackingEvent.EQUIP, _device.getInternalName());
+        RedMetricsManager.get ().sendEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
       }
 
 			//pointer Animation
