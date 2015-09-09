@@ -11,10 +11,13 @@ public class Hero : MonoBehaviour {
     public static Hero get() {
         if (_instance == null)
         {
-            _instance = GameObject.Find(gameObjectName).GetComponent<Hero>();
-            if(null != _instance)
+            GameObject go = GameObject.Find(gameObjectName);
+            if(null != go)
             {
-                _instance.initializeIfNecessary();
+                _instance = go.GetComponent<Hero>();
+                if(null != _instance) {
+                    _instance.initializeIfNecessary();
+                }
             }
             else
             {

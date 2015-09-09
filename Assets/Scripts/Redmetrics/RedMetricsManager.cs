@@ -325,39 +325,46 @@ public class RedMetricsManager : MonoBehaviour
 	public void sendEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null)
 	{
 
-        string checkedSection = string.IsNullOrEmpty(section)? Hero.get ().getLastCheckpointName() : section;
+        string checkedSection = section;
 
-        int[] checkedCoordinates = new int[coordinates.Length];
-        foreach(int i in coordinates) {
-            checkedCoordinates[i] = coordinates[i];
+        if(string.IsNullOrEmpty(section) && (null != Hero.get ())) {
+            checkedSection = Hero.get ().getLastCheckpointName();
         }
 
-        if(null == coordinates) {
-            Vector3 position = Hero.get ().gameObject.transform.position;
-            checkedCoordinates = new int[2]{Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.z)};
+        int[] checkedCoordinates = null;
+        if(null != coordinates) {
+            checkedCoordinates = new int[coordinates.Length];
+            foreach(int i in coordinates) {
+                checkedCoordinates[i] = coordinates[i];
+            }
+        } else {
+            if(null != Hero.get ()) {
+                Vector3 position = Hero.get ().gameObject.transform.position;
+                checkedCoordinates = new int[2]{Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.z)};
+            }
         }
              
 
-		//logMessage("RedMetricsManager::sendEvent");
-		if(Application.isWebPlayer) {
-			TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, section, coordinates);			
-			string json = getJsonString(data);
-			//logMessage("RedMetricsManager::sendEvent isWebPlayer will rmPostEvent json="+json);
-			Application.ExternalCall("rmPostEvent", json);
-		} else {
-			//logMessage("RedMetricsManager::sendEvent non web player");
-			//TODO wait on playerID using an IEnumerator
-			if(!string.IsNullOrEmpty(playerID))
-			{
-				TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(playerID, gameVersion, trackingEvent, customData, section, coordinates);			
-				string json = getJsonString(data);
-				//logMessage("RedMetricsManager::sendEvent player already identified - pID="+playerID);
-				sendDataStandalone(redMetricsEvent, json, value => wwwLogger(value, "sendEvent("+trackingEvent+")"));
-			} else {
-				logMessage("RedMetricsManager::sendEvent no registered player!", MessageLevel.ERROR);
-			}
-		}
-	}
+        //logMessage("RedMetricsManager::sendEvent");
+        if(Application.isWebPlayer) {
+            TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates);			
+            string json = getJsonString(data);
+            //logMessage("RedMetricsManager::sendEvent isWebPlayer will rmPostEvent json="+json);
+            Application.ExternalCall("rmPostEvent", json);
+        } else {
+            //logMessage("RedMetricsManager::sendEvent non web player");
+            //TODO wait on playerID using an IEnumerator
+            if(!string.IsNullOrEmpty(playerID))
+            {
+                TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(playerID, gameVersion, trackingEvent, customData, checkedSection, checkedCoordinates);			
+                string json = getJsonString(data);
+                //logMessage("RedMetricsManager::sendEvent player already identified - pID="+playerID);
+                sendDataStandalone(redMetricsEvent, json, value => wwwLogger(value, "sendEvent("+trackingEvent+")"));
+            } else {
+                logMessage("RedMetricsManager::sendEvent no registered player!", MessageLevel.ERROR);
+            }
+        }
+    }
 	
 	public override string ToString ()
 	{
