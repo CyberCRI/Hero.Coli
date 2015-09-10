@@ -4,7 +4,35 @@ using System.Collections.Generic;
 
 
 public class Hero : MonoBehaviour {
-
+    
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "Perso";
+    private static Hero _instance;
+    public static Hero get() {
+        if (_instance == null)
+        {
+            GameObject go = GameObject.Find(gameObjectName);
+            if(null != go)
+            {
+                _instance = go.GetComponent<Hero>();
+                if(null != _instance) {
+                    _instance.initializeIfNecessary();
+                }
+            }
+            else
+            {
+                Logger.Log("Hero::get couldn't find game object", Logger.Level.ERROR);
+            }
+        }
+        return _instance;
+    }
+    void Awake()
+    {
+        Logger.Log("Hero::Awake", Logger.Level.INFO);
+        Hero.get();
+        _lifeManager = new Life(_life, _lifeRegen);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
 	public LifeLogoAnimation lifeAnimation;
 	public EnergyLogoAnimation energyAnimation;
@@ -31,14 +59,14 @@ public class Hero : MonoBehaviour {
   private GameObject _lastNewCell = null;
 
 
-  static float _respawnTimeS = 1.5f;
-  static float _disappearingTimeSRatio = 0.9f;
-  static float _disappearingTimeS = _disappearingTimeSRatio*_respawnTimeS;
-    static float _popEffectTimeS = 1.0f;
-  static private float _baseScale = 145.4339f;
-  static private Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
-  static private Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
-  private List<GameObject> _flagella = new List<GameObject>();
+    private static float _respawnTimeS = 1.5f;
+    private static float _disappearingTimeSRatio = 0.9f;
+    private static float _disappearingTimeS = _disappearingTimeSRatio*_respawnTimeS;
+    private float _popEffectTimeS = 1.0f;
+    private static float _baseScale = 145.4339f;
+    private static Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
+    private static Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
+    private List<GameObject> _flagella = new List<GameObject>();
         
   private Hashtable _optionsIn = iTween.Hash(
       "scale", _baseScaleVector,
@@ -65,7 +93,17 @@ public class Hero : MonoBehaviour {
       "easetype", iTween.EaseType.easeInQuint
       );
 
-
+    private void initializeIfNecessary()
+    {
+        //???
+        //gameObject.SetActive(true);
+        _isAlive = true;
+        
+        //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+        _medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
+        _maxMediumEnergy = _medium.getMaxEnergy();
+        _energy = _medium.getEnergy()/_maxMediumEnergy;
+    }
 
 	public Life getLifeManager () {return _lifeManager;}
 
@@ -132,23 +170,6 @@ public class Hero : MonoBehaviour {
   public void subLife(float life) {
     _lifeManager.addVariation(-life);
   }
-
-  void Awake ()
-  {
-    _lifeManager = new Life(_life, _lifeRegen);
-  }
-  
-	void Start (){
-
-    gameObject.SetActive(true);
-		_isAlive = true;
-
-    //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-		_medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get ().getMediumList());
-    _maxMediumEnergy = _medium.getMaxEnergy();
-    _energy = _medium.getEnergy()/_maxMediumEnergy;
-
-	}
   
 	void Update() {
     if(!_pause)
@@ -191,7 +212,7 @@ public class Hero : MonoBehaviour {
 		  {
 			  _isAlive = false;
         
-        MemoryManager.get ().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
+        RedMetricsManager.get ().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
 			  StartCoroutine(RespawnCoroutine());
 		  }
     }
@@ -213,7 +234,7 @@ public class Hero : MonoBehaviour {
 
           //RedMetrics reporting
           //TODO put equiped devices in customData of sendEvent
-          MemoryManager.get ().sendEvent(TrackingEvent.REACH, null, _lastCheckpoint.name);
+          RedMetricsManager.get ().sendEvent(TrackingEvent.REACH, null, _lastCheckpoint.name);
       }
   }
 
@@ -244,7 +265,8 @@ public class Hero : MonoBehaviour {
     {
   	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
       item.pickUp();
-      MemoryManager.get ().sendEvent(TrackingEvent.PICKUP, item.getDNABit().getInternalName());
+            CustomData data;
+            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
     }
     else
     {

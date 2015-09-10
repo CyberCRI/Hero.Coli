@@ -401,7 +401,7 @@ public class GameStateController : MonoBehaviour {
                 GameConfiguration.GameMap.ADVENTURE1;
 
         setAndSaveLevelName(destination, "goToOtherGameMode");
-        MemoryManager.get ().sendEvent(TrackingEvent.SWITCH, destination.ToString());
+        RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
         internalRestart();
     }
 
@@ -488,7 +488,7 @@ public class GameStateController : MonoBehaviour {
 
     public static void restart()
     {
-        MemoryManager.get ().sendEvent(TrackingEvent.RESTART);
+        RedMetricsManager.get ().sendEvent(TrackingEvent.RESTART);
         internalRestart();
     }
 

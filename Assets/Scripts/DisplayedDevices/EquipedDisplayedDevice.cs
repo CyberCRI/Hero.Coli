@@ -56,7 +56,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
             if(_devicesDisplayer.IsEquipScreen()) {
                 if(askRemoveDevice())
                 {
-                    MemoryManager.get ().sendEvent(TrackingEvent.UNEQUIP, _device.getInternalName());
+                    RedMetricsManager.get ().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
                 }
             }
       }

@@ -11,7 +11,6 @@ public class CellControl : MonoBehaviour{
     public static CellControl get() {
         if (_instance == null)
         {
-            Logger.Log("CellControl::get was badly initialized", Logger.Level.WARN);
             _instance = GameObject.Find(gameObjectName).GetComponent<CellControl>();
             if(null != _instance)
             {
