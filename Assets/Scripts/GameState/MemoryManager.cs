@@ -70,9 +70,11 @@ public class MemoryManager : MonoBehaviour {
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
-            RedMetricsManager.get ().setGameVersion(gameVersion);
-            RedMetricsManager.get ().setPlayerID(defaultPlayerID);
-            Logger.Log("MemoryManager::initializeIfNecessary initial game configuration="+configuration, Logger.Level.INFO);
+            RedMetricsManager.get ().setGameVersion(gameVersionGuid);
+            RedMetricsManager.get ().setPlayerID(defaultPlayer);
+            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, defaultPlayer={2}"
+                                     , configuration, gameVersionGuid, defaultPlayer)
+                       , Logger.Level.ERROR);
         }
     }
 
@@ -155,12 +157,12 @@ public class MemoryManager : MonoBehaviour {
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //v1.0
-    //private static string gameVersion = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
+    //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     //v1.31
-    //private static string gameVersion = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
+    //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
     //v1.32
-    public string gameVersion = "\"be209fe8-0ef3-4291-a5f4-c2b389f5d77d\"";    
-    public string defaultPlayerID = "\"b5ab445a-56c9-4c5b-a6d0-86e8a286cd81\"";
+    public string gameVersionGuid = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";    
+    public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
   
     public void sendCompletionEvent()
     {

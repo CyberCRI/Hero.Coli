@@ -734,6 +734,13 @@ public class JsonMapper {
 			}
 			return;
 		}
+
+    // What if it's a Guid?
+    if (obj is System.Guid) {
+      writer.Write(((System.Guid)obj).ToString());
+      return;
+    }
+
 		// Okay, it looks like the input should be exported as an object
 		ObjectMetadata tdata = AddObjectMetadata(objType);
 		writer.WriteObjectStart();
