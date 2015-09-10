@@ -39,7 +39,6 @@ public class MemoryManager : MonoBehaviour {
     {
         MemoryManager.get ();
         Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode="+this.GetHashCode()+" and _instance.hashcode="+_instance.GetHashCode(), Logger.Level.INFO);
-        RedMetricsManager.get ().sendStartEvent(this != _instance);
         if(this != _instance) {
             Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
             Destroy(this.gameObject);
