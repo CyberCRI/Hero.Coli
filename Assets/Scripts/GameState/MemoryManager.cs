@@ -73,7 +73,7 @@ public class MemoryManager : MonoBehaviour {
             RedMetricsManager.get ().setPlayerID(defaultPlayer);
             Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, defaultPlayer={2}"
                                      , configuration, gameVersionGuid, defaultPlayer)
-                       , Logger.Level.ERROR);
+                       , Logger.Level.INFO);
         }
     }
 
