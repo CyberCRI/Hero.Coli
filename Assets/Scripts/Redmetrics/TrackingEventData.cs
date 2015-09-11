@@ -51,6 +51,9 @@ public abstract class TrackingEventData
     {
         internalTrackingEvent = _trackingEvent;
     }
+    public TrackingEvent getTrackingEvent () {
+        return internalTrackingEvent;
+    }
 
     //optional
     public CustomData customData;
@@ -69,11 +72,12 @@ public abstract class TrackingEventData
     TrackingEvent _trackingEvent, 
     CustomData _customData = null, 
     string _section = null,
-    int[] _coordinates = null
+    int[] _coordinates = null,
+    string _userTime = null
     )
     {
         //cf http://stackoverflow.com/questions/114983/given-a-datetime-object-how-do-i-get-a-iso-8601-date-in-string-format/115002#115002
-        userTime = System.DateTime.UtcNow.ToString ("yyyy-MM-ddTHH:mm:ss.fffZ", System.Globalization.CultureInfo.InvariantCulture);
+        userTime = string.IsNullOrEmpty(_userTime)?System.DateTime.UtcNow.ToString ("yyyy-MM-ddTHH:mm:ss.fffZ", System.Globalization.CultureInfo.InvariantCulture):_userTime;
   
         setTrackingEvent (_trackingEvent);
         customData = _customData;
@@ -138,8 +142,9 @@ public class TrackingEventDataWithoutIDs : TrackingEventData
     TrackingEvent _trackingEvent, 
     CustomData _customData = null, 
     string _section = null,
-    int[] _coordinates = null
-    ) : base(_trackingEvent, _customData, _section, _coordinates)
+    int[] _coordinates = null,
+    string userTime = null
+    ) : base(_trackingEvent, _customData, _section, _coordinates, userTime)
     {
     }
 
@@ -217,20 +222,20 @@ public class CreatePlayerData
 
 public class ConnectionData
 {
-    public System.Guid gameVersionGuid;
+    public System.Guid gameVersionId;
 
     public ConnectionData (string id)
     {
-        gameVersionGuid = new System.Guid(id);
+        gameVersionId = new System.Guid(id);
     }
     
     public ConnectionData (System.Guid id)
     {
-        gameVersionGuid = new System.Guid(id.ToByteArray());
+        gameVersionId = new System.Guid(id.ToByteArray());
     }
 
     public override string ToString ()
     {
-        return string.Format ("[ConnectionData: gameVersionGuid: {0}]", gameVersionGuid);
+        return string.Format ("[ConnectionData: gameVersionId: {0}]", gameVersionId);
     }
 }

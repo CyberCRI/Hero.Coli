@@ -65,6 +65,8 @@ public class RedMetricsManager : MonoBehaviour
     private static string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
     private static System.Guid defaultPlayerGuid = new System.Guid (defaultPlayer);
     private System.Guid playerGuid = new System.Guid (defaultPlayerGuid.ToByteArray());
+
+    private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();
   
     public void setPlayerID (string pID)
     {
@@ -279,11 +281,35 @@ public class RedMetricsManager : MonoBehaviour
             }
         }   
     }
+
+    //called by the bowser when connection is established
+    public void ConfirmWebplayerConnection() {
+        logMessage ("ConfirmWebplayerConnection", MessageLevel.ERROR);
+        executeAndClearAllWaitingEvents();
+    }
+
+    private void addEventToSendLater(TrackingEventDataWithoutIDs data) {
+        waitingList.AddLast(data);
+    }
+
+    private void executeAndClearAllWaitingEvents() {
+        logMessage ("executeAndClearAllWaitingEvents: starts", MessageLevel.ERROR);
+        foreach(TrackingEventDataWithoutIDs data in waitingList) {
+            logMessage ("executeAndClearAllWaitingEvents: sends "+data, MessageLevel.ERROR);
+            sendEvent(data);
+        }
+        waitingList.Clear();
+        logMessage ("executeAndClearAllWaitingEvents: done", MessageLevel.ERROR);
+    }
   
     private IEnumerator waitAndSendStart ()
     {
+        logMessage ("waitAndSendStart: waits to send start message: addEventToSendLater", MessageLevel.ERROR);
+        addEventToSendLater(new TrackingEventDataWithoutIDs(TrackingEvent.START));
         yield return new WaitForSeconds (5.0f);
-        sendEvent (TrackingEvent.START);
+        logMessage ("waitAndSendStart: will send start message if necessary: executeAndClearAllWaitingEvents", MessageLevel.ERROR);
+        executeAndClearAllWaitingEvents();
+        logMessage ("waitAndSendStart: done", MessageLevel.ERROR);
     }
 
 
@@ -296,6 +322,7 @@ public class RedMetricsManager : MonoBehaviour
             //logMessage("RedMetricsManager::connect will rmConnect json="+json);
             Application.ExternalCall ("rmConnect", json);
         }
+        //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
     }
   
     public string getJsonString (object obj)
@@ -332,7 +359,11 @@ public class RedMetricsManager : MonoBehaviour
         sendEvent (trackingEvent, customData, section, _coordinates);
     }
 
-    public void sendEvent (TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null)
+    public void sendEvent( TrackingEventDataWithoutIDs data) {
+        sendEvent(data.getTrackingEvent(), data.customData, data.section, data.coordinates, data.userTime);
+    }
+
+    public void sendEvent (TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
 
         Debug.LogError (string.Format ("sendEvent({0}, {1}, {2}, {3})", trackingEvent, customData, section, coordinates));
@@ -362,7 +393,7 @@ public class RedMetricsManager : MonoBehaviour
 
         //logMessage("RedMetricsManager::sendEvent");
         if (Application.isWebPlayer) {
-            TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates);     
+            TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates, userTime);     
             string json = getJsonString (data);
             logMessage ("RedMetricsManager::sendEvent isWebPlayer will rmPostEvent json=" + json, MessageLevel.ERROR);
             Application.ExternalCall ("rmPostEvent", json);
@@ -380,6 +411,7 @@ public class RedMetricsManager : MonoBehaviour
             string json = getJsonString (data);
             logMessage (string.Format ("RedMetricsManager::sendEvent - pID={0}, gameVersionGuid={1}, json={2}", playerGuid, gameVersionGuid, json), MessageLevel.ERROR);
             sendDataStandalone (redMetricsEvent, json, value => wwwLogger (value, "sendEvent(" + trackingEvent + ")"));
+            //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
         }
     }
   
