@@ -366,7 +366,7 @@ public class RedMetricsManager : MonoBehaviour
         int[] checkedCoordinates = null;
         if (null != coordinates) {
             checkedCoordinates = new int[coordinates.Length];
-            foreach (int i in coordinates) {
+            for (int i = 0; i < coordinates.Length; i++) {
                 checkedCoordinates [i] = coordinates [i];
             }
         } else {
