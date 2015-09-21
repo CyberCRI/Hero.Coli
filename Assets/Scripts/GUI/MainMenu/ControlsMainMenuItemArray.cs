@@ -54,13 +54,10 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
         //show control selection sprites
         selectedKeyboardControlSprite.SetActive(true);
 
-        /*/
-        if(false) {
-            /*/
-        if(!Application.isWebPlayer) {
-                //*/
-            selectedMouseControlSprite.SetActive(true);
-        }
+        //if(!Application.isWebPlayer) {
+        selectedMouseControlSprite.SetActive(true);
+        //}
+
     }
 
     void OnDisable ()
@@ -70,23 +67,28 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
         selectedMouseControlSprite.SetActive(false);
     }
     
-    public void switchControlTypeToAbsoluteWASD()
-    {
-        cellControl.switchControlTypeToAbsoluteWASD();
-    }
+
+        public void switchControlTypeToAbsoluteWASD()
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.AbsoluteWASD.ToString()));
+            cellControl.switchControlTypeToAbsoluteWASD();
+        }
     
-    public void switchControlTypeToRelativeWASD()
-    {
-        cellControl.switchControlTypeToRelativeWASD();
-    }
+        public void switchControlTypeToRelativeWASD()
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RelativeWASD.ToString()));
+            cellControl.switchControlTypeToRelativeWASD();
+        }
     
-    public void switchControlTypeToLeftClickToMove()
-    {
-        cellControl.switchControlTypeToLeftClickToMove();
-    }
+        public void switchControlTypeToLeftClickToMove()
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.LeftClickToMove.ToString()));
+            cellControl.switchControlTypeToLeftClickToMove();
+        }
     
-    public void switchControlTypeToRightClickToMove()
-    {
-        cellControl.switchControlTypeToRightClickToMove();
+        public void switchControlTypeToRightClickToMove()
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RightClickToMove.ToString()));
+            cellControl.switchControlTypeToRightClickToMove();
+        }
     }
-}

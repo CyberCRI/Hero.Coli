@@ -298,8 +298,6 @@ public class CellControl : MonoBehaviour{
   private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
 
         Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
-        
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, newControlType.ToString()));
 
         if(ControlType.LeftClickToMove == newControlType) {
             _isFirstUpdate = true;
