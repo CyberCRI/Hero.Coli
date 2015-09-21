@@ -37,6 +37,8 @@ public class Logger : MonoBehaviour {
             break;
             case 8: _level = Level.ERROR;
             break;
+            case 9: _level = Level.WEBPLAYER;
+            break;
           }
         }
         return _internalSingleton;
@@ -76,7 +78,8 @@ public class Logger : MonoBehaviour {
     INFO,         // 5 for events that help finding out the sequence of events leading to a bug
     TEMP,         // 6 temporary development logs, printed out as warning logs
     WARN,         // 7 for unhandled, unexpected events that don't stop the program
-    ERROR         // 8 only for crashes or events threatening the program flow
+    ERROR,        // 8 only for crashes or events threatening the program flow
+    WEBPLAYER     // 9 displayed as js consolelog from webplayer
   }
   private static Level _level = Level.INFO; // initialized in Awake()
 
@@ -111,6 +114,10 @@ public class Logger : MonoBehaviour {
       } else if (level == Level.ERROR) {
         Debug.LogError(timedMsg);
         Application.ExternalCall("DebugFromWebPlayerToBrowser", "Hero.Coli: "+timedMsg);
+      } else if (level == Level.WEBPLAYER) {
+        if (Application.isWebPlayer) {
+          Application.ExternalCall ("DebugFromWebPlayerToBrowser", timedMsg);
+        }
       } else {
         Debug.Log(timedMsg);
       }
