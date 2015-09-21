@@ -71,7 +71,6 @@ public class CellControl : MonoBehaviour{
             return _isLeftClickToMove;
         }
         set {
-            Debug.LogError("isLeftClickToMove is set to "+value);
             _isLeftClickToMove = value;
             MemoryManager.get().configuration.isLeftClickToMove = value;
         }
@@ -82,7 +81,6 @@ public class CellControl : MonoBehaviour{
             return _isAbsoluteWASD;
         }
         set {
-            Debug.LogError("isAbsoluteWASD is set to "+value);
             _isAbsoluteWASD = value;
             MemoryManager.get().configuration.isAbsoluteWASD = value;
         }
@@ -218,7 +216,6 @@ public class CellControl : MonoBehaviour{
   }
 	
 	void Start (){
-        Debug.LogError("CellControl::Start isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
         CellControl.get ();
         
         gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
@@ -299,8 +296,8 @@ public class CellControl : MonoBehaviour{
   }
   
   private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
-    //Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
-        Debug.LogError("before CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+
+        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
         
         RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, newControlType.ToString()));
 
@@ -332,12 +329,12 @@ public class CellControl : MonoBehaviour{
 
         _targetPosition = transform.position;
 
-        Debug.LogError("after CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with new isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
   }
 
     public void refreshControlType ()
     {
-        Debug.LogError("before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
         if(isLeftClickToMove){
             switchControlTypeToLeftClickToMove ();
         } else {
@@ -348,7 +345,7 @@ public class CellControl : MonoBehaviour{
         } else {
             switchControlTypeToRelativeWASD ();
         }
-        Debug.LogError("after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
     }
 
   void OnCollisionStay(Collision col) {

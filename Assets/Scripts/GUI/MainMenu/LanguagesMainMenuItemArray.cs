@@ -19,7 +19,6 @@ public class LanguagesMainMenuItemArray : MainMenuItemArray {
 
     void OnEnable ()
     {
-        Debug.LogError("Languages are visible");
         languagesPanel.SetActive(true);
     }
     
