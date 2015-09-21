@@ -103,7 +103,10 @@ public enum CustomDataTag
     BIOBRICK,
     DEVICE,
 
-    GAMELEVEL
+    GAMELEVEL,
+
+    CONTROLS,
+    LANGUAGE
 }
 
 public class CustomData: Dictionary<string, string>
