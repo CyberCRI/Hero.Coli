@@ -392,7 +392,6 @@ public class ModalManager : MonoBehaviour {
                 if (null != _instance._currentModalElement) {
                     //Modal windows key presses
                     if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
-                        Debug.LogError("consume enter in manageKeyPresses");
                         keyPressedEventConsumed = manageValidateButton ();
                     } else if (Input.GetKeyDown (KeyCode.Escape)) {   
                         if (isCancelButtonActive ()) {
@@ -455,7 +454,6 @@ public class ModalManager : MonoBehaviour {
             //TODO check need for getting component with class name "modalButtonClass"
             ModalButton button = (ModalButton)modalButton.GetComponent(System.Type.GetType(modalButtonClass));
             if(null != button) {
-                Debug.LogError("manageModalButton::press");
                 button.press();
                 return true;
             } else {
