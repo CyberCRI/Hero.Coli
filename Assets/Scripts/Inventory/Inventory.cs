@@ -178,7 +178,7 @@ public class Inventory : DeviceContainer
       addDevice(device);
 
       if(reportToRedMetrics) {
-        MemoryManager.get ().sendEvent(TrackingEvent.CRAFT, device.getInternalName());
+                RedMetricsManager.get ().sendEvent(TrackingEvent.CRAFT, new CustomData(CustomDataTag.DEVICE, device.getInternalName()));
       }
 
             //uncomment to save user-created devices
