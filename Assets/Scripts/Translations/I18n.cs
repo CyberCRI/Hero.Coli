@@ -6,7 +6,8 @@ public class I18n {
 
     public enum Language {
         English,
-        French
+        French,
+        Russian
     }
 
     public static void changeLanguageTo(Language lang)
@@ -30,6 +31,7 @@ public class I18n {
         {
             case "english": return Language.English;
             case "french": return Language.French;
+            case "russian": return Language.Russian;
             default: return Language.English;
         }
     }
