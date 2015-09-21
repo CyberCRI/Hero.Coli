@@ -70,13 +70,11 @@ public class RedMetricsManager : MonoBehaviour
   
     public void setPlayerID (string pID)
     {
-        logMessage ("setPlayerID(" + pID + ")");
         playerGuid = new System.Guid (pID);
     }
   
     public void setGameVersion (string gVersion)
     {
-        logMessage ("setGameVersion(" + gVersion + ")");
         gameVersionGuid = new System.Guid (gVersion);
     }
 
