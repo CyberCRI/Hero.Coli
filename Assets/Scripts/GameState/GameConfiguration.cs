@@ -30,6 +30,8 @@ public class GameConfiguration {
     public I18n.Language language;    
     public bool isAbsoluteWASD;
     public bool isLeftClickToMove;
+    //TODO manage sound configuration
+    public bool isSoundOn;
 
     public GameConfiguration()
     {
