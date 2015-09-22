@@ -10,6 +10,9 @@ public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
     public void toggleSound()
     {
         isSoundOn = !isSoundOn;
+        string soundValue = isSoundOn?CustomDataValue.ON.ToString():CustomDataValue.OFF.ToString();
+        RedMetricsManager.get ().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
+
         if(baseVolume < 0) {
             if(0 == AudioListener.volume) {
                 baseVolume = 1f;
