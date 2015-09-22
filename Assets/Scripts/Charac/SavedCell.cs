@@ -26,6 +26,13 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<PhenoFickContact>());
         Destroy(GetComponent<BlackLight>());        
         Destroy(GetComponent<Rigidbody>());
+        
+        SphereCollider[] colliders = GetComponentsInChildren<SphereCollider>();
+        for(int i = 0; i<colliders.Length; i++) {
+            if (colliders[i].gameObject.name == "PhenoLight") {
+                colliders[i].enabled = false;
+            }
+        }
 
         resetCollisionState();
         
