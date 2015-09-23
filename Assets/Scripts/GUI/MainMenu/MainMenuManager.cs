@@ -30,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItemArray mainMenuItems;
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
+    public MainMenuItemArray soundItems;
 
     public float verticalSpacing;
     private static string menuKeyPrefix = "MENU.";
@@ -39,6 +40,7 @@ public class MainMenuManager : MonoBehaviour
     public enum MainMenuScreen {
         CONTROLS,
         LANGUAGES,
+        SOUNDOPTIONS,
         DEFAULT
     }
 
@@ -201,6 +203,7 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(false);
                 controlItems.gameObject.SetActive(true);
                 languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(controlItems);
                 selectItem(0);
                 break;
@@ -209,7 +212,17 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(false);
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(true);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(languageItems);
+                selectItem(0);
+                break;
+            case MainMenuScreen.SOUNDOPTIONS:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(true);
+                copyItemsFrom(soundItems);
                 selectItem(0);
                 break;
             case MainMenuScreen.DEFAULT:
@@ -218,6 +231,7 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(true);
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(mainMenuItems);
                 selectItem(0);
                 break;

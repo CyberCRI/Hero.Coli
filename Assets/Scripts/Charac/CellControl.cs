@@ -46,6 +46,7 @@ public class CellControl : MonoBehaviour{
   public RightClickToMoveButton rightClickToMoveButton;
   public UISprite selectedMouseControlTypeSprite;
   public UISprite selectedKeyboardControlTypeSprite;
+  public GameObject clickFeedback;
 
   private bool _pause;
   private Vector3 _inputMovement;
@@ -102,8 +103,13 @@ public class CellControl : MonoBehaviour{
     return _pause;
   }
 
+    private void setClickFeedback(Vector3 position) {
+        GameObject newClickFeedback = Instantiate(clickFeedback, position, Quaternion.identity) as GameObject;
+        newClickFeedback.SetActive(true);
+    }
+
   private void ClickToMoveUpdate(KeyCode mouseButtonCode) {
-    if(Input.GetKeyDown(mouseButtonCode))            
+    if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
     {
     
       Plane playerPlane = new Plane(Vector3.up, transform.position);            
@@ -111,6 +117,7 @@ public class CellControl : MonoBehaviour{
       
 			if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
         _targetPosition = ray.GetPoint(_hitdist);
+        setClickFeedback(_targetPosition);
       }
     }
 

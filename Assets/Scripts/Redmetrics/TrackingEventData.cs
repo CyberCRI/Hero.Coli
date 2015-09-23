@@ -106,7 +106,14 @@ public enum CustomDataTag
     GAMELEVEL,
 
     CONTROLS,
-    LANGUAGE
+    LANGUAGE,
+    SOUND
+}
+
+public enum CustomDataValue
+{
+    ON,
+    OFF
 }
 
 public class CustomData: Dictionary<string, string>
