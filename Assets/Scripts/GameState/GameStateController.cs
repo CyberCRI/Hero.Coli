@@ -185,7 +185,7 @@ public class GameStateController : MonoBehaviour {
 
     public void endGame()
     {
-        Debug.LogError("endGame");
+        Logger.Log("endGame", Logger.Level.INFO);
         _isGameLevelPrepared = false;
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);

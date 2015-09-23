@@ -46,6 +46,7 @@ public class CellControl : MonoBehaviour{
   public RightClickToMoveButton rightClickToMoveButton;
   public UISprite selectedMouseControlTypeSprite;
   public UISprite selectedKeyboardControlTypeSprite;
+  public GameObject clickFeedback;
 
   private bool _pause;
   private Vector3 _inputMovement;
@@ -71,7 +72,6 @@ public class CellControl : MonoBehaviour{
             return _isLeftClickToMove;
         }
         set {
-            Debug.LogError("isLeftClickToMove is set to "+value);
             _isLeftClickToMove = value;
             MemoryManager.get().configuration.isLeftClickToMove = value;
         }
@@ -82,7 +82,6 @@ public class CellControl : MonoBehaviour{
             return _isAbsoluteWASD;
         }
         set {
-            Debug.LogError("isAbsoluteWASD is set to "+value);
             _isAbsoluteWASD = value;
             MemoryManager.get().configuration.isAbsoluteWASD = value;
         }
@@ -104,8 +103,13 @@ public class CellControl : MonoBehaviour{
     return _pause;
   }
 
+    private void setClickFeedback(Vector3 position) {
+        GameObject newClickFeedback = Instantiate(clickFeedback, position, Quaternion.identity) as GameObject;
+        newClickFeedback.SetActive(true);
+    }
+
   private void ClickToMoveUpdate(KeyCode mouseButtonCode) {
-    if(Input.GetKeyDown(mouseButtonCode))            
+    if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
     {
     
       Plane playerPlane = new Plane(Vector3.up, transform.position);            
@@ -113,6 +117,7 @@ public class CellControl : MonoBehaviour{
       
 			if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
         _targetPosition = ray.GetPoint(_hitdist);
+        setClickFeedback(_targetPosition);
       }
     }
 
@@ -218,7 +223,6 @@ public class CellControl : MonoBehaviour{
   }
 	
 	void Start (){
-        Debug.LogError("CellControl::Start isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
         CellControl.get ();
         
         gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
@@ -299,8 +303,9 @@ public class CellControl : MonoBehaviour{
   }
   
   private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
-    //Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old="+_currentControlType, Logger.Level.DEBUG);
-        Debug.LogError("before CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+
+        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
+
         if(ControlType.LeftClickToMove == newControlType) {
             _isFirstUpdate = true;
         }
@@ -329,12 +334,12 @@ public class CellControl : MonoBehaviour{
 
         _targetPosition = transform.position;
 
-        Debug.LogError("after CellControl::switchControlTypeTo("+newControlType+") isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with new isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
   }
 
     public void refreshControlType ()
     {
-        Debug.LogError("before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
         if(isLeftClickToMove){
             switchControlTypeToLeftClickToMove ();
         } else {
@@ -345,7 +350,7 @@ public class CellControl : MonoBehaviour{
         } else {
             switchControlTypeToRelativeWASD ();
         }
-        Debug.LogError("after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD);
+        Logger.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
     }
 
   void OnCollisionStay(Collision col) {

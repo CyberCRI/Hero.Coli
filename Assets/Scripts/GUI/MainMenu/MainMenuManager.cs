@@ -30,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItemArray mainMenuItems;
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
+    public MainMenuItemArray soundItems;
 
     public float verticalSpacing;
     private static string menuKeyPrefix = "MENU.";
@@ -39,6 +40,7 @@ public class MainMenuManager : MonoBehaviour
     public enum MainMenuScreen {
         CONTROLS,
         LANGUAGES,
+        SOUNDOPTIONS,
         DEFAULT
     }
 
@@ -103,7 +105,6 @@ public class MainMenuManager : MonoBehaviour
 
         while (remainingTries > 0) {
             normalizedIndex = previousIndex >= 0 ? previousIndex % _items.Length : (previousIndex % _items.Length) + _items.Length;
-            //Debug.LogError(string.Format("selectItem({0}) selects {1} on try {2}/{3}", previousIndex, normalizedIndex, _items.Length-remainingTries, _items.Length));
             if (null != _items [normalizedIndex] && _items [normalizedIndex].displayed) {
                 deselect ();
                 _items [normalizedIndex].select ();
@@ -150,11 +151,10 @@ public class MainMenuManager : MonoBehaviour
         for(int index = 0; index < _items.Length; index++) {
             if(_items[index].itemName == target) {
                 _items[index].itemName = replacement;
-                Debug.LogError(debug+" BINGO at "+index+" with "+_items[index].itemName+" with target="+target+" and replacement="+replacement);
                 return;
             }
         }
-        Debug.LogError(debug+" FAIL with target="+target+" and replacement="+replacement);
+        Logger.Log("MainMenuItem::replaceTextBy "+debug+" FAIL with target="+target+" and replacement="+replacement, Logger.Level.WARN);
     }
 
     public void setNewGame() {
@@ -203,6 +203,7 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(false);
                 controlItems.gameObject.SetActive(true);
                 languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(controlItems);
                 selectItem(0);
                 break;
@@ -211,7 +212,17 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(false);
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(true);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(languageItems);
+                selectItem(0);
+                break;
+            case MainMenuScreen.SOUNDOPTIONS:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(true);
+                copyItemsFrom(soundItems);
                 selectItem(0);
                 break;
             case MainMenuScreen.DEFAULT:
@@ -220,6 +231,7 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuItems.gameObject.SetActive(true);
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
                 copyItemsFrom(mainMenuItems);
                 selectItem(0);
                 break;
@@ -228,13 +240,11 @@ public class MainMenuManager : MonoBehaviour
 
     private void copyItemsFrom(MainMenuItemArray array)
     {
-        Debug.LogError("copyItemsFrom with #items="+array._items.Length);
         _items = new MainMenuItem[array._items.Length];
         for(int index = 0; index < array._items.Length; index++)
         {
             _items[index] = array._items[index];
         }
-        Debug.LogError("copyItemsFrom DONE");
     }
 
     public bool escape() {

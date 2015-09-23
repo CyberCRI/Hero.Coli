@@ -59,6 +59,22 @@
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
+  <tooltip code="b_FLUO3">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO4">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO5">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
+  <tooltip code="b_FLUO6">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
   <tooltip code="b_IPTG">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>

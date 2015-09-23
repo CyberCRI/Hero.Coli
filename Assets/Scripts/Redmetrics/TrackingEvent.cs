@@ -26,5 +26,6 @@ public enum TrackingEvent {
     PICKUP,
     REACH,
     SWITCH,
-    UNEQUIP
+    UNEQUIP,
+    CONFIGURE
 }

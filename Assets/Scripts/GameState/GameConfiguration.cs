@@ -30,10 +30,11 @@ public class GameConfiguration {
     public I18n.Language language;    
     public bool isAbsoluteWASD;
     public bool isLeftClickToMove;
+    //TODO manage sound configuration
+    public bool isSoundOn;
 
     public GameConfiguration()
     {
-        Debug.LogError("GameConfiguration()");
         restartBehavior = RestartBehavior.MAINMENU;
         gameMap = GameMap.ADVENTURE1;
         language = I18n.Language.English;
@@ -42,12 +43,10 @@ public class GameConfiguration {
     }
 
     public GameMode getMode() {
-        Debug.LogError("getMode");
         return getMode (gameMap);
     }
 
     public static GameMode getMode(GameMap map) {
-        Debug.LogError("getMode("+map+")");
         switch(map)
         {
             case GameMap.ADVENTURE1:
@@ -62,12 +61,10 @@ public class GameConfiguration {
     }
 
     public string getSceneName() {
-        Debug.LogError("getSceneName");
         return getSceneName(gameMap);
     }
 
     public static string getSceneName(GameMap map) {
-        Debug.LogError("getSceneName("+map+")");
         switch(map)
         {
             case GameMap.ADVENTURE1:
