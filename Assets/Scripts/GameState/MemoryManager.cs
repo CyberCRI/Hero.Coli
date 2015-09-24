@@ -69,7 +69,13 @@ public class MemoryManager : MonoBehaviour {
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
-            RedMetricsManager.get ().setGameVersion(gameVersionGuid);
+
+            if(Application.isEditor) {
+                RedMetricsManager.get ().setGameVersion(testVersionGuid);
+            } else {
+                RedMetricsManager.get ().setGameVersion(gameVersionGuid);
+            }
+
             RedMetricsManager.get ().setPlayerID(defaultPlayer);
             Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, defaultPlayer={2}"
                                      , configuration, gameVersionGuid, defaultPlayer)
@@ -155,6 +161,8 @@ public class MemoryManager : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
+    //test
+    public string testVersionGuid = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
     //v1.0
     //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     //v1.31
