@@ -112,13 +112,13 @@ public class CellControl : MonoBehaviour{
     if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
     {
     
-      Plane playerPlane = new Plane(Vector3.up, transform.position);            
-      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
+      	Plane playerPlane = new Plane(Vector3.up, transform.position);            
+      	Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
       
-			if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
-        _targetPosition = ray.GetPoint(_hitdist);
-        setClickFeedback(_targetPosition);
-      }
+		if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
+        	_targetPosition = ray.GetPoint(_hitdist);
+        	setClickFeedback(_targetPosition);
+      	}
     }
 
     if(Vector3.zero == _inputMovement)
@@ -195,13 +195,13 @@ public class CellControl : MonoBehaviour{
   private void commonUpdate() {
     if(Vector3.zero != _inputMovement) {
 
-      Vector3 moveAmount = _inputMovement * currentMoveSpeed;
+		Vector3 moveAmount = _inputMovement * currentMoveSpeed * Time.deltaTime;
       
-      this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);
+		this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);
       
-      updateEnergy(moveAmount);
+		updateEnergy(moveAmount);
 
-      setSpeed();
+		setSpeed();
     }
   }
 
