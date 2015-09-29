@@ -9,11 +9,14 @@ public class MOOCOptionsMainMenuItemArray : MainMenuItemArray {
 	public string url = "http://genius.com/Igem-paris-bettencourt-team-what-are-biobricks-annotated";
 	
 	public void goToMOOC () {	
+
+		RedMetricsManager.get().sendEvent(TrackingEvent.GOTOMOOC, new CustomData(CustomDataTag.URL, url));
+
 		switch (Application.platform) {
 			case RuntimePlatform.WebGLPlayer:
 			case RuntimePlatform.WindowsWebPlayer:
-		case RuntimePlatform.OSXWebPlayer:
-				Debug.LogError ("MOOCOptionsMainMenuItemArray::goToMOOC Webplayer/WebGL attempting to open " + url);
+			case RuntimePlatform.OSXWebPlayer:
+				Logger.Log("MOOCOptionsMainMenuItemArray::goToMOOC Webplayer/WebGL attempting to open " + url, Logger.Level.WEBPLAYER);
 				Application.ExternalEval("window.open('"+url+"','_blank')");
 				break;
 			case RuntimePlatform.WindowsPlayer: 

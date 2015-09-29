@@ -18,6 +18,7 @@ public enum TrackingEvent {
     JUMP,
     BOUNCE,
     
+
     //specific events
     COMPLETE,
     CRAFT,
@@ -27,5 +28,8 @@ public enum TrackingEvent {
     REACH,
     SWITCH,
     UNEQUIP,
-    CONFIGURE
+	//main menu
+	SELECTMENU,
+    CONFIGURE,
+	GOTOMOOC
 }
