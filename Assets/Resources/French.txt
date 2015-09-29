@@ -52,9 +52,11 @@ MENU.LANGUAGES.FRENCH=français
 MENU.SOUND=SON
 MENU.SOUND.ON=on
 MENU.SOUND.OFF=off
-MENU.MOOC=POUR EN SAVOIR PLUS...
-MENU.MOOC.GOTO=Explorer le MOOC iGEM
-MENU.MOOC.EXPLANATION=Visitez le site de ce MOOC pour en apprendre plus sur la biologie de synthèse !
+MENU.LEARNMORE=POUR EN SAVOIR PLUS...
+MENU.LEARNMORE.GOTO=explorer le site
+MENU.LEARNMORE.GOTONEWTAB=nouvel onglet (autorisez la pop-up)
+MENU.LEARNMORE.GOTOSAMETAB=même onglet (quitte le jeu)
+MENU.LEARNMORE.EXPLANATION=Visitez le site du MOOC iGEM pour en apprendre plus sur la biologie de synthèse !
 
 BRICK.PRBAD1=pBAD fort
 BRICK.PRBAD2=pBAD moyen

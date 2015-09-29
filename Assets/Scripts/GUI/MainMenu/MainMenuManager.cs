@@ -31,7 +31,7 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
     public MainMenuItemArray soundItems;
-	public MainMenuItemArray moocItems;
+	public MainMenuItemArray learnMoreItems;
 
     public float verticalSpacing;
     private static string menuKeyPrefix = "MENU.";
@@ -42,7 +42,7 @@ public class MainMenuManager : MonoBehaviour
         CONTROLS,
         LANGUAGES,
         SOUNDOPTIONS,
-		MOOCOPTIONS,
+		LEARNMOREOPTIONS,
         DEFAULT
     }
 
@@ -206,7 +206,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(true);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(false);
-				moocItems.gameObject.SetActive(false);
+				learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(controlItems);
                 selectItem(0);
                 break;
@@ -216,7 +216,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(true);
                 soundItems.gameObject.SetActive(false);
-				moocItems.gameObject.SetActive(false);
+				learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(languageItems);
                 selectItem(0);
                 break;
@@ -226,18 +226,18 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(true);
-				moocItems.gameObject.SetActive(false);
+				learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(soundItems);
                 selectItem(0);
 			break;
-			case MainMenuScreen.MOOCOPTIONS:
+			case MainMenuScreen.LEARNMOREOPTIONS:
 				deselect ();
 				mainMenuItems.gameObject.SetActive(false);
 				controlItems.gameObject.SetActive(false);
 				languageItems.gameObject.SetActive(false);
 				soundItems.gameObject.SetActive(false);
-				moocItems.gameObject.SetActive(true);
-				copyItemsFrom(moocItems);
+				learnMoreItems.gameObject.SetActive(true);
+				copyItemsFrom(learnMoreItems);
 				selectItem(0);
 				break;
             case MainMenuScreen.DEFAULT:
@@ -247,7 +247,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(false);
-				moocItems.gameObject.SetActive(false);
+				learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(mainMenuItems);
                 selectItem(0);
                 break;

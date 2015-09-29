@@ -111,7 +111,8 @@ public enum CustomDataTag
     LANGUAGE,
     SOUND,
 
-	URL
+	NEWTAB,
+	SAMETAB
 }
 
 public enum CustomDataValue

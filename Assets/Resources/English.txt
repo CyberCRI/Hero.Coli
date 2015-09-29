@@ -52,9 +52,11 @@ MENU.LANGUAGES.FRENCH=français
 MENU.SOUND=SOUND
 MENU.SOUND.ON=on
 MENU.SOUND.OFF=off
-MENU.MOOC=LEARN MORE...
-MENU.MOOC.GOTO=go to MOOC iGEM
-MENU.MOOC.EXPLANATION=Go to this MOOC to learn more about synthetic biology!
+MENU.LEARNMORE=LEARN MORE...
+MENU.LEARNMORE.GOTO=explore the website
+MENU.LEARNMORE.GOTONEWTAB=new tab - please allow the pop-up
+MENU.LEARNMORE.GOTOSAMETAB=same tab - will exit the game
+MENU.LEARNMORE.EXPLANATION=Go to the iGEM MOOC to learn more about synthetic biology!
 
 BRICK.PRBAD1=pBAD strong
 BRICK.PRBAD2=pBAD medium
