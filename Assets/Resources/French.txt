@@ -58,6 +58,13 @@ MENU.LEARNMORE.GOTONEWTAB=nouvel onglet (autorisez la pop-up)
 MENU.LEARNMORE.GOTOSAMETAB=même onglet (quitte le jeu)
 MENU.LEARNMORE.EXPLANATION=Visitez le site du MOOC iGEM pour en apprendre plus sur la biologie de synthèse !
 
+LEARNMORE.LINK.MOOCFULL=http://igemhs.wix.com/mooc#!concepts-de-base-/csph
+LEARNMORE.LINK.MOOCECOLI=http://genius.com/Igem-paris-bettencourt-team-un-organisme-modele-e-coli-annotated
+LEARNMORE.LINK.MOOCBIOBRICKS=http://genius.com/Igem-paris-bettencourt-team-quest-ce-quune-biobrick-annotated
+LEARNMORE.LINK.MOOCTECHNIQUES=http://genius.com/Igem-paris-bettencourt-team-principales-techniques-de-base-utilisees-dans-igem-annotated
+LEARNMORE.LINK.MOOCENGINEERING=http://genius.com/Sarah-fernet-igem-paris-bettencourt-team-ingenierie-des-dispositifs-genetiques-annotated
+LEARNMORE.LINK.MOOCTHEORY=http://genius.com/Christophe-buherne-igem-paris-bettencourt-team-quest-ce-que-la-theorie-fondamentale-de-la-biologie-moleculaire-annotated
+
 BRICK.PRBAD1=pBAD fort
 BRICK.PRBAD2=pBAD moyen
 BRICK.PRBAD3=pBAD faible
