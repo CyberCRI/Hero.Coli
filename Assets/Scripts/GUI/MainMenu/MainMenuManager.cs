@@ -236,6 +236,7 @@ public class MainMenuManager : MonoBehaviour
 				controlItems.gameObject.SetActive(false);
 				languageItems.gameObject.SetActive(false);
 				soundItems.gameObject.SetActive(false);
+			    learnMoreItems.setPlatform();
 				learnMoreItems.gameObject.SetActive(true);
 				copyItemsFrom(learnMoreItems);
 				selectItem(0);
