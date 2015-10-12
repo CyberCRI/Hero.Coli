@@ -56,6 +56,7 @@ MENU.LEARNMORE=POUR EN SAVOIR PLUS...
 MENU.LEARNMORE.GOTO=explorer le site
 MENU.LEARNMORE.GOTONEWTAB=nouvel onglet (autorisez la pop-up)
 MENU.LEARNMORE.GOTOSAMETAB=même onglet (quitte le jeu)
+MENU.LEARNMORE.GOTOBROWSER=ouvrir dans le navigateur web
 MENU.LEARNMORE.EXPLANATION=Visitez le site du MOOC iGEM pour en apprendre plus sur la biologie de synthèse !
 
 LEARNMORE.LINK.MOOCFULL=http://igemhs.wix.com/mooc#!concepts-de-base-/csph

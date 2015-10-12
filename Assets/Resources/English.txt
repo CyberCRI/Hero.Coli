@@ -56,6 +56,7 @@ MENU.LEARNMORE=LEARN MORE...
 MENU.LEARNMORE.GOTO=explore the website
 MENU.LEARNMORE.GOTONEWTAB=new tab - please allow the pop-up
 MENU.LEARNMORE.GOTOSAMETAB=same tab - will exit the game
+MENU.LEARNMORE.GOTOBROWSER=open in browser
 MENU.LEARNMORE.EXPLANATION=Go to the iGEM MOOC to learn more about synthetic biology!
 
 LEARNMORE.LINK.MOOCFULL=http://igemhs.wix.com/mooc#!fundamental-facts/c5m9
