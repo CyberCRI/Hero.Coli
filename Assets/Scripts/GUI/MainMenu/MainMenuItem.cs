@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class MainMenuItem : MonoBehaviour {
+    
+    private bool _initialized = false;
 
     private bool _displayed = true;
     public bool displayed {
@@ -14,7 +16,7 @@ public class MainMenuItem : MonoBehaviour {
         }
     }
     protected UILocalize _localize;
-    private string _itemName;
+    public string _itemName;
     public string itemName {
         get {
             return _itemName;
@@ -66,22 +68,39 @@ public class MainMenuItem : MonoBehaviour {
     }
 
     private void initializeNameFromLocalizationKey() {
+        Debug.LogError("initializeNameFromLocalizationKey '"+itemName+"' starts");
+        bool previousState = gameObject.activeInHierarchy;
+        gameObject.SetActive(true);
         UILocalize localize = gameObject.GetComponentInChildren<UILocalize>();
         if(null == localize) {
             Logger.Log("no localize found", Logger.Level.WARN);
             itemName = gameObject.name;
+            Debug.LogError("no localize found, activeInHierarchy="+gameObject.activeInHierarchy+", activeSelf"+gameObject.activeSelf);
         } else {
             itemName = localize.key;
         }
+        gameObject.SetActive(previousState);
+        Debug.LogError("initializeNameFromLocalizationKey '"+itemName+"' ends");
     }
 
   public virtual void initialize() {
   }
+  
+  public void initializeIfNecessary() {
+      Debug.LogError("initializeIfNecessary '"+itemName+"' starts");
+      if(!_initialized) {
+            Debug.LogError("initializeIfNecessary '"+itemName+"': _initialized="+_initialized);
+            initializeNameFromLocalizationKey();
+            initialize();
+            _initialized = true;
+            Debug.LogError("initializeIfNecessary '"+itemName+"': now _initialized="+_initialized);
+      }
+      Debug.LogError("initializeIfNecessary '"+itemName+"' ends");
+  }
 
 	// Use this for initialization
 	void Start () {
-        initializeNameFromLocalizationKey();
-        initialize();
+        initializeIfNecessary();
 	}
 	
 	// Update is called once per frame

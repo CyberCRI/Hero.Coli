@@ -70,11 +70,11 @@ public class MemoryManager : MonoBehaviour {
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
 
-            if(Application.isEditor) {
+            //if(Application.isEditor) {
                 RedMetricsManager.get ().setGameVersion(testVersionGuid);
-            } else {
-                RedMetricsManager.get ().setGameVersion(gameVersionGuid);
-            }
+            //} else {
+            //    RedMetricsManager.get ().setGameVersion(gameVersionGuid);
+            //}
 
             RedMetricsManager.get ().setPlayerID(defaultPlayer);
             Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, defaultPlayer={2}"

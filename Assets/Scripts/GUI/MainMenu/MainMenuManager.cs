@@ -31,8 +31,11 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
     public MainMenuItemArray soundItems;
+    public LearnMoreOptionsMainMenuItemArray learnMoreItems;
 
     public float verticalSpacing;
+    public const float defaultVerticalSpacing = -0.1f;
+    
     private static string menuKeyPrefix = "MENU.";
     private static string newGameKey = menuKeyPrefix+"NEWGAME";
     private static string resumeKey = menuKeyPrefix+"RESUME";
@@ -41,6 +44,7 @@ public class MainMenuManager : MonoBehaviour
         CONTROLS,
         LANGUAGES,
         SOUNDOPTIONS,
+        LEARNMOREOPTIONS,
         DEFAULT
     }
 
@@ -147,14 +151,19 @@ public class MainMenuManager : MonoBehaviour
         selectItem (item.itemName);
     }
 
-    public void replaceTextBy(string target, string replacement, string debug = "") {
-        for(int index = 0; index < _items.Length; index++) {
-            if(_items[index].itemName == target) {
-                _items[index].itemName = replacement;
+    public static void replaceTextBy(string target, string replacement, MainMenuItem[] items, string debug = "") {
+        for(int index = 0; index < items.Length; index++) {
+            if(items[index].itemName == target) {
+                items[index].itemName = replacement;
+                MainMenuManager.redraw (items);
                 return;
             }
         }
-        Logger.Log("MainMenuItem::replaceTextBy "+debug+" FAIL with target="+target+" and replacement="+replacement, Logger.Level.WARN);
+        Logger.Log("MainMenuItem::replaceTextBy static "+debug+" FAIL with target="+target+" and replacement="+replacement, Logger.Level.WARN);
+    }
+
+    private void replaceTextBy(string target, string replacement, string debug = "") {
+        MainMenuManager.replaceTextBy(target, replacement, _items, debug);
     }
 
     public void setNewGame() {
@@ -167,32 +176,54 @@ public class MainMenuManager : MonoBehaviour
         setVisibility(restartKey, true);
     }
 
-    private void setVisibility (string itemKey, bool isVisible)
-    {
-        for(int index = 0; index < _items.Length; index++) {
-            if(_items[index].itemName == itemKey) {
-                _items[index].displayed = isVisible;
-                redraw ();
-                return;
-            }
+    public static void setVisibility (MainMenuItem[] items, string itemKey, bool isVisible, string debug = null, float spacing = defaultVerticalSpacing) {
+        if(!string.IsNullOrEmpty(debug)) {
+            Debug.LogError("setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
         }
+        for(int index = 0; index < items.Length; index++) {
+            items[index].initializeIfNecessary();
+            if(items[index].itemName == itemKey) {
+                items[index].displayed = isVisible;
+                if(!string.IsNullOrEmpty(debug)) {
+                    Debug.LogError("setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                }
+                return;
+            } else if(!string.IsNullOrEmpty(debug)) {
+                Debug.LogError("setVisibility "+debug+": "+itemKey+"≠'"+items[index].itemName+"'");
+            } 
+        }
+        MainMenuManager.redraw (items, debug, spacing);
     }
 
-    public void redraw ()
-    {
-        if(_items.Length != 0) {
-            Vector2 nextRelativeOffset = _items[0].anchor.relativeOffset;
-            foreach(MainMenuItem item in _items)
+    private void setVisibility (string itemKey, bool isVisible) {
+        setVisibility(_items, itemKey, isVisible);
+    }
+
+    public static void redraw (MainMenuItem[] items, string debug = null, float spacing = defaultVerticalSpacing) {
+        if(!string.IsNullOrEmpty(debug)) {
+            Debug.LogError("redraw "+debug);
+        }
+        if(items.Length != 0) {
+            Vector2 nextRelativeOffset = items[0].anchor.relativeOffset;
+            foreach(MainMenuItem item in items)
             {
                 item.gameObject.SetActive(item.displayed);
+                if(!string.IsNullOrEmpty(debug)) {
+                    Debug.LogError("redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
+                }
                 if(item.displayed) {
                     item.anchor.relativeOffset = nextRelativeOffset;
-                    nextRelativeOffset = new Vector2(nextRelativeOffset.x, nextRelativeOffset.y + verticalSpacing);
+                    nextRelativeOffset = new Vector2(nextRelativeOffset.x, nextRelativeOffset.y + spacing);
                 }
             }
         } else {
-            Logger.Log ("MainMenuManager::redraw no item", Logger.Level.WARN);
+            Logger.Log ("MainMenuManager::redraw static no item", Logger.Level.WARN);
         }
+    }
+
+    private void redraw ()
+    {
+        MainMenuManager.redraw (_items, null, verticalSpacing);
     }
 
     public void switchTo (MainMenuScreen screen) 
@@ -204,6 +235,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(true);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(false);
+                learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(controlItems);
                 selectItem(0);
                 break;
@@ -213,6 +245,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(true);
                 soundItems.gameObject.SetActive(false);
+                learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(languageItems);
                 selectItem(0);
                 break;
@@ -222,7 +255,19 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(true);
+                learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(soundItems);
+                selectItem(0);
+                break;
+            case MainMenuScreen.LEARNMOREOPTIONS:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
+                learnMoreItems.setPlatform();
+                learnMoreItems.gameObject.SetActive(true);
+                copyItemsFrom(learnMoreItems);
                 selectItem(0);
                 break;
             case MainMenuScreen.DEFAULT:
@@ -232,6 +277,7 @@ public class MainMenuManager : MonoBehaviour
                 controlItems.gameObject.SetActive(false);
                 languageItems.gameObject.SetActive(false);
                 soundItems.gameObject.SetActive(false);
+                learnMoreItems.gameObject.SetActive(false);
                 copyItemsFrom(mainMenuItems);
                 selectItem(0);
                 break;

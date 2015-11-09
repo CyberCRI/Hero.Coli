@@ -105,15 +105,29 @@ public enum CustomDataTag
 
     GAMELEVEL,
 
+    OPTION,
+
     CONTROLS,
     LANGUAGE,
-    SOUND
+    SOUND,
+
+    NEWTAB,
+    SAMETAB
 }
 
 public enum CustomDataValue
 {
     ON,
-    OFF
+    OFF,
+
+    RESUME,
+    RESTART,
+    ADVENTURE,
+    SANDBOX,
+    CONTROLS,
+    LANGUAGE,
+    SOUND,
+    LEARNMORE
 }
 
 public class CustomData: Dictionary<string, string>
