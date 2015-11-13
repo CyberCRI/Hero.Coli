@@ -138,21 +138,21 @@ DEVICE.SUFMED= (moyen)
 
 INFO.GENERIC.NEXT=Suivant
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
-INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre première construction génétique!
-INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Elle permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Suivant" pour ouvrir l'inventaire et injecter cette construction dans Cellia.
+INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre premier gène!
+INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Il permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Suivant" pour ouvrir l'inventaire et injecter gène dans Cellia.
 INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
 INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur "Suivant" pour ouvrir l'interface de construction.
-INFO.PICKEDUPGFP.TITLE=CONSTRUCTION TROUVÉE !
-INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé une nouvelle construction génétique !
-INFO.PICKEDUPGFP.EXPLANATION=Cette construction contient le gène contrôlant la production de la protéine de fluorescence verte (GFP), qui émet une lumière verte quand on l'éclaire avec une lumière bleue.
-INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Suivant" pour injecter cette construction dans Cellia.
+INFO.PICKEDUPGFP.TITLE=GÈNE TROUVÉ !
+INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé un nouveau gène !
+INFO.PICKEDUPGFP.EXPLANATION=Ce gène contient l'ORF contrôlant la production de la protéine de fluorescence verte (GFP). La GFP émet une lumière verte quand on l'éclaire avec une lumière bleue.
+INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Suivant" pour injecter ce gène dans Cellia.
 INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
-INFO.RFP.BOTTOM=La BioBrique du gène RFP sera présente dans une prochaine version du jeu !
+INFO.RFP.BOTTOM=La BioBrique de l'ORF RFP sera présente dans une prochaine version du jeu !
 
 MODAL.RESTARTGAME.TITLE=RECOMMENCER ?
 MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vous sûr ?
@@ -182,7 +182,7 @@ CRAFT.ASSEMBLY.TITLE=Table de Construction
 CRAFT.ASSEMBLY.TIP=Pour fabriquer vos constructions génétiques, cliquez sur les éléments de la banque de BioBriques pour les afficher sur la table. Assemblez votre combinaison de BioBriques pour l'ajouter à votre inventaire.
 CRAFT.ASSEMBLY.1ST=Promoteur
 CRAFT.ASSEMBLY.2ND=RBS
-CRAFT.ASSEMBLY.3RD=Gène
+CRAFT.ASSEMBLY.3RD=ORF
 CRAFT.ASSEMBLY.4TH=Terminateur
 
 CRAFT.FINALIZATION.TITLE=Résultat
@@ -196,7 +196,7 @@ CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de la construction s'affiche ici
 CRAFT.BANK.TITLE=Banque de BioBriques
 CRAFT.BANK.PROMOTER=Promoteur
 CRAFT.BANK.RBS=RBS
-CRAFT.BANK.GENE=Gène
+CRAFT.BANK.GENE=ORF
 CRAFT.BANK.TERMINATOR=Terminateur
 CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 
@@ -297,7 +297,7 @@ TOOLTIP.B_PRTETR.EXPLANATION=Promoteur couplé avec deux séquences se liant à 
 
 
 TOOLTIP.B_RBS1.TITLE=RBS Moyen
-TOOLTIP.B_RBS1.SUBTITLE=Fonction : détermine le niveau d'expression du gène en aval.
+TOOLTIP.B_RBS1.SUBTITLE=Fonction : détermine le niveau d'expression de l'ORF en aval.
 TOOLTIP.B_RBS1.CUSTOMFIELD=Niveau d'expression :
 TOOLTIP.B_RBS1.CUSTOMVALUE=23%
 TOOLTIP.B_RBS1.LENGTH=943bp
@@ -313,25 +313,25 @@ TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
 TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.
 
 
-TOOLTIP.B_AMPR.TITLE=Gène de Résistance à l'Ampicilline
+TOOLTIP.B_AMPR.TITLE=ORF de Résistance à l'Ampicilline
 TOOLTIP.B_AMPR.SUBTITLE=Fonction : permet de résister aux antibiotiques de type ampicilline.
 TOOLTIP.B_AMPR.LENGTH=943bp
 TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
 TOOLTIP.B_AMPR.EXPLANATION=Séquence codant pour le béta-lactamase, une enzyme qui catalyze l'hydrolyse des pénicillines.
 
-TOOLTIP.B_ARAC.TITLE=Gène araC
+TOOLTIP.B_ARAC.TITLE=ORF araC
 TOOLTIP.B_ARAC.SUBTITLE=-
 TOOLTIP.B_ARAC.LENGTH=-
 TOOLTIP.B_ARAC.REFERENCE=-
 TOOLTIP.B_ARAC.EXPLANATION=-
 
-TOOLTIP.B_ATC.TITLE=Gène aTc
+TOOLTIP.B_ATC.TITLE=ORF aTc
 TOOLTIP.B_ATC.SUBTITLE=-
 TOOLTIP.B_ATC.LENGTH=-
 TOOLTIP.B_ATC.REFERENCE=-
 TOOLTIP.B_ATC.EXPLANATION=-
 
-TOOLTIP.B_FLUO1.TITLE=Gène de la GFP
+TOOLTIP.B_FLUO1.TITLE=ORF de la GFP
 TOOLTIP.B_FLUO1.SUBTITLE=Fonction : exhibe une fluorescence vert vif quand exposée à une lumière allant du bleu à l'ultraviolet.
 TOOLTIP.B_FLUO1.CUSTOMFIELD=Paramètres de\nfluorescence :
 TOOLTIP.B_FLUO1.CUSTOMVALUE=Émission max : 511nm\nExcitation max : 501nm
@@ -339,7 +339,7 @@ TOOLTIP.B_FLUO1.LENGTH=716bp
 TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
 TOOLTIP.B_FLUO1.EXPLANATION=Séquence codant pour la protéine de fluorescence verte (GFP).
 
-TOOLTIP.B_FLUO2.TITLE=Gène de la RFP
+TOOLTIP.B_FLUO2.TITLE=ORF de la RFP
 TOOLTIP.B_FLUO2.SUBTITLE=Use: exhibits bright red fluorescence when exposed to green light.
 TOOLTIP.B_FLUO2.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO2.CUSTOMVALUE=Excitation max - 587nm\nEmission max - 610nm
@@ -347,7 +347,7 @@ TOOLTIP.B_FLUO2.LENGTH=714bp
 TOOLTIP.B_FLUO2.REFERENCE=iGEM Harvard 2005
 TOOLTIP.B_FLUO2.EXPLANATION=Red Fluorescent Protein coding sequence.
 
-TOOLTIP.B_FLUO3.TITLE=Gène Venus YFP
+TOOLTIP.B_FLUO3.TITLE=ORF Venus YFP
 TOOLTIP.B_FLUO3.SUBTITLE=Use: exhibits bright yellow fluorescence when exposed to green light.
 TOOLTIP.B_FLUO3.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO3.CUSTOMVALUE=Excitation max - 515nm\nEmission max - 528nm
@@ -355,7 +355,7 @@ TOOLTIP.B_FLUO3.LENGTH=720bp
 TOOLTIP.B_FLUO3.REFERENCE=Endy Lab 
 TOOLTIP.B_FLUO3.EXPLANATION=Yellow Fluorescent Protein coding sequence.
 
-TOOLTIP.B_FLUO4.TITLE=Gène de la OFP
+TOOLTIP.B_FLUO4.TITLE=ORF de la OFP
 TOOLTIP.B_FLUO4.SUBTITLE=Use: exhibits bright orange fluorescence when exposed to green light.
 TOOLTIP.B_FLUO4.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO4.CUSTOMVALUE=Excitation max - 548nm\nEmission max - 562nm
@@ -363,7 +363,7 @@ TOOLTIP.B_FLUO4.LENGTH=769bp
 TOOLTIP.B_FLUO4.REFERENCE=molsci
 TOOLTIP.B_FLUO4.EXPLANATION=Orange Fluorescent Protein coding sequence.
 
-TOOLTIP.B_FLUO5.TITLE=Gène de la CFP
+TOOLTIP.B_FLUO5.TITLE=ORF de la CFP
 TOOLTIP.B_FLUO5.SUBTITLE=Use: exhibits bright cyan fluorescence when exposed to light in the indigo to ultraviolet.
 TOOLTIP.B_FLUO5.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO5.CUSTOMVALUE=Excitation max - 439nm\nEmission max - 476nm
@@ -371,7 +371,7 @@ TOOLTIP.B_FLUO5.LENGTH=723bp
 TOOLTIP.B_FLUO5.REFERENCE=Caitlin Conboy and Jennifer Braff
 TOOLTIP.B_FLUO5.EXPLANATION=Cyan Fluorescent Protein coding sequence.
 
-TOOLTIP.B_FLUO6.TITLE=Gène de la BFP
+TOOLTIP.B_FLUO6.TITLE=ORF de la BFP
 TOOLTIP.B_FLUO6.SUBTITLE=Use: exhibits bright blue fluorescence when exposed to light in the indigo to ultraviolet.
 TOOLTIP.B_FLUO6.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO6.CUSTOMVALUE=Excitation max - 380nm\nEmission max - 460nm
@@ -435,14 +435,14 @@ TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.subtitle=Équipé : la bactérie devient vert f
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.length=1101bp
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.reference=Stanford University
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.energyConsumption=XXX
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.explanation=Niveau d'expression constant à 12,6% du gène codant pour la protéine vert fluorescent (GFP).
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.explanation=Niveau d'expression constant à 12,6% de l'ORF codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.TITLE=Fluorescence verte (moyen)
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Niveau d'expression constant à 23% du gène codant pour la protéine vert fluorescent (GFP).
+TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Niveau d'expression constant à 23% de l'ORF codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.TITLE=Hyperflagellation (faible)
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.SUBTITLE=Équipé : augmente la vitesse de déplacement.
@@ -463,14 +463,14 @@ TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert f
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.EXPLANATION=Niveau d'expression régulé, à 12,6% du gène codant pour la protéine vert fluorescent (GFP).
+TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.EXPLANATION=Niveau d'expression régulé, à 12,6% de l'ORF codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.TITLE=(Régulé) Fluorescence verte (moyen)
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.EXPLANATION=Niveau d'expression régulé, à 23% du gène codant pour la protéine vert fluorescent (GFP).
+TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.EXPLANATION=Niveau d'expression régulé, à 23% de l'ORF codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.TITLE=(Régulé) Hyperflagellation (faible)
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.SUBTITLE=Équipé : augmente la vitesse de déplacement.
