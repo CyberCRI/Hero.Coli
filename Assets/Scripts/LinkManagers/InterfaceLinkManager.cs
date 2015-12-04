@@ -46,6 +46,7 @@ public class InterfaceLinkManager : MonoBehaviour {
 
     public LoggerLabel loggerGUIComponent;
 
+    public GameObject loginInterface;
 	//public Camera _uicamera;
 
 
@@ -94,6 +95,7 @@ public class InterfaceLinkManager : MonoBehaviour {
     
     craftScreenPanel.SetActive(false);
 
+    mainMenu.loginInterface = loginInterface;
     mainMenu.open ();
     
     gameStateController.pauseIndicator = pauseIndicator;

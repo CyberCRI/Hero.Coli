@@ -27,11 +27,14 @@ public class MainMenuManager : MonoBehaviour
 
     public MainMenuItem[] _items;
 
+    public MainMenuItemArray loginItems;
     public MainMenuItemArray mainMenuItems;
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
     public MainMenuItemArray soundItems;
     public LearnMoreOptionsMainMenuItemArray learnMoreItems;
+    
+    public GameObject loginInterface;
 
     public float verticalSpacing;
     public const float defaultVerticalSpacing = -0.1f;
@@ -40,7 +43,11 @@ public class MainMenuManager : MonoBehaviour
     private static string newGameKey = menuKeyPrefix+"NEWGAME";
     private static string resumeKey = menuKeyPrefix+"RESUME";
     private static string restartKey = menuKeyPrefix+"RESTART";
+    
+    private bool isLoggedIn = false;
+    
     public enum MainMenuScreen {
+        LOGIN,
         CONTROLS,
         LANGUAGES,
         SOUNDOPTIONS,
@@ -81,7 +88,7 @@ public class MainMenuManager : MonoBehaviour
         if (isAnItemSelected () && name == _items [_currentIndex].itemName) {
             Logger.Log ("item " + name + " was already selected", Logger.Level.DEBUG);
             return true;
-        } else {
+        } else if (_items.Length != 0) {
             for (int index = 0; index < _items.Length; index++) {
                 if (name == _items [index].itemName) {
                     deselect ();
@@ -91,6 +98,10 @@ public class MainMenuManager : MonoBehaviour
                     return true;
                 }
             }
+            Logger.Log ("couldn't find item via its name '" + name + "' among "+_items.Length+" items", Logger.Level.DEBUG);
+            return false;
+        } else {
+            Logger.Log ("no items among which to search item '" + name + "'", Logger.Level.DEBUG);
             return false;
         }
     }
@@ -229,6 +240,16 @@ public class MainMenuManager : MonoBehaviour
     public void switchTo (MainMenuScreen screen) 
     {
         switch (screen) {
+            case MainMenuScreen.LOGIN:
+                deselect ();
+                mainMenuItems.gameObject.SetActive(false);
+                controlItems.gameObject.SetActive(false);
+                languageItems.gameObject.SetActive(false);
+                soundItems.gameObject.SetActive(false);
+                learnMoreItems.gameObject.SetActive(false);
+                copyItemsFrom(loginItems);
+                selectItem(0);
+                break;
             case MainMenuScreen.CONTROLS:
                 deselect ();
                 mainMenuItems.gameObject.SetActive(false);
@@ -317,10 +338,22 @@ public class MainMenuManager : MonoBehaviour
         GameStateController.get ().leaveMainMenu();
         return true;
     }
+    
+    public void logIn(string inputString) {
+        RedMetricsManager.get ().sendEvent(TrackingEvent.LOGIN, new CustomData(CustomDataTag.LOGINID, inputString));
+        isLoggedIn = true;
+        open();
+    }
 
     public void open() {
         this.gameObject.SetActive(true);
-        switchTo (MainMenuScreen.DEFAULT);
+        if(!isLoggedIn) {
+            loginInterface.SetActive(true);
+            switchTo (MainMenuScreen.LOGIN);                        
+        } else {
+            loginInterface.SetActive(false);
+            switchTo (MainMenuScreen.DEFAULT);
+        }
     }
 
     public void close() {
