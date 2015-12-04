@@ -8,5 +8,6 @@ public class LoginManager : MonoBehaviour {
 
 	public void validate(string inputString) {
 		feedback.text = inputString;
+		RedMetricsManager.get ().sendEvent(TrackingEvent.LOGIN, new CustomData(CustomDataTag.LOGINID, inputString));
 	}
 }

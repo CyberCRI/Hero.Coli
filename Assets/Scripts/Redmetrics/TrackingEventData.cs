@@ -112,7 +112,9 @@ public enum CustomDataTag
     SOUND,
 
     NEWTAB,
-    SAMETAB
+    SAMETAB,
+    
+    LOGINID
 }
 
 public enum CustomDataValue
