@@ -344,16 +344,24 @@ public class MainMenuManager : MonoBehaviour
         isLoggedIn = true;
         open();
     }
+  
+    public void triggerEnd ()
+    {
+        mainMenuItems.triggerEnd();
+    }
+    
+    public void setLoginScreen(bool on = true) {
+        loginInterface.SetActive(on);
+        if(on) {            
+            switchTo (MainMenuScreen.LOGIN);            
+        } else {
+            switchTo (MainMenuScreen.DEFAULT);            
+        }
+    }
 
     public void open() {
         this.gameObject.SetActive(true);
-        if(!isLoggedIn) {
-            loginInterface.SetActive(true);
-            switchTo (MainMenuScreen.LOGIN);                        
-        } else {
-            loginInterface.SetActive(false);
-            switchTo (MainMenuScreen.DEFAULT);
-        }
+        setLoginScreen(!isLoggedIn);
     }
 
     public void close() {
@@ -365,10 +373,5 @@ public class MainMenuManager : MonoBehaviour
     void Start ()
     {
         selectItem (0);
-    }
-  
-    // Update is called once per frame
-    void Update ()
-       {
     }
 }

@@ -32,6 +32,7 @@ public class GameConfiguration {
     public bool isLeftClickToMove;
     //TODO manage sound configuration
     public bool isSoundOn;
+    public string login;
 
     public GameConfiguration()
     {
@@ -78,9 +79,14 @@ public class GameConfiguration {
                 return _adventureLevel1;
         }
     }
+    
+    public bool isLoggedIn() {
+        return !string.IsNullOrEmpty(login);
+    }
 
     public override string ToString ()
     {
-      return string.Format ("[GameConfiguration: restartBehavior={0}, gameMap={1}]", restartBehavior, gameMap);
+      return string.Format ("[GameConfiguration: restartBehavior={0}, gameMap={1}, language={2}, isAbsoluteWASD={3}, isLeftClickToMove={4}, isSoundOn={5}, login={6}]", 
+        restartBehavior, gameMap, language, isAbsoluteWASD, isLeftClickToMove, isSoundOn, login);
     }
 }

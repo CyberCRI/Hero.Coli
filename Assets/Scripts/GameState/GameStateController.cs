@@ -414,6 +414,8 @@ public class GameStateController : MonoBehaviour {
         //TODO merge fadeSprite with Modal background
         fadeSprite.gameObject.SetActive(true);
         fadeSprite.FadeIn();
+        
+        mainMenu.triggerEnd();
 
         StartCoroutine (waitFade (2f, egc));
     }

@@ -5,13 +5,14 @@ public class MainMenuItemArray : MonoBehaviour {
     
     public MainMenuItem[] _items;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public void triggerEnd() {
+		foreach (MainMenuItem item in _items)
+		{
+			GoToOtherGameModeMainMenuItem castItem = item as GoToOtherGameModeMainMenuItem;
+			if(castItem != null) {
+				//castItem._isLocked = false;
+				castItem.displayed = true;
+			}
+		}
 	}
 }

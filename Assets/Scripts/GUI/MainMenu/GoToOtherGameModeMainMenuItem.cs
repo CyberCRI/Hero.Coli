@@ -4,9 +4,17 @@ using System.Collections;
 public class GoToOtherGameModeMainMenuItem : MainMenuItem {
     private string adventure = "MENU.ADVENTURE";
     private string sandbox = "MENU.SANDBOX";
+    
+    //public bool _isLocked = true;
 
     public override void initialize() {
+        Debug.LogError("GoToOtherGameModeMainMenuItem::initialize");
         itemName = GameConfiguration.GameMode.ADVENTURE == MemoryManager.get ().configuration.getMode() ? sandbox : adventure;
+        //if(_isLocked) {
+        //    Debug.LogError("GoToOtherGameModeMainMenuItem::initialize displayed = false;");
+        //    displayed = false;
+        //}
+        displayed = MemoryManager.get ().configuration.isLoggedIn();
     }
 
     public override void click() {
