@@ -358,6 +358,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void close() {
         this.gameObject.SetActive(false);
+        loginInterface.SetActive(false);
     }
 
     // Use this for initialization
