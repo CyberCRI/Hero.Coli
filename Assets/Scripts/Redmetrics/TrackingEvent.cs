@@ -31,5 +31,6 @@ public enum TrackingEvent {
 	//main menu
 	SELECTMENU,
     CONFIGURE,
-	GOTOMOOC
+	GOTOMOOC,
+    GOTOURL
 }
