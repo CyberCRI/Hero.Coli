@@ -372,6 +372,9 @@ public class Medium : LoadableFromXmlImpl
         if (_name == "Cellia")
         {
             manageMoleculeConcentrationWithKey("AMPI");
+            
+            //TODO manage this differently
+            /*
             manageMoleculeConcentrationWithKey("AMPR");
             manageMoleculeConcentrationWithKey("ATC");
             manageMoleculeConcentrationWithKey("FLUO1");
@@ -382,6 +385,7 @@ public class Medium : LoadableFromXmlImpl
             manageMoleculeConcentrationWithKey("REPR2");
             manageMoleculeConcentrationWithKey("REPR3");
             manageMoleculeConcentrationWithKey("REPR4");
+            */
         }
     }
 

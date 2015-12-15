@@ -320,10 +320,12 @@ public class GameStateController : MonoBehaviour {
                     Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
                     goToOtherGameMode();
                 }
+                //TODO fix this feature
+                /*
                 else if(isShortcutKeyDown(_forgetDevicesKey))
                 {
                     Inventory.get ().switchDeviceKnowledge();
-                }
+                }*/
                 break;
 
             case GameState.Pause:

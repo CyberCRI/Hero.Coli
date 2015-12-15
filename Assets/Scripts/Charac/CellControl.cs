@@ -218,7 +218,13 @@ public class CellControl : MonoBehaviour{
    }
 
   private void updateEnergy(Vector3 moveAmount) {
-    float cost = moveAmount.sqrMagnitude*moveEnergyCost;
+    
+    //float cost = moveAmount.sqrMagnitude*moveEnergyCost;
+    
+    //TODO remove this temporary modification
+    //TODO use Time.deltaTime inside "react" methods
+    float cost = 0;
+    
     hero.subEnergy(cost);
   }
 	
