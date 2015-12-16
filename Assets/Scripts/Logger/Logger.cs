@@ -105,21 +105,23 @@ public class Logger : MonoBehaviour {
 
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(level == Level.ONSCREEN) {
-      pushMessage(debugMsg);
-    } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
-      string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
-      if (level == Level.WARN || level == Level.TEMP) {
-        Debug.LogWarning(timedMsg);
-      } else if (level == Level.ERROR) {
-        Debug.LogError(timedMsg);
-        Application.ExternalCall("DebugFromWebPlayerToBrowser", "Hero.Coli: "+timedMsg);
-      } else if (level == Level.WEBPLAYER) {
-        if (Application.isWebPlayer) {
-          Application.ExternalCall ("DebugFromWebPlayerToBrowser", timedMsg);
+    if(false && Application.isEditor) {
+      if(level == Level.ONSCREEN) {
+        pushMessage(debugMsg);
+      } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+        string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
+        if (level == Level.WARN || level == Level.TEMP) {
+          Debug.LogWarning(timedMsg);
+        } else if (level == Level.ERROR) {
+          Debug.LogError(timedMsg);
+          Application.ExternalCall("DebugFromWebPlayerToBrowser", "Hero.Coli: "+timedMsg);
+        } else if (level == Level.WEBPLAYER) {
+          if (Application.isWebPlayer) {
+            Application.ExternalCall ("DebugFromWebPlayerToBrowser", timedMsg);
+          }
+        } else {
+          Debug.Log(timedMsg);
         }
-      } else {
-        Debug.Log(timedMsg);
       }
     }
   }
