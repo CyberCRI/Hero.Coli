@@ -49,6 +49,8 @@ public class Logger : MonoBehaviour {
     {
         return Logger._singleton;
     }
+    
+    private static bool _isEditor;
 
   //TODO fix interactive mode by making this field static
   //public bool interactiveDebug = true;
@@ -103,9 +105,14 @@ public class Logger : MonoBehaviour {
     return false;
   }
 
+  void Awake() {
+    _isEditor = Application.isEditor; 
+  }
+
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(false && Application.isEditor) {
+    //TODO replace this test by inheritance/factory/implementation use
+    if(false && _isEditor) {
       if(level == Level.ONSCREEN) {
         pushMessage(debugMsg);
       } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {

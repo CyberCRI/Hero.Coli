@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Vectrosity;
 /*!
  \brief This behaviour class manages the line drawing on a basic 2D shape
- \author Yann LEFLOUR
- \mail yleflour@gmail.com
  \sa PanelInfo
  \sa VectrosityPanel
 */
@@ -14,12 +12,15 @@ public class Line{
 	public string name {get; set;} //!< The line name
 	public float graphHeight {get; set;} //!< The line max Y value
 	public VectorLine vectorline {get{return _vectorline;}} //!< The Vectrosity line
-	public Vector3[] pointsArray {get{return _pointsArray;}} //!< The Vector3 array used by vectrosity to draw the lines
+	//public Vector3[] pointsArray {get{return _pointsArray;}} //!< The Vector3 array used by vectrosity to draw the lines
+	public List<Vector3> pointsList {get{return _pointsList;}} //!< The Vector3 List used by vectrosity to draw the lines
 	
 	private VectorLine _vectorline;
 	private PanelInfos _panelInfos;
-	private Vector3[] _pointsArray;
-	private List<float> _pointsList;
+	//private Vector3[] _pointsArray;
+	private LinkedList<Vector3> _pointsLinkedList;
+	private List<Vector3> _pointsList;
+	private List<float> _floatList;
 	private int _graphWidth; //!< The line max X value (final)
 	private float _ratioW, _ratioH;
 	private float _lastVal = 0f;
@@ -61,12 +62,16 @@ public class Line{
 		this._graphWidth = graphWidth;
 		this.graphHeight = graphHeight;
 		
-		this._pointsList = new List<float>();
-		this._pointsArray = new Vector3[_graphWidth];
+		this._floatList = new List<float>();
+		//this._pointsArray = new Vector3[_graphWidth];
+		this._pointsLinkedList = new LinkedList<Vector3>();
+		this._pointsList = new List<Vector3>();
 		
 		this.color = generateAppropriateColor();
 		
-		this._vectorline = new VectorLine("Graph", _pointsArray, this.color, null, 1.0f, LineType.Continuous, Joins.Weld);
+		//this._vectorline = new VectorLine("Graph", _pointsArray, this.color, null, 1.0f, LineType.Continuous, Joins.Weld);
+		this._vectorline = new VectorLine("Graph", _pointsList, 1.0f, LineType.Continuous, Joins.Weld);
+		this._vectorline.color = this.color;
 		this._vectorline.layer = _panelInfos.layer;
 		
 		resize();
@@ -78,21 +83,33 @@ public class Line{
 	 * \param point the Y value
  	*/
 	public void addPoint(float point){
-		if(_pointsList.Count == _graphWidth)
-			_pointsList.RemoveAt(0);
-		_pointsList.Add(point);
+		if(_floatList.Count == _graphWidth)
+			_floatList.RemoveAt(0);
+		_floatList.Add(point);
 		
-		shiftLeftArray();
+		shiftLeftArray(point);
 	}
 	
-	public void shiftLeftArray() {
-		
+	public void shiftLeftArray(float point) {
+		/*
 		for(int i = 0 ; i < _graphWidth - 1; i++){
 			_pointsArray[i] = _pointsArray[i+1];
 			_pointsArray[i].x = getX(i);
 		}
 		
-		_pointsArray[_graphWidth - 1] = newPoint(_graphWidth - 1, _pointsList[_pointsList.Count-1]);
+		_pointsArray[_graphWidth - 1] = newPoint(_graphWidth - 1, _floatList[_floatList.Count-1]);
+		*/
+		LinkedList<Vector3> newList = new LinkedList<Vector3>();
+		_pointsLinkedList.RemoveFirst();
+		int i = 0;
+		foreach(Vector3 v in _pointsLinkedList){
+			Vector3 newPt = new Vector3(getX(i), v.y, v.z); 
+			newList.AddLast(newPt);
+			i++;
+		}
+		//_pointsLinkedList.AddLast(newPoint(_graphWidth - 1, _floatList[_floatList.Count-1]));
+		newList.AddLast(newPoint(_graphWidth - 1, point));
+		_pointsLinkedList = newList;
 	}
 	
 	/*!
@@ -119,15 +136,17 @@ public class Line{
 		
 		//Unknown values
 		int i = 0;
-		int firstRange = _graphWidth - _pointsList.Count;
-		for(; i < firstRange ; i++){
-			_pointsArray[i] = newPoint(i, false);
-		}
+		int firstRange = _graphWidth - _floatList.Count;
+		_pointsLinkedList.Clear();
 		
+		for(; i < firstRange ; i++){
+			_pointsLinkedList.AddLast(newPoint(i, false));
+		}
+				
 		//Known values
-		i = _graphWidth - _pointsList.Count;
-		foreach(float val in _pointsList){
-			_pointsArray[i] = newPoint(i, val);
+		i = _graphWidth - _floatList.Count;
+		foreach(float val in _floatList){
+			_pointsLinkedList.AddLast(newPoint(i, val));
 			i++;
 		}
 	}

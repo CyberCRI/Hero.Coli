@@ -12,7 +12,8 @@ public class Curve
   private string _label;
   private LinkedList<Vector2> _points;
   private VectorLine _line;
-  private Vector2[] _pts;
+  //private Vector2[] _pts;
+  private List<Vector2> _pts;
 
   private LineType[] _linesTypes;
 //   private VectorLine[] _lines;
@@ -29,11 +30,14 @@ public class Curve
     _mol = mol;
     _label = mol.getName();
     _points = new LinkedList<Vector2>();
-    _pts = new Vector2[_maxPoints];
+    //_pts = new Vector2[_maxPoints];
+    _pts = new List<Vector2>();
     _minY = 0;
     _maxY = 0;
     _color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
-    _line = new VectorLine(mol.getName(), _pts, _color, null, 2.0f, LineType.Continuous, Joins.Weld);
+    //_line = new VectorLine(mol.getName(), _pts, _color, null, 2.0f, LineType.Continuous, Joins.Weld);
+    _line = new VectorLine(mol.getName(), _pts, 2.0f, LineType.Continuous, Joins.Weld);
+    _line.color = _color;
     _isEnabled = true;
     _vectroCam = VectroCam;
 //     _pos = pos;
@@ -43,7 +47,8 @@ public class Curve
 
     VectorManager.useDraw3D = true;
     if (_vectroCam != null)
-      Vectrosity.VectorLine.SetCamera(_vectroCam);
+      //Vectrosity.VectorLine.SetCamera(_vectroCam);
+      Vectrosity.VectorLine.SetCamera3D(_vectroCam);
     else
       Debug.Log("No Camera set for the Graph Window.");
   }
@@ -122,7 +127,10 @@ public class Curve
 
     if (_isEnabled == false)
       return;
+      
+      _pts = new List<Vector2>(_points);
 
+/*
     foreach (Vector2 pt in _points)
       {
         Vector2 tmpPt = new Vector2();
@@ -134,15 +142,10 @@ public class Curve
         _pts[i] = tmpPt;
         i++;
       }    
-    _line.drawStart = 0;
-    _line.drawEnd = _points.Count - 1;
+*/
+    //_line.drawStart = 0;
+    //_line.drawEnd = _points.Count - 1;
     _line.Draw();
   }
-
-//   public Vector2[] getPts()
-//   {
-//     updatePts();
-//     return _pts;
-//   }
 
 }
