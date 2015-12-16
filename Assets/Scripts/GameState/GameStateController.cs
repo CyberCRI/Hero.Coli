@@ -242,7 +242,7 @@ public class GameStateController : MonoBehaviour {
 	// Update is called once per frame
     void Update () {
 
-        //TODO remove this
+        /*
         if(Input.GetKeyDown(KeyCode.W))
         {
             Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
@@ -260,6 +260,7 @@ public class GameStateController : MonoBehaviour {
             //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
             perso.GetComponent<CellControl>().stopMovement();
         }
+        */
 
         switch(_gameState){
 
@@ -315,11 +316,12 @@ public class GameStateController : MonoBehaviour {
                     Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
                     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                 }
+                /*
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
                     Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
                     goToOtherGameMode();
-                }
+                }*/
                 //TODO fix this feature
                 /*
                 else if(isShortcutKeyDown(_forgetDevicesKey))
