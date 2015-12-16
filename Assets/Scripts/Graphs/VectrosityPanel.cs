@@ -111,9 +111,15 @@ public class VectrosityPanel : MonoBehaviour {
   }
 	
   // Update is called once per frame
-  void Update () {
-	  bool resize = refreshInfos();
-	  drawLines(resize);
+  void Update () {    
+    if(Input.GetKeyDown(KeyCode.W)) {
+      draw = !draw;
+    }
+    
+    if(draw) {
+	     bool resize = refreshInfos();
+	     drawLines(resize);
+    }
   }
 	
   void OnDisable() {
