@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 
 public class GameConfiguration {
     
     private static string _adventureLevel1 = "World1.0";
     private static string _sandboxLevel1 = "Sandbox-0.1";
     private static string _sandboxLevel2 = "Sandbox-0.2";
+    
+    private string playerGUIDPlayerPrefsKey = "playerGUID";
 
     public enum RestartBehavior
     {
@@ -32,6 +35,7 @@ public class GameConfiguration {
     public bool isLeftClickToMove;
     //TODO manage sound configuration
     public bool isSoundOn;
+    public string playerGUID;
 
     public GameConfiguration()
     {
@@ -40,6 +44,14 @@ public class GameConfiguration {
         language = I18n.Language.English;
         isAbsoluteWASD = true;
         isLeftClickToMove = true;
+        playerGUID = PlayerPrefs.GetString(playerGUIDPlayerPrefsKey);
+        if(string.IsNullOrEmpty(playerGUID)) {
+            playerGUID = Guid.NewGuid().ToString();
+            PlayerPrefs.SetString(playerGUIDPlayerPrefsKey, playerGUID);
+        }
+        
+        //TODO send playerGUID to RedMetrics
+        //TODO unlock Sandbox if Adventure was finished 
     }
 
     public GameMode getMode() {

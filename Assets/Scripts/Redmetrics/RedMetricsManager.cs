@@ -243,13 +243,17 @@ public class RedMetricsManager : MonoBehaviour
         //logMessage("RedMetricsManager::trackStart: www =? null:"+(null == www));
         string pID = extractPID (www);
         setPlayerID (pID);
+        //TODO send local GUID with START envent
         sendEvent (TrackingEvent.START);
     }
     //////////////////////////////////////////////////
 
+    //TODO send local GUID with START envent
+    private void generateCustomData() {
+        CustomData guidCD = new CustomData (CustomDataTag.NEWTAB, localizedUrl);        
+    } 
 
-
-
+    //////////////////////////////////////////////////
     // filtering is done on Application.isWebPlayer
     // but could be done on Application.platform for better accuracy
     public void sendStartEvent (bool restart)
@@ -298,6 +302,7 @@ public class RedMetricsManager : MonoBehaviour
   
     private IEnumerator waitAndSendStart ()
     {
+        //TODO send local GUID with START envent
         sendEvent(TrackingEvent.START);
         yield return new WaitForSeconds (5.0f);
         //all waiting events are flushed so that if the players disconnects, at least there's a trace that a player started the game

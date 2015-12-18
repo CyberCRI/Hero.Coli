@@ -168,7 +168,10 @@ public class MemoryManager : MonoBehaviour {
     //v1.31
     //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
     //v1.32
-    public string gameVersionGuid = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";    
+    public string gameVersionGuid = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
+    //v1.33
+    //public string gameVersionGuid = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
+    
     public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
   
     public void sendCompletionEvent()
