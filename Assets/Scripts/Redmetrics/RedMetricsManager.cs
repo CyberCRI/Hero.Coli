@@ -243,14 +243,21 @@ public class RedMetricsManager : MonoBehaviour
         //logMessage("RedMetricsManager::trackStart: www =? null:"+(null == www));
         string pID = extractPID (www);
         setPlayerID (pID);
-        //TODO send local GUID with START envent
-        sendEvent (TrackingEvent.START);
+        sendStartEventWithPlayerGUID();
     }
     //////////////////////////////////////////////////
+  
+    private void sendStartEventWithPlayerGUID() {
+        CustomData guidCD = generateCustomData();
+        sendEvent (TrackingEvent.START, guidCD);
+    }
 
-    //TODO send local GUID with START envent
-    private void generateCustomData() {
-        CustomData guidCD = new CustomData (CustomDataTag.NEWTAB, localizedUrl);        
+    private CustomData generateCustomData() {
+        string playerGUID = MemoryManager.get().configuration.playerGUID;
+        //TODO manage GLOBALPLAYERGUID
+        CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, playerGUID);
+        Debug.LogError("generated guidCD="+guidCD);
+        return guidCD;        
     } 
 
     //////////////////////////////////////////////////
@@ -302,8 +309,8 @@ public class RedMetricsManager : MonoBehaviour
   
     private IEnumerator waitAndSendStart ()
     {
-        //TODO send local GUID with START envent
-        sendEvent(TrackingEvent.START);
+        sendStartEventWithPlayerGUID();
+        
         yield return new WaitForSeconds (5.0f);
         //all waiting events are flushed so that if the players disconnects, at least there's a trace that a player started the game
         executeAndClearAllWaitingEvents();

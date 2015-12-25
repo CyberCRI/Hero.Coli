@@ -6,9 +6,9 @@ Obj/
 UnityGenerated/
 Library/
  
-# ===================================== #
-# Visual Studio / MonoDevelop generated #
-# ===================================== #
+# ============================================== #
+# Visual Studio / MonoDevelop / VSCode generated #
+# ============================================== #
 ExportedObj/
 *.svd
 *.userprefs
@@ -19,6 +19,7 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
+.vscode/
 
 # ============ #
 # OS generated #
