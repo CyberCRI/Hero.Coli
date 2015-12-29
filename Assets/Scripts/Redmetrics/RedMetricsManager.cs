@@ -80,12 +80,11 @@ public class RedMetricsManager : MonoBehaviour
 
     public void Start ()
     {
-        //sendStartEvent (false);
+        sendStartEvent (false);
     }
 
     private static void logMessage (string message, MessageLevel level = MessageLevel.DEFAULT)
     {
-/*
         //if the game is played using a web player
         if (Application.isWebPlayer) {
             Application.ExternalCall ("DebugFromWebPlayerToBrowser", message);
@@ -107,7 +106,6 @@ public class RedMetricsManager : MonoBehaviour
                     break;
             }
         }
-*/
     }
   
     //////////////////////////////////////////////////

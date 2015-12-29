@@ -9,6 +9,8 @@ using System.Collections.Generic;
 */
 public class VectrosityPanel : MonoBehaviour {
 	
+    //TODO bugfix: Cell VectrosityPanel displays World chemicals
+    
   public Camera GUICam; //!< The Isometric camera which will display the layer
   public bool draw = true; //!< Toggles drawing of the lines
   public float padding; //!< Adds padding to the side of your graph (to use if the panel sprite \shape has borders
