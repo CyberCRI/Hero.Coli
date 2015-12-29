@@ -11,4 +11,8 @@ public class PanelInfos
 	public Vector3 panelDimensions {get;set;} //!< The panel box collider size
 	public float padding {get;set;} //!< The graph padding
 	public int layer {get;set;} //!< The NGUI/Graph layer
+    
+    public override string ToString() {
+        return string.Format ("[PanelInfos: panelPos={0}, panelDimensions={1}, padding={2}, layer={3}]", panelPos, panelDimensions, padding, layer);
+    }
 }

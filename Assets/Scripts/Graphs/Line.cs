@@ -7,11 +7,10 @@ using Vectrosity;
  \sa PanelInfo
  \sa VectrosityPanel
 */
-public class Line{
+public class Line : VectrosityPanelLine {
 	public Color color {get; set;} //!< The line color
-	public string name {get; set;} //!< The line name
 	public float graphHeight {get; set;} //!< The line max Y value
-	public VectorLine vectorline {get{return _vectorline;}} //!< The Vectrosity line
+	public override VectorLine vectorline {get{return _vectorline;}} //!< The Vectrosity line
 	//public Vector3[] pointsArray {get{return _pointsArray;}} //!< The Vector3 array used by vectrosity to draw the lines
 	public List<Vector3> pointsList {get{return _pointsList;}} //!< The Vector3 List used by vectrosity to draw the lines
 	
@@ -82,7 +81,7 @@ public class Line{
 	 * \brief Adds a new point on the graph
 	 * \param point the Y value
  	*/
-	public void addPoint(float point){
+	public override void addPoint(float point){
 		if(_floatList.Count == _graphWidth)
 			_floatList.RemoveAt(0);
 		_floatList.Add(point);
@@ -122,15 +121,15 @@ public class Line{
 	/*!
 	 * \brief Redraws the line
  	*/
-	public void redraw(){
-		_vectorline.Draw3D();
+	public override void redraw(){
+		_vectorline.Draw();
 	}
 	
 	/*!
 	 * \brief Resizes the graph based on the panel Transform properties
 	 * \sa PanelInfos
  	*/
-	public void resize(){
+	public override void resize(){
 		_ratioW = (_panelInfos.panelDimensions.x - 2 * _paddingRatio * _panelInfos.padding) / _graphWidth;
 		_ratioH = (_panelInfos.panelDimensions.y - 2 * _paddingRatio * _panelInfos.padding) / graphHeight;
 		
@@ -193,6 +192,10 @@ public class Line{
 	private float getMinY() {
 		return _panelInfos.panelPos.y + _paddingRatio *_panelInfos.padding;
 	}
+    
+    public override void doDebugAction() {
+        
+    } 
 	
 }
 
