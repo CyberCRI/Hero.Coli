@@ -113,7 +113,7 @@ public class TestNewLine : VectrosityPanelLine {
                 _pointsLinkedList.AddFirst(new Vector2(getX(j), point));
             }
         }*/
-		int i = 0;
+		int i = _graphWidth - _pointsLinkedList.Count;
 		foreach(Vector2 v in _pointsLinkedList){
 			Vector2 newPt = new Vector2(getX(i), v.y); 
 			newList.AddLast(newPt);
