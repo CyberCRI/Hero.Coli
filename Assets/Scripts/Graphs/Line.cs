@@ -14,12 +14,15 @@ public class Line : VectrosityPanelLine {
 	
 	private VectorLine _vectorline;
 	private PanelInfos _panelInfos;
-	private LinkedList<Vector2> _pointsLinkedList;
-	private List<Vector2> _pointsList;
-	private List<float> _floatList;
+    
+	private List<Vector2> _pointsList; // list of points fed to VectorLine
+	private List<float> _floatList; // list of values
+    
+    private int lastNonZeroValueIndex; //index of last non-zero value in _floatList
+    
 	private int _graphWidth; //!< The line max X value (final)
 	private float _ratioW, _ratioH;
-	private float _lastVal = 0f;
+	//private float _lastVal = 0f;
 	private float _paddingRatio = 0.001f;
 
   private Color generateColor()
@@ -57,13 +60,13 @@ public class Line : VectrosityPanelLine {
         this.moleculeName = _moleculeName;
 		this._panelInfos = panelInfos;
 		this._graphWidth = graphWidth;
+        this.lastNonZeroValueIndex = graphWidth;
 		this.graphHeight = _graphHeight;
         computeRatios();
         
 		this.color = generateAppropriateColor();
         
 		this._floatList = new List<float>();
-		this._pointsLinkedList = new LinkedList<Vector2>();
 		this._pointsList = new List<Vector2>();		
         
 		initializeVectorLine();
@@ -86,39 +89,40 @@ public class Line : VectrosityPanelLine {
 	 * \param point the Y value
  	*/
 	public override void addPoint(float point){
+        if(0 != point) {
+            lastNonZeroValueIndex = 0;
+        } else if(lastNonZeroValueIndex >= _graphWidth && _floatList.Count > 0) {
+            _floatList.Clear();
+            _pointsList.Clear();
+            return;
+        } else if (0 == point && 0 == _floatList.Count) {
+            return;
+        }
+        
 		if(_floatList.Count == _graphWidth) {
 			_floatList.RemoveAt(0);
-        }
-		_floatList.Add(point);
-		
-		shiftLeft(point);
-	}
-	
-	private void shiftLeft(float point) {
-		LinkedList<Vector2> newList = new LinkedList<Vector2>();
-        if(_pointsLinkedList.Count == _graphWidth) {
-		  _pointsLinkedList.RemoveFirst();
+        } else if (0 != point && 0 == _floatList.Count) {
+            _floatList.Add(getY(0f));
         }
         
-		int i = _graphWidth - _pointsLinkedList.Count;
-		foreach(Vector2 v in _pointsLinkedList){
-			Vector2 newPt = new Vector2(getX(i), v.y); 
-			newList.AddLast(newPt);
+		_floatList.Add(getY(point));
+		
+		shiftLeft();
+	}
+	
+	private void shiftLeft() {
+		List<Vector2> newList = new List<Vector2>();
+        
+		int i = _graphWidth - _floatList.Count;
+		foreach(float f in _floatList){
+			Vector2 newPt = new Vector2(getX(i), f); 
+			newList.Add(newPt);
 			i++;
 		}
-		
-		newList.AddLast(newPoint(_graphWidth - 1, point));
-		_pointsLinkedList = new LinkedList<Vector2>(newList);
-        
+		        
         _pointsList.Clear();
         _pointsList.AddRange(newList);
-	}
-	
-	/*!
-	 * \brief Adds a hidden point based on the previous value
- 	*/
-	private void addPoint(){
-		addPoint(_lastVal);
+        lastNonZeroValueIndex++;
 	}
 	
 	/*!
@@ -165,17 +169,18 @@ public class Line : VectrosityPanelLine {
         computeRatios();     
 	}
 	
-	/*!
+    /*
+	/ *!
 	 * \brief Generates the Vector2 point corresponding to the X and Y values
- 	*/
+ 	* /
 	private Vector2 newPoint(int x, float y){
 		_lastVal = Mathf.Clamp(y, 0, graphHeight);
 		return newPoint(x, true);
 	}
 	
-	/*!
+	/ *!
 	 * \brief Generates the Vector2 hidden point based on the previous value
- 	*/
+ 	* /
 	private Vector2 newPoint(int x, bool visible){
 		if(visible) {
 			return new Vector2(
@@ -190,14 +195,28 @@ public class Line : VectrosityPanelLine {
 		}
 		
 	}
+    
+	private float getY(){
+		return _lastVal * _ratioH + getMinY();
+	}
+    
+    /*
+	/ *!
+	 * \brief Adds a hidden point based on the previous value
+ 	* /
+	private void addPoint(){
+		addPoint(_lastVal);
+	}
+    */
 	
 	private float getX(int x){
 		return        x * _ratioW + getMinX();
 	}
-	private float getY(){
-		return _lastVal * _ratioH + getMinY();
+	private float getY(float y){
+		return Mathf.Clamp(y, 0, graphHeight) * _ratioH + getMinY();
 	}
 	
+    /*
 	private float getMaxX() {
         if(null != _panelInfos) {
 		  return _panelInfos.panelDimensions.x - getMinX();
@@ -206,6 +225,7 @@ public class Line : VectrosityPanelLine {
             return 0;
         }
 	}
+    */
 	
 	private float getMinX() {
         if(null != _panelInfos) {
