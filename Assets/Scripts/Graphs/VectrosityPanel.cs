@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Vectrosity;
+
 /*!
  \brief This behaviour class manages the line drawing on a basic 2D shape
  \sa PanelInfo
@@ -62,9 +62,7 @@ public class VectrosityPanel : MonoBehaviour {
   }
 
   public void setMedium(int mediumId)
-  {
-    //Debug.LogError("setMedium("+mediumId+")");
-    
+  {    
     if(!safeLazyInit())
         return;
 
@@ -73,28 +71,23 @@ public class VectrosityPanel : MonoBehaviour {
     Medium medium = ReactionEngine.getMediumFromId(_mediumId, _mediums);
     if (medium == null)
     {
-        Debug.LogError("VectrosityPanel Can't find the given medium (" + _mediumId + ")");
+        Logger.Log("VectrosityPanel Can't find the given medium (" + _mediumId + ")", Logger.Level.ERROR);
         return ;
     }
   
     _molecules = medium.getMolecules();
     if (_molecules == null) {
-        Debug.LogError("VectrosityPanel Can't find molecules in medium (" + _mediumId + ")");
+        Logger.Log("VectrosityPanel Can't find molecules in medium (" + _mediumId + ")", Logger.Level.ERROR);
         return ;
     }
 
     VectrosityPanelLine line;
     foreach (Molecule m in _molecules)
     {
-        //string targetLineName = getLineName(m);
-        if("MOV" == m.getName()) {
-            //Debug.LogError("VectrosityPanel found MOV");
-            line = _lines.Find(l => m.getName() == l.name);
-            if(null == line)
-            {
-                _lines.Add(new TestNewLine(width, height, infos, _mediumId+"."+m.getName()));
-                //Debug.LogError("VectrosityPanel added MOV line");
-            }
+        line = _lines.Find(l => m.getName() == l.moleculeName);
+        if(null == line)
+        {
+            _lines.Add(new Line(width, height, infos, _mediumId, m.getName()));
         }
     }
   
@@ -102,26 +95,9 @@ public class VectrosityPanel : MonoBehaviour {
     
     lineCount = _lines.Count;
   }
-  
-  
-  
-    
-    /*
-    private string getLineName(Molecule m) {
-        return _mediumId.ToString()+"."+m.getName();
-    }
-    */
 	
   // Use this for initialization
-  void Start () {
-    if(_mediumId == 1) {
-        //TODO remove
-        //gameObject.AddComponent<TestVectorLine>();
-    } else {
-        Destroy(this);
-        return;
-    }
-    
+  void Start () {    
     infos = new PanelInfos();
     //refreshInfos();
     setInfos();
@@ -134,26 +110,21 @@ public class VectrosityPanel : MonoBehaviour {
 	
   // Update is called once per frame
   void Update () {
-    if(_mediumId == 1) {
-        bool resize = refreshInfos();
-        drawLines(resize);
-    }
-    
+    //bool resize = refreshInfos();
+    //drawLines(resize);
+    drawLines(false);
+
+/*    
     if(Input.GetKeyDown(KeyCode.Z)) {
         if(_mediumId == 1) {
-        /*
-        UnityEngine.Bounds panelBounds = GetComponent<Collider>().bounds;
-        Debug.LogError("VectrosityPanel Z with #_lines="+_lines.Count
-        +"; bounds.center="+panelBounds.center
-        +"; bounds.size="+panelBounds.size);
-        //*/
             foreach(VectrosityPanelLine line in _lines) {
-                //Debug.LogError("VectrosityPanel called doDebugAction on "+line.name);
                 line.doDebugAction();
             }
         }
     }
-    
+ //*/
+ 
+ /*   
     if(Input.GetKeyDown(KeyCode.E)) {
         if(_mediumId == 1) {
             if(areLinesNull) {
@@ -172,7 +143,8 @@ public class VectrosityPanel : MonoBehaviour {
                 areLinesNull = true;
             }
         }
-    }    
+    }
+//*/    
   } 
     
   void OnDisable() {
@@ -194,29 +166,24 @@ public class VectrosityPanel : MonoBehaviour {
    * \param resize If true will resize the lines first
   */
   private void drawLines(bool resize) {
-    Logger.Log("VectrosityPanel drawLines", Logger.Level.ONSCREEN);
-    if (_mediumId != 1 || _molecules == null)
+    if (_molecules == null)
         return ;
     foreach(VectrosityPanelLine line in _lines)
     {
-        Logger.Log("VectrosityPanel drawLines line.name="+line.name, Logger.Level.ONSCREEN);
-        if("1.MOV" == line.name) {        
-            //TODO add molecule in VectrosityPanelLine/Line instead of using same name for line and molecule?
-            Molecule m = ReactionEngine.getMoleculeFromName("MOV", _molecules);
-            //if(resize)
-                //line.resize();
-            if(!_paused) {
-                if (m != null) {
-                    float cc = m.getConcentration();
-                    Logger.Log("VectrosityPanel drawLines adds cc="+cc, Logger.Level.ONSCREEN);
-                    line.addPoint(cc);
-                } else {
-                    Logger.Log("VectrosityPanel drawLines adds 0", Logger.Level.ONSCREEN);
-                    line.addPoint(0f);
-                }
+        Molecule m = ReactionEngine.getMoleculeFromName(line.moleculeName, _molecules);
+        
+        //TODO dynamic resize
+        //if(resize)
+            //line.resize();
+            
+        if(!_paused) {
+            if (m != null) {
+                line.addPoint(m.getConcentration());
+            } else {
+                line.addPoint(0f);
             }
-            line.redraw();
         }
+        line.redraw();
     }
   }
   
@@ -231,7 +198,7 @@ public class VectrosityPanel : MonoBehaviour {
         //Vector2 graphPanelRatio = new Vector2(0.88f, 0.6f);        
         
         infos.panelDimensions = new Vector3(vectrosityPanelSize.x*graphPanelRatio.x, vectrosityPanelSize.y*graphPanelRatio.y, 0);        
-        //?infos.panelDimensions = new Vector2(140, 354);
+        //infos.panelDimensions = new Vector2(140, 354);
         
         //screen size: 1280x720
         //infos.panelPos = new Vector3(640, 354, 0);        
@@ -259,10 +226,10 @@ public class VectrosityPanel : MonoBehaviour {
    * \return True if the panel information were modified
    * \sa PanelInfo
   */
-  private bool refreshInfos(){
+  /*
+  private bool refreshInfos(){ //TODO dynamic resize
   	bool changed = false;
       
-      /*
   	if(infos.layer != gameObject.layer){
   		infos.layer = gameObject.layer;
   		changed = true;
@@ -278,20 +245,7 @@ public class VectrosityPanel : MonoBehaviour {
         infos.panelDimensions = panelBounds.size;
         changed = true;
   	}
-		
-    UISprite sprite = this.gameObject.GetComponent<UISprite>();
-    
-    
-    Logger.Log("infos.panelPos="+infos.panelPos, Logger.Level.ONSCREEN);
-    Logger.Log("infos.panelDimensions="+infos.panelDimensions, Logger.Level.ONSCREEN);
-    Logger.Log("panelBounds.center="+panelBounds.center, Logger.Level.ONSCREEN);
-    Logger.Log("panelBounds.size="+panelBounds.size, Logger.Level.ONSCREEN);
-    Logger.Log("go.name="+this.gameObject.name, Logger.Level.ONSCREEN);
-    Logger.Log("go.position="+this.gameObject.transform.position, Logger.Level.ONSCREEN);
-    //Logger.Log("go.scale="+this.gameObject.transform., Logger.Level.ONSCREEN);
-    //Logger.Log("sprite.dimensions=["+sprite.mainTexture.width+";"+sprite.mainTexture.height+"]", Logger.Level.ONSCREEN);
-    //Logger.Log("sprite.relativeSize="+sprite.relativeSize, Logger.Level.ONSCREEN);
-        
+	    
   	if(
 		infos.panelPos.x != panelBounds.center.x - infos.panelDimensions.x/2 
 	 || infos.panelPos.y != panelBounds.center.y - infos.panelDimensions.y/2 
@@ -303,7 +257,7 @@ public class VectrosityPanel : MonoBehaviour {
   			panelBounds.center.z);
   		changed = true;
   	}
-  	*/
   	return changed;
   }
+  //*/
 }

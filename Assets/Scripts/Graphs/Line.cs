@@ -1,9 +1,8 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Vectrosity;
 /*!
- \brief This behaviour class manages the line drawing on a basic 2D shape
+ \brief Class for Vectrosity graph to draw refreshed data on graph
  \sa PanelInfo
  \sa VectrosityPanel
 */
@@ -11,14 +10,12 @@ public class Line : VectrosityPanelLine {
 	public Color color {get; set;} //!< The line color
 	public float graphHeight {get; set;} //!< The line max Y value
 	public override VectorLine vectorline {get{return _vectorline;}} //!< The Vectrosity line
-	//public Vector3[] pointsArray {get{return _pointsArray;}} //!< The Vector3 array used by vectrosity to draw the lines
-	public List<Vector3> pointsList {get{return _pointsList;}} //!< The Vector3 List used by vectrosity to draw the lines
+	public List<Vector2> pointsList {get{return _pointsList;}} //!< The Vector2 List used by vectrosity to draw the lines
 	
 	private VectorLine _vectorline;
 	private PanelInfos _panelInfos;
-	//private Vector3[] _pointsArray;
-	private LinkedList<Vector3> _pointsLinkedList;
-	private List<Vector3> _pointsList;
+	private LinkedList<Vector2> _pointsLinkedList;
+	private List<Vector2> _pointsList;
 	private List<float> _floatList;
 	private int _graphWidth; //!< The line max X value (final)
 	private float _ratioW, _ratioH;
@@ -55,66 +52,72 @@ public class Line : VectrosityPanelLine {
 	 * \param graphWidth Max number of values on the X axis (cannot be modified)
 	 * \param panelinfos contains the panel Transform values \sa PanelInfos
  	*/
-  public Line(int graphWidth, float graphHeight, PanelInfos panelInfos, string name = ""){
-    this.name = name;
+  public Line(int graphWidth, float _graphHeight, PanelInfos panelInfos, int _mediumId, string _moleculeName){
+        this.name = generateLineName(_mediumId, _moleculeName);
+        this.moleculeName = _moleculeName;
 		this._panelInfos = panelInfos;
 		this._graphWidth = graphWidth;
-		this.graphHeight = graphHeight;
-		
-		this._floatList = new List<float>();
-		//this._pointsArray = new Vector3[_graphWidth];
-		this._pointsLinkedList = new LinkedList<Vector3>();
-		this._pointsList = new List<Vector3>();
-		
+		this.graphHeight = _graphHeight;
+        computeRatios();
+        
 		this.color = generateAppropriateColor();
-		
-		//this._vectorline = new VectorLine("Graph", _pointsArray, this.color, null, 1.0f, LineType.Continuous, Joins.Weld);
-		this._vectorline = new VectorLine("Graph", _pointsList, 1.0f, LineType.Continuous, Joins.Weld);
+        
+		this._floatList = new List<float>();
+		this._pointsLinkedList = new LinkedList<Vector2>();
+		this._pointsList = new List<Vector2>();		
+        
+		initializeVectorLine();
+        
+        resize();
+		redraw();
+	}
+    
+    public override void initializeVectorLine() {
+        this._vectorline = new VectorLine("GraphNL_"+name, _pointsList, 1.0f, LineType.Continuous, Joins.Weld);
 		this._vectorline.color = this.color;
 		this._vectorline.layer = _panelInfos.layer;
 		
-		resize();
+        //resize();
 		redraw();
-	}
+    }
 	
 	/*!
 	 * \brief Adds a new point on the graph
 	 * \param point the Y value
  	*/
 	public override void addPoint(float point){
-		if(_floatList.Count == _graphWidth)
+		if(_floatList.Count == _graphWidth) {
 			_floatList.RemoveAt(0);
+        }
 		_floatList.Add(point);
 		
-		shiftLeftArray(point);
+		shiftLeft(point);
 	}
 	
-	public void shiftLeftArray(float point) {
-		/*
-		for(int i = 0 ; i < _graphWidth - 1; i++){
-			_pointsArray[i] = _pointsArray[i+1];
-			_pointsArray[i].x = getX(i);
-		}
-		
-		_pointsArray[_graphWidth - 1] = newPoint(_graphWidth - 1, _floatList[_floatList.Count-1]);
-		*/
-		LinkedList<Vector3> newList = new LinkedList<Vector3>();
-		_pointsLinkedList.RemoveFirst();
-		int i = 0;
-		foreach(Vector3 v in _pointsLinkedList){
-			Vector3 newPt = new Vector3(getX(i), v.y, v.z); 
+	private void shiftLeft(float point) {
+		LinkedList<Vector2> newList = new LinkedList<Vector2>();
+        if(_pointsLinkedList.Count == _graphWidth) {
+		  _pointsLinkedList.RemoveFirst();
+        }
+        
+		int i = _graphWidth - _pointsLinkedList.Count;
+		foreach(Vector2 v in _pointsLinkedList){
+			Vector2 newPt = new Vector2(getX(i), v.y); 
 			newList.AddLast(newPt);
 			i++;
 		}
-		//_pointsLinkedList.AddLast(newPoint(_graphWidth - 1, _floatList[_floatList.Count-1]));
+		
 		newList.AddLast(newPoint(_graphWidth - 1, point));
-		_pointsLinkedList = newList;
+		_pointsLinkedList = new LinkedList<Vector2>(newList);
+        
+        _pointsList.Clear();
+        _pointsList.AddRange(newList);
 	}
 	
 	/*!
 	 * \brief Adds a hidden point based on the previous value
  	*/
-	public void addPoint(){
+	private void addPoint(){
 		addPoint(_lastVal);
 	}
 	
@@ -122,16 +125,16 @@ public class Line : VectrosityPanelLine {
 	 * \brief Redraws the line
  	*/
 	public override void redraw(){
-		_vectorline.Draw();
+        if(null != _vectorline) {
+		  _vectorline.Draw();
+        }
 	}
 	
-	/*!
-	 * \brief Resizes the graph based on the panel Transform properties
-	 * \sa PanelInfos
- 	*/
+	/*
 	public override void resize(){
-		_ratioW = (_panelInfos.panelDimensions.x - 2 * _paddingRatio * _panelInfos.padding) / _graphWidth;
-		_ratioH = (_panelInfos.panelDimensions.y - 2 * _paddingRatio * _panelInfos.padding) / graphHeight;
+        Logger.Log("Line resize", Logger.Level.ONSCREEN);
+        
+		computeRatios();
 		
 		//Unknown values
 		int i = 0;
@@ -149,53 +152,124 @@ public class Line : VectrosityPanelLine {
 			i++;
 		}
 	}
+    */
+    
+	/*!
+	 * \brief Resizes the graph based on the panel Transform properties
+	 * \sa PanelInfos
+ 	*/
+	public override void resize(){
+        if(null == _panelInfos) {
+            return;
+        }        
+        computeRatios();     
+	}
 	
 	/*!
-	 * \brief Generates the Vector3 point corresponding to the X and Y values
+	 * \brief Generates the Vector2 point corresponding to the X and Y values
  	*/
-	private Vector3 newPoint(int x, float y){
+	private Vector2 newPoint(int x, float y){
 		_lastVal = Mathf.Clamp(y, 0, graphHeight);
 		return newPoint(x, true);
 	}
 	
 	/*!
-	 * \brief Generates the Vector3 hidden point based on the previous value
+	 * \brief Generates the Vector2 hidden point based on the previous value
  	*/
-	private Vector3 newPoint(int x, bool visible){
+	private Vector2 newPoint(int x, bool visible){
 		if(visible) {
-			return new Vector3(
+			return new Vector2(
 				getX(x),
-				getY(),
-				_panelInfos.panelPos.z - 0.01f
+				getY()
 			);
 		} else {
-			return new Vector3(
+			return new Vector2(
 				getMaxX(),
-				getMinY (),
-				_panelInfos.panelPos.z + 1.0f
+				getMinY ()
 			);
 		}
 		
 	}
 	
 	private float getX(int x){
-		return x * _ratioW + _panelInfos.panelPos.x + _paddingRatio *_panelInfos.padding;
+		return        x * _ratioW + getMinX();
 	}
 	private float getY(){
 		return _lastVal * _ratioH + getMinY();
 	}
 	
 	private float getMaxX() {
-		return _panelInfos.panelDimensions.x - _paddingRatio * _panelInfos.padding + _panelInfos.panelPos.x;
+        if(null != _panelInfos) {
+		  return _panelInfos.panelDimensions.x - getMinX();
+        } else {
+            Logger.Log("Line getMaxX null == _panelInfos", Logger.Level.ERROR);
+            return 0;
+        }
+	}
+	
+	private float getMinX() {
+        if(null != _panelInfos) {
+		  return _panelInfos.panelPos.x + _paddingRatio *_panelInfos.padding;
+        } else {
+            Logger.Log("Line getMinX null == _panelInfos", Logger.Level.ERROR);
+            return 0;
+        }
 	}
 	
 	private float getMinY() {
-		return _panelInfos.panelPos.y + _paddingRatio *_panelInfos.padding;
+        if(null != _panelInfos) {
+		  return _panelInfos.panelPos.y + _paddingRatio *_panelInfos.padding;
+        } else {
+            Logger.Log("Line getMinY null == _panelInfos", Logger.Level.ERROR);
+            return 0;
+        }
 	}
     
-    public override void doDebugAction() {
+    private void computeRatios() {
+        if(null == _panelInfos) {
+            Logger.Log("Line computeRatios null == _panelInfos in "+name, Logger.Level.ERROR);
+            return;
+        }
+        if(0 == _graphWidth) {
+            Logger.Log("Line computeRatios 0 == _graphWidth in "+name, Logger.Level.ERROR);
+            return;
+        }
+        if(0 == graphHeight) {
+            Logger.Log("Line computeRatios 0 == graphHeight in "+name, Logger.Level.ERROR);
+            return;
+        }
+        if(0 == _paddingRatio) {
+            Logger.Log("Line computeRatios 0 == _paddingRatio in "+name, Logger.Level.ERROR);
+        }
         
+		_ratioW = (_panelInfos.panelDimensions.x - 2 * _paddingRatio * _panelInfos.padding) / _graphWidth;
+		_ratioH = (_panelInfos.panelDimensions.y - 2 * _paddingRatio * _panelInfos.padding) / graphHeight;
+    }
+    
+    public override void doDebugAction() {
+        string allValues = "[";
+        foreach(Vector2 vec in _pointsList) {
+            allValues += ";"+vec.ToString();
+        }
+        allValues += "]";
+        Logger.Log("Line _pointsList="+allValues, Logger.Level.ERROR);
+        
+        allValues = "[";
+        foreach(float flt in _floatList) {
+            allValues += ";"+flt.ToString();
+        }
+        allValues += "]";
+        Logger.Log("Line _floatList="+allValues, Logger.Level.ERROR);
     } 
 	
+    public override void setActive(bool isActive) {
+        if(null != _vectorline) {
+            _vectorline.active = isActive;
+        }
+    }
+    
+    public override void destroyLine() {
+        VectorLine.Destroy(ref _vectorline);
+    }
 }
 

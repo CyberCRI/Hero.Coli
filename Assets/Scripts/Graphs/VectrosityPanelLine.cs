@@ -3,6 +3,7 @@
 public abstract class VectrosityPanelLine {
 
     public string name; //!< The line name
+    public string moleculeName; //!< The name of the molecule whose concentration is represented by this VectrosityPanelLine
 
     public abstract VectorLine vectorline {get;} //!< The Vectrosity line
     public abstract void resize();
@@ -15,4 +16,8 @@ public abstract class VectrosityPanelLine {
     }    
     public virtual void destroyLine() {}
     public virtual void initializeVectorLine() {}
+
+    public static string generateLineName(int _mediumId, string _moleculeName) {
+        return _mediumId+"."+_moleculeName;
+    }
 }
