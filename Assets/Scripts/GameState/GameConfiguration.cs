@@ -55,7 +55,7 @@ public class GameConfiguration {
             case GameMap.SANDBOX2:
                 return GameMode.SANDBOX;
             default:
-                Debug.LogError("unknown map "+map);
+                Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return GameMode.ADVENTURE;
         }
     }
@@ -74,7 +74,7 @@ public class GameConfiguration {
             case GameMap.SANDBOX2:
                 return _sandboxLevel2;
             default:
-                Debug.LogError("unknown map "+map);
+                Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return _adventureLevel1;
         }
     }

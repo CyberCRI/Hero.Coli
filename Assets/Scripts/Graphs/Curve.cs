@@ -50,7 +50,7 @@ public class Curve
       //Vectrosity.VectorLine.SetCamera(_vectroCam);
       Vectrosity.VectorLine.SetCamera3D(_vectroCam);
     else
-      Debug.Log("No Camera set for the Graph Window.");
+      Logger.Log("No Camera set for the Graph Window.", Logger.Level.ERROR);
   }
 
   public float getLastY() { if (_points != null && _points.Last != null) return _points.Last.Value.y; return 0;}
@@ -105,7 +105,7 @@ public class Curve
   {
     if (_points.Count >= _maxPoints)
       removeFirstPoint();
-//     Debug.Log("add: "+pt.x+" pt.y="+pt.y);
+//     Logger.Log("add: "+pt.x+" pt.y="+pt.y);
     _points.AddLast(pt);
   }
 
@@ -113,7 +113,7 @@ public class Curve
   {
     if (_mol == null)
       {
-        Debug.Log("No molecule define for this Curve");
+        Logger.Log("No molecule defined for this Curve", Logger.Level.ERROR);
         return ;
       }
     Vector2 p = new Vector2((float)Time.timeSinceLevelLoad * 200f, _mol.getConcentration());
@@ -138,7 +138,7 @@ public class Curve
         tmpPt.x = pt.x;
         tmpPt.x -= getMinX();
 //         if (i == 0)
-//           Debug.Log(tmpPt);
+//           Logger.Log(tmpPt);
         _pts[i] = tmpPt;
         i++;
       }    

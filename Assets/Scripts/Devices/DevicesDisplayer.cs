@@ -243,7 +243,7 @@ public class DevicesDisplayer : MonoBehaviour {
             float halfIntervals = -columnCount*0.5f;
             float shift = halfIntervals + columnIdx;
             res = inventoryDevice.transform.localPosition + new Vector3(shift*_inventoriedWidth, -(idx%6)*_inventoriedHeight, -0.1f);
-            Debug.LogError("initialIdx="+initialIdx+",idx="+idx+",columnIdx="+columnIdx+",columnCount="+columnCount+",halfIntervals="+halfIntervals+",shift="+shift);
+            Logger.Log("initialIdx="+initialIdx+",idx="+idx+",columnIdx="+columnIdx+",columnCount="+columnCount+",halfIntervals="+halfIntervals+",shift="+shift, Logger.Level.ERROR);
             */
             res = inventoryDevice.transform.localPosition + new Vector3((idx%2-0.5f)*_inventoriedWidth, -(idx/2)*_inventoriedHeight, -0.1f);
     }

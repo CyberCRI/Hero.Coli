@@ -112,7 +112,7 @@ public class Logger : MonoBehaviour {
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
     //TODO replace this test by inheritance/factory/implementation use
-    if(_isEditor) {
+    if(false && _isEditor) {
       if(level == Level.ONSCREEN) {
         pushMessage(debugMsg);
       } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {

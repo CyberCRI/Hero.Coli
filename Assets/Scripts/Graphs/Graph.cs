@@ -112,9 +112,9 @@ public class Graph : MonoBehaviour
     foreach (Curve c in _curves)
       {
         drawAllPoints(c.getPointsList(), c.getColor());
-  //       Debug.Log("draw a curve");
+  //       Logger.Log("draw a curve");
       }
-  //   Debug.Log("End");
+  //   Logger.Log("End");
 
 //         Vector3 p1 = new Vector3();
 //         Vector3 p2 = new Vector3();

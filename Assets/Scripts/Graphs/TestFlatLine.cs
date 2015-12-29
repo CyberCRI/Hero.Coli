@@ -209,7 +209,7 @@ public class TestFlatLine : VectrosityPanelLine {
         if(null != _panelInfos) {
 		  return _panelInfos.panelDimensions.x - getMinX();
         } else {
-            Debug.LogError("TestFlatLine getMaxX null == _panelInfos");
+            Logger.Log("TestFlatLine getMaxX null == _panelInfos", Logger.Level.ERROR);
             return 0;
         }
 	}
@@ -218,7 +218,7 @@ public class TestFlatLine : VectrosityPanelLine {
         if(null != _panelInfos) {
 		  return _panelInfos.panelPos.x + _paddingRatio *_panelInfos.padding;
         } else {
-            Debug.LogError("TestFlatLine getMinX null == _panelInfos");
+            Logger.Log("TestFlatLine getMinX null == _panelInfos", Logger.Level.ERROR);
             return 0;
         }
 	}
@@ -227,34 +227,34 @@ public class TestFlatLine : VectrosityPanelLine {
         if(null != _panelInfos) {
 		  return _panelInfos.panelPos.y + _paddingRatio *_panelInfos.padding;
         } else {
-            Debug.LogError("TestFlatLine getMinY null == _panelInfos");
+            Logger.Log("TestFlatLine getMinY null == _panelInfos", Logger.Level.ERROR);
             return 0;
         }
 	}
     
     private void computeRatios() {
         if(null == _panelInfos) {
-            if("MOV"==name) Debug.LogError("TestFlatLine computeRatios null == _panelInfos in "+name);
+            if("MOV"==name) Logger.Log("TestFlatLine computeRatios null == _panelInfos in "+name, Logger.Level.ERROR);
             return;
         }
         if(0 == _graphWidth) {
-            if("MOV"==name) Debug.LogError("TestFlatLine computeRatios 0 == _graphWidth in "+name);
+            if("MOV"==name) Logger.Log("TestFlatLine computeRatios 0 == _graphWidth in "+name, Logger.Level.ERROR);
             return;
         }
         if(0 == graphHeight) {
-            if("MOV"==name) Debug.LogError("TestFlatLine computeRatios 0 == graphHeight in "+name);
+            if("MOV"==name) Logger.Log("TestFlatLine computeRatios 0 == graphHeight in "+name, Logger.Level.ERROR);
             return;
         }
         if(0 == _paddingRatio) {
-            if("MOV"==name) Debug.LogError("TestFlatLine computeRatios 0 == _paddingRatio in "+name);
+            if("MOV"==name) Logger.Log("TestFlatLine computeRatios 0 == _paddingRatio in "+name, Logger.Level.ERROR);
         }
         
 		_ratioW = (_panelInfos.panelDimensions.x - 2 * _paddingRatio * _panelInfos.padding) / _graphWidth;
 		_ratioH = (_panelInfos.panelDimensions.y - 2 * _paddingRatio * _panelInfos.padding) / graphHeight;
         
-        Debug.LogError(string.Format("TestFlatLine computeRatios outputs _ratioW={0} and _ratioH={1} "
+        Logger.Log(string.Format("TestFlatLine computeRatios outputs _ratioW={0} and _ratioH={1} "
             +"from _panelInfos={2}, _graphWidth={3}, graphHeight={4}, _paddingRatio={5} in {6}", 
-            _ratioW, _ratioH, _panelInfos, _graphWidth, graphHeight, _paddingRatio, name));
+            _ratioW, _ratioH, _panelInfos, _graphWidth, graphHeight, _paddingRatio, name), Logger.Level.ERROR);
     }
     
     public override void doDebugAction() {
@@ -263,7 +263,7 @@ public class TestFlatLine : VectrosityPanelLine {
             allValues += ";"+vec.ToString();
         }
         allValues += "]";
-        Debug.LogError("TestFlatLine _pointsList="+allValues);
+        Logger.Log("TestFlatLine _pointsList="+allValues, Logger.Level.ERROR);
     } 
 	
 }

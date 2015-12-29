@@ -10,7 +10,7 @@ public class GoToOtherGameModeMainMenuItem : MainMenuItem {
     }
 
     public override void click() {
-		Debug.LogWarning("the game will "+itemName+"...");
+		Logger.Log("the game will "+itemName+"...");
 
 		CustomDataValue modeValue = GameConfiguration.GameMode.ADVENTURE == MemoryManager.get ().configuration.getMode() ? CustomDataValue.SANDBOX : CustomDataValue.ADVENTURE;
 		RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, modeValue.ToString()));

@@ -128,17 +128,17 @@ public class VectrosityPanel : MonoBehaviour {
     if(Input.GetKeyDown(KeyCode.E)) {
         if(_mediumId == 1) {
             if(areLinesNull) {
-                Debug.LogError("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": creating lines");
+                Logger.Log("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": creating lines", Logger.Level.ERROR);
                 foreach(VectrosityPanelLine line in _lines) {
                     line.initializeVectorLine();
-                    Debug.LogError("VectrosityPanel initialized line "+line.name);
+                    Logger.Log("VectrosityPanel initialized line "+line.name, Logger.Level.ERROR);
                 }
                 areLinesNull = false;
             } else {
-                Debug.LogError("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": destroying lines");
+                Logger.Log("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": destroying lines", Logger.Level.ERROR);
                 foreach(VectrosityPanelLine line in _lines) {
                     line.destroyLine();
-                    Debug.LogError("VectrosityPanel destroyed line "+line.name);
+                    Logger.Log("VectrosityPanel destroyed line "+line.name, Logger.Level.ERROR);
                 }
                 areLinesNull = true;
             }
@@ -214,10 +214,10 @@ public class VectrosityPanel : MonoBehaviour {
         infos.layer = gameObject.layer;
         
         /*
-        Debug.LogError("setInfos "+infos);
-        Debug.LogError("setInfos boxSize="+boxSize);
-        Debug.LogError("setInfos go.t.localScale="+gameObject.transform.localScale);
-        Debug.LogError("setInfos t.localScale="+transform.localScale);
+        Logger.Log("setInfos "+infos, Logger.Level.ERROR);
+        Logger.Log("setInfos boxSize="+boxSize, Logger.Level.ERROR);
+        Logger.Log("setInfos go.t.localScale="+gameObject.transform.localScale, Logger.Level.ERROR);
+        Logger.Log("setInfos t.localScale="+transform.localScale, Logger.Level.ERROR);
         //*/
   }
   

@@ -35,14 +35,14 @@ public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray {
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.WindowsEditor:
                 case RuntimePlatform.OSXEditor:
-                    Debug.LogError ("LearnMoreOptionsMainMenuItemArray::setPlatform Editor/Standalone prepares choices");
+                    Logger.Log ("LearnMoreOptionsMainMenuItemArray::setPlatform Editor/Standalone prepares choices");
                     //hide "same tab" option
                     MainMenuManager.setVisibility(_items, sameTabKey, false, "setPlatform");
                     //rename "new tab" into "open in browser"
                     MainMenuManager.replaceTextBy(newTabKey, browserKey, _items, "setPlatform");
                     break;
                 default:
-                    Debug.LogError ("LearnMoreOptionsMainMenuItemArray::setPlatform default nothing to do");
+                    Logger.Log ("LearnMoreOptionsMainMenuItemArray::setPlatform default nothing to do");
                     MainMenuManager.setVisibility(_items, sameTabKey, true, "setPlatform");
                     //rename "open in browser tab" into "new tab"
                     MainMenuManager.replaceTextBy(browserKey, newTabKey, _items, "setPlatform");

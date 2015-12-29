@@ -66,7 +66,7 @@ public class TestRandomLine : VectrosityPanelLine {
  	*/
   public TestRandomLine(int graphWidth, float graphHeight, PanelInfos panelInfos, string name = ""){
         this.name = name;
-        //Debug.LogError("created TestRandomLine "+name);
+        //Logger.Log("created TestRandomLine "+name, Logger.Level.ERROR);
 		this._panelInfos = panelInfos;
 		this._graphWidth = graphWidth;
 		this.graphHeight = graphHeight;

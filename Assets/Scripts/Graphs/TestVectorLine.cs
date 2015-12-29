@@ -23,7 +23,7 @@ public class TestVectorLine : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	   Debug.LogError("TestVectorLine starts");
+	   Logger.Log("TestVectorLine starts", Logger.Level.ERROR);
        
        
        //VectorManager.useDraw3D = true;
