@@ -8,8 +8,6 @@ using System.Collections.Generic;
  \sa VectrosityPanelLine
 */
 public class VectrosityPanel : MonoBehaviour {
-	
-    //TODO bugfix: Cell VectrosityPanel displays World chemicals
     
   public Camera GUICam; //!< The Isometric camera which will display the layer
   public bool draw = true; //!< Toggles drawing of the lines
@@ -208,18 +206,54 @@ public class VectrosityPanel : MonoBehaviour {
         //infos.panelPos = new Vector3(1280-233/2, 714-152/2, 0); //center
         //infos.panelPos = new Vector3(1280-233, 714-152, 0); //bottom-left corner of VectrosityPanel itself
         float x = Screen.width - vectrosityPanelSize.x + ((1f-graphPanelRatio.x)/2f)*vectrosityPanelSize.x;
-        float y = Screen.height - 6f - vectrosityPanelSize.y + ((1f-graphPanelRatio.y)/2f)*vectrosityPanelSize.y;
+        float y = 0f;                
+        float verticalShift = 0f;
+        float marginShift = ((1f-graphPanelRatio.y)/2f)*vectrosityPanelSize.y;
+        float anchorShift = 0f;
+        
+        UIAnchor parentAnchor = transform.parent.GetComponent<UIAnchor>();
+        if(null != parentAnchor){
+            verticalShift = parentAnchor.relativeOffset.y * Screen.height + transform.localPosition.y;
+            switch(parentAnchor.side) {
+                case UIAnchor.Side.TopRight:
+                case UIAnchor.Side.TopLeft:
+                case UIAnchor.Side.Top:
+                    anchorShift = Screen.height;
+                    break;
+                case UIAnchor.Side.BottomRight:
+                case UIAnchor.Side.BottomLeft:
+                case UIAnchor.Side.Bottom:
+                    anchorShift = 0;
+                    break;
+                default:
+                    break;
+            }            
+        }
+        y = anchorShift + verticalShift - vectrosityPanelSize.y + marginShift;
+        
+        
         infos.panelPos = new Vector3(x, y, 0); 
         
         infos.padding = padding;
         
         infos.layer = gameObject.layer;
         
-        /*
-        Logger.Log("setInfos "+infos, Logger.Level.ERROR);
-        Logger.Log("setInfos boxSize="+boxSize, Logger.Level.ERROR);
-        Logger.Log("setInfos go.t.localScale="+gameObject.transform.localScale, Logger.Level.ERROR);
-        Logger.Log("setInfos t.localScale="+transform.localScale, Logger.Level.ERROR);
+        //*
+        Logger.Log("setInfos for id="+_mediumId+": infos="+infos
+            , Logger.Level.ERROR);
+        Logger.Log("setInfos boxSize="+boxSize
+            , Logger.Level.ERROR);
+        //Logger.Log("setInfos go.t.localScale="+gameObject.transform.localScale, Logger.Level.ERROR);
+        Logger.Log("setInfos t.localScale="+transform.localScale
+            , Logger.Level.ERROR);
+        Logger.Log("setInfos t.localPosition="+transform.localPosition
+            , Logger.Level.ERROR);
+        Logger.Log("setInfos t.position="+transform.position
+            , Logger.Level.ERROR);
+        Logger.Log("setInfos panelSizeY="+vectrosityPanelSize.y
+            +", graphMargin="+((1f-graphPanelRatio.y)/2f)*vectrosityPanelSize.y
+            +", parentAnchorShift="+Screen.height*parentAnchor.relativeOffset.y
+            , Logger.Level.ERROR);
         //*/
   }
   
