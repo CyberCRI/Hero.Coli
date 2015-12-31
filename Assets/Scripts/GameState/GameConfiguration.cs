@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 
 public class GameConfiguration {
     
     private static string _adventureLevel1 = "World1.0";
     private static string _sandboxLevel1 = "Sandbox-0.1";
     private static string _sandboxLevel2 = "Sandbox-0.2";
+    
+    private string localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
 
     public enum RestartBehavior
     {
@@ -32,6 +35,32 @@ public class GameConfiguration {
     public bool isLeftClickToMove;
     //TODO manage sound configuration
     public bool isSoundOn;
+    
+    private string _playerGUID;
+    public string playerGUID {
+        get {
+            if (!string.IsNullOrEmpty(_playerGUID)) {
+                Debug.LogError("use stored in GameConfiguration: "+_playerGUID);                
+            } else {
+                //TODO make it work through different versions of the game,
+                //     so that memory is not erased every time a new version of the game is published
+                string storedGUID = PlayerPrefs.GetString(localPlayerGUIDPlayerPrefsKey);
+                if(string.IsNullOrEmpty(storedGUID)) {
+                    playerGUID = Guid.NewGuid().ToString();
+                    PlayerPrefs.SetString(localPlayerGUIDPlayerPrefsKey, _playerGUID);
+                    Debug.LogError("use new: "+_playerGUID);
+                } else {
+                    playerGUID = storedGUID;
+                    Debug.LogError("use stored in PlayerPrefs: "+_playerGUID);
+                }
+            }
+            return _playerGUID;
+        }
+        set {
+            Debug.LogError("set to "+value);
+            _playerGUID = value;
+        }
+    }
 
     public GameConfiguration()
     {
@@ -40,6 +69,9 @@ public class GameConfiguration {
         language = I18n.Language.English;
         isAbsoluteWASD = true;
         isLeftClickToMove = true;
+        
+        //TODO send playerGUID to RedMetrics
+        //TODO unlock Sandbox if Adventure was finished 
     }
 
     public GameMode getMode() {

@@ -242,13 +242,24 @@ public class RedMetricsManager : MonoBehaviour
         //logMessage("RedMetricsManager::trackStart: www =? null:"+(null == www));
         string pID = extractPID (www);
         setPlayerID (pID);
-        sendEvent (TrackingEvent.START);
+        sendStartEventWithPlayerGUID();
     }
     //////////////////////////////////////////////////
+  
+    private void sendStartEventWithPlayerGUID() {
+        CustomData guidCD = generateCustomData();
+        sendEvent (TrackingEvent.START, guidCD);
+    }
 
+    private CustomData generateCustomData() {
+        string playerGUID = MemoryManager.get().configuration.playerGUID;
+        //TODO manage GLOBALPLAYERGUID
+        CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, playerGUID);
+        Debug.LogError("generated guidCD="+guidCD);
+        return guidCD;        
+    } 
 
-
-
+    //////////////////////////////////////////////////
     // filtering is done on Application.isWebPlayer
     // but could be done on Application.platform for better accuracy
     public void sendStartEvent (bool restart)
@@ -297,7 +308,8 @@ public class RedMetricsManager : MonoBehaviour
   
     private IEnumerator waitAndSendStart ()
     {
-        sendEvent(TrackingEvent.START);
+        sendStartEventWithPlayerGUID();
+        
         yield return new WaitForSeconds (5.0f);
         //all waiting events are flushed so that if the players disconnects, at least there's a trace that a player started the game
         executeAndClearAllWaitingEvents();

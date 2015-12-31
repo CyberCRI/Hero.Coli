@@ -99,6 +99,9 @@ public abstract class TrackingEventData
 
 public enum CustomDataTag
 {
+    LOCALPLAYERGUID,    //for GUID stored in local PlayerPrefs
+    GLOBALPLAYERGUID,   //for GUID associated to an acount
+    
     DNABIT,
     BIOBRICK,
     DEVICE,

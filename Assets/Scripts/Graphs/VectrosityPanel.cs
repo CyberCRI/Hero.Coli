@@ -112,7 +112,15 @@ public class VectrosityPanel : MonoBehaviour {
   void Update () {
     //bool resize = refreshInfos();
     //drawLines(resize);
-    drawLines(false);
+    if(Input.GetKeyDown(KeyCode.W)) {
+      draw = !draw;
+    }
+    
+    if(draw) {
+	     //bool resize = refreshInfos();
+	     //drawLines(resize);
+	     drawLines(false);
+    }
 
 /*    
     if(Input.GetKeyDown(KeyCode.Z)) {

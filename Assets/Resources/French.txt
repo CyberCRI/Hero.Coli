@@ -67,7 +67,7 @@ LEARNMORE.LINK.MOOCENGINEERING=http://genius.com/Sarah-fernet-igem-paris-bettenc
 LEARNMORE.LINK.MOOCTHEORY=http://genius.com/Christophe-buherne-igem-paris-bettencourt-team-quest-ce-que-la-theorie-fondamentale-de-la-biologie-moleculaire-annotated
 
 STUDY.GAMEDEV.LINK=https://docs.google.com/forms/d/1Dt5kWz5VmdVvsxzPXDNs5FEJjhgY8XLiF11qHZ0OqoU/viewform?usp=send_form
-STUDY.LEARN.LINK=https://docs.google.com/forms/d/19oBn524tnlVZei5S-c0VWPEwDt95kKRTqjwOPVsLn88/viewform?usp=send_form
+STUDY.LEARN.LINK=https://docs.google.com/forms/d/1WcVdg2mqTzw0avoZZEjzD940RyJonWim_NvwtBYH7jA/viewform?usp=send_form
 
 BRICK.PRBAD1=pBAD fort
 BRICK.PRBAD2=pBAD moyen
