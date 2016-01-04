@@ -64,6 +64,7 @@ public class RedMetricsManager : MonoBehaviour
     private System.Guid playerGuid = new System.Guid (defaultPlayerGuid.ToByteArray());
 
     private bool isPlayerGuidCreated = false;
+    private string testGUID1 = "a8ba2b83-c911-489c-98be-5fde646c46de"; // a GUID used for tests - should send events to the 'Hero.Coli - test' section
 
     // list of events to be stacked while the player guid is not created yet, ie rmConnect's callback has not been called yet and isPlayerGuidCreated is still false
     private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();
