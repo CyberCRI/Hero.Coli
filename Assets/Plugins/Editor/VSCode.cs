@@ -4,7 +4,7 @@
  * Seamless support for Microsoft Visual Studio Code in Unity
  *
  * Version:
- *   1.95
+ *   2.3
  *
  * Authors:
  *   Matthew Davey <matthew.davey@dotbunny.com>
@@ -13,6 +13,7 @@
 // TODO: Currently VSCode will not debug mono on Windows -- need a solution.
 namespace dotBunny.Unity
 {
+    using System;
     using System.IO;
     using System.Text.RegularExpressions;
     using UnityEditor;
@@ -20,6 +21,16 @@ namespace dotBunny.Unity
 
     public static class VSCode
     {
+        /// <summary>
+        /// Current Version Number
+        /// </summary>
+        public const float Version = 2.3f;
+
+        /// <summary>
+        /// Current Version Code
+        /// </summary>
+        public const string VersionCode = "-RELEASE";
+
         #region Properties
 
         /// <summary>
@@ -74,13 +85,51 @@ namespace dotBunny.Unity
         }
 
         /// <summary>
-        /// Quick reference to the VSCode settings folder
+        /// Should the plugin automatically update itself.
         /// </summary>
-        static string SettingsFolder
+        static bool AutomaticUpdates
         {
             get
             {
-                return ProjectPath + System.IO.Path.DirectorySeparatorChar + ".vscode";
+                return EditorPrefs.GetBool("VSCode_AutomaticUpdates", false);
+            }
+            set
+            {
+                EditorPrefs.SetBool("VSCode_AutomaticUpdates", value);
+            }
+        }
+
+        static float GitHubVersion
+        {
+            get
+            {
+                return EditorPrefs.GetFloat("VSCode_GitHubVersion", Version);
+            }
+            set
+            {
+                EditorPrefs.SetFloat("VSCode_GitHubVersion", value);
+            }
+        }
+
+        /// <summary>
+        /// When was the last time that the plugin was updated?
+        /// </summary>
+        static DateTime LastUpdate
+        {
+            get
+            {
+                // Feature creation date.
+                DateTime lastTime = new DateTime(2015, 10, 8);
+
+                if (EditorPrefs.HasKey("VSCode_LastUpdate"))
+                {
+                    DateTime.TryParse(EditorPrefs.GetString("VSCode_LastUpdate"), out lastTime);
+                }
+                return lastTime;
+            }
+            set
+            {
+                EditorPrefs.SetString("VSCode_LastUpdate", value.ToString());
             }
         }
 
@@ -106,29 +155,70 @@ namespace dotBunny.Unity
             }
         }
 
+        /// <summary>
+        /// Quick reference to the VSCode settings folder
+        /// </summary>
+        static string SettingsFolder
+        {
+            get
+            {
+                return ProjectPath + System.IO.Path.DirectorySeparatorChar + ".vscode";
+            }
+        }
+
         static string SettingsPath
         {
+
             get
             {
                 return SettingsFolder + System.IO.Path.DirectorySeparatorChar + "settings.json";
             }
         }
 
-
+        static int UpdateTime
+        {
+            get
+            {
+                return EditorPrefs.GetInt("VSCode_UpdateTime", 7);
+            }
+            set
+            {
+                EditorPrefs.SetInt("VSCode_UpdateTime", value);
+            }
+        }
 
         #endregion
 
         /// <summary>
-        /// Fail safe integration constructor
+        /// Integration Constructor
         /// </summary>
         static VSCode()
         {
             if (Enabled)
             {
                 UpdateUnityPreferences(true);
+
+                // Add Update Check
+                DateTime targetDate = LastUpdate.AddDays(UpdateTime);
+                if (DateTime.Now >= targetDate)
+                {
+                    CheckForUpdate();
+                }
             }
+
+
+
+
+            //System.AppDomain.CurrentDomain.DomainUnload += System_AppDomain_CurrentDomain_DomainUnload;
         }
 
+
+        //  static void System_AppDomain_CurrentDomain_DomainUnload (object sender, System.EventArgs e)
+        //  {
+        //  	if (Enabled) {
+        //  		UpdateUnityPreferences (false);
+        //  	}
+        //  }
 
         #region Public Members
 
@@ -143,6 +233,7 @@ namespace dotBunny.Unity
             System.Type T = System.Type.GetType("UnityEditor.SyncVS,UnityEditor");
             System.Reflection.MethodInfo SyncSolution = T.GetMethod("SyncSolution", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
             SyncSolution.Invoke(null, null);
+
         }
 
         /// <summary>
@@ -150,6 +241,7 @@ namespace dotBunny.Unity
         /// </summary>
         public static void UpdateSolution()
         {
+
             // No need to process if we are not enabled
             if (!VSCode.Enabled)
             {
@@ -169,7 +261,9 @@ namespace dotBunny.Unity
             {
                 string content = File.ReadAllText(filePath);
                 content = ScrubSolutionContent(content);
+
                 File.WriteAllText(filePath, content);
+
                 ScrubFile(filePath);
             }
 
@@ -177,7 +271,9 @@ namespace dotBunny.Unity
             {
                 string content = File.ReadAllText(filePath);
                 content = ScrubProjectContent(content);
+
                 File.WriteAllText(filePath, content);
+
                 ScrubFile(filePath);
             }
 
@@ -208,8 +304,112 @@ namespace dotBunny.Unity
             proc.StartInfo.Arguments = args;
             proc.StartInfo.UseShellExecute = false;
 #endif
+            proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.RedirectStandardOutput = true;
             proc.Start();
+        }
+
+        /// <summary>
+        /// Check for Updates with GitHub
+        /// </summary>
+        static void CheckForUpdate()
+        {
+            var fileContent = string.Empty;
+
+            EditorUtility.DisplayProgressBar("VSCode", "Checking for updates ...", 0.5f);
+
+            // Because were not a runtime framework, lets just use the simplest way of doing this
+            try
+            {
+                using (var webClient = new System.Net.WebClient())
+                {
+                    fileContent = webClient.DownloadString("https://raw.githubusercontent.com/dotBunny/VSCode/master/Plugins/Editor/VSCode.cs");
+                }
+            }
+            catch (Exception e)
+            {
+                if (Debug)
+                {
+                    UnityEngine.Debug.Log("[VSCode] " + e.Message);
+                }
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+
+            // Set the last update time
+            LastUpdate = DateTime.Now;
+
+            string[] fileExploded = fileContent.Split('\n');
+            if (fileExploded.Length > 7)
+            {
+                float github = Version;
+                if (float.TryParse(fileExploded[6].Replace("*", "").Trim(), out github))
+                {
+                    GitHubVersion = github;
+                }
+
+                if (github > Version)
+                {
+                    var GUIDs = AssetDatabase.FindAssets("t:Script VSCode");
+                    var path = Application.dataPath.Substring(0, Application.dataPath.Length - "/Assets".Length) + System.IO.Path.DirectorySeparatorChar +
+                               AssetDatabase.GUIDToAssetPath(GUIDs[0]).Replace('/', System.IO.Path.DirectorySeparatorChar);
+
+                    if (EditorUtility.DisplayDialog("VSCode Update", "A newer version of the VSCode plugin is available, would you like to update your version?", "Yes", "No"))
+                    {
+                        File.WriteAllText(path, fileContent);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Force Unity Preferences Window To Read From Settings
+        /// </summary>
+        static void FixUnityPreferences()
+        {
+            // I want that window, please and thank you
+            System.Type T = System.Type.GetType("UnityEditor.PreferencesWindow,UnityEditor");
+
+            if (EditorWindow.focusedWindow == null)
+                return;
+
+            // Only run this when the editor window is visible (cause its what screwed us up)
+            if (EditorWindow.focusedWindow.GetType() == T)
+            {
+                var window = EditorWindow.GetWindow(T, true, "Unity Preferences");
+
+
+                if (window == null)
+                {
+                    if (Debug)
+                    {
+                        UnityEngine.Debug.Log("[VSCode] No Preferences Window Found (really?)");
+                    }
+                    return;
+                }
+
+                var invokerType = window.GetType();
+                var invokerMethod = invokerType.GetMethod("ReadPreferences",
+                                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+                if (invokerMethod != null)
+                {
+                    invokerMethod.Invoke(window, null);
+                }
+                else if (Debug)
+                {
+                    UnityEngine.Debug.Log("[VSCode] No Reflection Method Found For Preferences");
+                }
+            }
+
+            //  // Get internal integration class
+            //  System.Type iT = System.Type.GetType("UnityEditor.VisualStudioIntegration.UnityVSSupport,UnityEditor.VisualStudioIntegration");
+            //  var iinvokerMethod = iT.GetMethod("ScriptEditorChanged", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            //  var temp = EditorPrefs.GetString("kScriptsDefaultApp");
+            //  iinvokerMethod.Invoke(null,new object[] { temp } );
+
         }
 
         /// <summary>
@@ -256,28 +456,33 @@ namespace dotBunny.Unity
                 }
             }
 #else
-            System.Diagnostics.Process process = new System.Diagnostics.Process ();
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
             process.StartInfo.FileName = "lsof";
             process.StartInfo.Arguments = "-c /^Unity$/ -i 4tcp -a";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
-            process.Start ();
+            process.Start();
 
             // Not thread safe (yet!)
-            string output = process.StandardOutput.ReadToEnd ();
-            string[] lines = output.Split ('\n');
+            string output = process.StandardOutput.ReadToEnd();
+            string[] lines = output.Split('\n');
 
-            process.WaitForExit ();
+            process.WaitForExit();
 
-            foreach (string line in lines) {
+            foreach (string line in lines)
+            {
                 int port = -1;
-                if (line.StartsWith ("Unity")) {
-                    string[] portions = line.Split (new string[] { "TCP *:" }, System.StringSplitOptions.None);
-                    if (portions.Length >= 2) {
-                        Regex digitsOnly = new Regex (@"[^\d]");
-                        string cleanPort = digitsOnly.Replace (portions [1], "");
-                        if (int.TryParse (cleanPort, out port)) {
-                            if (port > -1) {
+                if (line.StartsWith("Unity"))
+                {
+                    string[] portions = line.Split(new string[] { "TCP *:" }, System.StringSplitOptions.None);
+                    if (portions.Length >= 2)
+                    {
+                        Regex digitsOnly = new Regex(@"[^\d]");
+                        string cleanPort = digitsOnly.Replace(portions[1], "");
+                        if (int.TryParse(cleanPort, out port))
+                        {
+                            if (port > -1)
+                            {
                                 return port;
                             }
                         }
@@ -288,57 +493,7 @@ namespace dotBunny.Unity
             return -1;
         }
 
-        /// <summary>
-        /// VS Code Integration Preferences Item
-        /// </summary>
-        /// <remarks>
-        /// Contains all 3 toggles: Enable/Disable; Debug On/Off; Writing Launch File On/Off
-        /// </remarks>
-        [PreferenceItem( "VSCode" )]
-        static void VSCodePreferencesItem()
-        {
-            EditorGUILayout.BeginVertical();
-
-            EditorGUILayout.HelpBox("Support development of this plugin, follow @reapazor and @dotbunny on Twitter.", MessageType.Info);
-
-            EditorGUI.BeginChangeCheck();
-
-            Enabled = EditorGUILayout.Toggle("Enable Integration", Enabled);
-
-            EditorGUILayout.Space();
-
-            EditorGUI.BeginDisabledGroup(!Enabled);
-            Debug = EditorGUILayout.Toggle("Output Messages To Console", Debug);
-
-            WriteLaunchFile = EditorGUILayout.Toggle("Always Write Launch File", WriteLaunchFile);
-
-            EditorGUI.EndDisabledGroup();
-
-            EditorGUILayout.Space();
-
-            if( EditorGUI.EndChangeCheck())
-            {
-                UpdateUnityPreferences(Enabled);
-                if (VSCode.Debug)
-                {
-                    if (Enabled)
-                    {
-                        UnityEngine.Debug.Log("[VSCode] Integration Enabled");
-                    }
-                    else {
-                        UnityEngine.Debug.Log("[VSCode] Integration Disabled");
-                    }
-                }
-            }
-            
-            if (GUILayout.Button("Write Workspace Settings"))
-            {
-                WriteWorkspaceSettings();
-            }
-            
-            EditorGUILayout.EndVertical();
-        }
-
+        // HACK: This is in until Unity can figure out why MD keeps opening even though a different program is selected.
         [MenuItem("Assets/Open C# Project In Code", false, 1000)]
         static void MenuOpenProject()
         {
@@ -348,11 +503,101 @@ namespace dotBunny.Unity
             // Load Project
             CallVSCode("\"" + ProjectPath + "\" -r");
         }
-        
+
         [MenuItem("Assets/Open C# Project In Code", true, 1000)]
         static bool ValidateMenuOpenProject()
         {
             return Enabled;
+        }
+
+        /// <summary>
+        /// VS Code Integration Preferences Item
+        /// </summary>
+        /// <remarks>
+        /// Contains all 3 toggles: Enable/Disable; Debug On/Off; Writing Launch File On/Off
+        /// </remarks>
+        [PreferenceItem("VSCode")]
+        static void VSCodePreferencesItem()
+        {
+            EditorGUILayout.BeginVertical();
+
+            EditorGUILayout.HelpBox("Support development of this plugin, follow @reapazor and @dotbunny on Twitter.", MessageType.Info);
+
+            EditorGUI.BeginChangeCheck();
+
+            Enabled = EditorGUILayout.Toggle(new GUIContent("Enable Integration", "Should the integration work its magic for you?"), Enabled);
+
+            EditorGUILayout.Space();
+
+            EditorGUI.BeginDisabledGroup(!Enabled);
+
+            Debug = EditorGUILayout.Toggle(new GUIContent("Output Messages To Console", "Should informational messages be sent to Unity's Console?"), Debug);
+
+            WriteLaunchFile = EditorGUILayout.Toggle(new GUIContent("Always Write Launch File", "Always write the launch.json settings when entering play mode?"), WriteLaunchFile);
+
+            EditorGUILayout.Space();
+
+            AutomaticUpdates = EditorGUILayout.Toggle(new GUIContent("Automatic Updates", "Should the plugin automatically update itself?"), AutomaticUpdates);
+
+            EditorGUI.BeginDisabledGroup(!AutomaticUpdates);
+
+            UpdateTime = EditorGUILayout.IntSlider(new GUIContent("Update Timer (Days)", "After how many days should updates be checked for?"), UpdateTime, 1, 31);
+
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                UpdateUnityPreferences(Enabled);
+
+                //UnityEditor.PreferencesWindow.Read
+
+                // TODO: Force Unity To Reload Preferences
+                // This seems to be a hick up / issue
+
+                if (VSCode.Debug)
+                {
+                    if (Enabled)
+                    {
+                        UnityEngine.Debug.Log("[VSCode] Integration Enabled");
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log("[VSCode] Integration Disabled");
+                    }
+                }
+            }
+
+            if (GUILayout.Button(new GUIContent("Force Update", "Check for updates to the plugin, right NOW!")))
+            {
+                CheckForUpdate();
+                EditorGUILayout.EndVertical();
+                return;
+            }
+            if (GUILayout.Button(new GUIContent("Write Workspace Settings", "Output a default set of workspace settings for VSCode to use, ignoring many different types of files.")))
+            {
+                WriteWorkspaceSettings();
+                EditorGUILayout.EndVertical();
+                return;
+            }
+
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            GUILayout.Label(
+                new GUIContent(
+                    string.Format("{0:0.00}", Version) + VersionCode,
+                    "GitHub's Version @ " + string.Format("{0:0.00}", GitHubVersion)));
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.EndVertical();
+
         }
 
         /// <summary>
@@ -470,13 +715,16 @@ namespace dotBunny.Unity
             if (content.Length == 0)
                 return "";
 
+// Note: it causes OmniSharp faults on Windows, such as "not seeing UnityEngine.UI". 3.5 target works fine
+#if !UNITY_EDITOR_WIN
             // Make sure our reference framework is 2.0, still the base for Unity
             if (content.IndexOf("<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>") != -1)
             {
                 content = Regex.Replace(content, "<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>", "<TargetFrameworkVersion>v2.0</TargetFrameworkVersion>");
             }
+#endif
 
-            string targetPath = "<TargetPath>Temp\\bin\\Debug\\</TargetPath>"; //OutputPath
+            string targetPath = "";// "<TargetPath>Temp" + Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar + "Debug" + Path.DirectorySeparatorChar + "</TargetPath>"; //OutputPath
             string langVersion = "<LangVersion>default</LangVersion>";
 
 
@@ -565,7 +813,7 @@ namespace dotBunny.Unity
         static void UpdateLaunchFile(int port)
         {
             // Write out proper formatted JSON (hence no more SimpleJSON here)
-            string fileContent = "{\n\t\"version\":\"0.1.0\",\n\t\"configurations\":[ \n\t\t{\n\t\t\t\"name\":\"Unity\",\n\t\t\t\"type\":\"mono\",\n\t\t\t\"address\":\"localhost\",\n\t\t\t\"port\":" + port + "\n\t\t}\n\t]\n}";
+            string fileContent = "{\n\t\"version\":\"0.2.0\",\n\t\"configurations\":[ \n\t\t{\n\t\t\t\"name\":\"Unity\",\n\t\t\t\"type\":\"mono\",\n\t\t\t\"request\":\"attach\",\n\t\t\t\"address\":\"localhost\",\n\t\t\t\"port\":" + port + "\n\t\t}\n\t]\n}";
             File.WriteAllText(VSCode.LaunchPath, fileContent);
         }
 
@@ -597,6 +845,8 @@ namespace dotBunny.Unity
                 }
 
                 EditorPrefs.SetString("kScriptEditorArgs", "-r -g \"$(File):$(Line)\"");
+                EditorPrefs.SetString("kScriptEditorArgs" + newPath, "-r -g \"$(File):$(Line)\"");
+
 
                 // MonoDevelop Solution
                 if (EditorPrefs.GetBool("kMonoDevelopSolutionProperties", false))
@@ -653,6 +903,8 @@ namespace dotBunny.Unity
                     EditorPrefs.SetBool("AllowAttachedDebuggingOfEditor", false);
                 }
             }
+
+            FixUnityPreferences();
         }
 
         /// <summary>
@@ -662,84 +914,89 @@ namespace dotBunny.Unity
         {
             if (Debug)
             {
-                UnityEngine.Debug.Log("[VSCode] Workspace Settigns Written");
+                UnityEngine.Debug.Log("[VSCode] Workspace Settings Written");
             }
-                    
+
             if (!Directory.Exists(VSCode.SettingsFolder))
             {
                 System.IO.Directory.CreateDirectory(VSCode.SettingsFolder);
             }
 
             string exclusions =
-            "{\n" +
+                "{\n" +
                 "\t\"files.exclude\":\n" +
                 "\t{\n" +
-                    // Hidden Files
-                    "\t\t\"**/.DS_Store\":true,\n" +
-                    "\t\t\"**/.git\":true,\n" +
+                // Hidden Files
+                "\t\t\"**/.DS_Store\":true,\n" +
+                "\t\t\"**/.git\":true,\n" +
+                "\t\t\"**/.gitignore\":true,\n" +
+                "\t\t\"**/.gitattributes\":true,\n" +
+                "\t\t\"**/.gitmodules\":true,\n" +
+                "\t\t\"**/.svn\":true,\n" +
 
-                    // Project Files
-                    "\t\t\"**/*.booproj\":true,\n" +
-                    "\t\t\"**/*.pidb\":true,\n" +
-                    "\t\t\"**/*.suo\":true,\n" +
-                    "\t\t\"**/*.user\":true,\n" +
-                    "\t\t\"**/*.userprefs\":true,\n" +
-                    "\t\t\"**/*.unityproj\":true,\n" +
-                    "\t\t\"**/*.dll\":true,\n" +
-                    "\t\t\"**/*.exe\":true,\n" +
 
-                    // Media Files
-                    "\t\t\"**/*.pdf\":true,\n" +
+                // Project Files
+                "\t\t\"**/*.booproj\":true,\n" +
+                "\t\t\"**/*.pidb\":true,\n" +
+                "\t\t\"**/*.suo\":true,\n" +
+                "\t\t\"**/*.user\":true,\n" +
+                "\t\t\"**/*.userprefs\":true,\n" +
+                "\t\t\"**/*.unityproj\":true,\n" +
+                "\t\t\"**/*.dll\":true,\n" +
+                "\t\t\"**/*.exe\":true,\n" +
 
-                    // Audio
-                    "\t\t\"**/*.mid\":true,\n" +
-                    "\t\t\"**/*.midi\":true,\n" +
-                    "\t\t\"**/*.wav\":true,\n" +
+                // Media Files
+                "\t\t\"**/*.pdf\":true,\n" +
 
-                    // Textures
-                    "\t\t\"**/*.gif\":true,\n" +
-                    "\t\t\"**/*.ico\":true,\n" +
-                    "\t\t\"**/*.jpg\":true,\n" +
-                    "\t\t\"**/*.jpeg\":true,\n" +
-                    "\t\t\"**/*.png\":true,\n" +
-                    "\t\t\"**/*.psd\":true,\n" +
-                    "\t\t\"**/*.tga\":true,\n" +
-                    "\t\t\"**/*.tif\":true,\n" +
-                    "\t\t\"**/*.tiff\":true,\n" +
+                // Audio
+                "\t\t\"**/*.mid\":true,\n" +
+                "\t\t\"**/*.midi\":true,\n" +
+                "\t\t\"**/*.wav\":true,\n" +
 
-                    // Models
-                    "\t\t\"**/*.3ds\":true,\n" +
-                    "\t\t\"**/*.3DS\":true,\n" +
-                    "\t\t\"**/*.fbx\":true,\n" +
-                    "\t\t\"**/*.FBX\":true,\n" +
-                    "\t\t\"**/*.lxo\":true,\n" +
-                    "\t\t\"**/*.LXO\":true,\n" +
-                    "\t\t\"**/*.ma\":true,\n" +
-                    "\t\t\"**/*.MA\":true,\n" +
-                    "\t\t\"**/*.obj\":true,\n" +
-                    "\t\t\"**/*.OBJ\":true,\n" +
+                // Textures
+                "\t\t\"**/*.gif\":true,\n" +
+                "\t\t\"**/*.ico\":true,\n" +
+                "\t\t\"**/*.jpg\":true,\n" +
+                "\t\t\"**/*.jpeg\":true,\n" +
+                "\t\t\"**/*.png\":true,\n" +
+                "\t\t\"**/*.psd\":true,\n" +
+                "\t\t\"**/*.tga\":true,\n" +
+                "\t\t\"**/*.tif\":true,\n" +
+                "\t\t\"**/*.tiff\":true,\n" +
 
-                    // Unity File Types
-                    "\t\t\"**/*.asset\":true,\n" +
-                    "\t\t\"**/*.cubemap\":true,\n" +
-                    "\t\t\"**/*.flare\":true,\n" +
-                    "\t\t\"**/*.mat\":true,\n" +
-                    "\t\t\"**/*.meta\":true,\n" +
-                    "\t\t\"**/*.prefab\":true,\n" +
-                    "\t\t\"**/*.unity\":true,\n" +
+                // Models
+                "\t\t\"**/*.3ds\":true,\n" +
+                "\t\t\"**/*.3DS\":true,\n" +
+                "\t\t\"**/*.fbx\":true,\n" +
+                "\t\t\"**/*.FBX\":true,\n" +
+                "\t\t\"**/*.lxo\":true,\n" +
+                "\t\t\"**/*.LXO\":true,\n" +
+                "\t\t\"**/*.ma\":true,\n" +
+                "\t\t\"**/*.MA\":true,\n" +
+                "\t\t\"**/*.obj\":true,\n" +
+                "\t\t\"**/*.OBJ\":true,\n" +
 
-                   // Folders
-                   "\t\t\"build/\":true,\n" +
-                   "\t\t\"Build/\":true,\n" +
-                   "\t\t\"Library/\":true,\n" +
-                   "\t\t\"library/\":true,\n" +
-                   "\t\t\"obj/\":true,\n" +
-                   "\t\t\"Obj/\":true,\n" +
-                   "\t\t\"ProjectSettings/\":true,\r" +
-                   "\t\t\"temp/\":true,\n" +
-                   "\t\t\"Temp/\":true\n" +
+                // Unity File Types
+                "\t\t\"**/*.asset\":true,\n" +
+                "\t\t\"**/*.cubemap\":true,\n" +
+                "\t\t\"**/*.flare\":true,\n" +
+                "\t\t\"**/*.mat\":true,\n" +
+                "\t\t\"**/*.meta\":true,\n" +
+                "\t\t\"**/*.prefab\":true,\n" +
+                "\t\t\"**/*.unity\":true,\n" +
+
+                // Folders
+                "\t\t\"build/\":true,\n" +
+                "\t\t\"Build/\":true,\n" +
+                "\t\t\"Library/\":true,\n" +
+                "\t\t\"library/\":true,\n" +
+                "\t\t\"obj/\":true,\n" +
+                "\t\t\"Obj/\":true,\n" +
+                "\t\t\"ProjectSettings/\":true,\r" +
+                "\t\t\"temp/\":true,\n" +
+                "\t\t\"Temp/\":true\n" +
                 "\t}\n" +
-            "}";
+                "}";
 
             // Dont like the replace but it fixes the issue with the JSON
             File.WriteAllText(VSCode.SettingsPath, exclusions);
