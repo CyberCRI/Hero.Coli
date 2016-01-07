@@ -59,29 +59,34 @@ public class RedMetricsManager : MonoBehaviour
     private static System.Guid defaultGameVersionGuid = new System.Guid (defaultGameVersion);
     private System.Guid gameVersionGuid = new System.Guid (defaultGameVersionGuid.ToByteArray());
 
-    private static string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
-    private static System.Guid defaultPlayerGuid = new System.Guid (defaultPlayer);
-    private System.Guid playerGuid = new System.Guid (defaultPlayerGuid.ToByteArray());
+    private static string defaultGameSession = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
+    private static System.Guid defaultGameSessionGUID = new System.Guid (defaultGameSession);
+    private System.Guid gameSessionGUID = new System.Guid (defaultGameSessionGUID.ToByteArray());
 
-    private bool isPlayerGuidCreated = false;
-    private string testGUID1 = "a8ba2b83-c911-489c-98be-5fde646c46de"; // a GUID used for tests - should send events to the 'Hero.Coli - test' section
+    private string localPlayerGUID; //player guid stored on local computer, in PlayerPrefs 
+    private string globalPlayerGUID; //TODO login system
 
-    // list of events to be stacked while the player guid is not created yet, ie rmConnect's callback has not been called yet and isPlayerGuidCreated is still false
+    private bool isGameSessionGUIDCreated = false;
+    private bool isStartEventSent = false;
+
+    // list of events to be stacked while the player guid is not created yet, ie rmConnect's callback has not been called yet and isGameSessionGUIDCreated is still false
     private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();
-  
-    public void setPlayerID (string pID)
-    {
-        playerGuid = new System.Guid (pID);
+    
+    public void setGameSessionGUID(string _gameSessionGUID) {
+        gameSessionGUID = new System.Guid (_gameSessionGUID);
+    }
+    
+    public void setLocalPlayerGUID(string _localPlayerGUID) {     
+        localPlayerGUID = _localPlayerGUID;
+    }
+    
+    public void setGlobalPlayerGUID(string _globalPlayerGUID) {
+        globalPlayerGUID = _globalPlayerGUID;
     }
   
     public void setGameVersion (string gVersion)
     {
         gameVersionGuid = new System.Guid (gVersion);
-    }
-
-    public void Start ()
-    {
-        sendStartEvent (false);
     }
 
     private static void logMessage (string message, MessageLevel level = MessageLevel.DEFAULT)
@@ -238,24 +243,26 @@ public class RedMetricsManager : MonoBehaviour
         return result;
     }
   
-    private void trackStart (WWW www)
-    {
+    private void trackStart (WWW www) {
         //logMessage("RedMetricsManager::trackStart: www =? null:"+(null == www));
         string pID = extractPID (www);
-        setPlayerID (pID);
+        setGameSessionGUID (pID);
         sendStartEventWithPlayerGUID();
     }
     //////////////////////////////////////////////////
   
     private void sendStartEventWithPlayerGUID() {
-        CustomData guidCD = generateCustomData();
-        sendEvent (TrackingEvent.START, guidCD);
+        if(string.IsNullOrEmpty(localPlayerGUID)) {
+            sendEvent (TrackingEvent.START);
+        } else {
+            CustomData guidCD = generateCustomData();
+            sendEvent (TrackingEvent.START, guidCD);
+        }
     }
 
     private CustomData generateCustomData() {
-        string playerGUID = MemoryManager.get().configuration.playerGUID;
         //TODO manage GLOBALPLAYERGUID
-        CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, playerGUID);
+        CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, localPlayerGUID);
         Debug.LogError("generated guidCD="+guidCD);
         return guidCD;        
     } 
@@ -263,36 +270,31 @@ public class RedMetricsManager : MonoBehaviour
     //////////////////////////////////////////////////
     // filtering is done on Application.isWebPlayer
     // but could be done on Application.platform for better accuracy
-    public void sendStartEvent (bool restart)
+    // Should be called only after localPlayerGUID is set
+    public void sendStartEvent ()
     {
         //logMessage("RedMetricsManager::sendStartEvent");
-
-
-        if (Application.isWebPlayer) {
+        if (!isStartEventSent) {
+            
             // all web players
             // management of game start for webplayer
-            if (!restart) {
-                //restart event is sent from somewhere else
-                connect ();
-                StartCoroutine (waitAndSendStart ());
-            }
-        
-        } else {
+            if (Application.isWebPlayer) {
+                    connect ();
+                    StartCoroutine (waitAndSendStart ());
+            
             // other players + editor
-            if (defaultPlayerGuid == playerGuid) {
-                //playerGuid hasn't been initialized
-                //logMessage("RedMetricsManager::sendStartEvent other players/editor: createPlayer");
-                createPlayer (www => trackStart (www));
-                //testGet (www => trackStart(www));
-            } else {
-                sendEvent (TrackingEvent.RESTART);
-            }
-        }   
+            } else { 
+                    //gameSessionGUID hasn't been initialized
+                    //logMessage("RedMetricsManager::sendStartEvent other players/editor: createPlayer");
+                    createPlayer (www => trackStart (www));
+            }   
+            isStartEventSent = true;
+        }
     }
 
     //called by the bowser when connection is established
     public void ConfirmWebplayerConnection() {
-        isPlayerGuidCreated = true;
+        isGameSessionGUIDCreated = true;
         executeAndClearAllWaitingEvents();
     }
 
@@ -393,7 +395,7 @@ public class RedMetricsManager : MonoBehaviour
         //logMessage("RedMetricsManager::sendEvent");
         if (Application.isWebPlayer) {
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates, userTime);   
-            if(isPlayerGuidCreated) {
+            if(isGameSessionGUIDCreated) {
                 string json = getJsonString (data);
                 Application.ExternalCall ("rmPostEvent", json);
             } else {
@@ -401,15 +403,15 @@ public class RedMetricsManager : MonoBehaviour
                 //TODO: what if connection fails, or even fails permanently? Should retry connection at different intervals
             }
         } else {
-            //TODO wait on playerGuid using an IEnumerator
-            if (defaultPlayerGuid != playerGuid) {
+            //TODO wait on gameSessionGUID using an IEnumerator
+            if (defaultGameSessionGUID != gameSessionGUID) {
             } else {
                 logMessage ("RedMetricsManager::sendEvent default player guid: no registered player!", MessageLevel.ERROR);
             }
 
-            TrackingEventDataWithIDs data = new TrackingEventDataWithIDs (playerGuid, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
+            TrackingEventDataWithIDs data = new TrackingEventDataWithIDs (gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString (data);
-            logMessage (string.Format ("RedMetricsManager::sendEvent - playerGuid={0}, gameVersionGuid={1}, json={2}", playerGuid, gameVersionGuid, json), MessageLevel.DEFAULT);
+            logMessage (string.Format ("RedMetricsManager::sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json), MessageLevel.DEFAULT);
             sendDataStandalone (redMetricsEvent, json, value => wwwLogger (value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
         }
@@ -417,8 +419,8 @@ public class RedMetricsManager : MonoBehaviour
   
     public override string ToString ()
     {
-        return string.Format ("[RedMetricsManager playerGuid:{0}, gameVersionGuid:{1}, redMetricsURL:{2}]",
-                          playerGuid, gameVersionGuid, redMetricsURL);
+        return string.Format ("[RedMetricsManager gameSessionGUID:{0}, gameVersionGuid:{1}, redMetricsURL:{2}]",
+                          gameSessionGUID, gameVersionGuid, redMetricsURL);
     }
   
 }

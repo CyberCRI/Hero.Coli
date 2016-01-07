@@ -69,16 +69,26 @@ public class MemoryManager : MonoBehaviour {
         if(!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
-
-            //if(Application.isEditor) {
+            
+            string playerGUID = MemoryManager.get().configuration.playerGUID;
+            Debug.LogError(
+                "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
+                +" & testGUIDs.contains(playerGUID)="+testGUIDs.Contains(playerGUID)
+                +" & Application.isEditor="+Application.isEditor
+            );
+            
+            if(Application.isEditor || testGUIDs.Contains(playerGUID) ) {
+            //if(testGUIDs.Contains(playerGUID) ) {
                 RedMetricsManager.get ().setGameVersion(testVersionGuid);
-            //} else {
-            //    RedMetricsManager.get ().setGameVersion(gameVersionGuid);
-            //}
+            } else {
+                RedMetricsManager.get ().setGameVersion(gameVersionGuid);
+            }
 
-            RedMetricsManager.get ().setPlayerID(defaultPlayer);
-            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, defaultPlayer={2}"
-                                     , configuration, gameVersionGuid, defaultPlayer)
+            //TODO manage RedMetricsManager's globalPlayerGUID
+            RedMetricsManager.get ().setLocalPlayerGUID(playerGUID);
+            RedMetricsManager.get ().sendStartEvent();
+            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, playerGUID={2}"
+                                     , configuration, gameVersionGuid, playerGUID)
                        , Logger.Level.INFO);
         }
     }
@@ -172,7 +182,13 @@ public class MemoryManager : MonoBehaviour {
     //v1.33
     //public string gameVersionGuid = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
     
-    public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
+    //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
+    
+    
+    // GUIDs used for tests - should send events to the 'Hero.Coli - test' section
+    private static string testGUID1 = "a8ba2b83-c911-489c-98be-5fde646c46de";
+    private static string testGUID2 = "b44f1f3e-a118-40ae-aa82-f359570b38b7";
+    private List<string> testGUIDs = new List<string>(){testGUID1, testGUID2};
   
     public void sendCompletionEvent()
     {
