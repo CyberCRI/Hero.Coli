@@ -70,6 +70,8 @@ public class MemoryManager : MonoBehaviour {
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
             
+            setTestGUID();
+            
             string playerGUID = MemoryManager.get().configuration.playerGUID;
             Debug.LogError(
                 "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
@@ -77,8 +79,8 @@ public class MemoryManager : MonoBehaviour {
                 +" & Application.isEditor="+Application.isEditor
             );
             
-            if(Application.isEditor || testGUIDs.Contains(playerGUID) ) {
-            //if(testGUIDs.Contains(playerGUID) ) {
+            //if(Application.isEditor || testGUIDs.Contains(playerGUID) ) {
+            if(testGUIDs.Contains(playerGUID) ) {
                 RedMetricsManager.get ().setGameVersion(testVersionGuid);
             } else {
                 RedMetricsManager.get ().setGameVersion(gameVersionGuid);
@@ -90,6 +92,22 @@ public class MemoryManager : MonoBehaviour {
             Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, playerGUID={2}"
                                      , configuration, gameVersionGuid, playerGUID)
                        , Logger.Level.INFO);
+        }
+    }
+    
+    
+    //if the game is launched in the editor,
+    // sets the localPlayerGUID to a test GUID 
+    // so that events are logged onto a test version
+    // instead of the regular game version
+    // to prevent data from being contaminated by tests
+    private void setTestGUID() {
+        if(Application.platform == RuntimePlatform.WindowsEditor) {
+            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDWindows;
+        } else if (Application.platform == RuntimePlatform.OSXEditor) {
+            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDMacOS;
+        } else if (Application.isEditor) {
+            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDOther;
         }
     }
 
@@ -186,9 +204,10 @@ public class MemoryManager : MonoBehaviour {
     
     
     // GUIDs used for tests - should send events to the 'Hero.Coli - test' section
-    private static string testGUID1 = "a8ba2b83-c911-489c-98be-5fde646c46de";
-    private static string testGUID2 = "b44f1f3e-a118-40ae-aa82-f359570b38b7";
-    private List<string> testGUIDs = new List<string>(){testGUID1, testGUID2};
+    public static string testGUIDMacOS   = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
+    public static string testGUIDWindows = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb";
+    public static string testGUIDOther   = "cccccccc-cccc-cccc-cccc-cccccccccccc";
+    public List<string> testGUIDs = new List<string>(){testGUIDMacOS, testGUIDWindows,testGUIDOther};
   
     public void sendCompletionEvent()
     {
