@@ -72,25 +72,18 @@ public class MemoryManager : MonoBehaviour {
             
             setTestGUID();
             
-            string playerGUID = MemoryManager.get().configuration.playerGUID;
+            string playerGUID = configuration.playerGUID;
             Debug.LogError(
                 "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
-                +" & testGUIDs.contains(playerGUID)="+testGUIDs.Contains(playerGUID)
+                +" & testGUIDs.contains(playerGUID)="+configuration.isTestGUID()
                 +" & Application.isEditor="+Application.isEditor
             );
-            
-            //if(Application.isEditor || testGUIDs.Contains(playerGUID) ) {
-            if(testGUIDs.Contains(playerGUID) ) {
-                RedMetricsManager.get ().setGameVersion(testVersionGuid);
-            } else {
-                RedMetricsManager.get ().setGameVersion(gameVersionGuid);
-            }
 
             //TODO manage RedMetricsManager's globalPlayerGUID
             RedMetricsManager.get ().setLocalPlayerGUID(playerGUID);
             RedMetricsManager.get ().sendStartEvent();
             Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, playerGUID={2}"
-                                     , configuration, gameVersionGuid, playerGUID)
+                                     , configuration, GameConfiguration.gameVersionGuid, playerGUID)
                        , Logger.Level.INFO);
         }
     }
@@ -102,12 +95,8 @@ public class MemoryManager : MonoBehaviour {
     // instead of the regular game version
     // to prevent data from being contaminated by tests
     private void setTestGUID() {
-        if(Application.platform == RuntimePlatform.WindowsEditor) {
-            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDWindows;
-        } else if (Application.platform == RuntimePlatform.OSXEditor) {
-            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDMacOS;
-        } else if (Application.isEditor) {
-            MemoryManager.get().configuration.playerGUID = MemoryManager.testGUIDOther;
+        if (Application.isEditor) {
+            MemoryManager.get().configuration.setTestGUID(true);
         }
     }
 
@@ -183,32 +172,7 @@ public class MemoryManager : MonoBehaviour {
     {
         Logger.Log("MemoryManager::OnDestroy", Logger.Level.DEBUG);
     }
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    //test
-    public string testVersionGuid = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
-    //v1.0
-    //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
-    //v1.31
-    //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
-    //v1.32
-    public string gameVersionGuid = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
-    //v1.33
-    //public string gameVersionGuid = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
-    
-    //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
-    
-    
-    // GUIDs used for tests - should send events to the 'Hero.Coli - test' section
-    public static string testGUIDMacOS   = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
-    public static string testGUIDWindows = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb";
-    public static string testGUIDOther   = "cccccccc-cccc-cccc-cccc-cccccccccccc";
-    public List<string> testGUIDs = new List<string>(){testGUIDMacOS, testGUIDWindows,testGUIDOther};
-  
+   
     public void sendCompletionEvent()
     {
         RedMetricsManager.get ().sendEvent(TrackingEvent.COMPLETE);

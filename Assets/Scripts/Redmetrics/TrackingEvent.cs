@@ -17,7 +17,6 @@ public enum TrackingEvent {
     //example events
     JUMP,
     BOUNCE,
-    
 
     //specific events
     COMPLETE,
@@ -32,5 +31,7 @@ public enum TrackingEvent {
 	SELECTMENU,
     CONFIGURE,
 	GOTOMOOC,
-    GOTOURL
+    GOTOURL,
+    //backend events
+    SWITCHTESTGUID
 }

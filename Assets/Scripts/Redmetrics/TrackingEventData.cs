@@ -102,6 +102,8 @@ public enum CustomDataTag
     LOCALPLAYERGUID,    //for GUID stored in local PlayerPrefs
     GLOBALPLAYERGUID,   //for GUID associated to an acount
     
+    PLATFORM, //the runtime platform on which the game is run
+    
     DNABIT,
     BIOBRICK,
     DEVICE,
@@ -148,6 +150,10 @@ public class CustomData: Dictionary<string, string>
     public CustomData (CustomDataTag tag, string value) : this(tag.ToString().ToLowerInvariant(), value)
     {
 
+    }
+    
+    public void Add (CustomDataTag tag, string value) {
+        Add(tag.ToString().ToLowerInvariant(), value);
     }
 
     public override string ToString ()

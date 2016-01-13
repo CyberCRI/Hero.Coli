@@ -255,14 +255,15 @@ public class RedMetricsManager : MonoBehaviour
         if(string.IsNullOrEmpty(localPlayerGUID)) {
             sendEvent (TrackingEvent.START);
         } else {
-            CustomData guidCD = generateCustomData();
+            CustomData guidCD = generateCustomDataForGuidInit();
             sendEvent (TrackingEvent.START, guidCD);
         }
     }
 
-    private CustomData generateCustomData() {
+    public CustomData generateCustomDataForGuidInit() {
         //TODO manage GLOBALPLAYERGUID
         CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, localPlayerGUID);
+        guidCD.Add(CustomDataTag.PLATFORM, Application.platform.ToString().ToLowerInvariant());
         Debug.LogError("generated guidCD="+guidCD);
         return guidCD;        
     } 
