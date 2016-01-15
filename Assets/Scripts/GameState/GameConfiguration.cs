@@ -21,6 +21,7 @@ public class GameConfiguration {
     private static string _sandboxLevel2 = "Sandbox-0.2";
     
     private string localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
+    private string gameVersionGUIDPlayerPrefsKey = "gameVersionGUID";
 
     public enum RestartBehavior
     {
@@ -54,85 +55,87 @@ public class GameConfiguration {
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //test
-    public static string testVersionGuid = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
+    public static string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
     //v1.0
     //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     //v1.31
     //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
     //v1.32
-    public static string gameVersionGuid = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
+    public static string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
     //v1.33
     //public string gameVersionGuid = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
     
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
-    
-    
-    
-    // GUIDs used for tests - should send events to the 'Hero.Coli - test' section
-    public List<string> testGUIDs = new List<string>(){testGUID};
-    public static string testGUID = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
-    private string _previousGUID;
+        
     private string _playerGUID;
     public string playerGUID {
         get {
             if (!string.IsNullOrEmpty(_playerGUID)) {
-                Debug.LogError("use stored in GameConfiguration: "+_playerGUID);                
+                Debug.LogError("use playerGUID stored in GameConfiguration: "+_playerGUID);                
             } else {
                 //TODO make it work through different versions of the game,
                 //     so that memory is not erased every time a new version of the game is published
                 string storedGUID = PlayerPrefs.GetString(localPlayerGUIDPlayerPrefsKey);
                 if(string.IsNullOrEmpty(storedGUID)) {
-                    playerGUID = Guid.NewGuid().ToString();
-                    Debug.LogError("use new: "+_playerGUID);
+                    _playerGUID = Guid.NewGuid().ToString();
+                    PlayerPrefs.SetString(localPlayerGUIDPlayerPrefsKey, _playerGUID);
+                    Debug.LogError("use new playerGUID: "+_playerGUID);
                 } else {
-                    playerGUID = storedGUID;
-                    Debug.LogError("use stored in PlayerPrefs: "+_playerGUID);
+                    _playerGUID = storedGUID;
+                    Debug.LogError("use playerGUID stored in PlayerPrefs: "+_playerGUID);
                 }
             }
             return _playerGUID;
         }
+    }
+    
+    private string _gameVersionGUID;
+    public string gameVersionGUID {
+        get {
+            if (!string.IsNullOrEmpty(_gameVersionGUID)) {
+                Debug.LogError("use gameVersionGUID stored in GameConfiguration: "+_gameVersionGUID);                
+            } else {
+                string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
+                if(string.IsNullOrEmpty(storedGUID)) {
+                    gameVersionGUID = Guid.NewGuid().ToString();
+                    Debug.LogError("use new gameVersionGUID: "+_gameVersionGUID);
+                } else {
+                    gameVersionGUID = storedGUID;
+                    Debug.LogError("use gameVersionGUID stored in PlayerPrefs: "+_gameVersionGUID);
+                }
+            }
+            return _gameVersionGUID;
+        }
         set {
-            Debug.LogError("set to "+value);
-            _previousGUID = _playerGUID;
-            _playerGUID = value;
-            PlayerPrefs.SetString(localPlayerGUIDPlayerPrefsKey, _playerGUID);
-            setGameVersion();
+            Debug.LogError("set gameVersionGUID to "+value);
+            _gameVersionGUID = value;
+            PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, _gameVersionGUID);
+            RedMetricsManager.get ().setGameVersion(_gameVersionGUID);
         }
     }
     
-    public void setTestGUID(bool isTest) {
-        if(isTest) { //set a test playerGUID and store previous playerGUID
-            playerGUID = testGUID;
-        } else { //restore previous playerGUID
-            if(string.IsNullOrEmpty(_previousGUID)) {
-                _previousGUID = Guid.NewGuid().ToString();
-            }
-            string previousGUID = _previousGUID;
-            playerGUID = _previousGUID;
+    //sets the destination to which logs will be sent
+    public void setMetricLogDestination(bool isTest) {
+        if(isTest) { //sets a test destination
+            gameVersionGUID = testVersionGUID;
+        } else { //sets a labelled game version destination
+            gameVersionGUID = labelledGameVersionGUID;
         }
     }
     
     //switches the logging mode from test to normal and conversely
     //returns true if switched to normal
     public bool switchGUID() {
-        setTestGUID(playerGUID != testGUID);
+        setMetricLogDestination(gameVersionGUID != testVersionGUID);
         
         //send event to signal playerGUID manual change
         RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHTESTGUID);
         
-        return (playerGUID != testGUID);
+        return (gameVersionGUID != testVersionGUID);
     }
     
     public bool isTestGUID() {
-        return testGUIDs.Contains(playerGUID);
-    }
-    
-    private void setGameVersion() {
-        if(isTestGUID()) {
-            RedMetricsManager.get ().setGameVersion(testVersionGuid);
-        } else {
-            RedMetricsManager.get ().setGameVersion(gameVersionGuid);
-        }
+        return testVersionGUID == gameVersionGUID;
     }
 
     public GameMode getMode() {

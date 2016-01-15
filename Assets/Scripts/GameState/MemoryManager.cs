@@ -78,12 +78,12 @@ public class MemoryManager : MonoBehaviour {
                 +" & testGUIDs.contains(playerGUID)="+configuration.isTestGUID()
                 +" & Application.isEditor="+Application.isEditor
             );
-
+            
             //TODO manage RedMetricsManager's globalPlayerGUID
             RedMetricsManager.get ().setLocalPlayerGUID(playerGUID);
             RedMetricsManager.get ().sendStartEvent();
-            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, gameVersionGuid={1}, playerGUID={2}"
-                                     , configuration, GameConfiguration.gameVersionGuid, playerGUID)
+            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
+                                     , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID)
                        , Logger.Level.INFO);
         }
     }
