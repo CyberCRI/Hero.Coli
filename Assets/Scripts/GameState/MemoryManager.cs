@@ -96,7 +96,7 @@ public class MemoryManager : MonoBehaviour {
     // to prevent data from being contaminated by tests
     private void setTestGUID() {
         if (Application.isEditor) {
-            MemoryManager.get().configuration.setTestGUID(true);
+            MemoryManager.get().configuration.setMetricLogDestination(true);
         }
     }
 
