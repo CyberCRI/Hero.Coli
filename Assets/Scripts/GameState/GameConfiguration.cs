@@ -115,23 +115,21 @@ public class GameConfiguration {
     }
     
     //sets the destination to which logs will be sent
-    public void setMetricLogDestination(bool isTest) {
-        if(isTest) { //sets a test destination
-            gameVersionGUID = testVersionGUID;
-        } else { //sets a labelled game version destination
+    public void setMetricLogDestination(bool isDefault) {
+        if(isDefault) { //sets the default destination: a labelled game version
             gameVersionGUID = labelledGameVersionGUID;
+        } else { //sets a test version destination
+            gameVersionGUID = testVersionGUID;
         }
     }
-    
+        
     //switches the logging mode from test to normal and conversely
     //returns true if switched to normal
     public bool switchGUID() {
-        setMetricLogDestination(gameVersionGUID != testVersionGUID);
-        
+        setMetricLogDestination(!isTestGUID());
         //send event to signal playerGUID manual change
         RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHTESTGUID);
-        
-        return (gameVersionGUID != testVersionGUID);
+        return !isTestGUID();
     }
     
     public bool isTestGUID() {

@@ -73,8 +73,8 @@ public class Logger : MonoBehaviour {
  */
   public enum Level {
     ALL,          // 0 gets everything logged
-	  ONSCREEN,     // 1 gets printed in the Logger window
-	  INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
+    ONSCREEN,     // 1 gets printed in the Logger window
+    INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
     TRACE,        // 3 for step by step follow up on computation
     DEBUG,        // 4 for functions calls
     INFO,         // 5 for events that help finding out the sequence of events leading to a bug

@@ -95,10 +95,9 @@ public class MemoryManager : MonoBehaviour {
     // instead of the regular game version
     // to prevent data from being contaminated by tests
     private void setTestGUID() {
-        if (Application.isEditor) {
-            MemoryManager.get().configuration.setMetricLogDestination(true);
-        }
-    }
+        MemoryManager.get().configuration.setMetricLogDestination(!Application.isEditor);
+        //TODO add condition on PlayerPrefs attribute on manual redirection towards test version
+    }   
 
     public bool addData(string key, string value)
     {
