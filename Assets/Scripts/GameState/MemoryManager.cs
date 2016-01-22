@@ -70,8 +70,6 @@ public class MemoryManager : MonoBehaviour {
         {
             loadLevelData(inputFiles, _loadedLevelInfo);
             
-            setTestGUID();
-            
             string playerGUID = configuration.playerGUID;
             Debug.LogError(
                 "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
@@ -88,17 +86,6 @@ public class MemoryManager : MonoBehaviour {
         }
     }
     
-    
-    //if the game is launched in the editor,
-    // sets the localPlayerGUID to a test GUID 
-    // so that events are logged onto a test version
-    // instead of the regular game version
-    // to prevent data from being contaminated by tests
-    private void setTestGUID() {
-        MemoryManager.get().configuration.setMetricLogDestination(!Application.isEditor);
-        //TODO add condition on PlayerPrefs attribute on manual redirection towards test version
-    }   
-
     public bool addData(string key, string value)
     {
         if(!_savedData.ContainsKey(key))
