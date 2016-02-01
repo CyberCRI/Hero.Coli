@@ -333,7 +333,15 @@ public class RedMetricsManager : MonoBehaviour
         }
         //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
     }
-  
+    
+    public void disconnect ()
+    {
+        if (Application.isWebPlayer) {
+            Application.ExternalCall ("rmDisconnect");
+        }
+    }
+    
+    
     public string getJsonString (object obj)
     {
         //serialization
@@ -372,6 +380,7 @@ public class RedMetricsManager : MonoBehaviour
     {
         string checkedSection = section;
 
+        //TODO remove dependency to Hero class
         if (string.IsNullOrEmpty (section) && (null != Hero.get ())) {
             checkedSection = Hero.get ().getLastCheckpointName ();
         }

@@ -39,24 +39,23 @@ public class Hero : MonoBehaviour {
 	Medium _medium;
 
 	//Life
-
 	private float _life = 1f;
-  private static float _lifeRegen = 0.1f;
+    private static float _lifeRegen = 0.1f;
 	private Life _lifeManager;
 
 	//Energy.
 	private float _energy = 1f;
-  private float _maxMediumEnergy = 1f;
+    private float _maxMediumEnergy = 1f;
 	private float _energyBefore = 1f;
 	private float _lowEnergyDpt = 3*_lifeRegen;
 	
 
-  private bool _pause;
+    private bool _pause;
 	private bool _isAlive;
 
-  //respawn
-  private GameObject _lastCheckpoint = null;
-  private GameObject _lastNewCell = null;
+    //respawn
+    private GameObject _lastCheckpoint = null;
+    private GameObject _lastNewCell = null;
 
 
     private static float _respawnTimeS = 1.5f;
@@ -67,6 +66,7 @@ public class Hero : MonoBehaviour {
     private static Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
     private static Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
     private List<GameObject> _flagella = new List<GameObject>();
+    private static string checkpointSeparator = ".";
         
   private Hashtable _optionsIn = iTween.Hash(
       "scale", _baseScaleVector,
@@ -219,8 +219,10 @@ public class Hero : MonoBehaviour {
 	}
 
     public string getLastCheckpointName() {
+        string levelName = MemoryManager.get().configuration.gameMap.ToString().ToLowerInvariant();
         string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
-        return lastCheckpointName;
+        string result = string.IsNullOrEmpty(lastCheckpointName)?lastCheckpointName:levelName+checkpointSeparator+lastCheckpointName;
+        return result;
     }
 
   void setCurrentRespawnPoint(Collider col)

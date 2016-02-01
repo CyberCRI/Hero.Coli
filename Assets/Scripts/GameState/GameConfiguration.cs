@@ -107,13 +107,23 @@ public class GameConfiguration {
         set {
             _gameVersionGUID = value;
             PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, _gameVersionGUID);
+            if(Application.isWebPlayer) {
+                RedMetricsManager.get().disconnect ();   
+                
+                //TODO enable WaitingEvents stack 
+            }
             RedMetricsManager.get ().setGameVersion(_gameVersionGUID);
+            if(Application.isWebPlayer) {
+                RedMetricsManager.get().connect ();
+                
+                //TODO add wait and executeAndClearAllWaitingEvents()
+            }
         }
     }
     
     //sets the destination to which logs will be sent
-    public void setMetricsDestination(bool isDefault) {
-        if(isDefault) { //sets the default destination: a labelled game version
+    public void setMetricsDestination(bool wantToBecomeLabelledGameVersion) {
+        if(wantToBecomeLabelledGameVersion) { //sets the default destination: a labelled game version
             gameVersionGUID = labelledGameVersionGUID;
         } else { //sets a test version destination
             gameVersionGUID = testVersionGUID;
