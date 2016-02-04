@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using LitJson;
+using System;
 
 // author 
 //    Raphael Goujet
@@ -18,12 +19,15 @@ public class RedMetricsManager : MonoBehaviour
     {
         if (_instance == null) {
             _instance = GameObject.Find (gameObjectName).GetComponent<RedMetricsManager> ();
+            if (null == _instance) {
+                _instance = GameObject.FindObjectOfType<RedMetricsManager> ();
+            }
             if (null != _instance) {
                 //RedMetricsManager object is not destroyed when game restarts
                 DontDestroyOnLoad (_instance.gameObject);
                 _instance.initializeIfNecessary ();
             } else {
-                logMessage ("RedMetricsManager::get couldn't find game object", MessageLevel.ERROR);
+                logMessage (MessageLevel.ERROR, "get couldn't find game object");
             }
         }
         return _instance;
@@ -89,7 +93,19 @@ public class RedMetricsManager : MonoBehaviour
         gameVersionGuid = new System.Guid (gVersion);
     }
 
-    private static void logMessage (string message, MessageLevel level = MessageLevel.DEFAULT)
+    private static void logMessage (MessageLevel level, string formattedMessage, params System.Object[] args) {
+        logMessage(level, string.Format(formattedMessage, args));
+    }
+
+    private static void logMessage (MessageLevel level, string formattedMessage, IFormatProvider format, System.Object[] args) {
+        logMessage(level, string.Format(format, formattedMessage, args));
+    }
+    
+    private static void logMessage (string message) {
+        logMessage(MessageLevel.DEFAULT, message);
+    }
+
+    private static void logMessage (MessageLevel level, string message)
     {
         //if the game is played using a web player
         if (Application.isWebPlayer) {
@@ -99,7 +115,7 @@ public class RedMetricsManager : MonoBehaviour
         } else {
             switch (level) {
                 case MessageLevel.DEFAULT:
-                    Debug.Log (message);
+                    //Debug.Log (message);
                     break;
                 case MessageLevel.WARNING:
                     Debug.LogWarning (message);
@@ -119,14 +135,14 @@ public class RedMetricsManager : MonoBehaviour
   
     public static IEnumerator GET (string url, System.Action<WWW> callback)
     {
-        logMessage ("GET");
+        //logMessage ("GET");
         WWW www = new WWW (url);
         return waitForWWW (www, callback);
     }
   
     public static IEnumerator POST (string url, Dictionary<string,string> post, System.Action<WWW> callback)
     {
-        logMessage ("POST");
+        //logMessage ("POST");
         WWWForm form = new WWWForm ();
         foreach (KeyValuePair<string,string> post_arg in post) {
             form.AddField (post_arg.Key, post_arg.Value);
@@ -138,25 +154,25 @@ public class RedMetricsManager : MonoBehaviour
   
     public static IEnumerator POST (string url, byte[] post, Dictionary<string, string> headers, System.Action<WWW> callback)
     {
-        logMessage ("POST url:" + url);
+        //logMessage (MessageLevel.DEFAULT, "POST url: {0}", url);
         WWW www = new WWW (url, post, headers);
         return waitForWWW (www, callback);
     }
   
     private static IEnumerator waitForWWW (WWW www, System.Action<WWW> callback)
     {
-        logMessage ("waitForWWW");
+        //logMessage ("waitForWWW");
         float elapsedTime = 0.0f;
     
         if (null == www) {
-            logMessage ("waitForWWW: null www", MessageLevel.ERROR);
+            logMessage (MessageLevel.ERROR, "waitForWWW: null www");
             yield return null;
         }
     
         while (!www.isDone) {
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= 30.0f) {
-                logMessage ("waitForWWW: TimeOut!", MessageLevel.ERROR);
+                logMessage (MessageLevel.ERROR, "waitForWWW: TimeOut!");
                 break;
             }
             yield return null;
@@ -164,12 +180,12 @@ public class RedMetricsManager : MonoBehaviour
     
         if (!www.isDone || !string.IsNullOrEmpty (www.error)) {
             string errmsg = string.IsNullOrEmpty (www.error) ? "timeout" : www.error;
-            logMessage ("RedMetricsManager::waitForWWW Error: Load Failed: " + errmsg, MessageLevel.ERROR);
+            logMessage (MessageLevel.ERROR, "waitForWWW Error: Load Failed: {0}", errmsg);
             callback (null);    // Pass null result.
             yield break;
         }
     
-        logMessage ("waitForWWW: message successfully transmitted", MessageLevel.DEFAULT);
+        //logMessage (MessageLevel.DEFAULT, "waitForWWW: message successfully transmitted");
         callback (www); // Pass retrieved result.
     }
   
@@ -184,7 +200,7 @@ public class RedMetricsManager : MonoBehaviour
         Dictionary<string, string> headers = new Dictionary<string, string> ();
         headers.Add ("Content-Type", "application/json");
         byte[] pData = System.Text.Encoding.ASCII.GetBytes (pDataString.ToCharArray ());
-        //logMessage("RedMetricsManager::sendDataStandalone StartCoroutine POST with data="+pDataString+" ...");
+        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::sendDataStandalone StartCoroutine POST with data={0} ...", pDataString);
         StartCoroutine (RedMetricsManager.POST (url, pData, headers, callback));
     }
   
@@ -206,12 +222,12 @@ public class RedMetricsManager : MonoBehaviour
     private void wwwLogger (WWW www, string origin = "default")
     {
         if (null == www) {
-            logMessage ("RedMetricsManager::wwwLogger null == www from " + origin, MessageLevel.ERROR);
+            logMessage (MessageLevel.ERROR, "wwwLogger null == www from {0}", origin);
         } else {
             if (www.error == null) {
-                logMessage ("RedMetricsManager::wwwLogger Success: " + www.text + " from " + origin, MessageLevel.DEFAULT);
+                logMessage (MessageLevel.DEFAULT, "RedMetricsManager::wwwLogger Success: {0} from {1}", www.text, origin);
             } else {
-                logMessage ("RedMetricsManager::wwwLogger Error: " + www.error + " from " + origin, MessageLevel.ERROR);
+                logMessage (MessageLevel.ERROR, "wwwLogger Error: {0} from {1}", www.error, origin);
             } 
         }
     }
@@ -244,7 +260,7 @@ public class RedMetricsManager : MonoBehaviour
     }
   
     private void trackStart (WWW www) {
-        //logMessage("RedMetricsManager::trackStart: www =? null:"+(null == www));
+        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::trackStart: www =? null:{0}", (null == www));
         string pID = extractPID (www);
         setGameSessionGUID (pID);
         sendStartEventWithPlayerGUID();
@@ -264,7 +280,7 @@ public class RedMetricsManager : MonoBehaviour
         //TODO manage GLOBALPLAYERGUID
         CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, localPlayerGUID);
         guidCD.Add(CustomDataTag.PLATFORM, Application.platform.ToString().ToLowerInvariant());
-        Debug.LogError("generated guidCD="+guidCD);
+        //logMessage(MessageLevel.DEFAULT, "generated guidCD={0}", guidCD);
         return guidCD;        
     } 
 
@@ -328,7 +344,7 @@ public class RedMetricsManager : MonoBehaviour
         if (Application.isWebPlayer) {
             ConnectionData data = new ConnectionData (gameVersionGuid);
             string json = getJsonString (data);
-            //logMessage("RedMetricsManager::connect will rmConnect json="+json);
+            //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::connect will rmConnect json={0}", json);
             Application.ExternalCall ("rmConnect", json);
         }
         //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
@@ -338,8 +354,13 @@ public class RedMetricsManager : MonoBehaviour
     {
         if (Application.isWebPlayer) {
             Application.ExternalCall ("rmDisconnect");
+            resetConnectionVariables();
         }
     }
+    
+    private void resetConnectionVariables() {
+        isGameSessionGUIDCreated = false;
+    } 
     
     
     public string getJsonString (object obj)
@@ -401,8 +422,7 @@ public class RedMetricsManager : MonoBehaviour
             }
         }
              
-
-        //logMessage("RedMetricsManager::sendEvent");
+        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::sendEvent({0})", trackingEvent.ToString());
         if (Application.isWebPlayer) {
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates, userTime);   
             if(isGameSessionGUIDCreated) {
@@ -416,12 +436,12 @@ public class RedMetricsManager : MonoBehaviour
             //TODO wait on gameSessionGUID using an IEnumerator
             if (defaultGameSessionGUID != gameSessionGUID) {
             } else {
-                logMessage ("RedMetricsManager::sendEvent default player guid: no registered player!", MessageLevel.ERROR);
+                logMessage (MessageLevel.ERROR, "sendEvent default player guid: no registered player!");
             }
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs (gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString (data);
-            logMessage (string.Format ("RedMetricsManager::sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json), MessageLevel.DEFAULT);
+            //logMessage (MessageLevel.DEFAULT, string.Format ("RedMetricsManager::sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone (redMetricsEvent, json, value => wwwLogger (value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
         }

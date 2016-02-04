@@ -33,5 +33,6 @@ public enum TrackingEvent {
 	GOTOMOOC,
     GOTOURL,
     //backend events
-    SWITCHGAMEVERSION
+    SWITCHFROMGAMEVERSION,
+    SWITCHTOGAMEVERSION
 }

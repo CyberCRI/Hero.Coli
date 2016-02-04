@@ -56,14 +56,14 @@ public class GameConfiguration {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //test
     public static string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
-    //v1.0
+    //v 1.0
     //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
-    //v1.31
+    //v 1.31
     //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
-    //v1.32
-    public static string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
-    //v1.33
-    //public string gameVersionGuid = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
+    //v 1.32
+    //public static string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
+    //v 1.33
+    public static string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
     
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
         
@@ -108,15 +108,11 @@ public class GameConfiguration {
             _gameVersionGUID = value;
             PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, _gameVersionGUID);
             if(Application.isWebPlayer) {
-                RedMetricsManager.get().disconnect ();   
-                
-                //TODO enable WaitingEvents stack 
+                RedMetricsManager.get().disconnect ();
             }
             RedMetricsManager.get ().setGameVersion(_gameVersionGUID);
             if(Application.isWebPlayer) {
                 RedMetricsManager.get().connect ();
-                
-                //TODO add wait and executeAndClearAllWaitingEvents()
             }
         }
     }
@@ -133,9 +129,10 @@ public class GameConfiguration {
     //switches the logging mode from test to normal and conversely
     //returns true if switched to normal
     public bool switchMetricsGameVersion() {
+        //TODO
+        //RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
         setMetricsDestination(isTestGUID());
-        //send event to signal playerGUID manual change
-        RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
+        RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHTOGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
         return !isTestGUID();
     }
     

@@ -236,7 +236,7 @@ public class Hero : MonoBehaviour {
 
           //RedMetrics reporting
           //TODO put equiped devices in customData of sendEvent
-          RedMetricsManager.get ().sendEvent(TrackingEvent.REACH, null, _lastCheckpoint.name);
+          RedMetricsManager.get ().sendEvent(TrackingEvent.REACH);
       }
   }
 

@@ -73,7 +73,7 @@ public class MemoryManager : MonoBehaviour {
             string playerGUID = configuration.playerGUID;
             Debug.LogError(
                 "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
-                +" & testGUIDs.contains(playerGUID)="+configuration.isTestGUID()
+                +" & configuration.isTestGUID()="+configuration.isTestGUID()
                 +" & Application.isEditor="+Application.isEditor
             );
             
