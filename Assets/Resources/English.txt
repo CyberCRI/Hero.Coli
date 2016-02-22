@@ -143,23 +143,34 @@ DEVICE.REPR4=heat-sensible cI
 DEVICE.SUFLOW= (low)
 DEVICE.SUFMED= (med)
 
+
 INFO.GENERIC.NEXT=Next
+
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the device in your Inventory.
+
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
 INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
 INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
+
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
 INFO.PICKEDUPGFP.EXPLANATION=This device contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
+
+INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
+INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
+
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
 INFO.RFP.BOTTOM=The RFP ORF BioBrick will be included in future versions of the game!
+
 
 MODAL.RESTARTGAME.TITLE=RESTART GAME?
 MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?

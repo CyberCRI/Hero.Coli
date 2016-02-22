@@ -139,23 +139,34 @@ DEVICE.REPR4=cI thermosensible
 DEVICE.SUFLOW= (faible)
 DEVICE.SUFMED= (moyen)
 
+
 INFO.GENERIC.NEXT=Suivant
+
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=FÉLICITATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=Vous avez trouvé votre premier gène!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=Il permet d'accroître la vitesse de déplacement en augmentant le nombre de flagelles de la bactérie.
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Cliquez sur le bouton "Suivant" pour ouvrir l'inventaire et injecter gène dans Cellia.
-INFO.PICKEDUPRBS.TITLE=BIOBRIQUE TROUVÉE !
+
+INFO.PICKEDUPRBS.TITLE=NOUVELLE BIOBRIQUE !
 INFO.PICKEDUPRBS.SUBTITLE=Vous avez récupéré votre première BioBrique !
 INFO.PICKEDUPRBS.EXPLANATION=Cette BioBrique est un site de fixation de ribosome (RBS). Il détermine le niveau d'expression des gènes. Ce RBS a un niveau d'expression de 23%. Vous pouvez maintenant créer de nouvelles constructions avec !
 INFO.PICKEDUPRBS.BOTTOM=Allez faire de nouvelles constructions en cliquant sur "Suivant" pour ouvrir l'interface de construction.
+
 INFO.PICKEDUPGFP.TITLE=GÈNE TROUVÉ !
 INFO.PICKEDUPGFP.SUBTITLE=Vous avez ramassé un nouveau gène !
 INFO.PICKEDUPGFP.EXPLANATION=Ce gène contient l'ORF contrôlant la production de la protéine de fluorescence verte (GFP). La GFP émet une lumière verte quand on l'éclaire avec une lumière bleue.
 INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Suivant" pour injecter ce gène dans Cellia.
+
+INFO.PICKEDUPGFPBRICK.TITLE=NOUVELLE BIOBRIQUE !
+INFO.PICKEDUPGFPBRICK.SUBTITLE=Vous avez ramassé la BioBrique GFP !
+INFO.PICKEDUPGFPBRICK.EXPLANATION=Cette BioBrique contient l'ORF contrôlant la production de la protéine de fluorescence verte (GFP). La GFP émet une lumière verte quand on l'éclaire avec une lumière bleue.
+INFO.PICKEDUPGFPBRICK.BOTTOM=Construisez un gène fabriquant de la GFP !
+
 INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.
 INFO.RFP.EXPLANATION=Votre bactérie ne peut ouvrir la porte car elle n'émet pas de lumière rouge. Pour cela elle doit produire la protéine de fluorescence rouge (RFP) qui émet de la lumière rouge quand on l'éclaire avec de la lumière verte.
 INFO.RFP.BOTTOM=La BioBrique de l'ORF RFP sera présente dans une prochaine version du jeu !
+
 
 MODAL.RESTARTGAME.TITLE=RECOMMENCER ?
 MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vous sûr ?

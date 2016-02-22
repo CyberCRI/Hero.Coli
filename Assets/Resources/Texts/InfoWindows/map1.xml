@@ -11,6 +11,10 @@
     <texture>i_gfp</texture>
     <next>equip</next>
   </info>
+  <info code="PickedUpGFPBrick">
+    <texture>i_gfp</texture>
+    <next>craft</next>
+  </info>
   <info code="RFP">
     <texture>t_rfp_needed</texture>
     <next>world</next>

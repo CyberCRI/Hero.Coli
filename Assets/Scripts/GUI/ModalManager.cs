@@ -30,8 +30,8 @@ public class ModalManager : MonoBehaviour {
   public GameObject modalBackground;
   public GameObject genericModalWindow;
 
-  public UILabel titleLabel;
-  public UILabel explanationLabel;
+  public UILocalize titleLabel;
+  public UILocalize explanationLabel;
 
   public UISprite infoSprite;
 
@@ -144,9 +144,9 @@ public class ModalManager : MonoBehaviour {
         {
             string generic = _genericPrefix+code.ToUpper();
 
-            _instance.titleLabel.text       = Localization.Localize(generic+_genericTitle);
+            _instance.titleLabel.key        = generic+_genericTitle;
             _instance.infoSprite.spriteName = info._texture;
-            _instance.explanationLabel.text = Localization.Localize(generic+_genericExplanation);
+            _instance.explanationLabel.key  = generic+_genericExplanation;
 
             if(!string.IsNullOrEmpty(info._next))
             {

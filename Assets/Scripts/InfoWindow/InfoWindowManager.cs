@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 //TODO: merge with ModalManager
@@ -25,10 +24,10 @@ public class InfoWindowManager : MonoBehaviour {
 
   public string[] inputFiles;
 
-  public UILabel titleLabel;
-  public UILabel subtitleLabel;
-  public UILabel explanationLabel;
-  public UILabel bottomLabel;
+  public UILocalize titleLabel;
+  public UILocalize subtitleLabel;
+  public UILocalize explanationLabel;
+  public UILocalize bottomLabel;
   public NextAction nextAction;
 
   public GameObject infoPanel;
@@ -84,11 +83,11 @@ public class InfoWindowManager : MonoBehaviour {
     {
       string generic = _genericPrefix+code.ToUpper();
 
-      _instance.titleLabel.text       = Localization.Localize(generic+_genericTitle);
-      _instance.subtitleLabel.text    = Localization.Localize(generic+_genericSubtitle);
+      _instance.titleLabel.key        = generic+_genericTitle;
+      _instance.subtitleLabel.key     = generic+_genericSubtitle;
       _instance.infoSprite.spriteName = info._texture;
-      _instance.explanationLabel.text = Localization.Localize(generic+_genericExplanation);
-      _instance.bottomLabel.text      = Localization.Localize(generic+_genericBottom);
+      _instance.explanationLabel.key  = generic+_genericExplanation;
+      _instance.bottomLabel.key       = generic+_genericBottom;
       _instance.nextAction            = getFromString(info._next);
 
       return true;
