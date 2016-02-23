@@ -1,6 +1,3 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class TooltipInfo
 {
@@ -22,7 +19,7 @@ public class TooltipInfo
   public TooltipInfo(
     string code,
     string title,
-    string type,
+    TooltipManager.TooltipType tooltipType,
     string subtitle,
     string illustration,
     string customField,
@@ -35,7 +32,7 @@ public class TooltipInfo
   {
     _code              = code;
     _title             = title;
-    _type              = type;
+    _tooltipType       = tooltipType;
     _subtitle          = subtitle;
     _illustration      = illustration;
     _customField       = customField;
@@ -45,21 +42,19 @@ public class TooltipInfo
     _energyConsumption = energyConsumption;
     _explanation       = explanation;
 
-    string lower = _type.ToLower();
-    if(lower == "device")
-    {
-      _background = TooltipManager.getDeviceBackground();
-      _tooltipType = TooltipManager.TooltipType.DEVICE;
-    }
-    else if(lower == "biobrick")
-    {
-      _background = TooltipManager.getBioBrickBackground();
-      _tooltipType = TooltipManager.TooltipType.BIOBRICK;
-    }
-    else
-    {
-      _background = TooltipManager.getBioBrickBackground();
-      _tooltipType = TooltipManager.TooltipType.BIOBRICK;
+    switch(tooltipType) {
+        case TooltipManager.TooltipType.BIOBRICK:
+            _type = TooltipLoader.biobrickKey;
+            _background = TooltipManager.getBioBrickBackground();            
+            break;
+        case TooltipManager.TooltipType.DEVICE:
+            _type = TooltipLoader.deviceKey;
+            _background = TooltipManager.getDeviceBackground();
+            break;
+        default:
+            _type = TooltipLoader.biobrickKey;
+            _background = TooltipManager.getBioBrickBackground();
+            break;
     }
    }
 

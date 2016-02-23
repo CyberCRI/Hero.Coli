@@ -51,11 +51,11 @@ public class InterfaceLinkManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		//shortcut
-		CraftZoneManager craftZoneManager = CraftZoneManager.get();
-		GameStateController gameStateController = GameStateController.get();
-		//CraftFinalizer _craftfinalizer = craftFinalizer;
-		GUITransitioner guiTransitioner = GUITransitioner.get ();
+	//shortcut
+	CraftZoneManager craftZoneManager = CraftZoneManager.get();
+	GameStateController gameStateController = GameStateController.get();
+	//CraftFinalizer _craftfinalizer = craftFinalizer;
+	GUITransitioner guiTransitioner = GUITransitioner.get ();
     DevicesDisplayer devicesDisplayer = DevicesDisplayer.get();
     InfoWindowManager infoWindowManager = InfoWindowManager.get();
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
@@ -66,11 +66,11 @@ public class InterfaceLinkManager : MonoBehaviour {
 		//GUITransitioner
     guiTransitioner.celliaGraph = mediumInfoPanelCell.transform.Find("CellMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
-		guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
+	guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
-		guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-		guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
-		guiTransitioner.craftScreen = craftScreenPanel;
+	guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
+	guiTransitioner.craftScreen = craftScreenPanel;
 
     ContinueButton cb = okButton1.GetComponent<ContinueButton>();
     StartGameButton sgb = okButton2.GetComponent<StartGameButton>();

@@ -3,16 +3,16 @@ using UnityEngine;
 public class TooltipPanel : MonoBehaviour
 {
   public UISprite backgroundSprite;
-  public UILabel titleLabel;
-  public UILabel typeLabel;
-  public UILabel subtitleLabel;
+  public UILocalize titleLabel;
+  public UILocalize typeLabel;
+  public UILocalize subtitleLabel;
   public UISprite illustrationSprite;
-  public UILabel customFieldLabel;
-  public UILabel customValueLabel;
-  public UILabel lengthValueLabel;
-  public UILabel energyConsumptionValueLabel;
-  public UILabel referenceValueLabel;
-  public UILabel explanationLabel;
+  public UILocalize customFieldLabel;
+  public UILocalize customValueLabel;
+  public UILocalize lengthValueLabel;
+  public UILocalize energyConsumptionValueLabel;
+  public UILocalize referenceValueLabel;
+  public UILocalize explanationLabel;
 
   public override string ToString ()
   {

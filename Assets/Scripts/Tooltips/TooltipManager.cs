@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class TooltipManager : MonoBehaviour {
@@ -24,28 +23,17 @@ public class TooltipManager : MonoBehaviour {
 
   public string[] inputFiles;
 
-  private UISprite _backgroundSprite;
-  private UILabel _titleLabel;
-  private UILabel _typeLabel;
-  private UILabel _subtitleLabel;
-  private UISprite _illustrationSprite;
-  private UILabel _customFieldLabel;
-  private UILabel _customValueLabel;
-  private UILabel _lengthValueLabel;
-  private UILabel _referenceValueLabel;
-  private UILabel _energyConsumptionValueLabel;
-  private UILabel _explanationLabel;
-
-
-    private static string _tooltipPrefix     = "TOOLTIP.";
-    private static string _titleSuffix       = ".TITLE";
-    private static string _subtitleSuffix    = ".SUBTITLE";
-    private static string _customFieldSuffix = ".CUSTOMFIELD";
-    private static string _customValueSuffix = ".CUSTOMVALUE";
-    private static string _lengthSuffix      = ".LENGTH";
-    private static string _referenceSuffix   = ".REFERENCE";
-    private static string _energySuffix      = ".ENERGYCONSUMPTION";
-    private static string _explanationSuffix = ".EXPLANATION";
+  private UISprite   _backgroundSprite;
+  private UILocalize _titleLabel;
+  private UILocalize _typeLabel;
+  private UILocalize _subtitleLabel;
+  private UISprite   _illustrationSprite;
+  private UILocalize _customFieldLabel;
+  private UILocalize _customValueLabel;
+  private UILocalize _lengthValueLabel;
+  private UILocalize _referenceValueLabel;
+  private UILocalize _energyConsumptionValueLabel;
+  private UILocalize _explanationLabel;
 
   //public GameObject _tooltipPanel;
   private UIPanel _tooltipPanel;
@@ -67,8 +55,8 @@ public class TooltipManager : MonoBehaviour {
   public GameStateController gameStateController;
 
   private Dictionary<string, TooltipInfo> _loadedInfoWindows = new Dictionary<string, TooltipInfo>();
-  private static string _bioBrickPrefix = "b_";
-  private static string _devicePrefix = "d_";
+  private const string _bioBrickPrefix = "b_";
+  private const string _devicePrefix = "d_";
 
   public enum Quadrant {
     TOP_LEFT,
@@ -166,33 +154,35 @@ public class TooltipManager : MonoBehaviour {
 
   private static bool fillInFieldsFromCode(string code)
   {
-    TooltipInfo info = produceTooltipInfo(code);
+    //TooltipInfo info = produceTooltipInfo(code);
+    
+    TooltipInfo info = retrieveFromDico(code);
 
     if(null != info)
     {
       setVarsFromTooltipPanel(info._tooltipType);
 
-      _instance._backgroundSprite.spriteName   = info._background;
-      _instance._titleLabel.text               = info._title;
-      _instance._typeLabel.text                = info._type;
-      _instance._subtitleLabel.text            = info._subtitle;
+      _instance._backgroundSprite.spriteName = info._background;
+      _instance._titleLabel.key              = info._title;
+      _instance._typeLabel.key               = info._type;
+      _instance._subtitleLabel.key           = info._subtitle;
 
       if(null != _instance._illustrationSprite)
         _instance._illustrationSprite.spriteName = info._illustration;
 
       if((null != _instance._customFieldLabel) && (null != _instance._customValueLabel))
       {
-        _instance._customFieldLabel.text = info._customField;
-        _instance._customValueLabel.text = info._customValue;
+        _instance._customFieldLabel.key = info._customField;
+        _instance._customValueLabel.key = info._customValue;
       }
 
-      _instance._lengthValueLabel.text              = info._length;
-      _instance._referenceValueLabel.text           = info._reference;
+      _instance._lengthValueLabel.key    = info._length;
+      _instance._referenceValueLabel.key = info._reference;
 
       if(null != _instance._energyConsumptionValueLabel)
-        _instance._energyConsumptionValueLabel.text   = info._energyConsumption;
+        _instance._energyConsumptionValueLabel.key = info._energyConsumption;
 
-      _instance._explanationLabel.text         = info._explanation;
+      _instance._explanationLabel.key = info._explanation;
 
       return true;
     }
@@ -200,12 +190,6 @@ public class TooltipManager : MonoBehaviour {
     {
       return false;
     }
-  }
-
-  private static TooltipInfo produceTooltipInfo(string code)
-  {
-    TooltipInfo retrieved = retrieveFromDico(code);
-    return localize(retrieved);
   }
 
   private static TooltipInfo retrieveFromDico(string code)
@@ -217,40 +201,6 @@ public class TooltipManager : MonoBehaviour {
       info = null;
     }
     return info;
-  }
-
-  private static TooltipInfo localize(TooltipInfo coded)
-  { 
-    //TODO test on type
-    //string _code;
-    //string _background;
-
-    //string _type;
-    //TooltipManager.TooltipType _tooltipType;
-    //string _illustration;
-
-        if(null != coded && !string.IsNullOrEmpty(coded._code)) {
-            string root = _tooltipPrefix+coded._code.ToUpper().Replace(' ','_');
-
-            coded._title = Localization.Localize(root+_titleSuffix);
-            coded._subtitle = Localization.Localize(root+_subtitleSuffix);            
-            coded._customField = localizeIfExists(root+_customFieldSuffix);
-            coded._customValue = localizeIfExists(root+_customValueSuffix);    
-            coded._length = Localization.Localize(root+_lengthSuffix);
-            coded._reference = Localization.Localize(root+_referenceSuffix);    
-            coded._energyConsumption = localizeIfExists(root+_energySuffix);
-            coded._explanation = Localization.Localize(root+_explanationSuffix);
-        }
-
-        return coded;
-  }
-
-  private static string localizeIfExists(string code)
-  {
-        //TODO get rid of warnings from Localization
-    string localization = Localization.Localize(code);
-    string res = localization == code ? "" : localization;
-    return res;
   }
 
   private void loadDataIntoDico(string[] inputFiles, Dictionary<string, TooltipInfo> dico)
