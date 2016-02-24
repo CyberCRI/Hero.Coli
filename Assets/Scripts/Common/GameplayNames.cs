@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public class GameplayNames
 {
-  public static string getBrickRealName(string code)
-  {
-    return Localization.Localize("BRICK."+code);
-  }
+    
+    public const string biobrickPrefix = "BRICK.";
+    public const string moleculePrefix = "MOL.";
+    public const string devicePrefix   = "DEVICE.";
 
   public static string getMoleculeRealName(string code)
   {
-    return Localization.Localize("MOL."+code);
+    return Localization.Localize(moleculePrefix+code);
   }
 
   public static string getDeviceRealName(string code)
   {
-    return Localization.Localize("DEVICE."+code);
+    return Localization.Localize(devicePrefix+code);
   }
 
     //TODO check use

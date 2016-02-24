@@ -1,14 +1,12 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class DisplayedBioBrick : GenericDisplayedBioBrick {
 	
-	public UILabel                    _label;
+	public UILocalize                 _localize;
 	public LastHoveredInfoManager     _lastHoveredInfoManager;
 	
-	protected static string             prefabURI = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
-  public    static UnityEngine.Object prefab    = null;
+	protected new static string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
+    public static UnityEngine.Object prefab    = null;
 	
 	
 	public static new DisplayedBioBrick Create(
@@ -52,22 +50,17 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
 		// Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
 		GenericDisplayedBioBrick.Initialize(biobrickScript, biobrick);
-		biobrickScript._label.text = GameplayNames.getBrickRealName(biobrick.getName());
+		biobrickScript._localize.key = GameplayNames.biobrickPrefix+biobrick.getName();
 		Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
 
 	}
-
-  protected void OnLanguageChanged()
-  {
-    _label.text = GameplayNames.getBrickRealName(_biobrick.getName());
-  }
 	
 	public new static string getSpriteName(BioBrick brick) {
 		return brick.getName();
 	}
 
-  protected string getDebugInfos() {
-    return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", label="+_label.text+" time="+Time.realtimeSinceStartup;
+  protected new string getDebugInfos() {
+    return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", key="+_localize.key+" time="+Time.realtimeSinceStartup;
   }
 
 	protected override void OnPress(bool isPressed) {
