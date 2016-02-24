@@ -71,7 +71,7 @@ public class MemoryManager : MonoBehaviour {
             loadLevelData(inputFiles, _loadedLevelInfo);
             
             string playerGUID = configuration.playerGUID;
-            Debug.LogError(
+            Logger.Log(
                 "MemoryManager::initializeIfNecessary: playerGUID="+playerGUID
                 +" & configuration.isTestGUID()="+configuration.isTestGUID()
                 +" & Application.isEditor="+Application.isEditor

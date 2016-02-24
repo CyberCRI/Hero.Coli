@@ -25,17 +25,22 @@ public class WorldLinkManager : MonoBehaviour
             startPosition.gameObject.SetActive(false);
         }
 
-        //tuto End
-        EndGameCollider endGameCollider = GameObject.Find ("TutoEnd").GetComponent<EndGameCollider> ();
-        endGameCollider.hero = perso;
-        endGameCollider.endInfoPanel = GameStateController.get ().endWindow;
-        endGameCollider.endMainMenuButton = GameStateController.get ().endMainMenuButton;
+        //specific code for adventure1
+        GameObject endGameColliderGameObject = GameObject.Find ("TutoEnd");
+        if(null != endGameColliderGameObject) { 
+            EndGameCollider endGameCollider = endGameColliderGameObject.GetComponent<EndGameCollider> ();
+            endGameCollider.hero = perso;
+            endGameCollider.endInfoPanel = GameStateController.get ().endWindow;
+            endGameCollider.endMainMenuButton = GameStateController.get ().endMainMenuButton;
+            Logger.Log ("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel, Logger.Level.INFO);
+        }
             
-        //tuto End
-        InfoWindowCollisionTrigger tutoRFP = GameObject.Find ("TutoRFP").GetComponent<InfoWindowCollisionTrigger> ();
-        tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider> ();
-
-        Logger.Log ("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel, Logger.Level.INFO);
+        //specific code for adventure1
+        GameObject tutoRFPGameObject = GameObject.Find ("TutoRFP");
+        if(null != tutoRFPGameObject && null != perso) {
+            InfoWindowCollisionTrigger tutoRFP = tutoRFPGameObject.GetComponent<InfoWindowCollisionTrigger> ();
+            tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider> ();
+        }
 	
     }
 
