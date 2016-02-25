@@ -242,25 +242,20 @@ public class GameStateController : MonoBehaviour {
 	// Update is called once per frame
     void Update () {
 
-        /*
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
-            GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
-            GameObject perso = GameObject.Find("Perso");
-            perso.transform.localPosition = Vector3.zero;
-            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
-            perso.GetComponent<CellControl>().stopMovement();
-        } else if(Input.GetKeyDown(KeyCode.X))
+        if(Input.GetKeyDown(KeyCode.X) && Application.isEditor)
         {
             Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
-            GameObject.Find("Player").transform.position = new Vector3(500, 0, 637);
-            GameObject perso = GameObject.Find("Perso");
-            perso.transform.localPosition = Vector3.zero;
-            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
-            perso.GetComponent<CellControl>().stopMovement();
+            CellControl.get().teleport(new Vector3(500, 0, 637));
+        } else if(Input.GetKeyDown(KeyCode.V) && Application.isEditor)
+        {
+            Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
+            CellControl.get().teleport(new Vector3(168, 0, 724));
+            
+        } else if(Input.GetKeyDown(KeyCode.W) && Application.isEditor)
+        {
+            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
+            CellControl.get().teleport(new Vector3(-150, 0, 1110));
         }
-        */
 
         switch(_gameState){
 

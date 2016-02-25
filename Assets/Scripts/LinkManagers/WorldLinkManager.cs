@@ -17,11 +17,14 @@ public class WorldLinkManager : MonoBehaviour
     {
 
         GameObject perso = GameObject.Find ("Perso");
+        if(null == perso) {
+            Logger.Log("WorldLinkManager: error: Hero not found!", Logger.Level.ERROR);
+        }
+        
         mineManager.hero = perso.GetComponent<Hero> ();
 
         if (null != startPosition) {
-            perso.transform.position = startPosition.transform.position;
-            perso.transform.rotation = startPosition.transform.rotation;
+            CellControl.get().teleport(startPosition.transform.position, startPosition.transform.rotation);
             startPosition.gameObject.SetActive(false);
         }
 

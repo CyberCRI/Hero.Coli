@@ -373,19 +373,19 @@ public class Medium : LoadableFromXmlImpl
         {
             manageMoleculeConcentrationWithKey("AMPI");
             
-            //TODO manage this differently
-            /*
-            manageMoleculeConcentrationWithKey("AMPR");
-            manageMoleculeConcentrationWithKey("ATC");
-            manageMoleculeConcentrationWithKey("FLUO1");
-            manageMoleculeConcentrationWithKey("FLUO2");
-            manageMoleculeConcentrationWithKey("IPTG");
-            manageMoleculeConcentrationWithKey("MOV");
-            manageMoleculeConcentrationWithKey("REPR1");
-            manageMoleculeConcentrationWithKey("REPR2");
-            manageMoleculeConcentrationWithKey("REPR3");
-            manageMoleculeConcentrationWithKey("REPR4");
-            */
+            if(Application.isEditor) {
+                //TODO manage this differently
+                manageMoleculeConcentrationWithKey("AMPR");
+                manageMoleculeConcentrationWithKey("ATC");
+                manageMoleculeConcentrationWithKey("FLUO1");
+                manageMoleculeConcentrationWithKey("FLUO2");
+                manageMoleculeConcentrationWithKey("IPTG");
+                manageMoleculeConcentrationWithKey("MOV");
+                manageMoleculeConcentrationWithKey("REPR1");
+                manageMoleculeConcentrationWithKey("REPR2");
+                manageMoleculeConcentrationWithKey("REPR3");
+                manageMoleculeConcentrationWithKey("REPR4");
+            }
         }
     }
 
