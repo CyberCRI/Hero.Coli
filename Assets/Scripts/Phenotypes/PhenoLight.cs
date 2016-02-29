@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
 
 /*!
@@ -12,13 +11,12 @@ public class PhenoLight : Phenotype {
 
   // TODO use a LinkedList to manage overlapping light sources
 
-    public GameObject phenoLight;   //!< The light that will be affected by the phenotype
-    public List<TriggeredBehaviour> toTrigger;
+    public Light phenoLight;   //!< The light that will be affected by the phenotype
     
     private string fluorescenceProtein;
-    private bool colliderActivated = false;
+    private bool isSystemTriggered = false;
     private Molecule _mol = null;
-    private LightEmitter _lm;
+    private TriggeredLightEmitter _triggered;
 
   //! Called at the beginning
   public override void StartPhenotype()
@@ -44,31 +42,26 @@ public class PhenoLight : Phenotype {
             float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
             float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
-            phenoLight.GetComponent<Light>().intensity = intensity;
+            phenoLight.intensity = intensity;
             
-            // "stay"
-            if(null != _lm)
+            if(null != _triggered)
             {
-                if(_mol.getConcentration() > 0)
+                if(_mol.getConcentration() > _triggered.threshold)
                 {
-                    if(!colliderActivated)
+                    if(!isSystemTriggered)
                     {
-                        colliderActivated = true;
-                        _lm.triggerStart();
+                        turnLightOn();
                     }
                     else
                     {
-                        foreach(TriggeredBehaviour tb in toTrigger)
-                        {
-                            if(tb.gameObject != null)
-                                tb.triggerStay();
-                        }
+                        _triggered.triggerStay();
                     }
                 }
-                else if (colliderActivated)
-                {
-                    colliderActivated = false;
-                    _lm.triggerExit();
+                // The concentration fell below the threshold and the light must
+                // consequently be switched off
+                else if (isSystemTriggered)
+                {                    
+                    turnLightOff();
                 }
             }
         }
@@ -76,27 +69,49 @@ public class PhenoLight : Phenotype {
 	
 	void OnTriggerEnter(Collider col)
     {
-		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
+        // Prepares the future triggering of the light
+		TriggeredLightEmitter lm = col.gameObject.GetComponent<TriggeredLightEmitter>();
 		if(null != lm)
         {
-            _lm = lm;
-			phenoLight.GetComponent<Light>().enabled = true;
-			colliderActivated = true;
-			phenoLight.GetComponent<Light>().color = lm.colorTo;
+            _triggered = lm;
             fluorescenceProtein = lm.protein;
 		}
  	}
      
-	void OnTriggerExit(Collider col){
-		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
+	void OnTriggerExit(Collider col)
+    {
+		TriggeredLightEmitter lm = col.gameObject.GetComponent<TriggeredLightEmitter>();
 		if(null != lm){
-            _lm = lm;
-			phenoLight.GetComponent<Light>().enabled = false;
-			colliderActivated = false;
+            turnLightOff();
+            _triggered = null;
             fluorescenceProtein = "";
-            
-            lm.triggerExit();
-            _lm = null;
 		}
 	}
+    
+    private void turnLightOff()
+    {
+        if(_triggered)
+        {
+            _triggered.triggerExit();
+        }
+        isSystemTriggered = false;
+        if(phenoLight)
+        {
+            phenoLight.enabled = false;   
+        }
+    }
+    
+    private void turnLightOn()
+    {
+        if(_triggered)
+        {
+            _triggered.triggerStart();
+            isSystemTriggered = true;
+            if(phenoLight)
+            {
+                phenoLight.enabled = true;
+                phenoLight.color = _triggered.colorTo;
+            }
+        }
+    }
 }
