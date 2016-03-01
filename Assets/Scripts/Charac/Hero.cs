@@ -106,6 +106,10 @@ public class Hero : MonoBehaviour {
     }
 
 	public Life getLifeManager () {return _lifeManager;}
+    
+    public void kill() {
+        _lifeManager.setSuddenDeath(true);
+    }
 
 	public void Pause(bool pause)
 	{
