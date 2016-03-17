@@ -228,6 +228,20 @@ public class Hero : MonoBehaviour {
         string result = string.IsNullOrEmpty(lastCheckpointName)?lastCheckpointName:levelName+checkpointSeparator+lastCheckpointName;
         return result;
     }
+    
+    void manageCheckpoint(Collider col)
+    {
+        // Respawn
+        setCurrentRespawnPoint(col);
+        
+        // Particle emitters:
+        //  inactivate previous (-2)
+        //  activate future (+2)
+        updateMapElements(0);
+    }
+    
+    void updateMapElements(int checkpointIndex)
+    {}
 
   void setCurrentRespawnPoint(Collider col)
   {
@@ -264,25 +278,24 @@ public class Hero : MonoBehaviour {
       StartCoroutine(popEffectCoroutine(savedCell));
   }
 
- 	void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collision)
  	{
-	  PickableItem item = collision.GetComponent<PickableItem>();
-	  if(null != item)
-    {
-  	  Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
-      item.pickUp();
-            CustomData data;
+        PickableItem item = collision.GetComponent<PickableItem>();
+        if(null != item)
+        {
+            Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
+            item.pickUp();
             RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
+        }
+        else
+        {
+            manageCheckpoint(collision);
+        }
     }
-    else
-    {
-      setCurrentRespawnPoint(collision);
-    }
-  }
 
  	void OnTriggerExit(Collider col) {
-    setCurrentRespawnPoint(col);
-  }
+        manageCheckpoint(col);
+    }
 
 	//Respawn function after death
 	IEnumerator RespawnCoroutine() {
