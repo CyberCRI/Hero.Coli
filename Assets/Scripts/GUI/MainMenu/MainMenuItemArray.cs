@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MainMenuItemArray : MonoBehaviour {
     
@@ -14,4 +13,23 @@ public class MainMenuItemArray : MonoBehaviour {
 	void Update () {
 	
 	}
+    
+    public override string ToString()
+    {
+        return "MainMenuItemArray["+ToString(_items)+"]";
+    }
+    
+    public static string ToString(MainMenuItem[] items)
+    {
+        string result = "";
+        foreach(MainMenuItem item in items) {
+            if(!string.IsNullOrEmpty(result))
+            {
+                result+=", ";
+            }
+            result += item.itemName;
+        }
+        result = "items=["+result+"]";
+        return result;
+    }
 }

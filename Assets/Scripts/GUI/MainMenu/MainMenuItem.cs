@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MainMenuItem : MonoBehaviour {
     
@@ -16,7 +15,7 @@ public class MainMenuItem : MonoBehaviour {
         }
     }
     protected UILocalize _localize;
-    public string _itemName;
+    private string _itemName;
     public string itemName {
         get {
             return _itemName;
