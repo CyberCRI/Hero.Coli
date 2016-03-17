@@ -106,4 +106,23 @@ public class MainMenuItem : MonoBehaviour {
 	void Update () {
 	
 	}
+    
+    public static string ToString(MainMenuItem[] items)
+    {
+        string result = "";
+        foreach(MainMenuItem item in items) {
+            if(!string.IsNullOrEmpty(result))
+            {
+                result+=", ";
+            }
+            result += item.itemName;
+        }
+        result = "items=["+result+"]";
+        return result;
+    }
+    
+    public override string ToString()
+    {
+        return string.Format("MainMenuItem[{0}, {1}, {2}]", _initialized, displayed, itemName);
+    }
 }

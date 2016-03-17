@@ -16,20 +16,6 @@ public class MainMenuItemArray : MonoBehaviour {
     
     public override string ToString()
     {
-        return "MainMenuItemArray["+ToString(_items)+"]";
-    }
-    
-    public static string ToString(MainMenuItem[] items)
-    {
-        string result = "";
-        foreach(MainMenuItem item in items) {
-            if(!string.IsNullOrEmpty(result))
-            {
-                result+=", ";
-            }
-            result += item.itemName;
-        }
-        result = "items=["+result+"]";
-        return result;
+        return "MainMenuItemArray["+MainMenuItem.ToString(_items)+"]";
     }
 }
