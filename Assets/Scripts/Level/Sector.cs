@@ -28,12 +28,19 @@ public class Sector : MonoBehaviour {
     public bool switchOnNextFrame = false;
     public bool initializeOnNextFrame = false;
 
+    private bool _initialized = false;
 
     // Switches all elements to ON or OFF
     // Assumes the elements list doesn't change over time 
     // See commit #37b96ae692f49557f781b03e466de59d001d0ffc for runtime changes 
     private void switchTo(bool active)
     {   
+        
+        if(!_initialized)
+        {
+            initialize();
+        }
+        
         // Case: switch on
         if(!_areEmittersOn && active)
         {
@@ -101,7 +108,11 @@ public class Sector : MonoBehaviour {
     {
         Debug.Log(string.Format("{0}::Awake starts with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
         // Make inventory of all relevant elements
-        initialize();
+        
+        if(!_initialized)
+        {
+            initialize();
+        }
         Debug.Log(string.Format("{0}::Awake ends with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
     }
     
@@ -138,11 +149,17 @@ public class Sector : MonoBehaviour {
                 }
             }
         }
+        
+        _initialized = true;
+        
+        // switchOff contains a call to initialize conditioned by _initialized,
+        // therefore _initialized is set to true before the call to switchOff.
+        switchOff();
     }
     
 	// Update is called once per frame
     void Update () {
-        
+                
         if(initializeOnNextFrame)
         {
             initialize();

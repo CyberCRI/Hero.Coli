@@ -240,6 +240,28 @@ public class Hero : MonoBehaviour {
         updateMapElements(0);
     }
     
+    void managePickUp(Collider col)
+    {
+        PickableItem item = col.GetComponent<PickableItem>();
+        if(null != item)
+        {
+            Logger.Log("Hero::managePickUp collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
+            item.pickUp();
+            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
+        }
+    }
+    
+    // Manages sector when entering into the sector.
+    void manageSector(Collider col)
+    {
+        Sector sector = col.GetComponent<Sector>();
+        if(null != sector)
+        {
+            Logger.Log("Hero::manageSector collided with sector="+sector.ToString(), Logger.Level.INFO);
+            sector.switchOn();
+        }
+    }
+    
     void updateMapElements(int checkpointIndex)
     {}
 
@@ -280,17 +302,9 @@ public class Hero : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
  	{
-        PickableItem item = collision.GetComponent<PickableItem>();
-        if(null != item)
-        {
-            Logger.Log("Hero::OnTriggerEnter collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
-            item.pickUp();
-            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
-        }
-        else
-        {
-            manageCheckpoint(collision);
-        }
+        managePickUp(collision);
+        manageCheckpoint(collision);
+        manageSector(collision);
     }
 
  	void OnTriggerExit(Collider col) {
