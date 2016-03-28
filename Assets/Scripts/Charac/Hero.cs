@@ -258,7 +258,7 @@ public class Hero : MonoBehaviour {
         if(null != sector)
         {
             Logger.Log("Hero::manageSector collided with sector="+sector.ToString(), Logger.Level.INFO);
-            sector.switchOn();
+            sector.activate();
         }
     }
     

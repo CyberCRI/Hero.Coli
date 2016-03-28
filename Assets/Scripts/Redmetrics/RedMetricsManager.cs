@@ -237,19 +237,22 @@ public class RedMetricsManager : MonoBehaviour
         //logMessage("RedMetricsManager::extractPID");
         string result = null;
         wwwLogger (www, "extractPID");
-        string trimmed = www.text.Trim ();
-        string[] split1 = trimmed.Split ('\n');
-        foreach (string s1 in split1) {
-            //logMessage(s1);
-            if (s1.Length > 5) {
-                string[] split2 = s1.Trim ().Split (':');
-                foreach (string s2 in split2) {
-                    if (!s2.Equals ("\"id\"") && !string.IsNullOrEmpty (s2)) {
-                        string[] split3 = s2.Trim ().Split ('"');
-                        foreach (string s3 in split3) {
+        if(www != null && www.text != null)
+        {
+            string trimmed = www.text.Trim ();
+            string[] split1 = trimmed.Split ('\n');
+            foreach (string s1 in split1) {
+                //logMessage(s1);
+                if (s1.Length > 5) {
+                    string[] split2 = s1.Trim ().Split (':');
+                    foreach (string s2 in split2) {
+                        if (!s2.Equals ("\"id\"") && !string.IsNullOrEmpty (s2)) {
+                            string[] split3 = s2.Trim ().Split ('"');
+                            foreach (string s3 in split3) {
 
-                            if (!s3.Equals ("\"") && !string.IsNullOrEmpty (s3)) {
-                                result = s3;
+                                if (!s3.Equals ("\"") && !string.IsNullOrEmpty (s3)) {
+                                    result = s3;
+                                }
                             }
                         }
                     }
@@ -262,8 +265,11 @@ public class RedMetricsManager : MonoBehaviour
     private void trackStart (WWW www) {
         //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::trackStart: www =? null:{0}", (null == www));
         string pID = extractPID (www);
-        setGameSessionGUID (pID);
-        sendStartEventWithPlayerGUID();
+        if(null != pID)
+        {
+            setGameSessionGUID (pID);
+            sendStartEventWithPlayerGUID();
+        }
     }
     //////////////////////////////////////////////////
   

@@ -17,9 +17,13 @@ public class Sector : MonoBehaviour {
             return result;
         }
     }
+    
+    protected static List<Sector> allSectors = new List<Sector>();
 
     // The game objects comprised by the sector, some of which may have to be inactivated/activated sometimes
     public GameObject[] elements;
+    public Sector[] neighboringSectors;
+    
     private bool _areEmittersOn = true;
     private List<ParticleEmitter> _particleEmitters = new List<ParticleEmitter>();
     private List<ParticleSystem> _particleSystems = new List<ParticleSystem>();
@@ -103,6 +107,40 @@ public class Sector : MonoBehaviour {
     {
         switchTo(false);
     }
+    
+    public void activate()
+    {        
+        this.switchOn();
+        
+        bool contains = false;
+        
+        foreach(Sector sector in allSectors)
+        {
+            if(sector.id != this.id)
+            {
+                contains = false;
+                if((null != neighboringSectors) && (0 != neighboringSectors.Length))
+                {
+                    foreach(Sector neighbor in neighboringSectors)
+                    {
+                        if(sector == neighbor)
+                        {
+                            contains = true;
+                            break;
+                        }
+                    }
+                }
+                if(!sector._areEmittersOn && contains)
+                {
+                    sector.switchOn();
+                }
+                else if(sector._areEmittersOn && !contains)
+                {
+                    sector.switchOff();
+                }
+            }
+        }        
+    }
 
     void Awake()
     {
@@ -155,6 +193,8 @@ public class Sector : MonoBehaviour {
         // switchOff contains a call to initialize conditioned by _initialized,
         // therefore _initialized is set to true before the call to switchOff.
         switchOff();
+        
+        allSectors.Add(this);
     }
     
 	// Update is called once per frame
