@@ -223,7 +223,7 @@ public class Hero : MonoBehaviour {
 	}
 
     public string getLastCheckpointName() {
-        string levelName = MemoryManager.get().configuration.gameMap.ToString().ToLowerInvariant();
+        string levelName = MemoryManager.get().configuration.getGameMapName();
         string lastCheckpointName = null==_lastCheckpoint?"":_lastCheckpoint.name;
         string result = string.IsNullOrEmpty(lastCheckpointName)?lastCheckpointName:levelName+checkpointSeparator+lastCheckpointName;
         return result;

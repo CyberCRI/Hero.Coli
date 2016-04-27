@@ -1,13 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bricks>
-	<brick id="PRLACI" size="0" type="promoter">
-	  <beta>75</beta>
-	  <formula>![0.01,2]REPR1</formula>
-	</brick>
-	<brick id="RBS1" size="0" type="rbs">
-	  <rbsFactor>0.23</rbsFactor>
-	</brick>
-	<brick id="REPR2" size="0" type="gene">
-	  <protein>REPR2</protein>
-	</brick>
 </bricks>

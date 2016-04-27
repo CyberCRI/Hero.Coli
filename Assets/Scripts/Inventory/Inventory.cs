@@ -6,7 +6,6 @@ public class Inventory : DeviceContainer
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   public static string gameObjectName = "DeviceInventory";
-	public InventoryAnimator animator;
   private static Inventory _instance;
   public static Inventory get() {
     if(_instance == null) {
@@ -29,12 +28,14 @@ public class Inventory : DeviceContainer
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
+  public InventoryAnimator animator;
+  
   /* array of file paths from which the devices available by default from start will be loaded,
    * provided that the required BioBricks are available - cf. AvailableBioBricksManager
    */
-
   //private string[] _deviceFiles = new string[]{};
-    private string[] _deviceFiles = new string[]{ "Parameters/Devices/available"};
+    public string[] deviceFiles;
+    public string deviceFilesPathPrefix;
     //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePathRead };
 
     //old device files
@@ -232,22 +233,34 @@ public class Inventory : DeviceContainer
         return currentName;
     }
 	
+    // Warning: loads from inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
     void loadDevices() {
         LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
         
         LevelInfo levelInfo = null;
         MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo);
-        if(null != levelInfo && levelInfo.areAllDevicesAvailable)
-        {
-            List<Device> devices = new List<Device>();
+        
+        List<Device> devices = new List<Device>();
 
-            DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
-            foreach (string file in _deviceFiles) {
-                Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
-                devices.AddRange(dLoader.loadDevicesFromFile(file));
-            }
-            UpdateData(devices, new List<Device>(), new List<Device>());
+        DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+        
+        string[] filesToLoad;
+        string currentMapDevicesFilePath = MemoryManager.get().configuration.getGameMapName();
+        
+        if(null == levelInfo || !levelInfo.areAllDevicesAvailable)
+        { 
+            filesToLoad = new string[]{currentMapDevicesFilePath};
+        } else {
+            List<string> fileList = new List<string>(deviceFiles);
+            fileList.Add(currentMapDevicesFilePath);
+            filesToLoad = fileList.ToArray();
+        }            
+        foreach (string file in filesToLoad) {
+            string fullPathFile = deviceFilesPathPrefix + file;
+            Logger.Log("Inventory::loadDevices loads device file "+fullPathFile, Logger.Level.TRACE);
+            devices.AddRange(dLoader.loadDevicesFromFile(fullPathFile));
         }
+        UpdateData(devices, new List<Device>(), new List<Device>());
     }
 
     public void switchDeviceKnowledge()

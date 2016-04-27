@@ -44,6 +44,9 @@ public class GameConfiguration {
 
     public RestartBehavior restartBehavior;
     public GameMap gameMap;
+    public string getGameMapName() {
+        return gameMap.ToString().ToLowerInvariant();
+    }
     public I18n.Language language;    
     public bool isAbsoluteWASD;
     public bool isLeftClickToMove;

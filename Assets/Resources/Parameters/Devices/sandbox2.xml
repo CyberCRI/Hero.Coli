@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<devices>
+  <device id="PRLACI:RBS1:REPR2:DTER">
+    <brick id="PRLACI" size="0" type="promoter">
+      <beta>75</beta>
+      <formula>![0.01,2]REPR1</formula>
+    </brick>
+    <brick id="RBS1" size="0" type="rbs">
+      <rbsFactor>0.23</rbsFactor>
+    </brick>
+    <brick id="REPR2" size="0" type="gene">
+      <protein>REPR2</protein>
+    </brick>
+    <brick id="DTER" size="0" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
+  <device id="PRTETR:RBS1:REPR3:DTER">
+    <brick id="PRTETR" size="0" type="promoter">
+      <beta>75</beta>
+      <formula>![0.01,2]REPR2</formula>
+    </brick>
+    <brick id="RBS1" size="0" type="rbs">
+      <rbsFactor>0.23</rbsFactor>
+    </brick>
+    <brick id="REPR3" size="0" type="gene">
+      <protein>REPR3</protein>
+    </brick>
+    <brick id="DTER" size="0" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
+  <device id="PRLAMB:RBS1:REPR1:DTER">
+    <brick id="PRLAMB" size="0" type="promoter">
+      <beta>75</beta>
+      <formula>![0.01,2]REPR3</formula>
+    </brick>
+    <brick id="RBS1" size="0" type="rbs">
+      <rbsFactor>0.23</rbsFactor>
+    </brick>
+    <brick id="REPR1" size="0" type="gene">
+      <protein>REPR1</protein>
+    </brick>
+    <brick id="DTER" size="0" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
+  <device id="PRTETR:RBS1:FLUO1:DTER">
+    <brick id="PRTETR" size="0" type="promoter">
+      <beta>75</beta>
+      <formula>![0.01,2]REPR2</formula>
+    </brick>
+    <brick id="RBS1" size="0" type="rbs">
+      <rbsFactor>0.23</rbsFactor>
+    </brick>
+    <brick id="FLUO1" size="0" type="gene">
+      <protein>FLUO1</protein>
+    </brick>
+    <brick id="DTER" size="0" type="terminator">
+      <terminatorFactor>1</terminatorFactor>
+    </brick>
+  </device>
+</devices>

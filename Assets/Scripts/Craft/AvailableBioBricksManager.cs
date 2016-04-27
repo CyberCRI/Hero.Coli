@@ -283,6 +283,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
         Logger.Log("AvailableBioBricksManager::loadAllBioBricks _allBioBricks="+_allBioBricks.Count, Logger.Level.INFO);
     }
 
+    // Warning: inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
     private void loadBioBricks(string[] inputFiles, LinkedList<BioBrick> destination)
     {
         Logger.Log("AvailableBioBricksManager::loadBioBricks", Logger.Level.INFO);
@@ -293,14 +294,15 @@ public class AvailableBioBricksManager : MonoBehaviour {
         string files = "";
 
         foreach (string file in inputFiles) {
-            Logger.Log("AvailableBioBricksManager::loadBioBricks loads biobrick file "+file, Logger.Level.DEBUG);
-            LinkedList<BioBrick> bb = bLoader.loadBioBricksFromFile(file);
-            Logger.Log("AvailableBioBricksManager::loadBioBricks appended bb="+bb.Count.ToString()+" from file "+file, Logger.Level.DEBUG);
+            string fullPath = biobrickFilesPathPrefix + file;
+            Logger.Log("AvailableBioBricksManager::loadBioBricks loads biobrick file "+fullPath, Logger.Level.DEBUG);
+            LinkedList<BioBrick> bb = bLoader.loadBioBricksFromFile(fullPath);
+            Logger.Log("AvailableBioBricksManager::loadBioBricks appended bb="+bb.Count.ToString()+" from file "+fullPath, Logger.Level.DEBUG);
             LinkedListExtensions.AppendRange<BioBrick>(destination, bb);
             if(!string.IsNullOrEmpty(files)) {
                 files += ", ";
             }
-            files += file;
+            files += fullPath;
         }
         Logger.Log("AvailableBioBricksManager::loadBioBricks loaded "+files+" so that destination="+destination.Count, Logger.Level.DEBUG);
     }
@@ -334,8 +336,9 @@ public class AvailableBioBricksManager : MonoBehaviour {
         else
         {
             //default behavior
-            loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
-            loadBioBricks(new string[]{biobrickFilesPathPrefix + MemoryManager.get().configuration.gameMap}, _availableBioBricks);
+            List<string> filesToLoad = new List<string>(_availableBioBrickFiles);
+            filesToLoad.Add(MemoryManager.get().configuration.getGameMapName());
+            loadBioBricks(filesToLoad.ToArray(), _availableBioBricks);
         }
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks="+_availableBioBricks.Count, Logger.Level.DEBUG);
     }
