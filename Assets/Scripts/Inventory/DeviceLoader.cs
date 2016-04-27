@@ -35,6 +35,41 @@ public class DeviceLoader
     }
 
 
+    private void manageBrick(string brickName, string filePath = "")
+    {
+        Logger.Log("DeviceLoader::loadDevicesFromFile brick name " + brickName, Logger.Level.TRACE);
+        //"warn" parameter is true to indicate that there is no such BioBrick
+        //as the one mentioned in the xml file of the device
+        brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
+                                                    , b => (b.getName() == brickName)
+                                                    , true
+                                                    , " DeviceLoader::loadDevicesFromFile(" + filePath + ")"
+                                                        );
+
+        if (brick == null)
+        {
+            brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks
+                                                        , b => (b.getName() == brickName)
+                                                        , true
+                                                        , " DeviceLoader::loadDevicesFromFile(" + filePath + ")"
+                                                            );
+            if (brick != null)
+            {
+                Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick " + brick, Logger.Level.TRACE);
+                AvailableBioBricksManager.get().addAvailableBioBrick(brick);
+            }
+        }
+        if (brick != null)
+        {
+            Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick " + brick, Logger.Level.TRACE);
+            deviceBricks.AddLast(brick);
+        }
+        else
+        {
+            Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name " + brickName + "!", Logger.Level.WARN);
+        }
+    }
+
     public LinkedList<Device> loadDevicesFromFile(string filePath)
     {
         Logger.Log("DeviceLoader::loadDevicesFromFile(" + filePath + ")", Logger.Level.INFO);
@@ -69,47 +104,27 @@ public class DeviceLoader
 
             if (checkString(deviceName))
             {
-                foreach (XmlNode attr in deviceNode)
+                if(0 != deviceNode.ChildNodes.Count)
                 {
-                    if (attr.Name == BioBricksXMLTags.BIOBRICK)
+                    foreach (XmlNode attr in deviceNode)
                     {
-                        //find brick in existing bricks
-                        string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
-                        Logger.Log("DeviceLoader::loadDevicesFromFile brick name " + brickName, Logger.Level.TRACE);
-                        //"warn" parameter is true to indicate that there is no such BioBrick
-                        //as the one mentioned in the xml file of the device
-                        brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
-                                                                    , b => (b.getName() == brickName)
-                                                                    , true
-                                                                    , " DeviceLoader::loadDevicesFromFile(" + filePath + ")"
-                                                                        );
-
-                        if (brick == null)
+                        if (attr.Name == BioBricksXMLTags.BIOBRICK)
                         {
-                            brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks
-                                                                        , b => (b.getName() == brickName)
-                                                                        , true
-                                                                        , " DeviceLoader::loadDevicesFromFile(" + filePath + ")"
-                                                                            );
-                            if (brick != null)
-                            {
-                                Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick " + brick, Logger.Level.TRACE);
-                                AvailableBioBricksManager.get().addAvailableBioBrick(brick);
-                            }
-                        }
-                        if (brick != null)
-                        {
-                            Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick " + brick, Logger.Level.TRACE);
-                            deviceBricks.AddLast(brick);
+                            //find brick in existing bricks
+                            string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
+                            manageBrick(brickName, filePath);
                         }
                         else
                         {
-                            Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name " + brickName + "!", Logger.Level.WARN);
+                            Logger.Log("DeviceLoader::loadDevicesFromFile unknown attr " + attr.Name, Logger.Level.WARN);
                         }
                     }
-                    else
+                }
+                else
+                {
+                    foreach (string brickName in deviceName.Split(':'))
                     {
-                        Logger.Log("DeviceLoader::loadDevicesFromFile unknown attr " + attr.Name, Logger.Level.WARN);
+                        manageBrick(brickName, filePath);
                     }
                 }
                 ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
