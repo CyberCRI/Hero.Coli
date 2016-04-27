@@ -4,6 +4,8 @@ public static class LevelInfoXMLTags {
         INFOLIST = "infoList",
         INFO = "info",
         CODE = "code",
+        INVENTORYBIOBRICKS = "inventoryBioBricks",
+        INVENTORYDEVICES = "inventoryDevices",
         AREALLBIOBRICKSAVAILABLE = "areAllBioBricksAvailable",
         AREALLDEVICESAVAILABLE = "areAllDevicesAvailable";
 }

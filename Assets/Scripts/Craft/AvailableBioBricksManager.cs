@@ -26,7 +26,10 @@ public class AvailableBioBricksManager : MonoBehaviour {
 
 
   public string[] _allBioBrickFiles;
+  
+  //Parameters/BioBricks/availablebiobricks
   public string[] _availableBioBrickFiles;
+  public string biobrickFilesPathPrefix;    
 
   //width of a displayed BioBrick
   //set in Unity editor
@@ -332,6 +335,7 @@ public class AvailableBioBricksManager : MonoBehaviour {
         {
             //default behavior
             loadBioBricks(_availableBioBrickFiles, _availableBioBricks);
+            loadBioBricks(new string[]{biobrickFilesPathPrefix + MemoryManager.get().configuration.gameMap}, _availableBioBricks);
         }
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks="+_availableBioBricks.Count, Logger.Level.DEBUG);
     }

@@ -5,6 +5,8 @@ using System.Xml;
 public class LevelInfo : LoadableFromXmlImpl
 {
     public string code {get; set;}
+    public bool inventoryBioBricks {get; set;}
+    public bool inventoryDevices {get; set;}
     public bool areAllBioBricksAvailable {get; set;}
     public bool areAllDevicesAvailable {get; set;}
 
@@ -24,6 +26,12 @@ public class LevelInfo : LoadableFromXmlImpl
                 {
                     case LevelInfoXMLTags.CODE:
                         code = attr.InnerText;
+                        break;
+                    case LevelInfoXMLTags.INVENTORYBIOBRICKS:
+                        inventoryBioBricks = Tools.safeGetBool(attr.InnerText);
+                        break;
+                    case LevelInfoXMLTags.INVENTORYDEVICES:
+                        inventoryDevices = Tools.safeGetBool(attr.InnerText);
                         break;
                     case LevelInfoXMLTags.AREALLBIOBRICKSAVAILABLE:
                         areAllBioBricksAvailable = Tools.safeGetBool(attr.InnerText);

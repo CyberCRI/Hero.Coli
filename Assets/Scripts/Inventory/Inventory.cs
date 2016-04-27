@@ -234,14 +234,20 @@ public class Inventory : DeviceContainer
 	
     void loadDevices() {
         LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
-        List<Device> devices = new List<Device>();
+        
+        LevelInfo levelInfo = null;
+        MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo);
+        if(null != levelInfo && levelInfo.areAllDevicesAvailable)
+        {
+            List<Device> devices = new List<Device>();
 
-        DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
-        foreach (string file in _deviceFiles) {
-            Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
-            devices.AddRange(dLoader.loadDevicesFromFile(file));
+            DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+            foreach (string file in _deviceFiles) {
+                Logger.Log("Inventory::loadDevices loads device file "+file, Logger.Level.TRACE);
+                devices.AddRange(dLoader.loadDevicesFromFile(file));
+            }
+            UpdateData(devices, new List<Device>(), new List<Device>());
         }
-        UpdateData(devices, new List<Device>(), new List<Device>());
     }
 
     public void switchDeviceKnowledge()

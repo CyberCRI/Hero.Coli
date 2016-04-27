@@ -150,7 +150,7 @@ public class MemoryManager : MonoBehaviour {
     public bool tryGetCurrentLevelInfo(out LevelInfo levelInfo)
     {
         Logger.Log("MemoryManager::tryGetCurrentLevelInfo", Logger.Level.DEBUG);
-        levelInfo = null;;
+        levelInfo = null;
         return _loadedLevelInfo.TryGetValue(MemoryManager.get ().configuration.getSceneName (), out levelInfo);
     }
 
