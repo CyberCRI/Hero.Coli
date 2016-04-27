@@ -236,13 +236,14 @@ public class Inventory : DeviceContainer
     // Warning: loads from inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
     void loadDevices() {
         LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
+        LinkedList<BioBrick> allBioBricks = AvailableBioBricksManager.get().getAllBioBricks();
         
         LevelInfo levelInfo = null;
         MemoryManager.get ().tryGetCurrentLevelInfo(out levelInfo);
         
         List<Device> devices = new List<Device>();
 
-        DeviceLoader dLoader = new DeviceLoader(availableBioBricks);
+        DeviceLoader dLoader = new DeviceLoader(availableBioBricks, allBioBricks);
         
         string[] filesToLoad;
         string currentMapDevicesFilePath = MemoryManager.get().configuration.getGameMapName();

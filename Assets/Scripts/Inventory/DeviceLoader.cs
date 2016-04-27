@@ -8,6 +8,7 @@ using System.IO;
 //TODO refactor with FileLoader
 public class DeviceLoader {
   private LinkedList<BioBrick> _availableBioBricks;
+  private LinkedList<BioBrick> _allBioBricks;
 
   private string deviceName;
   private Device device;
@@ -21,10 +22,13 @@ public class DeviceLoader {
     deviceBricks.Clear();
   }
 
-  public DeviceLoader(LinkedList<BioBrick> availableBioBricks) {
+  public DeviceLoader(LinkedList<BioBrick> availableBioBricks, LinkedList<BioBrick> allBioBricks = null) {
     Logger.Log("DeviceLoader::DeviceLoader("+Logger.ToString<BioBrick>(availableBioBricks)+")", Logger.Level.TRACE);
     _availableBioBricks = new LinkedList<BioBrick>();
     _availableBioBricks.AppendRange(availableBioBricks);
+    
+    _allBioBricks = new LinkedList<BioBrick>();
+    _allBioBricks.AppendRange(allBioBricks);
   }
 
 
@@ -65,16 +69,28 @@ public class DeviceLoader {
               Logger.Log("DeviceLoader::loadDevicesFromFile brick name "+brickName, Logger.Level.TRACE);
                         //"warn" parameter is true to indicate that there is no such BioBrick
                         //as the one mentioned in the xml file of the device
-                        brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
-                                                                    , b => (b.getName() == brickName)
-                                                                    , true
-                                                                    , " DeviceLoader::loadDevicesFromFile("+filePath+")"
-                                                                      );
+                brick = LinkedListExtensions.Find<BioBrick>(_availableBioBricks
+                                                            , b => (b.getName() == brickName)
+                                                            , true
+                                                            , " DeviceLoader::loadDevicesFromFile("+filePath+")"
+                                                                );
+                                                                      
+              if(brick == null) {
+                    brick = LinkedListExtensions.Find<BioBrick>(_allBioBricks
+                                                                , b => (b.getName() == brickName)
+                                                                , true
+                                                                , " DeviceLoader::loadDevicesFromFile("+filePath+")"
+                                                                    );
+                    if(brick != null) {
+                        Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
+                        AvailableBioBricksManager.get().addAvailableBioBrick(brick);
+                    }
+              }
               if(brick != null) {
-                Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
-                deviceBricks.AddLast(brick);
+                    Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick "+brick, Logger.Level.TRACE);
+                    deviceBricks.AddLast(brick);
               } else {
-                Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name "+brickName+"!", Logger.Level.WARN);
+                    Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name "+brickName+"!", Logger.Level.WARN);
               }
             } else {
               Logger.Log("DeviceLoader::loadDevicesFromFile unknown attr "+attr.Name, Logger.Level.WARN);
