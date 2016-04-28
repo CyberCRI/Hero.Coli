@@ -1,9 +1,6 @@
-using UnityEngine;
-using System.Collections;
 using System.Xml;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 //TODO refactor with FileLoader
 public class DeviceLoader
@@ -15,7 +12,7 @@ public class DeviceLoader
     private Device device;
     private BioBrick brick;
     private LinkedList<BioBrick> deviceBricks = new LinkedList<BioBrick>();
-    private BioBrickLoader bLoader = new BioBrickLoader(); 
+    private BioBrickLoader bLoader = new BioBrickLoader();
 
     private void reinitVars()
     {
@@ -123,20 +120,20 @@ public class DeviceLoader
                         {
                             //find brick in existing bricks
                             string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
-                            if(!processBrick(brickName, filePath))
+                            if (!processBrick(brickName, filePath))
                             {
                                 // processes even longer grammar that uses explicit brick description
                                 // because the brick wasn't found neither in 'available' nor 'all' biobricks lists
                                 brick = bLoader.loadBioBrick(attr);
-                                if(null != brick)
+                                if (null != brick)
                                 {
-                                    AvailableBioBricksManager.get().addAvailableBioBrick(brick); 
-                                    deviceBricks.AddLast(brick);              
+                                    AvailableBioBricksManager.get().addAvailableBioBrick(brick);
+                                    deviceBricks.AddLast(brick);
                                 }
                                 else
                                 {
                                     processSuccess = false;
-                                    break;                       
+                                    break;
                                 }
                             }
                         }
@@ -151,15 +148,15 @@ public class DeviceLoader
                     // processes shortened grammar that uses only device name
                     foreach (string brickName in deviceName.Split(':'))
                     {
-                        if(!processBrick(brickName, filePath))
+                        if (!processBrick(brickName, filePath))
                         {
                             processSuccess = false;
                             break;
                         }
                     }
                 }
-                
-                if(processSuccess)
+
+                if (processSuccess)
                 {
                     ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
                     LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
