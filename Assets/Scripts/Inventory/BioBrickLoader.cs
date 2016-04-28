@@ -38,19 +38,9 @@ public class BioBrickLoader {
     Logger.Log("BioBrickLoader::BioBrickLoader()");
   }
 
-
-  public LinkedList<BioBrick> loadBioBricksFromFile(string filePath)
+  public BioBrick loadBioBrick(XmlNode bioBrickNode)
   {
-    Logger.Log("BioBrickLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
-
-    LinkedList<BioBrick> resultBioBricks = new LinkedList<BioBrick>();
-
-    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
-    
-    XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.BIOBRICK);
-
-    foreach (XmlNode bioBrickNode in bioBrickList)
-    {
+      
       reinitVars();
       //common biobrick attributes
       try {
@@ -60,11 +50,11 @@ public class BioBrickLoader {
       }
       catch (NullReferenceException exc) {
         Logger.Log("BioBrickLoader::loadBioBricksFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
-        continue;
+        return null;
       }
       catch (Exception exc) {
         Logger.Log("BioBrickLoader::loadBioBricksFromFile failed, got exc="+exc, Logger.Level.WARN);
-        continue;
+        return null;
       }
       Logger.Log ("BioBrickLoader::loadBioBricksFromFile got id="+bioBrickName
         +", size="+bioBrickSize
@@ -152,13 +142,31 @@ public class BioBrickLoader {
               Logger.Log ("BioBrickLoader::loadBioBricksFromFile wrong type "+bioBrickType, Logger.Level.WARN);
             break;
         }
-        if(bioBrick != null && checkString(bioBrickSize)){
+        if(null != bioBrick && checkString(bioBrickSize)){
           bioBrick.setSize(parseInt(bioBrickSize));
-          resultBioBricks.AddLast(bioBrick);
         }
-
+        return bioBrick;
         } else {
           Logger.Log("BioBrickLoader::loadBioBricksFromFile Error : missing attribute id in BioBrick node", Logger.Level.WARN);
+          return null;
+        }
+  }
+
+  public LinkedList<BioBrick> loadBioBricksFromFile(string filePath)
+  {
+    Logger.Log("BioBrickLoader::loadBioBricksFromFile("+filePath+")", Logger.Level.INFO);
+
+    LinkedList<BioBrick> resultBioBricks = new LinkedList<BioBrick>();
+
+    XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
+    
+    XmlNodeList bioBrickList = xmlDoc.GetElementsByTagName(BioBricksXMLTags.BIOBRICK);
+
+    foreach (XmlNode bioBrickNode in bioBrickList)
+    {
+        loadBioBrick(bioBrickNode);
+        if(bioBrick != null){
+          resultBioBricks.AddLast(bioBrick);
         }
     }
     return resultBioBricks;

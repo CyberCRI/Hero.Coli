@@ -32,4 +32,19 @@
       <terminatorFactor>1</terminatorFactor>
     </brick>
   </device>
+  <device id="PRTEST:RBSTEST:FLUO1:TERTEST">
+    <brick id="PRTEST" size="0" type="promoter">
+      <beta>75</beta>
+      <formula>![0.5,4]REPR2</formula>
+    </brick>
+    <brick id="RBSTEST" size="0" type="rbs">
+      <rbsFactor>0.50</rbsFactor>
+    </brick>
+    <brick id="FLUO1" size="0" type="gene">
+      <protein>FLUO1</protein>
+    </brick>
+    <brick id="TERTEST" size="0" type="terminator">
+      <terminatorFactor>12</terminatorFactor>
+    </brick>
+  </device>
 </devices>

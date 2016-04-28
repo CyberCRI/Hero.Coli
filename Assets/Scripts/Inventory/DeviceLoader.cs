@@ -15,6 +15,7 @@ public class DeviceLoader
     private Device device;
     private BioBrick brick;
     private LinkedList<BioBrick> deviceBricks = new LinkedList<BioBrick>();
+    private BioBrickLoader bLoader = new BioBrickLoader(); 
 
     private void reinitVars()
     {
@@ -34,8 +35,12 @@ public class DeviceLoader
         _allBioBricks.AppendRange(allBioBricks);
     }
 
-
-    private void manageBrick(string brickName, string filePath = "")
+    // Searches for a brick from its name in available BioBricks
+    //  If it succeeds, adds brick to deviceBricks and returns true
+    //  If it fails, searches for it in all the known BioBricks
+    //      If it succeeds, adds brick to available BioBricks list and does previous success treatment
+    //      If it fails, returns false
+    private bool processBrick(string brickName, string filePath = "")
     {
         Logger.Log("DeviceLoader::loadDevicesFromFile brick name " + brickName, Logger.Level.TRACE);
         //"warn" parameter is true to indicate that there is no such BioBrick
@@ -63,10 +68,12 @@ public class DeviceLoader
         {
             Logger.Log("DeviceLoader::loadDevicesFromFile successfully added brick " + brick, Logger.Level.TRACE);
             deviceBricks.AddLast(brick);
+            return true;
         }
         else
         {
             Logger.Log("DeviceLoader::loadDevicesFromFile failed to add brick with name " + brickName + "!", Logger.Level.WARN);
+            return false;
         }
     }
 
@@ -102,9 +109,13 @@ public class DeviceLoader
             Logger.Log("DeviceLoader::loadDevicesFromFile got id=" + deviceName
               , Logger.Level.TRACE);
 
+
+            bool processSuccess = true;
+
             if (checkString(deviceName))
             {
-                if(0 != deviceNode.ChildNodes.Count)
+                // processes longer grammars that use explicit brick nodes names
+                if (0 != deviceNode.ChildNodes.Count)
                 {
                     foreach (XmlNode attr in deviceNode)
                     {
@@ -112,7 +123,22 @@ public class DeviceLoader
                         {
                             //find brick in existing bricks
                             string brickName = attr.Attributes[BioBricksXMLTags.ID].Value;
-                            manageBrick(brickName, filePath);
+                            if(!processBrick(brickName, filePath))
+                            {
+                                // processes even longer grammar that uses explicit brick description
+                                // because the brick wasn't found neither in 'available' nor 'all' biobricks lists
+                                brick = bLoader.loadBioBrick(attr);
+                                if(null != brick)
+                                {
+                                    AvailableBioBricksManager.get().addAvailableBioBrick(brick); 
+                                    deviceBricks.AddLast(brick);              
+                                }
+                                else
+                                {
+                                    processSuccess = false;
+                                    break;                       
+                                }
+                            }
                         }
                         else
                         {
@@ -122,18 +148,27 @@ public class DeviceLoader
                 }
                 else
                 {
+                    // processes shortened grammar that uses only device name
                     foreach (string brickName in deviceName.Split(':'))
                     {
-                        manageBrick(brickName, filePath);
+                        if(!processBrick(brickName, filePath))
+                        {
+                            processSuccess = false;
+                            break;
+                        }
                     }
                 }
-                ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
-                LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
-                deviceModules.AddLast(deviceModule);
-                device = Device.buildDevice(deviceName, deviceModules);
-                if (device != null)
+                
+                if(processSuccess)
                 {
-                    resultDevices.AddLast(device);
+                    ExpressionModule deviceModule = new ExpressionModule(deviceName, deviceBricks);
+                    LinkedList<ExpressionModule> deviceModules = new LinkedList<ExpressionModule>();
+                    deviceModules.AddLast(deviceModule);
+                    device = Device.buildDevice(deviceName, deviceModules);
+                    if (device != null)
+                    {
+                        resultDevices.AddLast(device);
+                    }
                 }
             }
             else
