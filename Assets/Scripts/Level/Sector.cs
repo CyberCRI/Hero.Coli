@@ -161,13 +161,13 @@ public class Sector : MonoBehaviour {
         _forceFlowParticles.Clear();
         foreach(GameObject go in elements)
         {
-            foreach(ParticleEmitter pe in go.GetComponentsInChildren<ParticleEmitter>())
+            /*foreach(ParticleEmitter pe in go.GetComponentsInChildren<ParticleEmitter>())
             {
                 if(pe.gameObject.activeSelf && pe.enabled)
                 {
                     _particleEmitters.Add(pe);
                 }
-            }
+            }*/
             foreach(ParticleSystem ps in go.GetComponentsInChildren<ParticleSystem>())
             {
                 if(ps.gameObject.activeSelf)

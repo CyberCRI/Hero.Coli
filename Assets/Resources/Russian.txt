@@ -1,4 +1,4 @@
-MAIN.LANGUAGE=Russian
+﻿MAIN.LANGUAGE=Russian
 
 KEY.PAUSE=P
 KEY.LIFE=R
@@ -146,6 +146,11 @@ INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
 INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
+
+INFO.FIRSTBIOBRICK.TITLE = 1st BioBrick ! 
+INFO.FIRSTBIOBRICK.SUBTITLE = You found your first BioBrick !
+INFO.FIRSTBIOBRICK.EXPLANATION = All is in the title. This is a basic brick for Biologic Engineering.
+INFO.FIRSTBIOBRICK.BOTTOM= Construisez un gène fabriquant de la GFP !
 
 
 MODAL.RESTARTGAME.TITLE=RESTART GAME?

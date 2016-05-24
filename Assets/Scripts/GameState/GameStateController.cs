@@ -397,7 +397,7 @@ public class GameStateController : MonoBehaviour {
         GameConfiguration.GameMap destination =
             (MemoryManager.get ().configuration.gameMap == GameConfiguration.GameMap.ADVENTURE1) ?
                 GameConfiguration.GameMap.SANDBOX2 :
-                GameConfiguration.GameMap.ADVENTURE1;
+                GameConfiguration.GameMap.TUTORIAL1;
 
         setAndSaveLevelName(destination, "goToOtherGameMode");
         RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
@@ -469,6 +469,7 @@ public class GameStateController : MonoBehaviour {
             case GameConfiguration.GameMap.ADVENTURE1:
             case GameConfiguration.GameMap.SANDBOX1:
             case GameConfiguration.GameMap.SANDBOX2:
+            case GameConfiguration.GameMap.TUTORIAL1:
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart
                 //whereas MemoryManager won't

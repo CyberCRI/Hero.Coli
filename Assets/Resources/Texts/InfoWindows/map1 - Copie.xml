@@ -1,22 +1,26 @@
 <infoList>
   <info code="PickedUpHyperflagellation">
     <texture>i_hyperflagellation</texture>
-    <next>craft</next>
+    <next>equip</next>
   </info>
   <info code="PickedUpRBS">
-    <texture>i_rbs2</texture>
-    <next>world</next>
+    <texture>i_rbs</texture>
+    <next>craft</next>
   </info>
   <info code="PickedUpGFP">
-    <texture>i_term</texture>
-    <next>world</next>
+    <texture>i_gfp</texture>
+    <next>equip</next>
   </info>
   <info code="PickedUpGFPBrick">
-    <texture>i_cons</texture>
-    <next>world</next>
+    <texture>i_gfp</texture>
+    <next>craft</next>
   </info>
   <info code="RFP">
     <texture>t_rfp_needed</texture>
     <next>world</next>
+  </info>
+  <info code="FirstBioBrick">
+    <texture>i_gfp</texture>
+    <next>craft</next>  
   </info>
 </infoList>

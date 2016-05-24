@@ -15,4 +15,9 @@
     <areAllBioBricksAvailable>true</areAllBioBricksAvailable>
     <areAllDevicesAvailable>true</areAllDevicesAvailable>
   </info>
+  <info id="tutorial1">
+    <code>Tutorial1</code>
+    <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
+    <areAllDevicesAvailable>false</areAllDevicesAvailable>
+  </info>
 </infoList>

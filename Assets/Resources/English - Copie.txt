@@ -147,31 +147,31 @@ DEVICE.SUFMED= (med)
 INFO.GENERIC.NEXT=Next
 
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
-INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first Coding Sequence!
+INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
-INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button to open the craft menu and create your first Device !
+INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the device in your Inventory.
 
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
-INFO.PICKEDUPRBS.SUBTITLE=You picked up your first RBS BioBrick!
-INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 12,6%.
-INFO.PICKEDUPRBS.BOTTOM = Find the other Bricks to create your first device.
+INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
+INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
+INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
 
-INFO.PICKEDUPGFP.TITLE=BIOBRICK FOUND!
-INFO.PICKEDUPGFP.SUBTITLE=You picked up a Terminator !
-INFO.PICKEDUPGFP.EXPLANATION=The Terminators only purpose is to end a genetic sequence. It's the last brick needed to create a device.
-INFO.PICKEDUPGFP.BOTTOM= Find the other Bricks to create your first device.
+INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
+INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
+INFO.PICKEDUPGFP.EXPLANATION=This device contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
 
 INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
-INFO.PICKEDUPGFPBRICK.SUBTITLE=You found your first BioBrick !
-INFO.PICKEDUPGFPBRICK.EXPLANATION=All is in the title. This is a basic brick for Biologic Engineering. This is a Promoter the first brick needed to every device.
-INFO.PICKEDUPGFPBRICK.BOTTOM=Go find other bricks in order to craft your first device !
+INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
 
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
 INFO.RFP.BOTTOM=The RFP Coding Sequence BioBrick will be included in future versions of the game!
 
-INFO.FIRSTBIOBRICK.TITLE = BIOBRICK FOUND! 
+INFO.FIRSTBIOBRICK.TITLE = 1st BioBrick ! 
 INFO.FIRSTBIOBRICK.SUBTITLE = You found your first BioBrick !
 INFO.FIRSTBIOBRICK.EXPLANATION = All is in the title. This is a basic brick for Biologic Engineering.
 INFO.FIRSTBIOBRICK.BOTTOM= Construisez un gène fabriquant de la GFP !

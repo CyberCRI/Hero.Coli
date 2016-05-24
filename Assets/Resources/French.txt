@@ -160,7 +160,7 @@ INFO.PICKEDUPGFP.BOTTOM=Ouvrez votre inventaire en cliquant sur "Suivant" pour i
 INFO.PICKEDUPGFPBRICK.TITLE=NOUVELLE BIOBRIQUE !
 INFO.PICKEDUPGFPBRICK.SUBTITLE=Vous avez ramassé la BioBrique GFP !
 INFO.PICKEDUPGFPBRICK.EXPLANATION=Cette BioBrique est la Séquence Codante de la protéine de fluorescence verte (GFP).\nLa GFP émet une lumière verte quand on l'éclaire avec une lumière bleue.
-INFO.PICKEDUPGFPBRICK.BOTTOM=Construisez un gène fabriquant de la GFP !
+INFO.PICKEDUPGFPBRICK.BOTTOM=Construisez un gène fabriquant de la GFP
 
 INFO.RFP.TITLE=ZUT ! PAS DE FLUORESCENCE ROUGE !
 INFO.RFP.SUBTITLE=Lumière rouge nécessaire pour ouvrir la porte.

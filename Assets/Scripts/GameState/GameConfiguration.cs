@@ -17,6 +17,7 @@ public class GameConfiguration {
     }
     
     private static string _adventureLevel1 = "World1.0";
+    private static string _tutorial = "Tutorial1";
     private static string _sandboxLevel1 = "Sandbox-0.1";
     private static string _sandboxLevel2 = "Sandbox-0.2";
     
@@ -33,7 +34,8 @@ public class GameConfiguration {
     {
         ADVENTURE1,
         SANDBOX1,
-        SANDBOX2
+        SANDBOX2,
+        TUTORIAL1
     }
 
     public enum GameMode
@@ -155,6 +157,7 @@ public class GameConfiguration {
             case GameMap.SANDBOX1:
             case GameMap.SANDBOX2:
                 return GameMode.SANDBOX;
+            case GameMap.TUTORIAL1:
             default:
                 Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return GameMode.ADVENTURE;
@@ -174,6 +177,8 @@ public class GameConfiguration {
                 return _sandboxLevel1;
             case GameMap.SANDBOX2:
                 return _sandboxLevel2;
+            case GameMap.TUTORIAL1:
+                return _tutorial;
             default:
                 Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return _adventureLevel1;
