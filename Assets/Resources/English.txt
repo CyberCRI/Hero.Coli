@@ -221,6 +221,8 @@ CRAFT.BANK.TIP=Click on a category to display your goods.
 CRAFT.RECIPES.TITLE=Recipes
 CRAFT.RECIPES.TIP=Click on an existing device of your catalog to display its components on the crafting table.
 
+CRAFT.BIOBRICK.NONELEFT=NONE LEFT
+
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is you!
 TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, your companion!
 TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.coli

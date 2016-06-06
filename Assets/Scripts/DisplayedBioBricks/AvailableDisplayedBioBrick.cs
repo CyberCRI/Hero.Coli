@@ -16,6 +16,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
   protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
   public UILabel amount;
+  public GameObject noneLeftMask;
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -51,6 +52,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
  public void Update()
  {
      amount.text = _biobrick.amount.ToString();
+     noneLeftMask.SetActive(0 == _biobrick.amount);
  }
 
   public void display(bool enabled) {
