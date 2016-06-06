@@ -32,9 +32,9 @@ public class CraftZoneManager : MonoBehaviour {
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-  private LinkedList<BioBrick>              _currentBioBricks = new LinkedList<BioBrick>();
-  private LinkedList<CraftZoneDisplayedBioBrick>     _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
-  private Device                            _currentDevice = null;
+  private LinkedList<BioBrick>                      _currentBioBricks = new LinkedList<BioBrick>();
+  private LinkedList<CraftZoneDisplayedBioBrick>    _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
+  private Device                                    _currentDevice = null;
 
   private PromoterBrick                     _promoter;
   private RBSBrick                          _RBS;
@@ -161,28 +161,54 @@ public class CraftZoneManager : MonoBehaviour {
 
   private void insertOrdered(BioBrick toInsert)
   {
+    bool inserted = false;
+      
     foreach(BioBrick brick in _currentBioBricks)
     {
       if(brick.getType() > toInsert.getType())
       {
+          // the brick is inserted before the next brick
         LinkedListNode<BioBrick> afterNode = _currentBioBricks.Find(brick);
         _currentBioBricks.AddBefore(afterNode, toInsert);
-        return;
+        inserted = true;
       }
       else if(brick.getType() == toInsert.getType())
       {
-        LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
-        _currentBioBricks.AddAfter(toReplaceNode, toInsert);
-        _currentBioBricks.Remove(brick);
-        return;
+          // the brick should be positioned here
+          if(brick.getName() == toInsert.getName())
+          {
+              // the brick is already present on the crafting table: remove it
+              CraftZoneManager.get ().removeBioBrick(toInsert);
+              return;
+              
+          } else {
+              // the brick will replace a brick of the same type
+            LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
+            _currentBioBricks.AddAfter(toReplaceNode, toInsert);
+            _currentBioBricks.Remove(brick);
+            
+            //the brick is put out of the crafting table and is therefore available for new crafts
+            AvailableBioBricksManager.get().addBrickAmount(brick, 1);
+            inserted = true;
+          }
       }
     }
-    _currentBioBricks.AddLast(toInsert);
+    
+    if(!inserted)
+    {
+        // the brick is inserted in the last position
+        _currentBioBricks.AddLast(toInsert);
+    }
+    
+    // the brick was inserted: there's one less brick to use
+    AvailableBioBricksManager.get().addBrickAmount(toInsert, -1);
+    
   }
 
   public void removeBioBrick(BioBrick brick) {
     Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
     _currentBioBricks.Remove(brick);
+    AvailableBioBricksManager.get().addBrickAmount(brick, 1);
     OnBioBricksChanged();
   }
 

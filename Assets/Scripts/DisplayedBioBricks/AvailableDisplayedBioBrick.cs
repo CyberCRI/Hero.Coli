@@ -15,6 +15,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    */
 
   protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+  public UILabel amount;
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -45,6 +46,11 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       );
 
     return result;
+ }
+ 
+ public void Update()
+ {
+     amount.text = _biobrick.amount.ToString();
  }
 
   public void display(bool enabled) {
