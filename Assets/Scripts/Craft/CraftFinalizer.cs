@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
@@ -14,7 +13,21 @@ public class CraftFinalizer : MonoBehaviour {
 			}
 		}
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
+  
+  // these three objects are affected by the craft status of the currently displayed device
   public CraftFinalizationButton        craftFinalizationButton;
+  public GameObject                     isCraftedStatus;
+  public GameObject                     isUncraftedStatus;
+
+  private void setCraftedStatus(CraftFinalizationButton.CraftMode mode) {
+      if(isCraftedStatus && isUncraftedStatus)
+      {
+          craftFinalizationButton.setCraftMode(mode);
+          
+          isCraftedStatus.SetActive(CraftFinalizationButton.CraftMode.UNCRAFTING != mode);
+          isUncraftedStatus.SetActive(CraftFinalizationButton.CraftMode.UNCRAFTING == mode);
+      }
+  }
 
   public static Dictionary<Inventory.AddingResult, string>   statusMessagesDictionary =
     new Dictionary<Inventory.AddingResult, string>() {
@@ -33,7 +46,7 @@ public class CraftFinalizer : MonoBehaviour {
     //create new device from current biobricks in craft zone
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
     Device currentDevice = _craftZoneManager.getCurrentDevice();
-    if(currentDevice!=null){
+    if(currentDevice != null){
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice, true);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
         _craftZoneManager.craft();
@@ -51,13 +64,20 @@ public class CraftFinalizer : MonoBehaviour {
 
     Inventory.AddingResult addingResult = Inventory.get().canAddDevice(device);
     string status = statusMessagesDictionary[addingResult];
-    Logger.Log("CraftFinalizer::setDisplayedDevice(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
+    Logger.Log("CraftFinalizer::updateButtonStatus(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
 
-    bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);
-                
+    bool enabled = (addingResult == Inventory.AddingResult.SUCCESS);    
+    
+    CraftFinalizationButton.CraftMode mode = enabled?CraftFinalizationButton.CraftMode.CRAFTING:CraftFinalizationButton.CraftMode.UNCRAFTING;
+    if(null == device)
+    {
+        mode = CraftFinalizationButton.CraftMode.NOTHING;   
+    }    
+            
     if(null == craftFinalizationButton)
         craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
-    craftFinalizationButton.setEnabled(enabled);
+    //craftFinalizationButton.setEnabled(enabled);
+    setCraftedStatus(mode);
 
     Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     finalizationInfoPanelManager.setDisplayedDevice(device, status);
