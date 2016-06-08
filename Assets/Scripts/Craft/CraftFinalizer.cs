@@ -25,6 +25,10 @@ public class CraftFinalizer : MonoBehaviour {
         {Inventory.AddingResult.FAILURE_DEFAULT,        "CRAFT.FINALIZATION.FAILURE_DEFAULT"}
     };
 
+    public void uncraft() {
+        Debug.LogError("uncraft");
+    }
+
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
@@ -32,7 +36,7 @@ public class CraftFinalizer : MonoBehaviour {
     if(currentDevice!=null){
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice, true);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
-        _craftZoneManager.displayDevice();
+        _craftZoneManager.craft();
       }
       Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
     } else {

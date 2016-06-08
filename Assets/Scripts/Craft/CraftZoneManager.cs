@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -67,8 +66,14 @@ public class CraftZoneManager : MonoBehaviour {
 
   public void setBioBricks(LinkedList<BioBrick> bricks) {
     Logger.Log("CraftZoneManager::setBioBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
-    _currentBioBricks.Clear();
+    removeAllBricksFromCraftZone();
+    
+    foreach(BioBrick brick in bricks)
+    {
+        AvailableBioBricksManager.get().addBrickAmount(brick, -1);
+    }    
     _currentBioBricks.AppendRange(bricks);
+    
     OnBioBricksChanged();
   }
 
@@ -159,57 +164,63 @@ public class CraftZoneManager : MonoBehaviour {
     OnBioBricksChanged();
   }
 
-  private void insertOrdered(BioBrick toInsert)
-  {
-    bool inserted = false;
-      
-    foreach(BioBrick brick in _currentBioBricks)
+    private void insertOrdered(BioBrick toInsert)
     {
-      if(brick.getType() > toInsert.getType())
-      {
-          // the brick is inserted before the next brick
-        LinkedListNode<BioBrick> afterNode = _currentBioBricks.Find(brick);
-        _currentBioBricks.AddBefore(afterNode, toInsert);
-        inserted = true;
-      }
-      else if(brick.getType() == toInsert.getType())
-      {
-          // the brick should be positioned here
-          if(brick.getName() == toInsert.getName())
-          {
-              // the brick is already present on the crafting table: remove it
-              CraftZoneManager.get ().removeBioBrick(toInsert);
-              return;
-              
-          } else {
-              // the brick will replace a brick of the same type
-            LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
-            _currentBioBricks.AddAfter(toReplaceNode, toInsert);
-            _currentBioBricks.Remove(brick);
-            
-            //the brick is put out of the crafting table and is therefore available for new crafts
-            AvailableBioBricksManager.get().addBrickAmount(brick, 1);
-            inserted = true;
-          }
-      }
+
+        BioBrick sameBrick = LinkedListExtensions.Find(_currentBioBricks, b => b.getName() == toInsert.getName());
+
+        if (null != sameBrick)
+        {
+            // the brick is already present on the crafting table: remove it
+            removeBioBrick(toInsert);
+        }
+        else
+        {
+            bool inserted = false;
+
+            foreach (BioBrick brick in _currentBioBricks)
+            {
+                if (brick.getType() > toInsert.getType())
+                {
+                    // the brick is inserted before the next brick
+                    LinkedListNode<BioBrick> afterNode = _currentBioBricks.Find(brick);
+                    _currentBioBricks.AddBefore(afterNode, toInsert);
+                    inserted = true;
+                    break;
+                }
+                else if (brick.getType() == toInsert.getType())
+                {
+                    // the brick will replace a brick of the same type
+                    LinkedListNode<BioBrick> toReplaceNode = _currentBioBricks.Find(brick);
+                    _currentBioBricks.AddAfter(toReplaceNode, toInsert);
+                    _currentBioBricks.Remove(brick);
+
+                    //the brick is put out of the crafting table and is therefore available for new crafts
+                    AvailableBioBricksManager.get().addBrickAmount(brick, 1);
+                    inserted = true;
+                    break;
+                }
+            }
+
+            if (!inserted)
+            {
+                // the brick is inserted in the last position
+                _currentBioBricks.AddLast(toInsert);
+            }
+
+            // the brick was inserted: there's one less brick to use
+            AvailableBioBricksManager.get().addBrickAmount(toInsert, -1);
+        }
     }
-    
-    if(!inserted)
-    {
-        // the brick is inserted in the last position
-        _currentBioBricks.AddLast(toInsert);
-    }
-    
-    // the brick was inserted: there's one less brick to use
-    AvailableBioBricksManager.get().addBrickAmount(toInsert, -1);
-    
-  }
 
   public void removeBioBrick(BioBrick brick) {
-    Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
-    _currentBioBricks.Remove(brick);
-    AvailableBioBricksManager.get().addBrickAmount(brick, 1);
-    OnBioBricksChanged();
+      if(null != brick)
+      {
+        Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
+        _currentBioBricks.Remove(brick);
+        AvailableBioBricksManager.get().addBrickAmount(brick, 1);
+        OnBioBricksChanged();          
+      }
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,18 +240,41 @@ public class CraftZoneManager : MonoBehaviour {
 
   public void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
-    _currentDevice = device;
-    displayDevice();
 
-    _currentBioBricks.Clear();
     if(device != null)
     {
-      _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
-    }
-    displayBioBricks();
+        removeAllBricksFromCraftZone();
+        _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+        
+        _currentDevice = device;
+        displayDevice();
+        
+        displayBioBricks();
+    }    
+  }
+  
+  private void removeAllBricksFromCraftZone() {
+      
+      foreach(BioBrick brick in _currentBioBricks)
+      {
+          AvailableBioBricksManager.get().addBrickAmount(brick, 1);
+      }
+      
+      _currentBioBricks.Clear();
+  }
+  
+  public void craft () {
+      //consumeBricks();
+      displayDevice();
+  }
+  
+  private void consumeBricks() {
+      foreach(BioBrick brick in _currentBioBricks) {
+          brick.addAmount(-1);
+      }
   }
 
-  public void displayDevice() {
+  private void displayDevice() {
         if(null != craftFinalizer) {
             craftFinalizer.setDisplayedDevice(_currentDevice);
         }
