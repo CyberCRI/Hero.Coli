@@ -76,8 +76,20 @@ public class CraftZoneManager : MonoBehaviour {
     
     OnBioBricksChanged();
   }
+  
+  public void equip()
+  {
+      Equipment.get().askAddDevice(getCurrentDevice());
+      OnBioBricksChanged();
+  }
+  
+  public void unequip()
+  {
+      Equipment.get().removeDevice(getCurrentDevice());
+      OnBioBricksChanged();
+  }
 
-  private void OnBioBricksChanged() {
+  public void OnBioBricksChanged() {
     Logger.Log("CraftZoneManager::OnBioBricksChanged()", Logger.Level.TRACE);
     displayBioBricks();
 

@@ -195,6 +195,10 @@ CRAFT.TITLE.LABEL=CRAFTING INTERFACE
 
 CRAFT.PROCESS.EQUIP=Inventory
 CRAFT.PROCESS.CRAFT=Craft
+CRAFT.PROCESS.UNCRAFT=Uncraft
+CRAFT.PROCESS.NOTHING= 
+CRAFT.PROCESS.ACTIVATE=Activate
+CRAFT.PROCESS.INACTIVATE=Inactivate
 
 CRAFT.ASSEMBLY.TITLE=Crafting table
 CRAFT.ASSEMBLY.TIP=To build your own genetic devices, click on the elements of your BioBrick bank to feature them on the crafting table. Craft the combination of BioBricks of your choice in order to add a new device to your inventory.
