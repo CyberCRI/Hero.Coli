@@ -44,10 +44,40 @@ public class CraftZoneManager : MonoBehaviour {
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
   public GameObject                         assemblyZonePanel;
+  
+  private static EditMode editMode = EditMode.UNLOCKED;
+  public static bool isDeviceEditionOn() {
+      return EditMode.UNLOCKED == editMode;
+  }
+  public static void setDeviceEdition(bool editionOn)
+  {
+      editMode = editionOn?EditMode.UNLOCKED:EditMode.LOCKED;
+  }
 
   //width of a displayed BioBrick
   private int _width = 118;
 
+  private enum ProcessType {
+      
+      // 'craft' creates new recipes,
+      // equip only in inventory
+      MODE1,
+      
+      // 'activate' creates new recipes and equips and locks edition,
+      // 'inactivate' unequips and unlocks edition
+      MODE2,
+      
+      // 'activate' creates new recipes and equips,
+      // 'inactivate' unequips,
+      // clicking on bricks of an equiped device always trigger unequips
+      MODE3
+      
+  }
+  
+  private enum EditMode {
+      LOCKED,
+      UNLOCKED
+  }
 
   public LinkedList<CraftZoneDisplayedBioBrick> getCurrentDisplayedBricks() {
     return new LinkedList<CraftZoneDisplayedBioBrick>(_currentDisplayedBricks);
@@ -227,12 +257,16 @@ public class CraftZoneManager : MonoBehaviour {
     }
 
   public void removeBioBrick(BioBrick brick) {
-      if(null != brick)
+      string debug = null != brick? "contains="+_currentBioBricks.Contains(brick):"brick==null";
+      Debug.LogError("CraftZoneManager::removeBioBrick with "+debug);
+      if(null != brick && _currentBioBricks.Contains(brick))
       {
         Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
+        unequip();
+        
         _currentBioBricks.Remove(brick);
-        AvailableBioBricksManager.get().addBrickAmount(brick, 1);
-        OnBioBricksChanged();          
+        AvailableBioBricksManager.get().addBrickAmount(brick, 1);         
+        OnBioBricksChanged();
       }
   }
 

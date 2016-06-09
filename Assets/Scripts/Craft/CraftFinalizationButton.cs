@@ -40,14 +40,18 @@ public class CraftFinalizationButton : MonoBehaviour {
           case CraftMode.ACTIVATE:
             craftFinalizer.finalizeCraft();
             craftFinalizer.equip();
+            CraftZoneManager.setDeviceEdition(false);
           break;
           case CraftMode.INACTIVATE:
             craftFinalizer.unequip();
+            CraftZoneManager.setDeviceEdition(true);
           break;
           
           case CraftMode.NOTHING:
-          break;
+            CraftZoneManager.setDeviceEdition(true);
+          break;          
           case CraftMode.DEFAULT:
+            CraftZoneManager.setDeviceEdition(true);
           break;
       }
     }

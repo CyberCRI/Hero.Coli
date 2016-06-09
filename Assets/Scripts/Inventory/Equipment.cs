@@ -93,22 +93,23 @@ public class Equipment : DeviceContainer
     public override void removeDevice(Device device)
     {
         Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
-        _devices.RemoveAll(d => d.Equals(device));
-        safeGetDisplayer().removeEquipedDevice(device);
-        removeFromReactionEngine(device);
+        if(_devices.Contains(device))
+        {
+            _devices.RemoveAll(d => d.Equals(device));
+            safeGetDisplayer().removeEquipedDevice(device);
+            removeFromReactionEngine(device);
+        }
     }
   
-    
+    // not optimized
     public override void removeDevices(List<Device> toRemove)
     {
         Logger.Log("Equipment::removeDevices", Logger.Level.INFO);
         
         foreach(Device device in toRemove)
         {
-            safeGetDisplayer().removeEquipedDevice(device);
-            removeFromReactionEngine(device);
+            removeDevice(device);
         }
-        _devices.RemoveAll((Device obj) => toRemove.Contains(obj));
     }
     
     public override void editDevice(Device device) {

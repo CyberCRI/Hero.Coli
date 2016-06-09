@@ -176,7 +176,7 @@ public class AvailableBioBricksManager : MonoBehaviour
             } else {
                 //TODO fix this, maybe use addBrickAmount?
                 brick.addAmount(currentBrick.amount);
-                currentBrick.addAmount(brick.amount);
+                //currentBrick.addAmount(brick.amount);
                 _availableBioBricks.Remove(currentBrick);
                 _availableBioBricks.AddLast(brick);
                 return true;
