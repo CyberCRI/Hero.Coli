@@ -145,7 +145,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     private LinkedList<BioBrick> getAvailableBioBricksOfType(BioBrick.Type type)
     {
         Logger.Log("AvailableBioBricksManager::getAvailableBioBricksOfType(" + type + ")", Logger.Level.TRACE);
-        return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => ((b.getType() == type) && (b.amount > 0)));
+        return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => ((b.getType() == type)));// && (b.amount > 0)));
     }
 
     public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
@@ -174,6 +174,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 }
                 return true;                
             } else {
+                //TODO fix this, maybe use addBrickAmount?
                 brick.addAmount(currentBrick.amount);
                 currentBrick.addAmount(brick.amount);
                 _availableBioBricks.Remove(currentBrick);

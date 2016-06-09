@@ -15,24 +15,36 @@ public class CraftFinalizationButton : MonoBehaviour {
       NOTHING,
       DEFAULT
   }
+  
+  private const string _prefix          = "CRAFT.PROCESS.";
+  private const string _keyCraft        = _prefix+"CRAFT";
+  private const string _keyUncraft      = _prefix+"UNCRAFT";
+  private const string _keyActivate     = _prefix+"ACTIVATE";
+  private const string _keyInactivate   = _prefix+"INACTIVATE";
+  private const string _keyNothing      = _prefix+"NOTHING";
 
   void OnPress(bool isPressed) {
     if(isPressed) {
       Logger.Log("CraftFinalizationButton::OnPress()", Logger.Level.DEBUG);
       switch(_mode)
       {
+          // for craft / uncraft process
           case CraftMode.CRAFT:
             craftFinalizer.finalizeCraft();
           break;
           case CraftMode.UNCRAFT:
             craftFinalizer.uncraft();
           break;
+          
+          // for activate/inactivate process
           case CraftMode.ACTIVATE:
+            craftFinalizer.finalizeCraft();
             craftFinalizer.equip();
           break;
           case CraftMode.INACTIVATE:
             craftFinalizer.unequip();
           break;
+          
           case CraftMode.NOTHING:
           break;
           case CraftMode.DEFAULT:
@@ -67,27 +79,27 @@ public class CraftFinalizationButton : MonoBehaviour {
       switch(mode)
       {
           case CraftMode.CRAFT:
-            _localize.key = "CRAFT.PROCESS.CRAFT";
+            _localize.key = _keyCraft;
             setEnabled(true);
           break;
           case CraftMode.UNCRAFT:
-            _localize.key = "CRAFT.PROCESS.UNCRAFT";
+            _localize.key = _keyUncraft;
             setEnabled(true);
           break;
           case CraftMode.ACTIVATE:
-            _localize.key = "CRAFT.PROCESS.ACTIVATE";
+            _localize.key = _keyActivate;
             setEnabled(true);
           break;
           case CraftMode.INACTIVATE:
-            _localize.key = "CRAFT.PROCESS.INACTIVATE";
+            _localize.key = _keyInactivate;
             setEnabled(true);
           break;
           case CraftMode.NOTHING:
-            _localize.key = "CRAFT.PROCESS.NOTHING";
+            _localize.key = _keyNothing;
             setEnabled(false);
           break;
           case CraftMode.DEFAULT:
-            _localize.key = "CRAFT.PROCESS.NOTHING";
+            _localize.key = _keyNothing;
             setEnabled(false);
           break;
       }

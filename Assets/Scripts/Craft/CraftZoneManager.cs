@@ -123,6 +123,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   private void displayBioBricks() {
+      Debug.LogError("CraftZoneManager::displayBioBricks()");
     Logger.Log("CraftZoneManager::displayBioBricks() with _currentBioBricks="+Logger.ToString<BioBrick>(_currentBioBricks), Logger.Level.TRACE);
     removePreviousDisplayedBricks();
 
@@ -252,11 +253,13 @@ public class CraftZoneManager : MonoBehaviour {
 
   public void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
-
+    Debug.LogError("CraftZoneManager::setDevice("+device+")");
     if(device != null)
     {
         removeAllBricksFromCraftZone();
+        
         _currentBioBricks.AppendRange(device.getExpressionModules().First.Value.getBioBricks());
+        consumeBricks();
         
         _currentDevice = device;
         displayDevice();
@@ -266,7 +269,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
   
   private void removeAllBricksFromCraftZone() {
-      
+      Debug.LogError("CraftZoneManager::removeAllBricksFromCraftZone()");
       foreach(BioBrick brick in _currentBioBricks)
       {
           AvailableBioBricksManager.get().addBrickAmount(brick, 1);
@@ -281,12 +284,14 @@ public class CraftZoneManager : MonoBehaviour {
   }
   
   private void consumeBricks() {
+      Debug.LogError("CraftZoneManager::consumeBricks()");
       foreach(BioBrick brick in _currentBioBricks) {
-          brick.addAmount(-1);
+           AvailableBioBricksManager.get().addBrickAmount(brick, -1);
       }
   }
 
   private void displayDevice() {
+      Debug.LogError("CraftZoneManager::displayDevice()");
         if(null != craftFinalizer) {
             craftFinalizer.setDisplayedDevice(_currentDevice);
         }

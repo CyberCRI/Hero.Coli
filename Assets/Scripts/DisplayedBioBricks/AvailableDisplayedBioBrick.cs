@@ -52,7 +52,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
  public void Update()
  {
      amount.text = _biobrick.amount.ToString();
-     noneLeftMask.SetActive(0 == _biobrick.amount);
+     noneLeftMask.SetActive(0 >= _biobrick.amount);
  }
 
   public void display(bool enabled) {
