@@ -113,24 +113,15 @@ public class BlackLight : MonoBehaviour {
 	// change the shader of the background planes in the first asset. The shaders from the other assets are already "Transparent/Diffuse"
 	public void setDiffuseTransparentPlane ()
 	{
-
-		// change shaders of the fog in the level 1
-		GameObject go = GameObject.Find ("Assets Level1").transform.FindChild("Environmental Graphics").FindChild("BackgroundFog").gameObject;
-
-
-		Transform[] allChildren = go.GetComponentsInChildren<Transform>();
-
-		foreach(Transform child in allChildren)
+		foreach(GameObject fog in GameObject.FindGameObjectsWithTag("Fog"))
 		{
-			if(child.name.Contains("Fog") && child.FindChild("plane"))
+            Transform plane = fog.transform.FindChild("plane");
+			if(plane)
 			{
-				child.FindChild("plane").GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
+				plane.GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
 			}
 		}
-
-		_shaderChanged = true;
-
-				
+		_shaderChanged = true;				
 	}
 
 	// add lerp effect on light and color for the transition between normal light and black light
@@ -166,7 +157,7 @@ public class BlackLight : MonoBehaviour {
 	// light on/off for the black light
 	public void switchLight ()
 	{
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn)
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn, true)
                 && !isActive
        )
 		{
@@ -175,7 +166,7 @@ public class BlackLight : MonoBehaviour {
 				setDiffuseTransparentPlane();
 			isActive = true;
 		}
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff)
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff, true)
             && isActive
        )
 		{

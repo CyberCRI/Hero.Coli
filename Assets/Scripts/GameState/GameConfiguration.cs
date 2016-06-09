@@ -119,6 +119,7 @@ public class GameConfiguration {
             if(Application.isWebPlayer) {
                 RedMetricsManager.get().connect ();
             }
+            GameStateController.updateAdminStatus();
         }
     }
     

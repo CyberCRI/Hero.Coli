@@ -67,6 +67,8 @@ public class Hero : MonoBehaviour {
     private static Vector3 _reducedScaleVector = 0.7f*_baseScaleVector;
     private List<GameObject> _flagella = new List<GameObject>();
     private static string checkpointSeparator = ".";
+    private const string _keyLife = "KEY.LIFE";
+    private const string _keyEnergy = "KEY.ENERGY";
         
   private Hashtable _optionsIn = iTween.Hash(
       "scale", _baseScaleVector,
@@ -181,11 +183,11 @@ public class Hero : MonoBehaviour {
       _lifeManager.regen(Time.deltaTime);
       _energy = _medium.getEnergy()/_maxMediumEnergy;
 
-      if (GameStateController.isShortcutKey("KEY.LIFE"))
+      if (GameStateController.isShortcutKey(_keyLife, true))
       {
 		    _lifeManager.addVariation(1f);
       }
-      if (GameStateController.isShortcutKey("KEY.ENERGY"))
+      if (GameStateController.isShortcutKey(_keyEnergy, true))
       {
         setEnergy(1f);
       }
