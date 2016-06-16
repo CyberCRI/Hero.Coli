@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -68,6 +69,9 @@ public class GameStateController : MonoBehaviour {
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
+        
+        SceneManager.sceneLoaded += SceneLoaded;
+        
         GameStateController.get ();
         loadLevels();
     }
@@ -80,14 +84,97 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
+    bool isInterfaceLoaded = false;
+    bool isPlayerLoaded = false;
+    bool isWorldLoaded = false;
+    
+    private void reinitializeLoadingVariables()
+    {    
+        isInterfaceLoaded = false;
+        isPlayerLoaded = false;
+        isWorldLoaded = false;        
+    }
+    
+    void SceneLoaded(Scene scene, LoadSceneMode m)
+    {
+        
+    }
+    
+    void OnSceneLoaded(int level) {        
+        Debug.Log("SceneLoaded("+level+")");
+        isInterfaceLoaded   = isInterfaceLoaded || (3 == level);
+        isPlayerLoaded      = isPlayerLoaded    || (2 == level);
+        isWorldLoaded       = isWorldLoaded     || (1 == level) || (4 == level);
+        
+        if(isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
+        {
+            finishLoadLevels();
+        }
+    }
+    
     private void loadLevels()
     {
         Logger.Log("GameStateController::loadLevels", Logger.Level.INFO);
-        //take into account order of loading to know which LinkManager shall ask which one
-        Application.LoadLevelAdditive(_interfaceScene);
-        Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(MemoryManager.get ().configuration.getSceneName());
+        SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(MemoryManager.get ().configuration.getSceneName(), LoadSceneMode.Additive);
     }
+    
+    private void finishLoadLevels ()
+    {        
+        Debug.Log("finishLoadLevels");
+        
+        // get the linkers
+        GameObject go   = null;
+        InterfaceLinkManager ilm = null;
+        PlayerLinkManager blm = null;
+        WorldLinkManager wlm = null;       
+        
+        go = GameObject.Find("InterfaceLinkManager") as GameObject;
+        if(null != go)
+        {
+            ilm = go.GetComponent<InterfaceLinkManager>();
+            ilm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no ilm");
+        }
+        
+        go = GameObject.Find("BacteriumLinkManager") as GameObject;
+        if(null != go)
+        {
+            blm = go.GetComponent<PlayerLinkManager>();
+            blm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no blm");
+        }
+        
+        go = GameObject.Find("WorldLinkManager") as GameObject;
+        if(null != go)
+        {
+            wlm = go.GetComponent<WorldLinkManager>();
+            wlm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no wlm");
+        }
+        
+        // initialize them
+        if(null != ilm && null != blm && null != wlm)
+        {
+            ilm.finishInitialize();
+            blm.finishInitialize();
+            wlm.finishInitialize();
+        }
+        
+        // open the Main Menu
+        MainMenuManager.get().open();
+    }
+    
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;
@@ -187,6 +274,7 @@ public class GameStateController : MonoBehaviour {
     {
         Logger.Log("endGame", Logger.Level.INFO);
         _isGameLevelPrepared = false;
+        reinitializeLoadingVariables();
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
     }

@@ -1,17 +1,18 @@
 using UnityEngine;
-using System.Collections;
 
 
 /*
  * This class creates the links between the Player's Scene, classes and GameObject and the other scenes
  * */
 
-public class PlayerLinkManager : MonoBehaviour {
+public class PlayerLinkManager : LinkManager
+{
 
-    public static string persoGameObjectName = "Perso";
+    private const string persoGameObjectName = "Perso";
 
-	// Use this for initialization
-	void Awake () {
+
+	public override void initialize ()
+    {
 
     GameObject perso = GameObject.Find(persoGameObjectName);
 		Hero hero = perso.GetComponent<Hero>();
@@ -55,4 +56,8 @@ public class PlayerLinkManager : MonoBehaviour {
     //MemoryManager reporting
     MemoryManager.get ().hero = hero;
   }
+  
+    public override void finishInitialize ()
+    {
+    }
 }

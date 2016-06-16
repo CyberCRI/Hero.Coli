@@ -1,11 +1,12 @@
 using UnityEngine;
-using System.Collections;
+
 
 /*DESCRIPTION
  * This class creates the links between the Interface's Scene, classes and GameObject and the others
  * */
 
-public class InterfaceLinkManager : MonoBehaviour {
+public class InterfaceLinkManager : LinkManager
+{
 
   public static string interfaceLinkManagerGameObjectName = "InterfaceLinkManager";
 
@@ -17,7 +18,15 @@ public class InterfaceLinkManager : MonoBehaviour {
 	public GameObject craftZoneDisplayedBioBrickPrefab;
 	public GameObject lastHoveredInfo;
 	public GameObject genericInfoWindow;
-	public GameObject craftScreenPanel;
+    
+    // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
+	public GameObject craftScreenPanel1;
+    // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
+    public GameObject craftScreenPanel2;
+    
+    private GameObject craftScreenPanel;
+    
+    
   public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
   public UIPanel equipedDevicesSlotsPanel;
   public GameObject equipedDevice ,equipedDevice2;
@@ -46,11 +55,13 @@ public class InterfaceLinkManager : MonoBehaviour {
 
     public LoggerLabel loggerGUIComponent;
 
-	//public Camera _uicamera;
 
-
-	// Use this for initialization
-	void Awake () {
+	public override void initialize ()
+    {
+        
+    // activate everything
+    activateAllChildren(true);
+        
 	//shortcut
 	CraftZoneManager craftZoneManager = CraftZoneManager.get();
 	GameStateController gameStateController = GameStateController.get();
@@ -70,6 +81,8 @@ public class InterfaceLinkManager : MonoBehaviour {
 			.GetComponent<VectrosityPanel>();
 	guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
 	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
+    
+    craftScreenPanel = craftScreenPanel1;
 	guiTransitioner.craftScreen = craftScreenPanel;
 
     ContinueButton cb = okButton1.GetComponent<ContinueButton>();
@@ -93,8 +106,6 @@ public class InterfaceLinkManager : MonoBehaviour {
     genericModalWindow.SetActive(false);
     
     craftScreenPanel.SetActive(false);
-
-    mainMenu.open ();
     
     gameStateController.pauseIndicator = pauseIndicator;
 
@@ -169,4 +180,11 @@ public class InterfaceLinkManager : MonoBehaviour {
 
         Logger.get ().loggerGUIComponent = loggerGUIComponent;
   }
+  
+  
+  public override void finishInitialize ()
+  {
+      activateAllChildren(false);
+  }
+  
 }
