@@ -96,16 +96,6 @@ public class InterfaceLinkManager : LinkManager
     EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
     gameStateController.endMainMenuButton = emmb;
     gameStateController.mainMenu = mainMenu;
-
-    //TODO should be done in gameStateController instead
-    tutorialPanels.SetActive (true);
-    introduction1.SetActive(false);
-    introduction2.SetActive(false);
-    end.SetActive(false);
-    pauseIndicator.SetActive(false);
-    genericModalWindow.SetActive(false);
-    
-    craftScreenPanel.SetActive(false);
     
     gameStateController.pauseIndicator = pauseIndicator;
 
@@ -185,6 +175,17 @@ public class InterfaceLinkManager : LinkManager
   public override void finishInitialize ()
   {
       activateAllChildren(false);
+      
+      //TODO should be done in gameStateController instead
+      
+      // in TutorialPanels
+      tutorialPanels.SetActive (true);
+      introduction1.SetActive(false);
+      introduction2.SetActive(false);
+      end.SetActive(false);
+      
+      // in WorldScreensPanel
+      pauseIndicator.SetActive(false);      
   }
   
 }

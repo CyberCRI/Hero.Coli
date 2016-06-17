@@ -97,11 +97,10 @@ public class GameStateController : MonoBehaviour {
     
     void SceneLoaded(Scene scene, LoadSceneMode m)
     {
+        int level = scene.buildIndex;
         
-    }
-    
-    void OnSceneLoaded(int level) {        
         Debug.Log("SceneLoaded("+level+")");
+         
         isInterfaceLoaded   = isInterfaceLoaded || (3 == level);
         isPlayerLoaded      = isPlayerLoaded    || (2 == level);
         isWorldLoaded       = isWorldLoaded     || (1 == level) || (4 == level);
