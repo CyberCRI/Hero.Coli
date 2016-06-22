@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 public class MainMenuManager : MonoBehaviour
 {
-
     
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public static string gameObjectName = "MainMenuManager";

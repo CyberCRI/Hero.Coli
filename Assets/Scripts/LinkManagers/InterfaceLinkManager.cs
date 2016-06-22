@@ -19,9 +19,12 @@ public class InterfaceLinkManager : LinkManager
 	public GameObject lastHoveredInfo;
 	public GameObject genericInfoWindow;
     
-    // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
-	public GameObject craftScreenPanel1;
+    
+    bool isCraftMode1 = true;
+    
     // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
+	public GameObject craftScreenPanel1;
+    // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
     public GameObject craftScreenPanel2;
     
     private GameObject craftScreenPanel;
@@ -82,7 +85,15 @@ public class InterfaceLinkManager : LinkManager
 	guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
 	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
     
-    craftScreenPanel = craftScreenPanel1;
+    if(isCraftMode1)
+    {
+        craftScreenPanel = craftScreenPanel1;
+    }
+    else
+    {
+        craftScreenPanel = craftScreenPanel2;
+    }
+        
 	guiTransitioner.craftScreen = craftScreenPanel;
 
     ContinueButton cb = okButton1.GetComponent<ContinueButton>();
@@ -115,7 +126,10 @@ public class InterfaceLinkManager : LinkManager
 
 		craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
 		craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
-		craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild("AssemblyZonePanel").gameObject;
+        
+        
+        string assemblyZoneName = isCraftMode1?"CraftSlotsPanel":"AssemblyZonePanel";
+		craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
 
 
 		//DevicesDisplayer
@@ -160,8 +174,9 @@ public class InterfaceLinkManager : LinkManager
 		
 		//AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
 		availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
-		availableBioBricksManager.availableBioBrick = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
-		//AvailableBioBricksManager.get ().availableBioBrick = GameObject.Find ("AvailableDisplayedBioBrickPrefab");
+        
+        string availableDisplayedBioBrickPrefabName = isCraftMode1?"AvailableDisplayedPromoter":"AvailableDisplayedBioBrickPrefab";
+        availableBioBricksManager.availableBioBrick = availableBioBricksManager.bioBricksPanel.transform.FindChild(availableDisplayedBioBrickPrefabName).gameObject;
 		
 		//TooltipManager
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
