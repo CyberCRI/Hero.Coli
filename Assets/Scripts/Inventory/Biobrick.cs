@@ -111,7 +111,7 @@ public class PromoterBrick : BioBrick
   }
 }
 
-class RBSBrick : BioBrick
+public class RBSBrick : BioBrick
 {
   private float _RBSFactor;
 
@@ -149,7 +149,7 @@ class RBSBrick : BioBrick
   }
 }
 
-class GeneBrick : BioBrick
+public class GeneBrick : BioBrick
 {
   private string _proteinName;
            
@@ -187,7 +187,7 @@ class GeneBrick : BioBrick
   }
 }
 
-class TerminatorBrick : BioBrick
+public class TerminatorBrick : BioBrick
 {
   protected float _terminatorFactor;
 
