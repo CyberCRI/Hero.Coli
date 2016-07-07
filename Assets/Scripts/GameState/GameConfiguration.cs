@@ -7,7 +7,7 @@ public class GameConfiguration {
     public GameConfiguration()
     {
         restartBehavior = RestartBehavior.MAINMENU;
-        gameMap = GameMap.ADVENTURE1;
+        gameMap = GameMap.TUTORIAL1;
         language = I18n.Language.English;
         isAbsoluteWASD = true;
         isLeftClickToMove = true;
@@ -41,7 +41,8 @@ public class GameConfiguration {
     public enum GameMode
     {
         ADVENTURE,
-        SANDBOX
+        SANDBOX,
+        TUTORIAL
     }
 
     public RestartBehavior restartBehavior;
@@ -158,6 +159,7 @@ public class GameConfiguration {
             case GameMap.SANDBOX2:
                 return GameMode.SANDBOX;
             case GameMap.TUTORIAL1:
+                return GameMode.TUTORIAL;
             default:
                 Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return GameMode.ADVENTURE;

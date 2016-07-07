@@ -10,7 +10,7 @@ public class BlackLight : MonoBehaviour {
 
 	private Light _directionalLight;
 	private float _initialIntensity;
-
+    private bool _once = false;
 
 
 	private Camera _camera;
@@ -34,6 +34,9 @@ public class BlackLight : MonoBehaviour {
   private static string _blackLight = "BL.";
   private static string _blackLightOn = _blackLight+"ON";
   private static string _blackLightOff = _blackLight+"OFF";
+
+    [SerializeField]
+    private Light _playerSpotLight;
 
 	// Use this for initialization
 	void Start () {
@@ -100,12 +103,15 @@ public class BlackLight : MonoBehaviour {
 	}
 
 	public void leaveBlackLight () {
+        if (_once == true)
+        {
+		    _isCreating = false;
+		    _isDestroying = true;
+            _once = false;
+		    //Destroy BackgroundSpotlight
+		    Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
+        }
 
-		_isCreating = false;
-		_isDestroying = true;
-
-		//Destroy BackgroundSpotlight
-		Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
 
 	}
 
@@ -167,20 +173,46 @@ public class BlackLight : MonoBehaviour {
 	public void switchLight ()
 	{
     if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn)
-                && !isActive
+                /*&&*/ || isActive == true
        )
 		{
-			createBlackLight();
-			if(!_shaderChanged)
-				setDiffuseTransparentPlane();
-			isActive = true;
+            if (_once == false)
+            {
+			    createBlackLight();
+			    if(!_shaderChanged)
+			    	setDiffuseTransparentPlane();
+			    isActive = true;
+                _once = true;
+                /*_playerSpotLight.color = Color.green;
+                _playerSpotLight.range = 200;
+                _playerSpotLight.enabled = true;*/
+            }
 		}
     if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff)
-            && isActive
+            /*&&*/ || isActive == false
        )
 		{
 			leaveBlackLight();
-			isActive = false;
+            //_playerSpotLight.enabled = false;
+            isActive = false;
+            _once = false;
 		}
 	}
+
+    public void Activation(bool value)
+    {
+        isActive = value;
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "BlackLight")
+        {
+            isActive = true;
+        }
+        else if (col.tag == "NormalLight")
+        {
+            isActive = false;
+        }
+    }
 }
