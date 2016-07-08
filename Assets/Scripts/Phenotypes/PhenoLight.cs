@@ -12,6 +12,8 @@ public class PhenoLight : Phenotype {
   // TODO use a LinkedList to manage overlapping light sources
 
     public Light phenoLight;   //!< The light that will be affected by the phenotype
+    [SerializeField]
+    private Light _spotLight;
     
     private string fluorescenceProtein;
     private bool isSystemTriggered = false;
@@ -43,6 +45,7 @@ public class PhenoLight : Phenotype {
             float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
             phenoLight.intensity = intensity;
+            phenoLight.range = _mol.getConcentration() / 5;
             
             if(null != _triggered)
             {
@@ -97,7 +100,8 @@ public class PhenoLight : Phenotype {
         isSystemTriggered = false;
         if(phenoLight)
         {
-            phenoLight.enabled = false;   
+            phenoLight.enabled = false;
+            _spotLight.enabled = false;
         }
     }
     
@@ -111,6 +115,7 @@ public class PhenoLight : Phenotype {
             {
                 phenoLight.enabled = true;
                 phenoLight.color = _triggered.colorTo;
+                _spotLight.enabled = true;
             }
         }
     }
