@@ -49,6 +49,7 @@ public class CellControl : MonoBehaviour {
     private bool _pause;
     private Vector3 _inputMovement;
     private SwimAnimator _swimAnimator;
+    private bool _playerStopped = false;
 
     /* 
     * Click to move variables
@@ -108,6 +109,10 @@ public class CellControl : MonoBehaviour {
     }
 
     private void clickToMoveUpdate(KeyCode mouseButtonCode) {
+        if (_playerStopped == true)
+        {
+            return;
+        }
         if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
         {        
             Plane playerPlane = new Plane(Vector3.up, transform.position);            
@@ -182,6 +187,14 @@ public class CellControl : MonoBehaviour {
         _inputMovement = Vector3.zero;
         cancelMouseMove();
         setSpeed();
+    }
+
+    public void FreezePLayer(bool value)
+    {
+        _inputMovement = Vector3.zero;
+        cancelMouseMove();
+        setSpeed();
+        _playerStopped = value;
     }
 
     private void rotationUpdate() {
