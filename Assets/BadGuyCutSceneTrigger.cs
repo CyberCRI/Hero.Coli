@@ -92,6 +92,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         yield return new WaitForSeconds(2);
         _wayPoint1.transform.position = new Vector3 (_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y,_iTweenEventBigGuy.transform.position.z);
         _wayPoint2.transform.position = new Vector3 (_initialTarget.position.x,_cutSceneCam.transform.position.y,_initialTarget.position.z);
+        _cutSceneCam.transform.position = _wayPoint1.transform.position;
         _cutSceneCam.gameObject.SetActive(true);
         _mainCamBound.gameObject.SetActive(false);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
