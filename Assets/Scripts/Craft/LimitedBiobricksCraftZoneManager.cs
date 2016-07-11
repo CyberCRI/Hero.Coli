@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 {
 
-    protected List<CraftDeviceSlot> slots;
+    protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot activeSlot;
     
     public GameObject slotPrefab;

@@ -43,6 +43,12 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     //prefab for available biobricks
     public GameObject availableBioBrick;
+    public GameObject availablePromoter1;
+    public GameObject availablePromoter2;
+    public GameObject availableRBS;
+    public GameObject availableCodingSequence;
+    public GameObject availableTerminator;
+    private List<GameObject> dummies = new List<GameObject>();
 
     //visual, clickable biobricks currently displayed
     LinkedList<AvailableDisplayedBioBrick> _displayedBioBricks = new LinkedList<AvailableDisplayedBioBrick>();
@@ -64,7 +70,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     LinkedList<AvailableDisplayedBioBrick> _displayableAvailableGenes = new LinkedList<AvailableDisplayedBioBrick>();
     LinkedList<AvailableDisplayedBioBrick> _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
 
-    private void initialize()
+    public void initialize()
     {
         Logger.Log("AvailableBioBricksManager::initialize()", Logger.Level.INFO);
         _allBioBricks = new LinkedList<BioBrick>();
@@ -75,6 +81,22 @@ public class AvailableBioBricksManager : MonoBehaviour
         _displayableAvailableRBS = new LinkedList<AvailableDisplayedBioBrick>();
         _displayableAvailableGenes = new LinkedList<AvailableDisplayedBioBrick>();
         _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
+        
+        initializeDummies();
+    }
+    
+    void initializeDummies()
+    {
+        dummies.Clear();
+        dummies.AddRange(new List<GameObject>{availableBioBrick, availablePromoter1, availablePromoter2, availableRBS, availableCodingSequence, availableTerminator});
+        
+        foreach(GameObject dummy in dummies)
+        {
+            if(null != dummy)
+            {
+                dummy.SetActive(false);
+            }
+        }
     }
     
     public void addBrickAmount(BioBrick brick, double amount)
@@ -197,10 +219,13 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     public Vector3 getNewPosition(int index)
     {
-        return availableBioBrick.transform.localPosition + new Vector3(
+        GameObject dummy = (null==availableBioBrick)?availablePromoter1:availableBioBrick;
+        
+        return dummy.transform.localPosition + new Vector3(
           (index % _bricksPerRow) * _width,
           -(index / _bricksPerRow) * _width,
           -0.1f);
+        
     }
 
     private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator(BioBrick brick, int index);

@@ -47,6 +47,7 @@ public class CraftZoneManager : MonoBehaviour {
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
   public GameObject                         assemblyZonePanel;
+  public GameObject                         craftSlotDummy;
   
   protected static EditMode editMode = EditMode.UNLOCKED;
   public static bool isDeviceEditionOn() {
@@ -375,6 +376,19 @@ public class CraftZoneManager : MonoBehaviour {
 
   void Start()
   {
-    displayDevice();
+      initialize();
+      displayDevice();
+  }
+  
+  public void initialize()
+  {
+      if(null != displayedBioBrick)
+      {
+          displayedBioBrick.SetActive(false);
+      }
+      if(null != craftSlotDummy)
+      {
+          craftSlotDummy.SetActive(false);
+      }
   }
 }

@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
     
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "MainMenuManager";
+    public static string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
 
     public static MainMenuManager get ()

@@ -28,6 +28,7 @@ public class InterfaceLinkManager : LinkManager
     public GameObject craftScreenPanel2;
     
     private GameObject craftScreenPanel;
+    public GameObject craftSlotDummy;
     
     
   public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
@@ -130,6 +131,7 @@ public class InterfaceLinkManager : LinkManager
         
         string assemblyZoneName = isCraftMode1?"CraftSlotsPanel":"AssemblyZonePanel";
 		craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
+        craftZoneManager.craftSlotDummy = craftSlotDummy;
 
 
 		//DevicesDisplayer
@@ -166,24 +168,34 @@ public class InterfaceLinkManager : LinkManager
     modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
 
 
-		//DeviceInventory
-		Inventory.get().animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-		Inventory.get ().animator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
-		
-		//BiobrickInventory
-		
-		//AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
-		availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
-        
-        string availableDisplayedBioBrickPrefabName = isCraftMode1?"AvailableDisplayedPromoter":"AvailableDisplayedBioBrickPrefab";
-        availableBioBricksManager.availableBioBrick = availableBioBricksManager.bioBricksPanel.transform.FindChild(availableDisplayedBioBrickPrefabName).gameObject;
-		
-		//TooltipManager
+    //DeviceInventory
+    Inventory.get().animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
+    Inventory.get ().animator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
+    
+    //BiobrickInventory
+    
+    //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
+    availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
+    
+    if(isCraftMode1)
+    {
+        availableBioBricksManager.availablePromoter1        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter").gameObject;
+        availableBioBricksManager.availablePromoter2        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter2").gameObject;
+        availableBioBricksManager.availableRBS              = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedRBS").gameObject;
+        availableBioBricksManager.availableCodingSequence   = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedCodingSequence").gameObject;
+        availableBioBricksManager.availableTerminator       = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedTerminator").gameObject;
+    }
+    else
+    {
+        availableBioBricksManager.availableBioBrick         = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
+    }
+    
+    //TooltipManager
     tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
-		tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
-		tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
+    tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
+    tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
 
-        Logger.get ().loggerGUIComponent = loggerGUIComponent;
+    Logger.get ().loggerGUIComponent = loggerGUIComponent;
   }
   
   
@@ -201,6 +213,9 @@ public class InterfaceLinkManager : LinkManager
       
       // in WorldScreensPanel
       pauseIndicator.SetActive(false);      
+      
+      CraftZoneManager.get().initialize();
+      AvailableBioBricksManager.get().initialize();
   }
   
 }
