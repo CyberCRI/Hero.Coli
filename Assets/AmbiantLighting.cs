@@ -11,28 +11,18 @@ public class AmbiantLighting : MonoBehaviour {
     private Light _spotLight;
     [SerializeField]
     private Color[] _color;
+    [SerializeField]
+    private GameObject _background;
+    private Material[] _backgroundMaterial;
 
     /*Values : 
-    GFP classic = _phenoLight, _color[1] (8,255,0), 24, 4
+    Phenolight : 
+    GFP classic = _phenoLight, _color[1] (8,255,0,0), 24, 4
+
+    SpotLight : 
+    GFP Classic = _spotLight, _color[2] (105,255,118,255), 57.5, 5.3
     
     */
-
-
-
-    // Use this for initialization
-    void Start () {
-        /*EnableLight(_directionaleLight, false);
-        ChangeLightProperty(_phenoLight, _color[2], 10, 8);
-        ChangeLightProperty(_spotLight, _color[2], 57.5f, 8);
-        EnableLight(_phenoLight, true);
-        EnableLight(_spotLight, true);*/
-        ChangeLightProperty(_phenoLight, _color[1], 24, 4);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void ChangeLightColor(Light light, Color color)
     {
