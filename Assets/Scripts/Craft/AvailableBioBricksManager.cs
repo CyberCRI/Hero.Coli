@@ -216,16 +216,42 @@ public class AvailableBioBricksManager : MonoBehaviour
         Logger.Log("AvailableBioBricksManager::OnEnable", Logger.Level.DEBUG);
         updateDisplayedBioBricks();
     }
+    
+    // non-optimized
+    private bool isNewCraftMode()
+    {
+        return GameConfiguration.CraftInterface.LIMITEDDEVICES == MemoryManager.get().configuration.craftInterface; 
+    }
 
     public Vector3 getNewPosition(int index)
     {
-        GameObject dummy = (null==availableBioBrick)?availablePromoter1:availableBioBrick;
-        
-        return dummy.transform.localPosition + new Vector3(
+        if(
+            isNewCraftMode()
+            && (null==availableBioBrick)
+            && (null!=availablePromoter1)
+            )
+        {
+            return availablePromoter1.transform.localPosition + new Vector3(
+          0,
+          -(index % _bricksPerRow) * _width,
+          -0.1f);
+        }
+        else if(
+            !isNewCraftMode()
+            && (null!=availableBioBrick)
+            && (null==availablePromoter1)
+            )
+        {
+           return availableBioBrick.transform.localPosition + new Vector3(
           (index % _bricksPerRow) * _width,
           -(index / _bricksPerRow) * _width,
           -0.1f);
-        
+        }
+        else
+        {
+            Debug.LogError("no dummy for BioBrick position");
+            return Vector3.zero;
+        }
     }
 
     private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator(BioBrick brick, int index);

@@ -7,6 +7,30 @@ using UnityEngine;
 
 public class InterfaceLinkManager : LinkManager
 {
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "InterfaceLinkManager";
+    private static InterfaceLinkManager _instance;
+
+    public static InterfaceLinkManager get ()
+    {
+        if (_instance == null) {
+            Logger.Log("InterfaceLinkManager::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find (gameObjectName).GetComponent<InterfaceLinkManager> ();
+        }
+        return _instance;
+    }
+
+    void Awake ()
+    {
+        _instance = this;
+        Debug.LogError("InterfaceLinkManager awakes with (_instance == null)=="+(_instance == null));
+    }
+    
+    void OnDestroy()
+    {
+        Debug.LogError("InterfaceLinkManager OnDestroy");
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
   public static string interfaceLinkManagerGameObjectName = "InterfaceLinkManager";
 
@@ -108,6 +132,7 @@ public class InterfaceLinkManager : LinkManager
     EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
     gameStateController.endMainMenuButton = emmb;
     gameStateController.mainMenu = mainMenu;
+    MainMenuManager.setInstance(mainMenu);
     
     gameStateController.pauseIndicator = pauseIndicator;
 
