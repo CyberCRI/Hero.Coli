@@ -68,7 +68,8 @@ public class BlackLight : MonoBehaviour {
 
 
 		//Add spotlight 
-		_spotLightBL = new GameObject();
+        if (_spotLightBL == null)
+		    _spotLightBL = new GameObject();
 
 		_spotLightBL.name = "spotLightBL";
 		_spotLightBL.transform.parent = transform;
@@ -84,7 +85,8 @@ public class BlackLight : MonoBehaviour {
 		_spotLightBL.GetComponent<Light>().color = Color.white;
 
 		//Add backGroundSpotlight
-		 _backGroundSpotlight = new GameObject();
+        if (_backGroundSpotlight == null)
+		    _backGroundSpotlight = new GameObject();
 		
 		_backGroundSpotlight.name = "backGroundSpotlight";
 		_backGroundSpotlight.transform.parent = transform;
