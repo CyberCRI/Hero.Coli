@@ -51,6 +51,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     private List<GameObject> dummies = new List<GameObject>();
 
     //visual, clickable biobricks currently displayed
+    //only used in unlimited bricks mode
     LinkedList<AvailableDisplayedBioBrick> _displayedBioBricks = new LinkedList<AvailableDisplayedBioBrick>();
 
     //biobrick data catalog
@@ -160,7 +161,14 @@ public class AvailableBioBricksManager : MonoBehaviour
           + ",\n\n_displayableAvailableTerminators=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
           , Logger.Level.TRACE);
 
-        displayPromoters();
+        if(isNewCraftMode())
+        {
+            displayAll();
+        }
+        else
+        {
+            displayPromoters();
+        }
 
     }
 
@@ -223,29 +231,46 @@ public class AvailableBioBricksManager : MonoBehaviour
         return GameConfiguration.CraftInterface.LIMITEDDEVICES == MemoryManager.get().configuration.craftInterface; 
     }
 
-    public Vector3 getNewPosition(int index)
+    public Vector3 getNewPosition(int index, BioBrick.Type bbType = BioBrick.Type.UNKNOWN)
     {
-        if(
+        if (
             isNewCraftMode()
-            && (null==availableBioBrick)
-            && (null!=availablePromoter1)
+            && (null == availableBioBrick)
+            && (null != availablePromoter1)
+            && (bbType != BioBrick.Type.UNKNOWN)
             )
         {
-            return availablePromoter1.transform.localPosition + new Vector3(
+            GameObject dummy = availablePromoter1;
+            switch (bbType)
+            {
+                case BioBrick.Type.PROMOTER:
+                    break;
+                case BioBrick.Type.RBS:
+                    dummy = availableRBS;
+                    break;
+                case BioBrick.Type.GENE:
+                    dummy = availableCodingSequence;
+                    break;
+                case BioBrick.Type.TERMINATOR:
+                    dummy = availableTerminator;
+                    break;
+            }
+
+            return dummy.transform.localPosition + new Vector3(
           0,
           -(index % _bricksPerRow) * _width,
           -0.1f);
         }
-        else if(
+        else if (
             !isNewCraftMode()
-            && (null!=availableBioBrick)
-            && (null==availablePromoter1)
+            && (null != availableBioBrick)
+            && (null == availablePromoter1)
             )
         {
-           return availableBioBrick.transform.localPosition + new Vector3(
-          (index % _bricksPerRow) * _width,
-          -(index / _bricksPerRow) * _width,
-          -0.1f);
+            return availableBioBrick.transform.localPosition + new Vector3(
+           (index % _bricksPerRow) * _width,
+           -(index / _bricksPerRow) * _width,
+           -0.1f);
         }
         else
         {
@@ -275,7 +300,16 @@ public class AvailableBioBricksManager : MonoBehaviour
     {
 
         Transform parentTransformParam = bioBricksPanel.transform;
-        Vector3 localPositionParam = getNewPosition(index);
+        Vector3 localPositionParam = Vector3.zero;
+        if(isNewCraftMode())
+        {
+            localPositionParam = getNewPosition(index, brick.getType());
+        }
+        else
+        {
+            localPositionParam = getNewPosition(index);
+        }
+        
         string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
         BioBrick biobrickParam = brick;
 
@@ -297,6 +331,13 @@ public class AvailableBioBricksManager : MonoBehaviour
         return resultBrick;
     }
 
+    public void displayAll()
+    {
+        display(_displayableAvailablePromoters, true);
+        display(_displayableAvailableRBS, true);
+        display(_displayableAvailableGenes, true);
+        display(_displayableAvailableTerminators, true);
+    }
     public void displayPromoters()
     {
         Logger.Log("AvailableBioBricksManager::displayPromoters", Logger.Level.TRACE);
@@ -451,11 +492,12 @@ public class AvailableBioBricksManager : MonoBehaviour
         Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks=" + _availableBioBricks.Count, Logger.Level.DEBUG);
     }
 
-
+/*
     // Use this for initialization
     void Start()
     {
         Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
         displayPromoters();
     }
+    */
 }
