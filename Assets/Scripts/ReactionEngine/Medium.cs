@@ -373,7 +373,7 @@ public class Medium : LoadableFromXmlImpl
         {
             manageMoleculeConcentrationWithKey("AMPI");
             
-            if(Application.isEditor) {
+            if(GameStateController.isAdminMode) {
                 //TODO manage this differently
                 manageMoleculeConcentrationWithKey("AMPR");
                 manageMoleculeConcentrationWithKey("ATC");

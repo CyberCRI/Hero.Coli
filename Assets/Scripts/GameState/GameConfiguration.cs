@@ -69,7 +69,9 @@ public class GameConfiguration {
     //v 1.32
     //public static string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
     //v 1.33
-    public static string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
+    //public static string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
+    //v 1.40
+    public static string labelledGameVersionGUID = "81ee441f-6cbc-45ba-a306-160905c80b97";
     
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
         
@@ -120,6 +122,7 @@ public class GameConfiguration {
             if(Application.isWebPlayer) {
                 RedMetricsManager.get().connect ();
             }
+            GameStateController.updateAdminStatus();
         }
     }
     

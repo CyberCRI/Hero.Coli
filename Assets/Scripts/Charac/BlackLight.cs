@@ -10,7 +10,7 @@ public class BlackLight : MonoBehaviour {
 
 	private Light _directionalLight;
 	private float _initialIntensity;
-    private bool _once = false;
+
 
 
 	private Camera _camera;
@@ -34,9 +34,6 @@ public class BlackLight : MonoBehaviour {
   private static string _blackLight = "BL.";
   private static string _blackLightOn = _blackLight+"ON";
   private static string _blackLightOff = _blackLight+"OFF";
-
-    [SerializeField]
-    private Light _playerSpotLight;
 
 	// Use this for initialization
 	void Start () {
@@ -68,8 +65,7 @@ public class BlackLight : MonoBehaviour {
 
 
 		//Add spotlight 
-        if (_spotLightBL == null)
-		    _spotLightBL = new GameObject();
+		_spotLightBL = new GameObject();
 
 		_spotLightBL.name = "spotLightBL";
 		_spotLightBL.transform.parent = transform;
@@ -85,8 +81,7 @@ public class BlackLight : MonoBehaviour {
 		_spotLightBL.GetComponent<Light>().color = Color.white;
 
 		//Add backGroundSpotlight
-        if (_backGroundSpotlight == null)
-		    _backGroundSpotlight = new GameObject();
+		 _backGroundSpotlight = new GameObject();
 		
 		_backGroundSpotlight.name = "backGroundSpotlight";
 		_backGroundSpotlight.transform.parent = transform;
@@ -105,15 +100,12 @@ public class BlackLight : MonoBehaviour {
 	}
 
 	public void leaveBlackLight () {
-        if (_once == true)
-        {
-		    _isCreating = false;
-		    _isDestroying = true;
-            _once = false;
-		    //Destroy BackgroundSpotlight
-		    Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
-        }
 
+		_isCreating = false;
+		_isDestroying = true;
+
+		//Destroy BackgroundSpotlight
+		Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
 
 	}
 
@@ -121,24 +113,15 @@ public class BlackLight : MonoBehaviour {
 	// change the shader of the background planes in the first asset. The shaders from the other assets are already "Transparent/Diffuse"
 	public void setDiffuseTransparentPlane ()
 	{
-
-		// change shaders of the fog in the level 1
-		GameObject go = GameObject.Find ("Assets Level1").transform.FindChild("Environmental Graphics").FindChild("BackgroundFog").gameObject;
-
-
-		Transform[] allChildren = go.GetComponentsInChildren<Transform>();
-
-		foreach(Transform child in allChildren)
+		foreach(GameObject fog in GameObject.FindGameObjectsWithTag("Fog"))
 		{
-			if(child.name.Contains("Fog") && child.FindChild("plane"))
+            Transform plane = fog.transform.FindChild("plane");
+			if(plane)
 			{
-				child.FindChild("plane").GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
+				plane.GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
 			}
 		}
-
-		_shaderChanged = true;
-
-				
+		_shaderChanged = true;				
 	}
 
 	// add lerp effect on light and color for the transition between normal light and black light
@@ -174,47 +157,21 @@ public class BlackLight : MonoBehaviour {
 	// light on/off for the black light
 	public void switchLight ()
 	{
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn)
-                /*&&*/ || isActive == true
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn, true)
+                && !isActive
        )
 		{
-            if (_once == false)
-            {
-			    createBlackLight();
-			    if(!_shaderChanged)
-			    	setDiffuseTransparentPlane();
-			    isActive = true;
-                _once = true;
-                /*_playerSpotLight.color = Color.green;
-                _playerSpotLight.range = 200;
-                _playerSpotLight.enabled = true;*/
-            }
+			createBlackLight();
+			if(!_shaderChanged)
+				setDiffuseTransparentPlane();
+			isActive = true;
 		}
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff)
-            /*&&*/ || isActive == false
+    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff, true)
+            && isActive
        )
 		{
 			leaveBlackLight();
-            //_playerSpotLight.enabled = false;
-            isActive = false;
-            _once = false;
+			isActive = false;
 		}
 	}
-
-    public void Activation(bool value)
-    {
-        isActive = value;
-    }
-
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.tag == "BlackLight")
-        {
-            isActive = true;
-        }
-        else if (col.tag == "NormalLight")
-        {
-            isActive = false;
-        }
-    }
 }

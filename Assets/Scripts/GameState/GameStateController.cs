@@ -65,11 +65,20 @@ public class GameStateController : MonoBehaviour {
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
     private GameState _stateBeforeMainMenu = GameState.Game;
+    
+    private static bool _isAdminMode = false;
+    public static bool isAdminMode {
+        get {
+            return _isAdminMode;
+        }
+    } 
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
+        
         GameStateController.get ();
         loadLevels();
+        updateAdminStatus();
     }
 
     // Use this for initialization
@@ -78,6 +87,11 @@ public class GameStateController : MonoBehaviour {
         _gameState = GameState.Start;
         resetPauseStack();
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
+    }
+    
+    public static void updateAdminStatus()
+    {
+        _isAdminMode = Application.isEditor || MemoryManager.get().configuration.isTestGUID();
     }
     
     private void loadLevels()
@@ -137,15 +151,27 @@ public class GameStateController : MonoBehaviour {
     }
 
     //TODO optimize for frequent calls
-    public static bool isShortcutKeyDown(string localizationKey)
+    public static bool isShortcutKeyDown(KeyCode code, bool restricted = false)
     {
-      return Input.GetKeyDown(getKeyCode(localizationKey));
+      return (!restricted || isAdminMode) && Input.GetKeyDown(code);
     }
 
     //TODO optimize for frequent calls
-    public static bool isShortcutKey(string localizationKey)
+    public static bool isShortcutKey(KeyCode code, bool restricted = false)
     {
-      return Input.GetKey(getKeyCode(localizationKey));
+      return (!restricted || isAdminMode) && Input.GetKey(code);
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKeyDown(string localizationKey, bool restricted = false)
+    {
+      return (!restricted || isAdminMode) && Input.GetKeyDown(getKeyCode(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKey(string localizationKey, bool restricted = false)
+    {
+      return (!restricted || isAdminMode) && Input.GetKey(getKeyCode(localizationKey));
     }
 
     private static GameState getStateFromTarget(GameStateTarget target)
@@ -242,16 +268,16 @@ public class GameStateController : MonoBehaviour {
 	// Update is called once per frame
     void Update () {
 
-        if(Input.GetKeyDown(KeyCode.X) && Application.isEditor)
+        if (isShortcutKeyDown(KeyCode.X))
         {
             Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
             CellControl.get().teleport(new Vector3(500, 0, 637));
-        } else if(Input.GetKeyDown(KeyCode.V) && Application.isEditor)
+        } else if (isShortcutKeyDown(KeyCode.V))
         {
             Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
             CellControl.get().teleport(new Vector3(168, 0, 724));
             
-        } else if(Input.GetKeyDown(KeyCode.W) && Application.isEditor)
+        } else if (isShortcutKeyDown(KeyCode.W))
         {
             Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
             CellControl.get().teleport(new Vector3(-150, 0, 1110));
