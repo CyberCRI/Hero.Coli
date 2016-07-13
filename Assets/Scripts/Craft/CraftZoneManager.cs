@@ -18,8 +18,9 @@ public class CraftZoneManager : MonoBehaviour {
   protected const string gameObjectName = "CraftZoneManager";
   protected static CraftZoneManager _instance;
   public static CraftZoneManager get() {
+      Debug.LogError("CraftZoneManager get");
     if(_instance == null) {
-      Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);
+      Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);      
       _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
     }
     return _instance;
@@ -28,6 +29,7 @@ public class CraftZoneManager : MonoBehaviour {
   void Awake()
   {
     Logger.Log("CraftZoneManager::Awake", Logger.Level.DEBUG);
+    Debug.LogError("CraftZoneManager Awake");
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,6 +208,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public virtual void replaceWithBioBrick(BioBrick brick) {
+      Debug.LogError("replaceWithBioBrick("+brick.getName()+")");
     Logger.Log("CraftZoneManager::replaceWithBioBrick("+brick+")", Logger.Level.TRACE);
     insertOrdered(brick);
     OnBioBricksChanged();
@@ -213,7 +216,7 @@ public class CraftZoneManager : MonoBehaviour {
 
     protected void insertOrdered(BioBrick toInsert)
     {
-
+        Debug.LogError("insertOrdered("+toInsert.getName()+")");
         BioBrick sameBrick = LinkedListExtensions.Find(_currentBioBricks, b => b.getName() == toInsert.getName());
 
         if (null != sameBrick)
@@ -376,11 +379,13 @@ public class CraftZoneManager : MonoBehaviour {
 
   void Start()
   {
+      Debug.LogError("CraftZoneManager Start");
+      
       initialize();
       displayDevice();
   }
   
-  public void initialize()
+  public virtual void initialize()
   {
       if(null != displayedBioBrick)
       {

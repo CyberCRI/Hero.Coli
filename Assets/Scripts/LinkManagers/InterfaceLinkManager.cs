@@ -144,7 +144,7 @@ public class InterfaceLinkManager : LinkManager
 		craftFinalizer.ToCraftZoneManager = craftZoneManager;
 
 		//CraftZoneManager
-		craftZoneManager.GetComponent<CraftZoneManager>().craftFinalizer = craftFinalizer;
+		craftZoneManager.craftFinalizer = craftFinalizer;
 
 		//CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
     if(null == craftFinalizer.craftFinalizationButton)
