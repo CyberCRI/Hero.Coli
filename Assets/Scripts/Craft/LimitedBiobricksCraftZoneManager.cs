@@ -21,6 +21,8 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
   {
       Debug.LogError("LimitedBiobricksCraftZoneManager initialize");
       
+      slots.Clear();
+      
       GameObject activeSlotGO = GameObject.Instantiate(craftSlotDummy);
       activeSlotGO.transform.parent = craftSlotDummy.transform.parent;
       activeSlotGO.transform.localScale = craftSlotDummy.transform.localScale;
@@ -28,6 +30,8 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
       activeSlotGO.SetActive(true);
       
       activeSlot = activeSlotGO.GetComponent<CraftDeviceSlot>();
+      
+      slots.Add(activeSlot);
       
       base.initialize();      
   }
@@ -57,6 +61,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     
     public void removeBioBrick(CraftZoneDisplayedBioBrick brick)
     {
+        Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(czdb)");
         if(null != brick)
         {
             removeBioBrick(brick._biobrick);
@@ -65,13 +70,16 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     
     public override void removeBioBrick(BioBrick brick)
     {
+        Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(brick)");
         if(null != brick)
         {
+            Debug.LogError("removeBioBrick null != brick");
             foreach(CraftDeviceSlot slot in slots)
             {
-                if(null != slot)
+                Debug.LogError("removeBioBrick slot "+slot);
+                if(null != slot && slot.removeBrick(brick))
                 {
-                    slot.removeBrick(brick);
+                    return;
                 }   
             }
         }

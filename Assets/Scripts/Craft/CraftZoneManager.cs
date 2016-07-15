@@ -264,6 +264,7 @@ public class CraftZoneManager : MonoBehaviour {
     }
 
   public virtual void removeBioBrick(BioBrick brick) {
+      Debug.LogError("CraftZoneManager::removeBioBrick");
       string debug = null != brick? "contains="+_currentBioBricks.Contains(brick):"brick==null";
       Debug.LogError("CraftZoneManager::removeBioBrick with "+debug);
       if(null != brick && _currentBioBricks.Contains(brick))

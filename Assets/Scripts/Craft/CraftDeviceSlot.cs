@@ -157,30 +157,50 @@ public class CraftDeviceSlot : MonoBehaviour
         }
     }
 
-    public void removeBrick(BioBrick brick)
+    public bool removeBrick(BioBrick brick)
     {
+        Debug.LogError("removeBrick(brick)");
         if (null != brick)
         {
+            Debug.LogError("removeBrick(brick="+brick.getName()+")");
             foreach (CraftZoneDisplayedBioBrick czdb in currentBricks)
             {
                 if ((null != czdb) && (czdb._biobrick == brick))
                 {
-                    isLocked = false;
-                    AvailableBioBricksManager.get().addBrickAmount(brick, 1);
-                    removeBrick(czdb);
-                    return;
+                    innerRemoveBrick(czdb);
+                    return true;
                 }
             }
         }
+        return false;
+    }
+    
+    public bool removeBrick(CraftZoneDisplayedBioBrick brick)
+    {
+        Debug.LogError("removeBrick(czdb)");
+        if(null != brick)
+        {
+            Debug.LogError("removeBrick(czdb="+brick._biobrick.getName()+")");   
+            foreach (CraftZoneDisplayedBioBrick czdb in currentBricks)
+            {
+                if(czdb == brick)
+                {
+                    innerRemoveBrick(brick);
+                    return true;
+                }
+            }
+            Debug.LogError("failed to find czdb brick to remove called '"+brick._biobrick.getName()+"'");
+        }
+        return false;
     }
 
-    public void removeBrick(CraftZoneDisplayedBioBrick brick)
+    private void innerRemoveBrick(CraftZoneDisplayedBioBrick brick)
     {
-        if (null != brick)
-        {
-            GameObject.Destroy(brick.gameObject);
-            currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
-        }
+        Debug.LogError("innerRemoveBrick("+brick._biobrick.getName()+")");
+        isLocked = false;
+        AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
+        GameObject.Destroy(brick.gameObject);
+        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
     }
 
     public void updateDisplay()
