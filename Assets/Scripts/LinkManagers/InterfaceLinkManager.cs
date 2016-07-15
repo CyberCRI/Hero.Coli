@@ -140,9 +140,6 @@ public class InterfaceLinkManager : LinkManager
     cb.nextInfoPanel = introduction2;
     cb.nextInfoPanelContinue = sgb;
 
-		//CraftFinalizer
-		craftFinalizer.ToCraftZoneManager = craftZoneManager;
-
 		//CraftZoneManager
 		craftZoneManager.craftFinalizer = craftFinalizer;
 

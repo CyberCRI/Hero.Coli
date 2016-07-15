@@ -85,6 +85,12 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
     
+    
+    public override Device getCurrentDevice() {
+        Debug.LogError("LimitedBiobricksCraftZoneManager getCurrentDevice");
+        return activeSlot.getCurrentDevice();
+    }
+    
     public override void OnBioBricksChanged()
     {
         foreach(CraftDeviceSlot slot in slots)

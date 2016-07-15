@@ -2,16 +2,44 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class CraftFinalizer : MonoBehaviour {
+    
+  //////////////////////////////// singleton fields & methods ////////////////////////////////
+  protected const string gameObjectName = "FinalizationZonePanel";
+  protected static CraftFinalizer _instance;
+  public static CraftFinalizer get() {
+      Debug.LogError("CraftFinalizer get");
+    if(_instance == null) {
+      Logger.Log("CraftFinalizer::get was badly initialized", Logger.Level.WARN);      
+      _instance = GameObject.Find(gameObjectName).GetComponent<CraftFinalizer>();
+    }
+    return _instance;
+  }
+  
+  void Awake()
+  {
+    Logger.Log("CraftFinalizer::Awake", Logger.Level.DEBUG);
+    Debug.LogError("CraftFinalizer Awake");
+    _instance = this;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////
   private CraftZoneManager _craftZoneManager;
 
-	public CraftZoneManager ToCraftZoneManager {
-			get {
-				return _craftZoneManager;
-			}
-			set {
-				_craftZoneManager = value;
-			}
-		}
+    private CraftZoneManager craftZoneManager
+    {
+        get
+        {
+            if (null == _craftZoneManager)
+            {
+                craftZoneManager = CraftZoneManager.get();
+            }
+            return _craftZoneManager;
+        }
+        set
+        {
+            _craftZoneManager = value;
+        }
+    }
+        
   public FinalizationInfoPanelManager   finalizationInfoPanelManager;
   
   // these three objects are affected by the craft status of the currently displayed device
@@ -45,12 +73,12 @@ public class CraftFinalizer : MonoBehaviour {
   public void finalizeCraft() {
     //create new device from current biobricks in craft zone
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
-    Device currentDevice = _craftZoneManager.getCurrentDevice();
+    Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice != null){
         // TODO pipeline when recipe is unknown
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice, true);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
-        _craftZoneManager.craft();
+        craftZoneManager.craft();
       }
       Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
     } else {
@@ -62,12 +90,12 @@ public class CraftFinalizer : MonoBehaviour {
   
   public void equip()
   {
-    _craftZoneManager.equip();
+    craftZoneManager.equip();
   }
   
   public void unequip()
   {
-      _craftZoneManager.unequip();
+      craftZoneManager.unequip();
   }
   
   
@@ -132,12 +160,12 @@ public class CraftFinalizer : MonoBehaviour {
 
     public void randomRename() {
         Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
-        Device currentDevice = _craftZoneManager.getCurrentDevice();
+        Device currentDevice = craftZoneManager.getCurrentDevice();
         string newName = Inventory.get().getAvailableDeviceDisplayedName();
         Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
         if(newDevice != null){
-            Logger.Log("CraftFinalizer::randomRename _craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
-            _craftZoneManager.setDevice(newDevice);
+            Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
+            craftZoneManager.setDevice(newDevice);
         } else {
             Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
                        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
@@ -146,7 +174,7 @@ public class CraftFinalizer : MonoBehaviour {
 
   void Start()
   {
-    _craftZoneManager = CraftZoneManager.get();
+    craftZoneManager = CraftZoneManager.get();
   }
 
 

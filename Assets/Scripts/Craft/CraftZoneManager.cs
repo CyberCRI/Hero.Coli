@@ -342,7 +342,7 @@ public class CraftZoneManager : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // utilities
 
-    protected Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
+    public Device getDeviceFromBricks(LinkedList<BioBrick> bricks){
         Logger.Log("CraftZoneManager::getDeviceFromBricks("+Logger.ToString<BioBrick>(bricks)+")", Logger.Level.TRACE);
 
         if(!ExpressionModule.isBioBricksSequenceValid(bricks))
@@ -368,7 +368,7 @@ public class CraftZoneManager : MonoBehaviour {
         return device;
     }
 
-  public Device getCurrentDevice() {
+  public virtual Device getCurrentDevice() {
     return _currentDevice;
   }
 

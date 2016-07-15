@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class CraftDeviceSlot : MonoBehaviour
 {
@@ -153,10 +155,43 @@ public class CraftDeviceSlot : MonoBehaviour
             int index = getIndexFromBrick(brick);
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
+            
+            checkDevice();
+            
             updateDisplay();
         }
     }
+    
+    private void checkDevice()
+    {
+        if(
+            (null != currentBricks[0])
+            && (null != currentBricks[1])
+            && (null != currentBricks[2])
+            && (null != currentBricks[3])
+        )
+        {
+            CraftFinalizer.get().finalizeCraft();
+            CraftZoneManager.get().equip();
+        }
+    }
 
+    public Device getCurrentDevice() {
+        Debug.LogError("CraftDeviceSlot getCurrentDevice");
+        if(
+            (null != currentBricks[0])
+            && (null != currentBricks[1])
+            && (null != currentBricks[2])
+            && (null != currentBricks[3])
+        )
+        {
+            List<BioBrick> currentBricksL = new List<BioBrick>{currentBricks[0]._biobrick,currentBricks[1]._biobrick,currentBricks[2]._biobrick,currentBricks[3]._biobrick};
+            LinkedList<BioBrick> currentBricksLL = new LinkedList<BioBrick>(currentBricksL);
+            return CraftZoneManager.get().getDeviceFromBricks(currentBricksLL);
+        }
+        return null;
+    }
+    
     public bool removeBrick(BioBrick brick)
     {
         Debug.LogError("removeBrick(brick)");
