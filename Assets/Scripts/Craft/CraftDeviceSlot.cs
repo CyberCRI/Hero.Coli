@@ -8,10 +8,12 @@ public class CraftDeviceSlot : MonoBehaviour
     // TODO remove test sprites, put real sprites
     const string slotActive = "arrow";
     const string slotInactive = "arrow-bottom-white-bg";
-    protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
 
     // logical elements
-    public GameObject[] brickGameObjects;
+    protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
+    
+    public GameObject[] dummyBrickGameObjects;
+    
     protected Device _resultDevice;
     // isLocked == active: active == true when the device is working and protected from edition
     protected bool _isLocked;
@@ -122,14 +124,17 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public void addBrick(BioBrick brick)
     {
+        Debug.LogError("addBrick("+brick.getName()+")");
         if (!isLocked && (null != brick))
         {
             int index = getIndexFromBrick(brick);
+            
+            Debug.LogError("!isLocked && (null != brick); index="+index);
 
             // create new CraftZoneDisplayedBioBrick 
             CraftZoneDisplayedBioBrick czdb = CraftZoneDisplayedBioBrick.Create(
                 this.transform,
-                brickGameObjects[index].transform.localPosition,
+                dummyBrickGameObjects[index].transform.localPosition,
                 null,
                 brick
             );
@@ -141,8 +146,10 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public void addBrick(CraftZoneDisplayedBioBrick brick)
     {
+        Debug.LogError("addBrick(czdb)");
         if (!isLocked && (null != brick) && (null != brick._biobrick))
         {
+            Debug.LogError("!isLocked && (null != brick) && (null != brick._biobrick)");
             int index = getIndexFromBrick(brick);
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
@@ -180,10 +187,29 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         for (int index = 0; index < 4; index++)
         {
-            if (null != currentBricks[index] && (4 == brickGameObjects.Length) && (null != brickGameObjects[index]))
+            if (null != currentBricks[index])
             {
-                currentBricks[index].gameObject.transform.localPosition = brickGameObjects[index].transform.localPosition;
+                currentBricks[index].gameObject.transform.localPosition = dummyBrickGameObjects[index].transform.localPosition;
+                currentBricks[index].gameObject.SetActive(true);
             }
         }
+    }
+    
+    void initialize()
+    {
+        foreach(GameObject go in dummyBrickGameObjects)
+        {
+            go.SetActive(false);
+        }
+    }
+    
+    void Awake()
+    {
+        initialize();
+    }
+    
+    void OnEnable()
+    {
+        initialize();
     }
 }
