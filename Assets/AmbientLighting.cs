@@ -71,7 +71,7 @@ public class AmbientLighting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             ChangeLightProperty(_phenoLight, _color[1], 24, 4);
-            ChangeLightProperty(_spotLight, _color[2], 57.5f, 5.3f);
+            ChangeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
         }
     }
 
@@ -79,7 +79,7 @@ public class AmbientLighting : MonoBehaviour
     {
         _originalDirectionalIntensity = _directionaleLight.intensity;
         ChangeLightProperty(_phenoLight, _color[1], 24, 4);
-        ChangeLightProperty(_spotLight, _color[2], 57.5f, 5.3f);
+        ChangeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
     }
 
     void OnTriggerEnter(Collider col)
