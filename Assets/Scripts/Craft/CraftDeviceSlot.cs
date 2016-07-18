@@ -5,6 +5,11 @@ public class CraftDeviceSlot : MonoBehaviour
 {
     // GUI elements
     public UISprite craftSlotSprite;
+    private const string slotActiveSprite = "craft_slot_active";
+    private const string slotInactiveSprite = "craft_slot_inactive";
+    public UISprite selectionSprite;
+    private const string slotSelectedSprite = "transparent-light-grey";
+    private const string slotUnselectedSprite = "transparent-grey";
 
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
@@ -26,8 +31,8 @@ public class CraftDeviceSlot : MonoBehaviour
                 _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(getCurrentDevice()));
                 if (_isEquiped && (null != craftSlotSprite))
                 {
-                    Debug.LogError("craftSlotSprite.gameObject.SetActive(true);");
-                    craftSlotSprite.gameObject.SetActive(true);
+                    Debug.LogError("slotActiveSprite");
+                    craftSlotSprite.spriteName = slotActiveSprite;
                 }
             }
             else if(_isEquiped && !value)
@@ -37,8 +42,8 @@ public class CraftDeviceSlot : MonoBehaviour
                 Equipment.get().removeDevice(getCurrentDevice());
                 if (null != craftSlotSprite)
                 {
-                    Debug.LogError("craftSlotSprite.gameObject.SetActive(false);");
-                    craftSlotSprite.gameObject.SetActive(false);
+                    Debug.LogError("slotInactiveSprite");
+                    craftSlotSprite.spriteName = slotInactiveSprite;
                 }
             }
             else
@@ -198,7 +203,7 @@ public class CraftDeviceSlot : MonoBehaviour
                 null,
                 brick
             );
-
+            czdb.slot = this;
             addBrick(czdb);
             AvailableBioBricksManager.get().addBrickAmount(brick, -1);
         }
@@ -255,7 +260,7 @@ public class CraftDeviceSlot : MonoBehaviour
     public LinkedList<BioBrick> getCurrentBricks()
     {
         LinkedList<BioBrick> result = new LinkedList<BioBrick>();
-        for(int i = 1; i < 4; i++)
+        for(int i = 0; i < 4; i++)
         {
             if (null != currentBricks[i])
             {
@@ -310,6 +315,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         Debug.LogError("innerRemoveBrick("+brick._biobrick.getName()+")");
         //isLocked = false;
+        setSelected(true);
         unequip();
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
@@ -329,15 +335,52 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         if(device != null)
         {
+            Debug.LogError("CDS setDevice");
+            //check that can afford device            
+            LinkedList<BioBrick> newBricks = device.getExpressionModules().First.Value.getBioBricks();
+            LinkedList<BioBrick> currentBricks = getCurrentBricks();
+            AvailableBioBricksManager abbm = AvailableBioBricksManager.get(); 
+            
+            foreach(BioBrick brick in newBricks)
+            {
+                if(!currentBricks.Contains(brick))
+                {
+                    BioBrick abb = abbm.getBioBrickFromAll(brick.getName());
+                    if(0 == abb.amount) 
+                    {
+                        Debug.LogError("CDS setDevice abort with "+brick.getName());
+                        // can't afford; abort
+                        return;
+                    }
+                }
+            }
+            
+            Debug.LogError("CDS setDevice removeAllBricks");
             removeAllBricks();
             
-            foreach(BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
+            foreach(BioBrick brick in newBricks)
             {
                 addBrick(brick);
             }
             
             updateDisplay();
         }
+    }
+
+    public void setSelected(bool selected)
+    {
+        Debug.LogError("CraftDeviceSlot selectSlot("+selected+")");
+        LimitedBiobricksCraftZoneManager lbczm = ((LimitedBiobricksCraftZoneManager)CraftZoneManager.get());
+        if (null != lbczm)
+        {
+            lbczm.selectSlot(this);
+        }
+    }
+    
+    public void setSelectedBackground(bool selected)
+    {
+        Debug.LogError("CraftDeviceSlot setSelectedBackground("+selected+")");
+        selectionSprite.spriteName = selected?slotSelectedSprite:slotUnselectedSprite;        
     }
 
     public void updateDisplay()
