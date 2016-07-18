@@ -252,6 +252,19 @@ public class CraftDeviceSlot : MonoBehaviour
         return null;
     }
     
+    public LinkedList<BioBrick> getCurrentBricks()
+    {
+        LinkedList<BioBrick> result = new LinkedList<BioBrick>();
+        for(int i = 1; i < 4; i++)
+        {
+            if (null != currentBricks[i])
+            {
+                result.AddLast(currentBricks[i]._biobrick);
+            }
+        }
+        return result;
+    }
+    
     public bool removeBrick(BioBrick brick)
     {
         Debug.LogError("removeBrick(brick)");
@@ -301,6 +314,30 @@ public class CraftDeviceSlot : MonoBehaviour
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
         currentBricks[getIndexFromType(brick._biobrick.getType())] = null;        
+    }
+    
+    public void removeAllBricks()
+    {
+        unequip();
+        removeBrick(currentBricks[0]);
+        removeBrick(currentBricks[1]);
+        removeBrick(currentBricks[2]);
+        removeBrick(currentBricks[3]);
+    }
+    
+    public void setDevice(Device device)
+    {
+        if(device != null)
+        {
+            removeAllBricks();
+            
+            foreach(BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
+            {
+                addBrick(brick);
+            }
+            
+            updateDisplay();
+        }
     }
 
     public void updateDisplay()

@@ -294,7 +294,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
   */
 
-  public void setDevice(Device device) {
+  public virtual void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
     Debug.LogError("CraftZoneManager::setDevice("+device+")");
     if(device != null)
@@ -311,7 +311,7 @@ public class CraftZoneManager : MonoBehaviour {
     }    
   }
   
-  protected void removeAllBricksFromCraftZone() {
+  protected virtual void removeAllBricksFromCraftZone() {
       Debug.LogError("CraftZoneManager::removeAllBricksFromCraftZone()");
       foreach(BioBrick brick in _currentBioBricks)
       {

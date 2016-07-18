@@ -5,6 +5,19 @@ using System.Collections.Generic;
 public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 {
 
+    protected new LinkedList<BioBrick> _currentBioBricks {
+        get {
+            if(null != activeSlot)
+            {
+                return activeSlot.getCurrentBricks();
+            }
+            else
+            {
+                return new LinkedList<BioBrick>();   
+            } 
+        }
+    }
+
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot activeSlot;
     
@@ -105,6 +118,21 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
             slot.updateDisplay();
         }
     }
+    
+    public override void setDevice(Device device) {
+        Debug.LogError("LimitedBioBricksCraftZoneManager::setDevice("+device+")");
+        if(null != activeSlot)
+       {
+           activeSlot.setDevice(device);
+       } 
+    }
+    
+    protected override void removeAllBricksFromCraftZone() {
+       if(null != activeSlot)
+       {
+           activeSlot.removeAllBricks();
+       }
+    }
 }
 
-public class ActivationButton { }
+
