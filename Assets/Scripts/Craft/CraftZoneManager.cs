@@ -113,10 +113,11 @@ public class CraftZoneManager : MonoBehaviour {
     OnBioBricksChanged();
   }
   
-  public void equip()
+  public Equipment.AddingResult equip()
   {
-      Equipment.get().askAddDevice(getCurrentDevice());
+      Equipment.AddingResult result = Equipment.get().askAddDevice(getCurrentDevice());
       OnBioBricksChanged();
+      return result;
   }
   
   public void unequip()

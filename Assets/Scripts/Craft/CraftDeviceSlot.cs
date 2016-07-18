@@ -1,23 +1,79 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class CraftDeviceSlot : MonoBehaviour
 {
     // GUI elements
-    protected ActivationButton activationButton;
-    protected UISprite craftSlotSprite;
-    // TODO remove test sprites, put real sprites
-    const string slotActive = "arrow";
-    const string slotInactive = "arrow-bottom-white-bg";
+    public UISprite craftSlotSprite;
 
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
     
     public GameObject[] dummyBrickGameObjects;
     
-    protected Device _resultDevice;
+    protected bool _isEquiped;
+    public bool isEquiped
+    {
+        get
+        {
+            return _isEquiped;
+        }
+        set
+        {
+            if (!_isEquiped && value)
+            {
+                Debug.LogError("set: !_isEquiped && value");
+                _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(getCurrentDevice()));
+                if (_isEquiped && (null != craftSlotSprite))
+                {
+                    Debug.LogError("craftSlotSprite.gameObject.SetActive(true);");
+                    craftSlotSprite.gameObject.SetActive(true);
+                }
+            }
+            else if(_isEquiped && !value)
+            {
+                Debug.LogError("set: _isEquiped && !value");
+                _isEquiped = false;
+                Equipment.get().removeDevice(getCurrentDevice());
+                if (null != craftSlotSprite)
+                {
+                    Debug.LogError("craftSlotSprite.gameObject.SetActive(false);");
+                    craftSlotSprite.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("none");
+            }
+        }
+    }
+
+    public void toggleEquipped()
+    {
+        if (isEquiped)
+        {
+            unequip();
+        }
+        else
+        {
+            equip();
+        }
+    }
+
+    protected void equip()
+    {
+        Debug.LogError("equip");
+        isEquiped = true;
+    }
+
+    protected void unequip()
+    {
+        Debug.LogError("unequip");
+        isEquiped = false;
+    }
+    
     // isLocked == active: active == true when the device is working and protected from edition
+    /*
     protected bool _isLocked;
     public bool isLocked
     {
@@ -71,6 +127,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         isLocked = false;
     }
+    */
 
     public int getIndexFromType(BioBrick.Type bbType)
     {
@@ -127,7 +184,8 @@ public class CraftDeviceSlot : MonoBehaviour
     public void addBrick(BioBrick brick)
     {
         Debug.LogError("addBrick("+brick.getName()+")");
-        if (!isLocked && (null != brick))
+        //if (!isLocked && (null != brick))
+        if (null != brick)
         {
             int index = getIndexFromBrick(brick);
             
@@ -149,7 +207,8 @@ public class CraftDeviceSlot : MonoBehaviour
     public void addBrick(CraftZoneDisplayedBioBrick brick)
     {
         Debug.LogError("addBrick(czdb)");
-        if (!isLocked && (null != brick) && (null != brick._biobrick))
+        //if (!isLocked && (null != brick) && (null != brick._biobrick))
+        if ((null != brick) && (null != brick._biobrick))
         {
             Debug.LogError("!isLocked && (null != brick) && (null != brick._biobrick)");
             int index = getIndexFromBrick(brick);
@@ -172,7 +231,8 @@ public class CraftDeviceSlot : MonoBehaviour
         )
         {
             CraftFinalizer.get().finalizeCraft();
-            CraftZoneManager.get().equip();
+            
+            equip();
         }
     }
 
@@ -226,16 +286,21 @@ public class CraftDeviceSlot : MonoBehaviour
             }
             Debug.LogError("failed to find czdb brick to remove called '"+brick._biobrick.getName()+"'");
         }
+        else
+        {
+            Debug.LogError("null == czdb");
+        }
         return false;
     }
 
     private void innerRemoveBrick(CraftZoneDisplayedBioBrick brick)
     {
         Debug.LogError("innerRemoveBrick("+brick._biobrick.getName()+")");
-        isLocked = false;
+        //isLocked = false;
+        unequip();
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
-        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
+        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;        
     }
 
     public void updateDisplay()

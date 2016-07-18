@@ -57,17 +57,24 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
             activeSlot.addBrick(brick);
         }
     }
-    
-    
+    /*
     public void removeBioBrick(CraftZoneDisplayedBioBrick brick)
     {
         Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(czdb)");
         if(null != brick)
         {
-            removeBioBrick(brick._biobrick);
+            Debug.LogError("removeBioBrick null != brick");
+            foreach(CraftDeviceSlot slot in slots)
+            {
+                Debug.LogError("removeBioBrick slot "+slot);
+                if(null != slot && slot.removeBrick(brick))
+                {
+                    return;
+                }   
+            }
         }
     }
-    
+    */
     public override void removeBioBrick(BioBrick brick)
     {
         Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(brick)");
