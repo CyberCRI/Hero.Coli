@@ -10,6 +10,10 @@ public class CraftDeviceSlot : MonoBehaviour
     public UISprite selectionSprite;
     private const string slotSelectedSprite = "transparent-light-grey";
     private const string slotUnselectedSprite = "transparent-grey";
+    public CraftResultDevice resultDevice;
+    public UISprite resultSprite;
+    private const string resultActiveSprite = "craft_result_active";
+    private const string resultInactiveSprite = "craft_result_inactive";
 
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
@@ -28,11 +32,26 @@ public class CraftDeviceSlot : MonoBehaviour
             if (!_isEquiped && value)
             {
                 Debug.LogError("set: !_isEquiped && value");
-                _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(getCurrentDevice()));
-                if (_isEquiped && (null != craftSlotSprite))
+                Device currentDevice = getCurrentDevice();
+                _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
+                if (_isEquiped)
                 {
-                    Debug.LogError("slotActiveSprite");
-                    craftSlotSprite.spriteName = slotActiveSprite;
+                    if(null != craftSlotSprite)
+                    {
+                        Debug.LogError("slotActiveSprite");
+                        craftSlotSprite.spriteName = slotActiveSprite;
+                    }
+                    if(null != resultSprite)
+                    {
+                        resultSprite.spriteName = resultActiveSprite;
+                    }
+                    //set result device
+                    if(null != resultDevice)
+                    {
+                        resultDevice.gameObject.SetActive(true);
+                        resultDevice._device = currentDevice;
+                        resultDevice._sprite.spriteName = DisplayedDevice.getTextureName(currentDevice);
+                    }                    
                 }
             }
             else if(_isEquiped && !value)
@@ -44,6 +63,15 @@ public class CraftDeviceSlot : MonoBehaviour
                 {
                     Debug.LogError("slotInactiveSprite");
                     craftSlotSprite.spriteName = slotInactiveSprite;
+                }
+                if(null != resultSprite)
+                {
+                    resultSprite.spriteName = resultInactiveSprite;
+                }
+                //set result device
+                if(null != resultDevice)
+                {
+                    resultDevice.gameObject.SetActive(false);
                 }
             }
             else
@@ -397,10 +425,8 @@ public class CraftDeviceSlot : MonoBehaviour
     
     void initialize()
     {
-        foreach(GameObject go in dummyBrickGameObjects)
-        {
-            go.SetActive(false);
-        }
+        _isEquiped = true;
+        isEquiped = false;
     }
     
     void Awake()

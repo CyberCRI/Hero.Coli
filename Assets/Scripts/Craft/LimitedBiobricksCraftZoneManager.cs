@@ -22,7 +22,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
-    protected int slotCount = 3;
+    protected int slotCount = 4;
     
     public GameObject slotPrefab;
 
