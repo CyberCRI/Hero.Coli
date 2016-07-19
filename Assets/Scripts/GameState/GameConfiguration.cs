@@ -40,8 +40,7 @@ public class GameConfiguration {
     public enum GameMode
     {
         ADVENTURE,
-        SANDBOX,
-        TUTORIAL
+        SANDBOX
     }
     
     public enum CraftInterface
@@ -163,12 +162,11 @@ public class GameConfiguration {
         switch(map)
         {
             case GameMap.ADVENTURE1:
+            case GameMap.TUTORIAL1:
                 return GameMode.ADVENTURE;
             case GameMap.SANDBOX1:
             case GameMap.SANDBOX2:
                 return GameMode.SANDBOX;
-            case GameMap.TUTORIAL1:
-                return GameMode.TUTORIAL;
             default:
                 Logger.Log("unknown map "+map, Logger.Level.ERROR);
                 return GameMode.ADVENTURE;
