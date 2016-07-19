@@ -1,13 +1,17 @@
 using UnityEngine;
-using System.Collections;
 
 public class PhenoSpeed : Phenotype
 {
 
+public float ccdisp;
+    public bool devMode = false;
+
 	//public float minSpeed;
 	//public float maxSpeed;
+  public float baseSpeed;
   public float lowSpeed;
   public float medSpeed;
+  public float zeroCC;
   public float lowCC;
   public float medCC;
 
@@ -18,6 +22,8 @@ public class PhenoSpeed : Phenotype
   public float rem3rdFlagellumThresholdPerc;
   */
 
+  public float add1stFlagellumThreshold;
+  public float rem1stFlagellumThreshold;
   public float add2ndFlagellumThreshold;
   public float rem2ndFlagellumThreshold;
   public float add3rdFlagellumThreshold;
@@ -30,18 +36,21 @@ public class PhenoSpeed : Phenotype
   public GameObject leftFlagellum;
   public GameObject rightFlagellum;
 	
-	private int flagellaCount = 1;
+	private int flagellaCount = 0;
 	private Molecule _mol = null;
-	private string _speedName = "MOV";
+	private const string _speedName = "MOV";
 
-  private float _steepness1;
-  private float _steepness2;
-  private float _baseSpeed;
+public float _steepness0;
+  public float _steepness1;
+  public float _steepness2;
+  
+  public float intensity;
+  private CellControl cellControl;
 	
 	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
-    gameObject.GetComponent<SwimAnimator>().safeInitAnims();
+        gameObject.GetComponent<SwimAnimator>().safeInitAnims();
     set1Flagella();
 		initMoleculePhenotype();
 	}
@@ -53,9 +62,13 @@ public class PhenoSpeed : Phenotype
 
   public float getIntensity(float cc)
   {
-    if(cc < lowCC)
+      if(cc < zeroCC)
+      {
+          return cc*_steepness0;
+      }
+      else if(cc < lowCC)
     {
-      return _baseSpeed + cc*_steepness1;
+      return baseSpeed + cc*_steepness1;
     }
     else
     {
@@ -65,17 +78,25 @@ public class PhenoSpeed : Phenotype
 
   public void setBaseSpeed(float speed)
   {
-    _baseSpeed = speed;
+    baseSpeed = speed;
   }
 
   private void updateFlagellaCount(float speed)
   {
     switch(flagellaCount)
     {
+        case 0:
+        if(speed > add1stFlagellumThreshold)
+          //if(speed > add2ndFlagellumThresholdPerc*lowSpeed)
+          set1Flagella();
+        break;
       case 1:
         if(speed > add2ndFlagellumThreshold)
-          //if(speed > add2ndFlagellumThresholdPerc*lowSpeed)
+          //if(speed > add3rdFlagellumThresholdPerc*medSpeed)
           set2Flagella();
+        else if(speed < rem1stFlagellumThreshold)
+          //else if(speed < rem2ndFlagellumThresholdPerc*lowSpeed)
+          set0Flagella();
         break;
       case 2:
         if(speed > add3rdFlagellumThreshold)
@@ -94,6 +115,14 @@ public class PhenoSpeed : Phenotype
         Logger.Log("PhenoSpeed::updateFlagellaCount bad flagellaCount="+flagellaCount, Logger.Level.WARN);
         break;
     }
+  }
+
+  private void set0Flagella()
+  {
+    flagellaCount = 0;
+    leftFlagellum.SetActive(false);
+    centralFlagellum.SetActive(false);
+    rightFlagellum.SetActive(false);
   }
 
   private void set1Flagella()
@@ -128,6 +157,11 @@ public class PhenoSpeed : Phenotype
    */
 	public override void UpdatePhenotype ()
 	{
+        if(devMode)
+        {
+            initialize();
+        }
+        
 		if (_mol == null)
 		{
 			initMoleculePhenotype();
@@ -136,20 +170,15 @@ public class PhenoSpeed : Phenotype
 		}
 
 		//float intensity = Phenotype.hill (_mol.getConcentration(), threshold, steepness, minSpeed, maxSpeed);
-    if(_steepness1 == 0)
-    {
-      _steepness1 = (lowSpeed - _baseSpeed)/lowCC;
-    }
-    if(_steepness2 == 0)
-    {
-      _steepness2 = (medSpeed - lowSpeed)/(medCC - lowCC);
-    }
-    float intensity = getIntensity(_mol.getConcentration());
-		gameObject.GetComponent<CellControl>().currentMoveSpeed = intensity;
+    
+    intensity = getIntensity(_mol.getConcentration());
+    ccdisp = _mol.getConcentration();
+    
+		cellControl.currentMoveSpeed = intensity;
 
     /*
     Logger.Log("PhenoSpeed intensity="+intensity
-      //+"\n_base="+_baseSpeed
+      //+"\n_base="+baseSpeed
       //+"\n_steepness1="+_steepness1
       //+"\n_steepness2="+_steepness2
       , Logger.Level.ONSCREEN);
@@ -158,4 +187,28 @@ public class PhenoSpeed : Phenotype
 		
 		updateFlagellaCount(intensity);
 	}
+    
+    public override void initialize()
+    {
+        base.initialize();
+        
+        set0Flagella();
+        if(null == cellControl)
+        {
+            cellControl = gameObject.GetComponent<CellControl>(); 
+        }
+    
+        if(_steepness1 == 0)
+        {
+            _steepness1 = (lowSpeed - baseSpeed)/lowCC;
+        }
+        if(_steepness2 == 0)
+        {
+            _steepness2 = (medSpeed - lowSpeed)/(medCC - lowCC);
+        }
+        if(_steepness0 == 0)
+        {
+            _steepness0 = (baseSpeed + lowCC*_steepness1)/lowCC;
+        }
+    }
 }
