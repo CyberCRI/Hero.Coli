@@ -525,7 +525,7 @@ public class GameStateController : MonoBehaviour {
 
         //TODO merge fadeSprite with Modal background
         fadeSprite.gameObject.SetActive(true);
-        fadeSprite.FadeIn();
+        fadeSprite.FadeIn(0.5f);
 
         StartCoroutine (waitFade (2f, egc));
     }
@@ -622,5 +622,18 @@ public class GameStateController : MonoBehaviour {
 
     void OnDestroy() {
         Logger.Log("GameStateController::OnDestroy", Logger.Level.DEBUG);
+    }
+
+    public void FadeScreen(bool value, float speed)
+    {
+        fadeSprite.gameObject.SetActive(true);
+        if (value == true)
+        {
+            fadeSprite.FadeIn(speed);
+        }
+        else if (value == false)
+        {
+            fadeSprite.FadeOut(speed);
+        }
     }
 }

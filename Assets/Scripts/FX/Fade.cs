@@ -14,14 +14,16 @@ public class Fade : MonoBehaviour {
 	
 	}
 	
-	public void FadeOut(){
-			TweenColor.Begin(blackSprite,7,new Color(0,0,0,0));
+	public void FadeOut(float fadeSpeed){
+            this.GetComponent<UISprite>().alpha = 1;
+			TweenColor.Begin(blackSprite, fadeSpeed, new Color(0,0,0,0));
       //TODO don't enable instantly, enable after a few seconds
       gameObject.GetComponent<Collider>().enabled = false;
 	}
 	
-	public void FadeIn(){
-			TweenColor.Begin(blackSprite,0.5f,new Color(0,0,0,1));
+	public void FadeIn(float fadeSpeed){
+        this.GetComponent<UISprite>().alpha = 0;
+        TweenColor.Begin(blackSprite,fadeSpeed,new Color(0,0,0,1));
       gameObject.GetComponent<Collider>().enabled = true;
 	}
 

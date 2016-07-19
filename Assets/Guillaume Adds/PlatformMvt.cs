@@ -31,6 +31,7 @@ public class PlatformMvt : MonoBehaviour {
     void OnEnable()
     {
         StartCoroutine(Movement(pause, loop));
+        restart();
     }
 
     void OnDisable()
@@ -43,15 +44,15 @@ public class PlatformMvt : MonoBehaviour {
 		newPos = this.transform.position;
 		difMove = newPos - savePos;
 		savePos = this.transform.position;
-	}
+    }
 	
 	IEnumerator Movement (float pause, bool loop)
 	{
-		while (transform.position != points[currentDestination].transform.position)
+		while (Vector3.Distance(transform.position, points[currentDestination].transform.position) >= 0.002f)
 		{
 			transform.position = Vector3.MoveTowards(transform.position, points[currentDestination].transform.position, speed*Time.deltaTime);
-			
-			yield return true;
+
+            yield return true;
 		}
 
 		currentDestination++;
@@ -74,6 +75,11 @@ public class PlatformMvt : MonoBehaviour {
     {
         currentDestination -= 0;
         //StartCoroutine(Movement(pause, loop));
+    }
+
+    public Vector3 GetCurrentDestination()
+    {
+        return points[currentDestination].transform.position;
     }
 	
 }
