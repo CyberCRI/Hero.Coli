@@ -147,7 +147,7 @@ public class GameStateController : MonoBehaviour {
         }
         else
         {
-            Debug.LogError("no ilm");
+            //Debug.LogError("no ilm");
         }
         
         go = GameObject.Find("BacteriumLinkManager") as GameObject;
@@ -158,7 +158,7 @@ public class GameStateController : MonoBehaviour {
         }
         else
         {
-            Debug.LogError("no blm");
+            //Debug.LogError("no blm");
         }
         
         go = GameObject.Find("WorldLinkManager") as GameObject;
@@ -169,13 +169,13 @@ public class GameStateController : MonoBehaviour {
         }
         else
         {
-            Debug.LogError("no wlm");
+            //Debug.LogError("no wlm");
         }
         
         // initialize them
         if(null != ilm && null != blm && null != wlm)
         {
-            Debug.LogError("finishInitialize");
+            //Debug.LogError("finishInitialize");
             ilm.finishInitialize();
             blm.finishInitialize();
             wlm.finishInitialize();

@@ -17,7 +17,11 @@ public class MainMenuManager : MonoBehaviour
             setInstance(InterfaceLinkManager.get().mainMenu);
             
             if (_instance == null) {
-                _instance = GameObject.Find (gameObjectName).GetComponent<MainMenuManager> ();
+                GameObject go =  GameObject.Find (gameObjectName);
+                if (go)
+                {
+                    _instance = go.GetComponent<MainMenuManager> ();
+                }
             }
         }
         return _instance;
@@ -37,7 +41,7 @@ public class MainMenuManager : MonoBehaviour
     
     void OnDestroy()
     {
-        Debug.LogError("MainMenuManager OnDestroy");
+        //Debug.LogError("MainMenuManager OnDestroy");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

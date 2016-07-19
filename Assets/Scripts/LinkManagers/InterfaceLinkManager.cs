@@ -15,7 +15,11 @@ public class InterfaceLinkManager : LinkManager
     {
         if (_instance == null) {
             Logger.Log("InterfaceLinkManager::get was badly initialized", Logger.Level.WARN);
-            _instance = GameObject.Find (gameObjectName).GetComponent<InterfaceLinkManager> ();
+            GameObject go = GameObject.Find (gameObjectName);
+            if(go)
+            {
+                _instance = go.GetComponent<InterfaceLinkManager> ();
+            }
         }
         return _instance;
     }
@@ -23,12 +27,12 @@ public class InterfaceLinkManager : LinkManager
     void Awake ()
     {
         _instance = this;
-        Debug.LogError("InterfaceLinkManager awakes with (_instance == null)=="+(_instance == null));
+        //Debug.LogError("InterfaceLinkManager awakes with (_instance == null)=="+(_instance == null));
     }
     
     void OnDestroy()
     {
-        Debug.LogError("InterfaceLinkManager OnDestroy");
+        //Debug.LogError("InterfaceLinkManager OnDestroy");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
