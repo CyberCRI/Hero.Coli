@@ -132,7 +132,6 @@ public class GameStateController : MonoBehaviour {
     
     private void finishLoadLevels ()
     {        
-        Debug.Log("finishLoadLevels");
         
         // get the linkers
         GameObject go   = null;
