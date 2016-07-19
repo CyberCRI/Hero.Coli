@@ -6,6 +6,11 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 {
 
     private bool _initialized = false;
+    protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
+    protected CraftDeviceSlot selectedSlot;
+    protected int slotCount = 4;
+    public GameObject                         craftSlotDummy1;
+    public GameObject                         craftSlotDummy2;
 
     protected new LinkedList<BioBrick> _currentBioBricks {
         get {
@@ -20,15 +25,9 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
 
-    protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
-    protected CraftDeviceSlot selectedSlot;
-    protected int slotCount = 4;
-    
-    public GameObject slotPrefab;
-
     public override void initialize()
     {
-        Debug.LogError("LimitedBiobricksCraftZoneManager initialize");
+        //Debug.LogError("LimitedBiobricksCraftZoneManager initialize");
 
         if (!_initialized)
         {
@@ -36,17 +35,19 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 
             GameObject slotGO;
             CraftDeviceSlot slot;
-            float offset = 78f;
-            Vector3 firstPosition = craftSlotDummy.transform.localPosition
+            float offset = craftSlotDummy1.transform.localPosition.y
+            - craftSlotDummy2.transform.localPosition.y;
+            Vector3 firstPosition = 
+            (craftSlotDummy1.transform.localPosition +
+            craftSlotDummy2.transform.localPosition) / 2
             + (slotCount - 1) * offset * Vector3.up / 2;
 
             for (int index = 0; index < slotCount; index++)
             {
-                slotGO = GameObject.Instantiate(craftSlotDummy);
-                slotGO.transform.parent = craftSlotDummy.transform.parent;
-                slotGO.transform.localScale = craftSlotDummy.transform.localScale;
+                slotGO = GameObject.Instantiate(craftSlotDummy1);
+                slotGO.transform.parent = craftSlotDummy1.transform.parent;
+                slotGO.transform.localScale = craftSlotDummy1.transform.localScale;
                 slotGO.transform.localPosition = firstPosition - new Vector3(0, index * offset, 0);
-                slotGO.SetActive(true);
 
                 slot = slotGO.GetComponent<CraftDeviceSlot>();
 
@@ -54,6 +55,9 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
             }
 
             selectSlot(slots[0]);
+            
+            Destroy(craftSlotDummy1);
+            Destroy(craftSlotDummy2);
 
             base.initialize();
 
@@ -63,7 +67,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 
     public void selectSlot(CraftDeviceSlot slot)
     {
-        Debug.LogError("LimitedBiobricksCraftZoneManager selectSlot");
+        //Debug.LogError("LimitedBiobricksCraftZoneManager selectSlot");
         if (null != slot)
         {
             if (null != selectedSlot)
@@ -71,22 +75,22 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
                 selectedSlot.setSelectedBackground(false);
             }
             selectedSlot = slot;
-            Debug.LogError("selectSlot selectedSlot.setSelectedBackground(true); with selectedSlot="+selectedSlot);
+            //Debug.LogError("selectSlot selectedSlot.setSelectedBackground(true); with selectedSlot="+selectedSlot);
             selectedSlot.setSelectedBackground(true);
         }
     }
 
     public override void replaceWithBioBrick(BioBrick brick)
     {
-        Debug.LogError("replaceWithBioBrick("+brick.getName()+")");
+        //Debug.LogError("replaceWithBioBrick("+brick.getName()+")");
         if (null != selectedSlot)
         {
-            Debug.LogError("null != selectedSlot");
+            //Debug.LogError("null != selectedSlot");
             selectedSlot.addBrick(brick);
         }
         else
         {
-            Debug.LogError("null == selectedSlot");
+            //Debug.LogError("null == selectedSlot");
         }
     }
 
@@ -100,13 +104,13 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     
     public void removeBioBrick(CraftZoneDisplayedBioBrick brick)
     {
-        Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(czdb)");
+        //Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(czdb)");
         if(null != brick)
         {
-            Debug.LogError("removeBioBrick null != brick");
+            //Debug.LogError("removeBioBrick null != brick");
             foreach(CraftDeviceSlot slot in slots)
             {
-                Debug.LogError("removeBioBrick slot "+slot);
+                //Debug.LogError("removeBioBrick slot "+slot);
                 if(null != slot && slot.removeBrick(brick))
                 {
                     return;
@@ -118,13 +122,13 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     //unsafe if distinct genetic constructs have same brick
     public override void removeBioBrick(BioBrick brick)
     {
-        Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(brick)");
+        //Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(brick)");
         if(null != brick)
         {
-            Debug.LogError("removeBioBrick null != brick");
+            //Debug.LogError("removeBioBrick null != brick");
             foreach(CraftDeviceSlot slot in slots)
             {
-                Debug.LogError("removeBioBrick slot "+slot);
+                //Debug.LogError("removeBioBrick slot "+slot);
                 if(null != slot && slot.removeBrick(brick))
                 {
                     return;
@@ -135,7 +139,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     */
     
     public override Device getCurrentDevice() {
-        Debug.LogError("LimitedBiobricksCraftZoneManager getCurrentDevice");
+        //Debug.LogError("LimitedBiobricksCraftZoneManager getCurrentDevice");
         return selectedSlot.getCurrentDevice();
     }
     
@@ -148,7 +152,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     }
     
     public override void setDevice(Device device) {
-        Debug.LogError("LimitedBioBricksCraftZoneManager::setDevice("+device+")");
+        //Debug.LogError("LimitedBioBricksCraftZoneManager::setDevice("+device+")");
         if(null != selectedSlot)
        {
            selectedSlot.setDevice(device);
@@ -160,6 +164,11 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
        {
            selectedSlot.removeAllBricks();
        }
+    }
+    
+    //TODO add "new recipe" feedback
+    public override void craft () {
+        //Debug.LogError("LimitedBioBricksCraftZoneManager::craft");
     }
 }
 

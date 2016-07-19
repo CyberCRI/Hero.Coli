@@ -31,14 +31,14 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             if (!_isEquiped && value)
             {
-                Debug.LogError("set: !_isEquiped && value");
+                //Debug.LogError("set: !_isEquiped && value");
                 Device currentDevice = getCurrentDevice();
                 _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
                 if (_isEquiped)
                 {
                     if(null != craftSlotSprite)
                     {
-                        Debug.LogError("slotActiveSprite");
+                        //Debug.LogError("slotActiveSprite");
                         craftSlotSprite.spriteName = slotActiveSprite;
                     }
                     if(null != resultSprite)
@@ -56,12 +56,12 @@ public class CraftDeviceSlot : MonoBehaviour
             }
             else if(_isEquiped && !value)
             {
-                Debug.LogError("set: _isEquiped && !value");
+                //Debug.LogError("set: _isEquiped && !value");
                 _isEquiped = false;
                 Equipment.get().removeDevice(getCurrentDevice());
                 if (null != craftSlotSprite)
                 {
-                    Debug.LogError("slotInactiveSprite");
+                    //Debug.LogError("slotInactiveSprite");
                     craftSlotSprite.spriteName = slotInactiveSprite;
                 }
                 if(null != resultSprite)
@@ -76,7 +76,7 @@ public class CraftDeviceSlot : MonoBehaviour
             }
             else
             {
-                Debug.LogError("none");
+                //Debug.LogError("none");
             }
         }
     }
@@ -95,13 +95,13 @@ public class CraftDeviceSlot : MonoBehaviour
 
     protected void equip()
     {
-        Debug.LogError("equip");
+        //Debug.LogError("equip");
         isEquiped = true;
     }
 
     protected void unequip()
     {
-        Debug.LogError("unequip");
+        //Debug.LogError("unequip");
         isEquiped = false;
     }
     
@@ -180,7 +180,7 @@ public class CraftDeviceSlot : MonoBehaviour
                 result = 3;
                 break;
             default:
-                Debug.LogError("unrecognized BioBrick type " + bbType);
+                //Debug.LogError("unrecognized BioBrick type " + bbType);
                 break;
         }
         return result;
@@ -195,7 +195,7 @@ public class CraftDeviceSlot : MonoBehaviour
         }
         else
         {
-            Debug.LogError("bad brick '" + brick + "'");
+            //Debug.LogError("bad brick '" + brick + "'");
         }
         return result;
     }
@@ -209,20 +209,20 @@ public class CraftDeviceSlot : MonoBehaviour
         }
         else
         {
-            Debug.LogError("bad brick '" + brick + "'");
+            //Debug.LogError("bad brick '" + brick + "'");
         }
         return result;
     }
 
     public void addBrick(BioBrick brick)
     {
-        Debug.LogError("addBrick("+brick.getName()+")");
+        //Debug.LogError("addBrick("+brick.getName()+")");
         //if (!isLocked && (null != brick))
         if (null != brick)
         {
             int index = getIndexFromBrick(brick);
             
-            Debug.LogError("!isLocked && (null != brick); index="+index);
+            //Debug.LogError("!isLocked && (null != brick); index="+index);
 
             // create new CraftZoneDisplayedBioBrick 
             CraftZoneDisplayedBioBrick czdb = CraftZoneDisplayedBioBrick.Create(
@@ -239,11 +239,11 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public void addBrick(CraftZoneDisplayedBioBrick brick)
     {
-        Debug.LogError("addBrick(czdb)");
+        //Debug.LogError("addBrick(czdb)");
         //if (!isLocked && (null != brick) && (null != brick._biobrick))
         if ((null != brick) && (null != brick._biobrick))
         {
-            Debug.LogError("!isLocked && (null != brick) && (null != brick._biobrick)");
+            //Debug.LogError("!isLocked && (null != brick) && (null != brick._biobrick)");
             int index = getIndexFromBrick(brick);
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
@@ -270,7 +270,7 @@ public class CraftDeviceSlot : MonoBehaviour
     }
 
     public Device getCurrentDevice() {
-        Debug.LogError("CraftDeviceSlot getCurrentDevice");
+        //Debug.LogError("CraftDeviceSlot getCurrentDevice");
         if(
             (null != currentBricks[0])
             && (null != currentBricks[1])
@@ -300,10 +300,10 @@ public class CraftDeviceSlot : MonoBehaviour
     
     public bool removeBrick(BioBrick brick)
     {
-        Debug.LogError("removeBrick(brick)");
+        //Debug.LogError("removeBrick(brick)");
         if (null != brick)
         {
-            Debug.LogError("removeBrick(brick="+brick.getName()+")");
+            //Debug.LogError("removeBrick(brick="+brick.getName()+")");
             foreach (CraftZoneDisplayedBioBrick czdb in currentBricks)
             {
                 if ((null != czdb) && (czdb._biobrick == brick))
@@ -318,10 +318,10 @@ public class CraftDeviceSlot : MonoBehaviour
     
     public bool removeBrick(CraftZoneDisplayedBioBrick brick)
     {
-        Debug.LogError("removeBrick(czdb)");
+        //Debug.LogError("removeBrick(czdb)");
         if(null != brick)
         {
-            Debug.LogError("removeBrick(czdb="+brick._biobrick.getName()+")");   
+            //Debug.LogError("removeBrick(czdb="+brick._biobrick.getName()+")");   
             foreach (CraftZoneDisplayedBioBrick czdb in currentBricks)
             {
                 if(czdb == brick)
@@ -330,18 +330,18 @@ public class CraftDeviceSlot : MonoBehaviour
                     return true;
                 }
             }
-            Debug.LogError("failed to find czdb brick to remove called '"+brick._biobrick.getName()+"'");
+            //Debug.LogError("failed to find czdb brick to remove called '"+brick._biobrick.getName()+"'");
         }
         else
         {
-            Debug.LogError("null == czdb");
+            //Debug.LogError("null == czdb");
         }
         return false;
     }
 
     private void innerRemoveBrick(CraftZoneDisplayedBioBrick brick)
     {
-        Debug.LogError("innerRemoveBrick("+brick._biobrick.getName()+")");
+        //Debug.LogError("innerRemoveBrick("+brick._biobrick.getName()+")");
         //isLocked = false;
         setSelected(true);
         unequip();
@@ -363,7 +363,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         if(device != null)
         {
-            Debug.LogError("CDS setDevice");
+            //Debug.LogError("CDS setDevice");
             //check that can afford device            
             LinkedList<BioBrick> newBricks = device.getExpressionModules().First.Value.getBioBricks();
             LinkedList<BioBrick> currentBricks = getCurrentBricks();
@@ -376,14 +376,14 @@ public class CraftDeviceSlot : MonoBehaviour
                     BioBrick abb = abbm.getBioBrickFromAll(brick.getName());
                     if(0 == abb.amount) 
                     {
-                        Debug.LogError("CDS setDevice abort with "+brick.getName());
+                        //Debug.LogError("CDS setDevice abort with "+brick.getName());
                         // can't afford; abort
                         return;
                     }
                 }
             }
             
-            Debug.LogError("CDS setDevice removeAllBricks");
+            //Debug.LogError("CDS setDevice removeAllBricks");
             removeAllBricks();
             
             foreach(BioBrick brick in newBricks)
@@ -397,7 +397,7 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public void setSelected(bool selected)
     {
-        Debug.LogError("CraftDeviceSlot selectSlot("+selected+")");
+        //Debug.LogError("CraftDeviceSlot selectSlot("+selected+")");
         LimitedBiobricksCraftZoneManager lbczm = ((LimitedBiobricksCraftZoneManager)CraftZoneManager.get());
         if (null != lbczm)
         {
@@ -407,7 +407,7 @@ public class CraftDeviceSlot : MonoBehaviour
     
     public void setSelectedBackground(bool selected)
     {
-        Debug.LogError("CraftDeviceSlot setSelectedBackground("+selected+")");
+        //Debug.LogError("CraftDeviceSlot setSelectedBackground("+selected+")");
         selectionSprite.spriteName = selected?slotSelectedSprite:slotUnselectedSprite;        
     }
 

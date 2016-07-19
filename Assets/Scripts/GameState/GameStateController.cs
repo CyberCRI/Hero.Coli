@@ -165,6 +165,7 @@ public class GameStateController : MonoBehaviour {
         // initialize them
         if(null != ilm && null != blm && null != wlm)
         {
+            Debug.LogError("finishInitialize");
             ilm.finishInitialize();
             blm.finishInitialize();
             wlm.finishInitialize();

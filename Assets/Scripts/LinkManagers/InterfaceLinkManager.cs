@@ -52,7 +52,7 @@ public class InterfaceLinkManager : LinkManager
     public GameObject craftScreenPanel2;
     
     private GameObject craftScreenPanel;
-    public GameObject craftSlotDummy;
+    public GameObject craftSlotDummy1, craftSlotDummy2;
     
     
   public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
@@ -155,7 +155,13 @@ public class InterfaceLinkManager : LinkManager
         
         string assemblyZoneName = isCraftMode1?"CraftSlotsPanel":"AssemblyZonePanel";
 		craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
-        craftZoneManager.craftSlotDummy = craftSlotDummy;
+        
+        if(isCraftMode1)
+        {
+            LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) craftZoneManager; 
+            lbczm.craftSlotDummy1 = craftSlotDummy1;
+            lbczm.craftSlotDummy2 = craftSlotDummy2;
+        }
 
 
 		//DevicesDisplayer

@@ -18,7 +18,7 @@ public class CraftZoneManager : MonoBehaviour {
   protected const string gameObjectName = "CraftZoneManager";
   protected static CraftZoneManager _instance;
   public static CraftZoneManager get() {
-      Debug.LogError("CraftZoneManager get");
+      //Debug.LogError("CraftZoneManager get");
     if(_instance == null) {
       Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);      
       _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
@@ -29,7 +29,7 @@ public class CraftZoneManager : MonoBehaviour {
   void Awake()
   {
     Logger.Log("CraftZoneManager::Awake", Logger.Level.DEBUG);
-    Debug.LogError("CraftZoneManager Awake");
+    //Debug.LogError("CraftZoneManager Awake");
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,6 @@ public class CraftZoneManager : MonoBehaviour {
   public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
   public GameObject                         assemblyZonePanel;
-  public GameObject                         craftSlotDummy;
   
   protected static EditMode editMode = EditMode.UNLOCKED;
   public static bool isDeviceEditionOn() {
@@ -160,7 +159,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   protected void displayBioBricks() {
-      Debug.LogError("CraftZoneManager::displayBioBricks()");
+      //Debug.LogError("CraftZoneManager::displayBioBricks()");
     Logger.Log("CraftZoneManager::displayBioBricks() with _currentBioBricks="+Logger.ToString<BioBrick>(_currentBioBricks), Logger.Level.TRACE);
     removePreviousDisplayedBricks();
 
@@ -209,7 +208,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
 
   public virtual void replaceWithBioBrick(BioBrick brick) {
-      Debug.LogError("replaceWithBioBrick("+brick.getName()+")");
+      //Debug.LogError("replaceWithBioBrick("+brick.getName()+")");
     Logger.Log("CraftZoneManager::replaceWithBioBrick("+brick+")", Logger.Level.TRACE);
     insertOrdered(brick);
     OnBioBricksChanged();
@@ -217,7 +216,7 @@ public class CraftZoneManager : MonoBehaviour {
 
     protected void insertOrdered(BioBrick toInsert)
     {
-        Debug.LogError("insertOrdered("+toInsert.getName()+")");
+        //Debug.LogError("insertOrdered("+toInsert.getName()+")");
         BioBrick sameBrick = LinkedListExtensions.Find(_currentBioBricks, b => b.getName() == toInsert.getName());
 
         if (null != sameBrick)
@@ -265,9 +264,9 @@ public class CraftZoneManager : MonoBehaviour {
     }
 
   public virtual void removeBioBrick(BioBrick brick) {
-      Debug.LogError("CraftZoneManager::removeBioBrick");
+      //Debug.LogError("CraftZoneManager::removeBioBrick");
       string debug = null != brick? "contains="+_currentBioBricks.Contains(brick):"brick==null";
-      Debug.LogError("CraftZoneManager::removeBioBrick with "+debug);
+      //Debug.LogError("CraftZoneManager::removeBioBrick with "+debug);
       if(null != brick && _currentBioBricks.Contains(brick))
       {
         Logger.Log("CraftZoneManager::removeBioBrick("+brick+")", Logger.Level.TRACE);
@@ -296,7 +295,7 @@ public class CraftZoneManager : MonoBehaviour {
 
   public virtual void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
-    Debug.LogError("CraftZoneManager::setDevice("+device+")");
+    //Debug.LogError("CraftZoneManager::setDevice("+device+")");
     if(device != null)
     {
         removeAllBricksFromCraftZone();
@@ -312,7 +311,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
   
   protected virtual void removeAllBricksFromCraftZone() {
-      Debug.LogError("CraftZoneManager::removeAllBricksFromCraftZone()");
+      //Debug.LogError("CraftZoneManager::removeAllBricksFromCraftZone()");
       foreach(BioBrick brick in _currentBioBricks)
       {
           AvailableBioBricksManager.get().addBrickAmount(brick, 1);
@@ -321,20 +320,20 @@ public class CraftZoneManager : MonoBehaviour {
       _currentBioBricks.Clear();
   }
   
-  public void craft () {
+  public virtual void craft () {
       //consumeBricks();
       displayDevice();
   }
   
   protected void consumeBricks() {
-      Debug.LogError("CraftZoneManager::consumeBricks()");
+      //Debug.LogError("CraftZoneManager::consumeBricks()");
       foreach(BioBrick brick in _currentBioBricks) {
            AvailableBioBricksManager.get().addBrickAmount(brick, -1);
       }
   }
 
   protected void displayDevice() {
-      Debug.LogError("CraftZoneManager::displayDevice()");
+      //Debug.LogError("CraftZoneManager::displayDevice()");
         if(null != craftFinalizer) {
             craftFinalizer.setDisplayedDevice(_currentDevice);
         }
@@ -381,7 +380,7 @@ public class CraftZoneManager : MonoBehaviour {
 
   void Start()
   {
-      Debug.LogError("CraftZoneManager Start");
+      //Debug.LogError("CraftZoneManager Start");
       
       initialize();
       displayDevice();
@@ -392,10 +391,6 @@ public class CraftZoneManager : MonoBehaviour {
       if(null != displayedBioBrick)
       {
           displayedBioBrick.SetActive(false);
-      }
-      if(null != craftSlotDummy)
-      {
-          craftSlotDummy.SetActive(false);
       }
   }
 }
