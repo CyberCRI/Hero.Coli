@@ -56,6 +56,9 @@
   <brick id="RBS2" size="14" type="rbs">
     <rbsFactor>0.126</rbsFactor>
   </brick>
+  <brick id="RBS3" size="14" type="rbs">
+    <rbsFactor>0.06</rbsFactor>
+  </brick>
   <!--RBS-->
   
 
