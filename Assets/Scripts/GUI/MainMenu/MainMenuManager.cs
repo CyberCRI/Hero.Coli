@@ -1,27 +1,43 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 public class MainMenuManager : MonoBehaviour
 {
-
     
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "MainMenuManager";
+    public static string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
 
     public static MainMenuManager get ()
     {
         if (_instance == null) {
             Logger.Log("MainMenuManager::get was badly initialized", Logger.Level.WARN);
-            _instance = GameObject.Find (gameObjectName).GetComponent<MainMenuManager> ();
+            
+            //set from InterfaceLinkManager
+            setInstance(InterfaceLinkManager.get().mainMenu);
+            
+            if (_instance == null) {
+                _instance = GameObject.Find (gameObjectName).GetComponent<MainMenuManager> ();
+            }
         }
         return _instance;
+    }
+    
+    public static void setInstance(MainMenuManager instance)
+    {
+        _instance = instance;
     }
 
     void Awake ()
     {
         Logger.Log("MainMenuManager::Awake", Logger.Level.DEBUG);
         _instance = this;
+        get();
+    }
+    
+    void OnDestroy()
+    {
+        Debug.LogError("MainMenuManager OnDestroy");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

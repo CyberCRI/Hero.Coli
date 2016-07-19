@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
 
 public class GameConfiguration {
@@ -44,6 +43,12 @@ public class GameConfiguration {
         SANDBOX,
         TUTORIAL
     }
+    
+    public enum CraftInterface
+    {
+        UNLIMITEDDEVICES,
+        LIMITEDDEVICES
+    }
 
     public RestartBehavior restartBehavior;
     public GameMap gameMap;
@@ -56,6 +61,7 @@ public class GameConfiguration {
     //TODO manage sound configuration
     public bool isSoundOn;
     public bool isAdmin = false;
+    public CraftInterface craftInterface = CraftInterface.LIMITEDDEVICES;
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////

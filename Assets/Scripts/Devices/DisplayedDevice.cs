@@ -217,6 +217,30 @@ public class DisplayedDevice : DisplayedElement {
 	protected string getDebugInfos() {
 		return "device id="+_id+", inner device="+_device+", device type="+_deviceType+", time="+Time.realtimeSinceStartup;
 	}
+    
+    public void toggleEquiped()
+    {
+        if (_device == null)
+        {
+            Logger.Log("DisplayedDevice::toggleEquiped _device==null", Logger.Level.WARN);
+            return;
+        }
+
+        DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
+        Logger.Log("DisplayedDevice::toggleEquiped added device result=" + addingResult + ", " + getDebugInfos(), Logger.Level.DEBUG);
+        if (DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
+           || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
+        {
+            if (_devicesDisplayer.askRemoveEquipedDevice(_device))
+            {
+                RedMetricsManager.get().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+            }
+        }
+        else
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+        }
+    }
 	
 	protected override void OnPress(bool isPressed)
   {

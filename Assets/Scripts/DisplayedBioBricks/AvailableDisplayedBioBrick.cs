@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
@@ -15,6 +14,8 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    */
 
   protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+  public UILabel amount;
+  public GameObject noneLeftMask;
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -46,18 +47,44 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
     return result;
  }
+ 
+ public void Update()
+ {
+     amount.text = _biobrick.amount.ToString();
+     noneLeftMask.SetActive(0 >= _biobrick.amount);
+ }
 
   public void display(bool enabled) {
     gameObject.SetActive(enabled);
   }
 
-  protected override void OnPress(bool isPressed) {
-    if(isPressed) {
-      Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
-      if(craftZoneManager == null) {
-        craftZoneManager = CraftZoneManager.get();
-      }
-      craftZoneManager.replaceWithBioBrick(_biobrick);
+    protected override void OnPress(bool isPressed)
+    {
+        if (isPressed)
+        {
+            Logger.Log("AvailableDisplayedBioBrick::OnPress _id=" + _id, Logger.Level.INFO);
+            Debug.LogError("pressed");
+            if (CraftZoneManager.isDeviceEditionOn())
+            {
+                Debug.LogError("isDeviceEditionOn");
+                if (craftZoneManager == null)
+                {
+                    craftZoneManager = CraftZoneManager.get();
+                }
+                if (_biobrick.amount > 0)
+                {
+                    Debug.LogError("_biobrick.amount > 0");
+                    craftZoneManager.replaceWithBioBrick(_biobrick);
+                }
+                else
+                {
+                    Debug.LogError("!_biobrick.amount > 0");
+                }
+            }
+            else
+            {
+                Debug.LogError("!isDeviceEditionOn");
+            }
+        }
     }
-  }
 }

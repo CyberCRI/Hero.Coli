@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -76,6 +77,8 @@ public class GameStateController : MonoBehaviour {
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
         
+        SceneManager.sceneLoaded += SceneLoaded;
+        
         GameStateController.get ();
         loadLevels();
         updateAdminStatus();
@@ -94,14 +97,97 @@ public class GameStateController : MonoBehaviour {
         _isAdminMode = Application.isEditor || MemoryManager.get().configuration.isTestGUID();
     }
     
+    bool isInterfaceLoaded = false;
+    bool isPlayerLoaded = false;
+    bool isWorldLoaded = false;
+    
+    private void reinitializeLoadingVariables()
+    {    
+        isInterfaceLoaded = false;
+        isPlayerLoaded = false;
+        isWorldLoaded = false;        
+    }
+    
+    void SceneLoaded(Scene scene, LoadSceneMode m)
+    {
+        int level = scene.buildIndex;
+        
+        Debug.Log("SceneLoaded("+level+")");
+         
+        isInterfaceLoaded   = isInterfaceLoaded || (3 == level);
+        isPlayerLoaded      = isPlayerLoaded    || (2 == level);
+        isWorldLoaded       = isWorldLoaded     || (1 == level) || (4 == level) || (5 == level);
+        
+        if(isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
+        {
+            finishLoadLevels();
+        }
+    }
+    
     private void loadLevels()
     {
         Logger.Log("GameStateController::loadLevels", Logger.Level.INFO);
-        //take into account order of loading to know which LinkManager shall ask which one
-        Application.LoadLevelAdditive(_interfaceScene);
-        Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(MemoryManager.get ().configuration.getSceneName());
+        SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(MemoryManager.get ().configuration.getSceneName(), LoadSceneMode.Additive);
     }
+    
+    private void finishLoadLevels ()
+    {        
+        Debug.Log("finishLoadLevels");
+        
+        // get the linkers
+        GameObject go   = null;
+        InterfaceLinkManager ilm = null;
+        PlayerLinkManager blm = null;
+        WorldLinkManager wlm = null;       
+        
+        go = GameObject.Find("InterfaceLinkManager") as GameObject;
+        if(null != go)
+        {
+            ilm = go.GetComponent<InterfaceLinkManager>();
+            ilm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no ilm");
+        }
+        
+        go = GameObject.Find("BacteriumLinkManager") as GameObject;
+        if(null != go)
+        {
+            blm = go.GetComponent<PlayerLinkManager>();
+            blm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no blm");
+        }
+        
+        go = GameObject.Find("WorldLinkManager") as GameObject;
+        if(null != go)
+        {
+            wlm = go.GetComponent<WorldLinkManager>();
+            wlm.initialize();
+        }
+        else
+        {
+            Debug.LogError("no wlm");
+        }
+        
+        // initialize them
+        if(null != ilm && null != blm && null != wlm)
+        {
+            Debug.LogError("finishInitialize");
+            ilm.finishInitialize();
+            blm.finishInitialize();
+            wlm.finishInitialize();
+        }
+        
+        // open the Main Menu
+        MainMenuManager.get().open();
+    }
+    
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;
@@ -213,6 +299,7 @@ public class GameStateController : MonoBehaviour {
     {
         Logger.Log("endGame", Logger.Level.INFO);
         _isGameLevelPrepared = false;
+        reinitializeLoadingVariables();
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
     }
@@ -268,19 +355,22 @@ public class GameStateController : MonoBehaviour {
 	// Update is called once per frame
     void Update () {
 
-        if (isShortcutKeyDown(KeyCode.X))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
-            CellControl.get().teleport(new Vector3(500, 0, 637));
-        } else if (isShortcutKeyDown(KeyCode.V))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
-            CellControl.get().teleport(new Vector3(168, 0, 724));
+    	if (_isAdminMode)
+    	{
+        	if (isShortcutKeyDown(KeyCode.X))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(500, 0, 637));
+        	} else if (isShortcutKeyDown(KeyCode.V))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(168, 0, 724));
             
-        } else if (isShortcutKeyDown(KeyCode.W))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
-            CellControl.get().teleport(new Vector3(-150, 0, 1110));
+        	} else if (isShortcutKeyDown(KeyCode.W))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(-150, 0, 1110));
+        	}
         }
 
         switch(_gameState){

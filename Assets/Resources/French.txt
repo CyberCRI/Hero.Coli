@@ -217,6 +217,8 @@ CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 CRAFT.RECIPES.TITLE=Constructions
 CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour mettre ses BioBriques sur la table.
 
+CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
+
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=C'est vous !
 TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, votre amie !
 TUTORIAL.INTRODUCTION1.WELCOMETITLE=Bienvenue dans Hero.coli

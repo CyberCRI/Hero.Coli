@@ -1,9 +1,14 @@
 using UnityEngine;
-using System.Collections;
+
 
 public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
 
   protected static string _prefabURICraftZone = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
+  private CraftDeviceSlot _slot;
+  public CraftDeviceSlot slot
+  {
+      set { _slot = value; }
+  }
 
   public static CraftZoneDisplayedBioBrick Create(
    Transform parentTransform,
@@ -35,8 +40,23 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
 
   protected override void OnPress(bool isPressed) {
     Logger.Log("CraftZoneDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
-    CraftZoneManager.get ().removeBioBrick(_biobrick);
-    TooltipManager.displayTooltip();
+    Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
+    if(CraftZoneManager.isDeviceEditionOn())
+    {
+        LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) CraftZoneManager.get ();
+        if(null != lbczm)
+        {
+            if(null != _slot)
+            {
+                _slot.removeBrick(this);
+            }
+            else
+            {
+                lbczm.removeBioBrick(this);
+            }
+        }
+        TooltipManager.displayTooltip();
+    }
   }
 
 }

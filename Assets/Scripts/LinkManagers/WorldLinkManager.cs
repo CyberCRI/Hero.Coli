@@ -1,19 +1,17 @@
 using UnityEngine;
-using System.Collections;
 
 
 /*DESCRIPTION
  * This class create the links between the World's Scene, classes and GameObject and the others
  * */
 
-public class WorldLinkManager : MonoBehaviour
+public class WorldLinkManager : LinkManager
 {
 
     public MineManager mineManager;
     public Transform startPosition;
 
-    // Use this for initialization
-    void Start ()
+    public override void initialize ()
     {
 
         GameObject perso = GameObject.Find ("Perso");
@@ -47,4 +45,7 @@ public class WorldLinkManager : MonoBehaviour
 	
     }
 
+    public override void finishInitialize ()
+    {    
+    }
 }

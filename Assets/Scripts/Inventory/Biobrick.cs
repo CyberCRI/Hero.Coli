@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 
 public abstract class BioBrick: DNABit
 {
@@ -12,6 +8,13 @@ public abstract class BioBrick: DNABit
     GENE,
     TERMINATOR,
     UNKNOWN
+  }
+  
+  public enum Status
+  {
+      STRANDED,
+      STORED,
+      CRAFTED
   }
 
   protected string _name;
@@ -24,6 +27,14 @@ public abstract class BioBrick: DNABit
   public void setSize(int size) { _size = size; }
   public int getSize() { return _size; }
   public Type getType() { return _type; }
+  
+  private double _amount = 1;//double.PositiveInfinity;
+  public double amount {get{return _amount;}} 
+  
+  public void addAmount(double increase)
+  {
+      _amount += increase;
+  }
 
   public BioBrick(Type type)
   {
@@ -31,7 +42,6 @@ public abstract class BioBrick: DNABit
   }
 
   public abstract BioBrick copy();
-    
     
     public override bool Equals(System.Object obj)
     {
@@ -71,7 +81,7 @@ public class PromoterBrick : BioBrick
 	
   public PromoterBrick(string name, float beta, string formula) : base(BioBrick.Type.PROMOTER)
   {
-    _name = name;
+        _name = name;
 		_beta = beta;
 		_formula = formula;
   }
@@ -97,7 +107,7 @@ public class PromoterBrick : BioBrick
   }
 }
 
-class RBSBrick : BioBrick
+public class RBSBrick : BioBrick
 {
   private float _RBSFactor;
 
@@ -135,7 +145,7 @@ class RBSBrick : BioBrick
   }
 }
 
-class GeneBrick : BioBrick
+public class GeneBrick : BioBrick
 {
   private string _proteinName;
            
@@ -173,7 +183,7 @@ class GeneBrick : BioBrick
   }
 }
 
-class TerminatorBrick : BioBrick
+public class TerminatorBrick : BioBrick
 {
   protected float _terminatorFactor;
 
