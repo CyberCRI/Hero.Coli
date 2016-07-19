@@ -111,8 +111,6 @@ public class GameStateController : MonoBehaviour {
     void SceneLoaded(Scene scene, LoadSceneMode m)
     {
         int level = scene.buildIndex;
-        
-        Debug.Log("SceneLoaded("+level+")");
          
         isInterfaceLoaded   = isInterfaceLoaded || (3 == level);
         isPlayerLoaded      = isPlayerLoaded    || (2 == level);
