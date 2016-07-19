@@ -59,6 +59,10 @@ public class PushableBox : MonoBehaviour {
                 }
       }
     }
+    if (col.collider.tag == "Door")
+        {
+            GetComponent<Rigidbody>().constraints = canPush;
+        }
   }
 	
 	public void resetPos(){
