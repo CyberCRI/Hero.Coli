@@ -511,7 +511,7 @@ public class GameStateController : MonoBehaviour {
     {
         Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
         GameConfiguration.GameMap destination =
-            (MemoryManager.get ().configuration.gameMap == GameConfiguration.GameMap.ADVENTURE1) ?
+            (GameConfiguration.getMode(MemoryManager.get ().configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
                 GameConfiguration.GameMap.TUTORIAL1;
 
