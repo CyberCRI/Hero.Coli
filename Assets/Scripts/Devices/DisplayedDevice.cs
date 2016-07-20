@@ -249,7 +249,7 @@ public class DisplayedDevice : DisplayedElement {
         }
     }
 	
-	protected override void OnPress(bool isPressed)
+	public override void OnPress(bool isPressed)
   {
     Logger.Log("DisplayedDevice::OnPress "+_id+" device="+_device, Logger.Level.INFO);
   }

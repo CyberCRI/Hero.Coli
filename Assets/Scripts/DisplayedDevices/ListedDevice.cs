@@ -1,5 +1,5 @@
 class ListedDevice : DisplayedDevice {
- protected override void OnPress(bool isPressed) {
+ public override void OnPress(bool isPressed) {
     Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.INFO);
     
     if(CraftZoneManager.isDeviceEditionOn())

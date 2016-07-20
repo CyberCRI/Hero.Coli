@@ -63,7 +63,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", key="+_localize.key+" time="+Time.realtimeSinceStartup;
   }
 
-	protected override void OnPress(bool isPressed) {
+	public override void OnPress(bool isPressed) {
 		Logger.Log("DisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
   }
 }

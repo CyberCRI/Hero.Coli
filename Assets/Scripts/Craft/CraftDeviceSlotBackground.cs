@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-public class CraftDeviceSlotBackground : MonoBehaviour {
+﻿public class CraftDeviceSlotBackground : ExternalOnPressButton {
     public CraftDeviceSlot slot;
-    void OnPress(bool isPressed) {
+    public override void OnPress(bool isPressed) {
         //Debug.LogError("CraftDeviceSlotBackground OnPress");
         if(isPressed)
         {

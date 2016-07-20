@@ -44,6 +44,8 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       ,biobrick
       ,prefab
       );
+      
+      result.name = "AvailableDisplayed"+biobrick.getName();
 
     return result;
  }
@@ -58,7 +60,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
     gameObject.SetActive(enabled);
   }
 
-    protected override void OnPress(bool isPressed)
+    public override void OnPress(bool isPressed)
     {
         if (isPressed)
         {
