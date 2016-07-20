@@ -6,7 +6,7 @@ public class FocusMaskClickInterceptor : MonoBehaviour
     {
         if (isPressed)
         {
-            Debug.LogError("FocusMaskClickInterceptor::OnPress()");
+            //Debug.LogError("FocusMaskClickInterceptor::OnPress()");
             FocusMaskManager.get().click();
         }
     }
