@@ -40,12 +40,12 @@ public float ccdisp;
 	private Molecule _mol = null;
 	private const string _speedName = "MOV";
 
-public float _steepness0;
-  public float _steepness1;
-  public float _steepness2;
+    private float _steepness0;
+    private float _steepness1;
+    private float _steepness2;
   
-  public float intensity;
-  private CellControl cellControl;
+    private float intensity;
+    private CellControl cellControl;
 	
 	//! Called at the beginning
 	public override void StartPhenotype ()
