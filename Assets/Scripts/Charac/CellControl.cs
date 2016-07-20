@@ -244,7 +244,7 @@ public class CellControl : MonoBehaviour {
     void Start (){
         CellControl.get ();
         
-        gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
+        //gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
         _targetPosition = transform.position;
     

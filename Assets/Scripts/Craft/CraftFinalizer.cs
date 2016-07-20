@@ -7,7 +7,7 @@ public class CraftFinalizer : MonoBehaviour {
   protected const string gameObjectName = "FinalizationZonePanel";
   protected static CraftFinalizer _instance;
   public static CraftFinalizer get() {
-      Debug.LogError("CraftFinalizer get");
+      //Debug.LogError("CraftFinalizer get");
     if(_instance == null) {
       Logger.Log("CraftFinalizer::get was badly initialized", Logger.Level.WARN);      
       _instance = GameObject.Find(gameObjectName).GetComponent<CraftFinalizer>();
@@ -18,7 +18,7 @@ public class CraftFinalizer : MonoBehaviour {
   void Awake()
   {
     Logger.Log("CraftFinalizer::Awake", Logger.Level.DEBUG);
-    Debug.LogError("CraftFinalizer Awake");
+    //Debug.LogError("CraftFinalizer Awake");
     _instance = this;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ public class CraftFinalizer : MonoBehaviour {
     };
 
     public void uncraft() {
-        Debug.LogError("uncraft");
+        //Debug.LogError("uncraft");
     }
 
   public void finalizeCraft() {
@@ -152,7 +152,7 @@ public class CraftFinalizer : MonoBehaviour {
         craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
     //craftFinalizationButton.setEnabled(enabled);
     setCraftedStatus(mode);
-    Debug.LogError("new mode="+mode);
+    //Debug.LogError("new mode="+mode);
     //Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
     //finalizationInfoPanelManager.setDisplayedDevice(device, status);
     //Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice("+device+", "+status+")", Logger.Level.TRACE);

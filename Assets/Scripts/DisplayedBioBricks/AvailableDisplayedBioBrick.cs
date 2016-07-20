@@ -63,27 +63,27 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
         if (isPressed)
         {
             Logger.Log("AvailableDisplayedBioBrick::OnPress _id=" + _id, Logger.Level.INFO);
-            Debug.LogError("pressed");
+            //Debug.LogError("pressed");
             if (CraftZoneManager.isDeviceEditionOn())
             {
-                Debug.LogError("isDeviceEditionOn");
+                //Debug.LogError("isDeviceEditionOn");
                 if (craftZoneManager == null)
                 {
                     craftZoneManager = CraftZoneManager.get();
                 }
                 if (_biobrick.amount > 0)
                 {
-                    Debug.LogError("_biobrick.amount > 0");
+                    //Debug.LogError("_biobrick.amount > 0");
                     craftZoneManager.replaceWithBioBrick(_biobrick);
                 }
                 else
                 {
-                    Debug.LogError("!_biobrick.amount > 0");
+                    //Debug.LogError("!_biobrick.amount > 0");
                 }
             }
             else
             {
-                Debug.LogError("!isDeviceEditionOn");
+                //Debug.LogError("!isDeviceEditionOn");
             }
         }
     }

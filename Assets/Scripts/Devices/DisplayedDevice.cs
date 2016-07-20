@@ -21,12 +21,15 @@ public class DisplayedDevice : DisplayedElement {
   private static string quality80 = "80x80_";
   private static string quality64 = "64x64_";
   private static string qualityDefault = "64x64_";
+  private const float levelBase = .06f;
   private const float levelLow = .126f;
   private const float levelMed = .23f;
-  private const float levelLThreshold = levelLow * 0.75f;
+  private const float levelBThreshold = levelBase * 0.75f;
+  private const float levelBLThreshold = ( levelBase + levelLow ) / 2;
   private const float levelLMThreshold = ( levelLow + levelMed ) / 2;
   private const float levelMThreshold = levelMed * 1.25f;
   private static string levelDefaultPostfix = "";
+  private static string levelBasePostfix = "_base";
   private static string levelLowPostfix = "_low";
   private static string levelMedPostfix = "_med";
   private static string defaultTexture = "default";
@@ -73,9 +76,13 @@ public class DisplayedDevice : DisplayedElement {
     {
       float expressionLevel = device.getExpressionLevel();
   
-      if(expressionLevel < levelLThreshold)
+      if(expressionLevel < levelBThreshold)
       {
         postfix = levelDefaultPostfix;
+      }
+      else if (expressionLevel < levelBLThreshold)
+      {
+        postfix = levelBasePostfix;
       }
       else if (expressionLevel < levelLMThreshold)
       {
