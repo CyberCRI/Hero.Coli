@@ -87,7 +87,8 @@ public class AvailableBioBricksManager : MonoBehaviour
     {
         foreach(AvailableDisplayedBioBrick brick in bricks)
         {
-            Destroy(brick);
+            //Debug.LogError("destroying "+brick.gameObject.name);
+            Destroy(brick.gameObject);
         }
         bricks.Clear();
     }
