@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DisplayedElement : MonoBehaviour
+public class DisplayedElement : ExternalOnPressButton
 {
 
     protected static int _idCounter = 0;
@@ -88,7 +88,7 @@ public class DisplayedElement : MonoBehaviour
         _sprite.spriteName = spriteName;
     }
 
-    protected virtual void OnPress(bool isPressed)
+    public override void OnPress(bool isPressed)
     {
         Logger.Log("DisplayedElement::OnPress " + _id, Logger.Level.INFO);
     }

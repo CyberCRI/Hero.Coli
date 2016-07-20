@@ -250,6 +250,7 @@ public class InterfaceLinkManager : LinkManager
       
       CraftZoneManager.get().initialize();
       AvailableBioBricksManager.get().initialize();
+      FocusMaskManager.get().initialize();
   }
   
 }
