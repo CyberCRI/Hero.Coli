@@ -249,7 +249,7 @@ public class Hero : MonoBehaviour {
         {
             Logger.Log("Hero::managePickUp collided with DNA! bit="+item.getDNABit(), Logger.Level.INFO);
             item.pickUp();
-            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
+            //RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
         }
     }
     
