@@ -80,6 +80,7 @@ BRICK.PRTETR=pTet
 
 BRICK.RBS1=medium RBS
 BRICK.RBS2=low RBS
+BRICK.RBS3=base RBS
 
 BRICK.AMPR=ampicillin resistance cassette
 BRICK.ARAC=araC
@@ -473,6 +474,13 @@ TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.TITLE=Hyperflagellation (base)
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.SUBTITLE=Equipped: gives 1 flagellum.
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.LENGTH=1122bp
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.REFERENCE=fictitious
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.EXPLANATION=Constant level of expression at 6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.TITLE=Hyperflagellation (low)
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.

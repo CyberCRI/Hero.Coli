@@ -81,18 +81,6 @@ public class CraftDeviceSlot : MonoBehaviour
         }
     }
 
-    public void toggleEquipped()
-    {
-        if (isEquiped)
-        {
-            unequip();
-        }
-        else
-        {
-            equip();
-        }
-    }
-
     protected void equip()
     {
         //Debug.LogError("equip");
@@ -267,6 +255,10 @@ public class CraftDeviceSlot : MonoBehaviour
             
             equip();
         }
+        else
+        {
+            unequip();
+        }
     }
 
     public Device getCurrentDevice() {
@@ -352,11 +344,14 @@ public class CraftDeviceSlot : MonoBehaviour
     
     public void removeAllBricks()
     {
-        unequip();
         removeBrick(currentBricks[0]);
         removeBrick(currentBricks[1]);
         removeBrick(currentBricks[2]);
         removeBrick(currentBricks[3]);
+        if(isEquiped)
+        {
+            unequip();
+        }
     }
     
     public void setDevice(Device device)
@@ -430,11 +425,6 @@ public class CraftDeviceSlot : MonoBehaviour
     }
     
     void Awake()
-    {
-        initialize();
-    }
-    
-    void OnEnable()
     {
         initialize();
     }

@@ -1,6 +1,6 @@
 public class CraftResultDevice : DisplayedDevice {
     public CraftDeviceSlot slot;
-  protected override void OnPress(bool isPressed)
+  public override void OnPress(bool isPressed)
   {
     base.OnPress(isPressed);
     if(null != slot)

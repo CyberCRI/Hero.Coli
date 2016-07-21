@@ -62,8 +62,8 @@ public class AvailableBioBricksManager : MonoBehaviour
     private static LinkedList<GeneBrick>            _availableGenes       = new LinkedList<GeneBrick>();
     private static LinkedList<TerminatorBrick>      _availableTerminators = new LinkedList<TerminatorBrick>();
     */
-    private static LinkedList<BioBrick> _allBioBricks;
-    private static LinkedList<BioBrick> _availableBioBricks;
+    private static LinkedList<BioBrick> _allBioBricks = new LinkedList<BioBrick>();
+    private static LinkedList<BioBrick> _availableBioBricks = new LinkedList<BioBrick>();
 
     //visual, clickable biobrick catalog
     LinkedList<AvailableDisplayedBioBrick> _displayableAvailablePromoters = new LinkedList<AvailableDisplayedBioBrick>();
@@ -74,20 +74,37 @@ public class AvailableBioBricksManager : MonoBehaviour
     public void initialize()
     {
         Logger.Log("AvailableBioBricksManager::initialize()", Logger.Level.INFO);
-        _allBioBricks = new LinkedList<BioBrick>();
+        _allBioBricks.Clear();
         loadAllBioBricksIfNecessary();
-        _availableBioBricks = new LinkedList<BioBrick>();
+        _availableBioBricks.Clear();
 
-        _displayableAvailablePromoters = new LinkedList<AvailableDisplayedBioBrick>();
-        _displayableAvailableRBS = new LinkedList<AvailableDisplayedBioBrick>();
-        _displayableAvailableGenes = new LinkedList<AvailableDisplayedBioBrick>();
-        _displayableAvailableTerminators = new LinkedList<AvailableDisplayedBioBrick>();
+        destroyAllAvailableDisplayedBioBricks();
         
         initializeDummies();
     }
     
+    void destroyAllAvailableDisplayedBioBricks(LinkedList<AvailableDisplayedBioBrick> bricks)
+    {
+        foreach(AvailableDisplayedBioBrick brick in bricks)
+        {
+            //Debug.LogError("destroying "+brick.gameObject.name);
+            Destroy(brick.gameObject);
+        }
+        bricks.Clear();
+    }
+    
+    void destroyAllAvailableDisplayedBioBricks()
+    {
+        //Debug.LogError("destroyAllAvailableDisplayedBioBricks");
+        destroyAllAvailableDisplayedBioBricks(_displayableAvailablePromoters);
+        destroyAllAvailableDisplayedBioBricks(_displayableAvailableRBS);
+        destroyAllAvailableDisplayedBioBricks(_displayableAvailableGenes);
+        destroyAllAvailableDisplayedBioBricks(_displayableAvailableTerminators);
+    }
+    
     void initializeDummies()
     {
+        //Debug.LogError("initializeDummies");
         dummies.Clear();
         dummies.AddRange(new List<GameObject>{availableBioBrick, availablePromoter1, availablePromoter2, availableRBS, availableCodingSequence, availableTerminator});
         
@@ -95,6 +112,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         {
             if(null != dummy)
             {
+                //Debug.LogError("initializeDummies dummy="+dummy.name);
                 dummy.SetActive(false);
             }
         }
@@ -115,13 +133,17 @@ public class AvailableBioBricksManager : MonoBehaviour
                     currentBrick.addAmount(amount);
                     double finalAmount = currentBrick.amount;
                     
-                    Debug.LogError(brick.getName()+": initialAmount="+initialAmount+", finalAmount="+finalAmount);
+                    //Debug.LogError(brick.getName()+": initialAmount="+initialAmount+", finalAmount="+finalAmount);
                 }
     }
 
     private void updateDisplayedBioBricks()
     {
         Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks", Logger.Level.DEBUG);
+
+
+        //Debug.LogError("updateDisplayedBioBricks");
+        destroyAllAvailableDisplayedBioBricks();    
 
         LinkedList<BioBrick> availablePromoters = new LinkedList<BioBrick>();
         LinkedListExtensions.AppendRange<BioBrick>(availablePromoters, getAvailableBioBricksOfType(BioBrick.Type.PROMOTER));
@@ -258,7 +280,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
             return dummy.transform.localPosition + new Vector3(
           0,
-          -(index % _bricksPerRow) * _width,
+          -index * _width,
           -0.1f);
         }
         else if (
@@ -274,7 +296,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("no dummy for BioBrick position");
+            //Debug.LogError("no dummy for BioBrick position");
             return Vector3.zero;
         }
     }

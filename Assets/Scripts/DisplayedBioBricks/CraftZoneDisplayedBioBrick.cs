@@ -38,9 +38,9 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
     return result;
  }
 
-  protected override void OnPress(bool isPressed) {
+  public override void OnPress(bool isPressed) {
     Logger.Log("CraftZoneDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
-    Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
+    //Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
     if(CraftZoneManager.isDeviceEditionOn())
     {
         LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) CraftZoneManager.get ();

@@ -80,6 +80,7 @@ BRICK.PRTETR=pTet
 
 BRICK.RBS1=RBS moyen
 BRICK.RBS2=RBS faible
+BRICK.RBS3=RBS de base
 
 BRICK.AMPR=cassette de résistance à l'ampicilline
 BRICK.ARAC=araC
@@ -460,19 +461,26 @@ TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Niveau d'expression constant à 23% de la Séquence Codante codant pour la protéine vert fluorescent (GFP).
 
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.TITLE=Hyperflagellation (base)
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.SUBTITLE=Équipé : produit 1 flagelle.
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.LENGTH=1122bp
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.REFERENCE=fictif
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.EXPLANATION=Niveau d'expression constant à 6% de l'opéron maître FlhDC qui entraîne la synthèse du flagelle.
+
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.TITLE=Hyperflagellation (faible)
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS2:MOV:DTER.EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+TOOLTIP.D_PRCONS:RBS2:MOV:DTER.EXPLANATION=Niveau d'expression constant à 12,6% de l'opéron maître FlhDC qui entraîne la synthèse de flagelles.
 
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.TITLE=Hyperflagellation (moyen)
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.SUBTITLE=Équipé : augmente la vitesse de déplacement.
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de nouveaux flagelles.
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Niveau d'expression constant à 23% de l'opéron maître FlhDC qui entraîne la synthèse de flagelles.
 
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.TITLE=(Régulé) Fluorescence verte (faible)
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
