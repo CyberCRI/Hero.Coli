@@ -145,7 +145,7 @@ public class MemoryManager : MonoBehaviour
         //TODO set case-insensitive
         if (!_loadedLevelInfo.TryGetValue(code, out info))
         {
-            Logger.Log("InfoWindowManager::retrieveFromDico(" + code + ") failed", Logger.Level.WARN);
+            Logger.Log("MemoryManager::retrieveFromDico(" + code + ") failed", Logger.Level.WARN);
             info = null;
         }
         return info;

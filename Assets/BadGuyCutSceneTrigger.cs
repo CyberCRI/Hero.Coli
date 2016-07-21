@@ -111,6 +111,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         _cutSceneCam.gameObject.SetActive(false);
         _mainCamBound.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
+        ModalManager.setModal("T1_AMPICILLIN");
         yield return null;
     }
 

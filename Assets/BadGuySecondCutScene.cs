@@ -92,6 +92,8 @@ public class BadGuySecondCutScene : MonoBehaviour {
         _cutSceneCam.gameObject.SetActive(false);
         yield return new WaitForSeconds(2.5f);
         GameStateController.get().FadeScreen(true, 2.5f);
+        yield return new WaitForSeconds(2.5f);
+        ModalManager.setModal("T1_END");
         yield return null;
     }
 }

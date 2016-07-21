@@ -19,4 +19,27 @@
     <texture>t_rfp_needed</texture>
     <next>world</next>
   </info>
+  
+  
+  <info code="T1_PRO">
+    <texture>i_cons</texture>
+    <next>crafttuto</next>
+  </info>
+  <info code="T1_RBS">
+    <texture>i_rbs2</texture>
+    <next>crafttuto</next>
+  </info>
+  <info code="T1_CDS">
+    <texture>i_hyperflagellation</texture>
+    <next>crafttuto</next>
+  </info>
+  <info code="T1_TER">
+    <texture>i_cons</texture>
+    <next>crafttuto</next>
+  </info>
+  
+  <info code="MOVEMENT">
+    <texture>i_hyperflagellation</texture>
+    <next>world</next>
+  </info>
 </infoList>

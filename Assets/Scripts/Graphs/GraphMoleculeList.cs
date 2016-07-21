@@ -134,7 +134,10 @@ public class GraphMoleculeList : MonoBehaviour {
         deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
 
         EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
-        
+                
+        eddwm.namesLabel.transform.parent = this.transform;
+        eddwm.valuesLabel.gameObject.transform.parent = this.transform;
+        eddwm.background.transform.parent = this.transform;
 
         //equipmentDevice
         GameObject equipmentDevicePrefab = Resources.Load(DisplayedDevice.equipmentPrefabURI) as GameObject;
@@ -150,6 +153,7 @@ public class GraphMoleculeList : MonoBehaviour {
         eddwm.equipedDeviceScript = edd;
         eddwm.device = equipedDeviceScript._device;
         edd._device = equipedDeviceScript._device;
+        eddwm.background.GetComponent<UISprite>().spriteName = DisplayedDevice.getTextureName(equipedDeviceScript._device);
 
         eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
 
@@ -168,7 +172,8 @@ public class GraphMoleculeList : MonoBehaviour {
         //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
         //deviceWithMoleculesComponent.transform.localPosition = localPosition;
         positionDeviceAndMoleculeComponents();
-                    
+        
+        
       } else {
         Logger.Log("addDevice failed: newEquiped="+newEquiped, Logger.Level.TRACE);
       }
@@ -262,7 +267,7 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     for(int idx = removedIndex+1; idx < _equipedDevices.Count; idx++) {        
         Vector3 newLocalPosition = getNewPosition(idx-1);
-        _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
+        _equipedDevices[idx].setLocalPosition(newLocalPosition);
     }
   }
 
@@ -270,7 +275,7 @@ public class GraphMoleculeList : MonoBehaviour {
   {
     for(int idx = startIndex; idx < _equipedDevices.Count; idx++) {
       Vector3 newLocalPosition = getNewPosition(idx);
-      _equipedDevices[idx].gameObject.transform.localPosition = newLocalPosition;
+      _equipedDevices[idx].setLocalPosition(newLocalPosition);
     }
   }
 

@@ -127,6 +127,11 @@ public class CraftFinalizer : MonoBehaviour {
   {
       return (null != device) && Equipment.get().exists (d => d.Equals(device));
   }
+  
+  public bool isEquiped(string deviceName)
+  {
+      return (!string.IsNullOrEmpty(deviceName) && Equipment.get().exists (d => d.getInternalName() == deviceName));
+  }
 
   public void setDisplayedDevice(Device device){
     Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);

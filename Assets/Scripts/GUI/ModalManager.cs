@@ -96,7 +96,7 @@ public class ModalManager : MonoBehaviour {
     
   private static bool needsCancelButton(string validateButtonClassName)
   {
-      return (validateButtonClassName != _quitModalClassName);
+      return (validateButtonClassName == _quitModalClassName);
   }
 
     private static void removeAllModalButtonClasses(GameObject button)
