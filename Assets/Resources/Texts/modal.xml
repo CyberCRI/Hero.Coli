@@ -17,11 +17,11 @@
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
-  <info code="T1_GFP">
+  <info code="T1_FLUO1">
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
-  <info code="T1_RBS2">
+  <info code="T1_RBS1">
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
@@ -29,7 +29,7 @@
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
-  <info code="T1_RFP">
+  <info code="T1_FLUO2">
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>

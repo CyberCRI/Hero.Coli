@@ -16,6 +16,10 @@ public class NanobotsPickUpHandler : MonoBehaviour {
         if (col.tag == "Player")
         {
             _pickedUpNumber += 1;
+            if(_pickedUpNumber == 1)
+            {
+                ModalManager.setModal("T1_NANOBOT");
+            }
             _nanoCount.UpdateLabel(_pickedUpNumber);
             Destroy(this.gameObject);
         }
