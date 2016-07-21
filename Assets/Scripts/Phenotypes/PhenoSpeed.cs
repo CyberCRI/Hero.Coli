@@ -47,7 +47,7 @@ public float ccdisp;
     private float intensity;
     private CellControl cellControl;
 	
-    private int _defaultFlagellaCount = 0;
+    private int _defaultFlagellaCount = 1;
     public void setDefaultFlagellaCount(int defaultCount)
     {
         _defaultFlagellaCount = ((defaultCount>1)||(defaultCount<0))?1:defaultCount;
