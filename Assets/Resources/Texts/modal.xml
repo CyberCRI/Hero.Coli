@@ -12,4 +12,29 @@
     <next>ModalRestart</next>
     <cancel>BackToEndPanelButton</cancel>
   </info>
+  
+  <info code="T1_AMPICILLIN">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_GFP">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_RBS2">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_NANOBOT">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_RFP">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_END">
+    <texture>i_end</texture>
+    <next>QuitModalWindow</next>
+  </info>
 </infoList>

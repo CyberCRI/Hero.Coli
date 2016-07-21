@@ -33,13 +33,17 @@ public class FocusMaskManager : MonoBehaviour {
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
-	public void focusOn(ExternalOnPressButton target)
+    public delegate void Callback(); 
+    private Callback _callback;
+    
+	public void focusOn(ExternalOnPressButton target, Callback callback = null)
     {
         if(null != target)
         {
             //Debug.LogError("FocusMaskManager focusOn "+target.name);
             focusOn(target.transform.position, false);
             _target = target;
+            _callback = callback;
         }
         else
         {
@@ -107,6 +111,10 @@ public class FocusMaskManager : MonoBehaviour {
         if(_target)
         {
             _target.OnPress(true);
+        }
+        if(null != _callback)
+        {
+            _callback();
         }
         initialize();
     }

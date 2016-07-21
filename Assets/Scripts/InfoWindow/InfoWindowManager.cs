@@ -46,13 +46,15 @@ public class InfoWindowManager : MonoBehaviour {
   {
     GOTOWORLD,
     GOTOEQUIP,
-    GOTOCRAFT
+    GOTOCRAFT,
+    GOTOCRAFTTUTO
   }
 
   private Dictionary<string, NextAction> _actions = new Dictionary<string, NextAction>(){
     {InfoWindowXMLTags.WORLD, NextAction.GOTOWORLD},
     {InfoWindowXMLTags.EQUIP, NextAction.GOTOEQUIP},
-    {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT}
+    {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT},
+    {InfoWindowXMLTags.CRAFTTUTO, NextAction.GOTOCRAFTTUTO}
   };
 
     public static bool hasActivePanel()
@@ -64,12 +66,14 @@ public class InfoWindowManager : MonoBehaviour {
   {
     if(fillInFieldsFromCode(code))
     {
+        Debug.LogError("SUCCESS InfoWindowManager::displayInfoWindow("+code+") success");
       ModalManager.setModal(_instance.infoPanel);
       return true;
     }
     else
     {
       Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.WARN);
+      Debug.LogError("FAIL InfoWindowManager::displayInfoWindow("+code+") failed");
       return false;
     }
   }
@@ -148,6 +152,15 @@ public class InfoWindowManager : MonoBehaviour {
             case NextAction.GOTOCRAFT:
                 Logger.Log ("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
                 GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen3);
+                break;
+            case NextAction.GOTOCRAFTTUTO:
+                Logger.Log ("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
+                CraftHint hint = GameObject.Find("Perso").GetComponent<CraftHint>();
+                if(null == hint)
+                {
+                    hint = GameObject.Find("Perso").AddComponent<CraftHint>();
+                }
+                hint.bricks++;
                 break;
             default:
                 Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
