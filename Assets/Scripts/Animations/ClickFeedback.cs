@@ -1,20 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ClickFeedback : MonoBehaviour {
 
-    private float duration = 0f;
-    public ParticleEmitter emitter;
+    public ParticleSystem system;
 
-    // Use this for initialization
-    void Start () {
-        duration = emitter.maxEnergy;
-        StartCoroutine(selfDestruct());
-    }
-
-    IEnumerator selfDestruct()
+    public void burst(Vector3 position)
     {
-        yield return new WaitForSeconds(duration);
-        GameObject.Destroy(this.gameObject);
+        system.transform.position = position;
+        system.Emit(10);
     }
 }
