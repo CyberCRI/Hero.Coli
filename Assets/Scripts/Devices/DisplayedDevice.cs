@@ -121,15 +121,19 @@ public class DisplayedDevice : DisplayedElement {
 
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab;
+    string name = "";
     if (deviceType == DevicesDisplayer.DeviceType.Equiped) {
             Logger.Log("DisplayedDevice: will create Equiped "+equipedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(equipedPrefabURI);
+      name = "Equiped";
     } else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) {
             Logger.Log("DisplayedDevice: will create Inventoried "+inventoriedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(inventoriedPrefabURI);
+      name = "Inventoried";
     } else if (deviceType == DevicesDisplayer.DeviceType.Listed) {
             Logger.Log("DisplayedDevice: will create Listed "+listedPrefabURI, Logger.Level.DEBUG);
       prefab = Resources.Load(listedPrefabURI);
+      name = "Listed";
     } else {
       Logger.Log("DisplayedDevice::Create : unmanaged device type "+deviceType, Logger.Level.WARN);
       return null;
@@ -143,6 +147,8 @@ public class DisplayedDevice : DisplayedElement {
     + ", spriteName="+spriteName+nullSpriteName
     , Logger.Level.DEBUG
     );
+    
+    name += device.getInternalName();
 
     DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
       parentTransform
@@ -150,6 +156,8 @@ public class DisplayedDevice : DisplayedElement {
       ,getTextureName(device)
       ,prefab
       );
+
+      result.name = name;
 
     Initialize(result, device, devicesDisplayer, deviceType);
 

@@ -1,21 +1,18 @@
 ﻿using UnityEngine;
 
-public class CraftHint : MonoBehaviour
+public class GFPCraftHint : MonoBehaviour
 {
 
     private int step = 0;
-    public int bricks = 0;
     private bool prepared = false;
 
     private const string _craftButton = "CraftButton";
-    private const string _prefix = "AvailableDisplayed";
-    private const string _brick1 = _prefix + "PRCONS",
-    _brick2 = _prefix + "RBS2",
-    _brick3 = _prefix + "MOV",
-    _brick4 = _prefix + "DTER";
+    private const string _listedPrefix = "Listed";
+    private const string _device = "PRCONS:RBS2:MOV:DTER";
+    private const string _brick = "AvailableDisplayedFLUO1";
     private const string _exitCross = "CraftCloseButton";
 
-    private string[] focusObjects = new string[6] { _craftButton, _brick1, _brick2, _brick3, _brick4, _exitCross };
+    private string[] focusObjects = new string[4] { _craftButton, _listedPrefix + _device, _brick, _exitCross };
 
     public void next()
     {
@@ -23,25 +20,28 @@ public class CraftHint : MonoBehaviour
         step++;
     }
 
-
     // Update is called once per frame
     void Update()
     {
-        if (4 == bricks)
+        if (step < focusObjects.Length)
         {
-            if (step < focusObjects.Length)
+            if (!prepared)
             {
-                if (!prepared)
+                if ((1 == step) && (CraftFinalizer.get().isEquiped(_device)))
+                {
+                    next();
+                }
+                else
                 {
                     ExternalOnPressButton target = GameObject.Find(focusObjects[step]).GetComponent<ExternalOnPressButton>();
                     FocusMaskManager.get().focusOn(target, next);
                     prepared = true;
                 }
             }
-            else
-            {
-                Destroy(this);
-            }
+        }
+        else
+        {
+            Destroy(this);
         }
     }
 }

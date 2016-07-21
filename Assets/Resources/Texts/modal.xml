@@ -19,7 +19,7 @@
   </info>
   <info code="T1_FLUO1">
     <texture>i_end</texture>
-    <next>QuitModalWindow</next>
+    <next>GFPCraftHintModal</next>
   </info>
   <info code="T1_RBS1">
     <texture>i_end</texture>
