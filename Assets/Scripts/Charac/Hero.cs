@@ -361,7 +361,7 @@ public class Hero : MonoBehaviour {
         
         //1 wait sequence between flagella, pair of eyes disappearances
         //therefore #flagella + #pairs of eyes - 1
-        int maxWaitSequences = _flagella.Count-1;
+        int maxWaitSequences = _flagella.Count;
         
         //fractional elapsed time
         // 0<elapsed<maxWaitSequences

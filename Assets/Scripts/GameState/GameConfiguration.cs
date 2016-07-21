@@ -36,6 +36,15 @@ public class GameConfiguration {
         SANDBOX2,
         TUTORIAL1
     }
+    
+    public enum TutorialMode
+    {
+        START1FLAGELLUM,
+        START1FLAGELLUM4BRICKS,
+        START1FLAGELLUMDEVICE,
+        START0FLAGELLUM,
+        START0FLAGELLUMHORIZONTALTRANSFER
+    }
 
     public enum GameMode
     {
@@ -61,6 +70,7 @@ public class GameConfiguration {
     public bool isSoundOn;
     public bool isAdmin = false;
     public CraftInterface craftInterface = CraftInterface.LIMITEDDEVICES;
+    public TutorialMode tutorialMode = TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER;
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////

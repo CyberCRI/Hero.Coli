@@ -104,8 +104,11 @@ public class CellControl : MonoBehaviour {
     }
 
     private void setClickFeedback(Vector3 position) {
-        GameObject newClickFeedback = Instantiate(clickFeedback, position, Quaternion.identity) as GameObject;
-        newClickFeedback.SetActive(true);
+        ClickFeedback feedback = clickFeedback.GetComponent<ClickFeedback>();
+        if(null != feedback)
+        {
+            feedback.burst(position);
+        }
     }
 
     private void clickToMoveUpdate(KeyCode mouseButtonCode) {
