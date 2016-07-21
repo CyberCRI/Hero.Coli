@@ -8,7 +8,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     private bool _initialized = false;
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
-    protected int slotCount = 4;
+    protected int slotCount;
     public GameObject                         craftSlotDummy1;
     public GameObject                         craftSlotDummy2;
 
@@ -32,6 +32,9 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         if (!_initialized)
         {
             slots.Clear();
+            
+            Debug.LogError("slotCount map="+MemoryManager.get().configuration.gameMap);
+            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?4:2;
 
             GameObject slotGO;
             CraftDeviceSlot slot;
