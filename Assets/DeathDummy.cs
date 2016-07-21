@@ -15,6 +15,10 @@ public class DeathDummy : MonoBehaviour {
     private static string checkpointSeparator = ".";
     private const string _keyLife = "KEY.LIFE";
     private const string _keyEnergy = "KEY.ENERGY";
+    private bool _locked = false;
+    private Vector3 _positionLock;
+    [SerializeField]
+    private AmpicillinCutScene _ampCuttScene;
 
     private Hashtable _optionsIn = iTween.Hash(
         "scale", _baseScaleVector,
@@ -43,20 +47,27 @@ public class DeathDummy : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+            
 	}
 
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "DeathZoneDummy")
         {
-            StartCoroutine(deathEffectCoroutine());
-            Debug.Log("LaunchesCoroutine");
+            if (this.gameObject.name == "dummyPlayer3Flagellum")
+            {
+
+            }
+            else if (this.gameObject.name == "dummyPlayer2Flagellum")
+            {
+                StartCoroutine(deathEffectCoroutine());
+            }
+            
         }
     }
 
@@ -120,6 +131,9 @@ public class DeathDummy : MonoBehaviour {
         yield return new WaitForSeconds(lastRandom * _respawnTimeS / maxWaitSequences);
         elapsed += lastRandom;
         enableEyes(false);
+
+        _ampCuttScene.ResetCamTarget();
+        //Destroy(this.gameObject.transform.parent.gameObject);
 
         yield return new WaitForSeconds((maxWaitSequences - elapsed) * _respawnTimeS / maxWaitSequences);
     }
