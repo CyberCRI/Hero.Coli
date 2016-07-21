@@ -361,14 +361,13 @@ public class Hero : MonoBehaviour {
         
         //1 wait sequence between flagella, pair of eyes disappearances
         //therefore #flagella + #pairs of eyes - 1
-        int maxWaitSequences = _flagella.Count;
+        int maxWaitSequences = _flagella.Count-1;
         
         //fractional elapsed time
         // 0<elapsed<maxWaitSequences
         float elapsed = 0.0f;
 
-        _flagella[0].SetActive(false);
-        for(int i=1; i<_flagella.Count; i++)
+        for(int i=0; i<_flagella.Count; i++)
         {
             //to make flagella disappear
             float random = UnityEngine.Random.Range(0.0f,1.0f);
