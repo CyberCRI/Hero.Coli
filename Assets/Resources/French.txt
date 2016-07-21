@@ -200,7 +200,7 @@ CRAFT.ASSEMBLY.2ND=RBS
 CRAFT.ASSEMBLY.3RD=Séquence Codante
 CRAFT.ASSEMBLY.4TH=Terminateur
 
-CRAFT.FINALIZATION.TITLE=Résultat
+CRAFT.FINALIZATION.TITLE=Constructions actives
 
 CRAFT.FINALIZATION.SUCCESS=Nouvelle construction génétique !
 CRAFT.FINALIZATION.FAILURE_SAME_NAME=Ce nom de construction est déjà utilisé !
@@ -208,15 +208,17 @@ CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=Cet enchaînement de BioBriques est déj�
 CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=Il n'y a rien de nouveau à créer : cette construction est déjà connue !
 CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de la construction s'affiche ici.
 
-CRAFT.BANK.TITLE=Banque de BioBriques
-CRAFT.BANK.PROMOTER=Promoteur
+CRAFT.BANK.TITLE=Réserve de BioBriques
+CRAFT.BANK.PROMOTER=Promoteurs
 CRAFT.BANK.RBS=RBS
-CRAFT.BANK.GENE=Séquence Codante
-CRAFT.BANK.TERMINATOR=Terminateur
+CRAFT.BANK.GENE=Séquence Codantes
+CRAFT.BANK.TERMINATOR=Terminateurs
 CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 
+CRAFT.SLOTS.TITLE=Contenu des constructions génétiques
+
 CRAFT.RECIPES.TITLE=Constructions
-CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour mettre ses BioBriques sur la table.
+CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour l'équiper - si vous avez assez de BioBriques !
 
 CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
 
