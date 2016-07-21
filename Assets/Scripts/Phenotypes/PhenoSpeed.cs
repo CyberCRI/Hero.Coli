@@ -47,6 +47,12 @@ public float ccdisp;
     private float intensity;
     private CellControl cellControl;
 	
+    private int _defaultFlagellaCount = 0;
+    public void setDefaultFlagellaCount(int defaultCount)
+    {
+        _defaultFlagellaCount = ((defaultCount>1)||(defaultCount<0))?1:defaultCount;
+    }
+    
 	//! Called at the beginning
 	public override void StartPhenotype ()
 	{
@@ -62,18 +68,18 @@ public float ccdisp;
 
   public float getIntensity(float cc)
   {
-      if(cc < zeroCC)
-      {
-          return cc*_steepness0;
-      }
-      else if(cc < lowCC)
-    {
-      return baseSpeed + cc*_steepness1;
-    }
-    else
-    {
-      return lowSpeed + (cc - lowCC)*_steepness2;
-    }
+        if((0 == _defaultFlagellaCount) && (cc < zeroCC))
+        {
+            return cc*_steepness0;
+        }
+        else if(cc < lowCC)
+        {
+        return baseSpeed + cc*_steepness1;
+        }
+        else
+        {
+        return lowSpeed + (cc - lowCC)*_steepness2;
+        }
   }
 
   public void setBaseSpeed(float speed)
