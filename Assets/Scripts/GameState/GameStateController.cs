@@ -627,6 +627,7 @@ public class GameStateController : MonoBehaviour {
     public void FadeScreen(bool value, float speed)
     {
         fadeSprite.gameObject.SetActive(true);
+        Debug.Log(fadeSprite);
         if (value == true)
         {
             fadeSprite.FadeIn(speed);

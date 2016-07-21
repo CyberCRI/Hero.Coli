@@ -48,7 +48,7 @@ public class BadGuySecondCutScene : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            _cameraInterface.GetComponent<Camera>().enabled = false;
+            //_cameraInterface.GetComponent<Camera>().enabled = false;
             _dummyPlayer.transform.position = _player.transform.position;
             _dummyPlayer.transform.rotation = _player.transform.rotation;
             _player.SetActive(false);
