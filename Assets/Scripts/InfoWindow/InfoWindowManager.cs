@@ -66,14 +66,12 @@ public class InfoWindowManager : MonoBehaviour {
   {
     if(fillInFieldsFromCode(code))
     {
-        Debug.LogError("SUCCESS InfoWindowManager::displayInfoWindow("+code+") success");
       ModalManager.setModal(_instance.infoPanel);
       return true;
     }
     else
     {
       Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.WARN);
-      Debug.LogError("FAIL InfoWindowManager::displayInfoWindow("+code+") failed");
       return false;
     }
   }
