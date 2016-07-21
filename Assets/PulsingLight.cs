@@ -72,6 +72,22 @@ public class PulsingLight : MonoBehaviour {
                 _way = !_way;
             }
         }
-
 	}
+
+    public void TweekRangeIntensity(float min, float max)
+    {
+        _minIntensity = min;
+        _maxIntensity = max;
+    }
+
+    public float GetMaxIntensityValue()
+    {
+        return _maxIntensity;
+    }
+
+    public float GetMinIntensityValue()
+    {
+        return _minIntensity;
+    }
+
 }
