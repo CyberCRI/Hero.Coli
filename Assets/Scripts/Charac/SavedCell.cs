@@ -27,7 +27,7 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<BlackLight>());        
         Destroy(GetComponent<Rigidbody>());
         Destroy(GetComponent<AmbientLighting>());
-        //Destroy(this.transform.GetChild(8).gameObject);
+        Destroy(this.transform.GetChild(8).gameObject);
         
         SphereCollider[] colliders = GetComponentsInChildren<SphereCollider>();
         for(int i = 0; i<colliders.Length; i++) {
