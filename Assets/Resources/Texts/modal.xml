@@ -23,7 +23,7 @@
   </info>
   <info code="T1_RBS1">
     <texture>i_end</texture>
-    <next>QuitModalWindow</next>
+    <next>RBS1CraftHintModal</next>
   </info>
   <info code="T1_NANOBOT">
     <texture>i_end</texture>
