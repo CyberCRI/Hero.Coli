@@ -23,6 +23,11 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
+    
+    //quick fix to remove closeButton
+    //TODO fixme
+    closeButton = null;
+    
     createBioBricksIfNecessary();
     updateVisibility();
   }
