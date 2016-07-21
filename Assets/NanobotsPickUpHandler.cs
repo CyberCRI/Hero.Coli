@@ -4,7 +4,7 @@ using System.Collections;
 public class NanobotsPickUpHandler : MonoBehaviour {
 
     private NanobotsCounter _nanoCount;
-    private int _pickedUpNumber = 0;
+    private static int _pickedUpNumber = 0;
 
 	// Use this for initialization
 	void Start () {

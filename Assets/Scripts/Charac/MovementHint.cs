@@ -37,7 +37,6 @@ public class MovementHint : MonoBehaviour {
            {
                _clicksCount++;
            }
-           Debug.Log("t="+_elapsedTime);
        }
 	}
 }
