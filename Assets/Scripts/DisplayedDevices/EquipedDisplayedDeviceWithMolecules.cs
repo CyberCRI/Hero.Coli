@@ -18,6 +18,8 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
     
   public Device device; 
   
+  public GameObject background;
+  
     
   private DisplayedMolecule _displayedMolecule;
 
@@ -38,6 +40,17 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
             _equipedDeviceDummy = staticEquipedDeviceDummy;
       setEquipmentDevice();
     }
+  }
+  
+  public void setLocalPosition(Vector3 newLocalPosition)
+  {   
+      Vector3 delta = newLocalPosition - this.transform.localPosition;
+      
+      namesLabel.transform.localPosition = namesLabel.transform.localPosition + delta;
+      valuesLabel.transform.localPosition = valuesLabel.transform.localPosition + delta;
+      background.transform.localPosition = background.transform.localPosition + delta; 
+      
+      this.transform.localPosition = newLocalPosition;
   }
 
   public void setEquipmentDevice()
@@ -83,10 +96,19 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   
   void OnEnable() {
     Logger.Log("EquipedDisplayedDeviceWithMolecules::OnEnable", Logger.Level.INFO);
+    //background.SetActive(true);
   }
   
   void OnDisable() {
     Logger.Log("EquipedDisplayedDeviceWithMolecules::OnDisable", Logger.Level.INFO);
+    //background.SetActive(false);
+  }
+  
+  void OnDestroy()
+  {
+      Destroy(background);
+      Destroy(namesLabel.gameObject);
+      Destroy(valuesLabel.gameObject);
   }
   
   void OnPress(bool isPressed) {
