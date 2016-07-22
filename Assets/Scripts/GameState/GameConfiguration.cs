@@ -86,8 +86,10 @@ public class GameConfiguration {
     //v 1.33
     //public static string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
     //v 1.40
-    public static string labelledGameVersionGUID = "81ee441f-6cbc-45ba-a306-160905c80b97";
-    
+    //public static string labelledGameVersionGUID = "81ee441f-6cbc-45ba-a306-160905c80b97";
+    //v1.50
+    public static string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
+
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
         
     private string _playerGUID;
