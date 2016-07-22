@@ -14,11 +14,11 @@
   </info>
   
   <info code="T1_AMPICILLIN">
-    <texture>i_end</texture>
+    <texture>i_modal_ampi2</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_FLUO1">
-    <texture>i_end</texture>
+    <texture>i_gfp</texture>
     <next>GFPCraftHintModal</next>
   </info>
   <info code="T1_RBS1">
@@ -26,11 +26,11 @@
     <next>RBS1CraftHintModal</next>
   </info>
   <info code="T1_NANOBOT">
-    <texture>i_end</texture>
+    <texture>i_nanobot</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_FLUO2">
-    <texture>i_end</texture>
+    <texture>t_rfp_needed</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_END">

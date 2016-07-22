@@ -198,7 +198,7 @@ MODAL.RESTARTGAME.EXPLANATION=Tout ce que vous avez fait sera perdu ! Êtes-vou
 MODAL.FIRSTCHECKPOINT.TITLE=PREMIER CHECKPOINT !
 MODAL.FIRSTCHECKPOINT.EXPLANATION=Si Cellia meurt vous recommencerez à partir de sa dernière division !
 MODAL.T1_AMPICILLIN.TITLE=DANGER !
-MODAL.T1_AMPICILLIN.EXPLANATION=Évitez les zones riches en Ampicilline !
+MODAL.T1_AMPICILLIN.EXPLANATION=Évitez les zones rouges, elles contiennent un antibiotique, l'ampicilline !
 MODAL.T1_FLUO1.TITLE=FLUORESCENCE VERTE
 MODAL.T1_FLUO1.EXPLANATION=Cette brique permet à Cellia d'émettre de la lumière verte quand elle est éclairée par de la lumière bleue.
 MODAL.T1_RBS1.TITLE=RBS PLUS PUISSANT !
@@ -485,12 +485,12 @@ TOOLTIP.B_DTER.EXPLANATION=Terminateur fort de séquence de transcription - Term
 
 
 
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.title=Fluorescence verte (faible)
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.subtitle=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.length=1101bp
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.reference=Stanford University
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.energyConsumption=XXX
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.explanation=Niveau d'expression constant à 12,6% de la Séquence Codante codant pour la protéine vert fluorescent (GFP).
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.TITLE=Fluorescence verte (faible)
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.EXPLANATION=Niveau d'expression constant à 12,6% de la Séquence Codante codant pour la protéine vert fluorescent (GFP).
 
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.TITLE=Fluorescence verte (moyen)
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.SUBTITLE=Équipé : la bactérie devient vert fluorescent quand elle est exposée à de la lumière bleue.
