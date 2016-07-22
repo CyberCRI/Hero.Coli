@@ -268,11 +268,14 @@ public class CellControl : MonoBehaviour {
         if(!_pause) {
             _inputMovement = Vector3.zero;
             //Keyboard controls
-            if(isAbsoluteWASD)
+            if(!FocusMaskManager.isOn)
             {
-                AbsoluteWASDUpdate();
-            } else {
-                RelativeWASDUpdate();
+                if(isAbsoluteWASD)
+                {
+                    AbsoluteWASDUpdate();
+                } else {
+                    RelativeWASDUpdate();
+                }
             }
 
             //Mouse controls

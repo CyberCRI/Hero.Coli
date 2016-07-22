@@ -35,6 +35,15 @@ public class FocusMaskManager : MonoBehaviour {
 
     public delegate void Callback(); 
     private Callback _callback;
+
+    private static bool _isOn;
+    public static bool isOn
+    {
+    get
+    {
+    return _isOn;
+    }
+    }
     
 	public void focusOn(ExternalOnPressButton target, Callback callback = null)
     {
@@ -97,6 +106,7 @@ public class FocusMaskManager : MonoBehaviour {
     {
         focusMask.SetActive(show);
         hole.SetActive(show);
+        _isOn = show;
     }
     
     public void initialize()
