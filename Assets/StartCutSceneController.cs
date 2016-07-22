@@ -67,7 +67,7 @@ public class StartCutSceneController : MonoBehaviour {
     {
         if (col.gameObject.name == "dummyPlayer")
         {
-            _cellControl.FreezePLayer(false);
+            _cellControl.freezePlayer(false);
             //_cellControl.GetComponent<PhenoSpeed>().setDefaultFlagellaCount(1);
             Destroy(col.gameObject);
             Destroy(this.gameObject);
@@ -77,7 +77,7 @@ public class StartCutSceneController : MonoBehaviour {
     void StartCutScene()
     {
         _iTweenEventBacteria.enabled = true;
-        _cellControl.FreezePLayer(true);
+        _cellControl.freezePlayer(true);
         StartCoroutine(WaitForSecondPart());
     }
 

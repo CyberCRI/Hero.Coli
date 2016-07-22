@@ -4,6 +4,7 @@ public class FocusMaskManager : MonoBehaviour {
 
     public GameObject focusMask, hole;
     private ExternalOnPressButton _target;
+    private CellControl _cellControl;
     
     // test code
     /*
@@ -35,15 +36,6 @@ public class FocusMaskManager : MonoBehaviour {
 
     public delegate void Callback(); 
     private Callback _callback;
-
-    private static bool _isOn;
-    public static bool isOn
-    {
-    get
-    {
-    return _isOn;
-    }
-    }
     
 	public void focusOn(ExternalOnPressButton target, Callback callback = null)
     {
@@ -106,7 +98,8 @@ public class FocusMaskManager : MonoBehaviour {
     {
         focusMask.SetActive(show);
         hole.SetActive(show);
-        _isOn = show;
+        _cellControl = _cellControl==null?GameObject.Find("Perso").GetComponent<CellControl>():_cellControl;
+        _cellControl.freezePlayer(show);
     }
     
     public void initialize()

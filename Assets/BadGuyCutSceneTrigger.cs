@@ -107,7 +107,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
             yield return true;
         }
         _mainCamBound.target = _initialTarget;
-        _cellControl.FreezePLayer(false);
+        _cellControl.freezePlayer(false);
         _cutSceneCam.gameObject.SetActive(false);
         _mainCamBound.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
@@ -125,7 +125,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         _wayPoint1.transform.position = _cutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z);
         StartCoroutine(WaitForSecondPart());
-        _cellControl.FreezePLayer(true);
+        _cellControl.freezePlayer(true);
     }
 
     void CutSceneSecondPart()

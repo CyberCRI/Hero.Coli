@@ -34,7 +34,7 @@ public class AmpicillinCutScene : MonoBehaviour {
             if (Vector3.Distance(_cutSceneCam.transform.position ,new Vector3(_iTween2Flagellum.transform.position.x, _cutSceneCam.transform.position.y, _iTween2Flagellum.transform.position.z)) >= 30)
             {
                 _mainCam.target = _player.transform;
-                _cellControl.FreezePLayer(false);
+                _cellControl.freezePlayer(false);
                 Destroy(this.gameObject.transform.parent.gameObject);
             }
         }
@@ -52,7 +52,7 @@ public class AmpicillinCutScene : MonoBehaviour {
 
     void StartCutScene()
     {
-        _cellControl.FreezePLayer(true);
+        _cellControl.freezePlayer(true);
         for (int i = 0 ; i < _iTween2Flagellum.transform.childCount; i++)
         {
             _iTween2Flagellum.transform.GetChild(i).gameObject.SetActive(true);

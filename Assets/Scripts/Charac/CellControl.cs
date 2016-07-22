@@ -49,7 +49,7 @@ public class CellControl : MonoBehaviour {
     private bool _pause;
     private Vector3 _inputMovement;
     private SwimAnimator _swimAnimator;
-    private bool _playerStopped = false;
+    private bool _isPlayerFrozen = false;
 
     /* 
     * Click to move variables
@@ -112,10 +112,6 @@ public class CellControl : MonoBehaviour {
     }
 
     private void clickToMoveUpdate(KeyCode mouseButtonCode) {
-        if (_playerStopped == true)
-        {
-            return;
-        }
         if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
         {        
             Plane playerPlane = new Plane(Vector3.up, transform.position);            
@@ -192,12 +188,12 @@ public class CellControl : MonoBehaviour {
         setSpeed();
     }
 
-    public void FreezePLayer(bool value)
+    public void freezePlayer(bool value)
     {
         _inputMovement = Vector3.zero;
         cancelMouseMove();
         setSpeed();
-        _playerStopped = value;
+        _isPlayerFrozen = value;
     }
 
     private void rotationUpdate() {
@@ -268,7 +264,7 @@ public class CellControl : MonoBehaviour {
         if(!_pause) {
             _inputMovement = Vector3.zero;
             //Keyboard controls
-            if(!FocusMaskManager.isOn)
+            if(!_isPlayerFrozen)
             {
                 if(isAbsoluteWASD)
                 {
@@ -276,19 +272,19 @@ public class CellControl : MonoBehaviour {
                 } else {
                     RelativeWASDUpdate();
                 }
-            }
 
-            //Mouse controls
-            if(!_isFirstUpdate) {
-                if(isLeftClickToMove) {
-                    clickToMoveUpdate(KeyCode.Mouse0);
-                } else {
-                    clickToMoveUpdate(KeyCode.Mouse1);
-                }
-            } else { 
+                //Mouse controls
+                if(!_isFirstUpdate) {
+                    if(isLeftClickToMove) {
+                        clickToMoveUpdate(KeyCode.Mouse0);
+                    } else {
+                        clickToMoveUpdate(KeyCode.Mouse1);
+                    }
+                } else { 
                     _isFirstUpdate = false;
+                }
+                commonUpdate();
             }
-            commonUpdate();
         }
     }
     
