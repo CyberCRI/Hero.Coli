@@ -94,6 +94,7 @@ public class BadGuySecondCutScene : MonoBehaviour {
         GameStateController.get().FadeScreen(true, 2.5f);
         yield return new WaitForSeconds(2.5f);
         ModalManager.setModal("T1_END");
+        MemoryManager.get ().sendCompletionEvent();
         yield return null;
     }
 }
