@@ -154,7 +154,7 @@ INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the
 
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
-INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
+INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS has an expression level of 23%. Go and create new devices with it!
 INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
 
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
@@ -168,24 +168,24 @@ INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the
 INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
 
 INFO.T1_PRO.TITLE=BIOBRICK FOUND!
-INFO.T1_PRO.SUBTITLE=You found your first BioBrick !
-INFO.T1_PRO.EXPLANATION=All is in the title. This is a basic brick for Biologic Engineering. This is a Promoter the first brick needed to every device.
-INFO.T1_PRO.BOTTOM=Go find other bricks in order to craft your first device !
+INFO.T1_PRO.SUBTITLE=You found your first Promoter!
+INFO.T1_PRO.EXPLANATION=This is a Promoter BioBrick. Genetic devices always start with it.
+INFO.T1_PRO.BOTTOM=Go and find other bricks in order to craft your first device!
 
-INFO.T1_CDS.TITLE=CONGRATULATIONS!
+INFO.T1_CDS.TITLE=BIOBRICK FOUND!
 INFO.T1_CDS.SUBTITLE=You picked up your first Coding Sequence!
-INFO.T1_CDS.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
-INFO.T1_CDS.BOTTOM=Click on the "Next" button to open the craft menu and create your first Device !
+INFO.T1_CDS.EXPLANATION=Coding Sequences determine which ability genetic devices affect. For instance, this one affects Cellia's number of flagella.
+INFO.T1_CDS.BOTTOM=Go and find other bricks in order to craft your first device!
 
 INFO.T1_RBS.TITLE=BIOBRICK FOUND!
-INFO.T1_RBS.SUBTITLE=You picked up your first RBS BioBrick!
-INFO.T1_RBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 12,6%.
-INFO.T1_RBS.BOTTOM = Find the other Bricks to create your first device.
+INFO.T1_RBS.SUBTITLE=You picked up your first RBS!
+INFO.T1_RBS.EXPLANATION=This BioBrick is an RBS. It determines the power of genetic devices, called the level of expression. This RBS has an expression level of 12,6%.
+INFO.T1_RBS.BOTTOM =Go and find other bricks in order to craft your first device!
 
 INFO.T1_TER.TITLE=BIOBRICK FOUND!
-INFO.T1_TER.SUBTITLE=You picked up a Terminator !
-INFO.T1_TER.EXPLANATION=The Terminators only purpose is to end a genetic sequence. It's the last brick needed to create a device.
-INFO.T1_TER.BOTTOM= Find the other Bricks to create your first device.
+INFO.T1_TER.SUBTITLE=You picked up your first Terminator!
+INFO.T1_TER.EXPLANATION=The Terminator's only purpose is to end a genetic sequence, but it's compulsory.
+INFO.T1_TER.BOTTOM=Go and find other bricks in order to craft your first device!
 
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
@@ -207,13 +207,13 @@ MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?
 MODAL.FIRSTCHECKPOINT.TITLE=FIRST CHECKPOINT!
 MODAL.FIRSTCHECKPOINT.EXPLANATION=If Cellia dies you'll restart from her last duplicate!
 MODAL.T1_AMPICILLIN.TITLE=DANGER!
-MODAL.T1_AMPICILLIN.EXPLANATION=Ampicilin areas can be very dangerous for any living cell. Keep out!
+MODAL.T1_AMPICILLIN.EXPLANATION=Ampicillin areas can be very dangerous for any living cell. Keep out!
 MODAL.T1_FLUO1.TITLE=GREEN FLUORESCENCE
 MODAL.T1_FLUO1.EXPLANATION=This brick will allow you to glow green under blue light. Use it to open some passages in the maze!
-MODAL.T1_RBS1.TITLE=GREEN FLUORESCENCE
-MODAL.T1_RBS1.EXPLANATION=This brick will allow you to boost the efficiency of a device! Try to use it within the device that handles your flagella.
+MODAL.T1_RBS1.TITLE=MORE POWER!
+MODAL.T1_RBS1.EXPLANATION=This brick will allow you to boost the efficiency of a device! Try to put it inside the device that handles your flagella.
 MODAL.T1_NANOBOT.TITLE=STRANDED NANOBOT!
-MODAL.T1_NANOBOT.EXPLANATION=These little guys need you to get them back home. Try to find them all, and they’ll help you in your quest!
+MODAL.T1_NANOBOT.EXPLANATION=These little guys need you to get them back home. Try to find them all, and they'll help you in your quest!
 MODAL.T1_FLUO2.TITLE=RED FLUORESCENCE!
 MODAL.T1_FLUO2.EXPLANATION=This brick will allow you to glow red under green light. Use it to open some passage in the maze!
 MODAL.T1_END.TITLE=THIS IS THE END...
@@ -270,14 +270,14 @@ CRAFT.BIOBRICK.NONELEFT=NONE LEFT
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is a\nnanobot.
 TUTORIAL.INTRODUCTION1.CELLLABEL=This is Cellia!
 TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.coli!
-TUTORIAL.INTRODUCTION1.PART1=You, Cellia, are an Escherichia coli bacterium, living in an aquatic world with your sister cells.
+TUTORIAL.INTRODUCTION1.PART1=You, Cellia, are an e. coli bacterium, living in an aquatic world with your sister cells.
 TUTORIAL.INTRODUCTION1.PART2=Some stranded nanobots are waiting for you to help them out!
 TUTORIAL.INTRODUCTION1.PART3= 
 TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
 
 TUTORIAL.INTRODUCTION2.PART1=In this level, you will have to get out of a maze infested with mysterious creatures that spread toxic compounds in the water.
 TUTORIAL.INTRODUCTION2.PART2=However you will have to overcome different challenges in your path before you find the exit.
-TUTORIAL.INTRODUCTION2.PART3=For this mission, you will need to modify Cellia\’s DNA to adapt her skills and abilities to the new challenges the environment will oppose her.
+TUTORIAL.INTRODUCTION2.PART3=For this mission, you will need to modify Cellia's DNA to adapt her skills and abilities to the new challenges the environment will oppose her.
 TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION
 TUTORIAL.INTRODUCTION2.BOTTOM= 
 
