@@ -3,8 +3,13 @@
 public class FocusMaskManager : MonoBehaviour {
 
     public GameObject focusMask, hole;
+    public UISprite focusMaskSprite;
     private ExternalOnPressButton _target;
     private CellControl _cellControl;
+    private bool _isAlphaIncreasing = false;
+    private float _minAlpha = 0.2f;
+    private float _maxAlpha = 1f;
+    private float _newAlpha;
     
     // test code
     /*
@@ -107,6 +112,9 @@ public class FocusMaskManager : MonoBehaviour {
         //Debug.LogError("FocusMaskManager initialize");
         this.gameObject.SetActive(true);
         show(false);
+
+        _isAlphaIncreasing = false;
+        focusMaskSprite.alpha = 1;
     }
     
     public void click()
@@ -120,6 +128,29 @@ public class FocusMaskManager : MonoBehaviour {
             _callback();
         }
         initialize();
+    }
+
+	void Update ()
+    {
+        if(_isAlphaIncreasing)
+        {
+            _newAlpha = focusMaskSprite.alpha + Time.deltaTime;
+            if(_newAlpha > _maxAlpha)
+            {
+                _newAlpha = _maxAlpha;
+                _isAlphaIncreasing = false;
+            }
+        }
+        else
+        {
+            _newAlpha = focusMaskSprite.alpha - Time.deltaTime;
+            if(_newAlpha < _minAlpha)
+            {
+                _newAlpha = _minAlpha;
+                _isAlphaIncreasing = true;
+            }
+        }
+        focusMaskSprite.alpha = _newAlpha;
     }
     
     //test code
