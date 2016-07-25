@@ -46,12 +46,13 @@ public class AmpicillinCutScene : MonoBehaviour {
         {
             _player = col.gameObject;
             _cellControl = col.GetComponent<CellControl>();
-            StartCutScene();
+            startCutScene();
         }
     }
 
-    void StartCutScene()
+    void startCutScene()
     {
+        base.startCutScene()
         _cellControl.freezePlayer(true);
         for (int i = 0 ; i < _iTween2Flagellum.transform.childCount; i++)
         {

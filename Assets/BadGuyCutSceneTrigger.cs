@@ -50,7 +50,8 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
             if (_first == true)
             {
                 _first = false;
-                StartCutScene();
+                startCutScene();
+                startCutScene();
             }
         }
     }
@@ -115,7 +116,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         yield return null;
     }
 
-    void StartCutScene()
+    override void startCutScene()
     {
         _cutSceneCam.transform.position = _mainCamBound.transform.position;
         _cutSceneCam.transform.rotation = _mainCamBound.transform.rotation;

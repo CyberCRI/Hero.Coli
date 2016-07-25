@@ -98,6 +98,12 @@ public class FocusMaskManager : MonoBehaviour {
             //Debug.LogError("new pos="+newPosition);
         }
     }
+
+    private void blockClicks(bool block)
+    {
+        show(block);
+        focusMaskSprite.alpha = block?0:1;
+    }
     
     private void show(bool show)
     {

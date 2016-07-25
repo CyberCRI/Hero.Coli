@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StartCutSceneController : MonoBehaviour {
+public class StartCutSceneController : CutScene {
 
     [SerializeField]
     private iTweenEvent _iTweenEventBacteria;
@@ -19,17 +19,19 @@ public class StartCutSceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
         _cellControl = GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>();
-        StartCutScene();
+        
+        startCutScene();
     }
 
 	// Update is called once per frame
 	void Update () {
 	    if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            StartCutScene();
+            startCutScene();
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -74,7 +76,7 @@ public class StartCutSceneController : MonoBehaviour {
         }
     }
 
-    void StartCutScene()
+    override void startCutScene()
     {
         _iTweenEventBacteria.enabled = true;
         _cellControl.freezePlayer(true);
@@ -104,6 +106,8 @@ public class StartCutSceneController : MonoBehaviour {
     void FifthPart()
     {
         _itweenEventBacteria2.enabled = true;
+        
+        endCutScene();
     }
 
     IEnumerator WaitForSecondPart()
