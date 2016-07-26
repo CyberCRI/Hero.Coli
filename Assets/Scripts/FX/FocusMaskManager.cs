@@ -4,12 +4,14 @@ public class FocusMaskManager : MonoBehaviour {
 
     public GameObject focusMask, hole;
     public UISprite focusMaskSprite;
+    public GameObject clickBlocker;
     private ExternalOnPressButton _target;
     private CellControl _cellControl;
     private bool _isAlphaIncreasing = false;
     private float _minAlpha = 0.2f;
     private float _maxAlpha = 1f;
     private float _newAlpha;
+    private bool _isClicksBlocked = false;
     
     // test code
     /*
@@ -99,10 +101,10 @@ public class FocusMaskManager : MonoBehaviour {
         }
     }
 
-    private void blockClicks(bool block)
+    public void blockClicks(bool block)
     {
-        show(block);
-        focusMaskSprite.alpha = block?0:1;
+        _isClicksBlocked = block;
+        clickBlocker.SetActive(block);
     }
     
     private void show(bool show)
@@ -118,6 +120,7 @@ public class FocusMaskManager : MonoBehaviour {
         //Debug.LogError("FocusMaskManager initialize");
         this.gameObject.SetActive(true);
         show(false);
+        clickBlocker.SetActive(false);
 
         _isAlphaIncreasing = false;
         focusMaskSprite.alpha = 1;
@@ -125,15 +128,18 @@ public class FocusMaskManager : MonoBehaviour {
     
     public void click()
     {
-        if(_target)
+        if(!_isClicksBlocked)
         {
-            _target.OnPress(true);
+            if(_target)
+            {
+                _target.OnPress(true);
+            }
+            if(null != _callback)
+            {
+                _callback();
+            }
+            initialize();
         }
-        if(null != _callback)
-        {
-            _callback();
-        }
-        initialize();
     }
 
 	void Update ()

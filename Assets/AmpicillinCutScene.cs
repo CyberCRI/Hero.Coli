@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AmpicillinCutScene : MonoBehaviour {
+public class AmpicillinCutScene : CutScene {
 
     [SerializeField]
     private iTweenEvent _iTween2Flagellum;
@@ -33,9 +33,7 @@ public class AmpicillinCutScene : MonoBehaviour {
             Debug.Log(Vector3.Distance(_cutSceneCam.transform.position, new Vector3(_iTween2Flagellum.transform.position.x, _cutSceneCam.transform.position.y, _iTween2Flagellum.transform.position.z)));
             if (Vector3.Distance(_cutSceneCam.transform.position ,new Vector3(_iTween2Flagellum.transform.position.x, _cutSceneCam.transform.position.y, _iTween2Flagellum.transform.position.z)) >= 30)
             {
-                _mainCam.target = _player.transform;
-                _cellControl.freezePlayer(false);
-                Destroy(this.gameObject.transform.parent.gameObject);
+                end();
             }
         }
 	}
@@ -46,14 +44,12 @@ public class AmpicillinCutScene : MonoBehaviour {
         {
             _player = col.gameObject;
             _cellControl = col.GetComponent<CellControl>();
-            startCutScene();
+            start();
         }
     }
 
-    void startCutScene()
+    public override void startCutScene()
     {
-        base.startCutScene()
-        _cellControl.freezePlayer(true);
         for (int i = 0 ; i < _iTween2Flagellum.transform.childCount; i++)
         {
             _iTween2Flagellum.transform.GetChild(i).gameObject.SetActive(true);
@@ -64,6 +60,12 @@ public class AmpicillinCutScene : MonoBehaviour {
         }
         _iTween2Flagellum.enabled = true;
         StartCoroutine(WaitForTarget());
+    }
+    
+    public override void endCutScene ()
+    {
+        Destroy(this.gameObject.transform.parent.gameObject);
+        _mainCam.target = _player.transform;
     }
 
     IEnumerator WaitForTarget()

@@ -159,12 +159,12 @@ INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by c
 
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
-INFO.PICKEDUPGFP.EXPLANATION=This device contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFP.EXPLANATION=This device contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
 
 INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
-INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
 
 INFO.T1_PRO.TITLE=BIOBRICK FOUND!

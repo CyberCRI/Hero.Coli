@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BadGuyCutSceneTrigger : MonoBehaviour {
+public class BadGuyCutSceneTrigger : CutScene {
 
     private bool _first = true;
     [SerializeField]
@@ -50,8 +50,7 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
             if (_first == true)
             {
                 _first = false;
-                startCutScene();
-                startCutScene();
+                start();
             }
         }
     }
@@ -107,16 +106,12 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         {
             yield return true;
         }
-        _mainCamBound.target = _initialTarget;
-        _cellControl.freezePlayer(false);
-        _cutSceneCam.gameObject.SetActive(false);
-        _mainCamBound.gameObject.SetActive(true);
-        this.gameObject.SetActive(false);
-        ModalManager.setModal("T1_AMPICILLIN");
+        
+        end ();
         yield return null;
     }
 
-    override void startCutScene()
+    public override void startCutScene()
     {
         _cutSceneCam.transform.position = _mainCamBound.transform.position;
         _cutSceneCam.transform.rotation = _mainCamBound.transform.rotation;
@@ -126,7 +121,15 @@ public class BadGuyCutSceneTrigger : MonoBehaviour {
         _wayPoint1.transform.position = _cutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z);
         StartCoroutine(WaitForSecondPart());
-        _cellControl.freezePlayer(true);
+    }
+    
+    public override void endCutScene ()
+    {
+        _mainCamBound.target = _initialTarget;
+        _cutSceneCam.gameObject.SetActive(false);
+        _mainCamBound.gameObject.SetActive(true);
+        this.gameObject.SetActive(false);
+        ModalManager.setModal("T1_AMPICILLIN");
     }
 
     void CutSceneSecondPart()

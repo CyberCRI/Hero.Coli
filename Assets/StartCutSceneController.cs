@@ -69,14 +69,19 @@ public class StartCutSceneController : CutScene {
     {
         if (col.gameObject.name == "dummyPlayer")
         {
-            _cellControl.freezePlayer(false);
-            //_cellControl.GetComponent<PhenoSpeed>().setDefaultFlagellaCount(1);
             Destroy(col.gameObject);
-            Destroy(this.gameObject);
+            end ();
         }
     }
+    
+    public override void endCutScene()
+    {
+            _cellControl.freezePlayer(false);
+            //_cellControl.GetComponent<PhenoSpeed>().setDefaultFlagellaCount(1);            
+            Destroy(this.gameObject);
+    }
 
-    override void startCutScene()
+    public override void startCutScene()
     {
         _iTweenEventBacteria.enabled = true;
         _cellControl.freezePlayer(true);
