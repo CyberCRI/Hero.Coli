@@ -37,6 +37,8 @@ public class BoundCamera : MonoBehaviour {
     private float _zoomingTime;
     private float _originZoomingTime;
     private float _originalOffset;
+    private bool _isZooming;
+    private Coroutine _currentCoroutine;
 	
 	// Use this for initialization
 	void Start () {
@@ -65,23 +67,26 @@ public class BoundCamera : MonoBehaviour {
 
     public void ZoomInOut(float YOffset, float zoomingTime)
     {
+        if (_isZooming == true)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
         _zoomingTime = zoomingTime;
         _originZoomingTime = zoomingTime;
         var offSetDif = -(offset.y - YOffset);
-        StartCoroutine(Zoom(offSetDif,offset.y));
+        _currentCoroutine = StartCoroutine(Zoom(offSetDif,offset.y));
     }
 
     IEnumerator Zoom(float YOffset, float originalOffset)
     {
+        _isZooming = true;
         while(_zoomingTime > 0)
         {
             _zoomingTime -= Time.deltaTime;
             offset.y = originalOffset + (YOffset * (1 - (_zoomingTime / _originZoomingTime)));
-            Debug.Log(_zoomingTime + "  " + _originZoomingTime + "  " + YOffset);
             yield return null;
         }
-
+        _isZooming = false;
         yield return null;
     }
-
 }
