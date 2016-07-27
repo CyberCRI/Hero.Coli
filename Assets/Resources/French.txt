@@ -266,7 +266,7 @@ TUTORIAL.INTRODUCTION1.PART2=Des nanorobots égarés ont besoin de votre aide !
 TUTORIAL.INTRODUCTION1.PART3= 
 TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
 
-TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous devrez sortir d'un' labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
+TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous devrez sortir d'un labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
 TUTORIAL.INTRODUCTION2.PART2=Cependant sur votre chemin vous devrez remporter différentes épreuves avant de trouver la sortie.
 TUTORIAL.INTRODUCTION2.PART3=Pour cette mission vous devrez modifier l'ADN de Cellia pour changer ses capacités et remporter ces épreuves.
 TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION

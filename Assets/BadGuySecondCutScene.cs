@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BadGuySecondCutScene : MonoBehaviour {
+public class BadGuySecondCutScene : CutScene {
 
     [SerializeField]
     private iTweenEvent _iTweenEventBigBadGuy;
@@ -41,37 +41,13 @@ public class BadGuySecondCutScene : MonoBehaviour {
             _wayPointCam[1].transform.position = _originWayPoint1;
             StartCoroutine(WaitForSecondPart());
         }
-
 	}
 
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
         {
-            //_cameraInterface.GetComponent<Camera>().enabled = false;
-            _dummyPlayer.transform.position = _player.transform.position;
-            _dummyPlayer.transform.rotation = _player.transform.rotation;
-            _player.SetActive(false);
-            _dummyPlayer.SetActive(true);
-
-            _cutSceneCam.transform.position = _mainCamBound.transform.position;
-            _cutSceneCam.transform.rotation = _mainCamBound.transform.rotation;
-
-            _wayPointCam[0].transform.position = _cutSceneCam.transform.position;
-            _wayPointCam[0].transform.rotation = _cutSceneCam.transform.rotation;
-            _originWayPoint1 = _wayPointCam[0].transform.position;
-            _wayPointCam[1].transform.position = new Vector3(_iTweenEventBigBadGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigBadGuy.transform.position.z);
-            _wayPointCam[1].transform.rotation = _iTweenEventBigBadGuy.transform.rotation;
-            _originWayPoint2 = _wayPointCam[1].transform.position;
-
-            _wayPointPlayer[0].transform.position = _player.transform.position;
-            _wayPointPlayer[0].transform.rotation = _player.transform.rotation;
-
-            _cutSceneCam.gameObject.SetActive(true);
-            _cutSceneCam.GetComponent<PlatformMvt>().restart();
-            _mainCamBound.gameObject.SetActive(false);
-
-            _mainCamBound.target = _iTweenEventBigBadGuy.transform;
+            start ();
         }
     }
 
@@ -93,8 +69,41 @@ public class BadGuySecondCutScene : MonoBehaviour {
         yield return new WaitForSeconds(2.5f);
         GameStateController.get().FadeScreen(true, 2.5f);
         yield return new WaitForSeconds(2.5f);
+        end ();
+        yield return null;
+    }
+    
+    public override void startCutScene ()
+    {        
+        //_cameraInterface.GetComponent<Camera>().enabled = false;
+        _dummyPlayer.transform.position = _player.transform.position;
+        _dummyPlayer.transform.rotation = _player.transform.rotation;
+        _player.SetActive(false);
+        _dummyPlayer.SetActive(true);
+
+        _cutSceneCam.transform.position = _mainCamBound.transform.position;
+        _cutSceneCam.transform.rotation = _mainCamBound.transform.rotation;
+
+        _wayPointCam[0].transform.position = _cutSceneCam.transform.position;
+        _wayPointCam[0].transform.rotation = _cutSceneCam.transform.rotation;
+        _originWayPoint1 = _wayPointCam[0].transform.position;
+        _wayPointCam[1].transform.position = new Vector3(_iTweenEventBigBadGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigBadGuy.transform.position.z);
+        _wayPointCam[1].transform.rotation = _iTweenEventBigBadGuy.transform.rotation;
+        _originWayPoint2 = _wayPointCam[1].transform.position;
+
+        _wayPointPlayer[0].transform.position = _player.transform.position;
+        _wayPointPlayer[0].transform.rotation = _player.transform.rotation;
+
+        _cutSceneCam.gameObject.SetActive(true);
+        _cutSceneCam.GetComponent<PlatformMvt>().restart();
+        _mainCamBound.gameObject.SetActive(false);
+
+        _mainCamBound.target = _iTweenEventBigBadGuy.transform;
+    }    
+    
+    public override void endCutScene ()
+    {
         ModalManager.setModal("T1_END");
         MemoryManager.get ().sendCompletionEvent();
-        yield return null;
     }
 }
