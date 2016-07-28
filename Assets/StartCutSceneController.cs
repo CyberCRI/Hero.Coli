@@ -15,16 +15,14 @@ public class StartCutSceneController : CutScene {
     private TweenScale _tweenScale;
     private Vector3 _originFromTweenScale;
     private Vector3 _originToTweenScale;
-    private CellControl _cellControl;
 
 	// Use this for initialization
 	void Start () {
 
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
-        _cellControl = GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>();
         
-        startCutScene();
+        start();
     }
 
     void ReverseAnim()
@@ -46,14 +44,12 @@ public class StartCutSceneController : CutScene {
     
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false); 
         Destroy(this.gameObject.transform.parent.gameObject);
     }
 
     public override void startCutScene()
     {
         _iTweenEventBacteria.enabled = true;
-        _cellControl.freezePlayer(true);
         StartCoroutine(WaitForSecondPart());
     }
 
@@ -115,7 +111,7 @@ public class StartCutSceneController : CutScene {
     IEnumerator WaitForEnd()
     {
         yield return new WaitForSeconds(2f);
-        endCutScene();
+        end();
         yield return null;
     }
 }

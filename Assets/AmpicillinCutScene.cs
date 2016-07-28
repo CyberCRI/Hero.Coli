@@ -8,7 +8,6 @@ public class AmpicillinCutScene : CutScene {
     private PlatformMvt _pltMvt2Flagellum;
     [SerializeField]
     private PlatformMvt _pltMvt3Flagellum;
-    private CellControl _cellControl;
     private BoundCamera _mainCam;
     private GameObject _player;
     [SerializeField]
@@ -47,7 +46,6 @@ public class AmpicillinCutScene : CutScene {
         if (col.tag == "Player")
         {
             _player = col.gameObject;
-            _cellControl = col.GetComponent<CellControl>();
             start();
         }
     }
