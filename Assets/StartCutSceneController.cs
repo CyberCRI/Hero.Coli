@@ -27,36 +27,6 @@ public class StartCutSceneController : CutScene {
         startCutScene();
     }
 
-	// Update is called once per frame
-	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            startCutScene();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            _dnaTube.SetActive(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            _iTweenEventDNA.enabled = true;
-            _iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            ReverseAnim();
-            _iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad4))
-        {
-            _itweenEventBacteria2.enabled = true;
-        }
-	}
-
     void ReverseAnim()
     {
         _tweenScale.from = _originToTweenScale;
@@ -76,9 +46,8 @@ public class StartCutSceneController : CutScene {
     
     public override void endCutScene()
     {
-            _cellControl.freezePlayer(false);
-            //_cellControl.GetComponent<PhenoSpeed>().setDefaultFlagellaCount(1);            
-            Destroy(this.gameObject.transform.parent.gameObject);
+        _cellControl.freezePlayer(false); 
+        Destroy(this.gameObject.transform.parent.gameObject);
     }
 
     public override void startCutScene()

@@ -10,7 +10,18 @@ public abstract class CutScene : MonoBehaviour {
             __cellControl = (null == __cellControl)?GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>():__cellControl;
             return __cellControl;
         }
-    }  
+    }
+    
+    private CutSceneBlackBarHandler _blackBar;
+    private Camera _uiCam;
+    private int _originCullingMask;
+
+    void OnEnable()
+    {
+        _blackBar = GameObject.Find("CinematicBlackBar").GetComponent<CutSceneBlackBarHandler>();
+        _uiCam = GameObject.FindGameObjectWithTag("CameraInterface").GetComponent<Camera>();
+        _originCullingMask = _uiCam.cullingMask;
+    }
     
 	// must be implemented in each cut scene
     public abstract void startCutScene ();    
@@ -20,6 +31,8 @@ public abstract class CutScene : MonoBehaviour {
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
         startCutScene ();
+        _blackBar.CloseBar(true);
+        _uiCam.cullingMask = LayerMask.NameToLayer("Nothing");
 	}
 	
     // must be implemented in each cut scene
@@ -30,5 +43,7 @@ public abstract class CutScene : MonoBehaviour {
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
         endCutScene ();
+        _blackBar.CloseBar(false);
+        _uiCam.cullingMask = _originCullingMask;
 	}
 }
