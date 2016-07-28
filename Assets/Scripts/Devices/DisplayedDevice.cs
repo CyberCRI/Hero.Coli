@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 public class DisplayedDevice : DisplayedElement {
 
+    public UISprite levelSprite;
+    public UISprite backgroundSprite;
+    public UILocalize moleculeOverlay;
+
   // prefab URIs
   private const string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
   public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
@@ -28,25 +32,27 @@ public class DisplayedDevice : DisplayedElement {
   private const float levelBLThreshold = ( levelBase + levelLow ) / 2;
   private const float levelLMThreshold = ( levelLow + levelMed ) / 2;
   private const float levelMThreshold = levelMed * 1.25f;
-  private const string levelDefaultSuffix = "";
   private const string levelBaseSuffix = "_base";
   private const string levelLowSuffix = "_low";
   private const string levelMedSuffix = "_med";
-  private const string level1Suffix = "_level1";
-  private const string level2Suffix = "_level2";
-  private const string level3Suffix = "_level3";
+  private const string level1Suffix = "level1";
+  private const string level2Suffix = "level2";
+  private const string level3Suffix = "level3";
   private const string textSuffix = "_text";
   private const string pictureSuffix = "_picture";
   private const string level1TextSpriteName = baseDeviceTextureString+qualityDefault+level1Suffix+textSuffix;
   private const string level2TextSpriteName = baseDeviceTextureString+qualityDefault+level2Suffix+textSuffix;
   private const string level3TextSpriteName = baseDeviceTextureString+qualityDefault+level3Suffix+textSuffix;
-  private const string level1PictureSpriteName = baseDeviceTextureString+qualityDefault+level1Suffix+textSuffix;
-  private const string level2PictureSpriteName = baseDeviceTextureString+qualityDefault+level2Suffix+textSuffix;
-  private const string level3PictureSpriteName = baseDeviceTextureString+qualityDefault+level3Suffix+textSuffix;
+  private const string level1PictureSpriteName = baseDeviceTextureString+qualityDefault+level1Suffix+pictureSuffix;
+  private const string level2PictureSpriteName = baseDeviceTextureString+qualityDefault+level2Suffix+pictureSuffix;
+  private const string level3PictureSpriteName = baseDeviceTextureString+qualityDefault+level3Suffix+pictureSuffix;
   
   // default texture
   private const string defaultTexture = "default";
   private const string defaultTextureWithText = defaultTexture+textSuffix;
+  
+  // molecule name overlay
+  private const string moleculeOverlayPrefix = "BRICK.ICONLABEL.";
   
   // background
   private const string backgroundSuffix = "_background";
@@ -56,27 +62,6 @@ public class DisplayedDevice : DisplayedElement {
   private const string squareBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+squareBackgroundSuffix;
   private const string roundedSquareBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+roundedSquareBackgroundSuffix;
   private const string circleBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+circleBackgroundSuffix;
-  
-
-  private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
-  {
-        //{"AMPR", "resist"},
-        {"ARAC", "arac"},
-        {"ATC", "atc"},
-        //{"FLUO1", "fluo1"},
-        //{"FLUO2", "fluo2"},
-        //{"FLUO3", "fluo3"},
-        //{"FLUO4", "fluo4"},
-        //{"FLUO5", "fluo5"},
-        //{"FLUO6", "fluo6"},
-        {"IPTG", "iptg"},
-        {"LARA", "lara"},
-        //{"MOV", "speed"},
-        {"REPR1", "laci"},
-        {"REPR2", "tetr"},
-        {"REPR3", "ci"},
-        {"REPR4", "thci"}
-  };
   
   private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
   {
@@ -99,13 +84,62 @@ public class DisplayedDevice : DisplayedElement {
     }
     return texture;
   }
-
-  private static string getLevelSuffix(Device device)
+  
+  private void setBackgroundSprite(string backgroundSpriteName = circleBackgroundSpriteName)
   {
-    string postfix;
+      if(null != backgroundSprite)
+      {
+          levelSprite.spriteName = backgroundSpriteName;
+          levelSprite.gameObject.SetActive(true);
+      }
+  }
+
+    private void setMoleculeOverlay(string proteinName)
+    {
+        if (null != moleculeOverlay)
+        {
+            string texture = defaultTextureWithText;
+            if (geneSpecialTextureDico.TryGetValue(proteinName, out texture))
+            {
+                moleculeOverlay.gameObject.SetActive(true);
+                moleculeOverlay.key = moleculeOverlayPrefix + proteinName.ToUpperInvariant();
+            }
+            else
+            {
+                moleculeOverlay.gameObject.SetActive(false);
+            }
+        }
+    }
+  
+  private void setLevelSprite(bool isPictureMode = true)
+  {
+      if(null != levelSprite)
+      {
+          string spriteName = getLevelSpriteName(_device, isPictureMode);
+          if(!string.IsNullOrEmpty(spriteName))
+          {
+              levelSprite.spriteName = spriteName;
+              levelSprite.gameObject.SetActive(true);
+          }
+          else
+          {
+              levelSprite.gameObject.SetActive(false);
+          }
+      }
+  }
+  
+  private void setDeviceIcon()
+  {   
+        _currentSpriteName = getTextureName(_device);
+        setSprite(_currentSpriteName);
+  }
+
+  private static string getLevelSpriteName(Device device, bool isPictureMode = true)
+  {
+    string spriteName;
     if(device == null)
     {
-      postfix = levelDefaultSuffix;
+      spriteName = "";
     }
     else
     {
@@ -113,26 +147,26 @@ public class DisplayedDevice : DisplayedElement {
   
       if(expressionLevel < levelBThreshold)
       {
-        postfix = levelDefaultSuffix;
+        spriteName = "";
       }
       else if (expressionLevel < levelBLThreshold)
       {
-        postfix = levelBaseSuffix;
+        spriteName = isPictureMode?level1PictureSpriteName:level1TextSpriteName;
       }
       else if (expressionLevel < levelLMThreshold)
       {
-        postfix = levelLowSuffix;
+        spriteName = isPictureMode?level2PictureSpriteName:level2TextSpriteName;
       }
       else if (expressionLevel < levelMThreshold)
       {
-        postfix = levelMedSuffix;
+        spriteName = isPictureMode?level3PictureSpriteName:level3TextSpriteName;
       }
       else
       {
-        postfix = levelDefaultSuffix;
+        spriteName = "";
       }
     }
-    return postfix;
+    return spriteName;
   }
 
   public Device                       _device;
@@ -250,7 +284,9 @@ public class DisplayedDevice : DisplayedElement {
     {
       Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
     }
-    Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
+    if(null != devicesDisplayer)
+        Logger.Log("DisplayedDevice::Initialize("+displayedDeviceScript+", "+device+", "+devicesDisplayer+", "+deviceType+") starts", Logger.Level.DEBUG);
+        
     displayedDeviceScript._device = Device.buildDevice(device);
     if(displayedDeviceScript._device==null)
     {
@@ -263,6 +299,11 @@ public class DisplayedDevice : DisplayedElement {
     }
     displayedDeviceScript._deviceType = deviceType;
     Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
+    
+    displayedDeviceScript.setBackgroundSprite();
+    displayedDeviceScript.setMoleculeOverlay(device.getFirstGeneProteinName());
+    displayedDeviceScript.setLevelSprite();
+    displayedDeviceScript.setDeviceIcon();
   }
 	
 	protected string getDebugInfos() {

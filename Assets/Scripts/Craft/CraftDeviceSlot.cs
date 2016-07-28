@@ -48,9 +48,8 @@ public class CraftDeviceSlot : MonoBehaviour
                     //set result device
                     if(null != resultDevice)
                     {
+                        CraftResultDevice.Initialize(resultDevice, currentDevice, null, DevicesDisplayer.DeviceType.Listed);
                         resultDevice.gameObject.SetActive(true);
-                        resultDevice._device = currentDevice;
-                        resultDevice._sprite.spriteName = DisplayedDevice.getTextureName(currentDevice);
                     }                    
                 }
             }

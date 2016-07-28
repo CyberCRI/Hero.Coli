@@ -112,8 +112,11 @@ public class FocusMaskManager : MonoBehaviour {
         focusMask.SetActive(show);
         hole.SetActive(show);
         GameObject perso = GameObject.Find("Perso");
-        _cellControl = ((_cellControl==null) && (perso != null))?perso.GetComponent<CellControl>():_cellControl;
-        _cellControl.freezePlayer(show);
+        if(null != perso)
+        {
+            _cellControl = (_cellControl==null)?perso.GetComponent<CellControl>():_cellControl;
+            _cellControl.freezePlayer(show);
+        }
     }
     
     public void initialize()
