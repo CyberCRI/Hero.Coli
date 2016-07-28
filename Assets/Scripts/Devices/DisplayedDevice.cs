@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 public class DisplayedDevice : DisplayedElement {
 
-  // static stuff
+  // prefab URIs
+  private const string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+  public const string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";  
+  //private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
+  private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
+  private const string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
 
-  private static string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
-  public static string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
-
-  public static string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";
+  // device icon //
   
-  //private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
-  private static string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
+  // common
+  private const string baseDeviceTextureString = "device_";
+  private const string quality256 = "256x256_";
+  private const string quality80 = "80x80_";
+  private const string quality64 = "64x64_";
+  private const string qualityDefault = quality64;
   
-
-  private static string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
-
-  private static string baseDeviceTextureString = "device_";
-  private static string quality256 = "256x256_";
-  private static string quality80 = "80x80_";
-  private static string quality64 = "64x64_";
-  private static string qualityDefault = "64x64_";
+  // level
   private const float levelBase = .06f;
   private const float levelLow = .126f;
   private const float levelMed = .23f;
@@ -28,49 +28,84 @@ public class DisplayedDevice : DisplayedElement {
   private const float levelBLThreshold = ( levelBase + levelLow ) / 2;
   private const float levelLMThreshold = ( levelLow + levelMed ) / 2;
   private const float levelMThreshold = levelMed * 1.25f;
-  private static string levelDefaultPostfix = "";
-  private static string levelBasePostfix = "_base";
-  private static string levelLowPostfix = "_low";
-  private static string levelMedPostfix = "_med";
-  private static string defaultTexture = "default";
+  private const string levelDefaultSuffix = "";
+  private const string levelBaseSuffix = "_base";
+  private const string levelLowSuffix = "_low";
+  private const string levelMedSuffix = "_med";
+  private const string level1Suffix = "_level1";
+  private const string level2Suffix = "_level2";
+  private const string level3Suffix = "_level3";
+  private const string textSuffix = "_text";
+  private const string pictureSuffix = "_picture";
+  private const string level1TextSpriteName = baseDeviceTextureString+qualityDefault+level1Suffix+textSuffix;
+  private const string level2TextSpriteName = baseDeviceTextureString+qualityDefault+level2Suffix+textSuffix;
+  private const string level3TextSpriteName = baseDeviceTextureString+qualityDefault+level3Suffix+textSuffix;
+  private const string level1PictureSpriteName = baseDeviceTextureString+qualityDefault+level1Suffix+textSuffix;
+  private const string level2PictureSpriteName = baseDeviceTextureString+qualityDefault+level2Suffix+textSuffix;
+  private const string level3PictureSpriteName = baseDeviceTextureString+qualityDefault+level3Suffix+textSuffix;
+  
+  // default texture
+  private const string defaultTexture = "default";
+  private const string defaultTextureWithText = defaultTexture+textSuffix;
+  
+  // background
+  private const string backgroundSuffix = "_background";
+  private const string squareBackgroundSuffix = "_square";
+  private const string roundedSquareBackgroundSuffix = "_rounded_square";
+  private const string circleBackgroundSuffix = "_circle";
+  private const string squareBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+squareBackgroundSuffix;
+  private const string roundedSquareBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+roundedSquareBackgroundSuffix;
+  private const string circleBackgroundSpriteName = baseDeviceTextureString+qualityDefault+backgroundSuffix+circleBackgroundSuffix;
+  
 
   private static Dictionary<string, string> geneTextureDico = new Dictionary<string, string>()
   {
-        {"AMPR", "resist"},
+        //{"AMPR", "resist"},
         {"ARAC", "arac"},
         {"ATC", "atc"},
-        {"FLUO1", "fluo1"},
-        {"FLUO2", "fluo2"},
-        {"FLUO3", "fluo3"},
-        {"FLUO4", "fluo4"},
-        {"FLUO5", "fluo5"},
-        {"FLUO6", "fluo6"},
+        //{"FLUO1", "fluo1"},
+        //{"FLUO2", "fluo2"},
+        //{"FLUO3", "fluo3"},
+        //{"FLUO4", "fluo4"},
+        //{"FLUO5", "fluo5"},
+        //{"FLUO6", "fluo6"},
         {"IPTG", "iptg"},
         {"LARA", "lara"},
-        {"MOV", "speed"},
+        //{"MOV", "speed"},
         {"REPR1", "laci"},
         {"REPR2", "tetr"},
         {"REPR3", "ci"},
         {"REPR4", "thci"}
   };
-
+  
+  private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
+  {
+        {"ARAC", defaultTextureWithText},
+        {"ATC", defaultTextureWithText},
+        {"IPTG", defaultTextureWithText},
+        {"LARA", defaultTextureWithText},
+        {"REPR1", defaultTextureWithText},
+        {"REPR2", defaultTextureWithText},
+        {"REPR3", defaultTextureWithText},
+        {"REPR4", defaultTextureWithText}
+  };
 
   private static string getTextureName(string proteinName)
   {
-    string texture = null;
-    if(!geneTextureDico.TryGetValue(proteinName, out texture))
+    string texture = defaultTextureWithText;
+    if(!geneSpecialTextureDico.TryGetValue(proteinName, out texture))
     {
-      texture = defaultTexture;
+      texture = proteinName.ToLowerInvariant();
     }
     return texture;
   }
 
-  private static string getLevelPostfix(Device device)
+  private static string getLevelSuffix(Device device)
   {
     string postfix;
     if(device == null)
     {
-      postfix = levelDefaultPostfix;
+      postfix = levelDefaultSuffix;
     }
     else
     {
@@ -78,23 +113,23 @@ public class DisplayedDevice : DisplayedElement {
   
       if(expressionLevel < levelBThreshold)
       {
-        postfix = levelDefaultPostfix;
+        postfix = levelDefaultSuffix;
       }
       else if (expressionLevel < levelBLThreshold)
       {
-        postfix = levelBasePostfix;
+        postfix = levelBaseSuffix;
       }
       else if (expressionLevel < levelLMThreshold)
       {
-        postfix = levelLowPostfix;
+        postfix = levelLowSuffix;
       }
       else if (expressionLevel < levelMThreshold)
       {
-        postfix = levelMedPostfix;
+        postfix = levelMedSuffix;
       }
       else
       {
-        postfix = levelDefaultPostfix;
+        postfix = levelDefaultSuffix;
       }
     }
     return postfix;
@@ -195,8 +230,10 @@ public class DisplayedDevice : DisplayedElement {
       usedSpriteName += getTextureName(device.getFirstGeneProteinName());
     }
 
+/*
     if(quality == DevicesDisplayer.TextureQuality.LOW)
-      usedSpriteName += getLevelPostfix(device);
+      usedSpriteName += getLevelSuffix(device);
+*/
 
     Logger.Log("DisplayedDevice::getTextureName usedSpriteName="+usedSpriteName, Logger.Level.TRACE);
     return usedSpriteName;
@@ -226,7 +263,6 @@ public class DisplayedDevice : DisplayedElement {
     }
     displayedDeviceScript._deviceType = deviceType;
     Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
-
   }
 	
 	protected string getDebugInfos() {
