@@ -6,7 +6,7 @@ public class PlatformMvt : MonoBehaviour {
 	
 	//Tu peux remplacer les Vector3 par Transform, créer des Empty Objects que tu places aux positions que tu veux, et les glisser dans la liste.
 	public List<GameObject> points = new List<GameObject>();
-	private int currentDestination = 0;
+	public int currentDestination = 0;
 	public float speed = 0.1f;
 	[HideInInspector]
 	public float saveSpeed;
@@ -80,6 +80,11 @@ public class PlatformMvt : MonoBehaviour {
     public Vector3 GetCurrentDestination()
     {
         return points[currentDestination].transform.position;
+    }
+
+    public void SetCurrentDestination(int index)
+    {
+        currentDestination = index;
     }
 	
 }

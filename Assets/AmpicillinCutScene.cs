@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AmpicillinCutScene : MonoBehaviour {
 
     [SerializeField]
-    private iTweenEvent _iTween2Flagellum;
+    private PlatformMvt _pltMvt2Flagellum;
     [SerializeField]
-    private iTweenEvent _iTween3Flagellum;
+    private PlatformMvt _pltMvt3Flagellum;
     private CellControl _cellControl;
     private BoundCamera _mainCam;
     private GameObject _player;
@@ -14,12 +15,15 @@ public class AmpicillinCutScene : MonoBehaviour {
     private Camera _cutSceneCam;
     private bool _moveCam = false;
     private bool _moveCam2 = false;
-
+    [SerializeField]
+    private List<GameObject> _points = new List<GameObject>();
+    
     // Use this for initialization
     void Start () {
         _mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
-	
+	/*
 	// Update is called once per frame
 	void Update () {
 	    if (_moveCam == true)
@@ -77,10 +81,47 @@ public class AmpicillinCutScene : MonoBehaviour {
         _iTween3Flagellum.enabled = true;
         yield return null;
     }
-
+    */
     public void ResetCamTarget()
     {
         _moveCam = false;
         _moveCam2 = true;
+    }
+
+
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "Door")
+        {
+            StartEscape(_pltMvt2Flagellum, 10);
+            StartCoroutine(WaitForSecondBacteria());
+            _player.GetComponent<CellControl>().freezePlayer(true);
+        }
+        if (col.tag == "CutSceneElement")
+        {
+            Destroy(col.gameObject);
+        }
+    }
+
+    void StartEscape(PlatformMvt _pltMvt, float speed)
+    {
+        _pltMvt.points.Remove(_pltMvt.points[3]);
+        for (int i = 0; i < 3; i++)
+        {
+            _pltMvt.points[i] = _points[i];
+            _pltMvt.SetCurrentDestination(0);
+            _pltMvt.speed = speed;
+            _pltMvt.loop = false;
+        }
+    }
+
+    IEnumerator WaitForSecondBacteria()
+    {
+        yield return new WaitForSeconds(4.5f);
+        StartEscape(_pltMvt3Flagellum, 25);
+        yield return new WaitForSeconds(3f);
+        _player.GetComponent<CellControl>().freezePlayer(false);
+        yield return null;
     }
 }
