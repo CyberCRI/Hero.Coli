@@ -4,12 +4,14 @@ public class FocusMaskManager : MonoBehaviour {
 
     public GameObject focusMask, hole;
     public UISprite focusMaskSprite;
+    public GameObject clickBlocker;
     private ExternalOnPressButton _target;
     private CellControl _cellControl;
     private bool _isAlphaIncreasing = false;
     private float _minAlpha = 0.2f;
     private float _maxAlpha = 1f;
     private float _newAlpha;
+    private bool _isClicksBlocked = false;
     
     // test code
     /*
@@ -98,13 +100,23 @@ public class FocusMaskManager : MonoBehaviour {
             //Debug.LogError("new pos="+newPosition);
         }
     }
+
+    public void blockClicks(bool block)
+    {
+        _isClicksBlocked = block;
+        clickBlocker.SetActive(block);
+    }
     
     private void show(bool show)
     {
         focusMask.SetActive(show);
         hole.SetActive(show);
-        _cellControl = _cellControl==null?GameObject.Find("Perso").GetComponent<CellControl>():_cellControl;
-        _cellControl.freezePlayer(show);
+        GameObject perso = GameObject.Find("Perso");
+        if(null != perso)
+        {
+            _cellControl = (_cellControl==null)?perso.GetComponent<CellControl>():_cellControl;
+            _cellControl.freezePlayer(show);
+        }
     }
     
     public void initialize()
@@ -112,6 +124,7 @@ public class FocusMaskManager : MonoBehaviour {
         //Debug.LogError("FocusMaskManager initialize");
         this.gameObject.SetActive(true);
         show(false);
+        clickBlocker.SetActive(false);
 
         _isAlphaIncreasing = false;
         focusMaskSprite.alpha = 1;
@@ -119,15 +132,18 @@ public class FocusMaskManager : MonoBehaviour {
     
     public void click()
     {
-        if(_target)
+        if(!_isClicksBlocked)
         {
-            _target.OnPress(true);
+            if(_target)
+            {
+                _target.OnPress(true);
+            }
+            if(null != _callback)
+            {
+                _callback();
+            }
+            initialize();
         }
-        if(null != _callback)
-        {
-            _callback();
-        }
-        initialize();
     }
 
 	void Update ()

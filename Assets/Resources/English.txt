@@ -99,8 +99,35 @@ BRICK.REPR2=tetR
 BRICK.REPR3=cI
 BRICK.REPR4=heat-sensible cI
 
-
 BRICK.DTER=double terminator
+
+BRICK.ICONLABEL.PRBAD1= 
+BRICK.ICONLABEL.PRBAD2= 
+BRICK.ICONLABEL.PRBAD3= 
+BRICK.ICONLABEL.PRCONS= 
+BRICK.ICONLABEL.PRGLUC= 
+BRICK.ICONLABEL.PRLACI= 
+BRICK.ICONLABEL.PRLAMB= 
+BRICK.ICONLABEL.PRTETR= 
+
+BRICK.ICONLABEL.RBS1= 
+BRICK.ICONLABEL.RBS2= 
+BRICK.ICONLABEL.RBS3= 
+
+BRICK.ICONLABEL.AMPR=AmpR
+BRICK.ICONLABEL.ARAC=araC
+BRICK.ICONLABEL.ATC=aTc
+BRICK.ICONLABEL.FLUO1=GFP
+BRICK.ICONLABEL.FLUO2=RFP
+BRICK.ICONLABEL.IPTG=IPTG
+BRICK.ICONLABEL.LARA=l-ara
+BRICK.ICONLABEL.MOV=FlhDC
+BRICK.ICONLABEL.REPR1=lacI
+BRICK.ICONLABEL.REPR2=tetR
+BRICK.ICONLABEL.REPR3=cI
+BRICK.ICONLABEL.REPR4=T°-cI
+
+BRICK.ICONLABEL.DTER= 
 
 MOL.AMPI*=penicilloic acid
 MOL.AMPI=ampicillin
@@ -159,12 +186,12 @@ INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by c
 
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
-INFO.PICKEDUPGFP.EXPLANATION=This device contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFP.EXPLANATION=This device contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
 
 INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
-INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
 
 INFO.T1_PRO.TITLE=BIOBRICK FOUND!

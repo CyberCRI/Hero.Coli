@@ -97,6 +97,33 @@ BRICK.REPR4=cI thermosensible
 
 BRICK.DTER=terminateur double
 
+BRICK.ICONLABEL.PRBAD1= 
+BRICK.ICONLABEL.PRBAD2= 
+BRICK.ICONLABEL.PRBAD3= 
+BRICK.ICONLABEL.PRCONS= 
+BRICK.ICONLABEL.PRGLUC= 
+BRICK.ICONLABEL.PRLACI= 
+BRICK.ICONLABEL.PRLAMB= 
+BRICK.ICONLABEL.PRTETR= 
+
+BRICK.ICONLABEL.RBS1= 
+BRICK.ICONLABEL.RBS2= 
+BRICK.ICONLABEL.RBS3= 
+
+BRICK.ICONLABEL.AMPR=AmpR
+BRICK.ICONLABEL.ARAC=araC
+BRICK.ICONLABEL.ATC=aTc
+BRICK.ICONLABEL.FLUO1=GFP
+BRICK.ICONLABEL.FLUO2=RFP
+BRICK.ICONLABEL.IPTG=IPTG
+BRICK.ICONLABEL.LARA=l-ara
+BRICK.ICONLABEL.MOV=FlhDC
+BRICK.ICONLABEL.REPR1=lacI
+BRICK.ICONLABEL.REPR2=tetR
+BRICK.ICONLABEL.REPR3=cI
+BRICK.ICONLABEL.REPR4=T°-cI
+
+BRICK.ICONLABEL.DTER= 
 
 MOL.AMPI*=acide pénicilloïque
 MOL.AMPI=ampicilline
@@ -266,7 +293,7 @@ TUTORIAL.INTRODUCTION1.PART2=Des nanorobots égarés ont besoin de votre aide !
 TUTORIAL.INTRODUCTION1.PART3= 
 TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
 
-TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous devrez sortir d'un' labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
+TUTORIAL.INTRODUCTION2.PART1=Dans ce niveau, vous devrez sortir d'un labyrinthe infesté de mystérieuses créatures qui ont répandu des composés toxiques.
 TUTORIAL.INTRODUCTION2.PART2=Cependant sur votre chemin vous devrez remporter différentes épreuves avant de trouver la sortie.
 TUTORIAL.INTRODUCTION2.PART3=Pour cette mission vous devrez modifier l'ADN de Cellia pour changer ses capacités et remporter ces épreuves.
 TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION
@@ -395,12 +422,12 @@ TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
 TOOLTIP.B_FLUO1.EXPLANATION=Séquence codant pour la protéine de fluorescence verte (GFP).
 
 TOOLTIP.B_FLUO2.TITLE=Séquence Codante de la RFP
-TOOLTIP.B_FLUO2.SUBTITLE=Use: exhibits bright red fluorescence when exposed to green light.
-TOOLTIP.B_FLUO2.CUSTOMFIELD=Fluorescence\nparameters:
+TOOLTIP.B_FLUO2.SUBTITLE=Fonction : exhibe une fluorescence rouge vif quand exposée à une lumière verte.
+TOOLTIP.B_FLUO2.CUSTOMFIELD=Paramètres de\nfluorescence :
 TOOLTIP.B_FLUO2.CUSTOMVALUE=Excitation max - 587nm\nÉmission max - 610nm
 TOOLTIP.B_FLUO2.LENGTH=714bp
 TOOLTIP.B_FLUO2.REFERENCE=iGEM Harvard 2005
-TOOLTIP.B_FLUO2.EXPLANATION=Red Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO2.EXPLANATION=Séquence codant pour la protéine de fluorescence rouge (RFP).
 
 TOOLTIP.B_FLUO3.TITLE=Séquence Codante Venus YFP
 TOOLTIP.B_FLUO3.SUBTITLE=Use: exhibits bright yellow fluorescence when exposed to green light.

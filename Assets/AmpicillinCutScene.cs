@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AmpicillinCutScene : MonoBehaviour {
+public class AmpicillinCutScene : CutScene {
 
     [SerializeField]
     private PlatformMvt _pltMvt2Flagellum;
@@ -37,9 +37,7 @@ public class AmpicillinCutScene : MonoBehaviour {
             Debug.Log(Vector3.Distance(_cutSceneCam.transform.position, new Vector3(_iTween2Flagellum.transform.position.x, _cutSceneCam.transform.position.y, _iTween2Flagellum.transform.position.z)));
             if (Vector3.Distance(_cutSceneCam.transform.position ,new Vector3(_iTween2Flagellum.transform.position.x, _cutSceneCam.transform.position.y, _iTween2Flagellum.transform.position.z)) >= 30)
             {
-                _mainCam.target = _player.transform;
-                _cellControl.freezePlayer(false);
-                Destroy(this.gameObject.transform.parent.gameObject);
+                end();
             }
         }
 	}
@@ -50,13 +48,12 @@ public class AmpicillinCutScene : MonoBehaviour {
         {
             _player = col.gameObject;
             _cellControl = col.GetComponent<CellControl>();
-            StartCutScene();
+            start();
         }
     }
 
-    void StartCutScene()
+    public override void startCutScene()
     {
-        _cellControl.freezePlayer(true);
         for (int i = 0 ; i < _iTween2Flagellum.transform.childCount; i++)
         {
             _iTween2Flagellum.transform.GetChild(i).gameObject.SetActive(true);
@@ -67,6 +64,12 @@ public class AmpicillinCutScene : MonoBehaviour {
         }
         _iTween2Flagellum.enabled = true;
         StartCoroutine(WaitForTarget());
+    }
+    
+    public override void endCutScene ()
+    {
+        Destroy(this.gameObject.transform.parent.gameObject);
+        _mainCam.target = _player.transform;
     }
 
     IEnumerator WaitForTarget()
@@ -94,9 +97,7 @@ public class AmpicillinCutScene : MonoBehaviour {
     {
         if (col.tag == "Door")
         {
-            StartEscape(_pltMvt2Flagellum, 10);
-            StartCoroutine(WaitForSecondBacteria());
-            _player.GetComponent<CellControl>().freezePlayer(true);
+            start();
         }
         if (col.tag == "CutSceneElement")
         {
@@ -116,12 +117,20 @@ public class AmpicillinCutScene : MonoBehaviour {
         }
     }
 
+    public override void startCutScene()
+    {
+        StartEscape(_pltMvt2Flagellum, 10);
+        StartCoroutine(WaitForSecondBacteria());
+    }
+
+    public override void endCutScene() { }
+
     IEnumerator WaitForSecondBacteria()
     {
         yield return new WaitForSeconds(4.5f);
         StartEscape(_pltMvt3Flagellum, 25);
         yield return new WaitForSeconds(3f);
-        _player.GetComponent<CellControl>().freezePlayer(false);
+        end();
         yield return null;
     }
 }

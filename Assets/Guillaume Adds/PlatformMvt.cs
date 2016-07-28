@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PlatformMvt : MonoBehaviour {
 	
-	//Tu peux remplacer les Vector3 par Transform, créer des Empty Objects que tu places aux positions que tu veux, et les glisser dans la liste.
 	public List<GameObject> points = new List<GameObject>();
 	public int currentDestination = 0;
 	public float speed = 0.1f;

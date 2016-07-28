@@ -115,6 +115,11 @@ public class CellControl : MonoBehaviour {
         if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
         {        
             Plane playerPlane = new Plane(Vector3.up, transform.position);            
+            if(null == Camera.main)
+                Debug.LogWarning("(null == Camera.main)");
+            if(null == Camera.main)
+                Debug.LogWarning("Input.mousePosition");
+            
             Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
         
             if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
