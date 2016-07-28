@@ -78,7 +78,7 @@ public class StartCutSceneController : CutScene {
     {
             _cellControl.freezePlayer(false);
             //_cellControl.GetComponent<PhenoSpeed>().setDefaultFlagellaCount(1);            
-            Destroy(this.gameObject);
+            Destroy(this.gameObject.transform.parent.gameObject);
     }
 
     public override void startCutScene()
@@ -111,8 +111,8 @@ public class StartCutSceneController : CutScene {
     void FifthPart()
     {
         _itweenEventBacteria2.enabled = true;
-        
-        endCutScene();
+
+        StartCoroutine(WaitForEnd());
     }
 
     IEnumerator WaitForSecondPart()
@@ -140,6 +140,13 @@ public class StartCutSceneController : CutScene {
     {
         yield return new WaitForSeconds(0.5f);
         FifthPart();
+        yield return null;
+    }
+
+    IEnumerator WaitForEnd()
+    {
+        yield return new WaitForSeconds(2f);
+        endCutScene();
         yield return null;
     }
 }
