@@ -8,9 +8,9 @@ public class DisplayedDevice : DisplayedElement {
     public UILocalize moleculeOverlay;
 
   // prefab URIs
-  private const string equipedPrefabURI  = "GUI/screen1/Devices/EquipedDeviceButtonPrefab";
+  private const string equipedPrefabURI  = "GUI/screen1/Devices/DisplayedDevicePrefab";
   public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
-  public const string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesButtonPrefab";  
+  public const string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesPrefab";  
   //private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
   private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
   private const string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
@@ -174,13 +174,13 @@ public class DisplayedDevice : DisplayedElement {
   public DevicesDisplayer.DeviceType  _deviceType;
 
 	public static DisplayedDevice Create(
-		Transform parentTransform
-		, Vector3 localPosition
-    , string spriteName
-		, Device device
-		, DevicesDisplayer devicesDisplayer
-    , DevicesDisplayer.DeviceType deviceType
-		)
+            Transform parentTransform
+            , Vector3 localPosition
+            , string spriteName
+            , Device device
+            , DevicesDisplayer devicesDisplayer
+            , DevicesDisplayer.DeviceType deviceType
+        )
 	{
 
     if(device == null)

@@ -141,34 +141,38 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Level.TRACE);
 	}
 	
-	public void addEquipedDevice(Device device) {
-		Logger.Log("addEquipedDevice("+device.ToString()+")", Logger.Level.TRACE);
-    if(device == null)
+	public void addEquipedDevice(Device device)
     {
-      Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+        Logger.Log("addEquipedDevice(" + device.ToString() + ")", Logger.Level.TRACE);
+        if (device == null)
+        {
+            Logger.Log("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+        }
+        bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device));
+        if (newEquiped)
+        {
+            Vector3 localPosition = getNewPosition(DeviceType.Equiped);
+            UnityEngine.Transform parent = equipPanel.transform;
+
+            DisplayedDevice newDevice = DisplayedDevice.Create(
+                                            parent,
+                                            localPosition,
+                                            null,
+                                            device,
+                                            this,
+                                            DevicesDisplayer.DeviceType.Equiped
+                                        );
+                
+            _equipedDevices.Add(newDevice);
+
+            graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
+
+        }
+        else
+        {
+            Logger.Log("addDevice failed: alreadyEquiped=" + newEquiped, Logger.Level.TRACE);
+        }
     }
-		bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
-		if(newEquiped) { 
-			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
-			UnityEngine.Transform parent = equipPanel.transform;
-
-			DisplayedDevice newDevice = 
-				EquipedDisplayedDevice.Create(
-          parent,
-          localPosition,
-          null,
-          device,
-          this,
-          DevicesDisplayer.DeviceType.Equiped
-        );
-			_equipedDevices.Add(newDevice);
-
-      graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
-
-		} else {
-			Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
-		}
-	}
 
   public DeviceContainer.AddingResult askAddEquipedDevice(Device device) {
     if(device == null)

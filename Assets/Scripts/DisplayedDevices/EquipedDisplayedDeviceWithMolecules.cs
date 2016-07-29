@@ -1,80 +1,92 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
-    
-  public UILabel           namesLabel;
-  public UILabel           valuesLabel;
+public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject _displayedDeviceDummy;
+    private GameObject _displayedDevice;
+    private DisplayedDevice _displayedDeviceScript;
+    private List<GameObject> graphicalComponents = new List<GameObject>();
 
-  private GameObject _equipmentDeviceDummy;
-  public GameObject equipmentDeviceDummy;
-  public GameObject equipmentDevice;
-  public EquipmentDevice equipmentDeviceScript;
-    
-  private GameObject _equipedDeviceDummy;
-  public GameObject equipedDevice;
-  public EquipedDisplayedDevice equipedDeviceScript;
-    
-  public Device device; 
-  
-  public GameObject background;
-  
-    
-  private DisplayedMolecule _displayedMolecule;
+    public Device device;
+    public UILabel namesLabel;
+    public UILabel valuesLabel;
+    public GameObject background, deviceIcon, level, moleculeName;
 
-  public void initialize(GameObject staticEquipmentDeviceDummy, GameObject staticEquipedDeviceDummy)
-  {
-    if(null != equipmentDeviceDummy)
+    private DisplayedMolecule _displayedMolecule;
+
+    public void initialize(DisplayedDevice displayedDeviceScript)
     {
-        equipmentDeviceDummy.SetActive(false);
-    }
-
-        if(null == staticEquipmentDeviceDummy || null == staticEquipedDeviceDummy)
+        if (null != _displayedDeviceDummy)
         {
-      Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
-    }
-    else
-    {
-      _equipmentDeviceDummy = staticEquipmentDeviceDummy;
-            _equipedDeviceDummy = staticEquipedDeviceDummy;
-      setEquipmentDevice();
-    }
-  }
-  
-  public void setLocalPosition(Vector3 newLocalPosition)
-  {   
-      Vector3 delta = newLocalPosition - this.transform.localPosition;
-      
-      namesLabel.transform.localPosition = namesLabel.transform.localPosition + delta;
-      valuesLabel.transform.localPosition = valuesLabel.transform.localPosition + delta;
-      background.transform.localPosition = background.transform.localPosition + delta; 
-      
-      this.transform.localPosition = newLocalPosition;
-  }
-
-  public void setEquipmentDevice()
-  {
-    equipmentDevice.transform.parent = transform;
-    equipmentDevice.transform.localPosition = _equipmentDeviceDummy.transform.localPosition;
-    equipmentDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    equipmentDevice.transform.localRotation = _equipmentDeviceDummy.transform.localRotation;    
-
-    setEquipedDevice();
-  }
-
-  public void setEquipedDevice()
-  {
-    //    if(equipedDevice.GetComponent<EquipmentDevice>
-    equipedDevice.transform.parent = equipmentDevice.transform;
-    equipedDevice.transform.localPosition = _equipedDeviceDummy.transform.localPosition;
-    equipedDevice.transform.localScale = new Vector3(1f, 1f, 0);
-    equipedDevice.transform.localRotation = _equipedDeviceDummy.transform.localRotation;
+            _displayedDeviceDummy.SetActive(false);
             
-    equipedDeviceScript.closeButton = equipmentDeviceScript.closeButton;
-    equipmentDeviceScript.closeButton.device = equipedDeviceScript;
-    equipedDeviceScript.setDisplayBricks(false);
-  }
+            _displayedDevice        = displayedDeviceScript.gameObject;
+            _displayedDeviceScript  = displayedDeviceScript;
+            device                  = displayedDeviceScript._device;
+            
+            setDisplayedDevice();
+            
+            background      = displayedDeviceScript.backgroundSprite.gameObject;
+            deviceIcon      = displayedDeviceScript._sprite.gameObject;
+            level           = displayedDeviceScript.levelSprite.gameObject;
+            moleculeName    = displayedDeviceScript.moleculeOverlay.gameObject;
+            
+            graphicalComponents = new List<GameObject>{namesLabel.gameObject, valuesLabel.gameObject, background, deviceIcon, level, moleculeName};
+            
+            doOnGameObjects(setParent);
+            
+            moleculeName.transform.position = new Vector3(moleculeName.transform.position.x, moleculeName.transform.position.y, -0.3f); 
+        }
+        else
+        {
+            Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
+        }
+    }
+
+    private delegate void GOEditor(GameObject go);
+    private void doOnGameObjects(GOEditor edit)
+    {
+        foreach (GameObject go in graphicalComponents)
+        {
+            if (null != go)
+            {
+                edit(go);
+            }
+        }
+    }
+    private void setParent(GameObject go)
+    {
+        go.transform.parent = this.transform.parent;
+    }
+
+    private void moveGameObject(Vector3 delta, GameObject go)
+    {
+        go.transform.localPosition = go.transform.localPosition + delta;
+    }
+
+    private GOEditor moveGameObject(Vector3 delta)
+    {
+        return (GameObject go) => moveGameObject(delta, go);
+    }
+
+    public void setLocalPosition(Vector3 newLocalPosition)
+    {
+        //TODO clean
+        Vector3 delta = newLocalPosition - this.transform.localPosition;
+
+        this.transform.localPosition = newLocalPosition;
+        doOnGameObjects(moveGameObject(delta));
+    }
+
+    public void setDisplayedDevice()
+    {
+        _displayedDevice.transform.parent = this.transform;
+        _displayedDevice.transform.localPosition = _displayedDeviceDummy.transform.localPosition;
+        _displayedDevice.transform.localScale = new Vector3(1f, 1f, 0);
+        _displayedDevice.transform.localRotation = _displayedDeviceDummy.transform.localRotation;
+    }
 
   //TODO allow multiple protein management
   public void addDisplayedMolecule(DisplayedMolecule molecule)
@@ -106,9 +118,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   
   void OnDestroy()
   {
-      Destroy(background);
-      Destroy(namesLabel.gameObject);
-      Destroy(valuesLabel.gameObject);
+      doOnGameObjects(Destroy);
   }
   
   void OnPress(bool isPressed) {
@@ -125,6 +135,9 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.INFO);
+    
+    graphicalComponents = new List<GameObject>{namesLabel.gameObject, valuesLabel.gameObject, background, deviceIcon, level, moleculeName};
+    
     namesLabel.text = "";
     valuesLabel.text = "";
   }
@@ -147,6 +160,6 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour {
   }
 
   protected string getDebugInfos() {
-        return "EquipedDisplayedDeviceWithMolecules inner device="+device+", inner equipedDeviceScript type="+equipedDeviceScript+", time="+Time.realtimeSinceStartup;
+        return "EquipedDisplayedDeviceWithMolecules inner device="+device+", inner displayedDeviceScript type="+_displayedDeviceScript+", time="+Time.realtimeSinceStartup;
   }
 }
