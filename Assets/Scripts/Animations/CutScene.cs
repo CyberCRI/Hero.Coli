@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public abstract class CutScene : MonoBehaviour {
 
     private CellControl __cellControl;
-    private CellControl _cellControl
+    protected CellControl _cellControl
     {
         get {
             __cellControl = (null == __cellControl)?GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>():__cellControl;
@@ -27,7 +26,7 @@ public abstract class CutScene : MonoBehaviour {
     public abstract void startCutScene ();    
     
     // must be called when starting a cut scene
-	public virtual void start () {
+	public void start () {
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
         StartCoroutine(WaitForBlackBar(true));
@@ -40,7 +39,7 @@ public abstract class CutScene : MonoBehaviour {
     public abstract void endCutScene ();
     
     // must be called when ending a cut scene
-    public virtual void end () {
+    public void end () {
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
         StartCoroutine(WaitForBlackBar(false));

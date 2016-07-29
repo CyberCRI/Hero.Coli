@@ -13,7 +13,6 @@ public class BadGuyCutSceneTrigger : CutScene {
     private GameObject _deadBigBadGuy;
     private BoundCamera _mainCamBound;
     private Transform _initialTarget;
-    private CellControl _cellControl;
     [SerializeField]
     private Camera _cutSceneCam;
     [SerializeField]
@@ -25,7 +24,6 @@ public class BadGuyCutSceneTrigger : CutScene {
     void Start () {
         _mainCamBound = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
         _initialTarget = _mainCamBound.target;
-        _cellControl = GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>();
 	}
 	
 	// Update is called once per frame
