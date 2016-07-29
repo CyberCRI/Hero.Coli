@@ -30,7 +30,8 @@ public abstract class CutScene : MonoBehaviour {
 	public virtual void start () {
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
-        startCutScene ();
+        StartCoroutine(WaitForBlackBar(true));
+        //startCutScene ();
         _blackBar.CloseBar(true);
         _uiCam.cullingMask = LayerMask.NameToLayer("Nothing");
 	}
@@ -42,8 +43,25 @@ public abstract class CutScene : MonoBehaviour {
     public virtual void end () {
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
-        endCutScene ();
+        StartCoroutine(WaitForBlackBar(false));
+        //endCutScene ();
         _blackBar.CloseBar(false);
         _uiCam.cullingMask = _originCullingMask;
 	}
+
+    IEnumerator WaitForBlackBar(bool start)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log("1");
+        if (start == true)
+        {
+            startCutScene();
+            Debug.Log("2");
+        }
+        else
+        {
+            endCutScene();
+        }
+        yield return null;
+    }
 }
