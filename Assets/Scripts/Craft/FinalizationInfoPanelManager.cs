@@ -32,7 +32,7 @@ public class FinalizationInfoPanelManager : MonoBehaviour {
     _device = device;
     craftResultDevice._device = device;
 
-    finalizationIconSprite.spriteName = DisplayedDevice.getTextureName(device);
+    finalizationIconSprite.spriteName = "";//DisplayedDevice.getTextureName(device);
     finalizationIconSprite.gameObject.SetActive(null != device);
 
     //string displayedInfo = _device!=null?_lengthPrefix+_device.getSize().ToString()+_lengthPostfix:infos;
