@@ -110,9 +110,9 @@ BRICK.ICONLABEL.PRLACI=pLac
 BRICK.ICONLABEL.PRLAMB=pLambda
 BRICK.ICONLABEL.PRTETR=pTet
 
-BRICK.ICONLABEL.RBS1=6%
+BRICK.ICONLABEL.RBS1=23%
 BRICK.ICONLABEL.RBS2=12.6%
-BRICK.ICONLABEL.RBS3=23%
+BRICK.ICONLABEL.RBS3=6%
 
 BRICK.ICONLABEL.AMPR=AmpR
 BRICK.ICONLABEL.ARAC=araC
@@ -526,12 +526,12 @@ TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double ter
 
 
 
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.title=Green fluorescence (low)
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.subtitle=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.length=1101bp
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.reference=Stanford University
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.energyConsumption=XXX
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.explanation=Constant level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.TITLE=Green fluorescence (low)
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
 
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.TITLE=Green fluorescence (med)
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
