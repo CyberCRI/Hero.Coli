@@ -350,6 +350,7 @@ public class AvailableBioBricksManager : MonoBehaviour
           , spriteNameParam
           , biobrickParam
         );
+        
         return resultBrick;
     }
 

@@ -28,7 +28,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
             
             setDisplayedDevice();
             
-            background      = displayedDeviceScript.backgroundSprite.gameObject;
+            background      = displayedDeviceScript.deviceBackgroundSprite.gameObject;
             deviceIcon      = displayedDeviceScript._sprite.gameObject;
             level           = displayedDeviceScript.levelSprite.gameObject;
             moleculeName    = displayedDeviceScript.moleculeOverlay.gameObject;

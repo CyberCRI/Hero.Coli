@@ -1,8 +1,19 @@
 using UnityEngine;
 
 public class AvailableDisplayedBioBrick : DisplayedBioBrick {
+    
+    [SerializeField]
+    private UISprite _jigsawSprite;
+    [SerializeField]
+    private UILocalize _biobrickOverlay;
+    
+    private const string _jigsawSpriteNamePrefix     = "jigsaw_";
+    private const string _promoterJigsawSpriteName   = _jigsawSpriteNamePrefix + "promoter";
+    private const string _rbsJigsawSpriteName        = _jigsawSpriteNamePrefix + "rbs";
+    private const string _geneJigsawSpriteName       = _jigsawSpriteNamePrefix + "gene";
+    private const string _terminatorJigsawSpriteName = _jigsawSpriteNamePrefix + "terminator";
 
-  private static CraftZoneManager       craftZoneManager;
+  private static CraftZoneManager       _craftZoneManager;
 
   /*TODO
    *automatically choose name:
@@ -15,7 +26,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
   protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
   public UILabel amount;
-  public GameObject noneLeftMask;
+  public GameObject noneLeftSprite, noneLeftLabel;
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -26,8 +37,8 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab = Resources.Load(_prefabURIAvailable);
-    if(craftZoneManager == null) {
-      craftZoneManager = CraftZoneManager.get();
+    if(_craftZoneManager == null) {
+      _craftZoneManager = CraftZoneManager.get();
     }
 
     Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
@@ -46,14 +57,65 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       );
       
       result.name = "AvailableDisplayed"+biobrick.getName();
+      result.Initialize();
 
     return result;
  }
+    
+    public void Initialize()
+    {
+        setJigsawSprite();
+        setBioBrickOverlay();
+        
+        Debug.Log("this.transform="+this.transform);
+        Debug.Log("this.transform.localScale="+this.transform.localScale);
+        
+        this.transform.localScale = Vector3.one;
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0);
+    }
+    
+    private void setJigsawSprite()
+    {
+        if (null != _jigsawSprite)
+        {
+            string jigsawSpriteName = "";
+            switch (_biobrick.getType())
+            {
+                case BioBrick.Type.PROMOTER:
+                    jigsawSpriteName = _promoterJigsawSpriteName;
+                    break;
+                case BioBrick.Type.RBS:
+                    jigsawSpriteName = _rbsJigsawSpriteName;
+                    break;
+                case BioBrick.Type.GENE:
+                    jigsawSpriteName = _geneJigsawSpriteName;
+                    break;
+                case BioBrick.Type.TERMINATOR:
+                    jigsawSpriteName = _terminatorJigsawSpriteName;
+                    break;
+                default:
+                    jigsawSpriteName = _promoterJigsawSpriteName;
+                    break;
+            }
+            _jigsawSprite.spriteName = jigsawSpriteName;
+        }
+    }
+    
+    private void setBioBrickOverlay()
+    {
+        DisplayedDevice.setMoleculeOverlay(this._biobrick.getInternalName(), _biobrickOverlay, true);
+    }
  
  public void Update()
  {
      amount.text = _biobrick.amount.ToString();
-     noneLeftMask.SetActive(0 >= _biobrick.amount);
+     setNoneLeftIndicators(0 >= _biobrick.amount);
+ }
+ 
+ private void setNoneLeftIndicators(bool isActive)
+ {
+     noneLeftSprite.SetActive(isActive);
+     noneLeftLabel.SetActive(isActive);
  }
 
   public void display(bool enabled) {
@@ -69,14 +131,14 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
             if (CraftZoneManager.isDeviceEditionOn())
             {
                 //Debug.LogError("isDeviceEditionOn");
-                if (craftZoneManager == null)
+                if (_craftZoneManager == null)
                 {
-                    craftZoneManager = CraftZoneManager.get();
+                    _craftZoneManager = CraftZoneManager.get();
                 }
                 if (_biobrick.amount > 0)
                 {
                     //Debug.LogError("_biobrick.amount > 0");
-                    craftZoneManager.replaceWithBioBrick(_biobrick);
+                    _craftZoneManager.replaceWithBioBrick(_biobrick);
                 }
                 else
                 {

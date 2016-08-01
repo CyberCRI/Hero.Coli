@@ -70,7 +70,13 @@ public class DevicesDisplayer : MonoBehaviour {
   private CraftZoneManager craftZoneManager;
 
 
-
+    public void initialize()
+    {
+        equipedDevice.SetActive(false);
+        equipedDevice2.SetActive(false);
+        inventoryDevice.SetActive(false);
+        listedInventoryDevice.SetActive(false);
+    }
 
 
   /*

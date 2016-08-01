@@ -5,7 +5,7 @@ public class DisplayedDevice : DisplayedElement
 {
 
     public UISprite levelSprite;
-    public UISprite backgroundSprite;
+    public UISprite deviceBackgroundSprite;
     public UILocalize moleculeOverlay;
 
     // prefab URIs
@@ -53,20 +53,20 @@ public class DisplayedDevice : DisplayedElement
     private const string _level3PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level3Suffix + _pictureSuffix;
 
     // default texture
-    private const string _defaultTexture = "default";
-    private const string _defaultTextureWithText = _defaultTexture + _textSuffix;
+    private const string _defaultTexture            = "default";
+    private const string _defaultTextureWithText    = _defaultTexture + _textSuffix;
 
     // molecule name overlay
     private const string _moleculeOverlayPrefix = "BRICK.ICONLABEL.";
 
     // background
-    private const string backgroundSuffix = "_background";
-    private const string squareBackgroundSuffix = "_square";
-    private const string roundedSquareBackgroundSuffix = "_rounded_square";
-    private const string circleBackgroundSuffix = "_circle";
-    private const string squareBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + squareBackgroundSuffix;
-    private const string roundedSquareBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
-    private const string circleBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
+    private const string backgroundSuffix               = "background_";
+    private const string squareBackgroundSuffix         = "square";
+    private const string roundedSquareBackgroundSuffix  = "rounded_square";
+    private const string circleBackgroundSuffix         = "circle";
+    private const string squareBackgroundSpriteName         = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + squareBackgroundSuffix;
+    private const string roundedSquareBackgroundSpriteName  = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
+    private const string circleBackgroundSpriteName         = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
 
     private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
   {
@@ -92,26 +92,31 @@ public class DisplayedDevice : DisplayedElement
 
     private void setBackgroundSprite(string backgroundSpriteName = circleBackgroundSpriteName)
     {
-        if (null != backgroundSprite)
+        if (null != deviceBackgroundSprite)
         {
-            levelSprite.spriteName = backgroundSpriteName;
-            levelSprite.gameObject.SetActive(true);
+            deviceBackgroundSprite.spriteName = backgroundSpriteName;
+            deviceBackgroundSprite.gameObject.SetActive(true);
         }
     }
-
+    
     private void setMoleculeOverlay(string proteinName)
     {
-        if (null != moleculeOverlay)
+        setMoleculeOverlay(proteinName, moleculeOverlay);
+    }
+
+    public static void setMoleculeOverlay(string proteinName, UILocalize moleculeOverlayLocalize, bool dontFilter = false)
+    {
+        if (null != moleculeOverlayLocalize)
         {
             string texture = _defaultTextureWithText;
-            if (geneSpecialTextureDico.TryGetValue(proteinName, out texture))
+            if (dontFilter || geneSpecialTextureDico.TryGetValue(proteinName, out texture))
             {
-                moleculeOverlay.gameObject.SetActive(true);
-                moleculeOverlay.key = _moleculeOverlayPrefix + proteinName.ToUpperInvariant();
+                moleculeOverlayLocalize.gameObject.SetActive(true);
+                moleculeOverlayLocalize.key = _moleculeOverlayPrefix + proteinName.ToUpperInvariant();
             }
             else
             {
-                moleculeOverlay.gameObject.SetActive(false);
+                moleculeOverlayLocalize.gameObject.SetActive(false);
             }
         }
     }
