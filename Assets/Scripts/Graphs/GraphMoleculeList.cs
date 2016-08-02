@@ -11,9 +11,7 @@ public class GraphMoleculeList : MonoBehaviour {
 	public bool              displayAll;
   public GameObject        unfoldingMoleculeList;
 
-  public GameObject        equipedWithMoleculesDeviceDummy;
-  public GameObject        equipmentDeviceDummy;
-  public GameObject        equipedDeviceDummy;
+  public GameObject             equipedWithMoleculesDeviceDummy;
     
   public string            debugName;
 
@@ -111,74 +109,53 @@ public class GraphMoleculeList : MonoBehaviour {
     unfoldingMoleculeList.transform.localScale = _initialScale + currentHeight;
   }
 
-  public void addDeviceAndMoleculesComponent(DisplayedDevice equipedDeviceScript)
-  {
-    if(equipedDeviceScript == null)
+    public void addDeviceAndMoleculesComponent(DisplayedDevice displayedDeviceScript)
     {
-      Logger.Log ("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
-    }
-    else
-    {
-      //equipedDevice is "EquipedDevicePrefabPos" object
-      GameObject equipedDevice = equipedDeviceScript.gameObject;
-
-      bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == equipedDeviceScript._device)); 
-      if(newEquiped) { 
-
-        //EquipedDisplayedDeviceWithMolecules
-        GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;        
-        //deviceWithMoleculesComponent is "EquipedDisplayedDeviceWithMoleculesButtonPrefab" object
-        //it needs an EquipmentDevice instance - it has only an EquipmentDeviceDummy object
-        GameObject deviceWithMoleculesComponent = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-        deviceWithMoleculesComponent.transform.parent = transform;
-        deviceWithMoleculesComponent.transform.localScale = new Vector3(1f, 1f, 0);
-
-        EquipedDisplayedDeviceWithMolecules eddwm = deviceWithMoleculesComponent.GetComponent<EquipedDisplayedDeviceWithMolecules>();
-                
-        eddwm.namesLabel.transform.parent = this.transform;
-        eddwm.valuesLabel.gameObject.transform.parent = this.transform;
-        eddwm.background.transform.parent = this.transform;
-
-        //equipmentDevice
-        GameObject equipmentDevicePrefab = Resources.Load(DisplayedDevice.equipmentPrefabURI) as GameObject;
-        GameObject equipmentDeviceComponent = Instantiate(equipmentDevicePrefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-        eddwm.equipmentDevice = equipmentDeviceComponent;
-        EquipmentDevice equipmentD = equipmentDeviceComponent.GetComponent<EquipmentDevice>() as EquipmentDevice;
-        eddwm.equipmentDeviceScript = equipmentD;
-                
-        //equipedDevice
-        GameObject equipedDeviceComponent = Instantiate(equipedDevice) as GameObject;
-        eddwm.equipedDevice = equipedDeviceComponent;
-        EquipedDisplayedDevice edd = equipedDeviceComponent.GetComponent<EquipedDisplayedDevice>() as EquipedDisplayedDevice;
-        eddwm.equipedDeviceScript = edd;
-        eddwm.device = equipedDeviceScript._device;
-        edd._device = equipedDeviceScript._device;
-        eddwm.background.GetComponent<UISprite>().spriteName = DisplayedDevice.getTextureName(equipedDeviceScript._device);
-
-        eddwm.initialize(equipmentDeviceDummy, equipedDeviceDummy);
-
-        _equipedDevices.Add(eddwm);
-
-        //search if there's already in the cell a molecule that this device produces
-        foreach(DisplayedMolecule molecule in _displayedMolecules)
+        if (displayedDeviceScript == null)
         {
-          if(molecule.getCodeName() == eddwm.device.getFirstGeneProteinName())
-          {
-            displayMoleculeInDevice(molecule, eddwm);
-          }
+            Logger.Log("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
         }
+        else
+        {
+            //displayedDevice is "EquipedDevicePrefabPos" object
+            GameObject displayedDevice = displayedDeviceScript.gameObject;
 
-        //depends on displayed list of molecules
-        //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
-        //deviceWithMoleculesComponent.transform.localPosition = localPosition;
-        positionDeviceAndMoleculeComponents();
-        
-        
-      } else {
-        Logger.Log("addDevice failed: newEquiped="+newEquiped, Logger.Level.TRACE);
-      }
+            bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == displayedDeviceScript._device));
+            if (newEquiped)
+            {
+                //EquipedDisplayedDeviceWithMolecules
+                GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
+                //equipedDisplayedDeviceWithMoleculesGameObject is "EquipedDisplayedDeviceWithMoleculesPrefab" object
+                //it needs an DisplayedDevice instance - it has only an DisplayedDeviceDummy object
+                GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.parent = this.transform;
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = new Vector3(1f, 1f, 0);
+
+                EquipedDisplayedDeviceWithMolecules eddwm = equipedDisplayedDeviceWithMoleculesGameObject.GetComponent<EquipedDisplayedDeviceWithMolecules>();
+                eddwm.initialize(displayedDeviceScript);
+
+                _equipedDevices.Add(eddwm);
+
+                //search if there's already in the cell a molecule that this device produces
+                foreach (DisplayedMolecule molecule in _displayedMolecules)
+                {
+                    if (molecule.getCodeName() == eddwm.device.getFirstGeneProteinName())
+                    {
+                        displayMoleculeInDevice(molecule, eddwm);
+                    }
+                }
+
+                //depends on displayed list of molecules
+                //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
+                //equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition = localPosition;
+                positionDeviceAndMoleculeComponents();
+            }
+            else
+            {
+                Logger.Log("addDevice failed: newEquiped=" + newEquiped, Logger.Level.TRACE);
+            }
+        }
     }
-  }
 
   Vector3 getNewPosition(int index = -1) {
     Vector3 res;
