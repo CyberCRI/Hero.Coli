@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public abstract class BioBrick: DNABit
 {
@@ -67,26 +68,72 @@ public abstract class BioBrick: DNABit
 
 public class PromoterBrick : BioBrick
 {
-  private float _beta;
-  private string _formula;
+    
+    public enum Regulation
+    {
+        CONSTANT,
+        ACTIVATED,
+        REPRESSED,
+        BOTH
+    }
+
+    private float _beta;
+    private string _formula;
+    public string formula
+    {
+        get { return _formula; }
+        set
+        {
+            _formula = value;
+            Debug.Log(value);
+
+            // TODO fix
+            if (!string.IsNullOrEmpty(value))
+            {
+                bool activated = false, repressed = false;
+                repressed = value.Contains("!");
+                
+                if("T" == value)
+                {
+                    _regulation = Regulation.CONSTANT;
+                }
+                //else if (repressed && !activated)
+                else if(value.Length == 14)
+                {
+                    _regulation = Regulation.REPRESSED;                
+                }
+                //else if(!repressed && activated)
+                //{
+                //    _regulation = Regulation.ACTIVATED;
+                //}
+                else //if (repressed && activated)
+                {
+                    _regulation = Regulation.BOTH;
+                }
+            }
+        }
+    }
+  private Regulation _regulation = Regulation.CONSTANT;
 
   public void setBeta(float v) { _beta = v; }
   public float getBeta() { return _beta; }
-  public void setFormula(string v) { _formula = v; }
-  public string getFormula() { return _formula; }
+  public void setFormula(string v) { formula = v; }
+      
+  public string getFormula() { return formula; }
+  public Regulation getRegulation() { return _regulation; }
 
   public PromoterBrick() : base(BioBrick.Type.PROMOTER)
   {
   }
 	
-  public PromoterBrick(string name, float beta, string formula) : base(BioBrick.Type.PROMOTER)
+  public PromoterBrick(string name, float beta, string __formula) : base(BioBrick.Type.PROMOTER)
   {
         _name = name;
 		_beta = beta;
-		_formula = formula;
+		formula = __formula;
   }
 
-  public PromoterBrick(PromoterBrick p) : this(p._name, p._beta, p._formula)
+  public PromoterBrick(PromoterBrick p) : this(p._name, p._beta, p.formula)
   {
   }
 	
@@ -98,12 +145,12 @@ public class PromoterBrick : BioBrick
     public override bool Equals(System.Object obj)
     {
         PromoterBrick pb = obj as PromoterBrick;
-        return base.Equals(obj) && (_beta == pb._beta) && (_formula == pb._formula);
+        return base.Equals(obj) && (_beta == pb._beta) && (formula == pb.formula);
     }
 
   public override string ToString ()
   {
-	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}]", _name, _beta, _formula);
+	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}]", _name, _beta, formula);
   }
 }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class DisplayedBioBrick : GenericDisplayedBioBrick {
 	
-	public UILocalize                 _localize;
 	public LastHoveredInfoManager     _lastHoveredInfoManager;
 	
 	protected new static string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
@@ -50,7 +49,6 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
 		// Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
 		GenericDisplayedBioBrick.Initialize(biobrickScript, biobrick);
-		biobrickScript._localize.key = GameplayNames.biobrickPrefix+biobrick.getName();
 		Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
 
 	}
@@ -60,7 +58,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 	}
 
   protected new string getDebugInfos() {
-    return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+", key="+_localize.key+" time="+Time.realtimeSinceStartup;
+    return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+",  time="+Time.realtimeSinceStartup;
   }
 
 	public override void OnPress(bool isPressed) {
