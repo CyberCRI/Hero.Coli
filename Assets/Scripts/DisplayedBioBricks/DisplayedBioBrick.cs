@@ -2,12 +2,35 @@ using UnityEngine;
 
 public class DisplayedBioBrick : GenericDisplayedBioBrick {
 	
+    [SerializeField]
+    protected UISprite _jigsawSprite;
+    [SerializeField]
+    protected UILocalize _biobrickLabel;
+    
 	public LastHoveredInfoManager     _lastHoveredInfoManager;
-	
+	public static UnityEngine.Object prefab    = null;
+    
 	protected new static string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
-    public static UnityEngine.Object prefab    = null;
+    
+    private const string _jigsawSpriteNamePrefix     = "jigsaw_";
+    private const string _promoterJigsawSpriteName   = _jigsawSpriteNamePrefix + "promoter";
+    private const string _rbsJigsawSpriteName        = _jigsawSpriteNamePrefix + "rbs";
+    private const string _geneJigsawSpriteName       = _jigsawSpriteNamePrefix + "gene";
+    private const string _terminatorJigsawSpriteName = _jigsawSpriteNamePrefix + "terminator";
+    
+    private const string _textBackgroundSpriteSuffix = "_text";
+    private const string _geneTextBackgroundSprite = "gene"+_textBackgroundSpriteSuffix;
+    private const string _promoterTextBackgroundSpritePrefix = "promoter";
+    private const string _promoterConstantTextBackgroundSpritStem = "";
+    private const string _promoterActivatedTextBackgroundSpritStem = "_+";
+    private const string _promoterRepressedTextBackgroundSpritStem = "_-";
+    private const string _promoterBothTextBackgroundSpritStem = "_+-";
+    private const string _promoterConstantTextBackgroundSprite          = _promoterTextBackgroundSpritePrefix+_promoterConstantTextBackgroundSpritStem+_textBackgroundSpriteSuffix;
+    private const string _promoterActivatedTextBackgroundSprite         = _promoterTextBackgroundSpritePrefix+_promoterActivatedTextBackgroundSpritStem+_textBackgroundSpriteSuffix;
+    private const string _promoterRepressedConstTextBackgroundSprite    = _promoterTextBackgroundSpritePrefix+_promoterRepressedTextBackgroundSpritStem+_textBackgroundSpriteSuffix;
+    private const string _promoterBothConstTextBackgroundSprite         = _promoterTextBackgroundSpritePrefix+_promoterBothTextBackgroundSpritStem+_textBackgroundSpriteSuffix;
 	
-	
+    
 	public static new DisplayedBioBrick Create(
 		Transform parentTransform
 		,Vector3 localPosition
@@ -37,21 +60,107 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 			,prefabToUse
 			);
 		
-		Initialize(result, biobrick);
+		result.Initialize(biobrick);
 		
 		return result;
 	}
-	
-	protected static void Initialize(
-		DisplayedBioBrick biobrickScript
-		,BioBrick biobrick
-		) {
 
-		// Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
-		GenericDisplayedBioBrick.Initialize(biobrickScript, biobrick);
-		Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager="+biobrickScript._lastHoveredInfoManager, Logger.Level.TRACE);
+    protected void Initialize(BioBrick biobrick)
+    {
 
-	}
+        // Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
+        GenericDisplayedBioBrick.Initialize(this, biobrick);
+
+        setJigsawSprite();
+        setBioBrickOverlay();
+        setBioBrickIcon();
+
+        //Debug.Log("this.transform.localPosition="+this.transform.localPosition);
+        //Debug.Log("this.transform.localScale="+this.transform.localScale);
+
+        this.transform.localScale = Vector3.one;
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0);
+
+        Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager=" + _lastHoveredInfoManager, Logger.Level.TRACE);
+
+    }
+
+    protected virtual void setJigsawSprite()
+    {
+        if (null != _jigsawSprite)
+        {
+            string jigsawSpriteName = "";
+            switch (_biobrick.getType())
+            {
+                case BioBrick.Type.PROMOTER:
+                    jigsawSpriteName = _promoterJigsawSpriteName;
+                    break;
+                case BioBrick.Type.RBS:
+                    jigsawSpriteName = _rbsJigsawSpriteName;
+                    break;
+                case BioBrick.Type.GENE:
+                    jigsawSpriteName = _geneJigsawSpriteName;
+                    break;
+                case BioBrick.Type.TERMINATOR:
+                    jigsawSpriteName = _terminatorJigsawSpriteName;
+                    break;
+                default:
+                    jigsawSpriteName = _promoterJigsawSpriteName;
+                    break;
+            }
+            _jigsawSprite.spriteName = jigsawSpriteName;
+        }
+    }
+    private void setBioBrickOverlay()
+    {
+        DisplayedDevice.setMoleculeOverlay(this._biobrick.getInternalName(), _biobrickLabel, true);
+    }
+    
+    private void setBioBrickIcon()
+    {
+        string backgroundSpriteName = null;
+        switch (_biobrick.getType())
+        {
+            case BioBrick.Type.PROMOTER:
+                PromoterBrick promoter = (PromoterBrick)_biobrick;
+                PromoterBrick.Regulation regulation = promoter.getRegulation();
+                switch (regulation)
+                {
+                    case PromoterBrick.Regulation.CONSTANT:
+                        backgroundSpriteName = _promoterConstantTextBackgroundSprite;
+                        break;
+                    case PromoterBrick.Regulation.ACTIVATED:
+                        backgroundSpriteName = _promoterActivatedTextBackgroundSprite;
+                        break;
+                    case PromoterBrick.Regulation.REPRESSED:
+                        backgroundSpriteName = _promoterRepressedConstTextBackgroundSprite;
+                        break;
+                    case PromoterBrick.Regulation.BOTH:
+                        backgroundSpriteName = _promoterBothConstTextBackgroundSprite;
+                        break;
+                    default:
+                        backgroundSpriteName = _promoterConstantTextBackgroundSprite;
+                        break;
+                }
+                break;
+            case BioBrick.Type.RBS:
+                backgroundSpriteName = null;
+                break;
+            case BioBrick.Type.GENE:
+                backgroundSpriteName = _geneTextBackgroundSprite;
+                break;
+            case BioBrick.Type.TERMINATOR:
+                backgroundSpriteName = null;
+                break;
+            default:
+                backgroundSpriteName = _geneTextBackgroundSprite;
+                break;
+        }
+        if (!string.IsNullOrEmpty(backgroundSpriteName))
+        {
+            setSprite(backgroundSpriteName);
+        }
+    }
 	
 	public new static string getSpriteName(BioBrick brick) {
 		return brick.getName();

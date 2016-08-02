@@ -111,8 +111,6 @@ public class PromoterBrick : BioBrick
                     _regulation = Regulation.BOTH;
                 }
             }
-            
-            Debug.LogError("regulation for "+value+" is "+_regulation);
         }
     }
     
