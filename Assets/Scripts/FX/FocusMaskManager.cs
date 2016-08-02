@@ -12,6 +12,8 @@ public class FocusMaskManager : MonoBehaviour {
     private float _maxAlpha = 1f;
     private float _newAlpha;
     private bool _isClicksBlocked = false;
+    [SerializeField]
+    private Advisor _advisor;
     
     // test code
     /*
@@ -98,6 +100,15 @@ public class FocusMaskManager : MonoBehaviour {
             } 
             //Debug.LogError("new glopos="+this.transform.position);
             //Debug.LogError("new pos="+newPosition);
+
+            if (this.transform.localPosition.y >=0)
+            {
+                _advisor.setUpNanoBot(false, "Je suis Bot");
+            }
+            else
+            {
+                _advisor.setUpNanoBot(true, "Je suis Top");
+            }
         }
     }
 
@@ -111,6 +122,7 @@ public class FocusMaskManager : MonoBehaviour {
     {
         focusMask.SetActive(show);
         hole.SetActive(show);
+        _advisor.gameObject.SetActive(show);
         GameObject perso = GameObject.Find("Perso");
         if(null != perso)
         {
