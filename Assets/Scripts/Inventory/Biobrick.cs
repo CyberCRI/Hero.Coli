@@ -87,32 +87,85 @@ public class PromoterBrick : BioBrick
             _formula = value;
             Debug.Log(value);
 
-            // TODO fix
-            if (!string.IsNullOrEmpty(value))
+            _regulation = Regulation.CONSTANT;
+            
+            if (!string.IsNullOrEmpty(value) && value != "T")
             {
-                bool activated = false, repressed = false;
-                repressed = value.Contains("!");
                 
-                if("T" == value)
-                {
-                    _regulation = Regulation.CONSTANT;
-                }
-                //else if (repressed && !activated)
-                else if(value.Length == 14)
+                PromoterParser parser = new PromoterParser();
+                TreeNode<PromoterNodeData> formulaTree = parser.Parse(value);
+                bool activated = false, repressed = false;
+                
+                recGetPromoterType(formulaTree, out activated, out repressed);
+                
+                if (repressed && !activated)
                 {
                     _regulation = Regulation.REPRESSED;                
                 }
-                //else if(!repressed && activated)
-                //{
-                //    _regulation = Regulation.ACTIVATED;
-                //}
-                else //if (repressed && activated)
+                else if(!repressed && activated)
+                {
+                    _regulation = Regulation.ACTIVATED;
+                }
+                else if (repressed && activated)
                 {
                     _regulation = Regulation.BOTH;
                 }
             }
+            
+            Debug.LogError("regulation for "+value+" is "+_regulation);
         }
     }
+    
+    private void recGetPromoterType(TreeNode<PromoterNodeData> formulaTree, out bool activated, out bool repressed, TreeNode<PromoterNodeData> parentFormulaTree = null)
+    {
+        TreeNode<PromoterNodeData> leftFormulaTree = formulaTree.getLeftNode(), rightFormulaTree = formulaTree.getRightNode();
+
+        if((null == leftFormulaTree) && (null == rightFormulaTree))
+        {
+            activated = false;
+            repressed = false;
+        }
+        else
+        {
+            bool leftActivated = false, rightActivated = false, leftRepressed = false, rightRepressed = false;
+        
+            if (null != leftFormulaTree)
+            {
+                recGetPromoterType(leftFormulaTree, out leftActivated, out leftRepressed, formulaTree);
+            }
+
+            if (null != rightFormulaTree && (!leftActivated || !leftRepressed))
+            {
+                recGetPromoterType(rightFormulaTree, out rightActivated, out rightRepressed, formulaTree);
+            }
+            
+            activated = leftActivated || rightActivated;
+            repressed = leftRepressed || rightRepressed;
+            
+            if(null != parentFormulaTree)
+            {
+                activated = activated || isActivated(parentFormulaTree, formulaTree);
+                repressed = repressed || isRepressed(parentFormulaTree, formulaTree);
+            }
+            else
+            {
+                activated = activated || formulaTree.getData().token == PromoterParser.eNodeType.CONSTANT;
+            }
+        }
+    }
+
+    private bool isActivated(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
+    {
+        return ((childFormulaTree.getData().token == PromoterParser.eNodeType.CONSTANT)
+         && parentFormulaTree.getData().token != PromoterParser.eNodeType.NOT);
+    }
+
+    private bool isRepressed(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
+    {
+        return ((childFormulaTree.getData().token == PromoterParser.eNodeType.CONSTANT)
+         && parentFormulaTree.getData().token == PromoterParser.eNodeType.NOT);
+    }
+    
   private Regulation _regulation = Regulation.CONSTANT;
 
   public void setBeta(float v) { _beta = v; }

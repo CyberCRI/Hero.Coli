@@ -3,7 +3,7 @@
   <device id="PRLACI:RBS1:REPR2:DTER">
     <brick id="PRLACI" size="0" type="promoter">
       <beta>75</beta>
-      <formula>![0.01,2]REPR1</formula>
+      <formula>[0.01,2]IPTG</formula>
     </brick>
     <brick id="RBS1" size="0" type="rbs">
       <rbsFactor>0.23</rbsFactor>
@@ -18,7 +18,7 @@
   <device id="PRTETR:RBS1:REPR3:DTER">
     <brick id="PRTETR" size="0" type="promoter">
       <beta>75</beta>
-      <formula>![0.01,2]REPR2</formula>
+      <formula>![0.01,2]REPR2|[0.01,2]ATC</formula>
     </brick>
     <brick id="RBS1" size="0" type="rbs">
       <rbsFactor>0.23</rbsFactor>
@@ -48,7 +48,7 @@
   <device id="PRTETR:RBS1:FLUO1:DTER">
     <brick id="PRTETR" size="0" type="promoter">
       <beta>75</beta>
-      <formula>![0.01,2]REPR2</formula>
+      <formula>![0.01,2]REPR2|[0.01,2]ATC</formula>
     </brick>
     <brick id="RBS1" size="0" type="rbs">
       <rbsFactor>0.23</rbsFactor>
