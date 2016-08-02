@@ -306,6 +306,7 @@ public class CraftDeviceSlot : MonoBehaviour
                 if ((null != czdb) && (czdb._biobrick == brick))
                 {
                     innerRemoveBrick(czdb);
+                    _bricksCollapse.StartMoveBricksBack();
                     return true;
                 }
             }
@@ -344,7 +345,8 @@ public class CraftDeviceSlot : MonoBehaviour
         unequip();
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
-        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;        
+        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
+        _bricksCollapse.StartMoveBricksBack();
     }
     
     public void removeAllBricks()
