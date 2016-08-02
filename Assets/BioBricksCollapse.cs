@@ -21,14 +21,6 @@ public class BioBricksCollapse : MonoBehaviour {
 
         _craftDeviceSlot = this.gameObject.GetComponent<CraftDeviceSlot>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            Collapse();
-        }
-	}
 
     public void Collapse()
     {
