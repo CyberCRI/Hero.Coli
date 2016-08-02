@@ -9,7 +9,7 @@
   <brick id="PRLACI" size="200" type="promoter">
     <beta>75</beta>
     <!--instead, put reaction REPR1+IPTG->REPR1*-->
-    <formula>![0.01,2]REPR1|[0.01,2]IPTG</formula>
+    <formula>[0.01,2]IPTG</formula>
   </brick>
   <!--TetR promoter: induced by aTc (inhibits tetR), inhibited by tetR-->
   <brick id="PRTETR" size="54" type="promoter">

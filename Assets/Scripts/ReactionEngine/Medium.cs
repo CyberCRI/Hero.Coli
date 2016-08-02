@@ -341,13 +341,14 @@ public class Medium : LoadableFromXmlImpl
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
     foreach (IReaction reaction in _reactions) {
-		
+		/*
   	  if(Logger.isLevel(Logger.Level.TRACE)) {
   	    PromoterReaction promoter = reaction as PromoterReaction;
   	    if (promoter != null) {
 	      Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
 	    }
 	  }
+      */
 	  reaction.react(_molecules);
 	}	
 		
