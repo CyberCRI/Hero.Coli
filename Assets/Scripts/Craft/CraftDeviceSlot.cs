@@ -14,6 +14,7 @@ public class CraftDeviceSlot : MonoBehaviour
     public UISprite resultSprite;
     private const string resultActiveSprite = "craft_result_active";
     private const string resultInactiveSprite = "craft_result_inactive";
+    private BioBricksCollapse _bricksCollapse;
 
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
@@ -78,6 +79,11 @@ public class CraftDeviceSlot : MonoBehaviour
                 //Debug.LogError("none");
             }
         }
+    }
+
+    void Start()
+    {
+        _bricksCollapse = this.gameObject.GetComponent<BioBricksCollapse>();
     }
 
     protected void equip()
@@ -251,7 +257,7 @@ public class CraftDeviceSlot : MonoBehaviour
         )
         {
             CraftFinalizer.get().finalizeCraft();
-            
+            _bricksCollapse.Collapse();
             equip();
         }
         else
