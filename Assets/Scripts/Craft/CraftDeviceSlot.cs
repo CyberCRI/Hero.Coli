@@ -427,4 +427,9 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         initialize();
     }
+
+    public CraftZoneDisplayedBioBrick[] GetCraftZoneDisplayedBioBricks()
+    {
+        return currentBricks;
+    }
 }
