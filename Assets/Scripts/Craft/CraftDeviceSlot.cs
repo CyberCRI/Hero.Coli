@@ -113,6 +113,7 @@ public class CraftDeviceSlot : MonoBehaviour
 
     protected void unequip()
     {
+        resultDevice.displayFeedback = false;
         //Debug.Log("unequip");
         isEquiped = false;
     }
@@ -291,7 +292,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         if(areAllBricksNonNull())
         {
-            CraftFinalizer.get().finalizeCraft();
+            resultDevice.displayFeedback = CraftFinalizer.get().finalizeCraft();
             askCollapseBricks();
             onBricksCollapsedCallback = equip;
             onBricksExpandedCallback = displayCraftSlotSprite;

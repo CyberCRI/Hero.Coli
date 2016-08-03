@@ -1,4 +1,16 @@
 class ListedDevice : DisplayedDevice {
+    
+    public bool displayFeedback = true;
+    
+    void Start()
+    {
+        if(displayFeedback)
+        {
+            playFeedback();
+            displayFeedback = false;
+        }
+    }
+    
  public override void OnPress(bool isPressed) {
     Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.INFO);
     
