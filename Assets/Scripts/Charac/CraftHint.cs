@@ -16,6 +16,7 @@ public class CraftHint : MonoBehaviour
     private const string _exitCross = "CraftCloseButton";
 
     private string[] focusObjects = new string[6] { _craftButton, _brick1, _brick2, _brick3, _brick4, _exitCross };
+    private string[] textHints = new string[6] { "HINT.CRAFT.0", "HINT.CRAFT.1", "HINT.CRAFT.2", "HINT.CRAFT.3" , "HINT.CRAFT.4", "HINT.CRAFT.5" };
 
     public void next()
     {
@@ -34,7 +35,7 @@ public class CraftHint : MonoBehaviour
                 if (!prepared)
                 {
                     ExternalOnPressButton target = GameObject.Find(focusObjects[step]).GetComponent<ExternalOnPressButton>();
-                    FocusMaskManager.get().focusOn(target, next);
+                    FocusMaskManager.get().focusOn(target, next, textHints[step]);
                     prepared = true;
                 }
             }

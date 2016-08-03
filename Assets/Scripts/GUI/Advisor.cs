@@ -31,7 +31,7 @@ public class Advisor : MonoBehaviour {
             _nanoBot.transform.position = _positionBottom.position;
         }
 
-        _dynamicText.text = text;
+        GetDynamicText().key = text;
     }
 
     public void setUpNanoBot(bool top)
@@ -48,7 +48,7 @@ public class Advisor : MonoBehaviour {
 
     public void setUpNanoBot(string text)
     {
-        _dynamicText.text = text;
+        GetDynamicText().key = text;
     }
 
     public void setUpNanoBot(Vector3 position)
@@ -59,5 +59,10 @@ public class Advisor : MonoBehaviour {
     public void setUpNanoBot(float scale)
     {
         _nanoBot.transform.localScale = _originalScale * scale;
+    }
+
+    public UILocalize GetDynamicText()
+    {
+        return _dynamicText.GetComponent<UILocalize>();
     }
 }

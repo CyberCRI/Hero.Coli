@@ -46,12 +46,12 @@ public class FocusMaskManager : MonoBehaviour {
     public delegate void Callback(); 
     private Callback _callback;
     
-	public void focusOn(ExternalOnPressButton target, Callback callback = null)
+	public void focusOn(ExternalOnPressButton target, Callback callback = null, string advisorTextKey = null)
     {
         if(null != target)
         {
             //Debug.LogError("FocusMaskManager focusOn "+target.name);
-            focusOn(target.transform.position, false);
+            focusOn(target.transform.position, false, advisorTextKey);
             _target = target;
             _callback = callback;
         }
@@ -61,11 +61,11 @@ public class FocusMaskManager : MonoBehaviour {
         }
     }
     
-    public void focusOn(GameObject go, bool isInterfaceObject)
+    public void focusOn(GameObject go, bool isInterfaceObject, string advisorTextKey = null)
     {   
         if(isInterfaceObject)
         {
-            focusOn(go.transform.position, !isInterfaceObject);
+            focusOn(go.transform.position, !isInterfaceObject, advisorTextKey);
         }
         else
         {
@@ -74,11 +74,11 @@ public class FocusMaskManager : MonoBehaviour {
             Camera camera = GameObject.Find("Player").GetComponentInChildren<Camera>();
             Vector3 convertedPosition = camera.WorldToScreenPoint(go.transform.position);
             convertedPosition -= focusMask.transform.localScale/4;
-            focusOn(convertedPosition, !isInterfaceObject);
+            focusOn(convertedPosition, !isInterfaceObject,advisorTextKey);
         }
     }
     
-    public void focusOn(Vector3 position, bool local = true)
+    public void focusOn(Vector3 position, bool local = true, string advisorTextKey = null)
     {
         //Debug.LogError("focusOn("+position+")");
         if(null != position)
@@ -101,14 +101,23 @@ public class FocusMaskManager : MonoBehaviour {
             //Debug.LogError("new glopos="+this.transform.position);
             //Debug.LogError("new pos="+newPosition);
 
-            if (this.transform.localPosition.y >=0)
+            
+        }
+        if (string.IsNullOrEmpty(advisorTextKey) == false)
+        {
+            if (this.transform.localPosition.y >= 0)
             {
-                _advisor.setUpNanoBot(false, "Je suis Bot");
+                _advisor.setUpNanoBot(false, advisorTextKey);
             }
             else
             {
-                _advisor.setUpNanoBot(true, "Je suis Top");
+                _advisor.setUpNanoBot(true, advisorTextKey);
             }
+            _advisor.gameObject.SetActive(true);
+        }
+        else
+        {
+            _advisor.gameObject.SetActive(false);
         }
     }
 

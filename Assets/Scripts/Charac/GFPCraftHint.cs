@@ -14,6 +14,8 @@ public class GFPCraftHint : MonoBehaviour
 
     private string[] focusObjects = new string[4] { _craftButton, _listedPrefix + _device, _brick, _exitCross };
 
+    private string[] textHints = new string[4] { "HINT.GFPCRAFT.0", "HINT.GFPCRAFT.1", "HINT.GFPCRAFT.2", "HINT.GFPCRAFT.3" };
+
     public void next()
     {
         prepared = false;
@@ -34,7 +36,7 @@ public class GFPCraftHint : MonoBehaviour
                 else
                 {
                     ExternalOnPressButton target = GameObject.Find(focusObjects[step]).GetComponent<ExternalOnPressButton>();
-                    FocusMaskManager.get().focusOn(target, next);
+                    FocusMaskManager.get().focusOn(target, next, textHints[step]);
                     prepared = true;
                 }
             }
