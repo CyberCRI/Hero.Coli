@@ -29,6 +29,7 @@ public class CraftDeviceSlot : MonoBehaviour
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
     
     public GameObject[] dummyBrickGameObjects;
+    private UISprite[] dummyBrickGameObjectsSprites = new UISprite[4];
     
     protected bool _isEquiped;
     public bool isEquiped
@@ -49,7 +50,8 @@ public class CraftDeviceSlot : MonoBehaviour
                     if(null != craftSlotSprite)
                     {
                         //Debug.Log("slotActiveSprite");
-                        craftSlotSprite.spriteName = slotActiveSprite;
+                        craftSlotSprite.gameObject.SetActive(false);
+                        //craftSlotSprite.spriteName = slotActiveSprite;
                     }
                     if(null != resultSprite)
                     {
@@ -71,7 +73,8 @@ public class CraftDeviceSlot : MonoBehaviour
                 if (null != craftSlotSprite)
                 {
                     //Debug.Log("slotInactiveSprite");
-                    craftSlotSprite.spriteName = slotInactiveSprite;
+                    //craftSlotSprite.gameObject.SetActive(true);
+                    //craftSlotSprite.spriteName = slotInactiveSprite;
                 }
                 if(null != resultSprite)
                 {
@@ -92,6 +95,11 @@ public class CraftDeviceSlot : MonoBehaviour
 
     void Start()
     {
+        for(int index = 0; index < 4; index++)
+        {
+            dummyBrickGameObjectsSprites[index] = dummyBrickGameObjects[index].GetComponent<UISprite>();
+        }
+            
         _bricksCollapse = this.gameObject.GetComponent<BioBricksCollapse>();
         _bricksCollapse.onBricksStoppedMoving = onBricksStoppedMoving;
     }
@@ -251,6 +259,7 @@ public class CraftDeviceSlot : MonoBehaviour
             int index = getIndexFromBrick(brick);
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
+            dummyBrickGameObjectsSprites[index].enabled = false;
             
             checkDevice();
             
@@ -272,6 +281,12 @@ public class CraftDeviceSlot : MonoBehaviour
     public Callback onBricksCollapsedCallback = noneCallback;
     public Callback onBricksExpandedCallback = noneCallback;
     
+    private void displayCraftSlotSprite()
+    {
+        craftSlotSprite.gameObject.SetActive(true);
+        craftSlotSprite.spriteName = slotInactiveSprite;
+    }
+    
     private void checkDevice()
     {
         if(areAllBricksNonNull())
@@ -279,6 +294,7 @@ public class CraftDeviceSlot : MonoBehaviour
             CraftFinalizer.get().finalizeCraft();
             askCollapseBricks();
             onBricksCollapsedCallback = equip;
+            onBricksExpandedCallback = displayCraftSlotSprite;
         }
         else
         {
@@ -523,7 +539,9 @@ public class CraftDeviceSlot : MonoBehaviour
         unequip();
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
-        currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
+        int index = getIndexFromType(brick._biobrick.getType());
+        currentBricks[index] = null;
+        dummyBrickGameObjectsSprites[index].enabled = true;
         expandBricks();
         //askExpandBricks();
     }
