@@ -85,7 +85,6 @@ public class PromoterBrick : BioBrick
         set
         {
             _formula = value;
-            Debug.Log(value);
 
             _regulation = Regulation.CONSTANT;
             

@@ -33,7 +33,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startCollapseBricks()
     {
-        Debug.Log("startCollapseBricks");
+        //Debug.Log("startCollapseBricks");
         StopAllCoroutines();
         
         /*_bricksTransform[1].localPosition*/ _goTo[1] = new Vector3(_bricksTransform[1].localPosition.x + (_distanceBetweenMiddleBricks / 2), _bricksTransform[1].localPosition.y, _bricksTransform[1].localPosition.z);
@@ -122,7 +122,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startExpandBricks()
     {
-        Debug.Log("startExpandBricks");
+        //Debug.Log("startExpandBricks");
         StopAllCoroutines();
         StartCoroutine(expandBricks(50f));
     }

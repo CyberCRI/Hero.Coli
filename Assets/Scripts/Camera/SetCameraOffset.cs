@@ -16,7 +16,6 @@ public class SetCameraOffset : MonoBehaviour {
 	void Start () {
         _boundCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
         _originOffsetY = _boundCam.offset.y;
-        Debug.Log(_boundCam);
 	}
 	
 	// Update is called once per frame

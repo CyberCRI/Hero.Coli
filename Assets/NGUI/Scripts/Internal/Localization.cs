@@ -168,7 +168,7 @@ public class Localization : MonoBehaviour
 
 #if UNITY_EDITOR
 		if (mDictionary.TryGetValue(key, out val)) return val;
-		Debug.LogWarning("Localization key not found: '" + key + "'");
+		//Debug.LogWarning("Localization key not found: '" + key + "'");
 		return key;
 #else
 		return (mDictionary.TryGetValue(key, out val)) ? val : key;
