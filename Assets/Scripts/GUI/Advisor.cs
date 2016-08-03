@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 public class Advisor : MonoBehaviour {
 
@@ -14,6 +12,8 @@ public class Advisor : MonoBehaviour {
     private GameObject _nanoBot;
     [SerializeField]
     private Vector3 _originalScale;
+    
+    private UILocalize _localize;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class Advisor : MonoBehaviour {
             _nanoBot.transform.position = _positionBottom.position;
         }
 
-        GetDynamicText().key = text;
+        getDynamicText().key = text;
     }
 
     public void setUpNanoBot(bool top)
@@ -48,7 +48,7 @@ public class Advisor : MonoBehaviour {
 
     public void setUpNanoBot(string text)
     {
-        GetDynamicText().key = text;
+        getDynamicText().key = text;
     }
 
     public void setUpNanoBot(Vector3 position)
@@ -61,8 +61,12 @@ public class Advisor : MonoBehaviour {
         _nanoBot.transform.localScale = _originalScale * scale;
     }
 
-    public UILocalize GetDynamicText()
+    public UILocalize getDynamicText()
     {
-        return _dynamicText.GetComponent<UILocalize>();
+        if(null == _localize)
+        {
+            _localize = _dynamicText.GetComponent<UILocalize>();
+        }
+        return _localize;
     }
 }

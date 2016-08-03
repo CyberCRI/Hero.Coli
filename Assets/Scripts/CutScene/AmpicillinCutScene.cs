@@ -17,6 +17,8 @@ public class AmpicillinCutScene : CutScene {
     [SerializeField]
     private List<GameObject> _points = new List<GameObject>();
     
+    bool _played = false;
+    
     // Use this for initialization
     void Start () {
         _mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
@@ -95,7 +97,11 @@ public class AmpicillinCutScene : CutScene {
     {
         if (col.tag == "Door")
         {
-            start();
+            if(!_played)
+            {
+                start();
+                _played = true;
+            }
         }
         if (col.tag == "CutSceneElement")
         {

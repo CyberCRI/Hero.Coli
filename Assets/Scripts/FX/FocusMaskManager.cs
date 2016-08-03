@@ -84,7 +84,7 @@ public class FocusMaskManager : MonoBehaviour {
         if(null != position)
         {
             _target = null;
-            show(true);
+            
             //Debug.LogError("old pos="+this.transform.position);
             
             Vector3 newPosition;
@@ -119,6 +119,8 @@ public class FocusMaskManager : MonoBehaviour {
         {
             _advisor.gameObject.SetActive(false);
         }
+        
+        show(true);
     }
 
     public void blockClicks(bool block)
