@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class DisplayedDevice : DisplayedElement
@@ -7,6 +8,29 @@ public class DisplayedDevice : DisplayedElement
     public UISprite levelSprite;
     public UISprite deviceBackgroundSprite;
     public UILocalize moleculeOverlay;
+    public ParticleSystem feedbackParticleSystem;
+    protected bool _isFeedbackParticleSystemActive = false;
+    public void playFeedback()
+    {
+        _isFeedbackParticleSystemActive = true;
+        
+        feedbackParticleSystem.gameObject.SetActive(true);
+        feedbackParticleSystem.Emit(50);
+
+        StartCoroutine(terminateParticleSystem());
+    }
+    
+    IEnumerator terminateParticleSystem()
+    {
+        yield return new WaitForSeconds(1.5f);
+        
+        _isFeedbackParticleSystemActive = false;
+        
+        feedbackParticleSystem.Stop();
+        feedbackParticleSystem.gameObject.SetActive(false);
+        
+        yield return null;
+    }
 
     // prefab URIs
     private const string equipedPrefabURI = "GUI/screen1/Devices/DisplayedDevicePrefab";
@@ -429,6 +453,14 @@ public class DisplayedDevice : DisplayedElement
         else
         {
             RedMetricsManager.get().sendEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+        }
+    }
+    
+    void Update ()
+    {
+        if((_isFeedbackParticleSystemActive) && (Time.timeScale < 0.01f) && (null != feedbackParticleSystem))
+        {
+             feedbackParticleSystem.Simulate(Time.unscaledDeltaTime, true, false);
         }
     }
 

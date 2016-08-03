@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CellControl : MonoBehaviour {
     
@@ -95,6 +96,11 @@ public class CellControl : MonoBehaviour {
 
     public void Pause(bool pause)
     {
+        if(_pause && !pause)
+        {
+            StopAllCoroutines();
+            StartCoroutine(blockClicksAfterPause());
+        }
         _pause = pause;
     }
 
@@ -263,6 +269,15 @@ public class CellControl : MonoBehaviour {
             switchControlTypeToRightClickToMove();
         }
     }
+    
+    private bool _isClickBlockedAfterPause = true;
+    IEnumerator blockClicksAfterPause()
+    {
+        _isClickBlockedAfterPause = true;
+        yield return new WaitForSeconds(0.1f);
+        _isClickBlockedAfterPause = false;
+        yield return null;
+    }
   
     void Update ()
     {
@@ -279,7 +294,7 @@ public class CellControl : MonoBehaviour {
                 }
 
                 //Mouse controls
-                if(!_isFirstUpdate) {
+                if(!_isFirstUpdate && !_isClickBlockedAfterPause) {
                     if(isLeftClickToMove) {
                         clickToMoveUpdate(KeyCode.Mouse0);
                     } else {

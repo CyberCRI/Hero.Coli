@@ -70,7 +70,8 @@ public class CraftFinalizer : MonoBehaviour {
         //Debug.LogError("uncraft");
     }
 
-  public void finalizeCraft() {
+  public bool finalizeCraft() {
+      bool newCraft = false;
     //create new device from current biobricks in craft zone
     Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
     Device currentDevice = craftZoneManager.getCurrentDevice();
@@ -79,12 +80,13 @@ public class CraftFinalizer : MonoBehaviour {
       Inventory.AddingResult addingResult = Inventory.get().askAddDevice(currentDevice, true);
       if(addingResult == Inventory.AddingResult.SUCCESS) {
         craftZoneManager.craft();
+        newCraft = true;
       }
       Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
     } else {
       Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.WARN);
     }
-
+    return newCraft;
         //TODO RedMetrics reporting
   }
   
