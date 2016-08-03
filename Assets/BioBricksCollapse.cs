@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class BioBricksCollapse : MonoBehaviour {
 
@@ -14,6 +13,9 @@ public class BioBricksCollapse : MonoBehaviour {
     private CraftDeviceSlot _craftDeviceSlot;
     private Vector3[] _goTo = new Vector3[4];
     private Vector3[] _origin = new Vector3[4];
+
+    public delegate void Callback();
+    public Callback onBricksStoppedMoving;
 
     // Use this for initialization
     void Start () {
@@ -29,8 +31,11 @@ public class BioBricksCollapse : MonoBehaviour {
         _craftDeviceSlot = this.gameObject.GetComponent<CraftDeviceSlot>();
     }
 
-    public void Collapse()
+    public void startCollapseBricks()
     {
+        Debug.Log("startCollapseBricks");
+        StopAllCoroutines();
+        
         /*_bricksTransform[1].localPosition*/ _goTo[1] = new Vector3(_bricksTransform[1].localPosition.x + (_distanceBetweenMiddleBricks / 2), _bricksTransform[1].localPosition.y, _bricksTransform[1].localPosition.z);
         /*_bricksTransform[2].localPosition*/ _goTo[2] = new Vector3(_bricksTransform[2].localPosition.x - (_distanceBetweenMiddleBricks / 2), _bricksTransform[2].localPosition.y, _bricksTransform[2].localPosition.z);
 
@@ -43,18 +48,18 @@ public class BioBricksCollapse : MonoBehaviour {
             slotList[i].transform.localPosition = _bricksTransform[i].localPosition;
         }
 
-        StartCoroutine(MoveBricks(50f));
+        StartCoroutine(collapseBricks(50f));
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            StartCoroutine(MoveBricksBack(50f));
+            StartCoroutine(expandBricks(50f));
         }
     }
 
-    IEnumerator MoveBricks(float speed)
+    IEnumerator collapseBricks(float speed)
     {
         float time = Time.realtimeSinceStartup;
         float deltaTime = Time.realtimeSinceStartup - time;
@@ -66,7 +71,7 @@ public class BioBricksCollapse : MonoBehaviour {
             time = Time.realtimeSinceStartup;
             for (var i = 0; i < _bricksTransform.Length; i++)
             {
-                Debug.Log("executing");
+                //Debug.Log("executing");
                 _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _goTo[i], speed * deltaTime * multiplicator);
                 yield return null;
             }
@@ -77,10 +82,11 @@ public class BioBricksCollapse : MonoBehaviour {
                 slotList[i].transform.localPosition = _bricksTransform[i].localPosition;
             }
         }
+        onBricksStoppedMoving();
         yield return null;
     }
 
-    IEnumerator MoveBricksBack(float speed)
+    IEnumerator expandBricks(float speed)
     {
         float time = Time.realtimeSinceStartup;
         float deltaTime = Time.realtimeSinceStartup - time;
@@ -94,7 +100,7 @@ public class BioBricksCollapse : MonoBehaviour {
             {
                 if (_bricksTransform[i] != null)
                 {
-                    Debug.Log("executing");
+                    //Debug.Log("executing");
                     _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _origin[i], speed * deltaTime * multiplicator);
                     yield return null;
                 }
@@ -110,11 +116,14 @@ public class BioBricksCollapse : MonoBehaviour {
                 }
             }
         }
+        onBricksStoppedMoving();
         yield return null;
     }
 
-    public void StartMoveBricksBack()
+    public void startExpandBricks()
     {
-        StartCoroutine(MoveBricksBack(50f));
+        Debug.Log("startExpandBricks");
+        StopAllCoroutines();
+        StartCoroutine(expandBricks(50f));
     }
 }

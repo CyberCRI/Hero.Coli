@@ -16,6 +16,15 @@ public class CraftDeviceSlot : MonoBehaviour
     private const string resultInactiveSprite = "craft_result_inactive";
     private BioBricksCollapse _bricksCollapse;
 
+    private bool _isCollapsingBricks = false;
+    private bool _isExpandingBricks = false;
+    private bool _hasToCollapseBricks = false;
+    private bool _hasToExpandBricks = false;
+    private bool _isCollapsed = false;
+    private bool _isExpanded = true;
+    
+    private bool _isSelectedSlot = false;
+    
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
     
@@ -84,12 +93,14 @@ public class CraftDeviceSlot : MonoBehaviour
     void Start()
     {
         _bricksCollapse = this.gameObject.GetComponent<BioBricksCollapse>();
+        _bricksCollapse.onBricksStoppedMoving = onBricksStoppedMoving;
     }
 
     protected void equip()
     {
         //Debug.LogError("equip");
         isEquiped = true;
+        onBricksCollapsedCallback = noneCallback;
     }
 
     protected void unequip()
@@ -247,18 +258,27 @@ public class CraftDeviceSlot : MonoBehaviour
         }
     }
     
-    private void checkDevice()
+    private bool areAllBricksNonNull()
     {
-        if(
+        return (
             (null != currentBricks[0])
             && (null != currentBricks[1])
             && (null != currentBricks[2])
             && (null != currentBricks[3])
-        )
+        );
+    }
+    public delegate void Callback();
+    public static void noneCallback() {}
+    public Callback onBricksCollapsedCallback = noneCallback;
+    public Callback onBricksExpandedCallback = noneCallback;
+    
+    private void checkDevice()
+    {
+        if(areAllBricksNonNull())
         {
             CraftFinalizer.get().finalizeCraft();
-            _bricksCollapse.Collapse();
-            equip();
+            askCollapseBricks();
+            onBricksCollapsedCallback = equip;
         }
         else
         {
@@ -268,12 +288,7 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public Device getCurrentDevice() {
         //Debug.LogError("CraftDeviceSlot getCurrentDevice");
-        if(
-            (null != currentBricks[0])
-            && (null != currentBricks[1])
-            && (null != currentBricks[2])
-            && (null != currentBricks[3])
-        )
+        if(areAllBricksNonNull())
         {
             List<BioBrick> currentBricksL = new List<BioBrick>{currentBricks[0]._biobrick,currentBricks[1]._biobrick,currentBricks[2]._biobrick,currentBricks[3]._biobrick};
             LinkedList<BioBrick> currentBricksLL = new LinkedList<BioBrick>(currentBricksL);
@@ -306,14 +321,178 @@ public class CraftDeviceSlot : MonoBehaviour
                 if ((null != czdb) && (czdb._biobrick == brick))
                 {
                     innerRemoveBrick(czdb);
-                    _bricksCollapse.StartMoveBricksBack();
+                    askExpandBricks();
                     return true;
                 }
             }
         }
         return false;
     }
-    
+
+    private void askCollapseBricks()
+    {
+        Debug.LogWarning("askCollapseBricks "+getDebugBoolsString());
+        
+        if(_isCollapsed)
+        {
+            _isCollapsingBricks = false;
+            _hasToCollapseBricks = false; 
+        }
+        else
+        {
+            if (!_isCollapsingBricks && !_isExpandingBricks)
+            {
+                Debug.LogWarning("askExpandBricks validated "+getDebugBoolsString());
+                collapseBricks();
+            }
+            else if (_isCollapsingBricks && _isExpandingBricks)
+            {
+                Debug.LogError("forbidden state _isCollapsingBricks && _isExpandingBricks");
+                Debug.LogWarning("askExpandBricks denied: error "+getDebugBoolsString());
+            }
+            else if (_isCollapsingBricks)
+            {
+                //do nothing
+                _hasToCollapseBricks = false;
+                Debug.LogWarning("askExpandBricks denied: _isCollapsingBricks "+getDebugBoolsString());
+            }
+            else if (_isExpandingBricks)
+            {
+                _hasToCollapseBricks = true;
+                Debug.LogWarning("askExpandBricks denied: _isExpandingBricks "+getDebugBoolsString());
+            }
+            else
+            {
+                Debug.LogError("impossible state");
+                Debug.LogWarning("askExpandBricks denied: impossible "+getDebugBoolsString());
+            }
+        }
+    }
+
+    private void askExpandBricks()
+    {
+        Debug.LogWarning("askExpandBricks "+getDebugBoolsString());
+        
+        if(_isExpanded)
+        {
+            _isExpandingBricks = false;
+            _hasToExpandBricks = false;
+        }
+        else
+        {
+            if (!_isCollapsingBricks && !_isExpandingBricks)
+            {
+                Debug.LogWarning("askExpandBricks validated "+getDebugBoolsString());
+                expandBricks();
+            }
+            else if (_isCollapsingBricks && _isExpandingBricks)
+            {
+                Debug.LogError("forbidden state _isCollapsingBricks && _isExpandingBricks");
+                Debug.LogWarning("askExpandBricks denied: error "+getDebugBoolsString());
+            }
+            else if (_isCollapsingBricks)
+            {
+                _hasToExpandBricks = true;
+                Debug.LogWarning("askExpandBricks denied: _isCollapsingBricks "+getDebugBoolsString());
+            }
+            else if (_isExpandingBricks)
+            {
+                //do nothing
+                _hasToExpandBricks = false;
+                Debug.LogWarning("askExpandBricks denied: _isExpandingBricks "+getDebugBoolsString());
+            }
+            else
+            {
+                Debug.LogError("impossible state");
+                Debug.LogWarning("askExpandBricks denied: impossible "+getDebugBoolsString());
+            }
+        }
+    }
+
+    private void collapseBricks()
+    {
+        Debug.Log("collapseBricks "+getDebugBoolsString());
+        if(_isCollapsed)
+        {
+            _isCollapsingBricks = false;
+            _hasToCollapseBricks = false; 
+        }
+        else if(!_isExpandingBricks && areAllBricksNonNull())
+        {
+            string startString = getDebugBoolsString();
+            _isExpandingBricks = false; 
+            
+            _isCollapsingBricks = true;
+            _hasToCollapseBricks = false;
+            
+            _isExpanded = false;
+            _isCollapsed = false;
+            
+            _bricksCollapse.startCollapseBricks();
+            Debug.Log("collapseBricks for reals start="+startString+"\nend="+getDebugBoolsString());
+        }
+    }
+
+    private void expandBricks()
+    {
+        Debug.Log("expandBricks "+getDebugBoolsString());
+        if(_isExpanded)
+        {
+            _isExpandingBricks = false;
+            _hasToExpandBricks = false;
+        }
+        else if(!_isExpandingBricks)
+        {
+            string startString = getDebugBoolsString();
+            _isCollapsingBricks = false;
+            
+            _isExpandingBricks = true;
+            _hasToExpandBricks = false;
+            
+            _isExpanded = false;
+            _isCollapsed = false;
+            
+            _bricksCollapse.startExpandBricks();
+            
+            Debug.Log("expandBricks for reals start="+startString+"\nend="+getDebugBoolsString());
+        }
+    }
+
+    public void onBricksStoppedMoving()
+    {
+        string startString = getDebugBoolsString();
+        
+        _isCollapsed = _isCollapsingBricks;
+        _isExpanded = _isExpandingBricks;
+
+        _isCollapsingBricks = false;
+        _isExpandingBricks = false;
+
+        if (_isCollapsed)
+        {
+            onBricksCollapsedCallback();
+        }
+        else if (_isExpanded)
+        {
+            onBricksExpandedCallback();
+        }
+
+        if (_hasToCollapseBricks)
+        {
+            askCollapseBricks();
+        }
+        else if (_hasToExpandBricks)
+        {
+            askExpandBricks();
+        }
+        else
+        {
+            //nothing's happening and nothing's to be happening: unlock edition
+        }
+        
+        Debug.Log("onBricksStoppedMoving start="+startString+"\nend="+getDebugBoolsString());
+    }
+
     public bool removeBrick(CraftZoneDisplayedBioBrick brick)
     {
         //Debug.LogError("removeBrick(czdb)");
@@ -346,7 +525,8 @@ public class CraftDeviceSlot : MonoBehaviour
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
         GameObject.Destroy(brick.gameObject);
         currentBricks[getIndexFromType(brick._biobrick.getType())] = null;
-        _bricksCollapse.StartMoveBricksBack();
+        expandBricks();
+        //askExpandBricks();
     }
     
     public void removeAllBricks()
@@ -410,6 +590,7 @@ public class CraftDeviceSlot : MonoBehaviour
     public void setSelectedBackground(bool selected)
     {
         //Debug.LogError("CraftDeviceSlot setSelectedBackground("+selected+")");
+        _isSelectedSlot = selected;
         selectionSprite.spriteName = selected?slotSelectedSprite:slotUnselectedSprite;        
     }
 
@@ -430,7 +611,7 @@ public class CraftDeviceSlot : MonoBehaviour
         _isEquiped = true;
         isEquiped = false;
     }
-    
+
     void Awake()
     {
         initialize();
@@ -439,5 +620,24 @@ public class CraftDeviceSlot : MonoBehaviour
     public CraftZoneDisplayedBioBrick[] GetCraftZoneDisplayedBioBricks()
     {
         return currentBricks;
+    }
+
+    void Update()
+    {
+        if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
+        {
+            Debug.LogError(getDebugBoolsString());
+        }
+    }
+    
+    private string getDebugBoolsString()
+    {
+        return  "bools:\n_isCollapsingBricks = " + _isCollapsingBricks + ";" +
+                "\n_isExpandingBricks = " + _isExpandingBricks + ";" +
+                "\n_hasToCollapseBricks = " + _hasToCollapseBricks + ";" +
+                "\n_hasToExpandBricks = " + _hasToExpandBricks + ";" +
+                "\n_isCollapsed = " + _isCollapsed + ";" +
+                "\n_isExpanded = " + _isExpanded
+                ;
     }
 }
