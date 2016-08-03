@@ -13,14 +13,15 @@ public abstract class CutScene : MonoBehaviour {
     }
     
     private CutSceneBlackBarHandler _blackBar;
-    private Camera _uiCam;
+    private CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
+    private Camera _cameraCutScene;
 
     void OnEnable()
     {
         _blackBar = GameObject.Find("CinematicBlackBar").GetComponent<CutSceneBlackBarHandler>();
-        _uiCam = GameObject.FindGameObjectWithTag("CameraInterface").GetComponent<Camera>();
-        _originCullingMask = _uiCam.cullingMask;
+        _cullingMaskHandler = GameObject.FindGameObjectWithTag("CameraInterface").GetComponent<CullingMaskHandler>();
+        _cameraCutScene = GameObject.Find("CameraCutScene").GetComponent<Camera>();
     }
     
 	// must be implemented in each cut scene
@@ -33,7 +34,8 @@ public abstract class CutScene : MonoBehaviour {
         StartCoroutine(WaitForBlackBar(true));
         //startCutScene ();
         _blackBar.CloseBar(true);
-        _uiCam.cullingMask = LayerMask.NameToLayer("Nothing");
+        _cullingMaskHandler.HideInterface(true);
+        _cameraCutScene.enabled = true;
 	}
 	
     // must be implemented in each cut scene
@@ -46,8 +48,9 @@ public abstract class CutScene : MonoBehaviour {
         StartCoroutine(WaitForBlackBar(false));
         //endCutScene ();
         _blackBar.CloseBar(false);
-        _uiCam.cullingMask = _originCullingMask;
-	}
+        _cullingMaskHandler.HideInterface(false);
+        _cameraCutScene.enabled = false;
+    }
 
     IEnumerator WaitForBlackBar(bool start)
     {
