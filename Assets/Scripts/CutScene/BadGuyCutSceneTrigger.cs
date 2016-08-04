@@ -19,6 +19,8 @@ public class BadGuyCutSceneTrigger : CutScene {
     private GameObject _wayPoint1;
     [SerializeField]
     private GameObject _wayPoint2;
+    [SerializeField]
+    private GameObject _dummyFlagellum;
 
     // Use this for initialization
     void Start () {
@@ -40,7 +42,8 @@ public class BadGuyCutSceneTrigger : CutScene {
         if (col.tag == "CutSceneElement")
         {
             _isSlowingAnimation = true;
-            StartCoroutine(SlowAnimation(col.gameObject));
+            //StartCoroutine(SlowAnimation(col.gameObject));
+            StartCoroutine(DeathDummy(_iTweenEventBigGuy.gameObject));
         }
 
         if (col.tag == "Player")
@@ -52,6 +55,37 @@ public class BadGuyCutSceneTrigger : CutScene {
             }
         }
     }
+
+    IEnumerator DeathDummy(GameObject dummy)
+    {
+        _iTweenEventBigGuy.GetComponent<DeathDummy>().StartDeath();
+        yield return null;
+    }
+
+    IEnumerator WaitForDummyDeath()
+    {
+        while(_dummyFlagellum.activeSelf == true)
+        {
+            Debug.Log("1");
+            yield return null;
+        }
+        AlternativeEnd();
+        Debug.Log("2");
+        yield return null;
+    }
+
+    void AlternativeEnd()
+    {
+        Debug.Log("3");
+        _wayPoint1.transform.position = new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z);
+        _wayPoint2.transform.position = new Vector3(_initialTarget.position.x, _cutSceneCam.transform.position.y, _initialTarget.position.z);
+        _cutSceneCam.transform.position = _wayPoint1.transform.position;
+        _cutSceneCam.gameObject.SetActive(true);
+        _mainCamBound.gameObject.SetActive(false);
+        _cutSceneCam.GetComponent<PlatformMvt>().restart();
+        StartCoroutine(WaitForEnd());
+    }
+
 
     IEnumerator SlowAnimation(GameObject bigbadGuy)
     {
@@ -87,7 +121,9 @@ public class BadGuyCutSceneTrigger : CutScene {
 
     IEnumerator EndCutScene()
     {
+        Debug.Log("3");
         yield return new WaitForSeconds(2);
+        Debug.Log("3");
         _wayPoint1.transform.position = new Vector3 (_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y,_iTweenEventBigGuy.transform.position.z);
         _wayPoint2.transform.position = new Vector3 (_initialTarget.position.x,_cutSceneCam.transform.position.y,_initialTarget.position.z);
         _cutSceneCam.transform.position = _wayPoint1.transform.position;
@@ -95,6 +131,7 @@ public class BadGuyCutSceneTrigger : CutScene {
         _mainCamBound.gameObject.SetActive(false);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
         StartCoroutine(WaitForEnd());
+        Debug.Log("3");
         yield return null;
     }
 

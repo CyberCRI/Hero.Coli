@@ -55,6 +55,11 @@ public class DeathDummy : MonoBehaviour {
             
 	}
 
+    public void StartDeath()
+    {
+        StartCoroutine(deathEffectCoroutine());
+    }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "DeathZoneDummy")
