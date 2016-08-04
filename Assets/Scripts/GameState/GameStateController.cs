@@ -185,6 +185,11 @@ public class GameStateController : MonoBehaviour {
         MainMenuManager.get().open();
     }
     
+    public static bool isPause()
+    {
+        return (GameState.Pause == _instance._gameState);
+    }
+    
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;

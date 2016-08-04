@@ -4,16 +4,22 @@ using System.Collections.Generic;
 public class CraftDeviceSlot : MonoBehaviour
 {
     // GUI elements
-    public UISprite craftSlotSprite;
-    private const string slotActiveSprite = "craft_slot_active";
-    private const string slotInactiveSprite = "craft_slot_inactive";
-    public UISprite selectionSprite;
-    private const string slotSelectedSprite = "transparent-light-grey";
-    private const string slotUnselectedSprite = "transparent-grey";
-    public CraftResultDevice resultDevice;
-    public UISprite resultSprite;
-    private const string resultActiveSprite = "craft_result_active";
-    private const string resultInactiveSprite = "craft_result_inactive";
+    [SerializeField]
+    private UISprite _craftSlotSprite;
+    private const string _slotActiveSprite = "craft_slot_active";
+    private const string _slotInactiveSprite = "craft_slot_inactive";
+    [SerializeField]
+    private UISprite _selectionSprite;
+    private const string _slotSelectedSprite = "transparent-light-grey";
+    private const string _slotUnselectedSprite = "transparent-grey";
+    [SerializeField]
+    private CraftResultDevice _resultDevice;
+    [SerializeField]
+    private UISprite _resultSprite;
+    private const string _resultActiveSprite = "craft_result_active";
+    private const string _resultInactiveSprite = "craft_result_inactive";
+    
+    [SerializeField]
     private BioBricksCollapse _bricksCollapse;
 
     private bool _isCollapsingBricks = false;
@@ -25,11 +31,16 @@ public class CraftDeviceSlot : MonoBehaviour
     
     private bool _isSelectedSlot = false;
     
+    private bool _interruptOnDisable = false;
+    
+    [SerializeField]
+    private GameObject[] dummyBrickGameObjects;
+    [SerializeField]
+    private UISprite[] dummyBrickGameObjectsSprites = new UISprite[4];
+    
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
     
-    public GameObject[] dummyBrickGameObjects;
-    private UISprite[] dummyBrickGameObjectsSprites = new UISprite[4];
     
     protected bool _isEquiped;
     public bool isEquiped
@@ -47,21 +58,15 @@ public class CraftDeviceSlot : MonoBehaviour
                 _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
                 if (_isEquiped)
                 {
-                    if(null != craftSlotSprite)
+                    if(null != _resultSprite)
                     {
-                        //Debug.Log("slotActiveSprite");
-                        craftSlotSprite.gameObject.SetActive(false);
-                        //craftSlotSprite.spriteName = slotActiveSprite;
-                    }
-                    if(null != resultSprite)
-                    {
-                        resultSprite.spriteName = resultActiveSprite;
+                        _resultSprite.spriteName = _resultActiveSprite;
                     }
                     //set result device
-                    if(null != resultDevice)
+                    if(null != _resultDevice)
                     {
-                        resultDevice.Initialize(currentDevice, null, DevicesDisplayer.DeviceType.Listed);
-                        resultDevice.gameObject.SetActive(true);
+                        _resultDevice.Initialize(currentDevice, null, DevicesDisplayer.DeviceType.Listed);
+                        _resultDevice.gameObject.SetActive(true);
                     }                    
                 }
             }
@@ -70,20 +75,14 @@ public class CraftDeviceSlot : MonoBehaviour
                 //Debug.Log("set: _isEquiped && !value");
                 _isEquiped = false;
                 Equipment.get().removeDevice(getCurrentDevice());
-                if (null != craftSlotSprite)
+                if(null != _resultSprite)
                 {
-                    //Debug.Log("slotInactiveSprite");
-                    //craftSlotSprite.gameObject.SetActive(true);
-                    //craftSlotSprite.spriteName = slotInactiveSprite;
-                }
-                if(null != resultSprite)
-                {
-                    resultSprite.spriteName = resultInactiveSprite;
+                    _resultSprite.spriteName = _resultInactiveSprite;
                 }
                 //set result device
-                if(null != resultDevice)
+                if(null != _resultDevice)
                 {
-                    resultDevice.gameObject.SetActive(false);
+                    _resultDevice.gameObject.SetActive(false);
                 }
             }
             else
@@ -100,7 +99,6 @@ public class CraftDeviceSlot : MonoBehaviour
             dummyBrickGameObjectsSprites[index] = dummyBrickGameObjects[index].GetComponent<UISprite>();
         }
             
-        _bricksCollapse = this.gameObject.GetComponent<BioBricksCollapse>();
         _bricksCollapse.onBricksStoppedMoving = onBricksStoppedMoving;
     }
 
@@ -113,67 +111,10 @@ public class CraftDeviceSlot : MonoBehaviour
 
     protected void unequip()
     {
-        resultDevice.displayFeedback = false;
+        _isCraftSuccess = false;
         //Debug.Log("unequip");
         isEquiped = false;
     }
-    
-    // isLocked == active: active == true when the device is working and protected from edition
-    /*
-    protected bool _isLocked;
-    public bool isLocked
-    {
-        get
-        {
-            return _isLocked;
-        }
-        set
-        {
-            if (!value || (null != _resultDevice))
-            {
-                _isLocked = value;
-                if (null != craftSlotSprite)
-                {
-                    craftSlotSprite.spriteName = value ? slotActive : slotInactive;
-                }
-                if (null != _resultDevice)
-                {
-                    if (value)
-                    {
-                        Equipment.get().askAddDevice(_resultDevice);
-                    }
-                    else
-                    {
-                        Equipment.get().removeDevice(_resultDevice);
-                    }
-                }
-                updateDisplay();
-            }
-        }
-    }
-
-    public void toggleActivation()
-    {
-        if (isLocked)
-        {
-            deactivate();
-        }
-        else
-        {
-            activate();
-        }
-    }
-
-    protected void activate()
-    {
-        isLocked = true;
-    }
-
-    protected void deactivate()
-    {
-        isLocked = false;
-    }
-    */
 
     public int getIndexFromType(BioBrick.Type bbType)
     {
@@ -230,7 +171,6 @@ public class CraftDeviceSlot : MonoBehaviour
     public void addBrick(BioBrick brick)
     {
         //Debug.Log("addBrick("+brick.getName()+")");
-        //if (!isLocked && (null != brick))
         if (null != brick)
         {
             int index = getIndexFromBrick(brick);
@@ -253,7 +193,6 @@ public class CraftDeviceSlot : MonoBehaviour
     public void addBrick(CraftZoneDisplayedBioBrick brick)
     {
         //Debug.Log("addBrick(czdb)");
-        //if (!isLocked && (null != brick) && (null != brick._biobrick))
         if ((null != brick) && (null != brick._biobrick))
         {
             //Debug.Log("!isLocked && (null != brick) && (null != brick._biobrick)");
@@ -284,22 +223,37 @@ public class CraftDeviceSlot : MonoBehaviour
     
     private void displayCraftSlotSprite()
     {
-        craftSlotSprite.gameObject.SetActive(true);
-        craftSlotSprite.spriteName = slotInactiveSprite;
+        _craftSlotSprite.gameObject.SetActive(_isExpanded);
     }
     
     private void checkDevice()
     {
         if(areAllBricksNonNull())
         {
-            resultDevice.displayFeedback = CraftFinalizer.get().finalizeCraft();
+            _isCraftSuccess = (Inventory.get().canAddDevice(getCurrentDevice()) == Inventory.AddingResult.SUCCESS);
             askCollapseBricks();
-            onBricksCollapsedCallback = equip;
-            onBricksExpandedCallback = displayCraftSlotSprite;
+            onBricksCollapsedCallback = animateCollapseCompleted;
         }
         else
         {
             unequip();
+        }
+    }
+    private bool _isCraftSuccess = false;
+    public void animateCollapseCompleted()
+    {
+        equip();
+        if(_isCraftSuccess)
+        {
+            // feedback on new listed device
+            CraftFinalizer.get().finalizeCraft();
+            // feedback on crafted device
+            _resultDevice.playFeedback();
+            
+            // feedback on new listed device
+            CraftFinalizer.get().finalizeCraft();
+            
+            _isCraftSuccess = false;
         }
     }
 
@@ -446,6 +400,8 @@ public class CraftDeviceSlot : MonoBehaviour
             _isCollapsed = false;
             
             _bricksCollapse.startCollapseBricks();
+            
+            displayCraftSlotSprite();
             //Debug.Log("collapseBricks for reals start="+startString+"\nend="+getDebugBoolsString());
         }
     }
@@ -471,6 +427,7 @@ public class CraftDeviceSlot : MonoBehaviour
             
             _bricksCollapse.startExpandBricks();
             
+            displayCraftSlotSprite();
             //Debug.Log("expandBricks for reals start="+startString+"\nend="+getDebugBoolsString());
         }
     }
@@ -502,11 +459,7 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             askExpandBricks();
         }
-        else
-        {
-            //nothing's happening and nothing's to be happening: unlock edition
-        }
-        
+        displayCraftSlotSprite();
         //Debug.Log("onBricksStoppedMoving start="+startString+"\nend="+getDebugBoolsString());
     }
 
@@ -535,7 +488,6 @@ public class CraftDeviceSlot : MonoBehaviour
     private void innerRemoveBrick(CraftZoneDisplayedBioBrick brick)
     {
         //Debug.Log("innerRemoveBrick("+brick._biobrick.getName()+")");
-        //isLocked = false;
         setSelected(true);
         unequip();
         AvailableBioBricksManager.get().addBrickAmount(brick._biobrick, 1);
@@ -544,7 +496,6 @@ public class CraftDeviceSlot : MonoBehaviour
         currentBricks[index] = null;
         dummyBrickGameObjectsSprites[index].enabled = true;
         expandBricks();
-        //askExpandBricks();
     }
     
     public void removeAllBricks()
@@ -609,7 +560,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         //Debug.Log("CraftDeviceSlot setSelectedBackground("+selected+")");
         _isSelectedSlot = selected;
-        selectionSprite.spriteName = selected?slotSelectedSprite:slotUnselectedSprite;        
+        _selectionSprite.spriteName = selected?_slotSelectedSprite:_slotUnselectedSprite;        
     }
 
     public void updateDisplay()
@@ -618,8 +569,12 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             if (null != currentBricks[index])
             {
-                currentBricks[index].gameObject.transform.localPosition = dummyBrickGameObjects[index].transform.localPosition;
                 currentBricks[index].gameObject.SetActive(true);
+                dummyBrickGameObjectsSprites[index].enabled = false;
+            }
+            else
+            {
+                dummyBrickGameObjectsSprites[index].enabled = true;
             }
         }
     }
@@ -635,19 +590,58 @@ public class CraftDeviceSlot : MonoBehaviour
         initialize();
     }
 
-    public CraftZoneDisplayedBioBrick[] GetCraftZoneDisplayedBioBricks()
+    public CraftZoneDisplayedBioBrick[] getCraftZoneDisplayedBioBricks()
     {
         return currentBricks;
     }
 
     void Update()
     {
-        /*
         if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
         {
             Debug.LogError(getDebugBoolsString());
+            _interruptOnDisable = !_interruptOnDisable;
+        }        
+    }
+    
+    void OnDisable()
+    {
+        if(!_interruptOnDisable)
+        {
+            // finish craft & equip if needed
+            if(_isCollapsingBricks || _hasToCollapseBricks)
+            {
+                onBricksCollapsedCallback();
+                setPosition(false);
+            }
+            else if (_isExpandingBricks || _hasToExpandBricks)
+            {
+                onBricksExpandedCallback();
+                setPosition(true);
+            }
         }
-        */
+        else
+        {   
+            // interrupt and abort equip & craft
+            if(_isCollapsingBricks || _hasToCollapseBricks)
+            {
+                removeAllBricks();
+            }
+            setPosition(!_isCollapsed);
+        }
+        displayCraftSlotSprite();
+    }
+    
+    private void setPosition(bool isExpanded)
+    {   
+        _isCollapsingBricks = false;
+        _isExpandingBricks = false;
+        _hasToCollapseBricks = false;
+        _hasToExpandBricks = false;
+        _isCollapsed = !isExpanded;
+        _isExpanded = isExpanded;
+        
+        _bricksCollapse.setPosition(isExpanded);
     }
     
     private string getDebugBoolsString()

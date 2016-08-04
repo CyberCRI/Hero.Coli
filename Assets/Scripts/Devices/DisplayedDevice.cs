@@ -458,7 +458,7 @@ public class DisplayedDevice : DisplayedElement
     
     void Update ()
     {
-        if((_isFeedbackParticleSystemActive) && (Time.timeScale < 0.01f) && (null != feedbackParticleSystem))
+        if((_isFeedbackParticleSystemActive) && (GameStateController.isPause()) && (null != feedbackParticleSystem))
         {
              feedbackParticleSystem.Simulate(Time.unscaledDeltaTime, true, false);
         }
