@@ -8,20 +8,31 @@ public class CraftHint : MonoBehaviour
     private bool prepared = false;
 
     private const string _craftButton = "CraftButton";
+    private const string _craftWindow = "CraftPanelSprite";
     private const string _prefix = "AvailableDisplayed";
     private const string _brick1 = _prefix + "PRCONS",
     _brick2 = _prefix + "RBS2",
     _brick3 = _prefix + "MOV",
     _brick4 = _prefix + "DTER";
     private const string _exitCross = "CraftCloseButton";
+    private const string _textKeyPrefix = "HINT.CRAFT.";
 
-    private string[] focusObjects = new string[6] { _craftButton, _brick1, _brick2, _brick3, _brick4, _exitCross };
-    private string[] textHints = new string[6] { "HINT.CRAFT.0", "HINT.CRAFT.1", "HINT.CRAFT.2", "HINT.CRAFT.3" , "HINT.CRAFT.4", "HINT.CRAFT.5" };
+    private const int _stepCount = 8;
+    private string[] focusObjects = new string[_stepCount] { _craftButton, _craftWindow, _brick1, _brick2, _brick3, _brick4, _craftWindow, _exitCross };
+    private string[] textHints = new string[_stepCount];
 
     public void next()
     {
         prepared = false;
         step++;
+    }
+    
+    void Awake()
+    {
+        for(int index = 0; index < textHints.Length; index++)
+        {
+            textHints[index] = _textKeyPrefix+index;
+        }
     }
 
 
@@ -34,8 +45,16 @@ public class CraftHint : MonoBehaviour
             {
                 if (!prepared)
                 {
-                    ExternalOnPressButton target = GameObject.Find(focusObjects[step]).GetComponent<ExternalOnPressButton>();
-                    FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                    GameObject go = GameObject.Find(focusObjects[step]);
+                    ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
+                    if(null != target)
+                    {
+                        FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                    }
+                    else
+                    {
+                        FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                    }
                     prepared = true;
                 }
             }

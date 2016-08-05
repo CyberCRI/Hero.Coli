@@ -289,17 +289,20 @@ CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour l'équiper - si 
 
 CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
 
-HINT.CRAFT.0=Click here to craft!
-HINT.CRAFT.1=Click on first brick!
-HINT.CRAFT.2=Click on second brick!
-HINT.CRAFT.3=Now, the third!
-HINT.CRAFT.4=And now the last one.
-HINT.CRAFT.5=Well done! Quit to test your device.
+HINT.CRAFT.0=You have enough bricks now. Click there to craft!
+HINT.CRAFT.1=This is the craft interface. We'll use it to create a new device. Click anywhere inside the circle.
+HINT.CRAFT.2=Start by clicking on the Promoter.
+HINT.CRAFT.3=Click on the RBS.
+HINT.CRAFT.4=Now, the Coding Sequence.
+HINT.CRAFT.5=And now the Terminator.
+HINT.CRAFT.6=See? You have a new device now, on the top-right. Click anywhere inside the circle.
+HINT.CRAFT.7=Now let's quit to test your device.
 HINT.GFPCRAFT.0=Let's use GFP in a new device!
-HINT.GFPCRAFT.1=Click on the previous device to edit it.
+HINT.GFPCRAFT.1=See this? It's your previous device. Click on it to edit it.
 HINT.GFPCRAFT.2=Click on the GFP brick.
-HINT.GFPCRAFT.3=Well done! Quit to test your device.
-HINT.RBS1CRAFT.0=Let's use this to upgrade a new device!
+HINT.GFPCRAFT.3=There's your new GFP device. Click anywhere inside the circle.
+HINT.GFPCRAFT.4=Quit and see what happens!
+HINT.RBS1CRAFT.0=Let's use this to upgrade your movement device and go faster!
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=un nanorobot
 TUTORIAL.INTRODUCTION1.CELLLABEL=C'est vous, Cellia !

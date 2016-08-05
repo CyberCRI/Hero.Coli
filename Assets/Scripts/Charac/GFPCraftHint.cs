@@ -10,16 +10,27 @@ public class GFPCraftHint : MonoBehaviour
     private const string _listedPrefix = "Listed";
     private const string _device = "PRCONS:RBS2:MOV:DTER";
     private const string _brick = "AvailableDisplayedFLUO1";
+    private const string _craftWindow = "CraftPanelSprite";
     private const string _exitCross = "CraftCloseButton";
+    private const string _textKeyPrefix = "HINT.GFPCRAFT.";
 
-    private string[] focusObjects = new string[4] { _craftButton, _listedPrefix + _device, _brick, _exitCross };
+    private const int _stepCount = 5;
+    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device, _brick, _craftWindow, _exitCross };
 
-    private string[] textHints = new string[4] { "HINT.GFPCRAFT.0", "HINT.GFPCRAFT.1", "HINT.GFPCRAFT.2", "HINT.GFPCRAFT.3" };
+    private string[] textHints = new string[_stepCount];
 
     public void next()
     {
         prepared = false;
         step++;
+    }
+    
+    void Awake()
+    {
+        for(int index = 0; index < textHints.Length; index++)
+        {
+            textHints[index] = _textKeyPrefix+index;
+        }
     }
 
     // Update is called once per frame
@@ -35,8 +46,16 @@ public class GFPCraftHint : MonoBehaviour
                 }
                 else
                 {
-                    ExternalOnPressButton target = GameObject.Find(focusObjects[step]).GetComponent<ExternalOnPressButton>();
-                    FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                    GameObject go = GameObject.Find(focusObjects[step]);
+                    ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
+                    if(null != target)
+                    {
+                        FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                    }
+                    else
+                    {
+                        FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                    }
                     prepared = true;
                 }
             }
