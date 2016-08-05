@@ -18,14 +18,12 @@ public class BadGuySecondCutScene : CutScene {
     private bool _secondPart = false;
     private Vector3 _originWayPoint1;
     private Vector3 _originWayPoint2;
-    private GameObject _cameraInterface;
 
 
 	// Use this for initialization
 	void Start () {
         _mainCamBound = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
         _player = GameObject.FindGameObjectWithTag("Player");
-        _cameraInterface = GameObject.FindGameObjectWithTag("CameraInterface");
     }
 	
 	// Update is called once per frame
@@ -75,7 +73,6 @@ public class BadGuySecondCutScene : CutScene {
     
     public override void startCutScene ()
     {        
-        //_cameraInterface.GetComponent<Camera>().enabled = false;
         _dummyPlayer.transform.position = _player.transform.position;
         _dummyPlayer.transform.rotation = _player.transform.rotation;
         _player.SetActive(false);

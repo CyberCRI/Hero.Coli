@@ -12,16 +12,39 @@ public abstract class CutScene : MonoBehaviour {
         }
     }
     
-    private CutSceneBlackBarHandler _blackBar;
-    private CullingMaskHandler _cullingMaskHandler;
+    private static CutSceneBlackBarHandler _blackBar;
+    private static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
-    private Camera _cameraCutScene;
+    private static Camera _cameraCutScene;
+    private static Renderer _graphsCanvas;
+    
+    private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
+    {
+        if (null != t)
+        {
+            return t;
+        }
+        else
+        {
+            if(isTag)
+            {
+                Debug.LogError(" GameObject.FindGameObjectWithTag("+gameObjectOrTagName+")="+GameObject.FindGameObjectWithTag(gameObjectOrTagName));
+                return GameObject.FindGameObjectWithTag(gameObjectOrTagName).GetComponent<T>();
+            }
+            else
+            {
+                Debug.LogError(" GameObject.Find("+gameObjectOrTagName+")="+GameObject.Find(gameObjectOrTagName));
+                return GameObject.Find(gameObjectOrTagName).GetComponent<T>();   
+            }
+        }
+    }
 
     void OnEnable()
     {
-        _blackBar = GameObject.Find("CinematicBlackBar").GetComponent<CutSceneBlackBarHandler>();
-        _cullingMaskHandler = GameObject.FindGameObjectWithTag("CameraInterface").GetComponent<CullingMaskHandler>();
-        _cameraCutScene = GameObject.Find("CameraCutScene").GetComponent<Camera>();
+        _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBar");
+        _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
+        _cameraCutScene = lazyInitObject<Camera>(_cameraCutScene, "CutSceneCamera");
+        _graphsCanvas = lazyInitObject<Renderer>(_graphsCanvas, "VectorCanvas");
     }
     
 	// must be implemented in each cut scene
@@ -36,6 +59,7 @@ public abstract class CutScene : MonoBehaviour {
         _blackBar.CloseBar(true);
         _cullingMaskHandler.HideInterface(true);
         _cameraCutScene.enabled = true;
+        _graphsCanvas.enabled = false;
 	}
 	
     // must be implemented in each cut scene
@@ -50,6 +74,7 @@ public abstract class CutScene : MonoBehaviour {
         _blackBar.CloseBar(false);
         _cullingMaskHandler.HideInterface(false);
         _cameraCutScene.enabled = false;
+        _graphsCanvas.enabled = true;
     }
 
     IEnumerator WaitForBlackBar(bool start)
