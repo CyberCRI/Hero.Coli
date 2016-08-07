@@ -33,7 +33,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         {
             slots.Clear();
             
-            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?4:2;
+            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?4:1;
 
             GameObject slotGO;
             CraftDeviceSlot slot;

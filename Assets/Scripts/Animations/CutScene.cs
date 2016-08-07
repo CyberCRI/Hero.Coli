@@ -76,11 +76,9 @@ public abstract class CutScene : MonoBehaviour {
     IEnumerator WaitForBlackBar(bool start)
     {
         yield return new WaitForSeconds(1.5f);
-        Debug.Log("1");
         if (start == true)
         {
             startCutScene();
-            Debug.Log("2");
         }
         else
         {

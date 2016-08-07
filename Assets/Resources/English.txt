@@ -312,7 +312,7 @@ HINT.GFPCRAFT.1=See this? It's your previous device. Click on it to edit it.
 HINT.GFPCRAFT.2=Click on the GFP brick.
 HINT.GFPCRAFT.3=There's your new GFP device.
 HINT.GFPCRAFT.4=Quit and see what happens!
-HINT.RBS1CRAFT.0=Let's use this to upgrade your movement device and go faster!
+HINT.RBS1CRAFT.0=To swim faster, upgrade your movement device with it!
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is a\nnanobot.
 TUTORIAL.INTRODUCTION1.CELLLABEL=This is Cellia!

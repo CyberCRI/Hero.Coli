@@ -10,8 +10,9 @@ public class FocusMaskManager : MonoBehaviour
     private CellControl _cellControl;
     private bool _isBlinking = false;
     private bool _isAlphaIncreasing = false;
-    private float _minAlpha = 0.7f;
-    private float _maxAlpha = 1f;
+    private const float _blinkingSpeed = 0.5f;
+    private const float _minAlpha = 0.7f;
+    private const float _maxAlpha = 1f;
     private float _newAlpha;
     private bool _isClicksBlocked = false;
     private Vector3 _baseFocusMaskScale, _baseHoleScale;
@@ -209,7 +210,7 @@ public class FocusMaskManager : MonoBehaviour
         {
             if (_isAlphaIncreasing)
             {
-                _newAlpha = focusMaskSprite.alpha + Time.unscaledDeltaTime;
+                _newAlpha = focusMaskSprite.alpha + _blinkingSpeed*Time.unscaledDeltaTime;
                 if (_newAlpha > _maxAlpha)
                 {
                     _newAlpha = _maxAlpha;
@@ -218,7 +219,7 @@ public class FocusMaskManager : MonoBehaviour
             }
             else
             {
-                _newAlpha = focusMaskSprite.alpha - Time.unscaledDeltaTime;
+                _newAlpha = focusMaskSprite.alpha - _blinkingSpeed*Time.unscaledDeltaTime;
                 if (_newAlpha < _minAlpha)
                 {
                     _newAlpha = _minAlpha;
