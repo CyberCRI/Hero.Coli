@@ -54,21 +54,21 @@
       <description>LacI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
-      <FickFactor>1</FickFactor>
+      <FickFactor>0</FickFactor>
     </molecule>
     <molecule type="other">
       <name>REPR2</name>
       <description>TetR</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
-      <FickFactor>1</FickFactor>
+      <FickFactor>0</FickFactor>
     </molecule>
     <molecule type="other">
       <name>REPR3</name>
       <description>cI</description>
       <concentration>0</concentration>
       <degradationRate>0.2</degradationRate>
-      <FickFactor>1</FickFactor>
+      <FickFactor>0</FickFactor>
     </molecule>
     <!--molecule type="other">
       <name>REPR4</name>

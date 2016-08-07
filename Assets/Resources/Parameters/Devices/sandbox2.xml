@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <devices>
+  <!--REPR1=lacI REPR2=tetR REPR3=cI REPR4=cI th-->
   <device id="PRLACI:RBS1:REPR2:DTER">
     <brick id="PRLACI" size="0" type="promoter">
       <beta>75</beta>

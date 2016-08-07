@@ -7,7 +7,9 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
     [SerializeField]
     private UILocalize _noneLeftLabel;
     [SerializeField]
-    private UILabel _amount;
+    private UILabel _amountLabel;
+    [SerializeField]
+    private GameObject _amountBackground;
 
   private static CraftZoneManager       _craftZoneManager;
 
@@ -35,7 +37,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       _craftZoneManager = CraftZoneManager.get();
     }
 
-    Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+    Logger.Log("AvailableDisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
       + ", spriteName="+spriteName+nullSpriteName
       + ", biobrick="+biobrick
@@ -52,13 +54,24 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       
       result.name = "AvailableDisplayed"+biobrick.getName();
 
+      result.Initialize();
+
     return result;
  }
     
+public void Initialize()
+{
+      if(BioBrick.isUnlimited)
+      {
+          Destroy(_amountLabel.gameObject);
+          Destroy(_amountBackground);
+      }
+}
  
  public void Update()
  {
-     _amount.text = _biobrick.amount.ToString();
+    if(_amountLabel != null)
+        _amountLabel.text = _biobrick.amount.ToString();
      setNoneLeftIndicators(0 >= _biobrick.amount);
  }
  

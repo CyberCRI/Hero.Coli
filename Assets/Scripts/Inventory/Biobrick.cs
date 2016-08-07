@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public abstract class BioBrick: DNABit
 {
   public enum Type
@@ -22,6 +20,7 @@ public abstract class BioBrick: DNABit
   protected int _size;
   protected Type _type;
 
+  public static bool isUnlimited = false;
   public void setName(string name) { _name = name; }
   public string getName() { return _name; }
   public override string getInternalName () { return _name; }
@@ -29,7 +28,7 @@ public abstract class BioBrick: DNABit
   public int getSize() { return _size; }
   public Type getType() { return _type; }
   
-  private double _amount = 1;//double.PositiveInfinity;
+  private double _amount = 0;
   public double amount {get{return _amount;}} 
   
   public void addAmount(double increase)
@@ -40,6 +39,8 @@ public abstract class BioBrick: DNABit
   public BioBrick(Type type)
   {
     _type = type;
+    isUnlimited = _amount==0?MemoryManager.get().configuration.getMode()==GameConfiguration.GameMode.SANDBOX:isUnlimited;
+    _amount = isUnlimited?double.PositiveInfinity:1;
   }
 
   public abstract BioBrick copy();
