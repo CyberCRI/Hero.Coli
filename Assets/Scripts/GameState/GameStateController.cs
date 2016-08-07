@@ -526,7 +526,7 @@ public class GameStateController : MonoBehaviour {
     {
         MemoryManager.get ().sendCompletionEvent();
 
-        gUITransitioner.TerminateGraphs();
+        gUITransitioner.showGraphs(false);
 
         //TODO merge fadeSprite with Modal background
         fadeSprite.gameObject.SetActive(true);

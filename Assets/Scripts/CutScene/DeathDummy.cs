@@ -12,13 +12,11 @@ public class DeathDummy : MonoBehaviour {
     private static Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
     private static Vector3 _reducedScaleVector = 0.7f * _baseScaleVector;
     private List<GameObject> _flagella = new List<GameObject>();
-    private static string checkpointSeparator = ".";
-    private const string _keyLife = "KEY.LIFE";
-    private const string _keyEnergy = "KEY.ENERGY";
+    
     private bool _locked = false;
     private Vector3 _positionLock;
     [SerializeField]
-    private AmpicillinCutScene _ampCuttScene;
+    private AmpicillinCutScene _ampCutScene;
 
     private Hashtable _optionsIn = iTween.Hash(
         "scale", _baseScaleVector,
@@ -45,25 +43,15 @@ public class DeathDummy : MonoBehaviour {
         "easetype", iTween.EaseType.easeInQuint
         );
 
-    // Use this for initialization
-    void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-            
-	}
-
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "DeathZoneDummy")
         {
-            if (this.gameObject.name == "dummyPlayer3Flagellum")
+            if (this.gameObject.name == "3FlagellaPlayerDummy")
             {
 
             }
-            else if (this.gameObject.name == "dummyPlayer2Flagellum")
+            else if (this.gameObject.name == "2FlagellaPlayerDummy")
             {
                 StartCoroutine(deathEffectCoroutine());
             }
@@ -132,7 +120,7 @@ public class DeathDummy : MonoBehaviour {
         elapsed += lastRandom;
         enableEyes(false);
 
-        _ampCuttScene.ResetCamTarget();
+        _ampCutScene.ResetCamTarget();
         //Destroy(this.gameObject.transform.parent.gameObject);
 
         yield return new WaitForSeconds((maxWaitSequences - elapsed) * _respawnTimeS / maxWaitSequences);

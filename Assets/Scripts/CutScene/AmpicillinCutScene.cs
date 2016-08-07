@@ -19,12 +19,13 @@ public class AmpicillinCutScene : CutScene {
     
     bool _played = false;
     
+    /*
     // Use this for initialization
     void Start () {
         _mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
         _player = GameObject.FindGameObjectWithTag("Player");
     }
-	/*
+	
 	// Update is called once per frame
 	void Update () {
 	    if (_moveCam == true)
@@ -68,8 +69,8 @@ public class AmpicillinCutScene : CutScene {
     
     public override void endCutScene ()
     {
-        Destroy(this.gameObject.transform.parent.gameObject);
         _mainCam.target = _player.transform;
+        Destroy(this.transform.parent.gameObject);        
     }
 
     IEnumerator WaitForTarget()
@@ -90,8 +91,6 @@ public class AmpicillinCutScene : CutScene {
         _moveCam = false;
         _moveCam2 = true;
     }
-
-
 
     void OnTriggerEnter(Collider col)
     {
@@ -127,7 +126,9 @@ public class AmpicillinCutScene : CutScene {
         StartCoroutine(WaitForSecondBacteria());
     }
 
-    public override void endCutScene() { }
+    public override void endCutScene() {
+        Destroy(this.transform.parent.gameObject);
+    }
 
     IEnumerator WaitForSecondBacteria()
     {

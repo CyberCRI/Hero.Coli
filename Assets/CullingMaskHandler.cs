@@ -10,8 +10,9 @@ public class CullingMaskHandler : MonoBehaviour {
         _originalCullingMask = _uiCamera.cullingMask;
 	}
 
-    public void HideInterface(bool value)
+    public void hideInterface(bool value)
     {
+        GUITransitioner.get().showGraphs(!value);
         if (value == true)
         {
             _uiCamera.cullingMask = 0;
