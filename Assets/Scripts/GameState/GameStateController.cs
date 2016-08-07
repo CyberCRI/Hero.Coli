@@ -525,7 +525,9 @@ public class GameStateController : MonoBehaviour {
     public void triggerEnd(EndGameCollider egc)
     {
         MemoryManager.get ().sendCompletionEvent();
+        egc.displayEndMessage();
 
+/*
         gUITransitioner.showGraphs(false);
 
         //TODO merge fadeSprite with Modal background
@@ -533,6 +535,7 @@ public class GameStateController : MonoBehaviour {
         fadeSprite.FadeIn(0.5f);
 
         StartCoroutine (waitFade (2f, egc));
+        */
     }
 
     private IEnumerator waitFade (float waitTime, EndGameCollider egc)

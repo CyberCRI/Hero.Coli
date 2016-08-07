@@ -19,6 +19,9 @@ public class BadGuySecondCutScene : CutScene {
     private Vector3 _originWayPoint1;
     private Vector3 _originWayPoint2;
 
+    [SerializeField]
+    private EndGameCollider _endGameCollider;
+
 
 	// Use this for initialization
 	void Start () {
@@ -100,7 +103,7 @@ public class BadGuySecondCutScene : CutScene {
     
     public override void endCutScene ()
     {
-        ModalManager.setModal("T1_END");
-        MemoryManager.get ().sendCompletionEvent();
+        //ModalManager.setModal("T1_END");
+        _endGameCollider.triggerEnd ();
     }
 }

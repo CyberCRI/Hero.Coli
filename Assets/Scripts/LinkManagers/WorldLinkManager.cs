@@ -43,6 +43,15 @@ public class WorldLinkManager : LinkManager
             tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider> ();
         }
 	
+        //specific code for tutorial1
+        endGameColliderGameObject = GameObject.Find ("Tutorial1End");
+        if(null != endGameColliderGameObject) { 
+            EndGameCollider endGameCollider = endGameColliderGameObject.GetComponent<EndGameCollider> ();
+            endGameCollider.hero = perso;
+            endGameCollider.endInfoPanel = GameStateController.get ().endWindow;
+            endGameCollider.endMainMenuButton = GameStateController.get ().endMainMenuButton;
+            Logger.Log ("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel, Logger.Level.INFO);
+        }
     }
 
     public override void finishInitialize ()
