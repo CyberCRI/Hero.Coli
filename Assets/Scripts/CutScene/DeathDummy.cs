@@ -43,6 +43,12 @@ public class DeathDummy : MonoBehaviour {
         "easetype", iTween.EaseType.easeInQuint
         );
 
+
+    public void startDeath()
+    {
+        StartCoroutine(deathEffectCoroutine());
+    }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "DeathZoneDummy")
@@ -114,13 +120,16 @@ public class DeathDummy : MonoBehaviour {
             elapsed += random;
         }
 
-        //to make eyes disappear
+        //to make eyeresetCameraear
         float lastRandom = UnityEngine.Random.Range(0.0f, 1.0f);
         yield return new WaitForSeconds(lastRandom * _respawnTimeS / maxWaitSequences);
         elapsed += lastRandom;
         enableEyes(false);
 
-        _ampCutScene.ResetCamTarget();
+        if(null != _ampCutScene)
+        {
+            _ampCutScene.resetCameraTarget();
+        }
         //Destroy(this.gameObject.transform.parent.gameObject);
 
         yield return new WaitForSeconds((maxWaitSequences - elapsed) * _respawnTimeS / maxWaitSequences);

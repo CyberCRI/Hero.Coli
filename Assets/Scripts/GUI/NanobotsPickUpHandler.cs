@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class NanobotsPickUpHandler : MonoBehaviour {
 
-    private NanobotsCounter _nanoCount;
+    private static NanobotsCounter _nanoCount;
     private static int _pickedUpNumber = 0;
 
 	// Use this for initialization
 	void Start () {
-        _nanoCount = GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>();
+        _nanoCount = (null==_nanoCount)?GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>():_nanoCount;
     }
 
     void OnTriggerEnter(Collider col)
@@ -20,7 +19,7 @@ public class NanobotsPickUpHandler : MonoBehaviour {
             {
                 ModalManager.setModal("T1_NANOBOT");
             }
-            _nanoCount.UpdateLabel(_pickedUpNumber);
+            _nanoCount.updateLabel(_pickedUpNumber);
             Destroy(this.gameObject);
         }
     }

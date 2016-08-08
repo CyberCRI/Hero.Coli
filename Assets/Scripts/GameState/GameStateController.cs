@@ -632,15 +632,14 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::OnDestroy", Logger.Level.DEBUG);
     }
 
-    public void FadeScreen(bool value, float speed)
+    public void FadeScreen(bool fade, float speed)
     {
         fadeSprite.gameObject.SetActive(true);
-        Debug.Log(fadeSprite);
-        if (value == true)
+        if (fade)
         {
             fadeSprite.FadeIn(speed);
         }
-        else if (value == false)
+        else
         {
             fadeSprite.FadeOut(speed);
         }

@@ -18,16 +18,16 @@ public class CutSceneBlackBarHandler : MonoBehaviour {
 	void Update () {
 	    if (Input.GetKeyDown(KeyCode.Keypad5))
         {
-            CloseBar(true);
+            closeBar(true);
         }
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            CloseBar(false);
+            closeBar(false);
         }
 
     }
 
-    public void CloseBar(bool value)
+    public void closeBar(bool value)
     {
         _animBottom.SetBool("Close", value);
         _animTop.SetBool("Close", value);

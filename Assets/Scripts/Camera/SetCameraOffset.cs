@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SetCameraOffset : MonoBehaviour {
 
@@ -9,13 +8,11 @@ public class SetCameraOffset : MonoBehaviour {
     private float _timeToSetCam;
     [SerializeField]
     private bool _resetCam = false;
-    private BoundCamera _boundCam;
     private float _originOffsetY;
 
 	// Use this for initialization
 	void Start () {
-        _boundCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
-        _originOffsetY = _boundCam.offset.y;
+        _originOffsetY = GUITransitioner.get().mainBoundCamera.offset.y;
 	}
 	
 	// Update is called once per frame
@@ -29,11 +26,11 @@ public class SetCameraOffset : MonoBehaviour {
         {
             if (_resetCam == false)
             {
-                _boundCam.ZoomInOut(_offSetValue, _timeToSetCam);
+                GUITransitioner.get().mainBoundCamera.ZoomInOut(_offSetValue, _timeToSetCam);
             }
             else if (_resetCam == true)
             {
-                _boundCam.ZoomInOut(_originOffsetY, _timeToSetCam);
+                GUITransitioner.get().mainBoundCamera.ZoomInOut(_originOffsetY, _timeToSetCam);
             }
         }
     }

@@ -8,7 +8,6 @@ public class Hero : MonoBehaviour {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public static string gameObjectName = "Perso";
     private static Hero _instance;
-    private BoundCamera _boundCam;
     private float _originOffsetY;
 
     public static Hero get() {
@@ -39,7 +38,6 @@ public class Hero : MonoBehaviour {
 
     void Start()
     {
-        _boundCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
         _originOffsetY = 41.11548f;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,7 +325,7 @@ public class Hero : MonoBehaviour {
 	IEnumerator RespawnCoroutine() {
 
         CellControl cc = GetComponent<CellControl>();
-        _boundCam.offset.y = _originOffsetY;
+        GUITransitioner.get().mainBoundCamera.offset.y = _originOffsetY;
 
         yield return StartCoroutine(deathEffectCoroutine(cc));        
     }	

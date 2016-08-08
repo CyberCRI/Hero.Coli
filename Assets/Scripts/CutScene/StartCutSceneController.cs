@@ -17,7 +17,8 @@ public class StartCutSceneController : CutScene {
     private Vector3 _originToTweenScale;
 
 	// Use this for initialization
-	void Start () {
+	public override void initialize()
+    {
 
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;

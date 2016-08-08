@@ -9,7 +9,6 @@ public class BadGuySecondCutScene : CutScene {
     private Camera _cutSceneCam;
     [SerializeField]
     private GameObject _dummyPlayer;
-    private BoundCamera _mainCamBound;
     [SerializeField]
     private Transform[] _wayPointCam;
     [SerializeField]
@@ -24,8 +23,8 @@ public class BadGuySecondCutScene : CutScene {
 
 
 	// Use this for initialization
-	void Start () {
-        _mainCamBound = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BoundCamera>();
+	public override void initialize() 
+    {
         _player = GameObject.FindGameObjectWithTag("Player");
     }
 	
@@ -36,7 +35,7 @@ public class BadGuySecondCutScene : CutScene {
         {
             _secondPart = true;
             _cutSceneCam.gameObject.SetActive(false);
-            _mainCamBound.gameObject.SetActive(true);
+            _boundCamera.gameObject.SetActive(true);
             //_iTweenEventBigBadGuy.enabled = true;
             _wayPointCam[0].transform.position = _originWayPoint2;
             _wayPointCam[1].transform.position = _originWayPoint1;
@@ -56,8 +55,8 @@ public class BadGuySecondCutScene : CutScene {
     {
 
         yield return new WaitForSeconds(1.5f);
-        _mainCamBound.gameObject.SetActive(false);
-        _mainCamBound.target = _dummyPlayer.transform;
+        _boundCamera.gameObject.SetActive(false);
+        _boundCamera.target = _dummyPlayer.transform;
         _cutSceneCam.gameObject.SetActive(true);
         while (Vector3.Distance(_cutSceneCam.transform.position, _wayPointCam[1].transform.position) > 0.002)
         {
@@ -65,7 +64,7 @@ public class BadGuySecondCutScene : CutScene {
         }
         _dummyPlayer.GetComponent<PlatformMvt>().enabled = true;
         _iTweenEventBigBadGuy.enabled = true;
-        _mainCamBound.gameObject.SetActive(true);
+        _boundCamera.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         yield return new WaitForSeconds(2.5f);
         GameStateController.get().FadeScreen(true, 2.5f);
@@ -81,8 +80,8 @@ public class BadGuySecondCutScene : CutScene {
         _player.SetActive(false);
         _dummyPlayer.SetActive(true);
 
-        _cutSceneCam.transform.position = _mainCamBound.transform.position;
-        _cutSceneCam.transform.rotation = _mainCamBound.transform.rotation;
+        _cutSceneCam.transform.position = _boundCamera.transform.position;
+        _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
 
         _wayPointCam[0].transform.position = _cutSceneCam.transform.position;
         _wayPointCam[0].transform.rotation = _cutSceneCam.transform.rotation;
@@ -96,9 +95,9 @@ public class BadGuySecondCutScene : CutScene {
 
         _cutSceneCam.gameObject.SetActive(true);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
-        _mainCamBound.gameObject.SetActive(false);
+        _boundCamera.gameObject.SetActive(false);
 
-        _mainCamBound.target = _iTweenEventBigBadGuy.transform;
+        _boundCamera.target = _iTweenEventBigBadGuy.transform;
     }    
     
     public override void endCutScene ()

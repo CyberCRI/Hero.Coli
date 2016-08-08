@@ -15,7 +15,8 @@ public abstract class CutScene : MonoBehaviour {
     private static CutSceneBlackBarHandler _blackBar;
     private static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
-    private static Camera _cameraCutScene;
+    private static Camera _cutSceneCamera;
+    protected static BoundCamera _boundCamera;
     
     private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
     {
@@ -40,11 +41,19 @@ public abstract class CutScene : MonoBehaviour {
 
     void OnEnable()
     {
+        // initialization of static elements
         _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBar");
         _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
-        _cameraCutScene = lazyInitObject<Camera>(_cameraCutScene, "CutSceneCamera");
+        _cutSceneCamera = lazyInitObject<Camera>(_cutSceneCamera, "CutSceneCamera");
+        _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
+
+        // cut scene initialization
+        initialize ();
     }
     
+    // must be implemented in each cut scene
+    public abstract void initialize ();  
+
 	// must be implemented in each cut scene
     public abstract void startCutScene ();    
     
@@ -54,9 +63,9 @@ public abstract class CutScene : MonoBehaviour {
 		FocusMaskManager.get().blockClicks(true);
         StartCoroutine(WaitForBlackBar(true));
         //startCutScene ();
-        _blackBar.CloseBar(true);
+        _blackBar.closeBar(true);
         _cullingMaskHandler.hideInterface(true);
-        _cameraCutScene.enabled = true;
+        _cutSceneCamera.enabled = true;
 	}
 	
     // must be implemented in each cut scene
@@ -68,9 +77,9 @@ public abstract class CutScene : MonoBehaviour {
         _cellControl.freezePlayer(false);
         StartCoroutine(WaitForBlackBar(false));
         //endCutScene ();
-        _blackBar.CloseBar(false);
+        _blackBar.closeBar(false);
         _cullingMaskHandler.hideInterface(false);
-        _cameraCutScene.enabled = false;
+        _cutSceneCamera.enabled = false;
     }
 
     IEnumerator WaitForBlackBar(bool start)
