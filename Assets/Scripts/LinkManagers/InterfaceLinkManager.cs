@@ -235,6 +235,8 @@ public class InterfaceLinkManager : LinkManager
   
   public override void finishInitialize ()
   {
+      GameObject bars = GameObject.Find("CutSceneBlackBars");
+
       activateAllChildren(false);
       
       //TODO should be done in gameStateController instead
@@ -244,6 +246,7 @@ public class InterfaceLinkManager : LinkManager
       introduction1.SetActive(false);
       introduction2.SetActive(false);
       end.SetActive(false);
+      bars.SetActive(true);
       
       // in WorldScreensPanel
       pauseIndicator.SetActive(false);      

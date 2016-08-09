@@ -42,7 +42,7 @@ public abstract class CutScene : MonoBehaviour {
     void OnEnable()
     {
         // initialization of static elements
-        _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBar");
+        _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBars");
         _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
         _cutSceneCamera = lazyInitObject<Camera>(_cutSceneCamera, "CutSceneCamera");
         _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
@@ -61,7 +61,7 @@ public abstract class CutScene : MonoBehaviour {
 	public void start () {
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
-        StartCoroutine(WaitForBlackBar(true));
+        StartCoroutine(waitForBlackBar(true));
         //startCutScene ();
         _blackBar.closeBar(true);
         _cullingMaskHandler.hideInterface(true);
@@ -75,14 +75,14 @@ public abstract class CutScene : MonoBehaviour {
     public void end () {
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
-        StartCoroutine(WaitForBlackBar(false));
+        StartCoroutine(waitForBlackBar(false));
         //endCutScene ();
         _blackBar.closeBar(false);
         _cullingMaskHandler.hideInterface(false);
         _cutSceneCamera.enabled = false;
     }
 
-    IEnumerator WaitForBlackBar(bool start)
+    IEnumerator waitForBlackBar(bool start)
     {
         yield return new WaitForSeconds(1.5f);
         if (start == true)

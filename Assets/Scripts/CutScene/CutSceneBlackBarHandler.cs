@@ -1,18 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CutSceneBlackBarHandler : MonoBehaviour {
 
     [SerializeField]
-    private Animator _animTop;
+    private Animator _topAnimation;
     [SerializeField]
-    private Animator _animBottom;
-
-
-    // Use this for initialization
-    void Start () {
-	
-	}
+    private Animator _bottomAnimation;
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,9 +20,9 @@ public class CutSceneBlackBarHandler : MonoBehaviour {
 
     }
 
-    public void closeBar(bool value)
+    public void closeBar(bool close)
     {
-        _animBottom.SetBool("Close", value);
-        _animTop.SetBool("Close", value);
+        _bottomAnimation.SetBool("Close", close);
+        _topAnimation.SetBool("Close", close);
     }
 }
