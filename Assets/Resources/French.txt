@@ -289,20 +289,21 @@ CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour l'équiper - si 
 
 CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
 
-HINT.CRAFT.0=You have enough bricks now. Click there to craft!
-HINT.CRAFT.1=This is the craft interface. We'll use it to create a new device. Click anywhere inside the circle.
-HINT.CRAFT.2=Start by clicking on the Promoter.
-HINT.CRAFT.3=Click on the RBS.
-HINT.CRAFT.4=Now, the Coding Sequence.
-HINT.CRAFT.5=And now the Terminator.
-HINT.CRAFT.6=See? You have a new device now, on the top-right. Click anywhere inside the circle.
-HINT.CRAFT.7=Now let's quit to test your device.
-HINT.GFPCRAFT.0=Let's use GFP in a new device!
-HINT.GFPCRAFT.1=See this? It's your previous device. Click on it to edit it.
-HINT.GFPCRAFT.2=Click on the GFP brick.
-HINT.GFPCRAFT.3=There's your new GFP device. Click anywhere inside the circle.
-HINT.GFPCRAFT.4=Quit and see what happens!
-HINT.RBS1CRAFT.0=Let's use this to upgrade your movement device and go faster!
+HINT.NEXT = Cliquez n'importe où dans la zone éclairée.
+HINT.CRAFT.0=Vous avez assez de briques pour créer une construction, cliquez ici !
+HINT.CRAFT.1=Utilisez cette interface pour créer de nouvelles constructions génétiques.
+HINT.CRAFT.2=Commencez par cliquer sur le Promoteur.
+HINT.CRAFT.3=Cliquez sur le RBS.
+HINT.CRAFT.4=Et maintenant, la Séquence Codante.
+HINT.CRAFT.5=Et pour finir, le Terminateur.
+HINT.CRAFT.6=Et voilà, vous avez une nouvelle construction, en haut à droite.
+HINT.CRAFT.7=Maintenant, quittez cette interface et testez votre construction.
+HINT.GFPCRAFT.0=Créons une construction à base de GFP !
+HINT.GFPCRAFT.1=Voilà votre construction précédente. Cliquez dessus pour la modifier.
+HINT.GFPCRAFT.2=Cliquez sur la brique de GFP.
+HINT.GFPCRAFT.3=Et voilà votre construction à base de GFP.
+HINT.GFPCRAFT.4=Quittez pour voir ce que cette construction fait !
+HINT.RBS1CRAFT.0=Pour aller plus vite, améliorez votre construction de déplacement !
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=un nanorobot
 TUTORIAL.INTRODUCTION1.CELLLABEL=C'est vous, Cellia !
