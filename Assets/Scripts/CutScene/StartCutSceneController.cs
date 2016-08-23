@@ -26,6 +26,11 @@ public class StartCutSceneController : CutScene {
         start();
     }
 
+    void Update()
+    {
+        _cellControl.freezePlayer(true);
+    }
+
     void ReverseAnim()
     {
         _tweenScale.from = _originToTweenScale;
@@ -50,6 +55,7 @@ public class StartCutSceneController : CutScene {
 
     public override void startCutScene()
     {
+        _cellControl.freezePlayer(true);
         _iTweenEventBacteria.enabled = true;
         StartCoroutine(WaitForSecondPart());
     }

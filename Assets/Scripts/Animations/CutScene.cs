@@ -80,6 +80,7 @@ public abstract class CutScene : MonoBehaviour {
         _blackBar.closeBar(false);
         _cullingMaskHandler.hideInterface(false);
         _cutSceneCamera.enabled = false;
+        this.enabled = false;
     }
 
     IEnumerator waitForBlackBar(bool start)
