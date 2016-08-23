@@ -14,12 +14,12 @@ public class AmbientLighting : MonoBehaviour
     private Color[] _color;
     [SerializeField]
     private GameObject _background;
-    [SerializeField]
-    private Material[] _backgroundMaterial;
     private float _originalDirectionalIntensity;
     private PulsingLight _ampicillinPulsingLight;
     private float _originMaxPulse;
     private float _originMinPulse;
+    private Vector3 _originGradient;
+    private Vector3 _limitGradient;
 
     /*Values : 
     Phenolight : 
@@ -58,12 +58,6 @@ public class AmbientLighting : MonoBehaviour
     }
 
 
-    public void ChangeBackgroundColor(int colorIndex)
-    {
-        _background.GetComponent<Renderer>().material = _backgroundMaterial[colorIndex];
-    }
-
-
 
     ////////////Tests
 
@@ -91,16 +85,34 @@ public class AmbientLighting : MonoBehaviour
     {
         if (col.tag == "BlackLight")
         {
-            ChangeLightIntensity(_directionaleLight, 0f);
-            ChangeBackgroundColor(1);
+            _originGradient = col.transform.position;
+            _limitGradient = col.transform.GetChild(0).transform.position;
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.1f);
         }
-        
-        if (col.tag == "NormalLight")
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.tag == "BlackLight")
         {
-            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-            ChangeBackgroundColor(0);
-            _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+            if (this.transform.position.x <= col.transform.position.x)
+            {
+                ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+                _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.tag == "BlackLight")
+        {
+            float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
+            float distance = Vector3.Distance(_originGradient, this.transform.position);
+            ChangeLightIntensity(_directionaleLight, 1 - (distance / distanceMax));
+            Color color = _background.GetComponent<Renderer>().material.color;
+            color.a = 1 - (distance / distanceMax);
+            _background.GetComponent<Renderer>().material.color = color;
         }
     }
 }
