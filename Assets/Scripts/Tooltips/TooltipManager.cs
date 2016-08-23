@@ -252,9 +252,8 @@ public class TooltipManager : MonoBehaviour {
         Logger.Log("TooltipManager::setPosition default case", Logger.Level.WARN);
         break;
     }
-    _instance._tooltipPanel.transform.position = new Vector3(pos.x, pos.y, pos.z);
-    Vector3 localPos2 = _instance._tooltipPanel.transform.localPosition;
-    _instance._tooltipPanel.transform.localPosition = new Vector3(localPos2.x + xShift, localPos2.y + yShift, -0.9f);
+    _instance._tooltipPanel.transform.position = new Vector3(pos.x, pos.y, _instance._tooltipPanel.transform.position.z);
+    _instance._tooltipPanel.transform.localPosition += new Vector3(xShift, yShift, 0f);
   }
 
   private static Quadrant getQuadrant(Vector3 pos)

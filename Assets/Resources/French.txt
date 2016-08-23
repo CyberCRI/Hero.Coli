@@ -84,7 +84,7 @@ BRICK.RBS3=RBS de base
 
 BRICK.AMPR=cassette de résistance à l'ampicilline
 BRICK.ARAC=araC
-BRICK.ATC=aTc
+BRICK.ATC=ATc
 BRICK.FLUO1=vert - GFP
 BRICK.FLUO2=rouge - mCherry
 BRICK.IPTG=IPTG
@@ -112,7 +112,7 @@ BRICK.ICONLABEL.RBS3=6%
 
 BRICK.ICONLABEL.AMPR=AmpR
 BRICK.ICONLABEL.ARAC=araC
-BRICK.ICONLABEL.ATC=aTc
+BRICK.ICONLABEL.ATC=ATc
 BRICK.ICONLABEL.FLUO1=GFP
 BRICK.ICONLABEL.FLUO2=RFP
 BRICK.ICONLABEL.FLUO3=YFP
@@ -291,7 +291,7 @@ CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
 
 HINT.NEXT = Cliquez n'importe où dans la zone éclairée.
 HINT.CRAFT.0=Vous avez assez de briques pour créer une construction, cliquez ici !
-HINT.CRAFT.1=Utilisez cette interface pour créer de nouvelles constructions génétiques.
+HINT.CRAFT.1=C'est ici que vous pourrez créer des constructions génétiques.
 HINT.CRAFT.2=Commencez par cliquer sur le Promoteur.
 HINT.CRAFT.3=Cliquez sur le RBS.
 HINT.CRAFT.4=Et maintenant, la Séquence Codante.
@@ -299,7 +299,7 @@ HINT.CRAFT.5=Et pour finir, le Terminateur.
 HINT.CRAFT.6=Et voilà, vous avez une nouvelle construction, en haut à droite.
 HINT.CRAFT.7=Maintenant, quittez cette interface et testez votre construction.
 HINT.GFPCRAFT.0=Créons une construction à base de GFP !
-HINT.GFPCRAFT.1=Voilà votre construction précédente. Cliquez dessus pour la modifier.
+HINT.GFPCRAFT.1=Voilà votre construction précédente. Cliquez dessus pour l'éditer.
 HINT.GFPCRAFT.2=Cliquez sur la brique de GFP.
 HINT.GFPCRAFT.3=Et voilà votre construction à base de GFP.
 HINT.GFPCRAFT.4=Quittez pour voir ce que cette construction fait !
@@ -333,7 +333,7 @@ TOOLTIP.MAIN.TYPE.BIOBRICK=BioBrique
 
 
 
-TOOLTIP.B_PRBAD1.TITLE=promoteur pBAD, fort
+TOOLTIP.B_PRBAD1.TITLE=Promoteur pBAD, fort
 TOOLTIP.B_PRBAD1.SUBTITLE=-
 TOOLTIP.B_PRBAD1.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRBAD1.CUSTOMVALUE=induit par la l-arabinose, inhibé par araC
@@ -341,7 +341,7 @@ TOOLTIP.B_PRBAD1.LENGTH=-
 TOOLTIP.B_PRBAD1.REFERENCE=-
 TOOLTIP.B_PRBAD1.EXPLANATION=-
 
-TOOLTIP.B_PRBAD2.TITLE=promoteur pBAD, moyen
+TOOLTIP.B_PRBAD2.TITLE=Promoteur pBAD, moyen
 TOOLTIP.B_PRBAD2.SUBTITLE=-
 TOOLTIP.B_PRBAD2.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRBAD2.CUSTOMVALUE=induit par la l-arabinose, inhibé par araC
@@ -349,7 +349,7 @@ TOOLTIP.B_PRBAD2.LENGTH=-
 TOOLTIP.B_PRBAD2.REFERENCE=-
 TOOLTIP.B_PRBAD2.EXPLANATION=-
 
-TOOLTIP.B_PRBAD3.TITLE=promoteur pBAD, faible
+TOOLTIP.B_PRBAD3.TITLE=Promoteur pBAD, faible
 TOOLTIP.B_PRBAD3.SUBTITLE=-
 TOOLTIP.B_PRBAD3.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRBAD3.CUSTOMVALUE=induit par la l-arabinose, inhibé par araC
@@ -357,7 +357,7 @@ TOOLTIP.B_PRBAD3.LENGTH=-
 TOOLTIP.B_PRBAD3.REFERENCE=-
 TOOLTIP.B_PRBAD3.EXPLANATION=-
 
-TOOLTIP.B_PRCONS.TITLE=promoteur pCons
+TOOLTIP.B_PRCONS.TITLE=Promoteur pCons
 TOOLTIP.B_PRCONS.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence en toute circonstance.
 TOOLTIP.B_PRCONS.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRCONS.CUSTOMVALUE=Aucune
@@ -365,7 +365,7 @@ TOOLTIP.B_PRCONS.LENGTH=48bp
 TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
 TOOLTIP.B_PRCONS.EXPLANATION=Promoteur constitutif (toujours activé).
 
-TOOLTIP.B_PRGLUC.TITLE=promoteur glucose
+TOOLTIP.B_PRGLUC.TITLE=Promoteur glucose
 TOOLTIP.B_PRGLUC.SUBTITLE=Fonction : inhibé par le glucose, induit par le manque de carbone
 TOOLTIP.B_PRGLUC.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRGLUC.CUSTOMVALUE=glucose --\ncarbone --
@@ -373,7 +373,7 @@ TOOLTIP.B_PRGLUC.LENGTH=-
 TOOLTIP.B_PRGLUC.REFERENCE=-
 TOOLTIP.B_PRGLUC.EXPLANATION=-
 
-TOOLTIP.B_PRLACI.TITLE=promoteur pLac
+TOOLTIP.B_PRLACI.TITLE=Promoteur pLac
 TOOLTIP.B_PRLACI.SUBTITLE=Fonction : entraîne l'expression des gènes en aval de la séquence ; activité inhibée par 'CAP' et 'LacI'.
 TOOLTIP.B_PRLACI.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRLACI.CUSTOMVALUE=LacI --\nCAP --
@@ -381,7 +381,7 @@ TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
 TOOLTIP.B_PRLACI.EXPLANATION=Promoteur naturel de l'opéron LacZYA couplé avec des sites de fixation de 'CAP' et 'LacI'.
 
-TOOLTIP.B_PRLAMB.TITLE=promoteur lambda
+TOOLTIP.B_PRLAMB.TITLE=Promoteur lambda
 TOOLTIP.B_PRLAMB.SUBTITLE=-
 TOOLTIP.B_PRLAMB.CUSTOMFIELD=Régulation :
 TOOLTIP.B_PRLAMB.CUSTOMVALUE=cI --
@@ -413,6 +413,14 @@ TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
 TOOLTIP.B_RBS2.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction faible.
+
+TOOLTIP.B_RBS3.TITLE=RBS Très Faible
+TOOLTIP.B_RBS3.SUBTITLE=Fonction : détermine le niveau d'expression de gènes en aval.
+TOOLTIP.B_RBS3.CUSTOMFIELD=Niveau d'expression :
+TOOLTIP.B_RBS3.CUSTOMVALUE=6%
+TOOLTIP.B_RBS3.LENGTH=14bp
+TOOLTIP.B_RBS3.REFERENCE=fictif
+TOOLTIP.B_RBS3.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction très faible.
 
 
 TOOLTIP.B_AMPR.TITLE=Séquence Codante de Résistance à l'Ampicilline
