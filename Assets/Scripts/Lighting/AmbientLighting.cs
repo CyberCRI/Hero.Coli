@@ -98,6 +98,7 @@ public class AmbientLighting : MonoBehaviour
     {
         if (col.tag == "BlackLight")
         {
+            _blackLight = true;
             _originGradient = col.transform.position;
             _limitGradient = col.transform.GetChild(0).transform.position;
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.1f);
@@ -110,6 +111,7 @@ public class AmbientLighting : MonoBehaviour
         {
             if (this.transform.position.x <= col.transform.position.x)
             {
+                _blackLight = false;
                 ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
             }
@@ -151,12 +153,15 @@ public class AmbientLighting : MonoBehaviour
 
     public void ResetLighting()
     {
-        _alphaColor = _backgroundBlood.material.color;
-        _alphaColor.a = 0f;
-        _backgroundBlood.material.color = _alphaColor;
-        ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-        ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
-        ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
+        if (_blackLight == false)
+        {
+            _alphaColor = _backgroundBlood.material.color;
+            _alphaColor.a = 0f;
+            _backgroundBlood.material.color = _alphaColor;
+            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
+            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
+        }
     }
 
     public void SaveCurrentLighting()

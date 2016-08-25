@@ -28,6 +28,7 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<Rigidbody>());
         Destroy(GetComponent<AmbientLighting>());
         Destroy(GetComponent<MovementHint>());
+        Destroy(this.transform.GetChild(9).gameObject);
         
         //TODO fix this
         Destroy(this.transform.GetChild(8).gameObject);
