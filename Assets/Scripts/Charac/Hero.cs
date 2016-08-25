@@ -266,8 +266,11 @@ public class Hero : MonoBehaviour {
             }
           else if (_lifeManager.getLife() > 0.95f)
             {
-                _isInjured = false;
-                _ambientLighting.ResetLighting();
+                if (_isInjured == true)
+                {
+                    _isInjured = false;
+                    _ambientLighting.ResetLighting();
+                }
             }
     }
 
