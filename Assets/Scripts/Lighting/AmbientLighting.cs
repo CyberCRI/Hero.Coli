@@ -153,15 +153,12 @@ public class AmbientLighting : MonoBehaviour
 
     public void ResetLighting()
     {
-        if (_blackLight == false)
-        {
             _alphaColor = _backgroundBlood.material.color;
             _alphaColor.a = 0f;
             _backgroundBlood.material.color = _alphaColor;
             ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
             ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
             ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
-        }
     }
 
     public void SaveCurrentLighting()
