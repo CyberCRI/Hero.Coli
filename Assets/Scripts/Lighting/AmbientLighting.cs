@@ -28,6 +28,7 @@ public class AmbientLighting : MonoBehaviour
     private bool _blackLight = false;
     private bool _injured = false;
     private bool _dead = false;
+    private Color _alphaColor;
 
     /*Values : 
     Phenolight : 
@@ -77,50 +78,6 @@ public class AmbientLighting : MonoBehaviour
             ChangeLightProperty(_phenoLight, _color[1], 24, 4);
             ChangeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
         }
-
-        float heroLife = _hero.getLife();
-        Color color = _backgroundBlood.material.color;
-
-        if (heroLife <= 0.95 && heroLife != 0)
-        {
-            if (_injured == false)
-            {
-                _injured = true;
-                _originalDirectionalIntensity = _directionaleLight.intensity;
-                _originalPhenoLightIntensity = _directionaleLight.intensity;
-                _originalSpotLightIntensity = _spotLight.intensity;
-            }
-            color.a = 0.5f - heroLife;
-            if (_blackLight == false)
-            {
-                ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity * heroLife);
-                ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity * heroLife);
-                ChangeLightIntensity(_spotLight, _originalSpotLightIntensity * heroLife);
-            }
-        }
-        else if (heroLife == 0)
-        {
-            color.a = 1f;
-            _dead = true;
-        }
-        else if (_dead = true && heroLife >= 0)
-        {
-            _injured = false;
-            color.a = 0f;
-            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
-            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
-
-        }
-        else
-        {
-            color.a = 0f;
-            _injured = false;
-            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
-            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
-        }
-        _backgroundBlood.material.color = color;
     }
 
     void Start()
@@ -170,5 +127,42 @@ public class AmbientLighting : MonoBehaviour
             color.a = 1 - (distance / distanceMax);
             _background.GetComponent<Renderer>().material.color = color;
         }
+    }
+
+    public void Injured(float life)
+    {
+        if (_blackLight == false)
+        {
+            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity * life);
+            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity * life);
+            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity * life);
+        }
+        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor.a = 0.5f - life;
+        _backgroundBlood.material.color = _alphaColor;
+    }
+
+    public void Dead()
+    {
+        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor.a = 1f;
+        _backgroundBlood.material.color = _alphaColor;
+    }
+
+    public void ResetLighting()
+    {
+        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor.a = 0f;
+        _backgroundBlood.material.color = _alphaColor;
+        ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+        ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
+        ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
+    }
+
+    public void SaveCurrentLighting()
+    {
+        _originalDirectionalIntensity = _directionaleLight.intensity;
+        _originalPhenoLightIntensity = _directionaleLight.intensity;
+        _originalSpotLightIntensity = _spotLight.intensity;
     }
 }

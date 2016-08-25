@@ -9,6 +9,8 @@ public class Hero : MonoBehaviour {
     public static string gameObjectName = "Perso";
     private static Hero _instance;
     private float _originOffsetY;
+    [SerializeField]
+    private AmbientLighting _ambientLighting;
 
     public static Hero get() {
         if (_instance == null)
@@ -39,6 +41,7 @@ public class Hero : MonoBehaviour {
     void Start()
     {
         _originOffsetY = 41.11548f;
+        _ambientLighting = this.GetComponent<AmbientLighting>();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,9 +60,12 @@ public class Hero : MonoBehaviour {
 	private float _energyBefore = 1f;
 	private float _lowEnergyDpt = 3*_lifeRegen;
 	
-
+    //Status
     private bool _pause;
 	private bool _isAlive;
+    private bool _isInjured;
+    private bool _isRegen;
+    private float _previousLife;
 
     //respawn
     private GameObject _lastCheckpoint = null;
@@ -225,11 +231,38 @@ public class Hero : MonoBehaviour {
  		  if(_lifeManager.getLife() == 0f && (_isAlive))
 		  {
 			  _isAlive = false;
+                _ambientLighting.Dead();
         
         RedMetricsManager.get ().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
 			  StartCoroutine(RespawnCoroutine());
 		  }
+            float life = _lifeManager.getLife();
+          if (_lifeManager.getLife()<= 0.95f)
+            {
+                if (_isInjured == false)
+                {
+                    _ambientLighting.SaveCurrentLighting();
+                    _isInjured = true;
+                }
+                if (life >= _previousLife)
+                {
+                    _isRegen = true;
+                }
+                else
+                {
+                    _isRegen = false;
+                }
+                _ambientLighting.Injured(life);
+            }
+          else if (_lifeManager.getLife() > 0.95f)
+            {
+                _isInjured = false;
+                _ambientLighting.ResetLighting();
+            }
     }
+
+        _previousLife = _lifeManager.getLife();
+
 	}
 
     public string getLastCheckpointName() {
@@ -437,6 +470,7 @@ public class Hero : MonoBehaviour {
         _isAlive = true;
         cc.reset();
         setLife(1f);
+        _ambientLighting.ResetLighting();
 
         StartCoroutine(popEffectCoroutine(savedCell));
     }
