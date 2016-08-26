@@ -201,9 +201,7 @@ public class CellControl : MonoBehaviour {
 
     public void freezePlayer(bool value)
     {
-        _inputMovement = Vector3.zero;
-        cancelMouseMove();
-        setSpeed();
+        stopMovement();
         _isPlayerFrozen = value;
     }
 

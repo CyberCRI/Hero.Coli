@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PhenoSpeed : Phenotype
 {
-
-public float ccdisp;
     public bool devMode = false;
 
 	//public float minSpeed;
@@ -47,7 +45,7 @@ public float ccdisp;
     private float intensity;
     private CellControl cellControl;
 	
-    private int _defaultFlagellaCount = 1;
+    private int _defaultFlagellaCount = 0;
     public void setDefaultFlagellaCount(int defaultCount)
     {
         _defaultFlagellaCount = ((defaultCount>1)||(defaultCount<0))?1:defaultCount;
@@ -178,7 +176,6 @@ public float ccdisp;
 		//float intensity = Phenotype.hill (_mol.getConcentration(), threshold, steepness, minSpeed, maxSpeed);
     
     intensity = getIntensity(_mol.getConcentration());
-    ccdisp = _mol.getConcentration();
     
 		cellControl.currentMoveSpeed = intensity;
 
