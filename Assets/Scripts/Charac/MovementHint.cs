@@ -3,11 +3,12 @@
 public class MovementHint : MonoBehaviour {
 
     private float _elapsedTime = 0f;
-    private float _pressedTime = 0f;
-    private int _clicksCount = 0;
+    private float _mousePressedTime = 0f;
+    private int _mousePressCount = 0;
+    private float _keyboardPressedTime = 0f;
     
     private const float _waitThreshold = 5.0f;
-    private const float _clickWaitThreshold = 1f;
+    private const float _pressedWaitThreshold = 1f;
     private const int _clicksThreshold = 5;
 	
     private const string _infoWindowCode = "MOVEMENT";
@@ -21,8 +22,11 @@ public class MovementHint : MonoBehaviour {
            InfoWindowManager.displayInfoWindow(_infoWindowCode);
            Destroy(this);
        }
-       else if ((_pressedTime > _clickWaitThreshold)
-           || (_clicksCount >= _clicksThreshold))
+       else if (
+                (_mousePressedTime > _pressedWaitThreshold)
+           ||   (_mousePressCount >= _clicksThreshold)
+           ||   (_keyboardPressedTime >= _pressedWaitThreshold)
+           )
        {
            Destroy(this);
        }
@@ -31,11 +35,15 @@ public class MovementHint : MonoBehaviour {
            _elapsedTime += Time.deltaTime;
            if(Input.GetMouseButton(0))
            {
-               _pressedTime += Time.deltaTime;
+               _mousePressedTime += Time.deltaTime;
            }
            if(Input.GetMouseButtonUp(0))
            {
-               _clicksCount++;
+               _mousePressCount++;
+           }
+           if(0 != Input.GetAxis("Horizontal") || 0 != Input.GetAxis("Vertical"))
+           {
+               _keyboardPressedTime += Time.deltaTime;
            }
        }
 	}
