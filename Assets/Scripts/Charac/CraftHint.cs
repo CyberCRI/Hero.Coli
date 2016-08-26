@@ -46,16 +46,23 @@ public class CraftHint : MonoBehaviour
                 if (!prepared)
                 {
                     GameObject go = GameObject.Find(focusObjects[step]);
-                    ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                    if(null != target)
+                    if(go == null)
                     {
-                        FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                        Debug.LogError("couldn't find "+focusObjects[step]);
                     }
                     else
                     {
-                        FocusMaskManager.get().focusOn(go, true, textHints[step], true);
-                    }
-                    prepared = true;
+                        ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
+                        if(null != target)
+                        {
+                            FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                        }
+                        else
+                        {
+                            FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                        }
+                        prepared = true;
+                    }                    
                 }
             }
             else

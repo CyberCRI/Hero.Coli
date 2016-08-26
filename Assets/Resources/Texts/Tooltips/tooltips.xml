@@ -39,6 +39,10 @@
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
+  <tooltip code="b_RBS3">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
   <tooltip code="b_AMPR">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
@@ -114,6 +118,10 @@
   <tooltip code="d_PRCONS:RBS1:FLUO1:DTER">
     <type>Device</type>
     <illustration>pic_d_cons-gfp-med</illustration>
+  </tooltip>
+  <tooltip code="d_PRCONS:RBS3:MOV:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-speed-low</illustration>
   </tooltip>
   <tooltip code="d_PRCONS:RBS2:MOV:DTER">
     <type>Device</type>
