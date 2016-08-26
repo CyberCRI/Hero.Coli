@@ -16,9 +16,10 @@ public class StartCutSceneController : CutScene {
     private Vector3 _originFromTweenScale;
     private Vector3 _originToTweenScale;
     private bool _scaleUp = true;
+    private bool _scaling = false;
 
-	// Use this for initialization
-	public override void initialize()
+    // Use this for initialization
+    public override void initialize()
     {
 
         _originFromTweenScale = _tweenScale.from;
@@ -80,6 +81,7 @@ public class StartCutSceneController : CutScene {
         ReverseAnim();
         //_iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         StartCoroutine(WaitForFifthPart());
+        _scaling = true;
         StartCoroutine(ScalePulse(_iTweenEventDNA.GetComponent<Transform>(), 1f));
     }
 
@@ -93,8 +95,13 @@ public class StartCutSceneController : CutScene {
 
     IEnumerator ScalePulse(Transform objTransform, float speed)
     {
-        while (objTransform != null)
+        bool test = false;
+        while (_scaling == true)
         {
+            if (test == true)
+            {
+                Debug.Log("2");
+            }
             if (_scaleUp == true && objTransform.localScale.x < 2f)
             {
                 objTransform.localScale = new Vector3(objTransform.localScale.x + (Time.deltaTime * speed), objTransform.localScale.y + (Time.deltaTime * speed), objTransform.localScale.z + (Time.deltaTime * speed));
@@ -111,12 +118,13 @@ public class StartCutSceneController : CutScene {
             {
                 objTransform.localScale = new Vector3(objTransform.localScale.x - (Time.deltaTime * speed), objTransform.localScale.y - (Time.deltaTime * speed), objTransform.localScale.z - (Time.deltaTime * speed));
             }
-            else if (_scaleUp == false && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
+            else if (_scaleUp == false && _iTweenEventDNA.transform != null && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
             {
+                Debug.Log("1");
                 _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
-                /*/////
-                Edit here for equip device
-                /////*/
+                _scaling = false;
+                ///////////////////Edit behind to fix bug "Coroutine couldn't be started because the the game object 'CraftSlot1(Clone)' is inactive!"
+                CraftZoneManager.get().setDevice(_iTweenEventDNA.transform.GetChild(0).GetComponent<PickableDeviceRef4Bricks>().getDNABit() as Device);
             }
             yield return null;
         }
