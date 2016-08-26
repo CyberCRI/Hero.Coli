@@ -46,8 +46,9 @@ public class PhenoLight : Phenotype {
     
             phenoLight.intensity = intensity;
             phenoLight.range = _mol.getConcentration() / 5;
+            _spotLight.color = phenoLight.color;
             _spotLight.intensity = intensity;
-            _spotLight.range = _mol.getConcentration() / 5;
+            _spotLight.range = _mol.getConcentration() / 2;
             _spotLight.spotAngle = _mol.getConcentration();
             
             if(null != _triggered)
