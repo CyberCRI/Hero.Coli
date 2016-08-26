@@ -15,6 +15,7 @@ public class StartCutSceneController : CutScene {
     private TweenScale _tweenScale;
     private Vector3 _originFromTweenScale;
     private Vector3 _originToTweenScale;
+    private bool _scaleUp = true;
 
 	// Use this for initialization
 	public override void initialize()
@@ -78,13 +79,44 @@ public class StartCutSceneController : CutScene {
         ReverseAnim();
         //_iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         StartCoroutine(WaitForFifthPart());
+        StartCoroutine(ScalePulse(_iTweenEventDNA.GetComponent<Transform>(), 1f));
     }
 
     void FifthPart()
     {
         _itweenEventBacteria2.enabled = true;
+        //_iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
 
         StartCoroutine(WaitForEnd());
+    }
+
+    IEnumerator ScalePulse(Transform objTransform, float speed)
+    {
+        while (objTransform != null)
+        {
+            if (_scaleUp == true && objTransform.localScale.x < 2f)
+            {
+                objTransform.localScale = new Vector3(objTransform.localScale.x + (Time.deltaTime * speed), objTransform.localScale.y + (Time.deltaTime * speed), objTransform.localScale.z + (Time.deltaTime * speed));
+                if (objTransform.localScale.x > 2f)
+                {
+                    _scaleUp = false;
+                }
+            }
+            if (_scaleUp == false)
+            {
+                objTransform.eulerAngles = new Vector3(objTransform.eulerAngles.x, objTransform.eulerAngles.y - Time.deltaTime * 200, objTransform.eulerAngles.z);
+            }
+            if (_scaleUp == false && objTransform.localScale.x > 0.1f)
+            {
+                objTransform.localScale = new Vector3(objTransform.localScale.x - (Time.deltaTime * speed), objTransform.localScale.y - (Time.deltaTime * speed), objTransform.localScale.z - (Time.deltaTime * speed));
+            }
+            else if (_scaleUp == false && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
+            {
+                _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+            }
+            yield return null;
+        }
+        yield return null;
     }
 
     IEnumerator WaitForSecondPart()
