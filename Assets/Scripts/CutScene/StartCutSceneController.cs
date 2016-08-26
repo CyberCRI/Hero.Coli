@@ -50,6 +50,7 @@ public class StartCutSceneController : CutScene {
     
     public override void endCutScene()
     {
+        _cellControl.gameObject.AddComponent<MovementHint>();
         Destroy(this.gameObject.transform.parent.gameObject);
     }
 

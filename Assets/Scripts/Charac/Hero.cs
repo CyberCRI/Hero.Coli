@@ -45,7 +45,6 @@ public class Hero : MonoBehaviour {
         Logger.Log("Hero::Awake", Logger.Level.INFO);
         Hero.get();
         _lifeManager = new Life(_life, _lifeRegen);
-        this.gameObject.AddComponent<MovementHint>();
     }
 
     void Start()
