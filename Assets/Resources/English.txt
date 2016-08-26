@@ -80,11 +80,11 @@ BRICK.PRTETR=pTet
 
 BRICK.RBS1=medium RBS
 BRICK.RBS2=low RBS
-BRICK.RBS3=base RBS
+BRICK.RBS3=very low RBS
 
 BRICK.AMPR=ampicillin resistance cassette
 BRICK.ARAC=araC
-BRICK.ATC=aTc
+BRICK.ATC=ATc
 BRICK.FLUO1=green - GFP
 BRICK.FLUO2=red - mCherry
 BRICK.FLUO3=yellow - YFP
@@ -116,7 +116,7 @@ BRICK.ICONLABEL.RBS3=6%
 
 BRICK.ICONLABEL.AMPR=AmpR
 BRICK.ICONLABEL.ARAC=araC
-BRICK.ICONLABEL.ATC=aTc
+BRICK.ICONLABEL.ATC=ATc
 BRICK.ICONLABEL.FLUO1=GFP
 BRICK.ICONLABEL.FLUO2=RFP
 BRICK.ICONLABEL.FLUO3=YFP
@@ -298,7 +298,7 @@ CRAFT.RECIPES.TIP=Click on a genetic device to equip it - if you have enough bri
 
 CRAFT.BIOBRICK.NONELEFT=NONE LEFT
 
-HINT.NEXT = Click anywhere inside the illuminated area.
+HINT.NEXT=Click anywhere inside the illuminated area.
 HINT.CRAFT.0=You have enough bricks now. Click there to craft!
 HINT.CRAFT.1=This is the craft interface. We'll use it to create a new device.
 HINT.CRAFT.2=Start by clicking on the Promoter.
@@ -373,7 +373,7 @@ TOOLTIP.B_PRCONS.LENGTH=48bp
 TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
 TOOLTIP.B_PRCONS.EXPLANATION=Constitutive promoter (constantly ON).
 
-TOOLTIP.B_PRGLUC.TITLE=glucose promoter
+TOOLTIP.B_PRGLUC.TITLE=Glucose Promoter
 TOOLTIP.B_PRGLUC.SUBTITLE=Use: inhibited by glucose, induced by carbon starvation.
 TOOLTIP.B_PRGLUC.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRGLUC.CUSTOMVALUE=glucose --\ncarbon --
@@ -389,7 +389,7 @@ TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
 TOOLTIP.B_PRLACI.EXPLANATION=Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.
 
-TOOLTIP.B_PRLAMB.TITLE=lambda promoter
+TOOLTIP.B_PRLAMB.TITLE=Lambda Promoter
 TOOLTIP.B_PRLAMB.SUBTITLE=Use: pR promoter from bacteriophage lambda repressible
 TOOLTIP.B_PRLAMB.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRLAMB.CUSTOMVALUE=cI --
@@ -414,13 +414,21 @@ TOOLTIP.B_RBS1.LENGTH=943bp
 TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
 TOOLTIP.B_RBS1.EXPLANATION=Ribosome Binding Site sequence with medium low translation initialization.
 
-TOOLTIP.B_RBS2.TITLE=RBS low
+TOOLTIP.B_RBS2.TITLE=RBS Low
 TOOLTIP.B_RBS2.SUBTITLE=Use: determines the level of expression of downstream Coding Sequence.
 TOOLTIP.B_RBS2.CUSTOMFIELD=Expression level:
 TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
 TOOLTIP.B_RBS2.EXPLANATION=Ribosome Binding Site sequence with weak translation initialization.
+
+TOOLTIP.B_RBS3.TITLE=RBS Very Low
+TOOLTIP.B_RBS3.SUBTITLE=Use: determines the level of expression of downstream Coding Sequence.
+TOOLTIP.B_RBS3.CUSTOMFIELD=Expression level:
+TOOLTIP.B_RBS3.CUSTOMVALUE=6%
+TOOLTIP.B_RBS3.LENGTH=14bp
+TOOLTIP.B_RBS3.REFERENCE=fictive
+TOOLTIP.B_RBS3.EXPLANATION=Ribosome Binding Site sequence with very 3weak translation initialization.
 
 
 TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Coding Sequence

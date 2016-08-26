@@ -11,6 +11,16 @@ public class Hero : MonoBehaviour {
     private float _originOffsetY;
     [SerializeField]
     private AmbientLighting _ambientLighting;
+    [SerializeField]
+    private GameObject[] _childrenToDestroy;
+    
+    public void destroyChildren()
+    {
+        foreach (GameObject child in _childrenToDestroy)
+        {
+            Destroy(child);
+        }
+    }
 
     public static Hero get() {
         if (_instance == null)
