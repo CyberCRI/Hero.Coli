@@ -5,13 +5,11 @@ using System;
 
 /*!
  \brief A phenotype class that represents the effects of the toxicity of a molecule
- \author Raphael GOUJET
- \mail raphael.goujet@gmail.com
  */
 public class PhenoToxic : Phenotype {
 
   public Hero hero;
-	private string _toxicName = "AMPI";
+	public const string ampicillinMoleculeName = "AMPI";
 
     private Molecule _mol;  
     //TODO extract to config file
@@ -26,7 +24,7 @@ public class PhenoToxic : Phenotype {
 
 	public void initMoleculePhenotype()
 	{
-		_mol = ReactionEngine.getMoleculeFromName (_toxicName, _molecules);
+		_mol = ReactionEngine.getMoleculeFromName (ampicillinMoleculeName, _molecules);
 	}
 
   /*!

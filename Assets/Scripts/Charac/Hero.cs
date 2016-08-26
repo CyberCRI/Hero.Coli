@@ -438,7 +438,7 @@ public class Hero : MonoBehaviour {
 
         yield return new WaitForSeconds((maxWaitSequences-elapsed)*_respawnTimeS/maxWaitSequences);
         
-        respawnCoroutine(cc);
+        respawn(cc);
     }
 
     private void enableEyes(bool enable)
@@ -449,7 +449,7 @@ public class Hero : MonoBehaviour {
         }
     }
     
-    void respawnCoroutine(CellControl cc)
+    void respawn(CellControl cc)
     {
         enableEyes(true);
         
@@ -482,6 +482,14 @@ public class Hero : MonoBehaviour {
         _isAlive = true;
         cc.reset();
         setLife(1f);
+        
+        
+        Molecule ampicillin = ReactionEngine.getMoleculeFromName (PhenoToxic.ampicillinMoleculeName, _medium.getMolecules());
+        if (null != ampicillin)
+        {
+            ampicillin.setNewConcentration(0);
+        }
+        
         _ambientLighting.ResetLighting();
 
         StartCoroutine(popEffectCoroutine(savedCell));
