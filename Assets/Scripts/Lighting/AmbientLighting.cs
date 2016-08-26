@@ -101,7 +101,7 @@ public class AmbientLighting : MonoBehaviour
             _blackLight = true;
             _originGradient = col.transform.position;
             _limitGradient = col.transform.GetChild(0).transform.position;
-            _ampicillinPulsingLight.TweekRangeIntensity(0, 0.1f);
+            _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
         }
     }
 
@@ -153,6 +153,7 @@ public class AmbientLighting : MonoBehaviour
 
     public void ResetLighting()
     {
+            Debug.Log("1");
             _alphaColor = _backgroundBlood.material.color;
             _alphaColor.a = 0f;
             _backgroundBlood.material.color = _alphaColor;
