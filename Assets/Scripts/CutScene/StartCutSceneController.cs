@@ -114,6 +114,9 @@ public class StartCutSceneController : CutScene {
             else if (_scaleUp == false && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
             {
                 _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+                /*/////
+                Edit here for equip device
+                /////*/
             }
             yield return null;
         }
