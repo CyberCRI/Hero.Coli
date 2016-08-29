@@ -33,6 +33,7 @@ public abstract class BioBrick: DNABit
   
   public void addAmount(double increase)
   {
+      Debug.LogError("BioBrick addAmount("+increase+")");
       _amount += increase;
   }
 
@@ -201,7 +202,7 @@ public class PromoterBrick : BioBrick
 
   public override string ToString ()
   {
-	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}]", _name, _beta, formula);
+	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}, amount: {3}]", _name, _beta, formula, amount);
   }
 }
 
@@ -239,7 +240,7 @@ public class RBSBrick : BioBrick
 
   public override string ToString ()
   {
-	return string.Format ("[RBSBrick: name: {0}, RBSFactor: {1}]", _name, _RBSFactor);
+	return string.Format ("[RBSBrick: name: {0}, RBSFactor: {1}, amount: {2}]", _name, _RBSFactor, amount);
   }
 }
 
@@ -277,7 +278,7 @@ public class GeneBrick : BioBrick
 	
   public override string ToString ()
   {
-	return string.Format ("[GeneBrick: name: {0}, proteinName: {1}]", _name, _proteinName);
+	return string.Format ("[GeneBrick: name: {0}, proteinName: {1}, amount: {2}]", _name, _proteinName, amount);
   }
 }
 
@@ -315,6 +316,6 @@ public class TerminatorBrick : BioBrick
 	
   public override string ToString ()
   {
-	  return string.Format ("[TerminatorBrick: name: {0}, terminatorFactor: {1}]", _name, _terminatorFactor);
+	  return string.Format ("[TerminatorBrick: name: {0}, terminatorFactor: {1}, amount: {2}]", _name, _terminatorFactor, amount);
   }
 }

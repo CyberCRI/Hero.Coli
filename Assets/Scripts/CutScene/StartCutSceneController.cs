@@ -141,11 +141,10 @@ public class StartCutSceneController : CutScene {
             }
             else if (_scaleUp == false && _iTweenEventDNA.transform != null && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
             {
-                Debug.Log("1");
                 _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 _scaling = false;
-                ///////////////////Edit behind to fix bug "Coroutine couldn't be started because the the game object 'CraftSlot1(Clone)' is inactive!"
-                CraftZoneManager.get().setDevice(_iTweenEventDNA.transform.GetChild(0).GetComponent<PickableDeviceRef4Bricks>().getDNABit() as Device);
+                
+                CraftZoneManager.get().addAndEquipDevice(_iTweenEventDNA.transform.GetChild(0).GetComponent<PickableDeviceRef4Bricks>().getDNABit() as Device);
             }
             yield return null;
         }
@@ -168,7 +167,6 @@ public class StartCutSceneController : CutScene {
         _dialogBubblePlayer.SetActive(false);
         while (turn < 2f)
         {
-            Debug.Log("1");
             _bacteriaTransform.eulerAngles = new Vector3(_bacteriaTransform.eulerAngles.x, _bacteriaTransform.eulerAngles.y + Time.deltaTime * 1000, _bacteriaTransform.eulerAngles.z);
             currentAngle += Time.deltaTime * 1000;
             if (currentAngle >= 810)
