@@ -7,12 +7,21 @@ public class StartCutSceneController : CutScene {
     private iTweenEvent _iTweenEventBacteria;
     [SerializeField]
     private iTweenEvent _itweenEventBacteria2;
+    private Transform _bacteriaTransform;
     [SerializeField]
     private GameObject _dnaTube;
     [SerializeField]
     private iTweenEvent _iTweenEventDNA;
     [SerializeField]
     private TweenScale _tweenScale;
+    [SerializeField]
+    private GameObject _dialogBubble;
+    [SerializeField]
+    private GameObject _dialogBubblePlayer;
+    [SerializeField]
+    private TextMesh _textFieldDummy;
+    [SerializeField]
+    private TextMesh _textFieldPlayer;
     private Vector3 _originFromTweenScale;
     private Vector3 _originToTweenScale;
     private bool _scaleUp = true;
@@ -24,6 +33,7 @@ public class StartCutSceneController : CutScene {
 
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
+        _bacteriaTransform = _iTweenEventBacteria.GetComponent<Transform>();
         
         start();
     }
@@ -60,17 +70,27 @@ public class StartCutSceneController : CutScene {
     {
         _cellControl.freezePlayer(true);
         _iTweenEventBacteria.enabled = true;
-        StartCoroutine(WaitForSecondPart());
+        StartCoroutine(WaitForFirstPart());
+    }
+
+    void FirstPart()
+    {
+        _dialogBubble.SetActive(true);
+        _textFieldDummy.text = "!";
     }
 
     void SecondPart()
     {
         _dnaTube.SetActive(true);
+        _dialogBubblePlayer.SetActive(true);
+        _textFieldPlayer.text = "?";
         StartCoroutine(WaitForThirdPart());
     }
 
     void ThirdPart()
     {
+        _dialogBubblePlayer.SetActive(true);
+        _textFieldPlayer.text = "!?";
         _iTweenEventDNA.enabled = true;
         _iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(true);
         StartCoroutine(WaitForFourthPart());
@@ -78,6 +98,7 @@ public class StartCutSceneController : CutScene {
 
     void FourthPart()
     {
+        _dialogBubblePlayer.SetActive(false);
         ReverseAnim();
         //_iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         StartCoroutine(WaitForFifthPart());
@@ -131,6 +152,35 @@ public class StartCutSceneController : CutScene {
         yield return null;
     }
 
+    IEnumerator WaitForFirstPart()
+    {
+        yield return new WaitForSeconds(3.5f);
+        _dialogBubble.SetActive(true);
+        _textFieldDummy.text = "!";
+        yield return new WaitForSeconds(1f);
+        _dialogBubblePlayer.SetActive(true);
+        _textFieldPlayer.text = "!";
+        _iTweenEventBacteria.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        float turn = 0f;
+        float currentAngle = 0;
+        _dialogBubble.SetActive(false);
+        _dialogBubblePlayer.SetActive(false);
+        while (turn < 2f)
+        {
+            Debug.Log("1");
+            _bacteriaTransform.eulerAngles = new Vector3(_bacteriaTransform.eulerAngles.x, _bacteriaTransform.eulerAngles.y + Time.deltaTime * 1000, _bacteriaTransform.eulerAngles.z);
+            currentAngle += Time.deltaTime * 1000;
+            if (currentAngle >= 810)
+            {
+                turn += 2;
+            }
+            yield return null;
+        }
+        SecondPart();
+        yield return null;
+    }
+
     IEnumerator WaitForSecondPart()
     {
         yield return new WaitForSeconds(5);
@@ -141,6 +191,7 @@ public class StartCutSceneController : CutScene {
     IEnumerator WaitForThirdPart()
     {
         yield return new WaitForSeconds(1.5f);
+        _dialogBubblePlayer.SetActive(false);
         ThirdPart();
         yield return null;
     }
