@@ -33,7 +33,6 @@ public abstract class BioBrick: DNABit
   
   public void addAmount(double increase)
   {
-      Debug.LogError("BioBrick addAmount("+increase+")");
       _amount += increase;
   }
 
