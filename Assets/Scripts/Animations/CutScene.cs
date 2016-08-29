@@ -61,9 +61,9 @@ public abstract class CutScene : MonoBehaviour {
 	public void start () {
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
+        _blackBar.closeBar(true);
         StartCoroutine(waitForBlackBar(true));
         //startCutScene ();
-        _blackBar.closeBar(true);
         _cullingMaskHandler.hideInterface(true);
         _cutSceneCamera.enabled = true;
 	}
@@ -73,6 +73,7 @@ public abstract class CutScene : MonoBehaviour {
     
     // must be called when ending a cut scene
     public void end () {
+        Debug.Log("sapass");
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
         StartCoroutine(waitForBlackBar(false));
@@ -85,6 +86,9 @@ public abstract class CutScene : MonoBehaviour {
 
     IEnumerator waitForBlackBar(bool start)
     {
+        yield return new WaitForSeconds(0.1f);
+        SetCutSceneCamera(start);
+        _cellControl.freezePlayer(true);
         yield return new WaitForSeconds(1.5f);
         if (start == true)
         {
@@ -95,5 +99,11 @@ public abstract class CutScene : MonoBehaviour {
             endCutScene();
         }
         yield return null;
+    }
+
+    public void SetCutSceneCamera(bool value)
+    {
+        _cullingMaskHandler.hideInterface(value);
+        _cutSceneCamera.enabled = value;
     }
 }

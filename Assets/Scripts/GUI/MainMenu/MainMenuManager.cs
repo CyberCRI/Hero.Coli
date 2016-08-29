@@ -7,6 +7,9 @@ public class MainMenuManager : MonoBehaviour
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public static string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
+    [SerializeField]
+    private StartCutSceneController _cutscene;
+    private bool _first = true;
 
     public static MainMenuManager get ()
     {
@@ -36,7 +39,22 @@ public class MainMenuManager : MonoBehaviour
     {
         Logger.Log("MainMenuManager::Awake", Logger.Level.DEBUG);
         _instance = this;
+        _cutscene = GameObject.FindGameObjectWithTag("FirstCutScene").GetComponent<StartCutSceneController>();
         get();
+        Debug.Log("3");
+    }
+
+    void OnDisable()
+    {
+        if (_first == true)
+        {
+            _first = false;
+        }
+        else
+        {
+            //_cutscene.SetCutSceneCamera();
+            Debug.Log("2");
+        }
     }
     
     void OnDestroy()
@@ -369,5 +387,7 @@ public class MainMenuManager : MonoBehaviour
     {
         //Debug.Log("MainMenuManager::Start");
         selectItem (0);
+        
+        Debug.Log("1");
     }
 }

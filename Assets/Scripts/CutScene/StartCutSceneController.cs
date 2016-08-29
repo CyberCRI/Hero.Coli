@@ -41,6 +41,7 @@ public class StartCutSceneController : CutScene {
     void Update()
     {
         _cellControl.freezePlayer(true);
+        
     }
 
     void ReverseAnim()
@@ -55,14 +56,15 @@ public class StartCutSceneController : CutScene {
     {
         if (col.gameObject.name == "dummyPlayer")
         {
-            Destroy(col.gameObject);
             end ();
+            Destroy(col.gameObject);
         }
     }
     
     public override void endCutScene()
     {
         _cellControl.gameObject.AddComponent<MovementHint>();
+        _cellControl.freezePlayer(false);
         Destroy(this.gameObject.transform.parent.gameObject);
     }
 
@@ -168,7 +170,6 @@ public class StartCutSceneController : CutScene {
         _dialogBubblePlayer.SetActive(false);
         while (turn < 2f)
         {
-            Debug.Log("1");
             _bacteriaTransform.eulerAngles = new Vector3(_bacteriaTransform.eulerAngles.x, _bacteriaTransform.eulerAngles.y + Time.deltaTime * 1000, _bacteriaTransform.eulerAngles.z);
             currentAngle += Time.deltaTime * 1000;
             if (currentAngle >= 810)
