@@ -69,16 +69,27 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startCollapseBricks()
     {
-        //Debug.Log("startCollapseBricks");
+        Debug.Log("startCollapseBricks");
+        
         StopAllCoroutines();
         
         lazyInitialize();
         
         moveBricks();
 
-        StartCoroutine(collapseBricks(50f));
+        if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(collapseBricks(50f));
+        }        
+        else
+        {
+            Debug.Log("startCollapseBricks !gameObject.activeInHierarchy");
+            setPosition(false);
+        }
+        onBricksStoppedMoving();
     }
 
+/*
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -86,6 +97,7 @@ public class BioBricksCollapse : MonoBehaviour {
             StartCoroutine(expandBricks(50f));
         }
     }
+    */
 
     IEnumerator collapseBricks(float speed)
     {
@@ -101,7 +113,6 @@ public class BioBricksCollapse : MonoBehaviour {
             moveBricks();
             yield return null;
         }
-        onBricksStoppedMoving();
         yield return null;
     }
 
@@ -122,12 +133,12 @@ public class BioBricksCollapse : MonoBehaviour {
             moveBricks();
             yield return null;
         }
-        onBricksStoppedMoving();
         yield return null;
     }
     
     private void moveBricks()
     {
+        Debug.Log("moveBricks");
         CraftZoneDisplayedBioBrick[] slotList = _craftDeviceSlot.getCraftZoneDisplayedBioBricks();
         for (int i = 0; i < slotList.Length; i++)
         {
@@ -145,6 +156,14 @@ public class BioBricksCollapse : MonoBehaviour {
         
         lazyInitialize();
        
-        StartCoroutine(expandBricks(50f));
+       if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(expandBricks(50f));
+        }
+        else
+        {
+            setPosition(false);
+        }
+        onBricksStoppedMoving();
     }
 }

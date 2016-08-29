@@ -114,11 +114,14 @@ public class GUITransitioner : MonoBehaviour {
 		//checkCamera();
 		mainBoundCamera.SetZoom(false);
 	}
-		
-  public void showGraphs(bool show) {
-  	roomGraph.gameObject.SetActive(show);
-    celliaGraph.gameObject.SetActive(show);
-  }
+
+    public void showGraphs(bool show)
+    {
+        if (null != roomGraph)
+            roomGraph.gameObject.SetActive(show);
+        if (null != celliaGraph)
+            celliaGraph.gameObject.SetActive(show);
+    }
 
     public void Pause (bool pause)
     {

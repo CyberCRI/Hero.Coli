@@ -17,7 +17,10 @@ public class DisplayedDevice : DisplayedElement
         feedbackParticleSystem.gameObject.SetActive(true);
         feedbackParticleSystem.Emit(50);
 
-        StartCoroutine(terminateParticleSystem());
+        if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(terminateParticleSystem());
+        }
     }
     
     IEnumerator terminateParticleSystem()
