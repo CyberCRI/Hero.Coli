@@ -293,6 +293,11 @@ public class CraftZoneManager : MonoBehaviour {
   }
   */
 
+  public virtual void addAndEquipDevice(Device device)
+  {
+      setDevice(device);
+  }
+
   public virtual void setDevice(Device device) {
     Logger.Log("CraftZoneManager::setDevice("+device+")", Logger.Level.TRACE);
     //Debug.LogError("CraftZoneManager::setDevice("+device+")");

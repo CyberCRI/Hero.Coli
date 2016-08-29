@@ -96,6 +96,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
 
+/*
     public void addBrick(CraftZoneDisplayedBioBrick brick)
     {
         if (null != selectedSlot)
@@ -103,6 +104,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
             selectedSlot.addBrick(brick);
         }
     }
+    */
     
     public void removeBioBrick(CraftZoneDisplayedBioBrick brick)
     {
@@ -150,6 +152,20 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         foreach(CraftDeviceSlot slot in slots)
         {
             slot.updateDisplay();
+        }
+    }
+    
+    public override void addAndEquipDevice(Device device)
+    {
+        if(Device.isValid(device))
+        {
+            //add every brick to the stock
+            foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
+            {
+                AvailableBioBricksManager.get ().addAvailableBioBrick (brick, false);
+            }
+            //set device
+            setDevice(device);
         }
     }
     

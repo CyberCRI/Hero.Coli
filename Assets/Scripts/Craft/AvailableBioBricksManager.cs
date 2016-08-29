@@ -120,6 +120,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     
     public void addBrickAmount(BioBrick brick, double amount)
     {
+        // Debug.Log("addBrickAmount("+brick+","+amount+")");
         BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
                 _availableBioBricks
                 , b => b.getName() == brick.getName()
@@ -129,11 +130,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 
                 if(null != currentBrick)
                 {
-                    double initialAmount = currentBrick.amount;
                     currentBrick.addAmount(amount);
-                    double finalAmount = currentBrick.amount;
-                    
-                    //Debug.LogError(brick.getName()+": initialAmount="+initialAmount+", finalAmount="+finalAmount);
                 }
     }
 
