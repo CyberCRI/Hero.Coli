@@ -11,7 +11,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
     [SerializeField]
     private GameObject _amountBackground;
 
-  private static CraftZoneManager       _craftZoneManager;
+    private static CraftZoneManager       _craftZoneManager;
 
   /*TODO
    *automatically choose name:

@@ -43,11 +43,9 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     //prefab for available biobricks
     public GameObject availableBioBrick;
-    public GameObject availablePromoter1;
-    public GameObject availablePromoter2;
-    public GameObject availableRBS;
-    public GameObject availableCodingSequence;
-    public GameObject availableTerminator;
+    public GameObject availablePromoter1, availablePromoter2, availableRBS, availableCodingSequence, availableTerminator;
+    public GameObject promoterBrickCategoryList, rbsBrickCategoryList, geneBrickCategoryList, terminatorBrickCategoryList;
+
     private List<GameObject> dummies = new List<GameObject>();
 
     //visual, clickable biobricks currently displayed
