@@ -3,6 +3,8 @@
 public class NanobotsCounter : MonoBehaviour {
 
     private UILabel _label;
+    [SerializeField]
+    private int _totalNanobots;
 
 	// Use this for initialization
 	void Start () {
@@ -11,6 +13,6 @@ public class NanobotsCounter : MonoBehaviour {
 
     public void updateLabel(int numNanoBots)
     {
-        _label.text = numNanoBots.ToString() + "/3";
+        _label.text = numNanoBots.ToString() + "/" + _totalNanobots.ToString();
     }
 }
