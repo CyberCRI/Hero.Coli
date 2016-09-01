@@ -219,10 +219,10 @@ public class InterfaceLinkManager : LinkManager
         availableBioBricksManager.availableCodingSequence   = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedCodingSequence").gameObject;
         availableBioBricksManager.availableTerminator       = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedTerminator").gameObject;
 
-        availableBioBricksManager.promoterBrickCategoryList     = availableBioBricksManager.bioBricksPanel.transform.FindChild("PromoterBrickCategoryList").gameObject;
-        availableBioBricksManager.rbsBrickCategoryList          = availableBioBricksManager.bioBricksPanel.transform.FindChild("RBSBrickCategoryList").gameObject;
-        availableBioBricksManager.geneBrickCategoryList         = availableBioBricksManager.bioBricksPanel.transform.FindChild("CodingSequenceBrickCategoryList").gameObject;
-        availableBioBricksManager.terminatorBrickCategoryList   = availableBioBricksManager.bioBricksPanel.transform.FindChild("TerminatorBrickCategoryList").gameObject;
+        availableBioBricksManager.promoterBrickCategoryGrid     = GameObject.Find("PromoterBrickCategoryGrid").transform;
+        availableBioBricksManager.rbsBrickCategoryGrid          = GameObject.Find("RBSBrickCategoryGrid").transform;
+        availableBioBricksManager.geneBrickCategoryGrid         = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
+        availableBioBricksManager.terminatorBrickCategoryGrid   = GameObject.Find("TerminatorBrickCategoryGrid").transform;
     }
     else
     {
