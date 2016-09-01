@@ -69,7 +69,6 @@ public class StartCutSceneController : CutScene {
         //Destroy(this.gameObject.transform.parent.gameObject);
         FocusMaskManager.get().blockClicks(false);
         Destroy(this.transform.parent.gameObject);
-        Debug.Log("mouais");
     }
 
     public override void startCutScene()

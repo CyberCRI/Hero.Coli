@@ -250,7 +250,7 @@ public class Hero : MonoBehaviour {
             {
                 if (_isInjured == false)
                 {
-                    _ambientLighting.SaveCurrentLighting();
+                    //_ambientLighting.SaveCurrentLighting();
                     _isInjured = true;
                 }
                 if (life >= _previousLife)
@@ -269,6 +269,10 @@ public class Hero : MonoBehaviour {
                 {
                     _isInjured = false;
                     _ambientLighting.ResetLighting();
+                }
+                else
+                {
+                    //_ambientLighting.SaveCurrentLighting();
                 }
             }
     }

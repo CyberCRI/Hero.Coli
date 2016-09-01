@@ -92,6 +92,7 @@ public class AmbientLighting : MonoBehaviour
         Color color = _backgroundBlood.material.color;
         color.a = 0;
         _backgroundBlood.material.color = color;
+        SaveCurrentLighting();
     }
 
     void OnTriggerEnter(Collider col)
@@ -114,6 +115,7 @@ public class AmbientLighting : MonoBehaviour
                 _blackLight = false;
                 ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+                ResetLighting();
             }
         }
     }
@@ -153,13 +155,15 @@ public class AmbientLighting : MonoBehaviour
 
     public void ResetLighting()
     {
-            Debug.Log("1");
-            _alphaColor = _backgroundBlood.material.color;
-            _alphaColor.a = 0f;
-            _backgroundBlood.material.color = _alphaColor;
-            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
-            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
+        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor.a = 0f;
+        _backgroundBlood.material.color = _alphaColor;
+        _alphaColor = _background.GetComponent<Renderer>().material.color;
+        _alphaColor.a = 1f;
+        _background.GetComponent<Renderer>().material.color = _alphaColor;
+        ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+        ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
+        ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
     }
 
     public void SaveCurrentLighting()
