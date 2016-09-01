@@ -173,6 +173,7 @@ public class InterfaceLinkManager : LinkManager
     devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
     devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
     devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
+    devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
     devicesDisplayer.graphMoleculeList = mediumInfoPanelCell.GetComponent<GraphMoleculeList>() as GraphMoleculeList;
             

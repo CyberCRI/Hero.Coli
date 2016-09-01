@@ -57,6 +57,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
+  public Transform listedDevicesGrid;
 
   public GraphMoleculeList graphMoleculeList;
 
@@ -76,6 +77,11 @@ public class DevicesDisplayer : MonoBehaviour {
         equipedDevice2.SetActive(false);
         inventoryDevice.SetActive(false);
         listedInventoryDevice.SetActive(false);
+        
+        for(int index = 0; index < listedDevicesGrid.childCount; index++)
+        {
+          Destroy(listedDevicesGrid.GetChild(index).gameObject);
+        }
     }
 
 
@@ -118,7 +124,7 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: adding listed device", Logger.Level.TRACE);
       localPosition = getNewPosition(DeviceType.Listed);
       Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
-      parent = listedInventoryPanel.transform;
+      parent = listedDevicesGrid;
       Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
       DisplayedDevice newListedDevice =
         ListedDevice.Create(
@@ -131,6 +137,7 @@ public class DevicesDisplayer : MonoBehaviour {
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
+      listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;
 
       /*
       if(_listedInventoriedDevices.Count == 1) {
