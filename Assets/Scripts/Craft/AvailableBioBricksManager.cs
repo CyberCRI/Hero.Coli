@@ -135,7 +135,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         {
             if(null != grid)
             {
-                Debug.LogError("initializeDummies grid="+grid.name);
+                // Debug.Log("initializeDummies grid="+grid.name);
                 for(int index = 0; index < grid.childCount; index++)
                 {
                     Destroy(grid.GetChild(index).gameObject);
@@ -390,10 +390,18 @@ public class AvailableBioBricksManager : MonoBehaviour
         display(_displayableAvailableGenes, true);
         display(_displayableAvailableTerminators, true);
 
-        promoterBrickCategoryGrid.GetComponent<UIGrid>().Reposition();
-        rbsBrickCategoryGrid.GetComponent<UIGrid>().Reposition();
-        geneBrickCategoryGrid.GetComponent<UIGrid>().Reposition();
-        terminatorBrickCategoryGrid.GetComponent<UIGrid>().Reposition();
+        if(
+            (null != promoterBrickCategoryGrid)
+            && (null != rbsBrickCategoryGrid)
+            && (null != geneBrickCategoryGrid)
+            && (null != terminatorBrickCategoryGrid)
+        )
+        {
+            promoterBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            rbsBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            geneBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            terminatorBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+        }
     }
     public void displayPromoters()
     {
