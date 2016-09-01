@@ -43,19 +43,6 @@ public class MainMenuManager : MonoBehaviour
         get();
         Debug.Log("3");
     }
-
-    void OnDisable()
-    {
-        if (_first == true)
-        {
-            _first = false;
-        }
-        else
-        {
-            //_cutscene.SetCutSceneCamera();
-            Debug.Log("2");
-        }
-    }
     
     void OnDestroy()
     {
@@ -387,7 +374,5 @@ public class MainMenuManager : MonoBehaviour
     {
         //Debug.Log("MainMenuManager::Start");
         selectItem (0);
-        
-        Debug.Log("1");
     }
 }

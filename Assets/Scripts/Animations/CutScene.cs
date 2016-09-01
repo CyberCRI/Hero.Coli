@@ -73,15 +73,14 @@ public abstract class CutScene : MonoBehaviour {
     
     // must be called when ending a cut scene
     public void end () {
-        Debug.Log("sapass");
 		FocusMaskManager.get().blockClicks(false);
         _cellControl.freezePlayer(false);
-        StartCoroutine(waitForBlackBar(false));
-        //endCutScene ();
         _blackBar.closeBar(false);
+        StartCoroutine(waitForBlackBar(false));
         _cullingMaskHandler.hideInterface(false);
         _cutSceneCamera.enabled = false;
-        this.enabled = false;
+        endCutScene();
+        //this.enabled = false;
     }
 
     IEnumerator waitForBlackBar(bool start)

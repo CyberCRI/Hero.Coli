@@ -34,13 +34,14 @@ public class StartCutSceneController : CutScene {
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
         _bacteriaTransform = _iTweenEventBacteria.GetComponent<Transform>();
-        
-        start();
+
+        StartCoroutine(WaitForBeginning());
+        //start();
     }
 
     void Update()
     {
-        _cellControl.freezePlayer(true);
+        //_cellControl.freezePlayer(true);
         
     }
 
@@ -54,18 +55,21 @@ public class StartCutSceneController : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.name == "dummyPlayer")
+        /*if (col.gameObject.name == "dummyPlayer")
         {
             end ();
             Destroy(col.gameObject);
-        }
+        }*/
     }
     
     public override void endCutScene()
     {
         _cellControl.gameObject.AddComponent<MovementHint>();
         _cellControl.freezePlayer(false);
-        Destroy(this.gameObject.transform.parent.gameObject);
+        //Destroy(this.gameObject.transform.parent.gameObject);
+        FocusMaskManager.get().blockClicks(false);
+        Destroy(this.transform.parent.gameObject);
+        Debug.Log("mouais");
     }
 
     public override void startCutScene()
@@ -123,7 +127,6 @@ public class StartCutSceneController : CutScene {
         {
             if (test == true)
             {
-                Debug.Log("2");
             }
             if (_scaleUp == true && objTransform.localScale.x < 2f)
             {
@@ -148,8 +151,10 @@ public class StartCutSceneController : CutScene {
                 
                 CraftZoneManager.get().addAndEquipDevice(_iTweenEventDNA.transform.GetChild(0).GetComponent<PickableDeviceRef4Bricks>().getDNABit() as Device);
             }
+
             yield return null;
         }
+        //end();
         yield return null;
     }
 
@@ -212,8 +217,21 @@ public class StartCutSceneController : CutScene {
 
     IEnumerator WaitForEnd()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         end();
+        yield return null;
+    }
+
+    IEnumerator WaitForBeginning()
+    {
+        float timer = 5f;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            _cellControl.freezePlayer(true);
+            yield return null;
+        }
+        start();
         yield return null;
     }
 }

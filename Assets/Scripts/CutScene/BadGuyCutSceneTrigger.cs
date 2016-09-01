@@ -111,7 +111,6 @@ public class BadGuyCutSceneTrigger : CutScene {
         {
             yield return true;
         }
-        
         end ();
         yield return null;
     }
