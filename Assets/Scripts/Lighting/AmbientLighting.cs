@@ -172,4 +172,9 @@ public class AmbientLighting : MonoBehaviour
         _originalPhenoLightIntensity = _directionaleLight.intensity;
         _originalSpotLightIntensity = _spotLight.intensity;
     }
+
+    public bool IsBlackLight()
+    {
+        return _blackLight;
+    }
 }

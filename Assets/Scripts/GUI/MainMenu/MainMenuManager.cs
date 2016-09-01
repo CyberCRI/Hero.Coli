@@ -41,7 +41,6 @@ public class MainMenuManager : MonoBehaviour
         _instance = this;
         _cutscene = GameObject.FindGameObjectWithTag("FirstCutScene").GetComponent<StartCutSceneController>();
         get();
-        Debug.Log("3");
     }
     
     void OnDestroy()

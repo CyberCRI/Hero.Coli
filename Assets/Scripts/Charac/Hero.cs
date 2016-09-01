@@ -268,7 +268,10 @@ public class Hero : MonoBehaviour {
                 if (_isInjured == true)
                 {
                     _isInjured = false;
-                    _ambientLighting.ResetLighting();
+                    if (_ambientLighting.IsBlackLight() == false)
+                    {
+                        _ambientLighting.ResetLighting();
+                    }
                 }
                 else
                 {
