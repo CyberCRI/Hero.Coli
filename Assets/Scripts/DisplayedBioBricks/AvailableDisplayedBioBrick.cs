@@ -1,9 +1,17 @@
 using UnityEngine;
-using System.Collections;
 
 public class AvailableDisplayedBioBrick : DisplayedBioBrick {
+    
+    [SerializeField]
+    protected UISprite _noneLeftSprite;
+    [SerializeField]
+    private UILocalize _noneLeftLabel;
+    [SerializeField]
+    private UILabel _amountLabel;
+    [SerializeField]
+    private GameObject _amountBackground;
 
-  private static CraftZoneManager       craftZoneManager;
+    private static CraftZoneManager       _craftZoneManager;
 
   /*TODO
    *automatically choose name:
@@ -25,11 +33,11 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab = Resources.Load(_prefabURIAvailable);
-    if(craftZoneManager == null) {
-      craftZoneManager = CraftZoneManager.get();
+    if(_craftZoneManager == null) {
+      _craftZoneManager = CraftZoneManager.get();
     }
 
-    Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+    Logger.Log("AvailableDisplayedBioBrick::Create(parentTransform="+parentTransform
       + ", localPosition="+localPosition
       + ", spriteName="+spriteName+nullSpriteName
       + ", biobrick="+biobrick
@@ -43,21 +51,73 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       ,biobrick
       ,prefab
       );
+      
+      result.name = "AvailableDisplayed"+biobrick.getName();
+
+      result.Initialize();
 
     return result;
+ }
+    
+public void Initialize()
+{
+      if(BioBrick.isUnlimited)
+      {
+          Destroy(_amountLabel.gameObject);
+          Destroy(_amountBackground);
+      }
+}
+ 
+ public void Update()
+ {
+    if(_amountLabel != null)
+        _amountLabel.text = _biobrick.amount.ToString();
+     setNoneLeftIndicators(0 >= _biobrick.amount);
+ }
+ 
+ private void setNoneLeftIndicators(bool isActive)
+ {
+     _noneLeftSprite.gameObject.SetActive(isActive);
+     _noneLeftLabel.gameObject.SetActive(isActive);
  }
 
   public void display(bool enabled) {
     gameObject.SetActive(enabled);
   }
 
-  protected override void OnPress(bool isPressed) {
-    if(isPressed) {
-      Logger.Log("AvailableDisplayedBioBrick::OnPress _id="+_id, Logger.Level.INFO);
-      if(craftZoneManager == null) {
-        craftZoneManager = CraftZoneManager.get();
-      }
-      craftZoneManager.replaceWithBioBrick(_biobrick);
-    }
+  protected override void setJigsawSprite()
+  {
+      base.setJigsawSprite();
+      _noneLeftSprite.spriteName = _jigsawSprite.spriteName;
   }
+
+    public override void OnPress(bool isPressed)
+    {
+        if (isPressed)
+        {
+            Logger.Log("AvailableDisplayedBioBrick::OnPress _id=" + _id, Logger.Level.INFO);
+            //Debug.LogError("pressed");
+            if (CraftZoneManager.isDeviceEditionOn())
+            {
+                //Debug.LogError("isDeviceEditionOn");
+                if (_craftZoneManager == null)
+                {
+                    _craftZoneManager = CraftZoneManager.get();
+                }
+                if (_biobrick.amount > 0)
+                {
+                    //Debug.LogError("_biobrick.amount > 0");
+                    _craftZoneManager.replaceWithBioBrick(_biobrick);
+                }
+                else
+                {
+                    //Debug.LogError("!_biobrick.amount > 0");
+                }
+            }
+            else
+            {
+                //Debug.LogError("!isDeviceEditionOn");
+            }
+        }
+    }
 }

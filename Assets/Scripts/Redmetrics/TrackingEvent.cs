@@ -17,7 +17,7 @@ public enum TrackingEvent {
     //example events
     JUMP,
     BOUNCE,
-    
+
     //specific events
     COMPLETE,
     CRAFT,
@@ -27,5 +27,12 @@ public enum TrackingEvent {
     REACH,
     SWITCH,
     UNEQUIP,
-    CONFIGURE
+	//main menu
+	SELECTMENU,
+    CONFIGURE,
+	GOTOMOOC,
+    GOTOURL,
+    //backend events
+    SWITCHFROMGAMEVERSION,
+    SWITCHTOGAMEVERSION
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class GUITransitioner : MonoBehaviour {
 
@@ -115,11 +114,14 @@ public class GUITransitioner : MonoBehaviour {
 		//checkCamera();
 		mainBoundCamera.SetZoom(false);
 	}
-		
-  public void TerminateGraphs() {
-  	roomGraph.gameObject.SetActive(false);
-    celliaGraph.gameObject.SetActive(false);
-  }
+
+    public void showGraphs(bool show)
+    {
+        if (null != roomGraph)
+            roomGraph.gameObject.SetActive(show);
+        if (null != celliaGraph)
+            celliaGraph.gameObject.SetActive(show);
+    }
 
     public void Pause (bool pause)
     {
@@ -242,8 +244,6 @@ public class GUITransitioner : MonoBehaviour {
       Logger.Log ("GuiTransitioner::SwitchScreen("+alternate1+","+alternate2+"): error: unmanaged alternate", Logger.Level.WARN);
     }
   }
-
-
 	
 	// Update is called once per frame
 	void Update () {

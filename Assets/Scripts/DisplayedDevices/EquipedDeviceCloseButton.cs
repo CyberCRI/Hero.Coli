@@ -16,6 +16,9 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
 
 	void OnPress()
   {
+      //quick fix to remove closeButton
+        //TODO fixme
+      /*
     if(null != device)
     {
       if(device.askRemoveDevice())
@@ -27,6 +30,7 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
     {
             Logger.Log("EquipedDeviceCloseButton::OnPress null==device", Logger.Level.WARN);
     }
+    */
   }
 
     /*

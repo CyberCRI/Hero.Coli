@@ -1,4 +1,4 @@
-MAIN.LANGUAGE=Russian
+﻿MAIN.LANGUAGE=Russian
 
 KEY.PAUSE=P
 KEY.LIFE=R
@@ -34,7 +34,7 @@ KEY.REPR4.MINUS=M
 KEY.REPR4.PLUS=L
 
 MENU.BUTTON=МЕНЮ (ESC)
-MENU.VERSION=1.32
+MENU.VERSION=1.33
 MENU.NEWGAME=НОВАЯ ИГРА
 MENU.RESUME=ПРОДОЛЖИТЬ
 MENU.RESTART=ПЕРЕЗАПУСК
@@ -124,23 +124,34 @@ DEVICE.REPR4=heat-sensible cI
 DEVICE.SUFLOW= (low)
 DEVICE.SUFMED= (med)
 
+
 INFO.GENERIC.NEXT=Next
+
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the device in your Inventory.
+
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
 INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
 INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
+
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
-INFO.PICKEDUPGFP.EXPLANATION=This device contains the gene controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFP.EXPLANATION=This device contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
-INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
-INFO.RFP.SUBTITLE=This door requires red light to be opened.
-INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
-INFO.RFP.BOTTOM=The RFP gene BioBrick will be included in future versions of the game!
+
+INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
+INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the ORF controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
+
+INFO.FIRSTBIOBRICK.TITLE = 1st BioBrick ! 
+INFO.FIRSTBIOBRICK.SUBTITLE = You found your first BioBrick !
+INFO.FIRSTBIOBRICK.EXPLANATION = All is in the title. This is a basic brick for Biologic Engineering.
+INFO.FIRSTBIOBRICK.BOTTOM= Construisez un gène fabriquant de la GFP !
+
 
 MODAL.RESTARTGAME.TITLE=RESTART GAME?
 MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?
@@ -191,6 +202,8 @@ CRAFT.BANK.TIP=Click on a category to display your goods.
 CRAFT.RECIPES.TITLE=Recipes
 CRAFT.RECIPES.TIP=Click on an existing device of your catalog to display its components on the crafting table.
 
+CRAFT.BIOBRICK.NONELEFT=NONE LEFT
+
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is you!
 TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, your companion!
 TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.coli
@@ -215,8 +228,8 @@ TUTORIAL.END.BUTTON=QUIT
 TOOLTIP.MAIN.LENGTH=Length:
 TOOLTIP.MAIN.REFERENCE=Reference:
 TOOLTIP.MAIN.ENERGYCONSUMPTION=Energy consumption:
-TOOLTIP.MAIN.DEVICETYPE=Device
-TOOLTIP.MAIN.BIOBRICKTYPE=BioBrick
+TOOLTIP.MAIN.TYPE.DEVICE=Device
+TOOLTIP.MAIN.TYPE.BIOBRICK=BioBrick
 
 
 

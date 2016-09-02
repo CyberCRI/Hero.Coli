@@ -17,7 +17,11 @@ public class SavedCell : MonoBehaviour {
     {
         //TODO find systematic way of doing this
 
-        Destroy(GetComponent<Hero>());
+        Hero hero = GetComponent<Hero>();
+        //Destroy(this.transform.GetChild(9).gameObject);
+        //Destroy(this.transform.GetChild(8).gameObject);
+        hero.destroyChildren();
+        Destroy(hero);
         Destroy(GetComponent<CellControl>());
         Destroy(GetComponent<PhysicalMedium>());
         Destroy(GetComponent<PhenoSpeed>());
@@ -26,6 +30,8 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<PhenoFickContact>());
         Destroy(GetComponent<BlackLight>());        
         Destroy(GetComponent<Rigidbody>());
+        Destroy(GetComponent<AmbientLighting>());
+        Destroy(GetComponent<MovementHint>());
         
         SphereCollider[] colliders = GetComponentsInChildren<SphereCollider>();
         for(int i = 0; i<colliders.Length; i++) {

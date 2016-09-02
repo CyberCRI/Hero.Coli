@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class EquipedDisplayedDevice : DisplayedDevice {
@@ -23,6 +22,11 @@ public class EquipedDisplayedDevice : DisplayedDevice {
 
   void OnEnable() {
     Logger.Log("EquipedDisplayedDevice::OnEnable "+_device, Logger.Level.TRACE);
+    
+    //quick fix to remove closeButton
+    //TODO fixme
+    closeButton = null;
+    
     createBioBricksIfNecessary();
     updateVisibility();
   }
@@ -45,7 +49,7 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     setBricksVisibilityTo(_displayBricks);
   }
 
-  protected override void OnPress(bool isPressed) {
+  public override void OnPress(bool isPressed) {
     if(isPressed) {
 	    Logger.Log("EquipedDisplayedDevice::OnPress() "+getDebugInfos(), Logger.Level.INFO);
       if(_device == null)

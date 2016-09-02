@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System;
 
 /*!
@@ -13,11 +11,14 @@ public class PhenoLight : Phenotype {
 
   // TODO use a LinkedList to manage overlapping light sources
 
-  public GameObject phenoLight;   //!< The light that will be affected by the phenotype
-  private string fluorescenceProtein;
-  	
-	private bool colliderActivated = false;
-	private Molecule _mol = null;
+    public Light phenoLight;   //!< The light that will be affected by the phenotype
+    [SerializeField]
+    private Light _spotLight;
+    
+    private string fluorescenceProtein;
+    private bool isSystemTriggered = false;
+    private Molecule _mol = null;
+    private TriggeredLightEmitter _triggered;
 
   //! Called at the beginning
   public override void StartPhenotype()
@@ -31,41 +32,95 @@ public class PhenoLight : Phenotype {
     This function should be implemented and all the graphical action has to be implemented in it.
     \sa Phenotype
    */
-  public override void UpdatePhenotype()
-  {
-    if(!String.IsNullOrEmpty(fluorescenceProtein))
+    public override void UpdatePhenotype()
     {
-      _mol = ReactionEngine.getMoleculeFromName(fluorescenceProtein, _molecules);
-      if (_mol == null)
-        return ;
-      float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
-      float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+        if(!String.IsNullOrEmpty(fluorescenceProtein))
+        {
+            _mol = ReactionEngine.getMoleculeFromName(fluorescenceProtein, _molecules);
+            if (_mol == null) {
+                return;   
+            }
+                
+            float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+            float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
     
-      phenoLight.GetComponent<Light>().intensity = intensity;
-      if(colliderActivated)
-        ((SphereCollider)phenoLight.GetComponent<Collider>()).radius = colRadius;
+            phenoLight.intensity = intensity;
+            phenoLight.range = _mol.getConcentration() / 5;
+            _spotLight.color = phenoLight.color;
+            _spotLight.intensity = intensity;
+            _spotLight.range = _mol.getConcentration() / 2;
+            _spotLight.spotAngle = _mol.getConcentration();
+            
+            if(null != _triggered)
+            {
+                if(_mol.getConcentration() > _triggered.threshold)
+                {
+                    if(!isSystemTriggered)
+                    {
+                        turnLightOn();
+                    }
+                    else
+                    {
+                        _triggered.triggerStay();
+                    }
+                }
+                // The concentration fell below the threshold and the light must
+                // consequently be switched off
+                else if (isSystemTriggered)
+                {                    
+                    turnLightOff();
+                }
+            }
+        }
     }
-  }
 	
-	void OnTriggerEnter(Collider col){
-		//if(_mol == null)
-			//return;
-		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
-		if(null != lm && col.gameObject != null){
-			phenoLight.GetComponent<Light>().enabled = true;
-			colliderActivated = true;
-			phenoLight.GetComponent<Light>().color = lm.colorTo;
-      fluorescenceProtein = lm.protein;
+	void OnTriggerEnter(Collider col)
+    {
+        // Prepares the future triggering of the light
+		TriggeredLightEmitter lm = col.gameObject.GetComponent<TriggeredLightEmitter>();
+		if(null != lm)
+        {
+            _triggered = lm;
+            fluorescenceProtein = lm.protein;
 		}
  	}
-	
-	void OnTriggerExit(Collider col){
-		LightEmitter lm = col.gameObject.GetComponent<LightEmitter>();
-		if(null != lm && col.gameObject != null){
-			phenoLight.GetComponent<Light>().enabled = false;
-			((SphereCollider)phenoLight.GetComponent<Collider>()).radius = 0;
-			colliderActivated = false;
-      fluorescenceProtein = "";
+     
+	void OnTriggerExit(Collider col)
+    {
+		TriggeredLightEmitter lm = col.gameObject.GetComponent<TriggeredLightEmitter>();
+		if(null != lm){
+            turnLightOff();
+            _triggered = null;
+            fluorescenceProtein = "";
 		}
 	}
+    
+    private void turnLightOff()
+    {
+        if(_triggered)
+        {
+            _triggered.triggerExit();
+        }
+        isSystemTriggered = false;
+        if(phenoLight)
+        {
+            phenoLight.enabled = false;
+            _spotLight.enabled = false;
+        }
+    }
+    
+    private void turnLightOn()
+    {
+        if(_triggered)
+        {
+            _triggered.triggerStart();
+            isSystemTriggered = true;
+            if(phenoLight)
+            {
+                phenoLight.enabled = true;
+                phenoLight.color = _triggered.colorTo;
+                _spotLight.enabled = true;
+            }
+        }
+    }
 }

@@ -254,6 +254,11 @@ public class Device: DNABit
         Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions), Logger.Level.INFO);
         return reactions;
     }
+    
+    public static bool isValid(Device device)
+    {
+        return (null != device && isValid(device._modules));
+    }
 
     private static bool isValid(LinkedList<ExpressionModule> modules)
     {

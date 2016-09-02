@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ForceFlowParticle : MonoBehaviour {
 
@@ -7,9 +6,8 @@ public class ForceFlowParticle : MonoBehaviour {
   public float period;
   public float startPhase;
   public ParticleSystem system;
-
-
-  private float _emissionRate;
+  
+  private ParticleSystem.EmissionModule _em;
   private float _timeDelta;
   private float _timeAtLastFrame = 0f;
   private float _timeAtCurrentFrame = 0f;
@@ -32,11 +30,11 @@ public class ForceFlowParticle : MonoBehaviour {
     _isOn = !_isOn;
     if(_isOn)
     {
-      system.emissionRate = _emissionRate;
+      _em.enabled = true;
     }
     else
     {
-      system.emissionRate = 0;
+      _em.enabled = false;
     }
   }
 
@@ -52,9 +50,9 @@ public class ForceFlowParticle : MonoBehaviour {
 
   void Start()
   {
-    _emissionRate = system.emissionRate;
     _timeDelta = period;
     _timeAtLastFrame = - startPhase * period;
+    _em = system.emission;
   }
 
 }

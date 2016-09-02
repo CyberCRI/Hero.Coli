@@ -1,11 +1,21 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class CraftResultDevice : DisplayedDevice {
-  protected override void OnPress(bool isPressed)
+    public CraftDeviceSlot slot;
+    
+  public override void OnPress(bool isPressed)
   {
+      Debug.LogError("CraftResultDevice OnPress("+isPressed+")");
     base.OnPress(isPressed);
+    if(null != slot)
+    {
+        Debug.LogError("CraftResultDevice OnPress("+isPressed+") slot != null");
+        slot.removeAllBricks();
+    }
+    else
+    {
+        Debug.LogError("CraftResultDevice OnPress("+isPressed+") slot == null");
+    }
     Logger.Log("CraftResultDevice::OnPress("+isPressed+")", Logger.Level.INFO);
   }
 

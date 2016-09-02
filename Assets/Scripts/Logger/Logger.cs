@@ -49,6 +49,8 @@ public class Logger : MonoBehaviour {
     {
         return Logger._singleton;
     }
+    
+    private static bool _isEditor;
 
   //TODO fix interactive mode by making this field static
   //public bool interactiveDebug = true;
@@ -71,8 +73,8 @@ public class Logger : MonoBehaviour {
  */
   public enum Level {
     ALL,          // 0 gets everything logged
-	  ONSCREEN,     // 1 gets printed in the Logger window
-	  INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
+    ONSCREEN,     // 1 gets printed in the Logger window
+    INTERACTIVE,  // 2 gets logged when Interactive mode is on - press J
     TRACE,        // 3 for step by step follow up on computation
     DEBUG,        // 4 for functions calls
     INFO,         // 5 for events that help finding out the sequence of events leading to a bug
@@ -103,23 +105,30 @@ public class Logger : MonoBehaviour {
     return false;
   }
 
+  void Awake() {
+    _isEditor = Application.isEditor; 
+  }
+
   //TODO "inline" this
   public static void Log(string debugMsg, Level level = Level.DEBUG) {
-    if(level == Level.ONSCREEN) {
-      pushMessage(debugMsg);
-    } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
-      string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
-      if (level == Level.WARN || level == Level.TEMP) {
-        Debug.LogWarning(timedMsg);
-      } else if (level == Level.ERROR) {
-        Debug.LogError(timedMsg);
-        Application.ExternalCall("DebugFromWebPlayerToBrowser", "Hero.Coli: "+timedMsg);
-      } else if (level == Level.WEBPLAYER) {
-        if (Application.isWebPlayer) {
-          Application.ExternalCall ("DebugFromWebPlayerToBrowser", timedMsg);
+    //TODO replace this test by inheritance/factory/implementation use
+    if(false && _isEditor) {
+      if(level == Level.ONSCREEN) {
+        pushMessage(debugMsg);
+      } else if(level >= _level || (isInteractive() && (level == Level.INTERACTIVE))) {
+        string timedMsg = level.ToString()+" "+DateTime.Now.ToString("HH:mm:ss:ffffff") +" "+debugMsg;
+        if (level == Level.WARN || level == Level.TEMP) {
+          Debug.LogWarning(timedMsg);
+        } else if (level == Level.ERROR) {
+          Debug.LogError(timedMsg);
+          Application.ExternalCall("DebugFromWebPlayerToBrowser", "Hero.Coli: "+timedMsg);
+        } else if (level == Level.WEBPLAYER) {
+          if (Application.isWebPlayer) {
+            Application.ExternalCall ("DebugFromWebPlayerToBrowser", timedMsg);
+          }
+        } else {
+          Debug.Log(timedMsg);
         }
-      } else {
-        Debug.Log(timedMsg);
       }
     }
   }

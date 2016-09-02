@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class BoundCamera : MonoBehaviour {
 	public Transform target;
 	public bool useScenePosition = true;
@@ -12,7 +11,10 @@ public class BoundCamera : MonoBehaviour {
 	public float zoomedCameraDistanceMin = 5;
 	public float cameraDistanceMin = 20;
   	public float cameraDistanceMax = 75;
-  	public float scrollSpeed = 5;
+      
+      [SerializeField]
+  	private float scrollSpeed = 5;
+      
 	public float zoomSmooth = 3;
 	public float fovZoomed = 10.0f;
 	
@@ -31,11 +33,17 @@ public class BoundCamera : MonoBehaviour {
 			fov = fovUnzoomed;
 		}
 	}
+
+    private float _zoomingTime;
+    private float _originZoomingTime;
+    private float _originalOffset;
+    private bool _isZooming;
+    private Coroutine _currentCoroutine;
 	
 	// Use this for initialization
 	void Start () {
 		if(useScenePosition){
-		  offset = transform.position - target.position;
+          offset = new Vector3(0, transform.position.y, 0);
 		}
 		fovUnzoomed = GetComponent<Camera>().fieldOfView;
 		fov = fovUnzoomed;
@@ -51,9 +59,34 @@ public class BoundCamera : MonoBehaviour {
 		
 		if(_transition){
 			if(!_zoomed) {
-				fov = Mathf.Clamp(fov + Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
+				fov = Mathf.Clamp(fov - Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
 			}
 			GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, fov, deltaTime * zoomSmooth);
 		}
-	}
+    }
+
+    public void ZoomInOut(float YOffset, float zoomingTime)
+    {
+        if (_isZooming == true)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+        _zoomingTime = zoomingTime;
+        _originZoomingTime = zoomingTime;
+        var offSetDif = -(offset.y - YOffset);
+        _currentCoroutine = StartCoroutine(Zoom(offSetDif,offset.y));
+    }
+
+    IEnumerator Zoom(float YOffset, float originalOffset)
+    {
+        _isZooming = true;
+        while(_zoomingTime > 0)
+        {
+            _zoomingTime -= Time.deltaTime;
+            offset.y = originalOffset + (YOffset * (1 - (_zoomingTime / _originZoomingTime)));
+            yield return null;
+        }
+        _isZooming = false;
+        yield return null;
+    }
 }

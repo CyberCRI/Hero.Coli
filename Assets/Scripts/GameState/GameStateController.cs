@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -65,11 +66,22 @@ public class GameStateController : MonoBehaviour {
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
     private GameState _stateBeforeMainMenu = GameState.Game;
+    
+    private static bool _isAdminMode = false;
+    public static bool isAdminMode {
+        get {
+            return _isAdminMode;
+        }
+    } 
 
     void Awake() {
         Logger.Log("GameStateController::Awake", Logger.Level.INFO);
+        
+        SceneManager.sceneLoaded += SceneLoaded;
+        
         GameStateController.get ();
         loadLevels();
+        updateAdminStatus();
     }
 
     // Use this for initialization
@@ -80,14 +92,104 @@ public class GameStateController : MonoBehaviour {
         Logger.Log("GameStateController::Start game starts in "+Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
     
+    public static void updateAdminStatus()
+    {
+        _isAdminMode = Application.isEditor || MemoryManager.get().configuration.isTestGUID();
+    }
+    
+    bool isInterfaceLoaded = false;
+    bool isPlayerLoaded = false;
+    bool isWorldLoaded = false;
+    
+    private void reinitializeLoadingVariables()
+    {    
+        isInterfaceLoaded = false;
+        isPlayerLoaded = false;
+        isWorldLoaded = false;        
+    }
+    
+    void SceneLoaded(Scene scene, LoadSceneMode m)
+    {
+        int level = scene.buildIndex;
+         
+        isInterfaceLoaded   = isInterfaceLoaded || (3 == level);
+        isPlayerLoaded      = isPlayerLoaded    || (2 == level);
+        isWorldLoaded       = isWorldLoaded     || (1 == level) || (4 == level) || (5 == level);
+        
+        if(isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
+        {
+            finishLoadLevels();
+        }
+    }
+    
     private void loadLevels()
     {
         Logger.Log("GameStateController::loadLevels", Logger.Level.INFO);
-        //take into account order of loading to know which LinkManager shall ask which one
-        Application.LoadLevelAdditive(_interfaceScene);
-        Application.LoadLevelAdditive(_bacteriumScene);
-        Application.LoadLevelAdditive(MemoryManager.get ().configuration.getSceneName());
+        SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
+        SceneManager.LoadScene(MemoryManager.get ().configuration.getSceneName(), LoadSceneMode.Additive);
     }
+    
+    private void finishLoadLevels ()
+    {        
+        
+        // get the linkers
+        GameObject go   = null;
+        InterfaceLinkManager ilm = null;
+        PlayerLinkManager blm = null;
+        WorldLinkManager wlm = null;       
+        
+        go = GameObject.Find("InterfaceLinkManager") as GameObject;
+        if(null != go)
+        {
+            ilm = go.GetComponent<InterfaceLinkManager>();
+            ilm.initialize();
+        }
+        else
+        {
+            //Debug.LogError("no ilm");
+        }
+        
+        go = GameObject.Find("BacteriumLinkManager") as GameObject;
+        if(null != go)
+        {
+            blm = go.GetComponent<PlayerLinkManager>();
+            blm.initialize();
+        }
+        else
+        {
+            //Debug.LogError("no blm");
+        }
+        
+        go = GameObject.Find("WorldLinkManager") as GameObject;
+        if(null != go)
+        {
+            wlm = go.GetComponent<WorldLinkManager>();
+            wlm.initialize();
+        }
+        else
+        {
+            //Debug.LogError("no wlm");
+        }
+        
+        // initialize them
+        if(null != ilm && null != blm && null != wlm)
+        {
+            //Debug.LogError("finishInitialize");
+            ilm.finishInitialize();
+            blm.finishInitialize();
+            wlm.finishInitialize();
+        }
+        
+        // open the Main Menu
+        MainMenuManager.get().open();
+    }
+    
+    public static bool isPause()
+    {
+        return (GameState.Pause == _instance._gameState);
+    }
+    
     private static void resetPauseStack ()
     {
         _pausesStacked = 0;
@@ -137,15 +239,27 @@ public class GameStateController : MonoBehaviour {
     }
 
     //TODO optimize for frequent calls
-    public static bool isShortcutKeyDown(string localizationKey)
+    public static bool isShortcutKeyDown(KeyCode code, bool restricted = false)
     {
-      return Input.GetKeyDown(getKeyCode(localizationKey));
+      return (!restricted || isAdminMode) && Input.GetKeyDown(code);
     }
 
     //TODO optimize for frequent calls
-    public static bool isShortcutKey(string localizationKey)
+    public static bool isShortcutKey(KeyCode code, bool restricted = false)
     {
-      return Input.GetKey(getKeyCode(localizationKey));
+      return (!restricted || isAdminMode) && Input.GetKey(code);
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKeyDown(string localizationKey, bool restricted = false)
+    {
+      return (!restricted || isAdminMode) && Input.GetKeyDown(getKeyCode(localizationKey));
+    }
+
+    //TODO optimize for frequent calls
+    public static bool isShortcutKey(string localizationKey, bool restricted = false)
+    {
+      return (!restricted || isAdminMode) && Input.GetKey(getKeyCode(localizationKey));
     }
 
     private static GameState getStateFromTarget(GameStateTarget target)
@@ -187,6 +301,7 @@ public class GameStateController : MonoBehaviour {
     {
         Logger.Log("endGame", Logger.Level.INFO);
         _isGameLevelPrepared = false;
+        reinitializeLoadingVariables();
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
     }
@@ -242,23 +357,22 @@ public class GameStateController : MonoBehaviour {
 	// Update is called once per frame
     void Update () {
 
-        //TODO remove this
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
-            GameObject.Find("Player").transform.position = new Vector3(-150, 0, 1110);
-            GameObject perso = GameObject.Find("Perso");
-            perso.transform.localPosition = Vector3.zero;
-            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
-            perso.GetComponent<CellControl>().stopMovement();
-        } else if(Input.GetKeyDown(KeyCode.X))
-        {
-            Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
-            GameObject.Find("Player").transform.position = new Vector3(500, 0, 637);
-            GameObject perso = GameObject.Find("Perso");
-            perso.transform.localPosition = Vector3.zero;
-            //perso.transform.localRotation = new Quaternion(0, -65, 0, perso.transform.localRotation.w);
-            perso.GetComponent<CellControl>().stopMovement();
+    	if (_isAdminMode)
+    	{
+        	if (isShortcutKeyDown(KeyCode.X))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(500, 0, 637));
+        	} else if (isShortcutKeyDown(KeyCode.V))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(168, 0, 724));
+            
+        	} else if (isShortcutKeyDown(KeyCode.W))
+        	{
+            	Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
+            	CellControl.get().teleport(new Vector3(-150, 0, 1110));
+        	}
         }
 
         switch(_gameState){
@@ -315,15 +429,18 @@ public class GameStateController : MonoBehaviour {
                     Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
                     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                 }
+                /*
                 else if(isShortcutKeyDown(_sandboxKey))
                 {
                     Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
                     goToOtherGameMode();
-                }
+                }*/
+                //TODO fix this feature
+                /*
                 else if(isShortcutKeyDown(_forgetDevicesKey))
                 {
                     Inventory.get ().switchDeviceKnowledge();
-                }
+                }*/
                 break;
 
             case GameState.Pause:
@@ -396,9 +513,9 @@ public class GameStateController : MonoBehaviour {
     {
         Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
         GameConfiguration.GameMap destination =
-            (MemoryManager.get ().configuration.gameMap == GameConfiguration.GameMap.ADVENTURE1) ?
+            (GameConfiguration.getMode(MemoryManager.get ().configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
-                GameConfiguration.GameMap.ADVENTURE1;
+                GameConfiguration.GameMap.TUTORIAL1;
 
         setAndSaveLevelName(destination, "goToOtherGameMode");
         RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
@@ -408,14 +525,17 @@ public class GameStateController : MonoBehaviour {
     public void triggerEnd(EndGameCollider egc)
     {
         MemoryManager.get ().sendCompletionEvent();
+        egc.displayEndMessage();
 
-        gUITransitioner.TerminateGraphs();
+/*
+        gUITransitioner.showGraphs(false);
 
         //TODO merge fadeSprite with Modal background
         fadeSprite.gameObject.SetActive(true);
-        fadeSprite.FadeIn();
+        fadeSprite.FadeIn(0.5f);
 
         StartCoroutine (waitFade (2f, egc));
+        */
     }
 
     private IEnumerator waitFade (float waitTime, EndGameCollider egc)
@@ -470,6 +590,7 @@ public class GameStateController : MonoBehaviour {
             case GameConfiguration.GameMap.ADVENTURE1:
             case GameConfiguration.GameMap.SANDBOX1:
             case GameConfiguration.GameMap.SANDBOX2:
+            case GameConfiguration.GameMap.TUTORIAL1:
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart
                 //whereas MemoryManager won't
@@ -509,5 +630,18 @@ public class GameStateController : MonoBehaviour {
 
     void OnDestroy() {
         Logger.Log("GameStateController::OnDestroy", Logger.Level.DEBUG);
+    }
+
+    public void FadeScreen(bool fade, float speed)
+    {
+        fadeSprite.gameObject.SetActive(true);
+        if (fade)
+        {
+            fadeSprite.FadeIn(speed);
+        }
+        else
+        {
+            fadeSprite.FadeOut(speed);
+        }
     }
 }

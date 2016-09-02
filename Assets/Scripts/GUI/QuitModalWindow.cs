@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-//ModalButton inheritor that quits modal window when isPressed is true,
+﻿//ModalButton inheritor that quits modal window when isPressed is true,
 //contrary to CancelModal
 public class QuitModalWindow : ModalButton
 {

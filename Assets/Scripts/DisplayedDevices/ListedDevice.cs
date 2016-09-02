@@ -1,14 +1,26 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
 class ListedDevice : DisplayedDevice {
- protected override void OnPress(bool isPressed) {
+    
+    public bool displayFeedback = true;
+    
+    void Start()
+    {
+        if(displayFeedback)
+        {
+            playFeedback();
+            displayFeedback = false;
+        }
+    }
+    
+ public override void OnPress(bool isPressed) {
     Logger.Log("ListedDevice::OnPress("+isPressed+")", Logger.Level.INFO);
-    setPressed(isPressed);
-    if(isPressed) {
-      //ask craft zone to display biobricks associated to this device
-      CraftZoneManager.get().setDevice(_device);
+    
+    if(CraftZoneManager.isDeviceEditionOn())
+    {
+        setPressed(isPressed);
+        if(isPressed) {
+        //ask craft zone to display biobricks associated to this device
+        CraftZoneManager.get().setDevice(_device);
+        }
     }
   }
 

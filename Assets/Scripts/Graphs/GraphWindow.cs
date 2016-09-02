@@ -38,7 +38,7 @@ public class GraphWindow : MonoBehaviour {
 
   public void changeMoleculeState(string name, bool state)
   {
-//     Debug.Log(name + state);
+//     Logger.Log(name + state);
     foreach (Curve c in _curves)
       if (c.getLabel() == name)
         {
@@ -56,7 +56,7 @@ public class GraphWindow : MonoBehaviour {
     foreach (Molecule mol in _molecules)
       {
         Vector2 p = new Vector2((float)Time.timeSinceLevelLoad*100f, mol.getConcentration());
-//         Debug.Log(ps);
+//         Logger.Log(ps);
 //         p.x -=  ps.x;
 //         p.y *= 30f;
 //         p.x -= ps.x;

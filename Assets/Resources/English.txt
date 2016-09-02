@@ -1,4 +1,4 @@
-MAIN.LANGUAGE=English
+﻿MAIN.LANGUAGE=English
 
 KEY.PAUSE=P
 KEY.LIFE=R
@@ -34,7 +34,7 @@ KEY.REPR4.MINUS=M
 KEY.REPR4.PLUS=L
 
 MENU.BUTTON=MENU (ESC)
-MENU.VERSION=1.32
+MENU.VERSION=1.50
 MENU.NEWGAME=NEW GAME
 MENU.RESUME=RESUME
 MENU.RESTART=RESTART
@@ -52,6 +52,22 @@ MENU.LANGUAGES.FRENCH=français
 MENU.SOUND=SOUND
 MENU.SOUND.ON=on
 MENU.SOUND.OFF=off
+MENU.LEARNMORE=LEARN MORE...
+MENU.LEARNMORE.GOTO=explore the website
+MENU.LEARNMORE.GOTONEWTAB=new tab - please allow the pop-up
+MENU.LEARNMORE.GOTOSAMETAB=same tab - will exit the game
+MENU.LEARNMORE.GOTOBROWSER=open in browser
+MENU.LEARNMORE.EXPLANATION=Go to the iGEM MOOC to learn more about synthetic biology!
+
+LEARNMORE.LINK.MOOCFULL=http://igemhs.wix.com/mooc#!fundamental-facts/c5m9
+LEARNMORE.LINK.MOOCECOLI=http://genius.com/Igem-paris-bettencourt-team-a-model-organism-e-coli-annotated
+LEARNMORE.LINK.MOOCBIOBRICKS=http://genius.com/Igem-paris-bettencourt-team-what-are-biobricks-annotated
+LEARNMORE.LINK.MOOCTECHNIQUES=http://genius.com/Igem-paris-bettencourt-team-basic-techniques-used-in-igem-annotated
+LEARNMORE.LINK.MOOCENGINEERING=http://genius.com/Igem-paris-bettencourt-team-engineering-parts-and-genetic-devices-annotated
+LEARNMORE.LINK.MOOCTHEORY=http://genius.com/Igem-paris-bettencourt-team-what-is-the-central-dogma-of-biology-annotated
+
+STUDY.GAMEDEV.LINK=https://docs.google.com/forms/d/1KeQIG3UDwX8NzrrdeU598qzcD1B7-SrwCz_cRWxuTsU/viewform
+STUDY.LEARN.LINK=https://docs.google.com/forms/d/1Mz4hH2btTRki91JsM7BYnQUj4hlr3gp3FlTYAdZDAYM/viewform?usp=send_form
 
 BRICK.PRBAD1=pBAD strong
 BRICK.PRBAD2=pBAD medium
@@ -64,10 +80,11 @@ BRICK.PRTETR=pTet
 
 BRICK.RBS1=medium RBS
 BRICK.RBS2=low RBS
+BRICK.RBS3=very low RBS
 
 BRICK.AMPR=ampicillin resistance cassette
 BRICK.ARAC=araC
-BRICK.ATC=aTc
+BRICK.ATC=ATc
 BRICK.FLUO1=green - GFP
 BRICK.FLUO2=red - mCherry
 BRICK.FLUO3=yellow - YFP
@@ -84,12 +101,43 @@ BRICK.REPR4=heat-sensible cI
 
 BRICK.DTER=double terminator
 
+BRICK.ICONLABEL.PRBAD1=pBAD1
+BRICK.ICONLABEL.PRBAD2=pBAD2
+BRICK.ICONLABEL.PRBAD3=pBAD3
+BRICK.ICONLABEL.PRCONS=pCons
+BRICK.ICONLABEL.PRGLUC=pGluc
+BRICK.ICONLABEL.PRLACI=pLac
+BRICK.ICONLABEL.PRLAMB=pLambda
+BRICK.ICONLABEL.PRTETR=pTet
+
+BRICK.ICONLABEL.RBS1=23%
+BRICK.ICONLABEL.RBS2=12.6%
+BRICK.ICONLABEL.RBS3=6%
+
+BRICK.ICONLABEL.AMPR=AmpR
+BRICK.ICONLABEL.ARAC=araC
+BRICK.ICONLABEL.ATC=ATc
+BRICK.ICONLABEL.FLUO1=GFP
+BRICK.ICONLABEL.FLUO2=RFP
+BRICK.ICONLABEL.FLUO3=YFP
+BRICK.ICONLABEL.FLUO4=OFP
+BRICK.ICONLABEL.FLUO5=CFP
+BRICK.ICONLABEL.FLUO6=BFP
+BRICK.ICONLABEL.IPTG=IPTG
+BRICK.ICONLABEL.LARA=l-ara
+BRICK.ICONLABEL.MOV=FlhDC
+BRICK.ICONLABEL.REPR1=lacI
+BRICK.ICONLABEL.REPR2=tetR
+BRICK.ICONLABEL.REPR3=cI
+BRICK.ICONLABEL.REPR4=T°-cI
+
+BRICK.ICONLABEL.DTER= 
 
 MOL.AMPI*=penicilloic acid
 MOL.AMPI=ampicillin
 MOL.AMPR=beta-lactamase
 MOL.ARAC=araC
-MOL.ATC=aTc tetracycline
+MOL.ATC=ATc
 MOL.FLUO1=GFP
 MOL.FLUO2=mCherry
 MOL.FLUO3=YFP
@@ -100,16 +148,16 @@ MOL.GLUCOSE=glucose
 MOL.IPTG=IPTG
 MOL.LARA=L-arabinose
 MOL.MOV=FlhDC
-MOL.REPR1=lacI
-MOL.REPR2=tetR
+MOL.REPR1=LacI
+MOL.REPR2=TetR
 MOL.REPR3=cI
 MOL.REPR4=heat-sensible cI
 MOL.REPR1*=lacI+IPTG
-MOL.REPR2*=tetR+aTc
+MOL.REPR2*=tetR+ATc
 
 DEVICE.AMPR=ampicillin resistance
 DEVICE.ARAC=araC
-DEVICE.ATC=aTc
+DEVICE.ATC=ATc
 DEVICE.FLUO1=green fluorescence
 DEVICE.FLUO2=red fluorescence
 DEVICE.FLUO3=yellow fluorescence
@@ -127,28 +175,80 @@ DEVICE.REPR4=heat-sensible cI
 DEVICE.SUFLOW= (low)
 DEVICE.SUFMED= (med)
 
+
 INFO.GENERIC.NEXT=Next
+
 INFO.PICKEDUPHYPERFLAGELLATION.TITLE=CONGRATULATIONS!
 INFO.PICKEDUPHYPERFLAGELLATION.SUBTITLE=You picked up your first genetic device!
 INFO.PICKEDUPHYPERFLAGELLATION.EXPLANATION=It allows you to boost up your swim speed by increasing the number of flagella of your bacterium companion.
 INFO.PICKEDUPHYPERFLAGELLATION.BOTTOM=Click on the "Next" button, then equip the device in your Inventory.
+
 INFO.PICKEDUPRBS.TITLE=BIOBRICK FOUND!
 INFO.PICKEDUPRBS.SUBTITLE=You picked up your first BioBrick!
-INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS  has an expression level of 23%. Go and create new devices with it!
+INFO.PICKEDUPRBS.EXPLANATION=This BioBrick is a Ribosome Binding Site (RBS). It determines the level of expression of genes. This RBS has an expression level of 23%. Go and create new devices with it!
 INFO.PICKEDUPRBS.BOTTOM=Go and craft new devices in your crafting interface by clicking on the "Next" button.
+
 INFO.PICKEDUPGFP.TITLE=DEVICE FOUND!
 INFO.PICKEDUPGFP.SUBTITLE=You picked up a GFP genetic device!
-INFO.PICKEDUPGFP.EXPLANATION=This device contains the gene controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFP.EXPLANATION=This device contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
 INFO.PICKEDUPGFP.BOTTOM=Click on the "Next" button and equip the device in your Inventory.
+
+INFO.PICKEDUPGFPBRICK.TITLE=BIOBRICK FOUND!
+INFO.PICKEDUPGFPBRICK.SUBTITLE=You picked up a GFP BioBrick!
+INFO.PICKEDUPGFPBRICK.EXPLANATION=This BioBrick contains the Coding Sequence controlling the production of the Green Fluorescence Protein, which glows green when exposed to blue light.
+INFO.PICKEDUPGFPBRICK.BOTTOM=Click "Next" and craft a GFP gene!
+
+INFO.T1_PRO.TITLE=BIOBRICK FOUND!
+INFO.T1_PRO.SUBTITLE=You found your first Promoter!
+INFO.T1_PRO.EXPLANATION=This is a Promoter BioBrick. Genetic devices always start with it.
+INFO.T1_PRO.BOTTOM=Go and find other bricks in order to craft your first device!
+
+INFO.T1_CDS.TITLE=BIOBRICK FOUND!
+INFO.T1_CDS.SUBTITLE=You picked up your first Coding Sequence!
+INFO.T1_CDS.EXPLANATION=Coding Sequences determine which ability genetic devices affect. For instance, this one affects Cellia's number of flagella.
+INFO.T1_CDS.BOTTOM=Go and find other bricks in order to craft your first device!
+
+INFO.T1_RBS.TITLE=BIOBRICK FOUND!
+INFO.T1_RBS.SUBTITLE=You picked up your first RBS!
+INFO.T1_RBS.EXPLANATION=This BioBrick is an RBS. It determines the power of genetic devices, called the level of expression. This RBS has an expression level of 12,6%.
+INFO.T1_RBS.BOTTOM =Go and find other bricks in order to craft your first device!
+
+INFO.T1_TER.TITLE=BIOBRICK FOUND!
+INFO.T1_TER.SUBTITLE=You picked up your first Terminator!
+INFO.T1_TER.EXPLANATION=The Terminator's only purpose is to end a genetic sequence, but it's compulsory.
+INFO.T1_TER.BOTTOM=Go and find other bricks in order to craft your first device!
+
 INFO.RFP.TITLE=OOPS! NO RED FLUORESCENCE!
 INFO.RFP.SUBTITLE=This door requires red light to be opened.
 INFO.RFP.EXPLANATION=Your bacterium cannot open this door because it doesn't glow red. It needs to produce a red fluorescence protein (RFP) that glows red when exposed to green light.
-INFO.RFP.BOTTOM=The RFP gene BioBrick will be included in future versions of the game!
+INFO.RFP.BOTTOM=The RFP Coding Sequence BioBrick will be included in future versions of the game!
+
+INFO.FIRSTBIOBRICK.TITLE = BIOBRICK FOUND! 
+INFO.FIRSTBIOBRICK.SUBTITLE = You found your first BioBrick !
+INFO.FIRSTBIOBRICK.EXPLANATION = All is in the title. This is a basic brick for Biologic Engineering.
+INFO.FIRSTBIOBRICK.BOTTOM= Construisez un gène fabriquant de la GFP !
+
+INFO.MOVEMENT.TITLE=GO GO GO!
+INFO.MOVEMENT.SUBTITLE=Mouse or keys, pick your choice!
+INFO.MOVEMENT.EXPLANATION=Move by clicking the left mouse button. You can also maintain the click to follow the cursor. You can also use the arrow keys.
+INFO.MOVEMENT.BOTTOM=Try those out!
 
 MODAL.RESTARTGAME.TITLE=RESTART GAME?
 MODAL.RESTARTGAME.EXPLANATION=All progress will be lost! Are you sure?
 MODAL.FIRSTCHECKPOINT.TITLE=FIRST CHECKPOINT!
-MODAL.FIRSTCHECKPOINT.EXPLANATION=If your bacterium dies you'll restart from its last duplicate!
+MODAL.FIRSTCHECKPOINT.EXPLANATION=If Cellia dies you'll restart from her last duplicate!
+MODAL.T1_AMPICILLIN.TITLE=DANGER!
+MODAL.T1_AMPICILLIN.EXPLANATION=Red clouds contain an antibiotic called ampicillin. Keep out!
+MODAL.T1_FLUO1.TITLE=GREEN FLUORESCENCE
+MODAL.T1_FLUO1.EXPLANATION=This brick will allow you to glow green under blue light. Use it to open some passages in the maze!
+MODAL.T1_RBS1.TITLE=MORE POWER!
+MODAL.T1_RBS1.EXPLANATION=This brick will allow you to boost the efficiency of a device! Try to put it inside the device that handles your flagella.
+MODAL.T1_NANOBOT.TITLE=STRANDED NANOBOT!
+MODAL.T1_NANOBOT.EXPLANATION=These little guys need you to get them back home. Try to find them all, and they'll help you in your quest!
+MODAL.T1_FLUO2.TITLE=RED FLUORESCENCE!
+MODAL.T1_FLUO2.EXPLANATION=This brick will allow you to glow red under green light. Use it to open some passage in the maze!
+MODAL.T1_END.TITLE=THIS IS THE END...
+MODAL.T1_END.EXPLANATION=To be continued!
 
 GUI.MEDIUMINFOSTATICINFO.LABELS=temperature:\npH:\nenergy input:
 GUI.MEDIUMINFOSTATICINFO.VALUES=20°C\n7\n15
@@ -171,12 +271,12 @@ CRAFT.PROCESS.CRAFT=Craft
 
 CRAFT.ASSEMBLY.TITLE=Crafting table
 CRAFT.ASSEMBLY.TIP=To build your own genetic devices, click on the elements of your BioBrick bank to feature them on the crafting table. Craft the combination of BioBricks of your choice in order to add a new device to your inventory.
-CRAFT.ASSEMBLY.1ST=Promoter
+CRAFT.ASSEMBLY.1ST=Promoters
 CRAFT.ASSEMBLY.2ND=RBS
-CRAFT.ASSEMBLY.3RD=Gene
-CRAFT.ASSEMBLY.4TH=Terminator
+CRAFT.ASSEMBLY.3RD=Coding Sequences
+CRAFT.ASSEMBLY.4TH=Terminators
 
-CRAFT.FINALIZATION.TITLE=Output
+CRAFT.FINALIZATION.TITLE=Active genetic devices
 
 CRAFT.FINALIZATION.SUCCESS=You found the recipe of a new device!
 CRAFT.FINALIZATION.FAILURE_SAME_NAME=There already is a device with the same name.
@@ -184,29 +284,49 @@ CRAFT.FINALIZATION.FAILURE_SAME_BRICKS=This recipe is already known.
 CRAFT.FINALIZATION.FAILURE_SAME_DEVICE=You already know this recipe. There's nothing new to craft!
 CRAFT.FINALIZATION.FAILURE_DEFAULT=You will find here the result of the crafting operation.
 
-CRAFT.BANK.TITLE=BioBrick bank
+CRAFT.BANK.TITLE=BioBrick store
 CRAFT.BANK.PROMOTER=Promoter
 CRAFT.BANK.RBS=RBS
-CRAFT.BANK.GENE=Gene
+CRAFT.BANK.GENE=Coding Sequence
 CRAFT.BANK.TERMINATOR=Terminator
 CRAFT.BANK.TIP=Click on a category to display your goods.
 
-CRAFT.RECIPES.TITLE=Recipes
-CRAFT.RECIPES.TIP=Click on an existing device of your catalog to display its components on the crafting table.
+CRAFT.SLOTS.TITLE=Content of the genetic devices
 
-TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is you!
-TUTORIAL.INTRODUCTION1.CELLLABEL=Cellia, your companion!
-TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.coli
-TUTORIAL.INTRODUCTION1.PART1=In this world, intelligent machines and living crea-\ntures are able to interact with each other in order\nto ensure the balance and harmony of their planet.
-TUTORIAL.INTRODUCTION1.PART2=You are a young and tiny robot living on this planet.
-TUTORIAL.INTRODUCTION1.PART3=Your best friend Cellia is a bacterium living in an aquatic environment.
+CRAFT.RECIPES.TITLE=Known genetic devices
+CRAFT.RECIPES.TIP=Click on a genetic device to equip it - if you have enough bricks!
+
+CRAFT.BIOBRICK.NONELEFT=NONE LEFT
+
+HINT.NEXT=Click anywhere inside the illuminated area.
+HINT.CRAFT.0=You have enough bricks now. Click there to craft!
+HINT.CRAFT.1=This is the craft interface. We'll use it to create a new device.
+HINT.CRAFT.2=Start by clicking on the Promoter.
+HINT.CRAFT.3=Click on the RBS.
+HINT.CRAFT.4=Now, the Coding Sequence.
+HINT.CRAFT.5=And now the Terminator.
+HINT.CRAFT.6=See? You have a new device now, on the top-right.
+HINT.CRAFT.7=Now let's quit to test your device.
+HINT.GFPCRAFT.0=Let's create a GFP device!
+HINT.GFPCRAFT.1=See this? It's your previous device. Click on it to edit it.
+HINT.GFPCRAFT.2=Click on the GFP brick.
+HINT.GFPCRAFT.3=There's your new GFP device.
+HINT.GFPCRAFT.4=Quit and see what happens!
+HINT.RBS1CRAFT.0=To swim faster, upgrade your movement device with it!
+
+TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is a\nnanobot.
+TUTORIAL.INTRODUCTION1.CELLLABEL=This is Cellia!
+TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.coli!
+TUTORIAL.INTRODUCTION1.PART1=You, Cellia, are an e. coli bacterium, living in an aquatic world with your sister cells.
+TUTORIAL.INTRODUCTION1.PART2=Some stranded nanobots are waiting for you to help them out!
+TUTORIAL.INTRODUCTION1.PART3= 
 TUTORIAL.INTRODUCTION1.TITLE=INTRODUCTION
 
-TUTORIAL.INTRODUCTION2.PART1=In this level, you will help your bacterium companion to get out of a maze infested with mysterious creatures that spread toxic compounds in the water.
-TUTORIAL.INTRODUCTION2.PART2=However in your path you will have to overcome different challenges before you find the exit.
-TUTORIAL.INTRODUCTION2.PART3=For this mission you will need to modify Cellia's DNA to adapt her skills and abilities to the challenges.
+TUTORIAL.INTRODUCTION2.PART1=In this level, you will have to get out of a maze infested with mysterious creatures that spread toxic compounds in the water.
+TUTORIAL.INTRODUCTION2.PART2=However you will have to overcome different challenges in your path before you find the exit.
+TUTORIAL.INTRODUCTION2.PART3=For this mission, you will need to modify Cellia's DNA to adapt her skills and abilities to the new challenges the environment will oppose her.
 TUTORIAL.INTRODUCTION2.TITLE=INTRODUCTION
-TUTORIAL.INTRODUCTION2.BOTTOM=Click to enter the cell and control Cellia's movement with the left mouse button.
+TUTORIAL.INTRODUCTION2.BOTTOM= 
 
 TUTORIAL.END.TITLE=YOU WON!
 TUTORIAL.END.EXPLANATION=Thanks for having played the game, we hope you enjoyed it.
@@ -218,12 +338,10 @@ TUTORIAL.END.BUTTON=QUIT
 TOOLTIP.MAIN.LENGTH=Length:
 TOOLTIP.MAIN.REFERENCE=Reference:
 TOOLTIP.MAIN.ENERGYCONSUMPTION=Energy consumption:
-TOOLTIP.MAIN.DEVICETYPE=Device
-TOOLTIP.MAIN.BIOBRICKTYPE=BioBrick
+TOOLTIP.MAIN.TYPE.DEVICE=Device
+TOOLTIP.MAIN.TYPE.BIOBRICK=BioBrick
 
-
-
-TOOLTIP.B_PRBAD1.TITLE=pBad Promoter, strong
+TOOLTIP.B_PRBAD1.TITLE=pBAD Promoter, strong
 TOOLTIP.B_PRBAD1.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
 TOOLTIP.B_PRBAD1.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRBAD1.CUSTOMVALUE=l-arabinose ++\naraC --
@@ -231,7 +349,7 @@ TOOLTIP.B_PRBAD1.LENGTH=-
 TOOLTIP.B_PRBAD1.REFERENCE=-
 TOOLTIP.B_PRBAD1.EXPLANATION=-
 
-TOOLTIP.B_PRBAD2.TITLE=pBad Promoter, medium
+TOOLTIP.B_PRBAD2.TITLE=pBAD Promoter, medium
 TOOLTIP.B_PRBAD2.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
 TOOLTIP.B_PRBAD2.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRBAD2.CUSTOMVALUE=l-arabinose ++\naraC --
@@ -239,7 +357,7 @@ TOOLTIP.B_PRBAD2.LENGTH=-
 TOOLTIP.B_PRBAD2.REFERENCE=-
 TOOLTIP.B_PRBAD2.EXPLANATION=-
 
-TOOLTIP.B_PRBAD3.TITLE=pBad Promoter, weak
+TOOLTIP.B_PRBAD3.TITLE=pBAD Promoter, weak
 TOOLTIP.B_PRBAD3.SUBTITLE=Use: induced by l-arabinose, inhibited by araC
 TOOLTIP.B_PRBAD3.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRBAD3.CUSTOMVALUE=l-arabinose ++\naraC --
@@ -255,7 +373,7 @@ TOOLTIP.B_PRCONS.LENGTH=48bp
 TOOLTIP.B_PRCONS.REFERENCE=BIOFAB (apFAB95)
 TOOLTIP.B_PRCONS.EXPLANATION=Constitutive promoter (constantly ON).
 
-TOOLTIP.B_PRGLUC.TITLE=glucose promoter
+TOOLTIP.B_PRGLUC.TITLE=Glucose Promoter
 TOOLTIP.B_PRGLUC.SUBTITLE=Use: inhibited by glucose, induced by carbon starvation.
 TOOLTIP.B_PRGLUC.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRGLUC.CUSTOMVALUE=glucose --\ncarbon --
@@ -271,7 +389,7 @@ TOOLTIP.B_PRLACI.LENGTH=200bp
 TOOLTIP.B_PRLACI.REFERENCE=iGEM (BBa_C0012)
 TOOLTIP.B_PRLACI.EXPLANATION=Natural promoter from the LacZYA operon coupled with 'CAP' and 'LacI' binding sites.
 
-TOOLTIP.B_PRLAMB.TITLE=lambda promoter
+TOOLTIP.B_PRLAMB.TITLE=Lambda Promoter
 TOOLTIP.B_PRLAMB.SUBTITLE=Use: pR promoter from bacteriophage lambda repressible
 TOOLTIP.B_PRLAMB.CUSTOMFIELD=Regulation:
 TOOLTIP.B_PRLAMB.CUSTOMVALUE=cI --
@@ -289,87 +407,95 @@ TOOLTIP.B_PRTETR.EXPLANATION=Promoter coupled with two tetR binding sequences.
 
 
 TOOLTIP.B_RBS1.TITLE=Medium RBS
-TOOLTIP.B_RBS1.SUBTITLE=Use: determines the level of expression of downstream gene.
+TOOLTIP.B_RBS1.SUBTITLE=Use: determines the level of expression of downstream Coding Sequence.
 TOOLTIP.B_RBS1.CUSTOMFIELD=Expression level:
 TOOLTIP.B_RBS1.CUSTOMVALUE=23%
 TOOLTIP.B_RBS1.LENGTH=943bp
 TOOLTIP.B_RBS1.REFERENCE=iGEM (BBa_0030)
 TOOLTIP.B_RBS1.EXPLANATION=Ribosome Binding Site sequence with medium low translation initialization.
 
-TOOLTIP.B_RBS2.TITLE=RBS low
-TOOLTIP.B_RBS2.SUBTITLE=Use: determines the level of expression of downstream gene.
+TOOLTIP.B_RBS2.TITLE=RBS Low
+TOOLTIP.B_RBS2.SUBTITLE=Use: determines the level of expression of downstream Coding Sequence.
 TOOLTIP.B_RBS2.CUSTOMFIELD=Expression level:
 TOOLTIP.B_RBS2.CUSTOMVALUE=12.6%
 TOOLTIP.B_RBS2.LENGTH=14bp
 TOOLTIP.B_RBS2.REFERENCE=iGEM (BBa_0031)
 TOOLTIP.B_RBS2.EXPLANATION=Ribosome Binding Site sequence with weak translation initialization.
 
+TOOLTIP.B_RBS3.TITLE=RBS Very Low
+TOOLTIP.B_RBS3.SUBTITLE=Use: determines the level of expression of downstream Coding Sequence.
+TOOLTIP.B_RBS3.CUSTOMFIELD=Expression level:
+TOOLTIP.B_RBS3.CUSTOMVALUE=6%
+TOOLTIP.B_RBS3.LENGTH=14bp
+TOOLTIP.B_RBS3.REFERENCE=fictive
+TOOLTIP.B_RBS3.EXPLANATION=Ribosome Binding Site sequence with very 3weak translation initialization.
 
-TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Gene
+
+TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Coding Sequence
 TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.
 TOOLTIP.B_AMPR.LENGTH=943bp
 TOOLTIP.B_AMPR.REFERENCE=Knight Lab, MIT
-TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase coding sequence, enzyme that catalyzes the hydrolysis of penicillins.
+TOOLTIP.B_AMPR.EXPLANATION=Beta-lactamase Coding Sequence, enzyme that catalyzes the hydrolysis of penicillins.
 
-TOOLTIP.B_ARAC.TITLE=araC Gene
+TOOLTIP.B_ARAC.TITLE=araC Coding Sequence
 TOOLTIP.B_ARAC.SUBTITLE=-
 TOOLTIP.B_ARAC.LENGTH=-
 TOOLTIP.B_ARAC.REFERENCE=-
 TOOLTIP.B_ARAC.EXPLANATION=-
 
-TOOLTIP.B_ATC.TITLE=aTc Gene
+TOOLTIP.B_ATC.TITLE=ATc Coding Sequence
 TOOLTIP.B_ATC.SUBTITLE=-
 TOOLTIP.B_ATC.LENGTH=-
 TOOLTIP.B_ATC.REFERENCE=-
 TOOLTIP.B_ATC.EXPLANATION=-
 
-TOOLTIP.B_FLUO1.TITLE=GFP Gene
+TOOLTIP.B_FLUO1.TITLE=GFP Coding Sequence
 TOOLTIP.B_FLUO1.SUBTITLE=Use: exhibits bright green fluorescence when exposed to light in the blue to ultraviolet.
 TOOLTIP.B_FLUO1.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO1.CUSTOMVALUE=Excitation max - 485nm\nEmission max - 515nm
 TOOLTIP.B_FLUO1.LENGTH=716bp
 TOOLTIP.B_FLUO1.REFERENCE=Stanford Univ. (GFP mut3 CDS)
-TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO1.EXPLANATION=Green Fluorescent Protein Coding Sequence.
 
-TOOLTIP.B_FLUO2.TITLE=RFP Gene
+TOOLTIP.B_FLUO2.TITLE=RFP Coding Sequence
 TOOLTIP.B_FLUO2.SUBTITLE=Use: exhibits bright red fluorescence when exposed to green light.
 TOOLTIP.B_FLUO2.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO2.CUSTOMVALUE=Excitation max - 587nm\nEmission max - 610nm
 TOOLTIP.B_FLUO2.LENGTH=714bp
 TOOLTIP.B_FLUO2.REFERENCE=iGEM Harvard 2005
-TOOLTIP.B_FLUO2.EXPLANATION=Red Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO2.EXPLANATION=Red Fluorescent Protein Coding Sequence.
 
-TOOLTIP.B_FLUO3.TITLE=Venus YFP Gene
+TOOLTIP.B_FLUO3.TITLE=Venus YFP Coding Sequence
 TOOLTIP.B_FLUO3.SUBTITLE=Use: exhibits bright yellow fluorescence when exposed to green light.
 TOOLTIP.B_FLUO3.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO3.CUSTOMVALUE=Excitation max - 515nm\nEmission max - 528nm
 TOOLTIP.B_FLUO3.LENGTH=720bp
 TOOLTIP.B_FLUO3.REFERENCE=Endy Lab 
-TOOLTIP.B_FLUO3.EXPLANATION=Yellow Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO3.EXPLANATION=Yellow Fluorescent Protein Coding Sequence.
 
-TOOLTIP.B_FLUO4.TITLE=OFP Gene
+TOOLTIP.B_FLUO4.TITLE=OFP Coding Sequence
 TOOLTIP.B_FLUO4.SUBTITLE=Use: exhibits bright orange fluorescence when exposed to green light.
 TOOLTIP.B_FLUO4.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO4.CUSTOMVALUE=Excitation max - 548nm\nEmission max - 562nm
 TOOLTIP.B_FLUO4.LENGTH=769bp
 TOOLTIP.B_FLUO4.REFERENCE=molsci
-TOOLTIP.B_FLUO4.EXPLANATION=Orange Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO4.EXPLANATION=Orange Fluorescent Protein Coding Sequence.
 
-TOOLTIP.B_FLUO5.TITLE=CFP Gene
+TOOLTIP.B_FLUO5.TITLE=CFP Coding Sequence
 TOOLTIP.B_FLUO5.SUBTITLE=Use: exhibits bright cyan fluorescence when exposed to light in the indigo to ultraviolet.
 TOOLTIP.B_FLUO5.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO5.CUSTOMVALUE=Excitation max - 439nm\nEmission max - 476nm
 TOOLTIP.B_FLUO5.LENGTH=723bp
 TOOLTIP.B_FLUO5.REFERENCE=Caitlin Conboy and Jennifer Braff
-TOOLTIP.B_FLUO5.EXPLANATION=Cyan Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO5.EXPLANATION=Cyan Fluorescent Protein Coding Sequence.
 
-TOOLTIP.B_FLUO6.TITLE=BFP Gene
+TOOLTIP.B_FLUO6.TITLE=BFP Coding Sequence
 TOOLTIP.B_FLUO6.SUBTITLE=Use: exhibits bright blue fluorescence when exposed to light in the indigo to ultraviolet.
 TOOLTIP.B_FLUO6.CUSTOMFIELD=Fluorescence\nparameters:
 TOOLTIP.B_FLUO6.CUSTOMVALUE=Excitation max - 380nm\nEmission max - 460nm
 TOOLTIP.B_FLUO6.LENGTH=720bp
 TOOLTIP.B_FLUO6.REFERENCE=iGEM08_Virginia
-TOOLTIP.B_FLUO6.EXPLANATION=Blue Fluorescent Protein coding sequence.
+TOOLTIP.B_FLUO6.EXPLANATION=Blue Fluorescent Protein Coding Sequence.
 
 TOOLTIP.B_IPTG.TITLE=IPTG
 TOOLTIP.B_IPTG.SUBTITLE=-
@@ -422,59 +548,66 @@ TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double ter
 
 
 
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.title=Green fluorescence (low)
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.subtitle=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.length=1101bp
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.reference=Stanford University
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.energyConsumption=XXX
-TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.explanation=Constant level of expression at 12.6% of the 'Green fluorescent protein' gene.
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.TITLE=Green fluorescence (low)
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
 
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.TITLE=Green fluorescence (med)
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' gene.
+TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.TITLE=Hyperflagellation (base)
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.SUBTITLE=Equipped: gives 1 flagellum.
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.LENGTH=1122bp
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.REFERENCE=fictitious
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:MOV:DTER.EXPLANATION=Constant level of expression at 6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.TITLE=Hyperflagellation (low)
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS2:MOV:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+TOOLTIP.D_PRCONS:RBS2:MOV:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.TITLE=Hyperflagellation (med)
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Constant level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Constant level of expression at 23% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.TITLE=Regulated green fluorescence (low)
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'Green fluorescent protein' gene.
+TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
 
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.TITLE=Regulated green fluorescence (med)
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.EXPLANATION=Regulated level of expression at 23% of the 'Green fluorescent protein' gene.
+TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.EXPLANATION=Regulated level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
 
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.TITLE=Regulated hyperflagellation (low)
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRLACI:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+TOOLTIP.D_PRLACI:RBS2:MOV:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
 TOOLTIP.D_PRLACI:RBS1:MOV:DTER.TITLE=Regulated hyperflagellation (med)
 TOOLTIP.D_PRLACI:RBS1:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
 TOOLTIP.D_PRLACI:RBS1:MOV:DTER.LENGTH=1122bp
 TOOLTIP.D_PRLACI:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRLACI:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.EXPLANATION=Regulated level of expression at 23% of the 'FlhDC master operon' coding sequence leading to flagella synthesis.
+TOOLTIP.D_PRLACI:RBS1:MOV:DTER.EXPLANATION=Regulated level of expression at 23% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 

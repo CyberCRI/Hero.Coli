@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 public class ExpressionModule
@@ -187,8 +185,11 @@ public class ExpressionModule
             return false;
         }
         LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBricksToCheck);
+        
+        
+        //PROMOTER
         if (bricks.Count == 0 || bricks.First.Value == null) {
-            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (bricks.Count == 0 || bricks.First.Value == null)", Logger.Level.DEBUG);
+            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: no promoter", Logger.Level.DEBUG);
             return false;
         }
         if (checkPromoter(bricks.First.Value) == false) {
@@ -197,23 +198,27 @@ public class ExpressionModule
         }
         bricks.RemoveFirst();
         
+        //RBS & ORF
+        if (bricks.Count == 0 || bricks.First.Value == null) {
+            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: no RBS/ORF/Terminator", Logger.Level.DEBUG);
+            return false;
+        }
         if (checkOperon(bricks) == false) {
             Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (checkOperon(bricks) == false)", Logger.Level.DEBUG);
             return false;
-        }
-        
+        }        
         bool b1 = (bricks.Count == 0);
-        bool b2 = (bricks.First.Value == null);
-        bool b3 = (checkTerminator(bricks.First.Value) == false);
+        bool b2 = (b1 || (bricks.First.Value == null));
+        bool b3 = (b2 || checkTerminator(bricks.First.Value) == false);
         if (b1 || b2 || b3) {
-            if (b1) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: bricks.Count == 0", Logger.Level.DEBUG);
-            if (b2) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: bricks.First.Value == null", Logger.Level.DEBUG);
-            if (b3) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: !checkTerminator(bricks.First.Value", Logger.Level.DEBUG);
+            if (b1) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: no terminator", Logger.Level.DEBUG);
+            if (b2) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: terminator is null", Logger.Level.DEBUG);
+            if (b3) Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: not a terminator", Logger.Level.DEBUG);
             return false;
         }
         bricks.RemoveFirst();
         if (bricks.Count != 0) {
-            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed (bricks.Count != 0)", Logger.Level.WARN);
+            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: terminator wasn't last brick", Logger.Level.WARN);
             return false;
         }
         return true;

@@ -40,7 +40,7 @@ public class MediumInfoWindow : MonoBehaviour {
     _reactionEngine = ReactionEngine.get ();
     _graphWindow = gameObject.GetComponentInChildren<GraphWindow>();
     if (setMedium(ReactionEngine.getMediumFromId(_mediumId, _reactionEngine.getMediumList())) == false)
-      Debug.Log("Failed to load medium curves");
+      Logger.Log("Failed to load medium curves", Logger.Level.ERROR);
   }
 
   void Update () {

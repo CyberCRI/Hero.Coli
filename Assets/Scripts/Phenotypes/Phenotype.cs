@@ -30,7 +30,7 @@ public abstract class Phenotype : MonoBehaviour
   protected Medium           _mediumRef;
 
 
-  public void initialize() {
+  public virtual void initialize() {
     _reactionEngine = null;
     _mediumRef = null;
     _molecules = null;
@@ -86,7 +86,7 @@ public abstract class Phenotype : MonoBehaviour
   /*!
     \brief Called at each tick of the game.
    */
-  public void Update () {
+  public virtual void Update () {
     if(!ReactionEngine.isPaused())
     {
       UpdatePhenotype();

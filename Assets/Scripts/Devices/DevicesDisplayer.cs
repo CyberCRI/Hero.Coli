@@ -57,6 +57,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
+  public Transform listedDevicesGrid;
 
   public GraphMoleculeList graphMoleculeList;
 
@@ -70,7 +71,17 @@ public class DevicesDisplayer : MonoBehaviour {
   private CraftZoneManager craftZoneManager;
 
 
-
+    public void initialize()
+    {
+        equipedDevice.SetActive(false);
+        equipedDevice2.SetActive(false);
+        inventoryDevice.SetActive(false);
+        
+        for(int index = 0; index < listedDevicesGrid.childCount; index++)
+        {
+          Destroy(listedDevicesGrid.GetChild(index).gameObject);
+        }
+    }
 
 
   /*
@@ -112,7 +123,7 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: adding listed device", Logger.Level.TRACE);
       localPosition = getNewPosition(DeviceType.Listed);
       Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
-      parent = listedInventoryPanel.transform;
+      parent = listedDevicesGrid;
       Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
       DisplayedDevice newListedDevice =
         ListedDevice.Create(
@@ -125,6 +136,7 @@ public class DevicesDisplayer : MonoBehaviour {
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
+      listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;
 
       /*
       if(_listedInventoriedDevices.Count == 1) {
@@ -141,34 +153,38 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Level.TRACE);
 	}
 	
-	public void addEquipedDevice(Device device) {
-		Logger.Log("addEquipedDevice("+device.ToString()+")", Logger.Level.TRACE);
-    if(device == null)
+	public void addEquipedDevice(Device device)
     {
-      Logger.Log ("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+        Logger.Log("addEquipedDevice(" + device.ToString() + ")", Logger.Level.TRACE);
+        if (device == null)
+        {
+            Logger.Log("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+        }
+        bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device));
+        if (newEquiped)
+        {
+            Vector3 localPosition = getNewPosition(DeviceType.Equiped);
+            UnityEngine.Transform parent = equipPanel.transform;
+
+            DisplayedDevice newDevice = DisplayedDevice.Create(
+                                            parent,
+                                            localPosition,
+                                            null,
+                                            device,
+                                            this,
+                                            DevicesDisplayer.DeviceType.Equiped
+                                        );
+                
+            _equipedDevices.Add(newDevice);
+
+            graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
+
+        }
+        else
+        {
+            Logger.Log("addDevice failed: alreadyEquiped=" + newEquiped, Logger.Level.TRACE);
+        }
     }
-		bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device)); 
-		if(newEquiped) { 
-			Vector3 localPosition = getNewPosition(DeviceType.Equiped);
-			UnityEngine.Transform parent = equipPanel.transform;
-
-			DisplayedDevice newDevice = 
-				EquipedDisplayedDevice.Create(
-          parent,
-          localPosition,
-          null,
-          device,
-          this,
-          DevicesDisplayer.DeviceType.Equiped
-        );
-			_equipedDevices.Add(newDevice);
-
-      graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
-
-		} else {
-			Logger.Log("addDevice failed: alreadyEquiped="+newEquiped, Logger.Level.TRACE);
-		}
-	}
 
   public DeviceContainer.AddingResult askAddEquipedDevice(Device device) {
     if(device == null)
@@ -243,25 +259,18 @@ public class DevicesDisplayer : MonoBehaviour {
             float halfIntervals = -columnCount*0.5f;
             float shift = halfIntervals + columnIdx;
             res = inventoryDevice.transform.localPosition + new Vector3(shift*_inventoriedWidth, -(idx%6)*_inventoriedHeight, -0.1f);
-            Debug.LogError("initialIdx="+initialIdx+",idx="+idx+",columnIdx="+columnIdx+",columnCount="+columnCount+",halfIntervals="+halfIntervals+",shift="+shift);
+            Logger.Log("initialIdx="+initialIdx+",idx="+idx+",columnIdx="+columnIdx+",columnCount="+columnCount+",halfIntervals="+halfIntervals+",shift="+shift, Logger.Level.ERROR);
             */
             res = inventoryDevice.transform.localPosition + new Vector3((idx%2-0.5f)*_inventoriedWidth, -(idx/2)*_inventoriedHeight, -0.1f);
     }
     else if(deviceType == DeviceType.Listed)
     {
-      if(idx == -1) idx = _listedInventoriedDevices.Count;
-      res = listedInventoryDevice.transform.localPosition + new Vector3((idx%4)*_listedInventoriedWidth, -(idx/4)*_listedInventoriedHeight, -0.1f);
-
-      Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
-        +", idx="+idx
-        +", localPosition="+listedInventoryDevice.transform.localPosition
-        +", res="+res
-        );
+      res = Vector3.zero;
     }
     else
     {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
-      res = new Vector3();
+      res = Vector3.zero;
     }
     return res;
  }

@@ -341,13 +341,14 @@ public class Medium : LoadableFromXmlImpl
       LinkedListExtensions.Shuffle<IReaction>(_reactions);
 
     foreach (IReaction reaction in _reactions) {
-		
+		/*
   	  if(Logger.isLevel(Logger.Level.TRACE)) {
   	    PromoterReaction promoter = reaction as PromoterReaction;
   	    if (promoter != null) {
 	      Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
 	    }
 	  }
+      */
 	  reaction.react(_molecules);
 	}	
 		
@@ -372,16 +373,20 @@ public class Medium : LoadableFromXmlImpl
         if (_name == "Cellia")
         {
             manageMoleculeConcentrationWithKey("AMPI");
-            manageMoleculeConcentrationWithKey("AMPR");
-            manageMoleculeConcentrationWithKey("ATC");
-            manageMoleculeConcentrationWithKey("FLUO1");
-            manageMoleculeConcentrationWithKey("FLUO2");
-            manageMoleculeConcentrationWithKey("IPTG");
-            manageMoleculeConcentrationWithKey("MOV");
-            manageMoleculeConcentrationWithKey("REPR1");
-            manageMoleculeConcentrationWithKey("REPR2");
-            manageMoleculeConcentrationWithKey("REPR3");
-            manageMoleculeConcentrationWithKey("REPR4");
+            
+            if(GameStateController.isAdminMode) {
+                //TODO manage this differently
+                manageMoleculeConcentrationWithKey("AMPR");
+                manageMoleculeConcentrationWithKey("ATC");
+                manageMoleculeConcentrationWithKey("FLUO1");
+                manageMoleculeConcentrationWithKey("FLUO2");
+                manageMoleculeConcentrationWithKey("IPTG");
+                manageMoleculeConcentrationWithKey("MOV");
+                manageMoleculeConcentrationWithKey("REPR1");
+                manageMoleculeConcentrationWithKey("REPR2");
+                manageMoleculeConcentrationWithKey("REPR3");
+                manageMoleculeConcentrationWithKey("REPR4");
+            }
         }
     }
 

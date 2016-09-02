@@ -29,6 +29,10 @@ public class PushableBox : MonoBehaviour {
       if(_control && _control.currentMoveSpeed >= minSpeed){
         GetComponent<Rigidbody>().constraints = canPush;
       }
+      else if (_control && _control.currentMoveSpeed < minSpeed)
+            {
+                GetComponent<Rigidbody>().constraints = noPush;
+            }
     }
   }
   
@@ -49,8 +53,16 @@ public class PushableBox : MonoBehaviour {
         if(_control && _control.currentMoveSpeed >= minSpeed){
           GetComponent<Rigidbody>().constraints = canPush;
         }
+        else if (_control && _control.currentMoveSpeed < minSpeed)
+                {
+                    GetComponent<Rigidbody>().constraints = noPush;
+                }
       }
     }
+    if (col.collider.tag == "Door")
+        {
+            GetComponent<Rigidbody>().constraints = canPush;
+        }
   }
 	
 	public void resetPos(){

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MainMenuItemArray : MonoBehaviour {
     
@@ -14,4 +13,9 @@ public class MainMenuItemArray : MonoBehaviour {
 	void Update () {
 	
 	}
+    
+    public override string ToString()
+    {
+        return "MainMenuItemArray["+MainMenuItem.ToString(_items)+"]";
+    }
 }

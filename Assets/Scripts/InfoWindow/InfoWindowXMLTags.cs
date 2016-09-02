@@ -9,5 +9,6 @@ public static class InfoWindowXMLTags {
     CANCEL = "cancel",
     WORLD = "world",
     EQUIP = "equip",
-    CRAFT = "craft";
+    CRAFT = "craft",
+    CRAFTTUTO = "crafttuto";
 }
