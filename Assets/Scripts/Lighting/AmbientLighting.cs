@@ -104,6 +104,14 @@ public class AmbientLighting : MonoBehaviour
             _limitGradient = col.transform.GetChild(0).transform.position;
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
         }
+        if (col.tag == "BlackLightInverse")
+        {
+            Debug.Log("1");
+            _blackLight = true;
+            _originGradient = col.transform.position;
+            _limitGradient = col.transform.GetChild(0).transform.position;
+            _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
+        }
     }
 
     void OnTriggerExit(Collider col)
@@ -111,6 +119,16 @@ public class AmbientLighting : MonoBehaviour
         if (col.tag == "BlackLight")
         {
             if (this.transform.position.x <= col.transform.position.x)
+            {
+                _blackLight = false;
+                ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+                _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+                ResetLighting();
+            }
+        }
+        if (col.tag == "BlackLightInverse")
+        {
+            if (this.transform.position.x >= col.transform.position.x)
             {
                 _blackLight = false;
                 ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
@@ -129,6 +147,15 @@ public class AmbientLighting : MonoBehaviour
             ChangeLightIntensity(_directionaleLight, 1 - (distance / distanceMax));
             Color color = _background.GetComponent<Renderer>().material.color;
             color.a = 1 - (distance / distanceMax);
+            _background.GetComponent<Renderer>().material.color = color;
+        }
+        if (col.tag == "BlackLightInverse")
+        {
+            float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
+            float distance = Vector3.Distance(_originGradient, this.transform.position);
+            ChangeLightIntensity(_directionaleLight, distance / distanceMax);
+            Color color = _background.GetComponent<Renderer>().material.color;
+            color.a = distance / distanceMax;
             _background.GetComponent<Renderer>().material.color = color;
         }
     }
