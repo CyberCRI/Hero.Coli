@@ -56,7 +56,7 @@ public class InterfaceLinkManager : LinkManager
     public GameObject craftScreenPanel2;
     
     private GameObject craftScreenPanel;
-    public GameObject craftSlotDummy1, craftSlotDummy2;
+    public Transform craftSlotsGrid;
     
     
   public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
@@ -163,8 +163,7 @@ public class InterfaceLinkManager : LinkManager
         if(isCraftMode1)
         {
             LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) craftZoneManager; 
-            lbczm.craftSlotDummy1 = craftSlotDummy1;
-            lbczm.craftSlotDummy2 = craftSlotDummy2;
+            lbczm.slotsGrid = craftSlotsGrid;
         }
 
 

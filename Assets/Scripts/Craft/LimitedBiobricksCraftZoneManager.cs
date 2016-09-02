@@ -9,8 +9,9 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
     protected int slotCount;
-    public GameObject                         craftSlotDummy1;
-    public GameObject                         craftSlotDummy2;
+    [SerializeField]
+    private GameObject slotPrefab;
+    public Transform slotsGrid;
 
     protected new LinkedList<BioBrick> _currentBioBricks {
         get {
@@ -33,37 +34,41 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         {
             slots.Clear();
             
-            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?4:2;
-
-            GameObject slotGO;
-            CraftDeviceSlot slot;
-            float offset = craftSlotDummy1.transform.localPosition.y
-            - craftSlotDummy2.transform.localPosition.y;
-            Vector3 firstPosition = 
-            (craftSlotDummy1.transform.localPosition +
-            craftSlotDummy2.transform.localPosition) / 2
-            + (slotCount - 1) * offset * Vector3.up / 2;
-
+            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?5:1;
+            // Debug.Log("going to destroy children slots");
+            for(int index = 0; index < slotsGrid.childCount; index++)
+            {
+                Destroy(slotsGrid.GetChild(index).gameObject);
+            }
+            // Debug.Log("going to add children slots");
             for (int index = 0; index < slotCount; index++)
             {
-                slotGO = GameObject.Instantiate(craftSlotDummy1);
-                slotGO.transform.parent = craftSlotDummy1.transform.parent;
-                slotGO.transform.localScale = craftSlotDummy1.transform.localScale;
-                slotGO.transform.localPosition = firstPosition - new Vector3(0, index * offset, 0);
-
-                slot = slotGO.GetComponent<CraftDeviceSlot>();
-
-                slots.Add(slot);
+                addSlot();
             }
-
+            // Debug.Log("done children slots");
             selectSlot(slots[0]);
-            
-            Destroy(craftSlotDummy1);
-            Destroy(craftSlotDummy2);
 
             base.initialize();
 
             _initialized = true;
+        }
+    }
+
+    public void addSlot()
+    {
+        // Debug.Log("adding slot #"+slotsGrid.childCount);
+        GameObject slotGO = GameObject.Instantiate(slotPrefab, Vector3.zero, Quaternion.identity, slotsGrid) as GameObject;
+        slotGO.transform.localPosition = new Vector3(slotGO.transform.localPosition.x, slotGO.transform.localPosition.y, 0);
+        CraftDeviceSlot slot = slotGO.GetComponent<CraftDeviceSlot>();
+        slots.Add(slot);
+        slotsGrid.GetComponent<UIGrid>().repositionNow = true;
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.KeypadPlus))
+        {
+            addSlot();
         }
     }
 

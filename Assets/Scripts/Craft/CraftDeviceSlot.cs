@@ -580,7 +580,8 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         //Debug.Log("CraftDeviceSlot setSelectedBackground("+selected+")");
         _isSelectedSlot = selected;
-        _selectionSprite.spriteName = selected?_slotSelectedSprite:_slotUnselectedSprite;        
+        _selectionSprite.spriteName = selected?_slotSelectedSprite:_slotUnselectedSprite;
+        _selectionSprite.type = UISprite.Type.Sliced;
     }
 
     public void updateDisplay()
