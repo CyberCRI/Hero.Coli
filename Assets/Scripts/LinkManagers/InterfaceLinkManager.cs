@@ -214,12 +214,6 @@ public class InterfaceLinkManager : LinkManager
     
     if(isCraftMode1)
     {
-        availableBioBricksManager.availablePromoter1        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter").gameObject;
-        availableBioBricksManager.availablePromoter2        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter2").gameObject;
-        availableBioBricksManager.availableRBS              = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedRBS").gameObject;
-        availableBioBricksManager.availableCodingSequence   = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedCodingSequence").gameObject;
-        availableBioBricksManager.availableTerminator       = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedTerminator").gameObject;
-
         availableBioBricksManager.promoterBrickCategoryGrid     = GameObject.Find("PromoterBrickCategoryGrid").transform;
         availableBioBricksManager.rbsBrickCategoryGrid          = GameObject.Find("RBSBrickCategoryGrid").transform;
         availableBioBricksManager.geneBrickCategoryGrid         = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;

@@ -76,7 +76,6 @@ public class DevicesDisplayer : MonoBehaviour {
         equipedDevice.SetActive(false);
         equipedDevice2.SetActive(false);
         inventoryDevice.SetActive(false);
-        listedInventoryDevice.SetActive(false);
         
         for(int index = 0; index < listedDevicesGrid.childCount; index++)
         {
@@ -266,19 +265,12 @@ public class DevicesDisplayer : MonoBehaviour {
     }
     else if(deviceType == DeviceType.Listed)
     {
-      if(idx == -1) idx = _listedInventoriedDevices.Count;
-      res = listedInventoryDevice.transform.localPosition + new Vector3((idx%4)*_listedInventoriedWidth, -(idx/4)*_listedInventoriedHeight, -0.1f);
-
-      Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
-        +", idx="+idx
-        +", localPosition="+listedInventoryDevice.transform.localPosition
-        +", res="+res
-        );
+      res = Vector3.zero;
     }
     else
     {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
-      res = new Vector3();
+      res = Vector3.zero;
     }
     return res;
  }
