@@ -153,7 +153,7 @@ public class AmbientLighting : MonoBehaviour
 
     public void ResetLighting()
     {
-            Debug.Log("1");
+            // Debug.Log("1");
             _alphaColor = _backgroundBlood.material.color;
             _alphaColor.a = 0f;
             _backgroundBlood.material.color = _alphaColor;

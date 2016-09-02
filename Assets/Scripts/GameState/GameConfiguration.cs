@@ -132,11 +132,11 @@ public class GameConfiguration {
         set {
             _gameVersionGUID = value;
             PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, _gameVersionGUID);
-            if(Application.isWebPlayer) {
+            if(Application.platform == RuntimePlatform.WebGLPlayer) {
                 RedMetricsManager.get().disconnect ();
             }
             RedMetricsManager.get ().setGameVersion(_gameVersionGUID);
-            if(Application.isWebPlayer) {
+            if(Application.platform == RuntimePlatform.WebGLPlayer) {
                 RedMetricsManager.get().connect ();
             }
             GameStateController.updateAdminStatus();

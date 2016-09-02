@@ -123,7 +123,7 @@ public class StartCutSceneController : CutScene {
         {
             if (test == true)
             {
-                Debug.Log("2");
+                // Debug.Log("2");
             }
             if (_scaleUp == true && objTransform.localScale.x < 2f)
             {

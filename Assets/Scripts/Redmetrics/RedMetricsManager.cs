@@ -105,28 +105,22 @@ public class RedMetricsManager : MonoBehaviour
         logMessage(MessageLevel.DEFAULT, message);
     }
 
-    private static void logMessage (MessageLevel level, string message)
+    private static void logMessage(MessageLevel level, string message)
     {
-        //if the game is played using a web player
-        if (Application.isWebPlayer) {
-            Application.ExternalCall ("DebugFromWebPlayerToBrowser", message);
-
-            //if the game is played inside the editor or as a standalone
-        } else {
-            switch (level) {
-                case MessageLevel.DEFAULT:
-                    //Debug.Log (message);
-                    break;
-                case MessageLevel.WARNING:
-                    Debug.LogWarning (message);
-                    break;
-                case MessageLevel.ERROR:
-                    Debug.LogError (message);
-                    break;
-                default:
-                    Debug.Log (message);
-                    break;
-            }
+        switch (level)
+        {
+            case MessageLevel.DEFAULT:
+                //Debug.Log (message);
+                break;
+            case MessageLevel.WARNING:
+                Debug.LogWarning(message);
+                break;
+            case MessageLevel.ERROR:
+                Debug.LogError(message);
+                break;
+            default:
+                Debug.Log(message);
+                break;
         }
     }
   
@@ -291,8 +285,6 @@ public class RedMetricsManager : MonoBehaviour
     } 
 
     //////////////////////////////////////////////////
-    // filtering is done on Application.isWebPlayer
-    // but could be done on Application.platform for better accuracy
     // Should be called only after localPlayerGUID is set
     public void sendStartEvent ()
     {
@@ -300,8 +292,9 @@ public class RedMetricsManager : MonoBehaviour
         if (!isStartEventSent) {
             
             // all web players
-            // management of game start for webplayer
-            if (Application.isWebPlayer) {
+            // management of game start for webglplayer
+            if (Application.platform == RuntimePlatform.WebGLPlayer) {
+                    Debug.Log("Unity RedMetricsManager: sendStartEvent");
                     connect ();
                     StartCoroutine (waitAndSendStart ());
             
@@ -317,6 +310,7 @@ public class RedMetricsManager : MonoBehaviour
 
     //called by the bowser when connection is established
     public void ConfirmWebplayerConnection() {
+        Debug.Log("Unity RedMetricsManager: ConfirmWebplayerConnection");
         isGameSessionGUIDCreated = true;
         executeAndClearAllWaitingEvents();
     }
@@ -347,7 +341,8 @@ public class RedMetricsManager : MonoBehaviour
     //webplayer
     public void connect ()
     {
-        if (Application.isWebPlayer) {
+        if (Application.platform == RuntimePlatform.WebGLPlayer) {
+            Debug.Log("Unity RedMetricsManager: connect");
             ConnectionData data = new ConnectionData (gameVersionGuid);
             string json = getJsonString (data);
             //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::connect will rmConnect json={0}", json);
@@ -358,7 +353,8 @@ public class RedMetricsManager : MonoBehaviour
     
     public void disconnect ()
     {
-        if (Application.isWebPlayer) {
+        if (Application.platform == RuntimePlatform.WebGLPlayer) {
+            Debug.Log("Unity RedMetricsManager: disconnect");
             Application.ExternalCall ("rmDisconnect");
             resetConnectionVariables();
         }
@@ -429,10 +425,11 @@ public class RedMetricsManager : MonoBehaviour
         }
              
         //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::sendEvent({0})", trackingEvent.ToString());
-        if (Application.isWebPlayer) {
+        if (Application.platform == RuntimePlatform.WebGLPlayer) {
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates, userTime);   
             if(isGameSessionGUIDCreated) {
                 string json = getJsonString (data);
+                Debug.Log("Unity RedMetricsManager: sendEvent("+json+")");
                 Application.ExternalCall ("rmPostEvent", json);
             } else {
                 addEventToSendLater(data);

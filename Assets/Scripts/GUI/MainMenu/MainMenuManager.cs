@@ -41,7 +41,7 @@ public class MainMenuManager : MonoBehaviour
         _instance = this;
         _cutscene = GameObject.FindGameObjectWithTag("FirstCutScene").GetComponent<StartCutSceneController>();
         get();
-        Debug.Log("3");
+        // Debug.Log("3");
     }
 
     void OnDisable()
@@ -53,7 +53,7 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             //_cutscene.SetCutSceneCamera();
-            Debug.Log("2");
+            // Debug.Log("2");
         }
     }
     
@@ -388,6 +388,6 @@ public class MainMenuManager : MonoBehaviour
         //Debug.Log("MainMenuManager::Start");
         selectItem (0);
         
-        Debug.Log("1");
+        // Debug.Log("1");
     }
 }
