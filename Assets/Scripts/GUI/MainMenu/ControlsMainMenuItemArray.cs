@@ -54,9 +54,7 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
         //show control selection sprites
         selectedKeyboardControlSprite.SetActive(true);
 
-        //if(!Application.isWebPlayer) {
         selectedMouseControlSprite.SetActive(true);
-        //}
 
     }
 

@@ -15,9 +15,7 @@ public static class URLOpener {
 			RedMetricsManager.get ().sendEvent (TrackingEvent.GOTOURL, new CustomData (CustomDataTag.NEWTAB, localizedUrl));
 			switch (Application.platform) {
 				case RuntimePlatform.WebGLPlayer:
-				case RuntimePlatform.WindowsWebPlayer:
-				case RuntimePlatform.OSXWebPlayer:
-					Logger.Log ("URLOpener::open Webplayer/WebGL attempting to open " + localizedUrl, Logger.Level.WEBPLAYER);
+					Logger.Log ("URLOpener::open Webplayer/WebGL attempting to open " + localizedUrl, Logger.Level.INFO);
 					Application.ExternalEval ("window.open('" + localizedUrl + "','_blank')");
 					break;
 				case RuntimePlatform.WindowsPlayer: 

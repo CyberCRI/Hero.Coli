@@ -73,6 +73,7 @@ public class InterfaceLinkManager : LinkManager
   public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
   public EndMainMenuButton endMainMenuButton;
 
+  // main menu
   public ControlsMainMenuItemArray controlsArray;
   public AbsoluteWASDButton absoluteWASDButton;
   public LeftClickToMoveButton leftClickToMoveButton;
@@ -82,8 +83,7 @@ public class InterfaceLinkManager : LinkManager
   public UISprite selectedMouseControlTypeSprite;
   public GameObject modalBackground;
   public GameObject genericModalWindow;
-
-    public MainMenuManager mainMenu;
+  public MainMenuManager mainMenu;
 
     public LoggerLabel loggerGUIComponent;
     public WorldEquipButton worldEquipButton;
@@ -173,6 +173,7 @@ public class InterfaceLinkManager : LinkManager
     devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
     devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
     devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
+    devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
     devicesDisplayer.graphMoleculeList = mediumInfoPanelCell.GetComponent<GraphMoleculeList>() as GraphMoleculeList;
             
@@ -213,11 +214,10 @@ public class InterfaceLinkManager : LinkManager
     
     if(isCraftMode1)
     {
-        availableBioBricksManager.availablePromoter1        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter").gameObject;
-        availableBioBricksManager.availablePromoter2        = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedPromoter2").gameObject;
-        availableBioBricksManager.availableRBS              = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedRBS").gameObject;
-        availableBioBricksManager.availableCodingSequence   = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedCodingSequence").gameObject;
-        availableBioBricksManager.availableTerminator       = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedTerminator").gameObject;
+        availableBioBricksManager.promoterBrickCategoryGrid     = GameObject.Find("PromoterBrickCategoryGrid").transform;
+        availableBioBricksManager.rbsBrickCategoryGrid          = GameObject.Find("RBSBrickCategoryGrid").transform;
+        availableBioBricksManager.geneBrickCategoryGrid         = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
+        availableBioBricksManager.terminatorBrickCategoryGrid   = GameObject.Find("TerminatorBrickCategoryGrid").transform;
     }
     else
     {

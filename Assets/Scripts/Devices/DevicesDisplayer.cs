@@ -57,6 +57,7 @@ public class DevicesDisplayer : MonoBehaviour {
   public UIPanel equipPanel;
   public UIPanel inventoryPanel;
   public UIPanel listedInventoryPanel;
+  public Transform listedDevicesGrid;
 
   public GraphMoleculeList graphMoleculeList;
 
@@ -75,7 +76,11 @@ public class DevicesDisplayer : MonoBehaviour {
         equipedDevice.SetActive(false);
         equipedDevice2.SetActive(false);
         inventoryDevice.SetActive(false);
-        listedInventoryDevice.SetActive(false);
+        
+        for(int index = 0; index < listedDevicesGrid.childCount; index++)
+        {
+          Destroy(listedDevicesGrid.GetChild(index).gameObject);
+        }
     }
 
 
@@ -118,7 +123,7 @@ public class DevicesDisplayer : MonoBehaviour {
       Logger.Log("DevicesDisplayer::addInventoriedDevice: adding listed device", Logger.Level.TRACE);
       localPosition = getNewPosition(DeviceType.Listed);
       Logger.Log("DevicesDisplayer::addInventoriedDevice: localPosition="+localPosition, Logger.Level.TRACE);
-      parent = listedInventoryPanel.transform;
+      parent = listedDevicesGrid;
       Logger.Log("DevicesDisplayer::addInventoriedDevice: parent="+parent, Logger.Level.TRACE);
       DisplayedDevice newListedDevice =
         ListedDevice.Create(
@@ -131,6 +136,7 @@ public class DevicesDisplayer : MonoBehaviour {
         );
       Logger.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice="+newListedDevice, Logger.Level.TRACE);
       _listedInventoriedDevices.Add(newListedDevice);
+      listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;
 
       /*
       if(_listedInventoriedDevices.Count == 1) {
@@ -259,19 +265,12 @@ public class DevicesDisplayer : MonoBehaviour {
     }
     else if(deviceType == DeviceType.Listed)
     {
-      if(idx == -1) idx = _listedInventoriedDevices.Count;
-      res = listedInventoryDevice.transform.localPosition + new Vector3((idx%4)*_listedInventoriedWidth, -(idx/4)*_listedInventoriedHeight, -0.1f);
-
-      Logger.Log ("DevicesDisplayer::getNewPosition type=="+deviceType
-        +", idx="+idx
-        +", localPosition="+listedInventoryDevice.transform.localPosition
-        +", res="+res
-        );
+      res = Vector3.zero;
     }
     else
     {
       Logger.Log("DevicesDisplayer::getNewPosition: Error: unmanaged type "+deviceType, Logger.Level.WARN);
-      res = new Vector3();
+      res = Vector3.zero;
     }
     return res;
  }

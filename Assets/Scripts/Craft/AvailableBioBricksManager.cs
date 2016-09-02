@@ -43,12 +43,10 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     //prefab for available biobricks
     public GameObject availableBioBrick;
-    public GameObject availablePromoter1;
-    public GameObject availablePromoter2;
-    public GameObject availableRBS;
-    public GameObject availableCodingSequence;
-    public GameObject availableTerminator;
+    public Transform promoterBrickCategoryGrid, rbsBrickCategoryGrid, geneBrickCategoryGrid, terminatorBrickCategoryGrid;
+
     private List<GameObject> dummies = new List<GameObject>();
+    private List<Transform> dummyGrids = new List<Transform>();
 
     //visual, clickable biobricks currently displayed
     //only used in unlimited bricks mode
@@ -106,7 +104,9 @@ public class AvailableBioBricksManager : MonoBehaviour
     {
         //Debug.LogError("initializeDummies");
         dummies.Clear();
-        dummies.AddRange(new List<GameObject>{availableBioBrick, availablePromoter1, availablePromoter2, availableRBS, availableCodingSequence, availableTerminator});
+        dummies.AddRange(new List<GameObject>{
+            availableBioBrick
+            });
         
         foreach(GameObject dummy in dummies)
         {
@@ -114,6 +114,26 @@ public class AvailableBioBricksManager : MonoBehaviour
             {
                 //Debug.LogError("initializeDummies dummy="+dummy.name);
                 dummy.SetActive(false);
+            }
+        }
+
+        dummyGrids.Clear();
+        dummyGrids.AddRange(new List<Transform>{
+            promoterBrickCategoryGrid,
+            rbsBrickCategoryGrid,
+            geneBrickCategoryGrid,
+            terminatorBrickCategoryGrid
+            });
+        
+        foreach(Transform grid in dummyGrids)
+        {
+            if(null != grid)
+            {
+                // Debug.Log("initializeDummies grid="+grid.name);
+                for(int index = 0; index < grid.childCount; index++)
+                {
+                    Destroy(grid.GetChild(index).gameObject);
+                }
             }
         }
     }
@@ -154,18 +174,23 @@ public class AvailableBioBricksManager : MonoBehaviour
         _displayableAvailablePromoters = getDisplayableAvailableBioBricks(
           availablePromoters
           , getDisplayableAvailableBioBrick
+          , promoterBrickCategoryGrid
           );
+
         _displayableAvailableRBS = getDisplayableAvailableBioBricks(
           availableRBS
           , getDisplayableAvailableBioBrick
+          , rbsBrickCategoryGrid
           );
         _displayableAvailableGenes = getDisplayableAvailableBioBricks(
           availableGenes
           , getDisplayableAvailableBioBrick
+          , geneBrickCategoryGrid
           );
         _displayableAvailableTerminators = getDisplayableAvailableBioBricks(
           availableTerminators
           , getDisplayableAvailableBioBrick
+          , terminatorBrickCategoryGrid
           );
 
         Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
@@ -180,14 +205,7 @@ public class AvailableBioBricksManager : MonoBehaviour
           + ",\n\n_displayableAvailableTerminators=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
           , Logger.Level.TRACE);
 
-        if(isNewCraftMode())
-        {
-            displayAll();
-        }
-        else
-        {
-            displayPromoters();
-        }
+        displayAll();
 
     }
 
@@ -243,92 +261,31 @@ public class AvailableBioBricksManager : MonoBehaviour
         Logger.Log("AvailableBioBricksManager::OnEnable", Logger.Level.DEBUG);
         updateDisplayedBioBricks();
     }
-    
-    // non-optimized
-    private bool isNewCraftMode()
-    {
-        return GameConfiguration.CraftInterface.LIMITEDDEVICES == MemoryManager.get().configuration.craftInterface; 
-    }
 
-    public Vector3 getNewPosition(int index, BioBrick.Type bbType = BioBrick.Type.UNKNOWN)
-    {
-        if (
-            isNewCraftMode()
-            && (null == availableBioBrick)
-            && (null != availablePromoter1)
-            && (bbType != BioBrick.Type.UNKNOWN)
-            )
-        {
-            GameObject dummy = availablePromoter1;
-            switch (bbType)
-            {
-                case BioBrick.Type.PROMOTER:
-                    break;
-                case BioBrick.Type.RBS:
-                    dummy = availableRBS;
-                    break;
-                case BioBrick.Type.GENE:
-                    dummy = availableCodingSequence;
-                    break;
-                case BioBrick.Type.TERMINATOR:
-                    dummy = availableTerminator;
-                    break;
-            }
-
-            return dummy.transform.localPosition + new Vector3(
-          0,
-          -index * _width,
-          -0.1f);
-        }
-        else if (
-            !isNewCraftMode()
-            && (null != availableBioBrick)
-            && (null == availablePromoter1)
-            )
-        {
-            return availableBioBrick.transform.localPosition + new Vector3(
-           (index % _bricksPerRow) * _width,
-           -(index / _bricksPerRow) * _width,
-           -0.1f);
-        }
-        else
-        {
-            //Debug.LogError("no dummy for BioBrick position");
-            return Vector3.zero;
-        }
-    }
-
-    private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator(BioBrick brick, int index);
+    private delegate AvailableDisplayedBioBrick DisplayableAvailableBioBrickCreator(BioBrick brick, int index, Transform parentTransform);
 
     private LinkedList<AvailableDisplayedBioBrick> getDisplayableAvailableBioBricks(
       LinkedList<BioBrick> bioBricks
       , DisplayableAvailableBioBrickCreator creator
+      , Transform parentTransform
     )
     {
         LinkedList<AvailableDisplayedBioBrick> result = new LinkedList<AvailableDisplayedBioBrick>();
         foreach (BioBrick brick in bioBricks)
         {
-            AvailableDisplayedBioBrick availableBrick = creator(brick, result.Count);
+            AvailableDisplayedBioBrick availableBrick = creator(brick, result.Count, parentTransform);
             availableBrick.display(false);
             result.AddLast(availableBrick);
         }
         return result;
     }
 
-    private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick(BioBrick brick, int index)
+    private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick(BioBrick brick, int index, Transform parentTransform)
     {
 
-        Transform parentTransformParam = bioBricksPanel.transform;
+        Transform parentTransformParam = (null==parentTransform)?bioBricksPanel.transform:parentTransform;
         Vector3 localPositionParam = Vector3.zero;
-        if(isNewCraftMode())
-        {
-            localPositionParam = getNewPosition(index, brick.getType());
-        }
-        else
-        {
-            localPositionParam = getNewPosition(index);
-        }
-        
+                
         string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
         BioBrick biobrickParam = brick;
 
@@ -357,6 +314,19 @@ public class AvailableBioBricksManager : MonoBehaviour
         display(_displayableAvailableRBS, true);
         display(_displayableAvailableGenes, true);
         display(_displayableAvailableTerminators, true);
+
+        if(
+            (null != promoterBrickCategoryGrid)
+            && (null != rbsBrickCategoryGrid)
+            && (null != geneBrickCategoryGrid)
+            && (null != terminatorBrickCategoryGrid)
+        )
+        {
+            promoterBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            rbsBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            geneBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+            terminatorBrickCategoryGrid.GetComponent<UIGrid>().repositionNow = true;
+        }
     }
     public void displayPromoters()
     {
