@@ -69,7 +69,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startCollapseBricks()
     {
-        Debug.Log("startCollapseBricks");
+        // Debug.Log("startCollapseBricks");
         
         StopAllCoroutines();
         
@@ -83,7 +83,7 @@ public class BioBricksCollapse : MonoBehaviour {
         }        
         else
         {
-            Debug.Log("startCollapseBricks !gameObject.activeInHierarchy");
+            // Debug.Log("startCollapseBricks !gameObject.activeInHierarchy");
             setPosition(false);
         }
         onBricksStoppedMoving();
@@ -138,7 +138,7 @@ public class BioBricksCollapse : MonoBehaviour {
     
     private void moveBricks()
     {
-        Debug.Log("moveBricks");
+        // Debug.Log("moveBricks");
         CraftZoneDisplayedBioBrick[] slotList = _craftDeviceSlot.getCraftZoneDisplayedBioBricks();
         for (int i = 0; i < slotList.Length; i++)
         {
