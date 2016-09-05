@@ -106,7 +106,6 @@ public class AmbientLighting : MonoBehaviour
         }
         if (col.tag == "BlackLightInverse")
         {
-            Debug.Log("1");
             _blackLight = true;
             _originGradient = col.transform.position;
             _limitGradient = col.transform.GetChild(0).transform.position;

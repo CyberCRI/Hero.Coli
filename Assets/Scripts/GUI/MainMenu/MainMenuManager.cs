@@ -39,7 +39,6 @@ public class MainMenuManager : MonoBehaviour
     {
         Logger.Log("MainMenuManager::Awake", Logger.Level.DEBUG);
         _instance = this;
-        _cutscene = GameObject.FindGameObjectWithTag("FirstCutScene").GetComponent<StartCutSceneController>();
         get();
     }
     
