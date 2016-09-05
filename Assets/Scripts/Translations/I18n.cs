@@ -19,6 +19,10 @@ public class I18n {
         foreach(UILocalize localize in GameObject.FindObjectsOfType<UILocalize>()) {
             localize.Localize();
         }
+        
+        foreach(TextMeshLocalizer localizer in GameObject.FindObjectsOfType<TextMeshLocalizer>()) {
+            localizer.localize();
+        }
     }
 
     public static Language getCurrentLanguage()

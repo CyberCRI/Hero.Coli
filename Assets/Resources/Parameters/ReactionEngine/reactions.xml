@@ -167,4 +167,32 @@
       </operon>
     </promoter>
   </reactions>
+  <reactions id="11_AMPR_Reactions">
+    <promoter>
+      <name>AMPRPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>AMPR</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
+  <reactions id="12_MOV_Reactions">
+    <promoter>
+      <name>MOVPROD</name>
+      <productionMax>75</productionMax>
+      <terminatorFactor>1</terminatorFactor>
+      <formula>T</formula>
+      <operon>
+        <gene>
+          <name>MOV</name>
+          <RBSFactor>1</RBSFactor>
+        </gene>
+      </operon>
+    </promoter>
+  </reactions>
 </Document>

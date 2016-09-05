@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 {
 
+    private const int sandboxSlotCount = 10;
+    private const int tutorialSlotCount = 2;
+
     private bool _initialized = false;
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
@@ -34,7 +37,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         {
             slots.Clear();
             
-            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?5:1;
+            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?sandboxSlotCount:tutorialSlotCount;
             // Debug.Log("going to destroy children slots");
             for(int index = 0; index < slotsGrid.childCount; index++)
             {
