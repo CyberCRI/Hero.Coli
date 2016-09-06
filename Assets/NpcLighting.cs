@@ -9,6 +9,8 @@ public class NpcLighting : MonoBehaviour {
     private Light _spotLight;
     [SerializeField]
     private Color _color;
+    [SerializeField]
+    private TriggeredDoor _triggeredDoor;
 
     // Use this for initialization
     void Start () {
@@ -55,6 +57,7 @@ public class NpcLighting : MonoBehaviour {
             ChangeLightProperty(_phenoLight, _color, 250, 8);
             EnableLight(_spotLight, true);
             EnableLight(_phenoLight, true);
+            _triggeredDoor.triggerStay();
         }
     }
 

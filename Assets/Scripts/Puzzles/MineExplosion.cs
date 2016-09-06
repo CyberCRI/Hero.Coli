@@ -89,7 +89,7 @@ public class MineExplosion : MonoBehaviour {
 
 
                 transform.parent.GetComponent<Mine>().detonate(false);
-
+                collision.gameObject.GetComponent<iTweenEvent>().enabled = false;
                 collision.gameObject.GetComponent<DeathDummy>().startDeath();
             }
         }
