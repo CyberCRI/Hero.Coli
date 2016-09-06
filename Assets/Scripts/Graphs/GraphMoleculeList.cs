@@ -30,27 +30,40 @@ public class GraphMoleculeList : MonoBehaviour {
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
+  // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
+  [SerializeField]
+  private Transform _eddwmGrid;
+
   public void setMediumId(int newMediumId)
   {
     mediumId = newMediumId;
   }
 
-  void safeInitialization()
-  {
-    if(null == equipedWithMoleculesDeviceDummy)
+    void safeInitialization()
     {
-      EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
-      equipedWithMoleculesDeviceDummy = script.gameObject;
+        if (null == equipedWithMoleculesDeviceDummy)
+        {
+            EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
+            equipedWithMoleculesDeviceDummy = script.gameObject;
+        }
+        if (null == equipedWithMoleculesDeviceDummy)
+        {
+            equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
+        }
+        if (null == equipedWithMoleculesDeviceDummy)
+        {
+            equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
+        }
+
+        if (null != _eddwmGrid)
+        {
+            Debug.Log("destroying all of eddwm's children");
+            for (int index = 0; index < _eddwmGrid.childCount; index++)
+            {
+                Destroy(_eddwmGrid.GetChild(index).gameObject);
+            }
+        }
     }
-    if(null == equipedWithMoleculesDeviceDummy)
-    {
-      equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
-    }
-    if(null == equipedWithMoleculesDeviceDummy)
-    {
-      equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
-    }
-  }
 
   void Awake()
   {
@@ -127,9 +140,14 @@ public class GraphMoleculeList : MonoBehaviour {
                 GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
                 //equipedDisplayedDeviceWithMoleculesGameObject is "EquipedDisplayedDeviceWithMoleculesPrefab" object
                 //it needs an DisplayedDevice instance - it has only an DisplayedDeviceDummy object
-                GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-                equipedDisplayedDeviceWithMoleculesGameObject.transform.parent = this.transform;
-                equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = new Vector3(1f, 1f, 0);
+                GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, Vector3.zero, Quaternion.identity, _eddwmGrid) as GameObject;
+                //equipedDisplayedDeviceWithMoleculesGameObject.transform.parent = this.transform;
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = Vector3.one; //new Vector3(1f, 1f, 0);
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition =
+                new Vector3(equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.x,
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.y,
+                0f);  
+                _eddwmGrid.GetComponent<UIGrid>().repositionNow = true;
 
                 EquipedDisplayedDeviceWithMolecules eddwm = equipedDisplayedDeviceWithMoleculesGameObject.GetComponent<EquipedDisplayedDeviceWithMolecules>();
                 eddwm.initialize(displayedDeviceScript);
@@ -149,6 +167,8 @@ public class GraphMoleculeList : MonoBehaviour {
                 //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
                 //equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition = localPosition;
                 positionDeviceAndMoleculeComponents();
+
+                _eddwmGrid.GetComponent<UIGrid>().repositionNow = true;
             }
             else
             {
@@ -242,18 +262,24 @@ public class GraphMoleculeList : MonoBehaviour {
   //unused but works
   void shiftDeviceAndMoleculeComponents(int removedIndex)
   {
+    _eddwmGrid.GetComponent<UIGrid>().repositionNow = true;
+    /*
     for(int idx = removedIndex+1; idx < _equipedDevices.Count; idx++) {        
         Vector3 newLocalPosition = getNewPosition(idx-1);
         _equipedDevices[idx].setLocalPosition(newLocalPosition);
     }
+    */
   }
 
   void positionDeviceAndMoleculeComponents(int startIndex = 0)
   {
+    Debug.LogWarning("ignored positionDeviceAndMoleculeComponents");
+    /*
     for(int idx = startIndex; idx < _equipedDevices.Count; idx++) {
       Vector3 newLocalPosition = getNewPosition(idx);
       _equipedDevices[idx].setLocalPosition(newLocalPosition);
     }
+    */
   }
 
 	// Update is called once per frame

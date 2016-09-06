@@ -7,12 +7,10 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     private GameObject _displayedDeviceDummy;
     private GameObject _displayedDevice;
     private DisplayedDevice _displayedDeviceScript;
-    private List<GameObject> graphicalComponents = new List<GameObject>();
 
     public Device device;
     public UILabel namesLabel;
     public UILabel valuesLabel;
-    public GameObject background, deviceIcon, level, moleculeName;
 
     private DisplayedMolecule _displayedMolecule;
 
@@ -20,72 +18,23 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     {
         if (null != _displayedDeviceDummy)
         {
-            _displayedDeviceDummy.SetActive(false);
-            
-            _displayedDevice        = displayedDeviceScript.gameObject;
-            _displayedDeviceScript  = displayedDeviceScript;
-            device                  = displayedDeviceScript._device;
-            
-            setDisplayedDevice();
-            
-            background      = displayedDeviceScript.deviceBackgroundSprite.gameObject;
-            deviceIcon      = displayedDeviceScript._sprite.gameObject;
-            level           = displayedDeviceScript.levelSprite.gameObject;
-            moleculeName    = displayedDeviceScript.moleculeOverlay.gameObject;
-            
-            graphicalComponents = new List<GameObject>{namesLabel.gameObject, valuesLabel.gameObject, background, deviceIcon, level, moleculeName};
-            
-            doOnGameObjects(setParent);
-            
-            moleculeName.transform.position = new Vector3(moleculeName.transform.position.x, moleculeName.transform.position.y, -0.3f); 
+
+            _displayedDeviceDummy.SetActive(true);
+
+
+            _displayedDevice = _displayedDeviceDummy;
+
+            _displayedDeviceScript = _displayedDeviceDummy.GetComponent<DisplayedDevice>();
+
+            _displayedDeviceScript.Initialize(displayedDeviceScript._device, null, displayedDeviceScript._deviceType);
+
+            device = displayedDeviceScript._device;
+
         }
         else
         {
             Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
         }
-    }
-
-    private delegate void GOEditor(GameObject go);
-    private void doOnGameObjects(GOEditor edit)
-    {
-        foreach (GameObject go in graphicalComponents)
-        {
-            if (null != go)
-            {
-                edit(go);
-            }
-        }
-    }
-    private void setParent(GameObject go)
-    {
-        go.transform.parent = this.transform.parent;
-    }
-
-    private void moveGameObject(Vector3 delta, GameObject go)
-    {
-        go.transform.localPosition = go.transform.localPosition + delta;
-    }
-
-    private GOEditor moveGameObject(Vector3 delta)
-    {
-        return (GameObject go) => moveGameObject(delta, go);
-    }
-
-    public void setLocalPosition(Vector3 newLocalPosition)
-    {
-        //TODO clean
-        Vector3 delta = newLocalPosition - this.transform.localPosition;
-
-        this.transform.localPosition = newLocalPosition;
-        doOnGameObjects(moveGameObject(delta));
-    }
-
-    public void setDisplayedDevice()
-    {
-        _displayedDevice.transform.parent = this.transform;
-        _displayedDevice.transform.localPosition = _displayedDeviceDummy.transform.localPosition;
-        _displayedDevice.transform.localScale = new Vector3(1f, 1f, 0);
-        _displayedDevice.transform.localRotation = _displayedDeviceDummy.transform.localRotation;
     }
 
   //TODO allow multiple protein management
@@ -116,11 +65,6 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     //background.SetActive(false);
   }
   
-  void OnDestroy()
-  {
-      doOnGameObjects(Destroy);
-  }
-  
   void OnPress(bool isPressed) {
     if(isPressed) {
       Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos(), Logger.Level.INFO);
@@ -135,8 +79,6 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
   // Use this for initialization
   void Start () {
     Logger.Log("EquipedDisplayedDeviceWithMolecules::Start", Logger.Level.INFO);
-    
-    graphicalComponents = new List<GameObject>{namesLabel.gameObject, valuesLabel.gameObject, background, deviceIcon, level, moleculeName};
     
     namesLabel.text = "";
     valuesLabel.text = "";
