@@ -49,7 +49,6 @@ public class MineManager : MonoBehaviour {
     {
         detonatedMines++;
         resetSelectedMine(mine, reseting);
-        Debug.Log(reseting + "3");
     }
 
 	//public void resetSelectedMine(float id, GameObject target)
@@ -61,7 +60,6 @@ public class MineManager : MonoBehaviour {
 	
 		iTween.Stop(target, true);
 		Destroy(target);
-        Debug.Log(reseting + "4");
         if (reseting == true)
         {
             GameObject go = (GameObject)Instantiate(_instance.mine, new Vector3(x, 0, z), Quaternion.identity);

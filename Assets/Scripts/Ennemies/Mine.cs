@@ -34,9 +34,7 @@ public class Mine : MonoBehaviour {
 
 	public void detonate(bool reseting) {
         _isReseting = reseting;
-        Debug.LogError(mineName + " detonates");
         MineManager.detonate(this, reseting);
-        Debug.Log("2" + reseting);
         _detonated = true;
 	}
 
@@ -141,9 +139,8 @@ public class Mine : MonoBehaviour {
 	{
 		if(_isReseting && _detonated)
 		{
-            Debug.Log(_isReseting);
-      Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
-      MineManager.resetSelectedMine(this,_isReseting);
+            Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
+            MineManager.resetSelectedMine(this,_isReseting);
 		}
 	}
 

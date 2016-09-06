@@ -74,7 +74,6 @@ public class MineExplosion : MonoBehaviour {
 
 
                 transform.parent.GetComponent<Mine>().detonate(true);
-                Debug.Log("1");
 
                 collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
             }
