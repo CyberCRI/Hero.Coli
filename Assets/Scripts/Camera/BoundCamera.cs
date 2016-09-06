@@ -58,9 +58,11 @@ public class BoundCamera : MonoBehaviour {
 		transform.position = target.position + offset;
 		
 		if(_transition){
+			/*
 			if(!_zoomed) {
 				fov = Mathf.Clamp(fov - Input.GetAxis("Mouse ScrollWheel") * scrollSpeed, cameraDistanceMin, cameraDistanceMax);
 			}
+			*/
 			GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, fov, deltaTime * zoomSmooth);
 		}
     }

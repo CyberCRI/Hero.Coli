@@ -111,9 +111,7 @@ public class InterfaceLinkManager : LinkManager
 			.GetComponent<VectrosityPanel>();
 	guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
 			.GetComponent<VectrosityPanel>();
-	//guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-    guiTransitioner.animator = worldEquipButton.GetComponent<InventoryAnimator>();
-    
+	
 	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
     
     if(isCraftMode1)
@@ -201,11 +199,6 @@ public class InterfaceLinkManager : LinkManager
     modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
     modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
 
-
-    //DeviceInventory
-    Inventory.get().animator = worldEquipButton.GetComponent<InventoryAnimator>();
-    Inventory.get ().animator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
-    
     //BiobrickInventory
     
     //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");

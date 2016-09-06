@@ -21,7 +21,6 @@ public class GUITransitioner : MonoBehaviour {
   ////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private ReactionEngine _reactionEngine;
-  public InventoryAnimator animator;
 	
 	private float _timeDelta = 0.2f;
 	
@@ -56,8 +55,6 @@ public class GUITransitioner : MonoBehaviour {
 
   public Hero hero;
   public CellControl control;
-
-	public ArrowAnimationManager arrowManager;		//Manager for the arrow Animation
 	
 	// Use this for initialization
 	void Start () {
@@ -74,8 +71,6 @@ public class GUITransitioner : MonoBehaviour {
 		_currentScreen = GameScreen.screen1;
 		
 		_timeAtLastFrame = Time.realtimeSinceStartup;
-
-		arrowManager = new ArrowAnimationManager();
 	}
 	
 	
@@ -172,10 +167,6 @@ public class GUITransitioner : MonoBehaviour {
 
 
     } else if (destination == GameScreen.screen2) {
-			if(animator.isPlaying == true)
-			{
-				animator.reset();
-			}
       if(_currentScreen == GameScreen.screen1) {
          Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
          //1 -> 2
@@ -261,8 +252,6 @@ public class GUITransitioner : MonoBehaviour {
 			}
       _timeAtLastFrame = _timeAtCurrentFrame;
 		}
-
-		arrowManager.launchAnimation ();
 	}
 	
 	void LateUpdate () {
