@@ -130,9 +130,12 @@ public class DeathDummy : MonoBehaviour {
         {
             _ampCutScene.resetCameraTarget();
         }
+        else
+            Destroy(this.gameObject);
         //Destroy(this.gameObject.transform.parent.gameObject);
 
         yield return new WaitForSeconds((maxWaitSequences - elapsed) * _respawnTimeS / maxWaitSequences);
+        
     }
 
     private void enableEyes(bool enable)

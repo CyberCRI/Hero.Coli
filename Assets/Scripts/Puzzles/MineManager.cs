@@ -45,13 +45,15 @@ public class MineManager : MonoBehaviour {
       return hero;
   }
 
-    public static void detonate(Mine mine)
+    public static void detonate(Mine mine , bool reseting)
     {
         detonatedMines++;
+        resetSelectedMine(mine, reseting);
+        Debug.Log(reseting + "3");
     }
 
 	//public void resetSelectedMine(float id, GameObject target)
-  public static void resetSelectedMine(Mine mine)
+  public static void resetSelectedMine(Mine mine, bool reseting)
 	{
     GameObject target = mine.gameObject;
 		float x = target.transform.position.x; 
@@ -59,10 +61,13 @@ public class MineManager : MonoBehaviour {
 	
 		iTween.Stop(target, true);
 		Destroy(target);
-
-		GameObject go = (GameObject)Instantiate(_instance.mine, new Vector3(x,0,z),Quaternion.identity);
-    Mine newMine = (Mine)go.GetComponent<Mine>();
-    newMine.mineName = mine.mineName;
+        Debug.Log(reseting + "4");
+        if (reseting == true)
+        {
+            GameObject go = (GameObject)Instantiate(_instance.mine, new Vector3(x, 0, z), Quaternion.identity);
+            Mine newMine = (Mine)go.GetComponent<Mine>();
+            newMine.mineName = mine.mineName;
+        }
 
 		detonatedMines--;
 

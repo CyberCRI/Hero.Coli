@@ -73,9 +73,25 @@ public class MineExplosion : MonoBehaviour {
                 FractureAtPoint(point,vec);
 
 
-                transform.parent.GetComponent<Mine>().detonate();
+                transform.parent.GetComponent<Mine>().detonate(true);
+                Debug.Log("1");
 
                 collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
+            }
+        }
+        else if (collision.gameObject.tag == "NPC")
+        {
+            if (transform.parent && transform.parent.GetComponent<Mine>() != null)
+            {
+                Vector3 point = collision.contacts[0].point;
+                Vector3 vec = collision.relativeVelocity * UsedMass(collision);
+
+                FractureAtPoint(point, vec);
+
+
+                transform.parent.GetComponent<Mine>().detonate(false);
+
+                collision.gameObject.GetComponent<DeathDummy>().startDeath();
             }
         }
     }
