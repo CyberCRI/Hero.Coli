@@ -9,7 +9,7 @@ public class BigBadGuy : MonoBehaviour
     public Hero hero;
     private float step;
     //TODO extract to config file
-    private float _dpt = 0.5f;
+    private float _dpt = 2f;
     public iTweenPath _iTP;
   
     void Awake ()

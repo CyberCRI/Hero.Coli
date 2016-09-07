@@ -79,7 +79,7 @@ public abstract class CutScene : MonoBehaviour {
         StartCoroutine(waitForBlackBar(false));
         _cullingMaskHandler.hideInterface(false);
         _cutSceneCamera.enabled = false;
-        endCutScene();
+        //endCutScene();
         //this.enabled = false;
     }
 
