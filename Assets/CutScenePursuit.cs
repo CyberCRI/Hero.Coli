@@ -43,6 +43,7 @@ public class CutScenePursuit : CutScene {
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
+        Destroy(this.transform.parent.gameObject);
     }
 
     public override void initialize()

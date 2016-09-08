@@ -33,6 +33,7 @@ public class TutorialMineCutSceneTrigger : CutScene {
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
+        Destroy(this.transform.parent.gameObject);
     }
 
     // Use this for initialization
