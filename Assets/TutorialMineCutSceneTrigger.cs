@@ -7,6 +7,7 @@ public class TutorialMineCutSceneTrigger : CutScene {
     [SerializeField]
     private GameObject[] _dummies;
     private int iteration = 0;
+    private bool _once = true;
 
     override public void initialize()
     {
@@ -33,7 +34,7 @@ public class TutorialMineCutSceneTrigger : CutScene {
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
-        Destroy(this.transform.parent.gameObject);
+        this.enabled = false;
     }
 
     // Use this for initialization
@@ -48,8 +49,9 @@ public class TutorialMineCutSceneTrigger : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Door")
+        if (col.tag == "Door" && _once == true)
         {
+            _once = false;
             start();
         }
     }
