@@ -122,5 +122,6 @@ public class BadGuyCutSceneTrigger : CutScene {
         _boundCamera.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
         ModalManager.setModal("T1_AMPICILLIN");
+        _cellControl.freezePlayer(false);
     }
 }

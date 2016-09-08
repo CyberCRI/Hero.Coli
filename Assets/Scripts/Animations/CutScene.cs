@@ -74,11 +74,11 @@ public abstract class CutScene : MonoBehaviour {
     // must be called when ending a cut scene
     public void end () {
 		FocusMaskManager.get().blockClicks(false);
-        _cellControl.freezePlayer(false);
         _blackBar.closeBar(false);
         StartCoroutine(waitForBlackBar(false));
         _cullingMaskHandler.hideInterface(false);
         _cutSceneCamera.enabled = false;
+        _cellControl.freezePlayer(false);
         //endCutScene();
         //this.enabled = false;
     }

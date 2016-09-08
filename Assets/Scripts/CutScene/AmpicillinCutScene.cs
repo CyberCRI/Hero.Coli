@@ -62,6 +62,7 @@ public class AmpicillinCutScene : CutScene {
 
     public override void endCutScene() {
         Destroy(this.transform.parent.gameObject);
+        _cellControl.freezePlayer(false);
     }
 
     IEnumerator waitForSecondBacteria()

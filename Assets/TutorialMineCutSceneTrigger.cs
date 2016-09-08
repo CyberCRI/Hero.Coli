@@ -32,7 +32,7 @@ public class TutorialMineCutSceneTrigger : CutScene {
 
     public override void endCutScene()
     {
-        
+        _cellControl.freezePlayer(false);
     }
 
     // Use this for initialization
