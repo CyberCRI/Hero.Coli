@@ -110,12 +110,44 @@ public class GUITransitioner : MonoBehaviour {
 		mainBoundCamera.SetZoom(false);
 	}
 
-    public void showGraphs(bool show)
+
+    public enum GRAPH_HIDER
     {
+      MAINMENU = 0,
+      CUTSCENE = 1,
+      ENDGAME = 2
+    } 
+    private bool[] _hideGraph = new bool[System.Enum.GetValues( typeof( GRAPH_HIDER ) ).Length];
+    
+    public void showGraphs(bool show, GRAPH_HIDER hider)
+    {
+
+      _hideGraph[(int)hider] = !show;
+
+      bool inactive = false; 
+      foreach(bool hide in _hideGraph)
+      {
+          inactive |= hide;
+      }
+      
+        Debug.Log("showGraphs("+show+") inactive="+inactive);
+
         if (null != roomGraph)
-            roomGraph.gameObject.SetActive(show);
+        {
+            Debug.Log("BEFORE roomGraph.gameObject.activeSelf="+roomGraph.gameObject.activeSelf
+            +", roomGraph.gameObject.activeInHierarchy="+roomGraph.gameObject.activeInHierarchy);
+            roomGraph.gameObject.SetActive(!inactive);
+            Debug.Log("AFTER roomGraph.gameObject.activeSelf="+roomGraph.gameObject.activeSelf
+            +", roomGraph.gameObject.activeInHierarchy="+roomGraph.gameObject.activeInHierarchy);
+        }
         if (null != celliaGraph)
-            celliaGraph.gameObject.SetActive(show);
+        {
+            Debug.Log("BEFORE celliaGraph.gameObject.activeSelf="+celliaGraph.gameObject.activeSelf
+            +", celliaGraph.gameObject.activeInHierarchy="+celliaGraph.gameObject.activeInHierarchy);
+            celliaGraph.gameObject.SetActive(!inactive);
+            Debug.Log("AFTER celliaGraph.gameObject.activeSelf="+celliaGraph.gameObject.activeSelf
+            +", celliaGraph.gameObject.activeInHierarchy="+celliaGraph.gameObject.activeInHierarchy);
+        }
     }
 
     public void Pause (bool pause)

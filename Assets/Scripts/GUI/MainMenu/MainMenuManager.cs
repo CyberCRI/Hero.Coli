@@ -8,7 +8,6 @@ public class MainMenuManager : MonoBehaviour
     public static string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
     [SerializeField]
-    private StartCutSceneController _cutscene;
     private bool _first = true;
 
     public static MainMenuManager get ()
@@ -39,7 +38,6 @@ public class MainMenuManager : MonoBehaviour
     {
         Logger.Log("MainMenuManager::Awake", Logger.Level.DEBUG);
         _instance = this;
-        _cutscene = GameObject.FindGameObjectWithTag("FirstCutScene").GetComponent<StartCutSceneController>();
         get();
     }
     
@@ -359,12 +357,17 @@ public class MainMenuManager : MonoBehaviour
 
     public void open() {
         //Debug.Log("MainMenuManager::open");
-        this.gameObject.SetActive(true);
+        GUITransitioner.get().showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
+        if(null != this)
+        {
+            gameObject.SetActive(true);
+        }
         switchTo (MainMenuScreen.DEFAULT);
     }
 
     public void close() {
         //Debug.Log("MainMenuManager::close");
+        GUITransitioner.get().showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
     }
 
