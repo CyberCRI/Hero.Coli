@@ -28,7 +28,6 @@ public class Line
     protected float _ratioW, _ratioH;
     //private float _lastVal = 0f;
     protected const float _paddingRatio = 0.001f;
-    private float _minX = 0f, _minY = 0f;
     private const string _graphNamePrefix = "GraphNL_";
 
     private static Color orange = new Color(1f, 0.5f, 0, 1f);
@@ -73,7 +72,6 @@ public class Line
  	*/
     public Line(int graphWidth, float _graphHeight, int _mediumId, string _moleculeName, RectTransform graphPlaceHolder)
     {
-
         this.name = generateLineName(_mediumId, _moleculeName);
         this.moleculeName = _moleculeName;
 
@@ -92,8 +90,6 @@ public class Line
 
     public void resize()
     {
-        setMinX();
-        setMinY();
         computeRatios();
     }
 
@@ -111,6 +107,7 @@ public class Line
         this._vectorline.layer = _graphPlaceHolder.gameObject.layer;
         resize();
         redraw();
+        this._vectorline.rectTransform.position = _graphPlaceHolder.position;
     }
 
     /*!
@@ -178,27 +175,11 @@ public class Line
 
     private float getX(int x)
     {
-        return x * _ratioW + _minX;
+        return x * _ratioW;
     }
     private float getY(float y)
     {
-        return Mathf.Clamp(y, 0, graphHeight) * _ratioH + _minY;
-    }
-
-    private void setMinX()
-    {
-        if (null != _graphPlaceHolder)
-        {
-            _minX = _graphPlaceHolder.transform.position.x;
-        }
-    }
-
-    private void setMinY()
-    {
-        if (null != _graphPlaceHolder)
-        {
-            _minY = _graphPlaceHolder.transform.position.y;
-        }
+        return Mathf.Clamp(y, 0, graphHeight) * _ratioH;
     }
 
     private void computeRatios()

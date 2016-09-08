@@ -95,6 +95,7 @@ public class VectrosityPanel : MonoBehaviour
             line = _lines.Find(l => m.getName() == l.moleculeName);
             if (null == line)
             {
+                string moleculeName = m.getName();
                 _lines.Add(new Line(width, height, _mediumId, m.getName(), graphPlaceHolder));
             }
         }
