@@ -4,10 +4,10 @@ public class GUITransitioner : MonoBehaviour
 {
 
 
-  //////////////////////////////// singleton fields & methods ////////////////////////////////
-  public static string gameObjectName = "GUITransitioner";
-  private static GUITransitioner _instance;
-  public static GUITransitioner get() {
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "GUITransitioner";
+    private static GUITransitioner _instance;
+    public static GUITransitioner get()
     {
         if (_instance == null)
         {
@@ -135,28 +135,28 @@ public class GUITransitioner : MonoBehaviour
 
     public static void showGraphs(bool show, GRAPH_HIDER hider)
     {
-      if(null != _instance)
-      {
-        // Debug.Log("showGraphs("+show+", "+hider+")");
-
-        bool inactive = false;
-
-        _instance._hideGraph[(int)hider] = !show;
-
-        foreach (bool hide in _instance._hideGraph)
+        if (null != _instance)
         {
-            inactive = (inactive || hide);
-        }
+            // Debug.Log("showGraphs("+show+", "+hider+")");
 
-        if (null != _instance.roomGraph)
-        {
-            _instance.roomGraph.show(!inactive);
+            bool inactive = false;
+
+            _instance._hideGraph[(int)hider] = !show;
+
+            foreach (bool hide in _instance._hideGraph)
+            {
+                inactive = (inactive || hide);
+            }
+
+            if (null != _instance.roomGraph)
+            {
+                _instance.roomGraph.show(!inactive);
+            }
+            if (null != _instance.celliaGraph)
+            {
+                _instance.celliaGraph.show(!inactive);
+            }
         }
-        if (null != _instance.celliaGraph)
-        {
-            _instance.celliaGraph.show(!inactive);
-        }
-      }
     }
 
     public void Pause(bool pause)
