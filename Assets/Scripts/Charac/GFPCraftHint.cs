@@ -8,14 +8,15 @@ public class GFPCraftHint : MonoBehaviour
 
     private const string _craftButton = "CraftButton";
     private const string _listedPrefix = "Listed";
-    private const string _device = "PRCONS:RBS2:MOV:DTER";
+    private const string _device1 = "PRCONS:RBS3:MOV:DTER";
+    private const string _device2 = "PRCONS:RBS2:MOV:DTER";
     private const string _brick = "AvailableDisplayedFLUO1";
     private const string _craftWindow = "CraftPanelSprite";
     private const string _exitCross = "CraftCloseButton";
     private const string _textKeyPrefix = "HINT.GFPCRAFT.";
 
     private const int _stepCount = 5;
-    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device, _brick, _craftWindow, _exitCross };
+    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device1, _brick, _craftWindow, _exitCross };
 
     private string[] textHints = new string[_stepCount];
 
@@ -40,23 +41,31 @@ public class GFPCraftHint : MonoBehaviour
         {
             if (!prepared)
             {
-                if ((1 == step) && (CraftFinalizer.get().isEquiped(_device)))
+                if ((1 == step) && (CraftFinalizer.get().isEquiped(_device1) || CraftFinalizer.get().isEquiped(_device2)))
                 {
                     next();
                 }
                 else
                 {
                     GameObject go = GameObject.Find(focusObjects[step]);
-                    ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                    if(null != target)
+                    if (null == go)
                     {
-                        FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                        Debug.LogError("GFPCraftHint: GameObject not found: "+focusObjects[step]);
+                        next();
                     }
                     else
                     {
-                        FocusMaskManager.get().focusOn(go, true, textHints[step], true);
-                    }
-                    prepared = true;
+                        ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
+                        if(null != target)
+                        {
+                            FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                        }
+                        else
+                        {
+                            FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                        }
+                        prepared = true;
+                        }
                 }
             }
         }
