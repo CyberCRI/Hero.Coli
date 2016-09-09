@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define QUICKTEST
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,9 +7,11 @@ public class PlatformMvt : MonoBehaviour {
 	
 	public List<GameObject> points = new List<GameObject>();
 	public int currentDestination = 0;
+#if QUICKTEST
+	public float speed = 1f;
+#else
 	public float speed = 0.1f;
-	[HideInInspector]
-	public float saveSpeed;
+#endif
 	public float pause;
     public bool loop = true;
 	
@@ -21,7 +24,7 @@ public class PlatformMvt : MonoBehaviour {
 	void Start () {
 		if(points.Count > 0)
         {
-			StartCoroutine(Movement(pause,loop));
+			StartCoroutine(move(pause,loop));
         }
 		
 		savePos = this.transform.position;
@@ -29,7 +32,7 @@ public class PlatformMvt : MonoBehaviour {
 
     void OnEnable()
     {
-        StartCoroutine(Movement(pause, loop));
+        StartCoroutine(move(pause, loop));
         restart();
     }
 
@@ -45,7 +48,7 @@ public class PlatformMvt : MonoBehaviour {
 		savePos = this.transform.position;
     }
 	
-	IEnumerator Movement (float pause, bool loop)
+	IEnumerator move (float pause, bool loop)
 	{
 		while (Vector3.Distance(transform.position, points[currentDestination].transform.position) >= 0.002f)
 		{
@@ -55,7 +58,7 @@ public class PlatformMvt : MonoBehaviour {
 		}
 
 		currentDestination++;
-		if (currentDestination > points.Count -1)
+		if (currentDestination >= points.Count)
 		{
             if (loop == true)
             {
@@ -65,7 +68,7 @@ public class PlatformMvt : MonoBehaviour {
 		}
 		
 		yield return new WaitForSeconds (pause);
-		StartCoroutine(Movement(pause,loop));
+		StartCoroutine(move(pause,loop));
 		
 		yield return true;
 	}
@@ -76,12 +79,12 @@ public class PlatformMvt : MonoBehaviour {
         //StartCoroutine(Movement(pause, loop));
     }
 
-    public Vector3 GetCurrentDestination()
+    public Vector3 getCurrentDestination()
     {
         return points[currentDestination].transform.position;
     }
 
-    public void SetCurrentDestination(int index)
+    public void setCurrentDestination(int index)
     {
         currentDestination = index;
     }

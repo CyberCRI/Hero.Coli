@@ -1,6 +1,7 @@
 ﻿#define QUICKTEST
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class CutScene : MonoBehaviour {
 
@@ -65,8 +66,41 @@ public abstract class CutScene : MonoBehaviour {
 	// must be implemented in each cut scene
     public abstract void startCutScene ();    
     
+    private const string iTweenSpeedKey = "speed";
+    private const float _speedIncreaseFactor = 10;
+    private Dictionary<iTweenEvent, float> iTweenSpeeds = new Dictionary<iTweenEvent, float>();
+
+    private void saveAndEditAlliTweenEvents()
+    {
+        object speedObject;
+        float speed;
+        foreach(iTweenEvent itEvent in GameObject.FindObjectsOfType<iTweenEvent>())
+        {
+            if((null != itEvent) && itEvent.Values.TryGetValue(iTweenSpeedKey, out speedObject))
+            {
+                speed = (float)speedObject;
+                iTweenSpeeds.Add(itEvent, speed);
+                itEvent.Values.Remove(iTweenSpeedKey);
+                itEvent.Values.Add(iTweenSpeedKey, speed * _speedIncreaseFactor);
+            }
+        }
+    }
+
+    private void reinitializeiTweenEvents()
+    {
+        foreach(KeyValuePair<iTweenEvent, float> entry in iTweenSpeeds)
+        {
+            entry.Key.Values.Remove(iTweenSpeedKey);
+            entry.Key.Values.Add(iTweenSpeedKey, entry.Value);
+        }
+    }
+
     // must be called when starting a cut scene
 	public void start () {
+#if QUICKTEST
+        Time.timeScale = 50f;
+        saveAndEditAlliTweenEvents();
+#endif        
         _cellControl.freezePlayer(true);
 		FocusMaskManager.get().blockClicks(true);
         _blackBar.closeBar(true);
@@ -81,6 +115,10 @@ public abstract class CutScene : MonoBehaviour {
     
     // must be called when ending a cut scene
     public void end () {
+#if QUICKTEST
+        Time.timeScale = 1f;
+        reinitializeiTweenEvents();
+#endif
 		FocusMaskManager.get().blockClicks(false);
         _blackBar.closeBar(false);
         StartCoroutine(waitForBlackBar(false));

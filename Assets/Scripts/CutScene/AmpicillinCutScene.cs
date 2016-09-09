@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define QUICKTEST
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,6 +19,18 @@ public class AmpicillinCutScene : CutScene {
     
     bool _played = false;
     
+#if QUICKTEST
+        private const float _bacterium1Speed = 100f;
+        private const float _bacterium2Speed = 250f;
+        private const float _waitDuration1 = 0.1f;
+        private const float _waitDuration2 = 0.1f;
+#else
+        private const float _bacterium1Speed = 100f;
+        private const float _bacterium2Speed = 250f;
+        private const float _waitDuration1 = 4.5f;
+        private const float _waitDuration2 = 3f;
+#endif
+
     public override void initialize() { }
 
     public void resetCameraTarget()
@@ -48,7 +61,7 @@ public class AmpicillinCutScene : CutScene {
         for (int i = 0; i < 3; i++)
         {
             _pltMvt.points[i] = _points[i];
-            _pltMvt.SetCurrentDestination(0);
+            _pltMvt.setCurrentDestination(0);
             _pltMvt.speed = speed;
             _pltMvt.loop = false;
         }
@@ -56,7 +69,7 @@ public class AmpicillinCutScene : CutScene {
 
     public override void startCutScene()
     {
-        startEscape(_pltMvt2Flagellum, 10);
+        startEscape(_pltMvt2Flagellum, _bacterium1Speed);
         StartCoroutine(waitForSecondBacteria());
     }
 
@@ -67,9 +80,9 @@ public class AmpicillinCutScene : CutScene {
 
     IEnumerator waitForSecondBacteria()
     {
-        yield return new WaitForSeconds(4.5f);
-        startEscape(_pltMvt3Flagellum, 25);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(_waitDuration1);
+        startEscape(_pltMvt3Flagellum, _bacterium2Speed);
+        yield return new WaitForSeconds(_waitDuration2);
         end();
         yield return null;
     }

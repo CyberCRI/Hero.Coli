@@ -15,7 +15,7 @@ public class RotationUpdate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        _inputMovement = _platformMvt.GetCurrentDestination() - this.transform.position;
+        _inputMovement = _platformMvt.getCurrentDestination() - this.transform.position;
         rotationUpdate();
 	}
 
