@@ -357,17 +357,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void open() {
         //Debug.Log("MainMenuManager::open");
-        GUITransitioner.get().showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
-        if(null != this)
-        {
-            gameObject.SetActive(true);
-        }
+        GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
+        gameObject.SetActive(true);
         switchTo (MainMenuScreen.DEFAULT);
     }
 
     public void close() {
         //Debug.Log("MainMenuManager::close");
-        GUITransitioner.get().showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
+        GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
     }
 

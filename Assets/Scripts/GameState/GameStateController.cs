@@ -524,7 +524,7 @@ public class GameStateController : MonoBehaviour {
 
     public void triggerEnd(EndGameCollider egc)
     {
-        gUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
+        GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
         MemoryManager.get ().sendCompletionEvent();
         egc.displayEndMessage();
 

@@ -48,7 +48,7 @@ public class BoundCamera : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		
-		if(_isZooming)
+		//if(_isZooming)
 			transform.position = target.position + offset;
 		
 		if(_transition){

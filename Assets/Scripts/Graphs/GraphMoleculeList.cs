@@ -55,7 +55,7 @@ public class GraphMoleculeList : MonoBehaviour {
     {
         if (null != _eddwmGridTransform)
         {
-            Debug.Log("destroying all of eddwm's children");
+            // Debug.Log("destroying all of eddwm's children");
             for (int index = 0; index < _eddwmGridTransform.childCount; index++)
             {
                 Destroy(_eddwmGridTransform.GetChild(index).gameObject);
@@ -208,7 +208,7 @@ public class GraphMoleculeList : MonoBehaviour {
 
   void positionDeviceAndMoleculeComponents()
   {
-    Debug.LogWarning("positionDeviceAndMoleculeComponents");
+    // Debug.LogWarning("positionDeviceAndMoleculeComponents");
     if(null != _eddwmGridComponent && null != _moleculesAndDevicesTableComponent)
     {
       _eddwmGridComponent.repositionNow = true;

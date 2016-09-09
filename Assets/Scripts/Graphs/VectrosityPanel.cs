@@ -13,7 +13,6 @@ public class VectrosityPanel : MonoBehaviour
     public Camera GUICam; //!< The Isometric camera which will display the layer
     public bool draw = true; //!< Toggles drawing of the lines
     public RectTransform graphPlaceHolder;
-    public List<Line> line { get { return _lines; } } //!< List of the lines being drawn
     public string identifier;
 
     private const int width = 200;
@@ -168,22 +167,26 @@ public class VectrosityPanel : MonoBehaviour
        //*/
     }
 
-    void OnDisable()
+    // can only be called directly by GUITransitioner
+    // use GUITransitioner.showGraphs instead
+    public void show(bool show)
     {
-        Logger.Log("VectrosityPanel::OnDisable " + identifier, Logger.Level.TRACE);
         foreach (Line line in _lines)
         {
-            line.setActive(false);
+            line.setActive(show);
         }
+    }
+
+    void OnDisable()
+    {
+        // Logger.Log("VectrosityPanel::OnDisable " + identifier, Logger.Level.TRACE);
+        GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.VECTROSITYPANEL);
     }
 
     void OnEnable()
     {
-        Logger.Log("VectrosityPanel::OnEnable " + identifier, Logger.Level.TRACE);
-        foreach (Line line in _lines)
-        {
-            line.setActive(true);
-        }
+        // Logger.Log("VectrosityPanel::OnEnable " + identifier, Logger.Level.TRACE);
+        GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.VECTROSITYPANEL);
     }
 
     /*!

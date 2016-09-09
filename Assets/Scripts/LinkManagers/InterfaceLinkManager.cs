@@ -86,7 +86,9 @@ public class InterfaceLinkManager : LinkManager
   public MainMenuManager mainMenu;
 
     public LoggerLabel loggerGUIComponent;
-    public WorldEquipButton worldEquipButton;
+
+    public VectrosityPanel celliaGraph, roomGraph;
+    public GraphMoleculeList graphMoleculeList;
 
 	public override void initialize ()
     {
@@ -104,13 +106,10 @@ public class InterfaceLinkManager : LinkManager
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
     TooltipManager tooltipManager = TooltipManager.get();
     ModalManager modalManager = ModalManager.get();
-    GameObject mediumInfoPanelCell = GameObject.Find("MediumInfoPanelCell");
 
 		//GUITransitioner
-    guiTransitioner.celliaGraph = mediumInfoPanelCell.transform.Find("CellMediumInfoBackgroundSprite").gameObject
-			.GetComponent<VectrosityPanel>();
-	guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
-			.GetComponent<VectrosityPanel>();
+    guiTransitioner.celliaGraph = celliaGraph;
+	guiTransitioner.roomGraph = roomGraph;
 	
 	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
     
@@ -172,7 +171,7 @@ public class InterfaceLinkManager : LinkManager
     devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
     devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
-    devicesDisplayer.graphMoleculeList = mediumInfoPanelCell.GetComponent<GraphMoleculeList>() as GraphMoleculeList;
+    devicesDisplayer.graphMoleculeList = graphMoleculeList;
             
     devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
     devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
