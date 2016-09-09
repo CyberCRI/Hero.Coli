@@ -1,14 +1,21 @@
-﻿using UnityEngine;
+﻿#define QUICKTEST
+using UnityEngine;
 using System.Collections;
 
 public class BadGuyCutSceneTrigger : CutScene {
+
+#if QUICKTEST
+    private const float endWaitDuration = 0.1f;
+    private const float iTweenEventSpeed = 350f;
+#else
+    private const float endWaitDuration = 2f;
+    private const float iTweenEventSpeed = 35f;
+#endif
 
     private bool _first = true;
     [SerializeField]
     private iTweenEvent _iTweenEventBigGuy;
     private bool _isSlowingAnimation = false;
-    [SerializeField]
-    private float slowSpeed = 1;
     [SerializeField]
     private GameObject _deadBigBadGuy;
     private Transform _initialTarget;
@@ -24,6 +31,8 @@ public class BadGuyCutSceneTrigger : CutScene {
     // Use this for initialization
     public override void initialize () {
         _initialTarget = _boundCamera.target;
+        _iTweenEventBigGuy.Values.Remove("speed");
+        _iTweenEventBigGuy.Values.Add("speed", iTweenEventSpeed);
 	}
 
     void OnTriggerEnter(Collider col)
@@ -36,7 +45,7 @@ public class BadGuyCutSceneTrigger : CutScene {
 
         if (col.tag == "Player")
         {
-            if (_first == true)
+            if (_first)
             {
                 _first = false;
                 start();
@@ -92,7 +101,7 @@ public class BadGuyCutSceneTrigger : CutScene {
 
     IEnumerator prepareEnd()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(endWaitDuration);
         
         _wayPoint1.transform.position = new Vector3 (_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y,_iTweenEventBigGuy.transform.position.z);
         _wayPoint2.transform.position = new Vector3 (_initialTarget.position.x,_cutSceneCam.transform.position.y,_initialTarget.position.z);

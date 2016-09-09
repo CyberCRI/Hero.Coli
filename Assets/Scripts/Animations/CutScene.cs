@@ -1,7 +1,15 @@
-﻿using UnityEngine;
+﻿#define QUICKTEST
+using UnityEngine;
 using System.Collections;
 
 public abstract class CutScene : MonoBehaviour {
+
+    private const float blackBarWait1 = 0.1f;
+#if QUICKTEST
+    private const float blackBarWait2 = 0.1f;
+#else
+    private const float blackBarWait2 = 1.5f;
+#endif
 
     private CellControl __cellControl;
     protected CellControl _cellControl
@@ -85,10 +93,10 @@ public abstract class CutScene : MonoBehaviour {
 
     IEnumerator waitForBlackBar(bool start)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(blackBarWait1);
         SetCutSceneCamera(start);
         _cellControl.freezePlayer(true);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(blackBarWait2);
         if (start == true)
         {
             startCutScene();
