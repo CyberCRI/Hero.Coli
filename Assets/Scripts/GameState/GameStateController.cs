@@ -418,11 +418,11 @@ public class GameStateController : MonoBehaviour {
                 }
                 //inventory
                 //TODO add DNA damage accumulation management when player equips/unequips too often
-                else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
-                {
-                    Logger.Log("GameStateController::Update inventory key pressed", Logger.Level.INFO);
-                    gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-                }
+                // else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                // {
+                //     Logger.Log("GameStateController::Update inventory key pressed", Logger.Level.INFO);
+                //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+                // }
                 //crafting
                 else if(isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
                 {
@@ -524,6 +524,7 @@ public class GameStateController : MonoBehaviour {
 
     public void triggerEnd(EndGameCollider egc)
     {
+        GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
         MemoryManager.get ().sendCompletionEvent();
         egc.displayEndMessage();
 

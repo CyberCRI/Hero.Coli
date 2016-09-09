@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class DisplayedMolecule
+﻿public class DisplayedMolecule
 {
     private string _codeName;
     private string _realName;
     private string _val;
+    private float _fval;
     private bool _updated;
     private DisplayType _displayType;
 
@@ -70,7 +68,15 @@ public class DisplayedMolecule
     
     public void update(float val)
     {
-        update(val.ToString());
+      if(_fval != val)
+      {
+        _fval = val;
+        update(val.ToString("F4"));
+      }
+      else
+      {
+        _updated = true;
+      }
     }
     
     public void reset()

@@ -30,8 +30,6 @@ public class Inventory : DeviceContainer
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public InventoryAnimator animator;
-
     /* array of file paths from which the devices available by default from start will be loaded,
      * provided that the required BioBricks are available - cf. AvailableBioBricksManager
      */
@@ -142,12 +140,6 @@ public class Inventory : DeviceContainer
         Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
         _displayer.addInventoriedDevice(copy);
         Logger.Log("Inventory::addDevice(" + device + "), count after=" + _devices.Count, Logger.Level.TRACE);
-
-        if (animator.isPlaying == false)
-        {
-            _deviceAdded = true;
-            animator.Play();
-        }
     }
 
     public AddingResult canAddDevice(Device device)

@@ -86,7 +86,9 @@ public class InterfaceLinkManager : LinkManager
   public MainMenuManager mainMenu;
 
     public LoggerLabel loggerGUIComponent;
-    public WorldEquipButton worldEquipButton;
+
+    public VectrosityPanel celliaGraph, roomGraph;
+    public GraphMoleculeList graphMoleculeList;
 
 	public override void initialize ()
     {
@@ -104,16 +106,11 @@ public class InterfaceLinkManager : LinkManager
     AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
     TooltipManager tooltipManager = TooltipManager.get();
     ModalManager modalManager = ModalManager.get();
-    GameObject mediumInfoPanelCell = GameObject.Find("MediumInfoPanelCell");
 
 		//GUITransitioner
-    guiTransitioner.celliaGraph = mediumInfoPanelCell.transform.Find("CellMediumInfoBackgroundSprite").gameObject
-			.GetComponent<VectrosityPanel>();
-	guiTransitioner.roomGraph = GameObject.Find ("MediumInfoPanelRoom").transform.Find("RoomMediumInfoBackgroundSprite").gameObject
-			.GetComponent<VectrosityPanel>();
-	//guiTransitioner.animator = GameObject.Find ("WorldEquipButton").GetComponent<InventoryAnimator>();
-    guiTransitioner.animator = worldEquipButton.GetComponent<InventoryAnimator>();
-    
+    guiTransitioner.celliaGraph = celliaGraph;
+	guiTransitioner.roomGraph = roomGraph;
+	
 	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
     
     if(isCraftMode1)
@@ -174,7 +171,7 @@ public class InterfaceLinkManager : LinkManager
     devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
     devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
-    devicesDisplayer.graphMoleculeList = mediumInfoPanelCell.GetComponent<GraphMoleculeList>() as GraphMoleculeList;
+    devicesDisplayer.graphMoleculeList = graphMoleculeList;
             
     devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
     devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
@@ -201,11 +198,6 @@ public class InterfaceLinkManager : LinkManager
     modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
     modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
 
-
-    //DeviceInventory
-    Inventory.get().animator = worldEquipButton.GetComponent<InventoryAnimator>();
-    Inventory.get ().animator.tutorialArrowAnimation = tutorialArrow.GetComponent<ArrowAnimation>();
-    
     //BiobrickInventory
     
     //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");

@@ -67,14 +67,6 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         slotsGrid.GetComponent<UIGrid>().repositionNow = true;
     }
 
-    void Update()
-    {
-        if(Input.GetKeyUp(KeyCode.KeypadPlus))
-        {
-            addSlot();
-        }
-    }
-
     public void selectSlot(CraftDeviceSlot slot)
     {
         //Debug.LogError("LimitedBiobricksCraftZoneManager selectSlot");

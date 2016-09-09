@@ -12,7 +12,7 @@ public class CullingMaskHandler : MonoBehaviour {
 
     public void hideInterface(bool hide)
     {
-        GUITransitioner.get().showGraphs(!hide);
+        GUITransitioner.showGraphs(!hide, GUITransitioner.GRAPH_HIDER.CUTSCENE);
         if(null != _uiCamera)
         {
             if (hide)

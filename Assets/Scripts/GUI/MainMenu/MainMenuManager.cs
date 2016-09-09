@@ -8,7 +8,6 @@ public class MainMenuManager : MonoBehaviour
     public static string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
     [SerializeField]
-    private StartCutSceneController _cutscene;
     private bool _first = true;
 
     public static MainMenuManager get ()
@@ -358,12 +357,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void open() {
         //Debug.Log("MainMenuManager::open");
-        this.gameObject.SetActive(true);
+        GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
+        gameObject.SetActive(true);
         switchTo (MainMenuScreen.DEFAULT);
     }
 
     public void close() {
         //Debug.Log("MainMenuManager::close");
+        GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
     }
 

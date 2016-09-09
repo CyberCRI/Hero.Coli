@@ -6,22 +6,28 @@ public class GraphMoleculeList : MonoBehaviour {
 
 	private ReactionEngine   _reactionEngine;
 	public int               mediumId;
-	public UILabel           namesLabel;
-  public UILabel           valuesLabel;
-	public bool              displayAll;
-  public GameObject        unfoldingMoleculeList;
+  [SerializeField]
+	private UILabel           namesLabel;
+  [SerializeField]
+  private UILabel           valuesLabel;
+  [SerializeField]
+	private bool              displayAll;
 
-  public GameObject             equipedWithMoleculesDeviceDummy;
-    
-  public string            debugName;
+  [SerializeField]
+  private GameObject        unfoldingMoleculeList;
 
-  private int               pixelsPerMoleculeLine = 15;
-  private int               pixelsPerDeviceLine = 80;
+  private const int               pixelsPerMoleculeLine = 15;
+  private const int               pixelsPerDeviceLine = 80;
       
-  public UILabel           topLabels;
-  public UILabel           topValues;
-  public Vector3           topLabelsShift;
-  public Vector3           topValuesShift;
+  [SerializeField]
+  private UILabel           topLabels;
+  [SerializeField]
+  private UILabel           topValues;
+
+  [SerializeField]
+  private Vector3           topLabelsShift;
+  [SerializeField]
+  private Vector3           topValuesShift;
   public Vector3           currentHeight;
 
   private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
@@ -30,48 +36,37 @@ public class GraphMoleculeList : MonoBehaviour {
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
 
+  // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
+  [SerializeField]
+  private Transform _eddwmGridTransform;
+  [SerializeField]
+  private Transform _moleculesAndDevicesTableTransform;
+  [SerializeField]
+  private UIGrid _eddwmGridComponent;
+  [SerializeField]
+  private UITable _moleculesAndDevicesTableComponent;
+
   public void setMediumId(int newMediumId)
   {
     mediumId = newMediumId;
   }
 
-  void safeInitialization()
-  {
-    if(null == equipedWithMoleculesDeviceDummy)
+    void safeInitialization()
     {
-      EquipedDisplayedDeviceWithMolecules script = this.gameObject.GetComponentInChildren<EquipedDisplayedDeviceWithMolecules>() as EquipedDisplayedDeviceWithMolecules;
-      equipedWithMoleculesDeviceDummy = script.gameObject;
+        if (null != _eddwmGridTransform)
+        {
+            // Debug.Log("destroying all of eddwm's children");
+            for (int index = 0; index < _eddwmGridTransform.childCount; index++)
+            {
+                Destroy(_eddwmGridTransform.GetChild(index).gameObject);
+            }
+        }
     }
-    if(null == equipedWithMoleculesDeviceDummy)
-    {
-      equipedWithMoleculesDeviceDummy = this.gameObject.transform.Find("DeviceMoleculesPanel").gameObject;
-    }
-    if(null == equipedWithMoleculesDeviceDummy)
-    {
-      equipedWithMoleculesDeviceDummy = GameObject.Find("DeviceMoleculesPanel");
-    }
-  }
-
-  void Awake()
-  {
-    currentHeight = Vector3.zero;
-    unfoldingMoleculeList.transform.localScale = new Vector3(unfoldingMoleculeList.transform.localScale.x, 20, unfoldingMoleculeList.transform.localScale.z);
-    _initialScale = unfoldingMoleculeList.transform.localScale;
-  }
    
   void Start() {
     _reactionEngine = ReactionEngine.get();
 
     safeInitialization();
-    
-    if(null != equipedWithMoleculesDeviceDummy)
-    {
-      equipedWithMoleculesDeviceDummy.SetActive(false);
-    }
-    else
-    {
-      Logger.Log("GraphMoleculeList::Start failed safeInitialization ", Logger.Level.WARN);
-    }
   }
 
   private void resetMoleculeList()
@@ -102,13 +97,6 @@ public class GraphMoleculeList : MonoBehaviour {
     }
   }
 
-  //TODO iTween this
-  void setUnfoldingListBackgroundScale()
-  {
-    currentHeight = Vector3.up * (pixelsPerMoleculeLine * _displayedListMoleculesCount + pixelsPerDeviceLine * _equipedDevices.Count);
-    unfoldingMoleculeList.transform.localScale = _initialScale + currentHeight;
-  }
-
     public void addDeviceAndMoleculesComponent(DisplayedDevice displayedDeviceScript)
     {
         if (displayedDeviceScript == null)
@@ -123,14 +111,15 @@ public class GraphMoleculeList : MonoBehaviour {
             bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == displayedDeviceScript._device));
             if (newEquiped)
             {
-                //EquipedDisplayedDeviceWithMolecules
-                GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
-                //equipedDisplayedDeviceWithMoleculesGameObject is "EquipedDisplayedDeviceWithMoleculesPrefab" object
-                //it needs an DisplayedDevice instance - it has only an DisplayedDeviceDummy object
-                GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-                equipedDisplayedDeviceWithMoleculesGameObject.transform.parent = this.transform;
-                equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = new Vector3(1f, 1f, 0);
 
+                GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
+                GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, Vector3.zero, Quaternion.identity, _eddwmGridTransform) as GameObject;
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = Vector3.one;
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition =
+                new Vector3(equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.x,
+                equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.y,
+                0f);  
+                
                 EquipedDisplayedDeviceWithMolecules eddwm = equipedDisplayedDeviceWithMoleculesGameObject.GetComponent<EquipedDisplayedDeviceWithMolecules>();
                 eddwm.initialize(displayedDeviceScript);
 
@@ -145,9 +134,6 @@ public class GraphMoleculeList : MonoBehaviour {
                     }
                 }
 
-                //depends on displayed list of molecules
-                //Vector3 localPosition = getNewPosition(previousEquipedDevicesCount);
-                //equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition = localPosition;
                 positionDeviceAndMoleculeComponents();
             }
             else
@@ -156,24 +142,6 @@ public class GraphMoleculeList : MonoBehaviour {
             }
         }
     }
-
-  Vector3 getNewPosition(int index = -1) {
-    Vector3 res;
-    int idx = index;
-    if(idx == -1)
-    {
-      idx = _equipedDevices.Count;
-    }
-    
-    res = equipedWithMoleculesDeviceDummy.transform.localPosition
-            + new Vector3(
-                0.0f,
-                -_displayedListMoleculesCount*pixelsPerMoleculeLine -idx*pixelsPerDeviceLine,
-                -0.1f
-                );
-    
-    return res;
-  }
 
     public void removeDeviceAndMoleculesComponent(Device device)
     {
@@ -187,8 +155,7 @@ public class GraphMoleculeList : MonoBehaviour {
             _equipedDevices.Remove(eddwm);
             Destroy(eddwm.gameObject);
 
-            positionDeviceAndMoleculeComponents(0);
-            setUnfoldingListBackgroundScale();
+            positionDeviceAndMoleculeComponents();
         }
         else
         {
@@ -239,20 +206,13 @@ public class GraphMoleculeList : MonoBehaviour {
     _displayedListMoleculesCount = res;
    }
 
-  //unused but works
-  void shiftDeviceAndMoleculeComponents(int removedIndex)
+  void positionDeviceAndMoleculeComponents()
   {
-    for(int idx = removedIndex+1; idx < _equipedDevices.Count; idx++) {        
-        Vector3 newLocalPosition = getNewPosition(idx-1);
-        _equipedDevices[idx].setLocalPosition(newLocalPosition);
-    }
-  }
-
-  void positionDeviceAndMoleculeComponents(int startIndex = 0)
-  {
-    for(int idx = startIndex; idx < _equipedDevices.Count; idx++) {
-      Vector3 newLocalPosition = getNewPosition(idx);
-      _equipedDevices[idx].setLocalPosition(newLocalPosition);
+    // Debug.LogWarning("positionDeviceAndMoleculeComponents");
+    if(null != _eddwmGridComponent && null != _moleculesAndDevicesTableComponent)
+    {
+      _eddwmGridComponent.repositionNow = true;
+      _moleculesAndDevicesTableComponent.repositionNow = true;
     }
   }
 
@@ -333,15 +293,5 @@ public class GraphMoleculeList : MonoBehaviour {
 		}
     namesLabel.text = namesToDisplay;
     valuesLabel.text = valuesToDisplay;
-
-        /*
-    if(null != topLabels)
-    {
-      topLabelsShift = Vector3.up * topLabels.relativeSize.y * topLabels.transform.localScale.y;
-      namesLabel.transform.localPosition = topLabels.transform.localPosition + topLabelsShift;
-    }
-    */
-
-    setUnfoldingListBackgroundScale();
 	}
 }
