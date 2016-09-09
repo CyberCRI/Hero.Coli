@@ -58,6 +58,7 @@ public class CellControl : MonoBehaviour {
     private float _hitdist = 0.0f;
     private Vector3 _targetPosition;
     private bool _isFirstUpdate = false;
+    private bool _isClickBlockedAfterPause = false;
 
     public enum ControlType {
         RightClickToMove = 0,
@@ -268,7 +269,6 @@ public class CellControl : MonoBehaviour {
         }
     }
     
-    private bool _isClickBlockedAfterPause = true;
     IEnumerator blockClicksAfterPause()
     {
         _isClickBlockedAfterPause = true;

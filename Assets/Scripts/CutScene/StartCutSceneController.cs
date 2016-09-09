@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define QUICKTEST
+using UnityEngine;
 using System.Collections;
 
 public class StartCutSceneController : CutScene {
@@ -27,6 +28,16 @@ public class StartCutSceneController : CutScene {
     private bool _scaleUp = true;
     private bool _scaling = false;
 
+#if QUICKTEST
+    private float[] waitTimes = new float[9]{0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f};
+    private const float _tweenScaleDuration = 0.1f;
+    private const float _pulseSpeed = 50f;
+#else
+    private float[] waitTimes = new float[9]{5f,3.5f,1f,0.5f,5f,1.5f,2f,0.5f,3f};
+    private const float _tweenScaleDuration = 1.5f;
+    private const float _pulseSpeed = 1f;
+#endif
+
     // Use this for initialization
     public override void initialize()
     {
@@ -35,21 +46,23 @@ public class StartCutSceneController : CutScene {
         _originToTweenScale = _tweenScale.to;
         _bacteriaTransform = _iTweenEventBacteria.GetComponent<Transform>();
 
-        StartCoroutine(WaitForBeginning());
+        StartCoroutine(waitForBeginning());
         //start();
     }
 
-    void Update()
-    {
-        //_cellControl.freezePlayer(true);
-        
+    IEnumerator waitForBeginning()
+    {   
+        _cellControl.freezePlayer(true);
+        yield return new WaitForSeconds(waitTimes[0]);
+        start();
+        yield return null;
     }
 
-    void ReverseAnim()
+    void reverseAnim()
     {
         _tweenScale.from = _originToTweenScale;
         _tweenScale.to = _originFromTweenScale;
-        _tweenScale.duration = 1.5f;
+        _tweenScale.duration = _tweenScaleDuration;
         _tweenScale.enabled = true;
     }
 
@@ -75,51 +88,51 @@ public class StartCutSceneController : CutScene {
     {
         _cellControl.freezePlayer(true);
         _iTweenEventBacteria.enabled = true;
-        StartCoroutine(WaitForFirstPart());
+        StartCoroutine(waitForFirstPart());
     }
 
-    void FirstPart()
+    void firstPart()
     {
         _dialogBubble.SetActive(true);
         _textFieldDummy.text = "!";
     }
 
-    void SecondPart()
+    void secondPart()
     {
         _dnaTube.SetActive(true);
         _dialogBubblePlayer.SetActive(true);
         _textFieldPlayer.text = "?";
-        StartCoroutine(WaitForThirdPart());
+        StartCoroutine(waitForThirdPart());
     }
 
-    void ThirdPart()
+    void thirdPart()
     {
         _dialogBubblePlayer.SetActive(true);
         _textFieldPlayer.text = "!?";
         _iTweenEventDNA.enabled = true;
         _iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(true);
-        StartCoroutine(WaitForFourthPart());
+        StartCoroutine(waitForFourthPart());
     }
 
-    void FourthPart()
+    void fourthPart()
     {
         _dialogBubblePlayer.SetActive(false);
-        ReverseAnim();
+        reverseAnim();
         //_iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        StartCoroutine(WaitForFifthPart());
+        StartCoroutine(waitForFifthPart());
         _scaling = true;
-        StartCoroutine(ScalePulse(_iTweenEventDNA.GetComponent<Transform>(), 1f));
+        StartCoroutine(scalePulse(_iTweenEventDNA.GetComponent<Transform>(), _pulseSpeed));
     }
 
-    void FifthPart()
+    void fifthPart()
     {
         _itweenEventBacteria2.enabled = true;
         //_iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
 
-        StartCoroutine(WaitForEnd());
+        StartCoroutine(waitForEnd());
     }
 
-    IEnumerator ScalePulse(Transform objTransform, float speed)
+    IEnumerator scalePulse(Transform objTransform, float speed)
     {
         bool test = false;
         while (_scaling == true)
@@ -157,80 +170,62 @@ public class StartCutSceneController : CutScene {
         yield return null;
     }
 
-    IEnumerator WaitForFirstPart()
+    IEnumerator waitForFirstPart()
     {
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(waitTimes[1]);
         _dialogBubble.SetActive(true);
         _textFieldDummy.text = "!";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(waitTimes[2]);
         _dialogBubblePlayer.SetActive(true);
         _textFieldPlayer.text = "!";
         _iTweenEventBacteria.enabled = false;
-        yield return new WaitForSeconds(0.5f);
-        float turn = 0f;
+        yield return new WaitForSeconds(waitTimes[3]);
         float currentAngle = 0;
         _dialogBubble.SetActive(false);
         _dialogBubblePlayer.SetActive(false);
-        while (turn < 2f)
+        while (currentAngle < 810)
         {
             _bacteriaTransform.eulerAngles = new Vector3(_bacteriaTransform.eulerAngles.x, _bacteriaTransform.eulerAngles.y + Time.deltaTime * 1000, _bacteriaTransform.eulerAngles.z);
             currentAngle += Time.deltaTime * 1000;
-            if (currentAngle >= 810)
-            {
-                turn += 2;
-            }
             yield return null;
         }
-        SecondPart();
+        secondPart();
         yield return null;
     }
 
-    IEnumerator WaitForSecondPart()
+    IEnumerator waitForSecondPart()
     {
-        yield return new WaitForSeconds(5);
-        SecondPart();
+        yield return new WaitForSeconds(waitTimes[4]);
+        secondPart();
         yield return null;
     }
 
-    IEnumerator WaitForThirdPart()
+    IEnumerator waitForThirdPart()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(waitTimes[5]);
         _dialogBubblePlayer.SetActive(false);
-        ThirdPart();
+        thirdPart();
         yield return null;
     }
 
-    IEnumerator WaitForFourthPart()
+    IEnumerator waitForFourthPart()
     {
-        yield return new WaitForSeconds(2);
-        FourthPart();
+        yield return new WaitForSeconds(waitTimes[6]);
+        fourthPart();
         yield return null;
     }
 
-    IEnumerator WaitForFifthPart()
+    IEnumerator waitForFifthPart()
     {
-        yield return new WaitForSeconds(0.5f);
-        FifthPart();
+        yield return new WaitForSeconds(waitTimes[7]);
+        fifthPart();
         yield return null;
     }
 
-    IEnumerator WaitForEnd()
+    IEnumerator waitForEnd()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(waitTimes[8]);
         end();
-        yield return null;
-    }
-
-    IEnumerator WaitForBeginning()
-    {
-        float timer = 5f;
-        while (timer >= 0)
-        {
-            timer -= Time.deltaTime;
-            _cellControl.freezePlayer(true);
-            yield return null;
-        }
-        start();
         yield return null;
     }
 }

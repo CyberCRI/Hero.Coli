@@ -30,7 +30,16 @@ public class Line
     protected const float _paddingRatio = 0.001f;
     private const string _graphNamePrefix = "GraphNL_";
 
-    private static Color orange = new Color(1f, 0.5f, 0, 1f);
+    private static Color orange = new Color(1f, 0.5f, 0);
+    private static Color darkYellow = new Color(0.5f, 0.5f, 0);
+    private static Color purple = new Color(0.5f, 0f, 0.5f);
+    private static Color darkRed = new Color(0f, 0.5f, 0);
+    private static Color darkGreen = new Color(0f, 0.5f, 0);
+    private static Color darkBlue = new Color(0f, 0.5f, 0);
+    private static Color grey1 = new Color(0.1f, 0.1f, 0.1f);
+    private static Color grey2 = new Color(0.2f, 0.2f, 0.2f);
+    private static Color grey3 = new Color(0.3f, 0.3f, 0.3f);
+    private static Color grey4 = new Color(0.4f, 0.4f, 0.4f);
 
     // white -> signalling molecules
     // grey -> complexes
@@ -40,25 +49,25 @@ public class Line
     // fluorescent proteins get their own color
     private static Dictionary<string, Color> moleculeColors = new Dictionary<string, Color>()
     {
-        {"AMPI*", Color.grey},
+        {"AMPI*", Color.black},
         {"AMPI", Color.magenta},
-        {"AMPR", Color.green},
-        {"ARAC", Color.white},
-        {"ATC", Color.white},
+        {"AMPR", darkGreen},
+        {"ARAC", grey3},
+        {"ATC", grey4},
         {"FLUO1", Color.green},
         {"FLUO2", Color.red},
         {"FLUO3", Color.yellow},
         {"FLUO4", orange},
         {"FLUO5", Color.cyan},
         {"FLUO6", Color.blue},
-        {"IPTG", Color.white},
-        {"MOV", Color.yellow},
-        {"REPR1", Color.white},
-        {"REPR2", Color.white},
-        {"REPR3", Color.white},
-        {"REPR4", Color.white},
+        {"IPTG", purple},
+        {"MOV", darkYellow},
+        {"REPR1", darkRed},
+        {"REPR2", darkBlue},
+        {"REPR3", grey1},
+        {"REPR4", grey2},
         {"REPR1*", Color.grey},
-        {"REPR2*", Color.grey}
+        {"REPR2*", Color.white}
   };
 
   	public string generateLineName(int _mediumId, string _moleculeName) {
