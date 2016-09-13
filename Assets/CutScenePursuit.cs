@@ -13,11 +13,6 @@ public class CutScenePursuit : CutScene {
     [SerializeField]
     private Transform _wayPoint2;
     private int _iteration = 0;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {
