@@ -74,7 +74,13 @@ public class FocusMaskManager : MonoBehaviour
 
     public void focusOn(GameObject go, bool isInterfaceObject, string advisorTextKey = null, bool scaleToComponent = false)
     {
-        float scaleFactor = scaleToComponent?computeScaleFactor(go.transform.localScale):1f;
+        focusOn(go, isInterfaceObject, Vector3.zero, advisorTextKey, scaleToComponent);
+    }
+
+    public void focusOn(GameObject go, bool isInterfaceObject, Vector3 manualScale, string advisorTextKey = null, bool scaleToComponent = false)
+    {
+        Vector3 scale = manualScale==Vector3.zero?go.transform.localScale:manualScale;
+        float scaleFactor = scaleToComponent?computeScaleFactor(scale):1f;
 
         Vector3 position = go.transform.position;
 

@@ -10,30 +10,6 @@ public class DisplayedDevice : DisplayedElement
     public UILocalize moleculeOverlay;
     public ParticleSystem feedbackParticleSystem;
     protected bool _isFeedbackParticleSystemActive = false;
-    public void playFeedback()
-    {
-        _isFeedbackParticleSystemActive = true;
-        
-        feedbackParticleSystem.gameObject.SetActive(true);
-        feedbackParticleSystem.Emit(50);
-
-        if(gameObject.activeInHierarchy)
-        {
-            StartCoroutine(terminateParticleSystem());
-        }
-    }
-    
-    IEnumerator terminateParticleSystem()
-    {
-        yield return new WaitForSeconds(1.5f);
-        
-        _isFeedbackParticleSystemActive = false;
-        
-        feedbackParticleSystem.Stop();
-        feedbackParticleSystem.gameObject.SetActive(false);
-        
-        yield return null;
-    }
 
     // prefab URIs
     private const string equipedPrefabURI = "GUI/screen1/Devices/DisplayedDevicePrefab";
@@ -95,6 +71,12 @@ public class DisplayedDevice : DisplayedElement
     private const string roundedSquareBackgroundSpriteName  = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
     private const string circleBackgroundSpriteName         = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
 
+    private const string _equipedPrefix = "e_";
+    private const string _inventoriedPrefix = "i_";
+    private const string _listedPrefix = "l_";
+    private const string _craftSlotPrefix = "c_"; 
+    private string[] _deviceNamePrefixes = new string[4]{_equipedPrefix,_inventoriedPrefix,_listedPrefix,_craftSlotPrefix};
+
     private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
   {
         {"ARAC", _defaultTextureWithText},
@@ -106,6 +88,31 @@ public class DisplayedDevice : DisplayedElement
         {"REPR3", _defaultTextureWithText},
         {"REPR4", _defaultTextureWithText}
   };
+  
+    public void playFeedback()
+    {
+        _isFeedbackParticleSystemActive = true;
+        
+        feedbackParticleSystem.gameObject.SetActive(true);
+        feedbackParticleSystem.Emit(50);
+
+        if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(terminateParticleSystem());
+        }
+    }
+    
+    IEnumerator terminateParticleSystem()
+    {
+        yield return new WaitForSeconds(1.5f);
+        
+        _isFeedbackParticleSystemActive = false;
+        
+        feedbackParticleSystem.Stop();
+        feedbackParticleSystem.gameObject.SetActive(false);
+        
+        yield return null;
+    }
 
     private static string getTextureName(string proteinName)
     {
@@ -304,24 +311,20 @@ public class DisplayedDevice : DisplayedElement
 
         string nullSpriteName = (spriteName != null) ? "" : "(null)";
         Object prefab;
-        string name = "";
         if (deviceType == DevicesDisplayer.DeviceType.Equiped)
         {
             Logger.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI, Logger.Level.DEBUG);
             prefab = Resources.Load(equipedPrefabURI);
-            name = "Equiped";
         }
         else if (deviceType == DevicesDisplayer.DeviceType.Inventoried)
         {
             Logger.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI, Logger.Level.DEBUG);
             prefab = Resources.Load(inventoriedPrefabURI);
-            name = "Inventoried";
         }
         else if (deviceType == DevicesDisplayer.DeviceType.Listed)
         {
             Logger.Log("DisplayedDevice: will create Listed " + listedPrefabURI, Logger.Level.DEBUG);
             prefab = Resources.Load(listedPrefabURI);
-            name = "Listed";
         }
         else
         {
@@ -338,18 +341,14 @@ public class DisplayedDevice : DisplayedElement
     , Logger.Level.DEBUG
     );
 
-        name += device.getInternalName();
-
         DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
           parentTransform
           , localPosition
           , ""
           , prefab
           );
-
-        result.name = name;
-
-        result.Initialize(device, devicesDisplayer, deviceType);
+          
+        result.Initialize(device, devicesDisplayer);
 
         return result;
     }
@@ -398,8 +397,7 @@ public class DisplayedDevice : DisplayedElement
 
     public void Initialize(
         Device device
-      , DevicesDisplayer devicesDisplayer
-      , DevicesDisplayer.DeviceType deviceType
+      , DevicesDisplayer devicesDisplayer = null
       )
     {
 
@@ -407,8 +405,6 @@ public class DisplayedDevice : DisplayedElement
         {
             Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
         }
-        if (null != devicesDisplayer)
-            Logger.Log("DisplayedDevice::Initialize(" + device + ", " + devicesDisplayer + ", " + deviceType + ") starts", Logger.Level.DEBUG);
 
         _device = Device.buildDevice(device);
         if (_device == null)
@@ -420,14 +416,20 @@ public class DisplayedDevice : DisplayedElement
         {
             _devicesDisplayer = DevicesDisplayer.get();
         }
-        _deviceType = deviceType;
+        
         Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
 
+        setName();
         setBackgroundSprite();
         setMoleculeOverlay(device.getFirstGeneProteinName());
         int levelIndex = getLevelIndex();
         setLevelSprite(levelIndex);
         setDeviceIcon(levelIndex);
+    }
+
+    private void setName()
+    {
+        gameObject.name = _deviceNamePrefixes[(int)_deviceType] + _device.getInternalName();
     }
 
     protected string getDebugInfos()

@@ -67,7 +67,7 @@ public class CraftDeviceSlot : MonoBehaviour
                     //set result device
                     if(null != _resultDevice)
                     {
-                        _resultDevice.Initialize(currentDevice, null, DevicesDisplayer.DeviceType.Listed);
+                        _resultDevice.Initialize(currentDevice);
                         _resultDevice.gameObject.SetActive(true);
                     }                    
                 }
@@ -606,6 +606,8 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             // Debug.Log("not yet initialized");
             _initialized = true;
+
+            _selectionSprite.name = gameObject.name + _selectionSprite.name;
             
             _isEquiped = true;
             isEquiped = false;

@@ -1,10 +1,8 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _displayedDeviceDummy;
     private GameObject _displayedDevice;
     private DisplayedDevice _displayedDeviceScript;
 
@@ -16,20 +14,12 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
 
     public void initialize(DisplayedDevice displayedDeviceScript)
     {
-        if (null != _displayedDeviceDummy)
+        if (null != _displayedDevice)
         {
-
-            _displayedDeviceDummy.SetActive(true);
-
-
-            _displayedDevice = _displayedDeviceDummy;
-
-            _displayedDeviceScript = _displayedDeviceDummy.GetComponent<DisplayedDevice>();
-
-            _displayedDeviceScript.Initialize(displayedDeviceScript._device, null, displayedDeviceScript._deviceType);
-
+            _displayedDevice.SetActive(true);
+            _displayedDeviceScript = _displayedDevice.GetComponent<DisplayedDevice>();
+            _displayedDeviceScript.Initialize(displayedDeviceScript._device);
             device = displayedDeviceScript._device;
-
         }
         else
         {

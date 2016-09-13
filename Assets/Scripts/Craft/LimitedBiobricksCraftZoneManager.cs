@@ -14,6 +14,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     protected int slotCount;
     [SerializeField]
     private GameObject slotPrefab;
+    private const string _slotNameRoot = "slot";
     public Transform slotsGrid;
 
     protected new LinkedList<BioBrick> _currentBioBricks {
@@ -62,6 +63,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         // Debug.Log("adding slot #"+slotsGrid.childCount);
         GameObject slotGO = GameObject.Instantiate(slotPrefab, Vector3.zero, Quaternion.identity, slotsGrid) as GameObject;
         slotGO.transform.localPosition = new Vector3(slotGO.transform.localPosition.x, slotGO.transform.localPosition.y, 0);
+        slotGO.name = _slotNameRoot + slots.Count;
         CraftDeviceSlot slot = slotGO.GetComponent<CraftDeviceSlot>();
         slots.Add(slot);
         slotsGrid.GetComponent<UIGrid>().repositionNow = true;
