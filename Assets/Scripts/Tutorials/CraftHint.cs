@@ -59,7 +59,7 @@ public class CraftHint : MonoBehaviour
                         }
                         else
                         {
-                            FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                            FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
                         prepared = true;
                     }                    

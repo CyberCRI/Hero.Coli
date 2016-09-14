@@ -47,7 +47,7 @@ public class FocusMaskManager : MonoBehaviour
         _instance = this;
         _baseFocusMaskScale = focusMask.transform.localScale;
         _baseHoleScale = hole.transform.localScale;
-        
+
         reinitialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,14 +57,18 @@ public class FocusMaskManager : MonoBehaviour
 
     public void focusOn(ExternalOnPressButton target, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
+        focusOn(target, Vector3.zero, callback, advisorTextKey, scaleToComponent);
+    }
+
+    public void focusOn(ExternalOnPressButton target, Vector3 manualScale, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
+    {
         if (null != target)
         {
             //Debug.Log("FocusMaskManager focusOn "+target.name);
-            float scaleFactor = scaleToComponent?computeScaleFactor(target.transform.localScale):1f;
+            float scaleFactor = computeScaleFactor(scaleToComponent, target.transform.localScale, manualScale);
 
-            focusOn(target.transform.position, scaleFactor, false, advisorTextKey);
+            focusOn(target.transform.position, callback, scaleFactor, false, advisorTextKey);
             _target = target;
-            _callback = callback;
         }
         else
         {
@@ -72,37 +76,52 @@ public class FocusMaskManager : MonoBehaviour
         }
     }
 
-    public void focusOn(GameObject go, bool isInterfaceObject, string advisorTextKey = null, bool scaleToComponent = false)
+    public void focusOn(GameObject go, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
-        focusOn(go, isInterfaceObject, Vector3.zero, advisorTextKey, scaleToComponent);
+        focusOn(go, Vector3.zero, callback, advisorTextKey, scaleToComponent);
     }
 
-    public void focusOn(GameObject go, bool isInterfaceObject, Vector3 manualScale, string advisorTextKey = null, bool scaleToComponent = false)
+    public void focusOn(GameObject go, Vector3 manualScale, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
-        Vector3 scale = manualScale==Vector3.zero?go.transform.localScale:manualScale;
-        float scaleFactor = scaleToComponent?computeScaleFactor(scale):1f;
+        float scaleFactor = computeScaleFactor(scaleToComponent, go.transform.localScale, manualScale);
 
         Vector3 position = go.transform.position;
 
+        bool isInterfaceObject = (Camera.main.gameObject.layer == go.layer);
         if (!isInterfaceObject)
         {
             Camera camera = GameObject.Find("Player").GetComponentInChildren<Camera>();
             position = camera.WorldToScreenPoint(go.transform.position);
             position -= focusMask.transform.localScale / 4;
         }
-        
-        focusOn(position, scaleFactor, !isInterfaceObject, advisorTextKey, true);
+
+        focusOn(position, callback, scaleFactor, !isInterfaceObject, advisorTextKey, true);
     }
-    
-    float computeScaleFactor(Vector3 localScale)
+
+    float computeScaleFactor(bool scaleToComponent, Vector3 localScale, Vector3 manualScale)
     {
-        float max = localScale.x>localScale.y?localScale.x:localScale.y;
-        float result = max/_baseHoleScale.x;
-        //Debug.Log("computeScaleFactor("+localScale+")="+result+" with _baseHoleScale="+_baseHoleScale);
+        Vector3 scale = Vector3.zero;
+        float result = 1f;
+        
+        if (Vector3.zero != manualScale)
+        {
+            scale = manualScale;
+        }
+        else if (scaleToComponent)
+        {
+            scale = localScale;
+        }   
+
+        if(Vector3.zero != scale)
+        {
+            float max = scale.x > scale.y ? scale.x : scale.y;
+            result = max / _baseHoleScale.x;
+        }
+
         return result;
     }
 
-    public void focusOn(Vector3 position, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showComplementaryHint = false)
+    public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showComplementaryHint = false)
     {
         //Debug.Log("focusOn("+position+")");
         if (null != position)
@@ -128,8 +147,8 @@ public class FocusMaskManager : MonoBehaviour
             if (1f != scaleFactor)
             {
                 //Debug.Log("will scale focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale+" with factor="+scaleFactor);
-                focusMask.transform.localScale = scaleFactor*focusMask.transform.localScale;
-                hole.transform.localScale = scaleFactor*hole.transform.localScale;
+                focusMask.transform.localScale = scaleFactor * focusMask.transform.localScale;
+                hole.transform.localScale = scaleFactor * hole.transform.localScale;
                 //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
             }
             else
@@ -139,6 +158,8 @@ public class FocusMaskManager : MonoBehaviour
                 hole.transform.localScale = _baseHoleScale;
                 //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);                
             }
+
+            _callback = callback;
 
             if (!string.IsNullOrEmpty(advisorTextKey))
             {
@@ -216,7 +237,7 @@ public class FocusMaskManager : MonoBehaviour
         {
             if (_isAlphaIncreasing)
             {
-                _newAlpha = focusMaskSprite.alpha + _blinkingSpeed*Time.unscaledDeltaTime;
+                _newAlpha = focusMaskSprite.alpha + _blinkingSpeed * Time.unscaledDeltaTime;
                 if (_newAlpha > _maxAlpha)
                 {
                     _newAlpha = _maxAlpha;
@@ -225,7 +246,7 @@ public class FocusMaskManager : MonoBehaviour
             }
             else
             {
-                _newAlpha = focusMaskSprite.alpha - _blinkingSpeed*Time.unscaledDeltaTime;
+                _newAlpha = focusMaskSprite.alpha - _blinkingSpeed * Time.unscaledDeltaTime;
                 if (_newAlpha < _minAlpha)
                 {
                     _newAlpha = _minAlpha;
