@@ -67,6 +67,7 @@ public class NpcLighting : MonoBehaviour {
         {
             EnableLight(_spotLight, false);
             EnableLight(_phenoLight, false);
+            _triggeredDoor.triggerExit();
         }
     }
 }
