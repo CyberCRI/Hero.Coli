@@ -1,76 +1,37 @@
-﻿using UnityEngine;
-
-public class RBS2CraftHint : MonoBehaviour
+﻿public class RBS2CraftHint : StepByStepTutorial
 {
-
-    private int step = 0;
-    private bool prepared = false;
-
-    private const string _craftButton = "CraftButton";
-    private const string _listedPrefix = "Listed";
-    private const string _device = "PRCONS:RBS3:MOV:DTER";
-    private const string _brick = "AvailableDisplayedRBS2";
-    private const string _craftWindow = "CraftPanelSprite";
-    private const string _exitCross = "CraftCloseButton";
-    private const string _textKeyPrefix = "HINT.GFPCRAFT.";
-
-    private const int _stepCount = 5;
-    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device, _brick, _craftWindow, _exitCross };
-
-    private string[] textHints = new string[_stepCount];
-
-    public void next()
-    {
-        prepared = false;
-        step++;
-    }
     
-    void Awake()
+    private const string _device = "PRCONS:RBS3:MOV:DTER";
+    private const string _brick = _availableDisplayedPrefix + "RBS2";
+
+    private const string _textKeyPrefix = _genericTextKeyPrefix + "GFPCRAFT.";
+    protected override string textKeyPrefix
     {
-        for(int index = 0; index < textHints.Length; index++)
+        get
         {
-            textHints[index] = _textKeyPrefix+index;
+            return _textKeyPrefix;
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    private const int _stepCount = 5;
+    protected override int stepCount
     {
-        if (step < focusObjects.Length)
+        get
         {
-            if (!prepared)
-            {
-                if ((1 == step) && (CraftFinalizer.get().isEquiped(_device)))
-                {
-                    next();
-                }
-                else
-                {
-                    GameObject go = GameObject.Find(focusObjects[step]);
-                    if (null == go)
-                    {
-                        Debug.LogError("GFPCraftHint: GameObject not found: "+focusObjects[step]);
-                        next();
-                    }
-                    else
-                    {
-                        ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                        if(null != target)
-                        {
-                            FocusMaskManager.get().focusOn(target, next, textHints[step]);
-                        }
-                        else
-                        {
-                            FocusMaskManager.get().focusOn(go, true, next, textHints[step], true);
-                        }
-                        prepared = true;
-                        }
-                }
-            }
+            return _stepCount;
         }
-        else
+    }
+    private string[] _focusObjects = new string[_stepCount] {
+        _craftButton,
+        _listedPrefix + _device,
+        _brick,
+        _craftWindow,
+        _exitCross
+        };
+    protected override string[] focusObjects
+    {
+        get
         {
-            Destroy(this);
+            return _focusObjects;
         }
     }
 }

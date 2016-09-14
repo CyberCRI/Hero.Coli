@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// TODO inherit StepByStepTutorial
 public class GFPCraftHint : MonoBehaviour
 {
 

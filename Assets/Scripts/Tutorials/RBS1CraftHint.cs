@@ -1,26 +1,31 @@
-﻿using UnityEngine;
-
-public class RBS1CraftHint : MonoBehaviour
+﻿public class RBS1CraftHint : StepByStepTutorial
 {
-
     private bool prepared = false;
 
-    private const string _craftButton = "CraftButton";
-    private const string _hintText = "HINT.RBS1CRAFT.0";
-
-    public void next()
+    private const string _textKeyPrefix = _genericTextKeyPrefix + "RBS1CRAFT.";
+    protected override string textKeyPrefix
     {
-        Destroy(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!prepared)
+        get
         {
-            ExternalOnPressButton target = GameObject.Find(_craftButton).GetComponent<ExternalOnPressButton>();
-            FocusMaskManager.get().focusOn(target, next, _hintText);
-            prepared = true;
+            return _textKeyPrefix;
+        }
+    }
+    private const int _stepCount = 1;
+    protected override int stepCount
+    {
+        get
+        {
+            return _stepCount;
+        }
+    }
+    private string[] _focusObjects = new string[_stepCount] { 
+        _craftButton
+    };
+    protected override string[] focusObjects
+    {
+        get
+        {
+            return _focusObjects;
         }
     }
 }
