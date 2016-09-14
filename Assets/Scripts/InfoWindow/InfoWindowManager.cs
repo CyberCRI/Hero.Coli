@@ -47,14 +47,16 @@ public class InfoWindowManager : MonoBehaviour {
     GOTOWORLD,
     GOTOEQUIP,
     GOTOCRAFT,
-    GOTOCRAFTTUTO
+    GOTOCRAFTTUTO,
+    GOTOCRAFTTUTO2
   }
 
   private Dictionary<string, NextAction> _actions = new Dictionary<string, NextAction>(){
     {InfoWindowXMLTags.WORLD, NextAction.GOTOWORLD},
     {InfoWindowXMLTags.EQUIP, NextAction.GOTOEQUIP},
     {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT},
-    {InfoWindowXMLTags.CRAFTTUTO, NextAction.GOTOCRAFTTUTO}
+    {InfoWindowXMLTags.CRAFTTUTO, NextAction.GOTOCRAFTTUTO},
+    {InfoWindowXMLTags.CRAFTTUTO2, NextAction.GOTOCRAFTTUTO2}
   };
 
     public static bool hasActivePanel()
@@ -152,13 +154,17 @@ public class InfoWindowManager : MonoBehaviour {
                 GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen3);
                 break;
             case NextAction.GOTOCRAFTTUTO:
-                Logger.Log ("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
+                Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO", Logger.Level.DEBUG);
                 CraftHint hint = GameObject.Find("Perso").GetComponent<CraftHint>();
                 if(null == hint)
                 {
                     hint = GameObject.Find("Perso").AddComponent<CraftHint>();
                 }
                 hint.bricks++;
+                break;
+            case NextAction.GOTOCRAFTTUTO2:
+                Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO2", Logger.Level.DEBUG);
+                GameObject.Find("Perso").AddComponent<RBS2CraftHint>();
                 break;
             default:
                 Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
