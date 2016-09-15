@@ -1,10 +1,6 @@
 ﻿public class RBS2CraftHint : StepByStepTutorial
 {
-    
-    private const string _device = "PRCONS:RBS3:MOV:DTER";
-    private const string _brick = _availableDisplayedPrefix + "RBS2";
-
-    private const string _textKeyPrefix = _genericTextKeyPrefix + "GFPCRAFT.";
+    private const string _textKeyPrefix = _genericTextKeyPrefix + "RBS2CRAFT.";
     protected override string textKeyPrefix
     {
         get
@@ -12,7 +8,7 @@
             return _textKeyPrefix;
         }
     }
-    private const int _stepCount = 5;
+    private const int _stepCount = 7;
     protected override int stepCount
     {
         get
@@ -22,9 +18,11 @@
     }
     private string[] _focusObjects = new string[_stepCount] {
         _craftButton,
-        _listedPrefix + _device,
-        _brick,
-        _craftWindow,
+        _craftResultPrefix + _moveDevice1 + _backgroundSuffix,
+        _craftSlot1,
+        _RBS2brick,
+        _craftSlot1,
+        _craftResultPrefix + _moveDevice2 + _backgroundSuffix,
         _exitCross
         };
     protected override string[] focusObjects

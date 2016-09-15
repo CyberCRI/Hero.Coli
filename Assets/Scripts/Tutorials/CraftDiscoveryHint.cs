@@ -2,16 +2,10 @@
 
 public class CraftDiscoveryHint : StepByStepTutorial
 {
-
-    private const string _slowMoveDevice = "PRCONS:RBS3:MOV:DTER";
-    private const string _cellPanelEquippedDevice = _equippedPrefix + _slowMoveDevice;
-    private const string _craftResultDevice = _craftResultPrefix + _slowMoveDevice;
-    private const string _listedDevice = _listedPrefix + _slowMoveDevice;
-    private const string _craftResultDeviceBackground = _craftResultDevice + _backgroundSuffix;    
-    private const string _craftSlot = "slot0SelectionSprite";
-
-    private Vector3 manualScale = new Vector3(440, 77, 1);
-
+    private const string _cellPanelEquippedDevice = _equippedPrefix + _moveDevice1;
+    private const string _craftResultDevice = _craftResultPrefix + _moveDevice1;
+    private const string _listedDevice = _listedPrefix + _moveDevice1;
+    private const string _craftResultDeviceBackground = _craftResultDevice + _backgroundSuffix;
 
     private const string _textKeyPrefix = _genericTextKeyPrefix + "CRAFTDISCOVERY.";
     protected override string textKeyPrefix
@@ -34,7 +28,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
         _craftButton,
         _craftWindow,
         _craftResultDeviceBackground,
-        _craftSlot,
+        _craftSlot1,
         _craftResultDevice,
         _exitCross,
         _bacterium,
@@ -48,5 +42,11 @@ public class CraftDiscoveryHint : StepByStepTutorial
         {
             return _focusObjects;
         }
+    }
+
+    protected override void end()
+    {
+        GameObject.Find("Perso").AddComponent<MovementHint>();
+        Destroy(this);
     }
 }

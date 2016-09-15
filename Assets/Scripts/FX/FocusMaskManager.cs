@@ -103,7 +103,7 @@ public class FocusMaskManager : MonoBehaviour
     {
         Vector3 scale = Vector3.zero;
         float result = 1f;
-        
+
         if (Vector3.zero != manualScale)
         {
             scale = manualScale;
@@ -111,13 +111,15 @@ public class FocusMaskManager : MonoBehaviour
         else if (scaleToComponent)
         {
             scale = localScale;
-        }   
+        }
 
-        if(Vector3.zero != scale)
+        if (Vector3.zero != scale)
         {
             float max = scale.x > scale.y ? scale.x : scale.y;
             result = max / _baseHoleScale.x;
         }
+
+        result = result < 1f ? 1f : result;
 
         return result;
     }
@@ -148,8 +150,8 @@ public class FocusMaskManager : MonoBehaviour
             if (1f != scaleFactor)
             {
                 //Debug.Log("will scale focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale+" with factor="+scaleFactor);
-                focusMask.transform.localScale = scaleFactor * focusMask.transform.localScale;
-                hole.transform.localScale = scaleFactor * hole.transform.localScale;
+                focusMask.transform.localScale = scaleFactor * _baseFocusMaskScale;
+                hole.transform.localScale = scaleFactor * _baseHoleScale;
                 //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
             }
             else
@@ -214,6 +216,10 @@ public class FocusMaskManager : MonoBehaviour
         _isBlinking = false;
         _isAlphaIncreasing = false;
         focusMaskSprite.alpha = 1;
+        focusMask.transform.localScale = _baseFocusMaskScale;
+        hole.transform.localScale = _baseHoleScale;
+
+        _callback = null;
     }
 
     public void click()
