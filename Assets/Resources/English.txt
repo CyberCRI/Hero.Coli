@@ -299,6 +299,7 @@ CRAFT.RECIPES.TIP=Click on a genetic device to equip it - if you have enough bri
 CRAFT.BIOBRICK.NONELEFT=NONE LEFT
 
 HINT.NEXT=Click anywhere inside the illuminated area.
+HINT.NEXTBUTTON=Next
 HINT.CRAFT.0=You have enough bricks now. Click there to craft!
 HINT.CRAFT.1=This is the craft interface. We'll use it to create a new device.
 HINT.CRAFT.2=Start by clicking on the Promoter.
