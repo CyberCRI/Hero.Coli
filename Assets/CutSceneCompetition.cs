@@ -18,10 +18,8 @@ public class CutSceneCompetition : CutScene {
     private GameObject _wayPointNPC2;
     [SerializeField]
     private float _offset = 40f;
-    [SerializeField]
-    private float _iTweenSpeed;
-    [SerializeField]
-    private iTweenEvent _iTweenNPC;
+	[SerializeField]
+	private Transform _camPosition;
 
 
     // Use this for initialization
@@ -49,7 +47,9 @@ public class CutSceneCompetition : CutScene {
 
     public override void endCutScene()
     {
-        
+		Debug.Log ("end");
+		_cellControl.freezePlayer (false);
+		//this.enabled = false;
     }
 
     public override void initialize()
@@ -64,11 +64,20 @@ public class CutSceneCompetition : CutScene {
             start();
         }
 
-        if (col.tag == "NPC")
-        {
-            _iTweenNPC.GetComponent<iTween>().isRunning = false;
-            StartCoroutine(npcWait());
-        }
+		if (col.tag == "Door") 
+		{
+			Debug.Log ("Door");
+			_cutSceneCam.transform.position = _boundCamera.transform.position;
+			_cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
+			_boundCamera.target = _cellControl.gameObject.transform;
+			_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y - _offset, _boundCamera.offset.z);
+			_wayPoint1.transform.position = _cutSceneCam.transform.position;
+			_wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y - _offset, _cellControl.transform.position.z);
+			_boundCamera.gameObject.SetActive(false);
+			_cutSceneCam.gameObject.SetActive(true);
+			_cutSceneCam.GetComponent<PlatformMvt> ().restart ();
+			StartCoroutine(waitForCamReset());
+		}
     }    
 
     IEnumerator waitForSecondPart()
@@ -76,7 +85,7 @@ public class CutSceneCompetition : CutScene {
         while (Vector3.Distance(_cutSceneCam.transform.position, new Vector3 (_npc.transform.position.x, _cutSceneCam.transform.position.y, _npc.transform.position.z)) >= 0.05f)
         {
             Debug.Log("wait");
-            yield return true;
+			yield return null;
         }
         launchCutSceneSecondPart();
         yield return null;
@@ -84,7 +93,7 @@ public class CutSceneCompetition : CutScene {
 
     void launchCutSceneSecondPart()
     {
-        _iTweenNPC.enabled = true;
+		_npc.GetComponent<PlatformMvt>().enabled = true;
         _boundCamera.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         StartCoroutine(waitForThirdPart());
@@ -104,18 +113,33 @@ public class CutSceneCompetition : CutScene {
     void launchCutSceneThirdPart()
     {
         Debug.Log("Third");
+		_cutSceneCam.transform.position = _boundCamera.transform.position;
+		_cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
+		_boundCamera.target = _camPosition;
+		_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);
+		_wayPoint1.transform.position = _cutSceneCam.transform.position;
+		_wayPoint2.transform.position = new Vector3(_camPosition.position.x, _cutSceneCam.transform.position.y, _camPosition.transform.position.z);
+		_boundCamera.gameObject.SetActive(false);
+		_cutSceneCam.gameObject.SetActive(true);
+		StartCoroutine(waitForEnd());
     }
 
-    IEnumerator npcWait()
-    {
-        yield return new WaitForSeconds(2f);
-        _iTweenNPC.GetComponent<iTween>().isRunning = true;
-        yield return null;
-    }
+	IEnumerator waitForEnd()
+	{
+		yield return new WaitForSeconds (3f);
+		_boundCamera.gameObject.SetActive(true);
+		_cutSceneCam.gameObject.SetActive(false);
+		_camPosition.GetComponent<PlatformMvt> ().enabled = true;
+		yield return new WaitForSeconds(2f);
+		end ();
+		yield return null;
+	}
 
-    void ResetSpeed()
-    {
-        _iTweenNPC.Values.Remove("speed");
-        _iTweenNPC.Values.Add("speed", _iTweenSpeed);
-    }
+	IEnumerator waitForCamReset()
+	{
+		yield return new WaitForSeconds (2f);
+		_boundCamera.gameObject.SetActive(true);
+		_cutSceneCam.gameObject.SetActive(false);
+		yield return null;
+	}
 }

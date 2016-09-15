@@ -6,17 +6,26 @@ public class RotationUpdate : MonoBehaviour {
     private Vector3 _inputMovement;
     private PlatformMvt _platformMvt;
     private float rotationSpeed = 6f;
+	private Vector3 _previousPosition;
 
 	// Use this for initialization
 	void Start () {
+		_previousPosition = this.transform.position;
         _platformMvt = this.GetComponent<PlatformMvt>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        _inputMovement = _platformMvt.getCurrentDestination() - this.transform.position;
-        rotationUpdate();
+		/*if (_platformMvt != null) {
+			_inputMovement = _platformMvt.getCurrentDestination () - this.transform.position;
+		} else 
+		{
+			_inputMovement = this.transform.position - _previousPosition;
+		}*/
+		_inputMovement = this.transform.position - _previousPosition;
+		rotationUpdate();
+		_previousPosition = this.transform.position;
 	}
 
     private void rotationUpdate()
