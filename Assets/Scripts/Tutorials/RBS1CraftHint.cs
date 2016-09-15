@@ -1,4 +1,9 @@
-﻿public class RBS1CraftHint : StepByStepTutorial
+﻿// #define QUICKTEST
+
+#if QUICKTEST
+public class RBS1CraftHint : FakeStepByStepTutorial { }
+#else
+public class RBS1CraftHint : StepByStepTutorial
 {
     private bool prepared = false;
 
@@ -29,3 +34,4 @@
         }
     }
 }
+#endif

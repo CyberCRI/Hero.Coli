@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
 
+#if QUICKTEST
+public class GFPCraftHint : FakeStepByStepTutorial { }
+#else
+using UnityEngine;
 // TODO inherit StepByStepTutorial
 public class GFPCraftHint : MonoBehaviour
 {
@@ -76,3 +80,4 @@ public class GFPCraftHint : MonoBehaviour
         }
     }
 }
+#endif

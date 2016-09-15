@@ -242,7 +242,7 @@ MODAL.T1_AMPICILLIN.EXPLANATION=Red clouds contain an antibiotic called ampicill
 MODAL.T1_FLUO1.TITLE=GREEN FLUORESCENCE
 MODAL.T1_FLUO1.EXPLANATION=This brick will allow you to glow green under blue light. Use it to open some passages in the maze!
 MODAL.T1_RBS1.TITLE=MORE POWER!
-MODAL.T1_RBS1.EXPLANATION=This brick will allow you to boost the efficiency of a device! Try to put it inside the device that handles your flagella.
+MODAL.T1_RBS1.EXPLANATION=This RBS brick is even more powerful than the previous one! Upgrade your movement device with it to go even faster.
 MODAL.T1_NANOBOT.TITLE=STRANDED NANOBOT!
 MODAL.T1_NANOBOT.EXPLANATION=These little guys need you to get them back home. Try to find them all, and they'll help you in your quest!
 MODAL.T1_FLUO2.TITLE=RED FLUORESCENCE!
@@ -334,7 +334,7 @@ HINT.GFPCRAFT.1=See this? It's your previous device. Click on it to edit it.
 HINT.GFPCRAFT.2=Click on the GFP brick.
 HINT.GFPCRAFT.3=There's your new GFP device.
 HINT.GFPCRAFT.4=Quit and see what happens!
-HINT.RBS1CRAFT.0=To swim even faster, upgrade your movement device with it!
+HINT.RBS1CRAFT.0=Let's craft a new device!
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is a\nnanobot.
 TUTORIAL.INTRODUCTION1.CELLLABEL=This is Cellia!

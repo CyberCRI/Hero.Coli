@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
 
+#if QUICKTEST
+public class CraftDiscoveryHint : FakeStepByStepTutorial { }
+#else
+using UnityEngine;
 public class CraftDiscoveryHint : StepByStepTutorial
 {
     private const string _cellPanelEquippedDevice = _equippedPrefix + _moveDevice1;
@@ -50,3 +54,4 @@ public class CraftDiscoveryHint : StepByStepTutorial
         Destroy(this);
     }
 }
+#endif

@@ -43,15 +43,15 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Awake " + this
-        + " step=" + stepCount
-        + " prepared=" + prepared
-        + " waited=" + waited
-        + " textHints=" + textHints
-        + " textKeyPrefix=" + textKeyPrefix
-        + " stepCount=" + stepCount
-        + " focusObjects=" + focusObjects
-        );
+        // Debug.Log("Awake " + this.GetType()
+        // + " step=" + stepCount
+        // + " prepared=" + prepared
+        // + " waited=" + waited
+        // + " textHints=" + textHints
+        // + " textKeyPrefix=" + textKeyPrefix
+        // + " stepCount=" + stepCount
+        // + " focusObjects=" + focusObjects
+        // );
         textHints = new string[stepCount];
         for (int index = 0; index < textHints.Length; index++)
         {
@@ -68,28 +68,28 @@ public abstract class StepByStepTutorial : MonoBehaviour
             {
                 if (!prepared)
                 {
-                    Debug.Log("StepByStepTutorial preparing step " + step + " searching for " + focusObjects[step]);
+                    // Debug.Log(this.GetType() + " preparing step " + step + " searching for " + focusObjects[step]);
                     GameObject go = GameObject.Find(focusObjects[step]);
                     if (go == null)
                     {
-                        Debug.LogError("StepByStepTutorial " + this + " couldn't find " + focusObjects[step]);
+                        Debug.LogError(this.GetType() + " couldn't find " + focusObjects[step]);
                     }
                     else
                     {
-                        Debug.Log("go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
+                        // Debug.Log("go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
                         ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
                         if (null != target)
                         {
-                            Debug.Log("target != null at step=" + step);
+                            // Debug.Log("target != null at step=" + step);
                             FocusMaskManager.get().focusOn(target, next, textHints[step]);
                         }
                         else
                         {
-                            Debug.Log("target == null at step=" + step);
+                            // Debug.Log("target == null at step=" + step);
                             FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
                     }
-                    Debug.Log("StepByStepTutorial prepared step=" + step);
+                    // Debug.Log(this.GetType() + " prepared step=" + step);
                     prepared = true;
                 }
             }

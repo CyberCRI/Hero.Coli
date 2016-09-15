@@ -88,7 +88,7 @@ public class FocusMaskManager : MonoBehaviour
         Vector3 position = go.transform.position;
 
         bool isInterfaceObject = (this.gameObject.layer == go.layer);
-        Debug.Log("isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
+        // Debug.Log("isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
         if (!isInterfaceObject)
         {
             Camera camera = GameObject.Find("Player").GetComponentInChildren<Camera>();
