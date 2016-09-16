@@ -6,9 +6,8 @@ public class CraftDiscoveryHint : FakeStepByStepTutorial { }
 using UnityEngine;
 public class CraftDiscoveryHint : StepByStepTutorial
 {
-    private const string _cellPanelEquippedDevice = _equippedPrefix + _moveDevice1;
+    private const string _cellPanelEquippedDeviceBackground = _equippedPrefix + _moveDevice1 + _backgroundSuffix;
     private const string _craftResultDevice = _craftResultPrefix + _moveDevice1;
-    private const string _listedDevice = _listedPrefix + _moveDevice1;
     private const string _craftResultDeviceBackground = _craftResultDevice + _backgroundSuffix;
 
     private const string _textKeyPrefix = _genericTextKeyPrefix + "CRAFTDISCOVERY.";
@@ -28,7 +27,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
     }
     private string[] _focusObjects = new string[_stepCount] { 
         _bacterium,
-        _cellPanelEquippedDevice,
+        _cellPanelEquippedDeviceBackground,
         _craftButton,
         _craftWindow,
         _craftResultDeviceBackground,
@@ -37,7 +36,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
         _exitCross,
         _bacterium,
         _craftButton,
-        _listedDevice,
+        _listedPrefix + _moveDevice1,
         _exitCross
         };
     protected override string[] focusObjects 

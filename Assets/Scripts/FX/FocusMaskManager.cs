@@ -124,7 +124,7 @@ public class FocusMaskManager : MonoBehaviour
         return result;
     }
 
-    public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showComplementaryHint = false)
+    public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showButton = false)
     {
         //Debug.Log("focusOn("+position+")");
         if (null != position)
@@ -168,11 +168,11 @@ public class FocusMaskManager : MonoBehaviour
             {
                 if (this.transform.localPosition.y >= 0)
                 {
-                    _advisor.setUpNanoBot(false, advisorTextKey, showComplementaryHint);
+                    _advisor.setUpNanoBot(false, advisorTextKey, showButton);
                 }
                 else
                 {
-                    _advisor.setUpNanoBot(true, advisorTextKey, showComplementaryHint);
+                    _advisor.setUpNanoBot(true, advisorTextKey, showButton);
                 }
                 _advisor.gameObject.SetActive(true);
             }
