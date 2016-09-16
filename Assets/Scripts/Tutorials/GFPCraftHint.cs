@@ -1,5 +1,10 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
 
+#if QUICKTEST
+public class GFPCraftHint : FakeStepByStepTutorial { }
+#else
+using UnityEngine;
+// TODO inherit StepByStepTutorial
 public class GFPCraftHint : MonoBehaviour
 {
 
@@ -62,7 +67,7 @@ public class GFPCraftHint : MonoBehaviour
                         }
                         else
                         {
-                            FocusMaskManager.get().focusOn(go, true, textHints[step], true);
+                            FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
                         prepared = true;
                         }
@@ -75,3 +80,4 @@ public class GFPCraftHint : MonoBehaviour
         }
     }
 }
+#endif

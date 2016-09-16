@@ -25,10 +25,10 @@
     <texture>i_cons</texture>
     <next>crafttuto</next>
   </info>
-  <info code="T1_RBS">
+  <!--info code="T1_RBS">
     <texture>i_rbs2</texture>
     <next>crafttuto</next>
-  </info>
+  </info-->
   <info code="T1_CDS">
     <texture>i_hyperflagellation</texture>
     <next>crafttuto</next>
@@ -36,6 +36,10 @@
   <info code="T1_TER">
     <texture>i_term</texture>
     <next>crafttuto</next>
+  </info>
+  <info code="T1_RBS">
+    <texture>i_rbs2</texture>
+    <next>crafttuto2</next>
   </info>
   
   <info code="MOVEMENT">

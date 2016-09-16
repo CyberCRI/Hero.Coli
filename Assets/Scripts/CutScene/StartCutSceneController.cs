@@ -77,7 +77,6 @@ public class StartCutSceneController : CutScene {
     
     public override void endCutScene()
     {
-        _cellControl.gameObject.AddComponent<MovementHint>();
         _cellControl.freezePlayer(false);
         //Destroy(this.gameObject.transform.parent.gameObject);
         FocusMaskManager.get().blockClicks(false);
@@ -225,6 +224,7 @@ public class StartCutSceneController : CutScene {
     IEnumerator waitForEnd()
     {
         yield return new WaitForSeconds(waitTimes[8]);
+        GameObject.Find("Perso").AddComponent<CraftDiscoveryHint>();
         end();
         yield return null;
     }

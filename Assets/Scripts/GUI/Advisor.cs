@@ -13,7 +13,7 @@ public class Advisor : MonoBehaviour {
     [SerializeField]
     private Vector3 _originalScale;
     [SerializeField]
-    private GameObject _complementaryHint;
+    private GameObject _nextButton;
     
     private UILocalize _localize;
 
@@ -22,7 +22,7 @@ public class Advisor : MonoBehaviour {
         _originalScale = _nanoBot.transform.localScale;
     }
 
-    public void setUpNanoBot(bool top, string text, bool showComplementaryHint = false)
+    public void setUpNanoBot(bool top, string text, bool showButton = false)
     {
         if (top == true)
         {
@@ -34,7 +34,7 @@ public class Advisor : MonoBehaviour {
         }
 
         getDynamicText().key = text;
-        _complementaryHint.SetActive(showComplementaryHint);
+        _nextButton.SetActive(showButton);
     }
 
     public void setUpNanoBot(bool top)

@@ -38,9 +38,10 @@ public class DevicesDisplayer : MonoBehaviour {
   }
 
   public enum DeviceType {
-    Equiped,
-    Inventoried,
-    Listed
+    Equiped = 0,
+    Inventoried = 1, // deprecated
+    Listed = 2,
+    CraftSlot =3
   }
 	
   private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// don't inherit StepByStepTutorial
 public class MovementHint : MonoBehaviour {
 
     private float _elapsedTime = 0f;
