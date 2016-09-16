@@ -1,8 +1,5 @@
-using UnityEngine;
-using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Xml;
 
 /*!
   \brief This class is an interface that each reaction has to inherit.
