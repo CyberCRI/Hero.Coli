@@ -49,7 +49,14 @@ public class BoundCamera : MonoBehaviour {
 	void LateUpdate () {
 		
 		//if(_isZooming)
+        if (target != null)
+        {
 			transform.position = target.position + offset;
+        }
+        else
+        {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+        }
 		
 		if(_transition){
 			/*

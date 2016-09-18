@@ -21,10 +21,10 @@ public abstract class CutScene : MonoBehaviour {
         }
     }
     
-    private static CutSceneBlackBarHandler _blackBar;
+    protected static CutSceneBlackBarHandler _blackBar;
     private static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
-    private static Camera _cutSceneCamera;
+    protected static Camera _cutSceneCamera;
     protected static BoundCamera _boundCamera;
     
     private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
