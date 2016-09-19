@@ -4,7 +4,7 @@
       <name>ANTIAMPI</name>
       <substrate>AMPI</substrate>
       <enzyme>AMPR</enzyme>
-      <Kcat>1</Kcat>
+      <Kcat>0.09</Kcat>
       <effector>False</effector>
       <alpha>1000</alpha>
       <beta>0</beta>
@@ -20,17 +20,17 @@
       <reactants>
         <reactant>
           <name>REPR1</name>
-          <quantity>1</quantity>
+          <v>1</v>
         </reactant>
         <reactant>
           <name>IPTG</name>
-          <quantity>1</quantity>
+          <v>1</v>
         </reactant>
       </reactants>
       <products>
         <product>
           <name>REPR1*</name>
-          <quantity>1</quantity>  
+          <v>1</v>  
         </product>
       </products>
     </instantReaction>
@@ -40,17 +40,17 @@
       <reactants>
         <reactant>
           <name>REPR2</name>
-          <quantity>1</quantity>
+          <v>1</v>
         </reactant>
         <reactant>
           <name>ATC</name>
-          <quantity>1</quantity>
+          <v>1</v>
         </reactant>
       </reactants>
       <products>
         <product>
           <name>REPR2*</name>
-          <quantity>1</quantity>  
+          <v>1</v>  
         </product>
       </products>
     </instantReaction>
