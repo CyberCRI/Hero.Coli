@@ -26,6 +26,8 @@ public class PhenoSpeed : Phenotype
   public float rem2ndFlagellumThreshold;
   public float add3rdFlagellumThreshold;
   public float rem3rdFlagellumThreshold;
+  public float add4thFlagellumThreshold;
+  public float rem4thFlagellumThreshold;
 
 
   //public float threshold = 50f;
@@ -33,6 +35,7 @@ public class PhenoSpeed : Phenotype
 	public GameObject centralFlagellum;
   public GameObject leftFlagellum;
   public GameObject rightFlagellum;
+  public GameObject sideFlagellum;
 	
 	private int flagellaCount = 0;
 	private Molecule _mol = null;
@@ -91,29 +94,29 @@ public class PhenoSpeed : Phenotype
     {
         case 0:
         if(speed > add1stFlagellumThreshold)
-          //if(speed > add2ndFlagellumThresholdPerc*lowSpeed)
           set1Flagella();
         break;
       case 1:
         if(speed > add2ndFlagellumThreshold)
-          //if(speed > add3rdFlagellumThresholdPerc*medSpeed)
           set2Flagella();
         else if(speed < rem1stFlagellumThreshold)
-          //else if(speed < rem2ndFlagellumThresholdPerc*lowSpeed)
           set0Flagella();
         break;
       case 2:
         if(speed > add3rdFlagellumThreshold)
-          //if(speed > add3rdFlagellumThresholdPerc*medSpeed)
           set3Flagella();
         else if(speed < rem2ndFlagellumThreshold)
-          //else if(speed < rem2ndFlagellumThresholdPerc*lowSpeed)
           set1Flagella();
         break;
       case 3:
-        if(speed < rem3rdFlagellumThreshold)
-          //if(speed < rem3rdFlagellumThresholdPerc*medSpeed)
+        if(speed > add4thFlagellumThreshold)
+          set4Flagella();
+        else if(speed < rem3rdFlagellumThreshold)
           set2Flagella();
+        break;
+      case 4:
+        if(speed < rem4thFlagellumThreshold)
+          set3Flagella();
         break;
       default:
         Logger.Log("PhenoSpeed::updateFlagellaCount bad flagellaCount="+flagellaCount, Logger.Level.WARN);
@@ -127,6 +130,7 @@ public class PhenoSpeed : Phenotype
     leftFlagellum.SetActive(false);
     centralFlagellum.SetActive(false);
     rightFlagellum.SetActive(false);
+    sideFlagellum.SetActive(false);
   }
 
   private void set1Flagella()
@@ -135,6 +139,7 @@ public class PhenoSpeed : Phenotype
     leftFlagellum.SetActive(false);
     centralFlagellum.SetActive(true);
     rightFlagellum.SetActive(false);
+    sideFlagellum.SetActive(false);
   }
 
   private void set2Flagella()
@@ -143,6 +148,7 @@ public class PhenoSpeed : Phenotype
     leftFlagellum.SetActive(true);
     centralFlagellum.SetActive(false);
     rightFlagellum.SetActive(true);
+    sideFlagellum.SetActive(false);
   }
 
   private void set3Flagella()
@@ -151,6 +157,16 @@ public class PhenoSpeed : Phenotype
     leftFlagellum.SetActive(true);
     centralFlagellum.SetActive(true);
     rightFlagellum.SetActive(true);
+    sideFlagellum.SetActive(false);
+  }
+
+  private void set4Flagella()
+  {
+    flagellaCount = 4;
+    leftFlagellum.SetActive(true);
+    centralFlagellum.SetActive(true);
+    rightFlagellum.SetActive(true);
+    sideFlagellum.SetActive(true);
   }
 
 	/*!
