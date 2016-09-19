@@ -374,13 +374,13 @@ public class PromoterReaction : IReaction
         if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
         if( pro == null) Debug.Log("pro is null");
 			
-		float increase = delta * pro.getQuantityFactor() * _terminatorFactor * _beta
+		float increase = delta * pro.v * _terminatorFactor * _beta
                            * ReactionEngine.reactionsSpeed * _reactionSpeed;
 		
 		if(Logger.isLevel(Logger.Level.TRACE)) {
 		  if(_debug) Logger.Log("PromoterReaction::react increase="+increase
 					+", delta:"+delta
-					+", qFactor:"+pro.getQuantityFactor()
+					+", qFactor:"+pro.v
 					+", tFactor:"+_terminatorFactor
 					+", beta:"+_beta
                     +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
@@ -591,15 +591,13 @@ A PromoterReaction should respect this syntax:
    */
     private bool loadGene(string name, string RBSf)
     {
-        Product gene = new Product();
-        
         if (String.IsNullOrEmpty(name) || String.IsNullOrEmpty(RBSf))
         {
             Debug.Log("Error: Empty Gene name field");
             return false;
         }
-        gene.setName(name);
-        gene.setQuantityFactor(float.Parse(RBSf.Replace(",", ".")));
+
+        Product gene = new Product(name, float.Parse(RBSf.Replace(",", ".")));
         addProduct(gene);
         return true;
     }

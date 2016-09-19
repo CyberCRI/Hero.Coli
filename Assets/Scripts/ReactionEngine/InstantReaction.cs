@@ -10,7 +10,7 @@ using System.Xml;
 public class InstantReactionProperties
 {
   public string name;                           //!< The name of the reaction
-  public LinkedList<Product> reactants;         //!< The List of reactants
+  public LinkedList<Reactant> reactants;        //!< The List of reactants
   public LinkedList<Product> products;          //!< The products of the reaction
   public float energyCost;                      //!< The cost in energy of the reaction
 }
@@ -28,12 +28,10 @@ public class InstantReactionProperties
   */
 public class InstantReaction : IReaction
 {
-  private LinkedList<Product> _reactants;       //!< the list of reactants
-
   //! Default Constructor
   public InstantReaction()
   {
-    _reactants = new LinkedList<Product>();
+    _reactants = new LinkedList<Reactant>();
   }
 
   //! Default constructor
@@ -68,10 +66,10 @@ public class InstantReaction : IReaction
 
     reaction.setName(props.name);
     reaction.setEnergyCost(props.energyCost);
-    Product newReactant;
-    foreach (Product r in props.reactants)
+    Reactant newReactant;
+    foreach (Reactant r in props.reactants)
       {
-        newReactant = new Product(r);
+        newReactant = new Reactant(r);
         reaction.addReactant(newReactant);
       }
     Product newProd;
@@ -84,7 +82,7 @@ public class InstantReaction : IReaction
   }
 
 
-  public void addReactant(Product reactant) { if (reactant != null) _reactants.AddLast(reactant); }
+  public void addReactant(Reactant reactant) { if (reactant != null) _reactants.AddLast(reactant); }
 
 
   /*!
@@ -95,12 +93,12 @@ public class InstantReaction : IReaction
   */
   private float getLimitantFactor(ArrayList molecules)
   {
-    Product minReact = null;
+    Reactant minReact = null;
     bool b = true;
     Molecule mol = null;
     Molecule molMin = null;
 
-    foreach (Product r in _reactants)
+    foreach (Reactant r in _reactants)
       {
         mol = ReactionEngine.getMoleculeFromName(r.getName(), molecules);
         if (b && mol != null)
@@ -111,7 +109,7 @@ public class InstantReaction : IReaction
           }
         else if (mol != null)
           {
-            if (molMin != null && ((mol.getConcentration() / r.getQuantityFactor()) < (molMin.getConcentration() / minReact.getQuantityFactor())))
+            if (molMin != null && ((mol.getConcentration() / r.v) < (molMin.getConcentration() / minReact.v)))
               {
                 molMin = mol;
                 minReact = r;
@@ -120,7 +118,7 @@ public class InstantReaction : IReaction
       }
     if (minReact == null)
       return 0f;
-    return (molMin.getConcentration() / minReact.getQuantityFactor());
+    return (molMin.getConcentration() / minReact.v);
   }
 
 
@@ -157,21 +155,21 @@ public class InstantReaction : IReaction
 
     delta *= energyCoef;
     Molecule mol;
-    foreach (Product react in _reactants)
+    foreach (Reactant react in _reactants)
       {
         mol = ReactionEngine.getMoleculeFromName(react.getName(), molecules);
         if (enableSequential)
-          mol.subConcentration(delta * react.getQuantityFactor());
+          mol.subConcentration(delta * react.v);
         else
-          mol.subNewConcentration(delta * react.getQuantityFactor());
+          mol.subNewConcentration(delta * react.v);
       }
     foreach (Product prod in _products)
       {
         mol = ReactionEngine.getMoleculeFromName(prod.getName(), molecules);
         if (enableSequential)
-          mol.addConcentration(delta * prod.getQuantityFactor());
+          mol.addConcentration(delta * prod.v);
         else
-          mol.addNewConcentration(delta * prod.getQuantityFactor());
+          mol.addNewConcentration(delta * prod.v);
       }
   }
 
@@ -180,7 +178,7 @@ public class InstantReaction : IReaction
 
 
     /*
-      An Instant reaction should respect this syntax :
+      An Instant reaction should respect this syntax:
 
               <instantReaction>
                 <name>Water</name>                        -> Name of the reaction
@@ -188,7 +186,7 @@ public class InstantReaction : IReaction
                 <reactants>
                   <reactant>
                     <name>O</name>                        -> Reactant name
-                    <quantity>1</quantity>                -> Reactant coefficiant (how much of this to make products)
+                    <quantity>1</quantity>                -> Reactant coefficient (how much of this to make products)
                   </reactant>
                   <reactant>
                     <name>H</name>
@@ -203,190 +201,4 @@ public class InstantReaction : IReaction
                 </products>
               </instantReaction>
      */
-
-    /*!
-    \brief Parse and load reactants of an InstantReaction
-    \param node The xml node to parse
-    \return return always true
-   */
-    private bool loadInstantReactionReactants(XmlNode node)
-    {
-      bool b = false;
-
-      foreach (XmlNode attr in node)
-      {
-        if (attr.Name == "reactant")
-        {
-          if(!loadInstantReactionReactant(attr))
-          {                    
-            Logger.Log ("InstantReaction::loadInstantReactionReactants loadInstantReactionReactant failed"
-                        , Logger.Level.ERROR);
-            return false;
-          }
-          else
-          {
-              b = true;
-          }
-        }
-        else
-        {
-          Logger.Log ("InstantReaction::loadInstantReactionReactants bad attr name:"+attr.Name
-                            , Logger.Level.ERROR);
-          return false;
-        }
-      }
-
-      if(!b)
-      {
-        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded nothing"
-          , Logger.Level.ERROR);
-        return false;
-      }
-      else
-      {
-        Logger.Log ("InstantReaction::loadInstantReactionReactants loaded successfully "+this
-          , Logger.Level.DEBUG);
-        return true;
-      }
-
-    }
-    
-    /*!
-    \brief Parse and load reactant of an InstantReaction
-    \param node The xml node to parse
-    \return return always true
-  */
-    private bool loadInstantReactionReactant(XmlNode node)
-    {
-      Product prod = new Product();
-      foreach (XmlNode attr in node)
-      {
-        if (attr.Name == "name")
-        {
-            if (String.IsNullOrEmpty(attr.InnerText))
-            {
-              Logger.Log("InstantReaction::loadInstantReactionReactant Empty name field in instant reaction reactant definition"
-                               , Logger.Level.ERROR);
-              return false;
-            }
-            prod.setName(attr.InnerText);
-        }
-        else if (attr.Name == "quantity")
-        {
-          if (String.IsNullOrEmpty(attr.InnerText))
-          {                    
-            Logger.Log("InstantReaction::loadInstantReactionReactant Empty quantity field in instant reaction reactant definition"
-                       , Logger.Level.ERROR);
-            return false;
-          }
-          prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
-        }
-      }
-      addReactant(prod);
-      return true;
-    }
-    
-    /*!
-    \brief Parse and load reactant of an InstantReaction
-    \param node The xml node to parse
-    \return return always true
-  */
-    private bool loadInstantReactionProducts(XmlNode node)
-    {
-      Boolean b = true;
-      foreach (XmlNode attr in node)
-      {
-            //TODO should this be "if (b && (attr.Name == "product"))" ?
-        if (attr.Name == "product")
-        {
-          b = b && loadInstantReactionProduct(attr);
-        }
-      }
-      return b;
-    }
-    
-    /*!
-    \brief Parse and load products of an InstantReaction
-    \param node The xml node to parse
-    \return return always true
-  */
-    private bool loadInstantReactionProduct(XmlNode node)
-    {
-      Product prod = new Product();
-      foreach (XmlNode attr in node)
-      {
-        if (attr.Name == "name")
-        {
-          if (String.IsNullOrEmpty(attr.InnerText))
-          {
-            Logger.Log("InstantReaction::loadInstantReactionProduct Empty name field in instant reaction product definition"
-                               , Logger.Level.ERROR);
-            return false;
-          }
-          prod.setName(attr.InnerText);
-        }
-        else if (attr.Name == "quantity")
-        {
-          if (String.IsNullOrEmpty(attr.InnerText))
-          {
-            Logger.Log("InstantReaction::loadInstantReactionProduct Empty quantity field in instant reaction product definition"
-                         , Logger.Level.ERROR);
-            return false;
-          }
-          prod.setQuantityFactor(float.Parse(attr.InnerText.Replace(",", ".")));
-        }
-      }
-      addProduct(prod);
-      return true;
-    }
-    
-    /*!
-    \brief Parse and load the energy cost of an InstantReaction
-    \param value The value string
-    \return return always true
-  */
-    private bool loadEnergyCost(string value)
-    {
-      if (String.IsNullOrEmpty(value))
-      {
-        Logger.Log("InstantReaction::loadInstantReactionProduct Empty EnergyCost field. default value = 0"
-                       , Logger.Level.WARN);
-        setEnergyCost(0f);
-      }
-      else
-        setEnergyCost(float.Parse(value.Replace(",", ".")));
-      return true;
-    }
-
-
-    public override bool tryInstantiateFromXml(XmlNode node)
-    {
-      Boolean b = true;
-      foreach (XmlNode attr in node)
-      {
-        switch (attr.Name)
-        {
-          case "name":
-            setName(attr.InnerText);
-            break;
-          case "reactants":
-            b = b && loadInstantReactionReactants(attr);
-            break;
-          case "products":
-            b = b && loadInstantReactionProducts(attr);
-            break;
-          case "EnergyCost":
-            b = b && loadEnergyCost(attr.InnerText);
-            break;
-        }
-      }
-
-      return b && hasValidData();
-  }
-
-    public override bool hasValidData()
-    {
-        return base.hasValidData()
-          && (null != _reactants) && (0 != _reactants.Count);
-    }
 }

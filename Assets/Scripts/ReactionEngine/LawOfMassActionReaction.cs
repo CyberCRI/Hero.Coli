@@ -1,15 +1,8 @@
 using UnityEngine;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 public class LawOfMassActionReaction : IReaction
 {
-
-    //!< the list of reactants
-    private LinkedList<Product> _reactants;
-    private LinkedList<Product> _products;
-
     // rate
     private float r = 0;
 
@@ -23,12 +16,13 @@ public class LawOfMassActionReaction : IReaction
     // universal ideal gas law constant
     private float R = 8.31446f; // J mol−1 K−1
     // temperature
-    private float T = 293f; // 293°K ≈ 20°C 
+    private float T = 293f; // 293°K ≈ 20°C
 
-    // orders
-    private float[] n;
-    // stoichiometric coefficients ν (Greek nu)
-    private float[] v;
+    //! Default Constructor
+    public LawOfMassActionReaction() : base() {}
+
+    //! Default constructor
+    public LawOfMassActionReaction(LawOfMassActionReaction r) : base(r) {}
 
     private void compute_k()
     {
@@ -38,19 +32,16 @@ public class LawOfMassActionReaction : IReaction
     private void compute_r(ArrayList molecules)
     {
         r = k;
-        int index = 0;
         Molecule mol;
-        foreach (Product reactant in _reactants)
+        foreach (Reactant reactant in _reactants)
         {
             mol = ReactionEngine.getMoleculeFromName(reactant.getName(), molecules);
-            r = r * Mathf.Pow(mol.getConcentration(), n[index]);
-            index++;
+            r = r * Mathf.Pow(mol.getConcentration(), reactant.n);
         }
     }
 
     public override void react(ArrayList molecules)
     {
-        int index = 0;
         Molecule mol;
         if (0 == k)
         {
@@ -58,33 +49,59 @@ public class LawOfMassActionReaction : IReaction
         }
         compute_r(molecules);
         float delta = r * Time.deltaTime;
-        foreach (Product reactant in _reactants)
+        foreach (Reactant reactant in _reactants)
         {
             mol = ReactionEngine.getMoleculeFromName(reactant.getName(), molecules);
             if (enableSequential)
             {
-                mol.subConcentration(delta * v[index]);
+                mol.subConcentration(delta * reactant.v);
             }
             else
             {
-                mol.subNewConcentration(delta * v[index]);
+                mol.subNewConcentration(delta * reactant.v);
             }
-            index++;
         }
-        index = 0;
-        foreach (Product prod in _products)
+        foreach (Product product in _products)
         {
-            mol = ReactionEngine.getMoleculeFromName(prod.getName(), molecules);
+            mol = ReactionEngine.getMoleculeFromName(product.getName(), molecules);
             if (enableSequential)
             {
-                mol.addConcentration(delta * v[index]);
+                mol.addConcentration(delta * product.v);
             }
             else
             {
-                mol.addNewConcentration(delta * v[index]);
+                mol.addNewConcentration(delta * product.v);
             }
-            index++;
         }
     }
+
+
+
+    /*
+      A LawOfMassActionReaction should respect this syntax:
+
+              <LawOfMassActionReaction>
+                <name>Water</name>                        -> Name of the reaction
+                <EnergyCost>0.1</EnergyCost>              -> Energy cost of the reaction
+                <reactants>
+                  <reactant>
+                    <name>O</name>                        -> Reactant name
+                    <v>1</v>                              -> Reactant stoichiometric coefficient
+                    <n>1</n>                              -> Reactant order in the rate equation
+                  </reactant>
+                  <reactant>
+                    <name>H</name>
+                    <v>2</v>                              
+                    <n>2</n>                              
+                  </reactant>
+                </reactants>
+                <products>
+                  <product>
+                    <name>H2O</name>                      -> Product name
+                    <v>1</v>                              -> Product stoichiometric coefficient
+                  </product>
+                </products>
+              </LawOfMassActionReaction>
+     */
 }
 
