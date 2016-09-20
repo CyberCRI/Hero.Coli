@@ -165,9 +165,9 @@ public class AmbientLighting : MonoBehaviour
     {
         if (_blackLight == false)
         {
-            ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity * life);
-            ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity * life);
-            ChangeLightIntensity(_spotLight, _originalSpotLightIntensity * life);
+            ChangeLightIntensity(_directionaleLight, _lightingSave.GetOriginDirectional() * life);
+            ChangeLightIntensity(_phenoLight, _lightingSave.GetOriginPheno() * life);
+            ChangeLightIntensity(_spotLight, _lightingSave.GetOriginSpot() * life);
         }
         _alphaColor = _backgroundBlood.material.color;
         _alphaColor.a = 0.5f - life;

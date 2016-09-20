@@ -40,4 +40,19 @@ public class LightingSave : MonoBehaviour {
         _originalPhenoLightIntensity = _phenoLight.intensity;
         _originalSpotLightIntensity = _spotLight.intensity;
     }
+
+    public float GetOriginDirectional()
+    {
+        return _originalDirectionalIntensity;
+    }
+
+    public float GetOriginPheno()
+    {
+        return _originalDirectionalIntensity;
+    }
+
+    public float GetOriginSpot()
+    {
+        return _originalDirectionalIntensity;
+    }
 }
