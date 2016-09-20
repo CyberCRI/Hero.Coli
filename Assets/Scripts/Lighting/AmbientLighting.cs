@@ -16,6 +16,8 @@ public class AmbientLighting : MonoBehaviour
     private GameObject _background;
     [SerializeField]
     private Renderer _backgroundBlood;
+    [SerializeField]
+    private LightingSave _lightingSave;
     private float _originalDirectionalIntensity;
     private float _originalSpotLightIntensity;
     private float _originalPhenoLightIntensity;
@@ -122,7 +124,7 @@ public class AmbientLighting : MonoBehaviour
                 _blackLight = false;
                 ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-                ResetLighting();
+                StartReset();
             }
         }
         if (col.tag == "BlackLightInverse")
@@ -132,7 +134,7 @@ public class AmbientLighting : MonoBehaviour
                 _blackLight = false;
                 ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-                ResetLighting();
+                StartReset();
             }
         }
     }
@@ -179,7 +181,12 @@ public class AmbientLighting : MonoBehaviour
         _backgroundBlood.material.color = _alphaColor;
     }
 
-    public void ResetLighting()
+    public void StartReset()
+    {
+        _lightingSave.GetOriginForReset();
+    }
+
+    public void ResetLighting(float directional, float pheno, float spotLight)
     {
         _alphaColor = _backgroundBlood.material.color;
         _alphaColor.a = 0f;
@@ -187,15 +194,15 @@ public class AmbientLighting : MonoBehaviour
         _alphaColor = _background.GetComponent<Renderer>().material.color;
         _alphaColor.a = 1f;
         _background.GetComponent<Renderer>().material.color = _alphaColor;
-        ChangeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
-        ChangeLightIntensity(_phenoLight, _originalPhenoLightIntensity);
-        ChangeLightIntensity(_spotLight, _originalSpotLightIntensity);
+        ChangeLightIntensity(_directionaleLight, directional);
+        ChangeLightIntensity(_phenoLight, pheno);
+        ChangeLightIntensity(_spotLight, spotLight);
     }
 
     public void SaveCurrentLighting()
     {
         _originalDirectionalIntensity = _directionaleLight.intensity;
-        _originalPhenoLightIntensity = _directionaleLight.intensity;
+        _originalPhenoLightIntensity = _phenoLight.intensity;
         _originalSpotLightIntensity = _spotLight.intensity;
     }
 

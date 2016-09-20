@@ -270,7 +270,7 @@ public class Hero : MonoBehaviour {
                     _isInjured = false;
                     if (_ambientLighting.IsBlackLight() == false)
                     {
-                        _ambientLighting.ResetLighting();
+                        _ambientLighting.StartReset();
                     }
                 }
                 else
@@ -279,7 +279,7 @@ public class Hero : MonoBehaviour {
                 }
             }
     }
-
+        _ambientLighting.Injured(_lifeManager.getLife());
         _previousLife = _lifeManager.getLife();
 
 	}
@@ -497,7 +497,7 @@ public class Hero : MonoBehaviour {
             ampicillin.setNewConcentration(0);
         }
         
-        _ambientLighting.ResetLighting();
+        _ambientLighting.StartReset();
 
         StartCoroutine(popEffectCoroutine(savedCell));
     }

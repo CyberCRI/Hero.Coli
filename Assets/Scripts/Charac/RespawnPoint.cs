@@ -27,7 +27,7 @@ public class RespawnPoint : MonoBehaviour {
             }
             else
             {
-                ambLight.ResetLighting();
+                ambLight.StartReset();
             }
         }
     }
