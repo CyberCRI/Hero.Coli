@@ -12,6 +12,10 @@
     <next>ModalRestart</next>
     <cancel>BackToEndPanelButton</cancel>
   </info>
+  <info code="NoCraftWhileDamage">
+    <texture>i_modal_ampi2</texture>
+    <next>QuitModalWindow</next>
+  </info>
   
   <info code="T1_AMPICILLIN">
     <texture>i_modal_ampi2</texture>

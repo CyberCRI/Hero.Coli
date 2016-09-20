@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LightingSave : MonoBehaviour {
 
@@ -31,7 +30,7 @@ public class LightingSave : MonoBehaviour {
 
     public void GetOriginForReset()
     {
-        _ambLight.ResetLighting(_originalDirectionalIntensity,_originalPhenoLightIntensity,_originalSpotLightIntensity);
+        _ambLight.resetLighting(_originalDirectionalIntensity,_originalPhenoLightIntensity,_originalSpotLightIntensity);
     }
 
     public void SaveCurrentLighting()

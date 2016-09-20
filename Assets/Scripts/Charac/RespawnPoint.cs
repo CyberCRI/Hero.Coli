@@ -22,12 +22,12 @@ public class RespawnPoint : MonoBehaviour {
             AmbientLighting ambLight = col.GetComponent<AmbientLighting>();
             if (_colNumber == 0)
             {
-                ambLight.SaveCurrentLighting();
+                ambLight.saveCurrentLighting();
                 _colNumber += 1;
             }
             else
             {
-                ambLight.StartReset();
+                ambLight.startReset();
             }
         }
     }

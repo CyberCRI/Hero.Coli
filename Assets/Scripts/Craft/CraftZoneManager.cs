@@ -380,7 +380,7 @@ public class CraftZoneManager : MonoBehaviour {
   public static bool isOpenable()
   {
     //FIXME doesn't work with test null != _instance._currentDevice
-    return 0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count;
+    return !(0 == AvailableBioBricksManager.get().getAvailableBioBricks().Count || Hero.isBeingInjured);
   }
 
   void Start()
