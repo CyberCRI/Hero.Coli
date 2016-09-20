@@ -1,151 +1,151 @@
 using UnityEngine;
 using System.Collections;
 
-public class Mine : MonoBehaviour {
-
-
-	private bool _detonated = false;
-	private float _x;
-	private float _z;
-  public string mineName;
+public class Mine : MonoBehaviour
+{
+    private bool _detonated = false;
+    private float _x;
+    private float _z;
+    public string mineName;
 
     //FIXME
-	private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive
-	private float _concentrationTreshold = 2f;
+    private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive to
+    private float _concentrationTreshold = 2f;
 
-	private float _radius = 9f;
-	private bool _isNear = false;
+    private float _radius = 9f;
+    private bool _isNear = false;
     private bool _isReseting = false;
 
     private GameObject _particleSystem;
     private bool _first = true;
 
-	/*private Hashtable _optionsIn = iTween.Hash(
-		"scale", Vector3.one,
-		//"alpha", 255f,
-		"time", 0.8f,
-		"easetype", iTween.EaseType.easeOutElastic
-		);
-
-	private Hashtable _optionsOut = iTween.Hash(
-		"scale", Vector3.zero,
-	//	"alpha", 0f,
-		"time",1f,
-		"easetype", iTween.EaseType.easeInQuint
-		);*/
-
-
-	public void detonate(bool reseting) {
+    public void detonate(bool reseting)
+    {
+        Debug.Log("self " + this.gameObject.name + " detonates");
         _isReseting = reseting;
-        MineManager.get().detonate(this, reseting);
+        MineManager.get().detonate(this);
         _detonated = true;
-	}
+    }
 
-	public bool isDetonated() { return _detonated;}
+    public bool isDetonated() { return _detonated; }
 
-	public float getX() {return _x;}
-	public float getZ() {return _z;}
-	//public float getId() {return _id;}
+    public float getX() { return _x; }
+    public float getZ() { return _z; }
+    //public float getId() {return _id;}
 
-	//public void setId(float f) {_id = f;}
+    //public void setId(float f) {_id = f;}
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         //transform.localScale = Vector3.zero;
         _particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
-		_x = transform.position.x;
-		_z = transform.position.z;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        _x = transform.position.x;
+        _z = transform.position.z;
+    }
 
-		//autoReset();
-	
-		detection ();
+    // Update is called once per frame
+    void Update()
+    {
 
-		//Start the red light of the mine
+        //autoReset();
 
-		if(transform.FindChild("Point light"))
-		{
-			if(_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
-			{
-				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
-			}
+        detection();
 
-			//end the red light of the mine
-			else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
-			{
-				transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
-			}
-		}
-	}
+        //Start the red light of the mine
 
-	void detection() {
+        if (transform.FindChild("Point light"))
+        {
+            if (_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
+            {
+                transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
+            }
 
+            //end the red light of the mine
+            else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
+            {
+                transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
+            }
+        }
+    }
 
-		Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
-		
-		// If Player is in a small area
-		Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == "Perso");
-			if(match)
-		{
-			if(match.transform.GetComponent<Hero>().getMedium() != null)
-			{
-				ArrayList molecules= match.transform.GetComponent<Hero>().getMedium().getMolecules();
-				
-				foreach(Molecule m in molecules)
-				{
-					//If player has the Green Fluorescence with a sufficient concentration :: the mine appears
-					if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
-					{
-						if(!_isNear)
-						{
-							//iTween.ScaleTo(this.gameObject, _optionsIn);
-							//iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
-							//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
-							_isNear = true;
-						}
-					}
-					else if(m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
-					{
-						//iTween.ScaleTo (this.gameObject, _optionsOut);
-						//iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
-						//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
-						_isNear = false;
+    void detection()
+    {
+        Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
 
-					}
-				}
-				
-			}
+        // If Player is in a small area
+        Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == "Perso");
+        if (match)
+        {
+            if (match.transform.GetComponent<Hero>().getMedium() != null)
+            {
+                ArrayList molecules = match.transform.GetComponent<Hero>().getMedium().getMolecules();
 
-		}
-		else 
-		{
-			//iTween.ScaleTo (this.gameObject, _optionsOut);
-			//iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
-			//TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
-			_isNear = false;
-		}
+                foreach (Molecule m in molecules)
+                {
+                    //If player has the Green Fluorescence with a sufficient concentration :: the mine appears
+                    if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
+                    {
+                        if (!_isNear)
+                        {
+                            //iTween.ScaleTo(this.gameObject, _optionsIn);
+                            //iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
+                            //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
+                            _isNear = true;
+                        }
+                    }
+                    else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
+                    {
+                        //iTween.ScaleTo (this.gameObject, _optionsOut);
+                        //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
+                        //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
+                        _isNear = false;
 
+                    }
+                }
 
-	}
-	public void stopAnimation() {
-		if(_detonated)
-		{
-			//iTween.Stop(transform.FindChild("Point light").gameObject);
-		}
-	}
+            }
+
+        }
+        else
+        {
+            //iTween.ScaleTo (this.gameObject, _optionsOut);
+            //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
+            //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
+            _isNear = false;
+        }
 
 
-	public void autoReset()
-	{
-		if(_isReseting && _detonated)
-		{
-            Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
-            //MineManager.resetSelectedMine(this,_isReseting);
-		}
-	}
+    }
+    public void stopAnimation()
+    {
+        if (_detonated)
+        {
+            //iTween.Stop(transform.FindChild("Point light").gameObject);
+        }
+    }
+
+    public void autoReset()
+    {
+        if (_isReseting && _detonated)
+        {
+            Debug.LogWarning("MINE " + mineName + " ASKS FOR RESETTING");
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+		Debug.Log("colliding with " + collision.gameObject.name);
+        if (collision.gameObject.name == "Perso")
+        {
+            detonate(true);
+            collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
+        }
+        else if (collision.gameObject.tag == "NPC")
+        {
+            detonate(false);
+        }
+    }
 
     void OnDestroy()
     {

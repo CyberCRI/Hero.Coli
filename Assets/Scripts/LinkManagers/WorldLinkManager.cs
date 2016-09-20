@@ -18,8 +18,6 @@ public class WorldLinkManager : LinkManager
         if(null == perso) {
             Logger.Log("WorldLinkManager: error: Hero not found!", Logger.Level.ERROR);
         }
-        
-        mineManager.hero = perso.GetComponent<Hero> ();
 
         if (null != startPosition) {
             CellControl.get().teleport(startPosition.transform.position, startPosition.transform.rotation);

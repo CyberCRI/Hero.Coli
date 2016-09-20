@@ -528,9 +528,7 @@ public class Hero : MonoBehaviour
             box.resetPos();
         }
 
-        MineManager.isReseting = true;
-        MineManager.get().ResetAllMines();
-
+        MineManager.get().resetAllMines();
 
         SavedCell savedCell = null;
         if (null != _lastNewCell)
