@@ -6,7 +6,7 @@ using System;
 /*!
   \brief     Describe a FickReaction
   \details   This class is a descriptive class of a FickReaction
- A fick reaction file should respect this syntax :
+ A fick reaction file should respect this syntax:
  
      <ficks>
       <fickProp>

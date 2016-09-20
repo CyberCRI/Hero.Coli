@@ -157,10 +157,21 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
     
-    public override void addAndEquipDevice(Device device)
+    public override void addAndEquipDevice(Device device, bool replace = true)
     {
         if(Device.isValid(device))
         {
+            if(!replace)
+            {
+                foreach(CraftDeviceSlot slot in slots)
+                {
+                    if(!slot.isEquiped)
+                    {
+                        slot.setSelected(true);
+                        break;
+                    }
+                }
+            }
             //add every brick to the stock
             foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
             {

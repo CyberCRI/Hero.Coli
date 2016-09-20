@@ -157,9 +157,7 @@ public class Device: DNABit
             if (gene != null)
               {
                 molName = gene.getProteinName();
-                prod = new Product();
-                prod.setName(molName);
-                prod.setQuantityFactor(RBSf);
+                prod = new Product(molName, RBSf);
                 products.AddLast(prod);
               }
             else

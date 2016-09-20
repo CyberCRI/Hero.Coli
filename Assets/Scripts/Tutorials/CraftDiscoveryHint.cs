@@ -1,4 +1,4 @@
-﻿// #define QUICKTEST
+﻿#define QUICKTEST
 
 #if QUICKTEST
 public class CraftDiscoveryHint : FakeStepByStepTutorial { }

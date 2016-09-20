@@ -293,7 +293,7 @@ public class CraftZoneManager : MonoBehaviour {
   }
   */
 
-  public virtual void addAndEquipDevice(Device device)
+  public virtual void addAndEquipDevice(Device device, bool replace = true)
   {
       setDevice(device);
   }

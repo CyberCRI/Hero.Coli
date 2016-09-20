@@ -416,7 +416,7 @@ public class Medium : LoadableFromXmlImpl
     /*! 
      *  \brief     Load medium files
      *  \details   This class loads everything about mediums from medium files
-     A medium file should respect this syntax :
+     A medium file should respect this syntax:
 
             <Mediums>
               <Medium type="Cellia">

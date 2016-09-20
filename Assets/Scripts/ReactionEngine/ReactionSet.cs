@@ -8,7 +8,7 @@ using UnityEngine;
   \details A ReactionSet is assigned to a medium and so describe
   which reaction is present in each medium.
 
-A reaction set musth be declare in molecule's files respecting this syntax :
+A reaction set musth be declare in molecule's files respecting this syntax:
 
     <Document>
       <reactions id="CelliaReactions">
@@ -40,12 +40,25 @@ public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
   {
     switch(reactionType)
     {
+      /*
+        Degradation
+        PromoterReaction
+        LawOfMassActionReaction
+        Allostery
+        EnzymeReaction
+        ActiveTransportReaction
+        FickReaction
+        ATPProducer
+        InstantReaction
+      */
       case "promoter":
         return new PromoterReaction();
       case "enzyme":
         return new EnzymeReaction();
       case "allostery":
         return new Allostery();
+      case "lawOfMassActionReaction":
+        return new LawOfMassActionReaction();
       case "instantReaction":
         return new InstantReaction();
       default:
