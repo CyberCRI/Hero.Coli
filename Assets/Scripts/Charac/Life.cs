@@ -16,75 +16,76 @@ using System.Collections;
  *
  * ApplyVariation is called in the Update() of the Character
  * */
-public class Life : MonoBehaviour {
+public class Life
+{
 
-	private float _lifeMax;
-	private float _life;
-	private float _lifeRegen;
-	private float _variation;
+    private float _lifeMax;
+    private float _life;
+    private float _lifeRegen;
+    private float _variation;
 
-	private bool _suddenDeath = false;
-	//Constructor
-	public Life(float life, float lifeRegen)
-	{
-		_lifeMax = life;
-		_life = _lifeMax;
-		_lifeRegen = lifeRegen;
-	}
-	
-
-	//Add a variation for the next update, the bool positive determines if the variation will be positive or negative
-	public void addVariation (float variation)
-	{
-		_variation += variation;
-	}
-
-	public float getLife()
-	{
-		return _life;
-  }
-
-  public void setLife(float life) {
-    if (life >= 1f)
+    private bool _suddenDeath = false;
+    //Constructor
+    public Life(float life, float lifeRegen)
     {
-      life = 1f;
+        _lifeMax = life;
+        _life = _lifeMax;
+        _lifeRegen = lifeRegen;
     }
-    else if (life <= 0f)
+
+    //Add a variation for the next update, the bool positive determines if the variation will be positive or negative
+    public void addVariation(float variation)
     {
-      life = 0f;
+        _variation += variation;
     }
-    _life = life;
-  }
 
-	public void setSuddenDeath(bool b) {
-		_suddenDeath = b;
-	}
+    public float getLife()
+    {
+        return _life;
+    }
 
-	public float getVariation()
-	{
-		return _variation;
-	}
+    public void setLife(float life)
+    {
+        if (life >= 1f)
+        {
+            life = 1f;
+        }
+        else if (life <= 0f)
+        {
+            life = 0f;
+        }
+        _life = life;
+    }
 
-	public void applyVariation()
-	{
-		_life += _variation;
-		if(_life  <= 0f || _suddenDeath) _life = 0f;
-		else if(_life  >= _lifeMax) _life = _lifeMax;
+    public void setSuddenDeath(bool b)
+    {
+        _suddenDeath = b;
+    }
 
+    public float getVariation()
+    {
+        return _variation;
+    }
 
-		ResetVariation();
-	}
+    public void applyVariation()
+    {
+        _life += _variation;
+        if (_life <= 0f || _suddenDeath) _life = 0f;
+        else if (_life >= _lifeMax) _life = _lifeMax;
 
-	// Reset the variation value : called at the end of the update
-	public void ResetVariation()
-	{
-		_variation = 0f;
-		if(_suddenDeath)
-			_suddenDeath = false;
-	}
+        ResetVariation();
+    }
 
-  public void regen(float deltaTime)
-  {
-    addVariation(deltaTime * _lifeRegen);
-  }
+    // Reset the variation value : called at the end of the update
+    public void ResetVariation()
+    {
+        _variation = 0f;
+        if (_suddenDeath)
+            _suddenDeath = false;
+    }
+
+    public void regen(float deltaTime)
+    {
+        addVariation(deltaTime * _lifeRegen);
+    }
 }
