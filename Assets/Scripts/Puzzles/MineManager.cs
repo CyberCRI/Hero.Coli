@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 
 public class MineManager : MonoBehaviour {
-    
-    
+
+
     //////////////////////////////// singleton fields & methods ////////////////////////////////
+    private List<Mine> _mineToReset = new List<Mine>();
+    private List<GameObject> _particleSys = new List<GameObject>();
     public static string gameObjectName = "MineManager";
     private static MineManager _instance;
     public static MineManager get() {
@@ -45,10 +48,14 @@ public class MineManager : MonoBehaviour {
       return hero;
   }
 
-    public static void detonate(Mine mine , bool reseting)
+    public void detonate(Mine mine , bool reseting)
     {
         detonatedMines++;
-        resetSelectedMine(mine, reseting);
+        //resetSelectedMine(mine, reseting);
+        _mineToReset.Add(mine);
+        GameObject particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
+        GameObject instance = Instantiate(particleSystem, new Vector3(mine.transform.position.x, mine.transform.position.y + 10, mine.transform.position.z), mine.transform.rotation) as GameObject;
+        _particleSys.Add(instance);
     }
 
 	//public void resetSelectedMine(float id, GameObject target)
@@ -73,5 +80,23 @@ public class MineManager : MonoBehaviour {
     {
       isReseting = false;
     }
+
+    
   }
+
+    public void ResetAllMines()
+    {
+        foreach(Mine mine in _mineToReset)
+        {
+            resetSelectedMine(mine, true);
+        }
+
+        foreach(GameObject partSys in _particleSys)
+        {
+            Destroy(partSys.gameObject);
+        }
+
+        _mineToReset.Clear();
+        _particleSys.Clear();
+    }
 }

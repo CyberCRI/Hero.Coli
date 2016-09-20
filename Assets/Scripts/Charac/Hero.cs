@@ -475,6 +475,7 @@ public class Hero : MonoBehaviour {
         }
 
         MineManager.isReseting = true;
+        MineManager.get().ResetAllMines();
 
 
         SavedCell savedCell = null;

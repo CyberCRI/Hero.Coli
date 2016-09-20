@@ -17,6 +17,9 @@ public class Mine : MonoBehaviour {
 	private bool _isNear = false;
     private bool _isReseting = false;
 
+    private GameObject _particleSystem;
+    private bool _first = true;
+
 	/*private Hashtable _optionsIn = iTween.Hash(
 		"scale", Vector3.one,
 		//"alpha", 255f,
@@ -34,7 +37,7 @@ public class Mine : MonoBehaviour {
 
 	public void detonate(bool reseting) {
         _isReseting = reseting;
-        MineManager.detonate(this, reseting);
+        MineManager.get().detonate(this, reseting);
         _detonated = true;
 	}
 
@@ -48,8 +51,8 @@ public class Mine : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//transform.localScale = Vector3.zero;
-
+        //transform.localScale = Vector3.zero;
+        _particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
 		_x = transform.position.x;
 		_z = transform.position.z;
 	}
@@ -140,8 +143,15 @@ public class Mine : MonoBehaviour {
 		if(_isReseting && _detonated)
 		{
             Debug.LogWarning("MINE "+mineName+" ASKS FOR RESETTING");
-            MineManager.resetSelectedMine(this,_isReseting);
+            //MineManager.resetSelectedMine(this,_isReseting);
 		}
 	}
+
+    void OnDestroy()
+    {
+        Debug.Log("11");
+        _particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
+        GameObject instance = Instantiate(_particleSystem, new Vector3(this.transform.position.x, this.transform.position.y + 10, this.transform.position.z), this.transform.rotation) as GameObject;
+    }
 
 }
