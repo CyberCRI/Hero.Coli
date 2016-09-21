@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class PhenoAmpicillinProducer : MonoBehaviour
 {
-
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public const string gameObjectName = Hero.gameObjectName;
     private static PhenoAmpicillinProducer _instance;
@@ -50,7 +49,7 @@ public class PhenoAmpicillinProducer : MonoBehaviour
     private bool _isInCollision = false;
     private List<GameObject> _clouds = new List<GameObject>();
 
-    private bool _isActive = true;
+    private bool _isActive = false;
     public bool isActive
     {
         get
@@ -66,6 +65,20 @@ public class PhenoAmpicillinProducer : MonoBehaviour
 
     private void initialize()
     {
+    }
+
+    // TODO replace using event system
+    public void onEquippedDevice(Device device)
+    {
+        isActive = isActive || containsAmpicillinBrick(device);
+    }
+    public void onUnequippedDevice(Device device)
+    {
+        isActive = Equipment.get().exists(d => containsAmpicillinBrick(d));
+    }
+    private bool containsAmpicillinBrick(Device device)
+    {
+        return (_brickName == device.getFirstGeneBrickName());
     }
 
     void FixedUpdate()

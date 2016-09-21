@@ -89,6 +89,10 @@
   <brick id="AMPR" size="943" type="gene">
     <protein>AMPR</protein>
   </brick>
+  <!--fictionary brick-->
+  <brick id="AMPI" size="943" type="gene">
+    <protein>AMPI</protein>
+  </brick>
 
   <!--LacI repressor from lac operon, LacI protein, IPTG binds to lacI-->
   <brick id="REPR1" size="1153" type="gene">

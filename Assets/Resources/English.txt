@@ -115,6 +115,7 @@ BRICK.ICONLABEL.RBS2=12.6%
 BRICK.ICONLABEL.RBS3=6%
 
 BRICK.ICONLABEL.AMPR=AmpR
+BRICK.ICONLABEL.AMPI=Ampicillin
 BRICK.ICONLABEL.ARAC=araC
 BRICK.ICONLABEL.ATC=ATc
 BRICK.ICONLABEL.FLUO1=GFP
@@ -456,6 +457,12 @@ TOOLTIP.B_RBS3.REFERENCE=fictive
 TOOLTIP.B_RBS3.EXPLANATION=Ribosome Binding Site sequence with very 3weak translation initialization.
 
 
+TOOLTIP.B_AMPI.TITLE=Ampicillin Coding Sequence
+TOOLTIP.B_AMPI.SUBTITLE=Use: entails the production of ampicillin.
+TOOLTIP.B_AMPI.LENGTH=943bp
+TOOLTIP.B_AMPI.REFERENCE=fictitious
+TOOLTIP.B_AMPI.EXPLANATION=Coding sequence for the Ampicillin antibiotic.
+
 TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Coding Sequence
 TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.
 TOOLTIP.B_AMPR.LENGTH=943bp
@@ -573,6 +580,34 @@ TOOLTIP.B_DTER.EXPLANATION=Strong transcription terminator sequence - Double ter
 
 
 
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.TITLE=Ampicillin (base)
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.SUBTITLE=Equipped: your bacterium produces Ampicillin.
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.REFERENCE=fictitious
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:AMPI:DTER.EXPLANATION=Constant level of expression at 6% of the 'Ampicillin' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.TITLE=Ampicillin (low)
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.SUBTITLE=Equipped: your bacterium produces Ampicillin.
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.REFERENCE=fictitious
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS2:AMPI:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'Ampicillin' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.TITLE=Ampicillin (med)
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.SUBTITLE=Equipped: your bacterium produces Ampicillin.
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.REFERENCE=fictitious
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS1:AMPI:DTER.EXPLANATION=Constant level of expression at 23% of the 'Ampicillin' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.TITLE=Green fluorescence (base)
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:FLUO1:DTER.EXPLANATION=Constant level of expression at 6% of the 'Green fluorescent protein' Coding Sequence.
+
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.TITLE=Green fluorescence (low)
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
 TOOLTIP.D_PRCONS:RBS2:FLUO1:DTER.LENGTH=1101bp
@@ -586,6 +621,27 @@ TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.LENGTH=1101bp
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.REFERENCE=Stanford University
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
 TOOLTIP.D_PRCONS:RBS1:FLUO1:DTER.EXPLANATION=Constant level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.TITLE=Red fluorescence (base)
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.SUBTITLE=Equipped: your bacterium becomes red fluorescent when exposed to green light.
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.REFERENCE=iGEM Harvard 2005
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS3:FLUO2:DTER.EXPLANATION=Constant level of expression at 6% of the 'Red fluorescent protein' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.TITLE=Red fluorescence (low)
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.SUBTITLE=Equipped: your bacterium becomes red fluorescent when exposed to green light.
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.REFERENCE=iGEM Harvard 2005
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS2:FLUO2:DTER.EXPLANATION=Constant level of expression at 12.6% of the 'Red fluorescent protein' Coding Sequence.
+
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.TITLE=Red fluorescence (med)
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.SUBTITLE=Equipped: your bacterium becomes red fluorescent when exposed to green light.
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.LENGTH=1101bp
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.REFERENCE=iGEM Harvard 2005
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.D_PRCONS:RBS1:FLUO2:DTER.EXPLANATION=Constant level of expression at 23% of the 'Red fluorescent protein' Coding Sequence.
 
 TOOLTIP.D_PRCONS:RBS3:MOV:DTER.TITLE=Hyperflagellation (base)
 TOOLTIP.D_PRCONS:RBS3:MOV:DTER.SUBTITLE=Equipped: gives 1 flagellum.
@@ -608,31 +664,45 @@ TOOLTIP.D_PRCONS:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
 TOOLTIP.D_PRCONS:RBS1:MOV:DTER.EXPLANATION=Constant level of expression at 23% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.TITLE=Regulated green fluorescence (low)
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.LENGTH=1101bp
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.REFERENCE=Stanford University
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS2:FLUO1:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.TITLE=Regulated green fluorescence (base)
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS3:FLUO1:DTER.EXPLANATION=Regulated level of expression at 6% of the 'Green fluorescent protein' Coding Sequence.
 
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.TITLE=Regulated green fluorescence (med)
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.LENGTH=1101bp
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.REFERENCE=Stanford University
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS1:FLUO1:DTER.EXPLANATION=Regulated level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.TITLE=Regulated green fluorescence (low)
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS2:FLUO1:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'Green fluorescent protein' Coding Sequence.
 
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.TITLE=Regulated hyperflagellation (low)
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.LENGTH=1122bp
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS2:MOV:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.TITLE=Regulated green fluorescence (med)
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.SUBTITLE=Equipped: your bacterium becomes green fluorescent when exposed to blue light.
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.LENGTH=1101bp
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.REFERENCE=Stanford University
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS1:FLUO1:DTER.EXPLANATION=Regulated level of expression at 23% of the 'Green fluorescent protein' Coding Sequence.
 
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.TITLE=Regulated hyperflagellation (med)
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.LENGTH=1122bp
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
-TOOLTIP.D_PRLACI:RBS1:MOV:DTER.EXPLANATION=Regulated level of expression at 23% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.TITLE=Regulated hyperflagellation (low)
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.LENGTH=1122bp
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS3:MOV:DTER.EXPLANATION=Regulated level of expression at 6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
+
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.TITLE=Regulated hyperflagellation (low)
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.LENGTH=1122bp
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS2:MOV:DTER.EXPLANATION=Regulated level of expression at 12.6% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
+
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.TITLE=Regulated hyperflagellation (med)
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.SUBTITLE=Equipped: increases swimming speed at 100% expression.
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.LENGTH=1122bp
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.REFERENCE=SDU-Denmark 2010 iGEM
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.ENERGYCONSUMPTION=XXX
+TOOLTIP.PRBAD1:RBS1:MOV:DTER.EXPLANATION=Regulated level of expression at 23% of the 'FlhDC master operon' Coding Sequence leading to flagella synthesis.
 
