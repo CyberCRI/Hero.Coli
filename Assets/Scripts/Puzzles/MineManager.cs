@@ -30,30 +30,29 @@ public class MineManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _mine;
+    [SerializeField]
+    private GameObject _particleSystem;
+    private Vector3 positionShift = new Vector3(0, 10f, 0);
 
     public void detonate(ResettableMine mine)
     {
         Debug.Log(mine.gameObject.name + " detonates");
         _minesToReset.Add(mine);
-        GameObject particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
-        GameObject instance = Instantiate(particleSystem, new Vector3(mine.transform.position.x, mine.transform.position.y + 10, mine.transform.position.z), mine.transform.rotation) as GameObject;
+        GameObject instance = Instantiate(_particleSystem, mine.transform.position + positionShift, mine.transform.rotation, mine.transform.parent) as GameObject;
         _particleSystems.Add(instance);
     }
 
-    public void resetSelectedMine(ResettableMine mine, bool reseting)
+    public void resetSelectedMine(ResettableMine mine)
     {
         GameObject target = mine.gameObject;
-        float x = target.transform.position.x;
-        float z = target.transform.position.z;
 
         iTween.Stop(target, true);
+        
+        GameObject go = (GameObject)Instantiate(_mine, mine.transform.position, mine.transform.rotation, mine.transform.parent);
+        ResettableMine newMine = go.GetComponent<ResettableMine>();
+        newMine.mineName = mine.mineName;
+        
         Destroy(target);
-        if (reseting)
-        {
-            GameObject go = (GameObject)Instantiate(_mine, new Vector3(x, 0, z), Quaternion.identity);
-            ResettableMine newMine = (ResettableMine)go.GetComponent<ResettableMine>();
-            newMine.mineName = mine.mineName;
-        }
     }
 
     public void resetAllMines()
@@ -62,7 +61,7 @@ public class MineManager : MonoBehaviour
         foreach (ResettableMine mine in _minesToReset)
         {
             Debug.Log("reset " + mine.gameObject.name);
-            resetSelectedMine(mine, true);
+            resetSelectedMine(mine);
         }
 
         foreach (GameObject particleSystem in _particleSystems)

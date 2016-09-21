@@ -27,7 +27,7 @@ public class CellControl : MonoBehaviour
             }
             else
             {
-                Debug.LogError("GameObject " + gameObjectName + " not found");
+                Debug.LogWarning("GameObject " + gameObjectName + " not found");
             }
         }
         return _instance;

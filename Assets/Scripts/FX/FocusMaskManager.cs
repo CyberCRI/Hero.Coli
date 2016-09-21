@@ -17,6 +17,7 @@ public class FocusMaskManager : MonoBehaviour
     private Vector3 _baseFocusMaskScale, _baseHoleScale;
     [SerializeField]
     private Advisor _advisor;
+    private CellControl _cellControl;
 
     // test code
     /*
@@ -196,7 +197,15 @@ public class FocusMaskManager : MonoBehaviour
         hole.SetActive(show);
         _advisor.gameObject.SetActive(show);
         
-        CellControl.get().freezePlayer(show);
+        if(null == _cellControl)
+        {
+            _cellControl = CellControl.get(); 
+        }
+
+        if(null != _cellControl)
+        {
+            _cellControl.freezePlayer(show);
+        }
     }
 
     public void initialize()
