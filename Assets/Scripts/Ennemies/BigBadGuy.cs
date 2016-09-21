@@ -11,7 +11,12 @@ public class BigBadGuy : MonoBehaviour
     //TODO extract to config file
     private float _dpt = 2f;
     public iTweenPath _iTP;
-  
+    [SerializeField]
+    private float _deathSpeed = 1f;
+    [SerializeField]
+    private GameObject _deadBigBadGuy;
+    public bool _injured = false;
+
     void Awake ()
     {
         _iTP = this.gameObject.GetComponent<iTweenPath> ();
@@ -57,5 +62,33 @@ public class BigBadGuy : MonoBehaviour
                 hero.subLife (_dpt);
             }
         }
-    }  
+    }
+    
+    void OnTriggerEnter(Collider col)
+    {
+        Debug.Log(col.tag);
+        if (col.tag == "Ampicillin")
+        {
+            if (_injured == false)
+            {
+                StartCoroutine(BadGuyDeath(this.GetComponent<slowDown>(),_deathSpeed));
+                _injured = true;
+            }
+        }
+    }
+
+    IEnumerator BadGuyDeath(slowDown slowDown, float deathSPeed)
+    {
+        Debug.Log("3");
+        while (slowDown.percentage > 0)
+        {
+            slowDown.percentage -= Time.deltaTime * deathSPeed;
+            Debug.Log("4");
+            Debug.Log(slowDown.percentage);
+            yield return null;
+        }
+        Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
+        this.gameObject.SetActive(false);
+        yield return null;
+    }
 }
