@@ -26,6 +26,19 @@ public abstract class DeviceContainer : MonoBehaviour {
   {
     return _devices.Exists(predicate);
   }
+
+  public void removeAll(System.Predicate<Device> predicate)
+  {
+    List<Device> devicesToRemove = new List<Device>();
+    foreach(Device device in _devices)
+    {
+        if(predicate(device))
+        {
+          devicesToRemove.Add(device);
+        }
+    }
+    removeDevices(devicesToRemove);
+  }
 	
   public void UpdateData(List<Device> added, List<Device> removed, List<Device> edited) {
     Logger.Log("DeviceContainer::UpdateData("

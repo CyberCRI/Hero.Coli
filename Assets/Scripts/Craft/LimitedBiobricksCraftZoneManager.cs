@@ -197,9 +197,23 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
        }
     }
     
-    //TODO add "new recipe" feedback
     public override void craft () {
         //Debug.LogError("LimitedBioBricksCraftZoneManager::craft");
+    }
+
+    public override void unequip(Device device)
+    {
+        Debug.Log("LBCZM unequip");
+        foreach(CraftDeviceSlot slot in slots)
+        {
+            // TODO check why Device.Equals fails
+            if (device.hasSameBricks(slot.getCurrentDevice()))
+            {
+                Debug.Log("LBCZM unequip: match on slot " + slot.name);
+                slot.removeAllBricks();
+                return;
+            }
+        }
     }
 }
 

@@ -96,14 +96,19 @@ public class Equipment : DeviceContainer
 
     public override void removeDevice(Device device)
     {
+        Debug.Log("Equipment removeDevice start");
         Logger.Log("Equipment::removeDevice("+device+")", Logger.Level.INFO);
         if(_devices.Contains(device))
         {
             _devices.RemoveAll(d => d.Equals(device));
-            safeGetDisplayer().removeEquipedDevice(device);
+            safeGetDisplayer().removeEquippedDevice(device);
             removeFromReactionEngine(device);
+            Debug.Log("Equipment removeDevice before");
+            LimitedBiobricksCraftZoneManager.get().unequip(device);
+            Debug.Log("Equipment removeDevice after");
             PhenoAmpicillinProducer.get().onUnequippedDevice(device);
         }
+        Debug.Log("Equipment removeDevice end");
     }
   
     // not optimized

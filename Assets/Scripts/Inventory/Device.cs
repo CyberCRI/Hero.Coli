@@ -417,7 +417,9 @@ public class Device: DNABit
     {
       return false;
     }
-    
-    return this.hasSameBricks(d);
+    bool sameBricks = this.hasSameBricks(d);
+    if(sameBricks)
+      Debug.Log("equals returns " + sameBricks + " between " + this + " and " + d);
+    return sameBricks;
   }
 }

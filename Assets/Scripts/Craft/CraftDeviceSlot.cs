@@ -76,6 +76,7 @@ public class CraftDeviceSlot : MonoBehaviour
             {
                 //Debug.Log("set: _isEquiped && !value");
                 _isEquiped = false;
+                Debug.Log("CDS calls Equipment.get().removeDevice");
                 Equipment.get().removeDevice(getCurrentDevice());
                 if(null != _resultSprite)
                 {

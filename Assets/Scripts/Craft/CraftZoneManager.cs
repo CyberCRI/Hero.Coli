@@ -125,6 +125,11 @@ public class CraftZoneManager : MonoBehaviour {
       OnBioBricksChanged();
   }
 
+  public virtual void unequip(Device device)
+  {
+      unequip();
+  }
+
   public virtual void OnBioBricksChanged() {
     Logger.Log("CraftZoneManager::OnBioBricksChanged()", Logger.Level.TRACE);
     displayBioBricks();
