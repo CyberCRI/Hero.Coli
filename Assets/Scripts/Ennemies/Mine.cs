@@ -1,28 +1,37 @@
 using UnityEngine;
 using System.Collections;
 
-public class Mine : MonoBehaviour
+public class Mine : ResettableMine
 {
     private bool _detonated = false;
     private float _x;
     private float _z;
-    public string mineName;
 
     //FIXME
-    private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive to
+    private string _targetMolecule = "FLUO1";  //the name of the molecule that the mine is sensitive
     private float _concentrationTreshold = 2f;
 
     private float _radius = 9f;
     private bool _isNear = false;
-    private bool _isReseting = false;
 
-    private GameObject _particleSystem;
-    private bool _first = true;
+    private Hashtable _optionsIn = iTween.Hash(
+        "scale", Vector3.one,
+        //"alpha", 255f,
+        "time", 0.8f,
+        "easetype", iTween.EaseType.easeOutElastic
+        );
 
-    public void detonate(bool reseting)
+    private Hashtable _optionsOut = iTween.Hash(
+        "scale", Vector3.zero,
+        //	"alpha", 0f,
+        "time", 1f,
+        "easetype", iTween.EaseType.easeInQuint
+        );
+
+
+    public void detonate()
     {
-        Debug.Log("self " + this.gameObject.name + " detonates");
-        _isReseting = reseting;
+        Debug.LogError(mineName + " detonates");
         MineManager.get().detonate(this);
         _detonated = true;
     }
@@ -38,8 +47,8 @@ public class Mine : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //transform.localScale = Vector3.zero;
-        _particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
+        transform.localScale = Vector3.zero;
+
         _x = transform.position.x;
         _z = transform.position.z;
     }
@@ -48,29 +57,28 @@ public class Mine : MonoBehaviour
     void Update()
     {
 
-        //autoReset();
-
-        detection();
+        detect();
 
         //Start the red light of the mine
 
         if (transform.FindChild("Point light"))
         {
-            if (_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
+            if (_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().isStarting)
             {
                 transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
             }
 
             //end the red light of the mine
-            else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().getIsStarting())
+            else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().isStarting)
             {
                 transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
             }
         }
     }
 
-    void detection()
+    void detect()
     {
+
         Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
 
         // If Player is in a small area
@@ -88,7 +96,7 @@ public class Mine : MonoBehaviour
                     {
                         if (!_isNear)
                         {
-                            //iTween.ScaleTo(this.gameObject, _optionsIn);
+                            iTween.ScaleTo(this.gameObject, _optionsIn);
                             //iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
                             //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
                             _isNear = true;
@@ -96,7 +104,7 @@ public class Mine : MonoBehaviour
                     }
                     else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
                     {
-                        //iTween.ScaleTo (this.gameObject, _optionsOut);
+                        iTween.ScaleTo(this.gameObject, _optionsOut);
                         //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
                         //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
                         _isNear = false;
@@ -109,7 +117,7 @@ public class Mine : MonoBehaviour
         }
         else
         {
-            //iTween.ScaleTo (this.gameObject, _optionsOut);
+            iTween.ScaleTo(this.gameObject, _optionsOut);
             //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
             //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
             _isNear = false;
@@ -121,37 +129,7 @@ public class Mine : MonoBehaviour
     {
         if (_detonated)
         {
-            //iTween.Stop(transform.FindChild("Point light").gameObject);
+            iTween.Stop(transform.FindChild("Point light").gameObject);
         }
     }
-
-    public void autoReset()
-    {
-        if (_isReseting && _detonated)
-        {
-            Debug.LogWarning("MINE " + mineName + " ASKS FOR RESETTING");
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-		Debug.Log("colliding with " + collision.gameObject.name);
-        if (collision.gameObject.name == "Perso")
-        {
-            detonate(true);
-            collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
-        }
-        else if (collision.gameObject.tag == "NPC")
-        {
-            detonate(false);
-        }
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("11");
-        _particleSystem = Resources.Load("ExplosionParticleSystem") as GameObject;
-        GameObject instance = Instantiate(_particleSystem, new Vector3(this.transform.position.x, this.transform.position.y + 10, this.transform.position.z), this.transform.rotation) as GameObject;
-    }
-
 }

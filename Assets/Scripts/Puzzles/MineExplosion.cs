@@ -73,7 +73,7 @@ public class MineExplosion : MonoBehaviour {
                 FractureAtPoint(point,vec);
 
 
-                transform.parent.GetComponent<Mine>().detonate(true);
+                transform.parent.GetComponent<Mine>().detonate();
 
                 collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
             }
@@ -88,7 +88,7 @@ public class MineExplosion : MonoBehaviour {
                 FractureAtPoint(point, vec);
 
 
-                transform.parent.GetComponent<Mine>().detonate(false);
+                transform.parent.GetComponent<Mine>().detonate();
                 collision.gameObject.GetComponent<iTweenEvent>().enabled = false;
                 collision.gameObject.GetComponent<DeathDummy>().startDeath();
             }

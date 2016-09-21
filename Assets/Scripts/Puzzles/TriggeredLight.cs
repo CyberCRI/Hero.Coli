@@ -10,10 +10,22 @@ public class TriggeredLight : TriggeredBehaviour {
 	private bool _isPlaying = false;
 
 
-	public bool getIsStarting () {return _isStarting;}
-
-	public void setIsPlaying (bool b) { _isPlaying = b;}
-	public bool getIsPlaying () {return _isPlaying;}
+	public bool isStarting {
+		get
+		{
+			return _isStarting;
+		}
+	}
+	public bool isPlaying {
+		get
+		{
+			return _isPlaying;
+		}
+		set
+		{
+			_isPlaying = value;
+		}
+	}
 	
 	public override void triggerStart(){
 		iTween.Stop(gameObject);

@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 
 public class MineManager : MonoBehaviour
 {
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    private List<Mine> _minesToReset = new List<Mine>();
+    private List<ResettableMine> _minesToReset = new List<ResettableMine>();
     private List<GameObject> _particleSystems = new List<GameObject>();
     public static string gameObjectName = "MineManager";
     private static MineManager _instance;
@@ -33,7 +31,7 @@ public class MineManager : MonoBehaviour
     [SerializeField]
     private GameObject _mine;
 
-    public void detonate(Mine mine)
+    public void detonate(ResettableMine mine)
     {
         Debug.Log(mine.gameObject.name + " detonates");
         _minesToReset.Add(mine);
@@ -42,7 +40,7 @@ public class MineManager : MonoBehaviour
         _particleSystems.Add(instance);
     }
 
-    public void resetSelectedMine(Mine mine, bool reseting)
+    public void resetSelectedMine(ResettableMine mine, bool reseting)
     {
         GameObject target = mine.gameObject;
         float x = target.transform.position.x;
@@ -53,7 +51,7 @@ public class MineManager : MonoBehaviour
         if (reseting)
         {
             GameObject go = (GameObject)Instantiate(_mine, new Vector3(x, 0, z), Quaternion.identity);
-            Mine newMine = (Mine)go.GetComponent<Mine>();
+            ResettableMine newMine = (ResettableMine)go.GetComponent<ResettableMine>();
             newMine.mineName = mine.mineName;
         }
     }
@@ -61,7 +59,7 @@ public class MineManager : MonoBehaviour
     public void resetAllMines()
     {
         Debug.Log("resetAllMines");
-        foreach (Mine mine in _minesToReset)
+        foreach (ResettableMine mine in _minesToReset)
         {
             Debug.Log("reset " + mine.gameObject.name);
             resetSelectedMine(mine, true);
