@@ -62,9 +62,11 @@ public class Equipment : DeviceContainer
     }
     _devices.Add(copy);
     safeGetDisplayer().addEquipedDevice(copy);
-    addToReactionEngine(copy);
     // TODO replace by event broadcasting
-    PhenoAmpicillinProducer.get().onEquippedDevice(device);
+    if(!PhenoAmpicillinProducer.get().onEquippedDevice(device))
+    {
+      addToReactionEngine(copy);
+    }
     return AddingResult.SUCCESS;
   }
 

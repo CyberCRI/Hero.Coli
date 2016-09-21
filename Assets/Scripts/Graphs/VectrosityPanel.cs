@@ -16,7 +16,7 @@ public class VectrosityPanel : MonoBehaviour
     public string identifier;
 
     private const int width = 200;
-    private const float height = 800;
+    private const float height = 200;
 
     public ReactionEngine _reactionEngine;
     public LinkedList<Medium> _mediums;
