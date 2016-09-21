@@ -71,7 +71,8 @@ public class BigBadGuy : MonoBehaviour
         {
             if (_injured == false)
             {
-                StartCoroutine(BadGuyDeath(this.GetComponent<slowDown>(),_deathSpeed));
+                float deathSpeed = _deathSpeed * Random.Range(0.5f, 2f);
+                StartCoroutine(BadGuyDeath(this.GetComponent<slowDown>(),deathSpeed));
                 _injured = true;
             }
         }
@@ -79,15 +80,13 @@ public class BigBadGuy : MonoBehaviour
 
     IEnumerator BadGuyDeath(slowDown slowDown, float deathSPeed)
     {
-        Debug.Log("3");
         while (slowDown.percentage > 0)
         {
             slowDown.percentage -= Time.deltaTime * deathSPeed;
-            Debug.Log("4");
-            Debug.Log(slowDown.percentage);
             yield return null;
         }
-        Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
+        GameObject instance = (GameObject) Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
+        instance.transform.SetParent(this.transform.parent);
         this.gameObject.SetActive(false);
         yield return null;
     }
