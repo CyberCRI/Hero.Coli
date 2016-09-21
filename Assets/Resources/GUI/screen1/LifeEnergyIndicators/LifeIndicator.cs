@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class LifeIndicator : MonoBehaviour {
 	
@@ -13,12 +12,8 @@ public class LifeIndicator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TODO trigger this after resize
-
-		if (GameObject.Find ("Perso") != null)
-		{
-			hero = GameObject.Find ("Perso").GetComponent<Hero>();
-			hero.setLife(startLife);
-		}
+		hero = Hero.get();
+		hero.setLife(startLife);
 		_lifeValueLabel = GameObject.Find("LifeValue").GetComponent<UILabel>();
 		_lifeValue = maxLife;
 		

@@ -9,6 +9,6 @@ public class GFPCraftHintModal : ModalButton
         Logger.Log ("GFPCraftHintModal::press()", Logger.Level.INFO);
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
-        GameObject.Find("Perso").AddComponent<GFPCraftHint>();
+        Hero.get().gameObject.AddComponent<GFPCraftHint>();
     }
 }

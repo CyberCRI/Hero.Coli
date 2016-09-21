@@ -155,16 +155,16 @@ public class InfoWindowManager : MonoBehaviour {
                 break;
             case NextAction.GOTOCRAFTTUTO:
                 Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO", Logger.Level.DEBUG);
-                CraftHint hint = GameObject.Find("Perso").GetComponent<CraftHint>();
+                CraftHint hint = Hero.get().gameObject.GetComponent<CraftHint>();
                 if(null == hint)
                 {
-                    hint = GameObject.Find("Perso").AddComponent<CraftHint>();
+                    hint = Hero.get().gameObject.AddComponent<CraftHint>();
                 }
                 hint.bricks++;
                 break;
             case NextAction.GOTOCRAFTTUTO2:
                 Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO2", Logger.Level.DEBUG);
-                GameObject.Find("Perso").AddComponent<RBS2CraftHint>();
+                Hero.get().gameObject.AddComponent<RBS2CraftHint>();
                 break;
             default:
                 Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);

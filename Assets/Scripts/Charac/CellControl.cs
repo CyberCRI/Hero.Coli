@@ -1,23 +1,33 @@
 using UnityEngine;
 using System.Collections;
 
-public class CellControl : MonoBehaviour {
-    
-    
+public class CellControl : MonoBehaviour
+{
+
+
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "Perso";
+    public const string gameObjectName = Hero.gameObjectName;
     private static CellControl _instance;
-    public static CellControl get() {
+    public static CellControl get()
+    {
         if (_instance == null)
         {
-            _instance = GameObject.Find(gameObjectName).GetComponent<CellControl>();
-            if(null != _instance)
+            GameObject go = GameObject.Find(gameObjectName);
+            if (null != go)
             {
-                _instance.initializeIfNecessary();
+                _instance = go.GetComponent<CellControl>();
+                if (null != _instance)
+                {
+                    _instance.initializeIfNecessary();
+                }
+                else
+                {
+                    Debug.LogError("Component CellControl of GameObject " + gameObjectName + " not found");
+                }
             }
             else
             {
-                Logger.Log("CellControl::get couldn't find game object", Logger.Level.ERROR);
+                Debug.LogError("GameObject " + gameObjectName + " not found");
             }
         }
         return _instance;
@@ -60,7 +70,8 @@ public class CellControl : MonoBehaviour {
     private bool _isFirstUpdate = false;
     private bool _isClickBlockedAfterPause = false;
 
-    public enum ControlType {
+    public enum ControlType
+    {
         RightClickToMove = 0,
         LeftClickToMove = 1,
         AbsoluteWASD = 2,
@@ -68,21 +79,27 @@ public class CellControl : MonoBehaviour {
     };
 
     private bool _isLeftClickToMove;
-    private bool isLeftClickToMove {
-        get {
+    private bool isLeftClickToMove
+    {
+        get
+        {
             return _isLeftClickToMove;
         }
-        set {
+        set
+        {
             _isLeftClickToMove = value;
             MemoryManager.get().configuration.isLeftClickToMove = value;
         }
     }
     private bool _isAbsoluteWASD;
-    private bool isAbsoluteWASD {
-        get {
+    private bool isAbsoluteWASD
+    {
+        get
+        {
             return _isAbsoluteWASD;
         }
-        set {
+        set
+        {
             _isAbsoluteWASD = value;
             MemoryManager.get().configuration.isAbsoluteWASD = value;
         }
@@ -90,14 +107,14 @@ public class CellControl : MonoBehaviour {
 
     private void initializeIfNecessary()
     {
-        _isAbsoluteWASD = MemoryManager.get ().configuration.isAbsoluteWASD;
-        _isLeftClickToMove = MemoryManager.get ().configuration.isLeftClickToMove;        
+        _isAbsoluteWASD = MemoryManager.get().configuration.isAbsoluteWASD;
+        _isLeftClickToMove = MemoryManager.get().configuration.isLeftClickToMove;
         reset();
     }
 
     public void Pause(bool pause)
     {
-        if(_pause && !pause)
+        if (_pause && !pause)
         {
             StopAllCoroutines();
             StartCoroutine(blockClicksAfterPause());
@@ -110,91 +127,107 @@ public class CellControl : MonoBehaviour {
         return _pause;
     }
 
-    private void setClickFeedback(Vector3 position) {
+    private void setClickFeedback(Vector3 position)
+    {
         ClickFeedback feedback = clickFeedback.GetComponent<ClickFeedback>();
-        if(null != feedback)
+        if (null != feedback)
         {
             feedback.burst(position);
         }
     }
 
-    private void clickToMoveUpdate(KeyCode mouseButtonCode) {
-        if(Input.GetKeyDown(mouseButtonCode) || Input.GetKey (mouseButtonCode))            
-        {        
+    private void clickToMoveUpdate(KeyCode mouseButtonCode)
+    {
+        if (Input.GetKeyDown(mouseButtonCode) || Input.GetKey(mouseButtonCode))
+        {
             Plane playerPlane = new Plane(Vector3.up, transform.position);
-            
+
             // TODO FIXME
-            if(null != Camera.main)
+            if (null != Camera.main)
             {
-                Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);            
-            
-                if (playerPlane.Raycast (ray, out _hitdist) && !UICamera.hoveredObject) {                
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (playerPlane.Raycast(ray, out _hitdist) && !UICamera.hoveredObject)
+                {
                     _targetPosition = ray.GetPoint(_hitdist);
                     setClickFeedback(_targetPosition);
                 }
             }
         }
 
-        if(Vector3.zero == _inputMovement)
+        if (Vector3.zero == _inputMovement)
         {
-            Vector3 aim = _targetPosition - transform.position;    
+            Vector3 aim = _targetPosition - transform.position;
             _inputMovement = new Vector3(aim.x, 0, aim.z);
 
-            if(_inputMovement.sqrMagnitude <= 5f) {
+            if (_inputMovement.sqrMagnitude <= 5f)
+            {
                 stopMovement();
-            } else {
+            }
+            else
+            {
                 _inputMovement = _inputMovement.normalized;
             }
             rotationUpdate();
         }
     }
-        
-    private void AbsoluteWASDUpdate() {
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
 
-        cancelMouseMove();
+    private void AbsoluteWASDUpdate()
+    {
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
 
-        //Translate
-        _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        
-        if(_inputMovement.sqrMagnitude > 1) { 
-            _inputMovement /= Mathf.Sqrt(2);
+            cancelMouseMove();
+
+            //Translate
+            _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+            if (_inputMovement.sqrMagnitude > 1)
+            {
+                _inputMovement /= Mathf.Sqrt(2);
+            }
+
+            rotationUpdate();
+
         }
-
-        rotationUpdate();
-
-        } else if (Vector3.zero != _inputMovement) {
+        else if (Vector3.zero != _inputMovement)
+        {
             stopMovement();
         }
     }
 
-    private void RelativeWASDUpdate() {
+    private void RelativeWASDUpdate()
+    {
 
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
 
-        cancelMouseMove();
+            cancelMouseMove();
 
-        float norm = Input.GetAxis("Vertical");
-        if(norm < 0) norm = 0;
-        
-        float deltaAngle = Input.GetAxis("Horizontal");
+            float norm = Input.GetAxis("Vertical");
+            if (norm < 0) norm = 0;
 
-        transform.RotateAround(transform.position, Vector3.up, deltaAngle * relativeRotationSpeed);
+            float deltaAngle = Input.GetAxis("Horizontal");
 
-        float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
-        _inputMovement = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * norm;
+            transform.RotateAround(transform.position, Vector3.up, deltaAngle * relativeRotationSpeed);
+
+            float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+            _inputMovement = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * norm;
         }
     }
 
-    public void reset() {
+    public void reset()
+    {
         stopMovement();
     }
 
-    private void cancelMouseMove() {
+    private void cancelMouseMove()
+    {
         _targetPosition = transform.position;
     }
 
-    public void stopMovement() {        
+    public void stopMovement()
+    {
         _inputMovement = Vector3.zero;
         cancelMouseMove();
         setSpeed();
@@ -206,21 +239,25 @@ public class CellControl : MonoBehaviour {
         _isPlayerFrozen = value;
     }
 
-    private void rotationUpdate() {
-        if(Vector3.zero != _inputMovement) {
-        //Rotation
-        float rotation = Mathf.Atan2(_inputMovement.x, _inputMovement.z) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
+    private void rotationUpdate()
+    {
+        if (Vector3.zero != _inputMovement)
+        {
+            //Rotation
+            float rotation = Mathf.Atan2(_inputMovement.x, _inputMovement.z) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
         }
     }
 
-    private void commonUpdate() {
-        if(Vector3.zero != _inputMovement) {
+    private void commonUpdate()
+    {
+        if (Vector3.zero != _inputMovement)
+        {
 
             Vector3 moveAmount = _inputMovement * currentMoveSpeed * Time.deltaTime;
-        
+
             this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);
-        
+
             updateEnergy(moveAmount);
 
             setSpeed();
@@ -232,43 +269,51 @@ public class CellControl : MonoBehaviour {
         //SetSpeed
         float speed = _inputMovement.sqrMagnitude + 0.3f;
         //TODO put variable for this
-        if(null == _swimAnimator)
+        if (null == _swimAnimator)
         {
-        _swimAnimator = (SwimAnimator)gameObject.GetComponent<SwimAnimator>();
+            _swimAnimator = (SwimAnimator)gameObject.GetComponent<SwimAnimator>();
         }
         _swimAnimator.setSpeed(speed);
     }
 
-    private void updateEnergy(Vector3 moveAmount) {
-        
+    private void updateEnergy(Vector3 moveAmount)
+    {
+
         //float cost = moveAmount.sqrMagnitude*moveEnergyCost;
-        
+
         //TODO remove this temporary modification
         //TODO use Time.deltaTime inside "react" methods
         float cost = 0;
-        
+
         hero.subEnergy(cost);
     }
-        
-    void Start (){
-        CellControl.get ();
-        
+
+    void Start()
+    {
+        CellControl.get();
+
         //gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
         _targetPosition = transform.position;
-    
-        if(isAbsoluteWASD) {
+
+        if (isAbsoluteWASD)
+        {
             switchControlTypeToAbsoluteWASD();
-        } else {
+        }
+        else
+        {
             switchControlTypeToRelativeWASD();
         }
-        if(isLeftClickToMove) {
+        if (isLeftClickToMove)
+        {
             switchControlTypeToLeftClickToMove();
-        } else {
+        }
+        else
+        {
             switchControlTypeToRightClickToMove();
         }
     }
-    
+
     IEnumerator blockClicksAfterPause()
     {
         _isClickBlockedAfterPause = true;
@@ -276,88 +321,108 @@ public class CellControl : MonoBehaviour {
         _isClickBlockedAfterPause = false;
         yield return null;
     }
-  
-    void Update ()
+
+    void Update()
     {
-        if(!_pause) {
+        if (!_pause)
+        {
             _inputMovement = Vector3.zero;
             //Keyboard controls
-            if(!_isPlayerFrozen)
+            if (!_isPlayerFrozen)
             {
-                if(isAbsoluteWASD)
+                if (isAbsoluteWASD)
                 {
                     AbsoluteWASDUpdate();
-                } else {
+                }
+                else
+                {
                     RelativeWASDUpdate();
                 }
 
                 //Mouse controls
-                if(!_isFirstUpdate && !_isClickBlockedAfterPause) {
-                    if(isLeftClickToMove) {
+                if (!_isFirstUpdate && !_isClickBlockedAfterPause)
+                {
+                    if (isLeftClickToMove)
+                    {
                         clickToMoveUpdate(KeyCode.Mouse0);
-                    } else {
+                    }
+                    else
+                    {
                         clickToMoveUpdate(KeyCode.Mouse1);
                     }
-                } else { 
+                }
+                else
+                {
                     _isFirstUpdate = false;
                 }
                 commonUpdate();
             }
         }
     }
-    
-    public void teleport(Vector3 position) {
+
+    public void teleport(Vector3 position)
+    {
         transform.position = position;
         stopMovement();
     }
-    
-    public void teleport(Vector3 position, Quaternion rotation) {
+
+    public void teleport(Vector3 position, Quaternion rotation)
+    {
         teleport(position);
         transform.rotation = rotation;
     }
 
-  private void switchControlTypeTo(ControlType newControlType) {
-    switch(newControlType) {
-      case ControlType.AbsoluteWASD:
-        switchControlTypeToAbsoluteWASD();
-        break;
-      case ControlType.LeftClickToMove:
-        switchControlTypeToLeftClickToMove();
-        break;
-      case ControlType.RelativeWASD:
-        switchControlTypeToRelativeWASD();
-        break;
-      case ControlType.RightClickToMove:
-        switchControlTypeToRightClickToMove();
-        break;
+    private void switchControlTypeTo(ControlType newControlType)
+    {
+        switch (newControlType)
+        {
+            case ControlType.AbsoluteWASD:
+                switchControlTypeToAbsoluteWASD();
+                break;
+            case ControlType.LeftClickToMove:
+                switchControlTypeToLeftClickToMove();
+                break;
+            case ControlType.RelativeWASD:
+                switchControlTypeToRelativeWASD();
+                break;
+            case ControlType.RightClickToMove:
+                switchControlTypeToRightClickToMove();
+                break;
+        }
     }
-  }
 
-  public void switchControlTypeToRightClickToMove() {
-    switchControlTypeTo(ControlType.RightClickToMove, rightClickToMoveButton.transform.position);
-  }
+    public void switchControlTypeToRightClickToMove()
+    {
+        switchControlTypeTo(ControlType.RightClickToMove, rightClickToMoveButton.transform.position);
+    }
 
-  public void switchControlTypeToLeftClickToMove() {
-    switchControlTypeTo(ControlType.LeftClickToMove, leftClickToMoveButton.transform.position);
-  }
+    public void switchControlTypeToLeftClickToMove()
+    {
+        switchControlTypeTo(ControlType.LeftClickToMove, leftClickToMoveButton.transform.position);
+    }
 
-  public void switchControlTypeToAbsoluteWASD() {
-    switchControlTypeTo(ControlType.AbsoluteWASD, absoluteWASDButton.transform.position);
-  }
+    public void switchControlTypeToAbsoluteWASD()
+    {
+        switchControlTypeTo(ControlType.AbsoluteWASD, absoluteWASDButton.transform.position);
+    }
 
-  public void switchControlTypeToRelativeWASD() {
-    switchControlTypeTo(ControlType.RelativeWASD, relativeWASDButton.transform.position);
-  }
-  
-  private void switchControlTypeTo(ControlType newControlType, Vector3 position) {
+    public void switchControlTypeToRelativeWASD()
+    {
+        switchControlTypeTo(ControlType.RelativeWASD, relativeWASDButton.transform.position);
+    }
 
-        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with old isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
+    private void switchControlTypeTo(ControlType newControlType, Vector3 position)
+    {
 
-        if(ControlType.LeftClickToMove == newControlType) {
+        Logger.Log("CellControl::switchControlTypeTo(" + newControlType + ") with old isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.DEBUG);
+
+        if (ControlType.LeftClickToMove == newControlType)
+        {
             _isFirstUpdate = true;
         }
 
-        switch(newControlType) {
+        switch (newControlType)
+        {
             case ControlType.AbsoluteWASD:
                 isAbsoluteWASD = true;
                 selectedKeyboardControlTypeSprite.transform.position = absoluteWASDButton.transform.position;
@@ -381,28 +446,36 @@ public class CellControl : MonoBehaviour {
 
         _targetPosition = transform.position;
 
-        Logger.Log("CellControl::switchControlTypeTo("+newControlType+") with new isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.DEBUG);
-  }
+        Logger.Log("CellControl::switchControlTypeTo(" + newControlType + ") with new isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.DEBUG);
+    }
 
-    public void refreshControlType ()
+    public void refreshControlType()
     {
-        Logger.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
-        if(isLeftClickToMove){
-            switchControlTypeToLeftClickToMove ();
-        } else {
-            switchControlTypeToRightClickToMove ();
+        Logger.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.INFO);
+        if (isLeftClickToMove)
+        {
+            switchControlTypeToLeftClickToMove();
         }
-        if(isAbsoluteWASD){
-            switchControlTypeToAbsoluteWASD ();
-        } else {
-            switchControlTypeToRelativeWASD ();
+        else
+        {
+            switchControlTypeToRightClickToMove();
         }
-        Logger.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove="+isLeftClickToMove+" & isAbsoluteWASD="+isAbsoluteWASD, Logger.Level.INFO);
+        if (isAbsoluteWASD)
+        {
+            switchControlTypeToAbsoluteWASD();
+        }
+        else
+        {
+            switchControlTypeToRelativeWASD();
+        }
+        Logger.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.INFO);
     }
 
-  void OnCollisionStay(Collision col) {
-    if ((Vector3.zero != _inputMovement) && col.collider && (wallname == col.collider.name)){
-      stopMovement();
+    void OnCollisionStay(Collision col)
+    {
+        if ((Vector3.zero != _inputMovement) && col.collider && (wallname == col.collider.name))
+        {
+            stopMovement();
+        }
     }
-  }
 }

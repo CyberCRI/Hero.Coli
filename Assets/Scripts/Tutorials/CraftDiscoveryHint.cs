@@ -49,7 +49,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
 
     protected override void end()
     {
-        GameObject.Find("Perso").AddComponent<MovementHint>();
+        Hero.get().gameObject.AddComponent<MovementHint>();
         Destroy(this);
     }
 }

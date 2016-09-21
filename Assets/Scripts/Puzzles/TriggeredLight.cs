@@ -67,7 +67,7 @@ public class TriggeredLight : TriggeredBehaviour {
 
 	private void updateLightIntensity()
 	{
-		float distance = Vector3.Magnitude (transform.parent.position - GameObject.Find("Perso").transform.position);
+		float distance = Vector3.Magnitude (transform.parent.position - Hero.get().transform.position);
 
 		//intensity increase when the player get near :: max 9 * maxIntensity
 		GetComponent<Light>().intensity = maxIntensity * (1f + 8f*(GetComponent<Light>().range - distance)/GetComponent<Light>().range);

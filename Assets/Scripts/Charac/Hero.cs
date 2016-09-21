@@ -7,7 +7,7 @@ public class Hero : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    protected const string gameObjectName = "Perso";
+    public const string gameObjectName = "Perso";
     protected static Hero _instance;
     public static Hero get()
     {

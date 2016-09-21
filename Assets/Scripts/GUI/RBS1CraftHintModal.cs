@@ -9,6 +9,6 @@ public class RBS1CraftHintModal : ModalButton
         Logger.Log ("RBS1CraftHintModal::press()", Logger.Level.INFO);
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
-        GameObject.Find("Perso").AddComponent<RBS1CraftHint>();
+        Hero.get().gameObject.AddComponent<RBS1CraftHint>();
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class EnergyIndicator : MonoBehaviour {
 	
@@ -13,10 +12,7 @@ public class EnergyIndicator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TODO trigger this after resize
-		if (GameObject.Find ("Perso") != null)
-		{
-			hero = GameObject.Find ("Perso").GetComponent<Hero>();
-		}
+		hero = Hero.get();
 		_energyValueLabel = GameObject.Find("EnergyValue").GetComponent<UILabel>();
 		_energyValue = maxEnergy;
 	}

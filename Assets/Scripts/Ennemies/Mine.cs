@@ -82,7 +82,7 @@ public class Mine : ResettableMine
         Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
 
         // If Player is in a small area
-        Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == "Perso");
+        Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == Hero.gameObjectName);
         if (match)
         {
             if (match.transform.GetComponent<Hero>().getMedium() != null)

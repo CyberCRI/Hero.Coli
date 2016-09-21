@@ -14,7 +14,7 @@ public class WorldLinkManager : LinkManager
     public override void initialize ()
     {
 
-        GameObject perso = GameObject.Find ("Perso");
+        GameObject perso = Hero.get().gameObject;
         if(null == perso) {
             Logger.Log("WorldLinkManager: error: Hero not found!", Logger.Level.ERROR);
         }

@@ -8,7 +8,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     private float waited = 0;
     private const float waitedThreshold = 0f;
 
-    protected const string _bacterium = "Perso";
+    protected const string _bacterium = Hero.gameObjectName;
     protected const string _craftWindow = "CraftPanelSprite";
     protected const string _craftButton = "CraftButton";
     protected const string _backgroundSuffix = "Background";

@@ -229,7 +229,7 @@ public class StartCutSceneController : CutScene {
     IEnumerator waitForEnd()
     {
         yield return new WaitForSeconds(waitTimes[8]);
-        GameObject.Find("Perso").AddComponent<CraftDiscoveryHint>();
+        Hero.get().gameObject.AddComponent<CraftDiscoveryHint>();
         end();
         yield return null;
     }

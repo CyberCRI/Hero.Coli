@@ -62,7 +62,7 @@ public class MineExplosion : MonoBehaviour {
     //-------------------------------------------------------------------
     void  OnCollisionEnter ( Collision collision  ){
 
-        if(collision.gameObject.name == "Perso")
+        if(collision.gameObject.name == Hero.gameObjectName)
         {
             //Debug.DrawLine(transform.position, collision.gameObject.transform.position, Color.red, 1.0ff);
             if(transform.parent && transform.parent.GetComponent<Mine>() != null)

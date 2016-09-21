@@ -46,7 +46,7 @@ public class BasicMine : ResettableMine
     void OnCollisionEnter(Collision collision)
     {
 		Debug.Log("colliding with " + collision.gameObject.name);
-        if (collision.gameObject.name == "Perso")
+        if (collision.gameObject.name == Hero.gameObjectName)
         {
             detonate(true);
             collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);

@@ -7,7 +7,6 @@ public class FocusMaskManager : MonoBehaviour
     public UISprite focusMaskSprite;
     public GameObject clickBlocker;
     private ExternalOnPressButton _target;
-    private CellControl _cellControl;
     private bool _isBlinking = false;
     private bool _isAlphaIncreasing = false;
     private const float _blinkingSpeed = 0.5f;
@@ -36,6 +35,8 @@ public class FocusMaskManager : MonoBehaviour
         {
             Logger.Log("FocusMaskManager::get was badly initialized", Logger.Level.WARN);
             _instance = GameObject.Find(gameObjectName).GetComponent<FocusMaskManager>();
+            _instance.initialize();
+            _instance.reinitialize();
         }
         return _instance;
     }
@@ -43,11 +44,7 @@ public class FocusMaskManager : MonoBehaviour
     void Awake()
     {
         Logger.Log("FocusMaskManager::Awake", Logger.Level.DEBUG);
-        //Debug.Log("FocusMaskManager Awake");
-        _instance = this;
-        _baseFocusMaskScale = focusMask.transform.localScale;
-        _baseHoleScale = hole.transform.localScale;
-
+        initialize();
         reinitialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,16 +195,20 @@ public class FocusMaskManager : MonoBehaviour
         focusMask.SetActive(show);
         hole.SetActive(show);
         _advisor.gameObject.SetActive(show);
-        GameObject perso = GameObject.Find("Perso");
-        if (null != perso)
-        {
-            _cellControl = (_cellControl == null) ? perso.GetComponent<CellControl>() : _cellControl;
-            _cellControl.freezePlayer(show);
-        }
+        
+        CellControl.get().freezePlayer(show);
+    }
+
+    public void initialize()
+    {        
+        _instance = this;
+        _baseFocusMaskScale = focusMask.transform.localScale;
+        _baseHoleScale = hole.transform.localScale;
     }
 
     public void reinitialize()
     {
+
         //Debug.Log("FocusMaskManager reinitialize");
         this.gameObject.SetActive(true);
         show(false);
@@ -288,7 +289,7 @@ public class FocusMaskManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            focusOn(GameObject.Find("Perso"), false);
+            focusOn(Hero.get().gameObject, false);
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
