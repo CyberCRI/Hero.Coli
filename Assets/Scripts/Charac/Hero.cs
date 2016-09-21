@@ -529,6 +529,7 @@ public class Hero : MonoBehaviour
         }
 
         MineManager.get().resetAllMines();
+        PhenoAmpicillinProducer.get().resetClouds();
 
         SavedCell savedCell = null;
         if (null != _lastNewCell)

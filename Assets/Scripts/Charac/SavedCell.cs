@@ -32,6 +32,7 @@ public class SavedCell : MonoBehaviour {
         Destroy(GetComponent<Rigidbody>());
         Destroy(GetComponent<AmbientLighting>());
         Destroy(GetComponent<MovementHint>());
+        Destroy(GetComponent<PhenoAmpicillinProducer>());
         
         SphereCollider[] colliders = GetComponentsInChildren<SphereCollider>();
         for(int i = 0; i<colliders.Length; i++) {
