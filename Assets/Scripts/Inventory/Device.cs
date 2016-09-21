@@ -111,6 +111,21 @@ public class Device: DNABit
     return null;
   }
 
+  public string getFirstGeneBrickName()
+  {
+    foreach (ExpressionModule module in _modules)
+    {
+      foreach (BioBrick brick in module.getBioBricks())
+      {
+        if(brick.getType() == BioBrick.Type.GENE)
+        {
+          return brick.getInternalName();
+        }
+      }
+    }
+    return null;
+  }
+
   public float getExpressionLevel()
   {
     foreach (ExpressionModule module in _modules)

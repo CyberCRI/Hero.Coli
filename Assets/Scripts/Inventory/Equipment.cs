@@ -62,7 +62,11 @@ public class Equipment : DeviceContainer
     }
     _devices.Add(copy);
     safeGetDisplayer().addEquipedDevice(copy);
-    addToReactionEngine(copy);
+    // TODO replace by event broadcasting
+    if(!PhenoAmpicillinProducer.get().onEquippedDevice(device))
+    {
+      addToReactionEngine(copy);
+    }
     return AddingResult.SUCCESS;
   }
 
@@ -98,6 +102,7 @@ public class Equipment : DeviceContainer
             _devices.RemoveAll(d => d.Equals(device));
             safeGetDisplayer().removeEquipedDevice(device);
             removeFromReactionEngine(device);
+            PhenoAmpicillinProducer.get().onUnequippedDevice(device);
         }
     }
   

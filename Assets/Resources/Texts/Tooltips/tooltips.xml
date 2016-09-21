@@ -111,6 +111,10 @@
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
+  <tooltip code="d_PRCONS:RBS3:FLUO1:DTER">
+    <type>Device</type>
+    <illustration>pic_d_cons-gfp-low</illustration>
+  </tooltip>
   <tooltip code="d_PRCONS:RBS2:FLUO1:DTER">
     <type>Device</type>
     <illustration>pic_d_cons-gfp-low</illustration>
