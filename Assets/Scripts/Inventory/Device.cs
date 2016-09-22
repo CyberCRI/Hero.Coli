@@ -422,9 +422,9 @@ public class Device: DNABit
     {
       return false;
     }
-    bool sameBricks = this.hasSameBricks(d);
-    if(sameBricks)
-      Debug.Log("equals returns " + sameBricks + " between " + this + " and " + d);
-    return sameBricks;
+    // bool sameBricks = this.hasSameBricks(d);
+    // if(sameBricks)
+    //   Debug.Log("equals returns " + sameBricks + " between " + this + " and " + d);
+    return this.hasSameBricks(d);
   }
 }

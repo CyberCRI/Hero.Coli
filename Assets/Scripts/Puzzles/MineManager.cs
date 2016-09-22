@@ -36,7 +36,7 @@ public class MineManager : MonoBehaviour
 
     public void detonate(ResettableMine mine)
     {
-        Debug.Log(mine.gameObject.name + " detonates");
+        // Debug.Log(mine.gameObject.name + " detonates");
         _minesToReset.Add(mine);
         GameObject instance = Instantiate(_particleSystem, mine.transform.position + positionShift, mine.transform.rotation, mine.transform.parent) as GameObject;
         _particleSystems.Add(instance);
@@ -57,16 +57,16 @@ public class MineManager : MonoBehaviour
 
     public void resetAllMines()
     {
-        Debug.Log("resetAllMines");
+        // Debug.Log("resetAllMines");
         foreach (ResettableMine mine in _minesToReset)
         {
-            Debug.Log("reset " + mine.gameObject.name);
+            // Debug.Log("reset " + mine.gameObject.name);
             resetSelectedMine(mine);
         }
 
         foreach (GameObject particleSystem in _particleSystems)
         {
-            Debug.Log("Destroy " + particleSystem.gameObject.name);
+            // Debug.Log("Destroy " + particleSystem.gameObject.name);
             Destroy(particleSystem.gameObject);
         }
 

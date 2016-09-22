@@ -79,7 +79,7 @@ public class CraftDeviceSlot : MonoBehaviour
             {
                 //Debug.Log("set: _isEquiped && !value");
                 _isEquiped = false;
-                Debug.Log("CDS calls Equipment.get().removeDevice");
+                // Debug.Log("CDS calls Equipment.get().removeDevice");
                 _isCallingRecursively = true;
                 Equipment.get().removeDevice(getCurrentDevice());
                 _isCallingRecursively = false;

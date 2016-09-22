@@ -203,13 +203,13 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 
     public override void unequip(Device device)
     {
-        Debug.Log("LBCZM unequip");
+        // Debug.Log("LBCZM unequip");
         foreach(CraftDeviceSlot slot in slots)
         {
             // TODO check why Device.Equals fails
             if (device.hasSameBricks(slot.getCurrentDevice()))
             {
-                Debug.Log("LBCZM unequip: match on slot " + slot.name);
+                // Debug.Log("LBCZM unequip: match on slot " + slot.name);
                 slot.removeAllBricks();
                 return;
             }
