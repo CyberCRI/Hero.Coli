@@ -49,16 +49,16 @@ public class PhenoAmpicillinProducer : MonoBehaviour
     private bool _isInCollision = false;
     private List<GameObject> _clouds = new List<GameObject>();
 
-    private bool _isActive = false;
-    public bool isActive
+    private bool _isSpawningAmpicillin = false;
+    public bool isSpawningAmpicillin
     {
         get
         {
-            return _isActive;
+            return _isSpawningAmpicillin;
         }
         set
         {
-            _isActive = value;
+            _isSpawningAmpicillin = value;
             _timeUntilNextSpawn = _timeBetweenSpawns;
         }
     }
@@ -71,22 +71,22 @@ public class PhenoAmpicillinProducer : MonoBehaviour
     public bool onEquippedDevice(Device device)
     {
         bool contains = containsAmpicillinBrick(device);
-        isActive = isActive || contains;
-
+        isSpawningAmpicillin = isSpawningAmpicillin || contains;
         return contains;
     }
     public void onUnequippedDevice(Device device)
     {
-        isActive = Equipment.get().exists(d => containsAmpicillinBrick(d));
+        isSpawningAmpicillin = Equipment.get().exists(d => containsAmpicillinBrick(d));
     }
     private bool containsAmpicillinBrick(Device device)
     {
-        return (_brickName == device.getFirstGeneBrickName());
+        bool result = (_brickName == device.getFirstGeneBrickName());
+        return result;
     }
 
     void FixedUpdate()
     {
-        if (isActive)
+        if (isSpawningAmpicillin)
         {
             _timeUntilNextSpawn -= Time.fixedDeltaTime;
             if (_timeUntilNextSpawn <= 0)
@@ -98,8 +98,9 @@ public class PhenoAmpicillinProducer : MonoBehaviour
         _isInCollision = false;
     }
 
-    public void resetClouds()
+    public void reset()
     {
+        Equipment.get().removeAll(d =>  containsAmpicillinBrick(d));
         foreach(GameObject cloud in _clouds)
         {
             Destroy(cloud);

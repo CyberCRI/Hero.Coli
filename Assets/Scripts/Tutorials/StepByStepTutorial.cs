@@ -73,6 +73,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
                     if (go == null)
                     {
                         Debug.LogError(this.GetType() + " couldn't find " + focusObjects[step]);
+                        next();
                     }
                     else
                     {
@@ -88,9 +89,9 @@ public abstract class StepByStepTutorial : MonoBehaviour
                             // Debug.Log("target == null at step=" + step);
                             FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
+                        // Debug.Log(this.GetType() + " prepared step=" + step);
+                        prepared = true;
                     }
-                    // Debug.Log(this.GetType() + " prepared step=" + step);
-                    prepared = true;
                 }
             }
             waited += Time.fixedDeltaTime;

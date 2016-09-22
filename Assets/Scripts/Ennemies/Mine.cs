@@ -56,11 +56,9 @@ public class Mine : ResettableMine
     // Update is called once per frame
     void Update()
     {
-
         detect();
 
         //Start the red light of the mine
-
         if (transform.FindChild("Point light"))
         {
             if (_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().isStarting)
@@ -78,42 +76,35 @@ public class Mine : ResettableMine
 
     void detect()
     {
-
         Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
 
         // If Player is in a small area
         Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == Hero.gameObjectName);
         if (match)
         {
-            if (match.transform.GetComponent<Hero>().getMedium() != null)
+            ArrayList molecules = Hero.get().medium.getMolecules();
+
+            foreach (Molecule m in molecules)
             {
-                ArrayList molecules = match.transform.GetComponent<Hero>().getMedium().getMolecules();
-
-                foreach (Molecule m in molecules)
+                //If player has the Green Fluorescence with a sufficient concentration :: the mine appears
+                if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
                 {
-                    //If player has the Green Fluorescence with a sufficient concentration :: the mine appears
-                    if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
+                    if (!_isNear)
                     {
-                        if (!_isNear)
-                        {
-                            iTween.ScaleTo(this.gameObject, _optionsIn);
-                            //iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
-                            //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
-                            _isNear = true;
-                        }
-                    }
-                    else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
-                    {
-                        iTween.ScaleTo(this.gameObject, _optionsOut);
-                        //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
-                        //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
-                        _isNear = false;
-
+                        iTween.ScaleTo(this.gameObject, _optionsIn);
+                        //iTween.FadeTo(transform.FindChild("Mine Light Collider").gameObject, _optionsIn);
+                        //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,1f);
+                        _isNear = true;
                     }
                 }
-
+                else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
+                {
+                    iTween.ScaleTo(this.gameObject, _optionsOut);
+                    //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);
+                    //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
+                    _isNear = false;
+                }
             }
-
         }
         else
         {
@@ -122,8 +113,6 @@ public class Mine : ResettableMine
             //TweenAlpha.Begin(transform.FindChild("Mine Light Collider").gameObject,1f,0f);
             _isNear = false;
         }
-
-
     }
     public void stopAnimation()
     {

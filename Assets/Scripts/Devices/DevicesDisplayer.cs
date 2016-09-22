@@ -307,7 +307,7 @@ public class DevicesDisplayer : MonoBehaviour {
     removeDevice(toRemove, devices, deviceType);
 	}
 
-  public void removeEquipedDevice(Device toRemove) {
+  public void removeEquippedDevice(Device toRemove) {
     removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
     graphMoleculeList.removeDeviceAndMoleculesComponent(toRemove);
   }

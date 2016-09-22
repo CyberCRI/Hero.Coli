@@ -67,7 +67,15 @@ public class Hero : MonoBehaviour
 
     public LifeLogoAnimation lifeAnimation;
     public EnergyLogoAnimation energyAnimation;
-    Medium _medium;
+    private Medium _medium;
+    public Medium medium
+    {
+        get
+        {
+            return _medium;
+        }
+    }
+    public const int mediumId = 1; 
 
     //Life
     private const float _life = 1f;
@@ -156,7 +164,7 @@ public class Hero : MonoBehaviour
             _isAlive = true;
 
             //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-            _medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get().getMediumList());
+            _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
             _maxMediumEnergy = _medium.getMaxEnergy();
             _energy = _medium.getEnergy() / _maxMediumEnergy;
             _isInitialized = true;
@@ -180,8 +188,6 @@ public class Hero : MonoBehaviour
         return _pause;
     }
 
-
-    public Medium getMedium() { return _medium; }
     public bool isAlive() { return _isAlive; }
 
 
@@ -463,7 +469,7 @@ public class Hero : MonoBehaviour
 
         safeFadeTo(_optionsOutAlpha);
 
-        _flagella = new List<GameObject>();
+        _flagella.Clear();
 
         foreach (Transform child in transform)
         {
@@ -475,18 +481,18 @@ public class Hero : MonoBehaviour
 
         //1 wait sequence between flagella, pair of eyes disappearances
         //therefore #flagella + #pairs of eyes - 1
-        int maxWaitSequences = _flagella.Count;
+        int maxWaitSequences = _flagella.Count == 0 ? 1 : _flagella.Count;
 
         //fractional elapsed time
         // 0<elapsed<maxWaitSequences
         float elapsed = 0.0f;
 
-        for (int i = 0; i < _flagella.Count; i++)
+        foreach (GameObject flagellum in _flagella)
         {
             //to make flagella disappear
             float random = UnityEngine.Random.Range(0.0f, 1.0f);
             yield return new WaitForSeconds(random * _respawnTimeS / maxWaitSequences);
-            _flagella[i].SetActive(false);
+            flagellum.SetActive(false);
             elapsed += random;
         }
 
@@ -529,7 +535,9 @@ public class Hero : MonoBehaviour
         }
 
         MineManager.get().resetAllMines();
-        PhenoAmpicillinProducer.get().resetClouds();
+        PhenoAmpicillinProducer.get().reset();
+        GetComponent<PhenoFickContact>().onDied();
+        medium.resetMolecules();
 
         SavedCell savedCell = null;
         if (null != _lastNewCell)
