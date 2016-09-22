@@ -67,7 +67,15 @@ public class Hero : MonoBehaviour
 
     public LifeLogoAnimation lifeAnimation;
     public EnergyLogoAnimation energyAnimation;
-    Medium _medium;
+    private Medium _medium;
+    public Medium medium
+    {
+        get
+        {
+            return _medium;
+        }
+    }
+    public const int mediumId = 1; 
 
     //Life
     private const float _life = 1f;
@@ -156,7 +164,7 @@ public class Hero : MonoBehaviour
             _isAlive = true;
 
             //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-            _medium = ReactionEngine.getMediumFromId(1, ReactionEngine.get().getMediumList());
+            _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
             _maxMediumEnergy = _medium.getMaxEnergy();
             _energy = _medium.getEnergy() / _maxMediumEnergy;
             _isInitialized = true;
@@ -180,8 +188,6 @@ public class Hero : MonoBehaviour
         return _pause;
     }
 
-
-    public Medium getMedium() { return _medium; }
     public bool isAlive() { return _isAlive; }
 
 
@@ -530,6 +536,8 @@ public class Hero : MonoBehaviour
 
         MineManager.get().resetAllMines();
         PhenoAmpicillinProducer.get().reset();
+        GetComponent<PhenoFickContact>().onDied();
+        medium.resetMolecules();
 
         SavedCell savedCell = null;
         if (null != _lastNewCell)

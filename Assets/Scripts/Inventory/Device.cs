@@ -388,22 +388,27 @@ public class Device: DNABit
 		return Device.buildDevice(notNullName, modules);
 	}
 
-  public bool hasSameBricks(Device device) {
-
-        if(device._modules.Count != _modules.Count) {
+    public bool hasSameBricks(Device device)
+    {
+        if (!Device.isValid(device)
+          || (device._modules.Count != _modules.Count)
+          )
+        {
             return false;
         }
 
-    IEnumerator<ExpressionModule> enumerator1 = device._modules.GetEnumerator();
-    IEnumerator<ExpressionModule> enumerator2 = _modules.GetEnumerator();
+        IEnumerator<ExpressionModule> enumerator1 = device._modules.GetEnumerator();
+        IEnumerator<ExpressionModule> enumerator2 = _modules.GetEnumerator();
 
-    while(enumerator1.MoveNext() && enumerator2.MoveNext()) {
-      if(!enumerator1.Current.hasSameBricks(enumerator2.Current)) {
-        return false;
-      }
+        while (enumerator1.MoveNext() && enumerator2.MoveNext())
+        {
+            if (!enumerator1.Current.hasSameBricks(enumerator2.Current))
+            {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
-  }
 
   public override bool Equals(System.Object obj)
   {

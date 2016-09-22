@@ -21,360 +21,383 @@ using System.Xml;
 
 public class Medium : LoadableFromXmlImpl
 {
-  private LinkedList<IReaction> _reactions;               //!< The list of reactions
-  private ArrayList             _molecules;               //!< The list of molecules (Molecule)
+    private LinkedList<IReaction> _reactions;               //!< The list of reactions
+    private ArrayList _molecules;               //!< The list of molecules (Molecule)
 
-  private int             _numberId;                            //!< The id of the Medium
-  private string          _name;                          //!< The name of the Medium
-  private string          _reactionsSet;                  //!< The ReactionSet id assigned to this Medium
-  private string          _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
-  private bool            _enableSequential;
-  private bool            _enableNoise;
-  private NumberGenerator _numberGenerator;               //!< Random number generator
-  private bool            _enableEnergy;
-  private float           _energy;                        //!< Represents the quantity of ATP
-  private float 		      _energyVariation;				        //!< The variation of energy during one frame
-  private float           _maxEnergy;                     //!< The maximum quantity of ATP
-  private float           _energyProductionRate;          //!< The energy production speed
-  public bool             enableShufflingReactionOrder;   //!< Enables shuffling of reactions
-
-    
-  //TODO refactor interactions out of medium
-  private string _shortkeyPlusSuffix = ".PLUS";
-  private string _shortkeyMinusSuffix = ".MINUS";
+    private int _numberId;                            //!< The id of the Medium
+    private string _name;                          //!< The name of the Medium
+    private string _reactionsSet;                  //!< The ReactionSet id assigned to this Medium
+    private string _moleculesSet;                  //!< The MoleculeSet id assigned to this Medium
+    private bool _enableSequential;
+    private bool _enableNoise;
+    private NumberGenerator _numberGenerator;               //!< Random number generator
+    private bool _enableEnergy;
+    private float _energy;                        //!< Represents the quantity of ATP
+    private float _energyVariation;                     //!< The variation of energy during one frame
+    private float _maxEnergy;                     //!< The maximum quantity of ATP
+    private float _energyProductionRate;          //!< The energy production speed
+    public bool enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
 
-  public void setId(int id) { _numberId = id;}
-  public int getId() { return _numberId;}
-  public void setName(string name) { _name = name;}
-  public string getName() { return _name;}
-  public void setReactions(LinkedList<IReaction> RL) { _reactions = RL;}
-  public LinkedList<IReaction> getReactions() { return _reactions;}
-  public void setReactionSet(string reactionsSet) { _reactionsSet = reactionsSet;}
-  public string getReactionSet() { return _reactionsSet;}
-  public void setMoleculeSet(string moleculesSet) { _moleculesSet = moleculesSet;}
-  public string getMoleculeSet() { return _moleculesSet;}
-  public ArrayList getMolecules() { return _molecules; }
+    //TODO refactor interactions out of medium
+    private string _shortkeyPlusSuffix = ".PLUS";
+    private string _shortkeyMinusSuffix = ".MINUS";
 
-  //TODO extract energy methods and fields and make class out of it
-  public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f;}
-  public float getEnergy() { return _energy; }
-  public void addEnergy(float v) {
-		addVariation(v);
-		//_energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
-	}
-  public void subEnergy(float v) {
-		addVariation(-v);
-		//_energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
-	}
-  public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
-  public float getMaxEnergy() { return _maxEnergy; }
-  public void setEnergyProductionRate(float v) { _energyProductionRate = v;}
-  public float getEnergyProductionRate() { return _energyProductionRate;}
 
-	public float getEnergyVariation() { return _energyVariation;}
+    public void setId(int id) { _numberId = id; }
+    public int getId() { return _numberId; }
+    public void setName(string name) { _name = name; }
+    public string getName() { return _name; }
+    public void setReactions(LinkedList<IReaction> RL) { _reactions = RL; }
+    public LinkedList<IReaction> getReactions() { return _reactions; }
+    public void setReactionSet(string reactionsSet) { _reactionsSet = reactionsSet; }
+    public string getReactionSet() { return _reactionsSet; }
+    public void setMoleculeSet(string moleculesSet) { _moleculesSet = moleculesSet; }
+    public string getMoleculeSet() { return _moleculesSet; }
+    public ArrayList getMolecules() { return _molecules; }
 
-	public void addVariation(float variation)
-	{
-		_energyVariation += variation;
-	}
-
-	public void applyVariation()
-	{
-		_energy += _energyVariation;
-		if(_energy <= 0f) _energy = 0f;
-		else if(_energy >= _maxEnergy) _energy = _maxEnergy;
-
-		ResetVariation();
-				
-	}
-	
-	// Reset the variation value : called at the end of the update
-	public void ResetVariation()
-	{
-		_energyVariation = 0f;
-	}
-
-  public void enableEnergy(bool b)
-  {
-    _enableEnergy = b;
-    foreach (IReaction r in _reactions)
-      r.enableEnergy = b;
-  }
-
-  public void enableSequential(bool b)
-  {
-    _enableSequential = b;
-    foreach (IReaction r in _reactions)
-      r.enableSequential = b;
-  }
-
-  public void enableNoise(bool b)
-  {
-    _enableNoise = b;
-  }
-
-  /*!
-    \brief Add a new reaction to the medium
-    \param reaction The reaction to add.
-   */
-  public void addReaction(IReaction reaction)
-  {
-    //Logger.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
-    if (reaction != null)
+    //TODO extract energy methods and fields and make class out of it
+    public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f; }
+    public float getEnergy() { return _energy; }
+    public void addEnergy(float v)
     {
-      reaction.setMedium(this);
-      reaction.enableEnergy = _enableEnergy;
-      _reactions.AddLast(reaction);
-      //Logger.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.DEBUG);
+        addVariation(v);
+        //_energy += v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
     }
-    else
-      Logger.Log("Medium::addReaction Cannot add this reaction because null was given", Logger.Level.WARN);
-
-  }
-
-  /* !
-    \brief Remove the reaction that has the given name
-    \param name The name of the reaction to remove.
-   */
-  public void removeReactionByName(string name)
-  {
-    LinkedListNode<IReaction> node = _reactions.First;
-    bool b = true;
-
-    while (node != null && b)
-      {
-        if (node.Value.getName() == name)
-          {
-            _reactions.Remove(node);
-            b = false;
-          }
-        node = node.Next;
-      }
-  }
-
-  /* !
-    \brief Remove the reaction that has the same characteristics as the one given as parameter
-    \param reaction The model of reaction to remove.
-    \param checkNameAndMedium Whether the name  and medium must be taken into account or not.
-   */
-  public void removeReaction(IReaction reaction, bool checkNameAndMedium)
-  {
-    LinkedListNode<IReaction> node = _reactions.First;
-    bool b = true;
-
-    while (node != null && b)
+    public void subEnergy(float v)
     {
-      if (node.Value.Equals(reaction, checkNameAndMedium))
-      {
-        _reactions.Remove(node);
-        b = false;
-      }
-      node = node.Next;
+        addVariation(-v);
+        //_energy -= v; if (_energy < 0) _energy = 0f; else if (_energy > _maxEnergy) _energy = _maxEnergy;
     }
-    if(b)
-      Logger.Log("ReactionEngine::removeReaction failed to find matching reaction", Logger.Level.WARN);
-    else
-      Logger.Log("ReactionEngine::removeReaction successfully removed matching reaction", Logger.Level.DEBUG);
-  }
+    public void setMaxEnergy(float v) { _maxEnergy = v; if (_maxEnergy < 0f) _maxEnergy = 0f; }
+    public float getMaxEnergy() { return _maxEnergy; }
+    public void setEnergyProductionRate(float v) { _energyProductionRate = v; }
+    public float getEnergyProductionRate() { return _energyProductionRate; }
 
-  /*!
-    \brief Substract a concentration to molecule corresponding to the name.
-    \param name The name of the Molecules.
-    \param value The value to substract.
-   */
-  public void subMolConcentration(string name, float value)
-  {
-    Molecule mol = ReactionEngine.getMoleculeFromName(name, _molecules);
+    public float getEnergyVariation() { return _energyVariation; }
 
-    if (mol != null)
-      mol.setConcentration(mol.getConcentration() - value);
-  }
-
-  /*!
-    \brief Add a concentration to molecule corresponding to the name.
-    \param name The name of the Molecules.
-    \param value The value to Add.    
-   */
-  public void addMolConcentration(string name, float value)
-  {
-    Molecule mol = ReactionEngine.getMoleculeFromName(name, _molecules);
-
-    if (mol != null)
-      mol.setConcentration(mol.getConcentration() + value);
-  }
-
-  /*!
-    \brief Load reactions from a ReactionSet
-    \param reactionsSet The set to load
-   */
-  public void initReactionsFromReactionSet(ReactionSet reactionsSet)
-  {
-    if (reactionsSet == null)
-      return;
-    foreach (IReaction reaction in reactionsSet.reactions)
-      addReaction(IReaction.copyReaction(reaction));
-//       _reactions.AddLast(reaction);
-  }
-
-  /*!
-    \brief Load degradation from each molecules
-    \param allMolecules The list of all the molecules
-   */
-  public void initDegradationReactions(ArrayList allMolecules)
-  {
-    foreach (Molecule mol in allMolecules)
-      addReaction(new Degradation(mol.getDegradationRate(), mol.getName()));
-  }
-
-  /*!
-    \brief Load Molecules from a MoleculeSet
-    \param molSet The set to Load
-    \param allMolecules The list of all the molecules
-   */
-  public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
-  {
-	Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_numberId,Logger.Level.TRACE);
-    Molecule newMol;
-    Molecule startingMolStatus;
-
-    _molecules = new ArrayList();
-    foreach (Molecule mol in allMolecules)
-      {
-        newMol = new Molecule(mol);
-        startingMolStatus = ReactionEngine.getMoleculeFromName(mol.getName(), molSet.molecules);
-        if (startingMolStatus == null) {
-          newMol.setConcentration(0);
-		} else {
-          newMol.setConcentration(startingMolStatus.getConcentration());
-		}
-		Logger.Log("Medium::initMoleculesFromMoleculeSets medium#"+_numberId
-				+" add mol "+newMol.getName()
-				+" with cc="+newMol.getConcentration()
-				,Logger.Level.TRACE
-				);
-        _molecules.Add(newMol);
-      }   
-  }
-
-  /*!
-    \brief This function initialize the production of ATP.
-    \details It create a reaction of type ATPProducer
-   */
-  private void initATPProduction()
-  {
-    ATPProducer reaction = new ATPProducer();
-    reaction.setProduction(_energyProductionRate);
-    reaction.setName("ATP Production");
-    if (_reactions == null)
-      setReactions(new LinkedList<IReaction>());
-    addReaction(reaction);
-  }
-
-  /*!
-    \brief Initialize the Medium
-    \param reactionsSets The list of all the reactions sets
-    \param moleculesSets The list of all the molecules sets
-   */
-  public void Init(LinkedList<ReactionSet> reactionsSets, LinkedList<MoleculeSet> moleculesSets)
-  {
-
-		//Receive a linkedlist of Sets
-    _reactions = new LinkedList<IReaction>();
-    _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
-
-		//Try to find the good set in the LinkedList
-    ReactionSet reactSet = ReactionEngine.getReactionSetFromId(_reactionsSet, reactionsSets);
-    MoleculeSet molSet = ReactionEngine.getMoleculeSetFromId(_moleculesSet, moleculesSets);
-
-		//Put all the different molecules from the linkedList in an arrayList
-    ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
-
-    if (reactSet == null)
-      Logger.Log("Medium::Init Cannot find group of reactions named " + _reactionsSet, Logger.Level.WARN);
-    if (molSet == null)
-      Logger.Log("Medium::Init Cannot find group of molecules named" + _moleculesSet, Logger.Level.WARN);
-
-    initATPProduction();
-    initReactionsFromReactionSet(reactSet);
-    initMoleculesFromMoleculeSets(molSet, allMolecules);
-    initDegradationReactions(allMolecules);
-    foreach (IReaction r in _reactions)
-      {
-        r.enableSequential = _enableSequential;
-      }
-  }
-
-  /*!
-    \brief Set the concentration of each molecules of the medium to their new values
-    \details Called only if sequential is disabled
-   */
-  public void updateMoleculesConcentrations()
-  {
-    foreach (Molecule m in _molecules)
-      m.updateConcentration();
-  }
-
-  /*!
-    \brief Debug the concentration of each molecules of the medium
-   */
-  public void Log(Logger.Level level = Logger.Level.TRACE)
-  {
-	string content = "";
-    foreach (Molecule m in _molecules) {
-	  if(!string.IsNullOrEmpty(content)) {
-		content += ", ";
-	  }
-	  content += m.ToString();
-	}
-					
-	Logger.Log("Medium::debug() #"+_numberId+"["+content+"]", level);
-  }
-
-  /*!
-    \brief Execute everything about simulation into the Medium
-   */
-  public void Update()
-  {
-		
-    if (enableShufflingReactionOrder)
-      LinkedListExtensions.Shuffle<IReaction>(_reactions);
-
-    foreach (IReaction reaction in _reactions) {
-		/*
-  	  if(Logger.isLevel(Logger.Level.TRACE)) {
-  	    PromoterReaction promoter = reaction as PromoterReaction;
-  	    if (promoter != null) {
-	      Logger.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
-	    }
-	  }
-      */
-	  reaction.react(_molecules);
-	}	
-		
-	applyVariation();
-	
-    if (_enableNoise)
+    public void addVariation(float variation)
     {
-      float noise;
- 
-      foreach (Molecule m in _molecules)
-      {
-        noise = _numberGenerator.getNumber();
-        if (_enableSequential)
-          m.addConcentration(noise);
+        _energyVariation += variation;
+    }
+
+    public void applyVariation()
+    {
+        _energy += _energyVariation;
+        if (_energy <= 0f) _energy = 0f;
+        else if (_energy >= _maxEnergy) _energy = _maxEnergy;
+
+        ResetVariation();
+
+    }
+
+    public void resetMolecules()
+    {
+        foreach (Molecule m in _molecules)
+        {
+            m.setConcentration(0);
+        }
+    }
+
+    // Reset the variation value : called at the end of the update
+    public void ResetVariation()
+    {
+        _energyVariation = 0f;
+    }
+
+    public void enableEnergy(bool b)
+    {
+        _enableEnergy = b;
+        foreach (IReaction r in _reactions)
+            r.enableEnergy = b;
+    }
+
+    public void enableSequential(bool b)
+    {
+        _enableSequential = b;
+        foreach (IReaction r in _reactions)
+            r.enableSequential = b;
+    }
+
+    public void enableNoise(bool b)
+    {
+        _enableNoise = b;
+    }
+
+    /*!
+      \brief Add a new reaction to the medium
+      \param reaction The reaction to add.
+     */
+    public void addReaction(IReaction reaction)
+    {
+        //// Debug.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
+        if (reaction != null)
+        {
+            reaction.setMedium(this);
+            reaction.enableEnergy = _enableEnergy;
+            _reactions.AddLast(reaction);
+            //// Debug.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.DEBUG);
+        }
         else
-          m.addNewConcentration(noise);
-      }
+        {
+            Debug.LogWarning("Medium::addReaction Cannot add this reaction because null was given");
+        }
+
     }
+
+    /* !
+      \brief Remove the reaction that has the given name
+      \param name The name of the reaction to remove.
+     */
+    public void removeReactionByName(string name)
+    {
+        LinkedListNode<IReaction> node = _reactions.First;
+        bool b = true;
+
+        while (node != null && b)
+        {
+            if (node.Value.getName() == name)
+            {
+                _reactions.Remove(node);
+                b = false;
+            }
+            node = node.Next;
+        }
+    }
+
+    /* !
+      \brief Remove the reaction that has the same characteristics as the one given as parameter
+      \param reaction The model of reaction to remove.
+      \param checkNameAndMedium Whether the name  and medium must be taken into account or not.
+     */
+    public void removeReaction(IReaction reaction, bool checkNameAndMedium)
+    {
+        LinkedListNode<IReaction> node = _reactions.First;
+        bool b = true;
+
+        while (node != null && b)
+        {
+            if (node.Value.Equals(reaction, checkNameAndMedium))
+            {
+                _reactions.Remove(node);
+                b = false;
+            }
+            node = node.Next;
+        }
+        if (b)
+        {
+            Debug.LogWarning("ReactionEngine::removeReaction failed to find matching reaction");
+        }
+        else
+        {
+            // Debug.Log("ReactionEngine::removeReaction successfully removed matching reaction");
+        }
+    }
+
+    /*!
+      \brief Substract a concentration to molecule corresponding to the name.
+      \param name The name of the Molecules.
+      \param value The value to substract.
+     */
+    public void subMolConcentration(string name, float value)
+    {
+        Molecule mol = ReactionEngine.getMoleculeFromName(name, _molecules);
+
+        if (mol != null)
+            mol.setConcentration(mol.getConcentration() - value);
+    }
+
+    /*!
+      \brief Add a concentration to molecule corresponding to the name.
+      \param name The name of the Molecules.
+      \param value The value to Add.    
+     */
+    public void addMolConcentration(string name, float value)
+    {
+        Molecule mol = ReactionEngine.getMoleculeFromName(name, _molecules);
+
+        if (mol != null)
+            mol.setConcentration(mol.getConcentration() + value);
+    }
+
+    /*!
+      \brief Load reactions from a ReactionSet
+      \param reactionsSet The set to load
+     */
+    public void initReactionsFromReactionSet(ReactionSet reactionsSet)
+    {
+        if (reactionsSet == null)
+            return;
+        foreach (IReaction reaction in reactionsSet.reactions)
+            addReaction(IReaction.copyReaction(reaction));
+        //       _reactions.AddLast(reaction);
+    }
+
+    /*!
+      \brief Load degradation from each molecules
+      \param allMolecules The list of all the molecules
+     */
+    public void initDegradationReactions(ArrayList allMolecules)
+    {
+        foreach (Molecule mol in allMolecules)
+            addReaction(new Degradation(mol.getDegradationRate(), mol.getName()));
+    }
+
+    /*!
+      \brief Load Molecules from a MoleculeSet
+      \param molSet The set to Load
+      \param allMolecules The list of all the molecules
+     */
+    public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
+    {
+        // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId, Logger.Level.TRACE);
+        Molecule newMol;
+        Molecule startingMolStatus;
+
+        _molecules = new ArrayList();
+        foreach (Molecule mol in allMolecules)
+        {
+            newMol = new Molecule(mol);
+            startingMolStatus = ReactionEngine.getMoleculeFromName(mol.getName(), molSet.molecules);
+            if (startingMolStatus == null)
+            {
+                newMol.setConcentration(0);
+            }
+            else
+            {
+                newMol.setConcentration(startingMolStatus.getConcentration());
+            }
+            // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId
+            // + " add mol " + newMol.getName()
+            // + " with cc=" + newMol.getConcentration()
+            // , Logger.Level.TRACE
+            // );
+            _molecules.Add(newMol);
+        }
+    }
+
+    /*!
+      \brief This function initialize the production of ATP.
+      \details It create a reaction of type ATPProducer
+     */
+    private void initATPProduction()
+    {
+        ATPProducer reaction = new ATPProducer();
+        reaction.setProduction(_energyProductionRate);
+        reaction.setName("ATP Production");
+        if (_reactions == null)
+            setReactions(new LinkedList<IReaction>());
+        addReaction(reaction);
+    }
+
+    /*!
+      \brief Initialize the Medium
+      \param reactionsSets The list of all the reactions sets
+      \param moleculesSets The list of all the molecules sets
+     */
+    public void Init(LinkedList<ReactionSet> reactionsSets, LinkedList<MoleculeSet> moleculesSets)
+    {
+
+        //Receive a linkedlist of Sets
+        _reactions = new LinkedList<IReaction>();
+        _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
+
+        //Try to find the good set in the LinkedList
+        ReactionSet reactSet = ReactionEngine.getReactionSetFromId(_reactionsSet, reactionsSets);
+        MoleculeSet molSet = ReactionEngine.getMoleculeSetFromId(_moleculesSet, moleculesSets);
+
+        //Put all the different molecules from the linkedList in an arrayList
+        ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
+
+        if (reactSet == null)
+            Debug.LogWarning("Medium::Init Cannot find group of reactions named " + _reactionsSet);
+        if (molSet == null)
+            Debug.LogWarning("Medium::Init Cannot find group of molecules named" + _moleculesSet);
+
+        initATPProduction();
+        initReactionsFromReactionSet(reactSet);
+        initMoleculesFromMoleculeSets(molSet, allMolecules);
+        initDegradationReactions(allMolecules);
+        foreach (IReaction r in _reactions)
+        {
+            r.enableSequential = _enableSequential;
+        }
+    }
+
+    /*!
+      \brief Set the concentration of each molecules of the medium to their new values
+      \details Called only if sequential is disabled
+     */
+    public void updateMoleculesConcentrations()
+    {
+        foreach (Molecule m in _molecules)
+            m.updateConcentration();
+    }
+
+    /*!
+      \brief Debug the concentration of each molecules of the medium
+     */
+    public void Log(Logger.Level level = Logger.Level.TRACE)
+    {
+        string content = "";
+        foreach (Molecule m in _molecules)
+        {
+            if (!string.IsNullOrEmpty(content))
+            {
+                content += ", ";
+            }
+            content += m.ToString();
+        }
+
+        // Debug.Log("Medium::debug() #" + _numberId + "[" + content + "]", level);
+    }
+
+    /*!
+      \brief Execute everything about simulation into the Medium
+     */
+    public void Update()
+    {
+
+        if (enableShufflingReactionOrder)
+            LinkedListExtensions.Shuffle<IReaction>(_reactions);
+
+        foreach (IReaction reaction in _reactions)
+        {
+            /*
+          if(Logger.isLevel(Logger.Level.TRACE)) {
+            PromoterReaction promoter = reaction as PromoterReaction;
+            if (promoter != null) {
+              // Debug.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
+            }
+          }
+          */
+            reaction.react(_molecules);
+        }
+
+        applyVariation();
+
+        if (_enableNoise)
+        {
+            float noise;
+
+            foreach (Molecule m in _molecules)
+            {
+                noise = _numberGenerator.getNumber();
+                if (_enableSequential)
+                    m.addConcentration(noise);
+                else
+                    m.addNewConcentration(noise);
+            }
+        }
 
         //TODO improve check that it's the medium of the hero bacterium Cellia
         //TODO refactor interactions out of medium
         if (_name == "Cellia")
         {
             manageMoleculeConcentrationWithKey("AMPI");
-            
-            if(GameStateController.isAdminMode) {
+
+            if (GameStateController.isAdminMode)
+            {
                 //TODO manage this differently
                 manageMoleculeConcentrationWithKey("AMPR");
                 manageMoleculeConcentrationWithKey("ATC");
@@ -390,24 +413,24 @@ public class Medium : LoadableFromXmlImpl
         }
     }
 
-  //TODO refactor interactions out of medium
-  private void manageMoleculeConcentrationWithKey(String molecule)
-  {
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+molecule+_shortkeyPlusSuffix))
+    //TODO refactor interactions out of medium
+    private void manageMoleculeConcentrationWithKey(String molecule)
     {
-      if (_enableSequential)
-        ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
-      else
-        ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
+        if (GameStateController.isShortcutKey(GameStateController.keyPrefix + molecule + _shortkeyPlusSuffix))
+        {
+            if (_enableSequential)
+                ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
+            else
+                ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
+        }
+        if (GameStateController.isShortcutKey(GameStateController.keyPrefix + molecule + _shortkeyMinusSuffix))
+        {
+            if (_enableSequential)
+                ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(-10f);
+            else
+                ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(-100f);
+        }
     }
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+molecule+_shortkeyMinusSuffix))
-    {
-      if (_enableSequential)
-        ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(- 10f);
-      else
-        ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(- 100f);
-    }
-  }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -436,8 +459,8 @@ public class Medium : LoadableFromXmlImpl
      *  \sa Medium
      */
 
-    public override string getTag() {return "Medium";}
-    
+    public override string getTag() { return "Medium"; }
+
     /*!
     \brief This function load the initial energy of the medium and parse the validity of the given string
     \param value The value to parse and load
@@ -456,7 +479,7 @@ public class Medium : LoadableFromXmlImpl
 
         return true;
     }
-    
+
     /*!
     \brief This function load the energy production rate of the medium and parse the validity of the given string
     \param value The value to parse and load
@@ -466,19 +489,19 @@ public class Medium : LoadableFromXmlImpl
     private bool loadEnergyProductionRate(string value)
     {
         float productionRate;
-        
+
         if (String.IsNullOrEmpty(value))
         {
             Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
             productionRate = 0f;
         }
         else
-            productionRate = float.Parse(value.Replace(",", ".")); 
+            productionRate = float.Parse(value.Replace(",", "."));
         setEnergyProductionRate(productionRate);
 
         return true;
     }
-    
+
     /*!
     \brief This function load the maximum energy in the medium and parse the validity of the given string
     \param value The value to parse and load
@@ -488,122 +511,122 @@ public class Medium : LoadableFromXmlImpl
     private bool loadMaxEnergy(string value)
     {
         float prodMax;
-        
+
         if (String.IsNullOrEmpty(value))
         {
             Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
             prodMax = 0f;
         }
         else
-            prodMax = float.Parse(value.Replace(",", ".")); 
+            prodMax = float.Parse(value.Replace(",", "."));
         setMaxEnergy(prodMax);
 
         return true;
     }
-    
+
     /*!
     \brief This function create a new Medium based on the information in the given XML Node
     \param node The XmlNode to load.
   */
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-        Logger.Log("Medium.tryInstantiateFromXml("+Logger.ToString(node)+")", Logger.Level.DEBUG);
-        
+        // Debug.Log("Medium.tryInstantiateFromXml(" + Logger.ToString(node) + ")", Logger.Level.DEBUG);
+
         foreach (XmlNode attr in node)
         {
-            if(null == attr)
+            if (null == attr)
             {
                 continue;
             }
 
             switch (attr.Name)
             {
-              case "Id":
-                setId(Convert.ToInt32(attr.InnerText));
-                break;
-              case "Name":
-                setName(attr.InnerText);
-                break;
-              case "Energy":
-                loadEnergy(attr.InnerText);
-                break;
-              case "EnergyProductionRate":
-                loadEnergyProductionRate(attr.InnerText);
-                break;
-              case "MaxEnergy":
-                loadMaxEnergy(attr.InnerText);
-                break;
-              case "ReactionSet":
-                setReactionSet(attr.InnerText);
-                break;
-              case "MoleculeSet":
-                setMoleculeSet(attr.InnerText);
-                break;
+                case "Id":
+                    setId(Convert.ToInt32(attr.InnerText));
+                    break;
+                case "Name":
+                    setName(attr.InnerText);
+                    break;
+                case "Energy":
+                    loadEnergy(attr.InnerText);
+                    break;
+                case "EnergyProductionRate":
+                    loadEnergyProductionRate(attr.InnerText);
+                    break;
+                case "MaxEnergy":
+                    loadMaxEnergy(attr.InnerText);
+                    break;
+                case "ReactionSet":
+                    setReactionSet(attr.InnerText);
+                    break;
+                case "MoleculeSet":
+                    setMoleculeSet(attr.InnerText);
+                    break;
             }
         }
 
-        if(
-            //_reactions;               //!< The list of reactions
-            //_molecules;               //!< The list of molecules (Molecule)
+        if (
+               //_reactions;               //!< The list of reactions
+               //_molecules;               //!< The list of molecules (Molecule)
 
                (0 == _numberId)
             || (string.IsNullOrEmpty(_name))            //!< The name of the Medium
             || string.IsNullOrEmpty(_reactionsSet)      //!< The ReactionSet id assigned to this Medium
             || string.IsNullOrEmpty(_moleculesSet)      //!< The MoleculeSet id assigned to this Medium
-            //_enableSequential;
-            //_enableNoise;
-            //_numberGenerator                          //!< Random number generator (initialized in Init)
-            //_enableEnergy;
-            //_energy;                                  //!< Represents the quantity of ATP
-            //_energyVariation;                         //!< The variation of energy during one frame
-            //_maxEnergy;                               //!< The maximum quantity of ATP
-            //_energyProductionRate;                    //!< The energy production speed
+                                                        //_enableSequential;
+                                                        //_enableNoise;
+                                                        //_numberGenerator                          //!< Random number generator (initialized in Init)
+                                                        //_enableEnergy;
+                                                        //_energy;                                  //!< Represents the quantity of ATP
+                                                        //_energyVariation;                         //!< The variation of energy during one frame
+                                                        //_maxEnergy;                               //!< The maximum quantity of ATP
+                                                        //_energyProductionRate;                    //!< The energy production speed
 
             )
         {
-          Logger.Log("Medium.tryInstantiateFromXml failed to load because "
-                       +"_numberId="+_numberId
-                       +"& _name="+_name
-                       +"& _reactionsSet="+_reactionsSet
-                       +"& _moleculesSet="+_moleculesSet
-                       , Logger.Level.ERROR);
+            Debug.LogError("Medium.tryInstantiateFromXml failed to load because "
+                         + "_numberId=" + _numberId
+                         + "& _name=" + _name
+                         + "& _reactionsSet=" + _reactionsSet
+                         + "& _moleculesSet=" + _moleculesSet
+                         );
             return false;
         }
         else
         {
-          Logger.Log("Medium.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);
-          return true;
+            // Debug.Log("Medium.tryInstantiateFromXml(node) loaded this=" + this, Logger.Level.DEBUG);
+            return true;
         }
     }
 
 
 
 
-  public override string ToString ()
-  {
-    
-        string moleculeString = null == _molecules? "" : _molecules.Count.ToString();
-        string reactionString = null == _reactions? "" : _reactions.Count.ToString();
+    public override string ToString()
+    {
 
-    return string.Format ("[Medium "
-                          +"name:"+_name
-                          +"; id:"+_numberId
-                          +"; molecules:"+moleculeString
-                          +"; reactions:"+reactionString
-                          +"]");
-  }
-    
-  public string ToStringDetailed ()
-  {
-      
-      string moleculeString = null == _molecules? "" : Logger.ToString<Molecule>("Molecule", _molecules);
-      string reactionString = null == _reactions? "" : Logger.ToString<IReaction>(_reactions);
-      
-      return string.Format ("[Medium "
-                            +"name:"+_name
-                            +"; id:"+_numberId
-                            +"; molecules:"+moleculeString
-                            +"; reactions:"+reactionString
-                            +"]");
-  }
+        string moleculeString = null == _molecules ? "" : _molecules.Count.ToString();
+        string reactionString = null == _reactions ? "" : _reactions.Count.ToString();
+
+        return string.Format("[Medium "
+                              + "name:" + _name
+                              + "; id:" + _numberId
+                              + "; molecules:" + moleculeString
+                              + "; reactions:" + reactionString
+                              + "]");
+    }
+
+    public string ToStringDetailed()
+    {
+
+        string moleculeString = null == _molecules ? "" : Logger.ToString<Molecule>("Molecule", _molecules);
+        string reactionString = null == _reactions ? "" : Logger.ToString<IReaction>(_reactions);
+
+        return string.Format("[Medium "
+                              + "name:" + _name
+                              + "; id:" + _numberId
+                              + "; molecules:" + moleculeString
+                              + "; reactions:" + reactionString
+                              + "]");
+    }
 }
