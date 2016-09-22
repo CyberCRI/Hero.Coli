@@ -9,6 +9,8 @@ public class MainMenuManager : MonoBehaviour
     private static MainMenuManager _instance;
     [SerializeField]
     private bool _first = true;
+    [SerializeField]
+    private CullingMaskHandler cullingMaskHandler;
 
     public static MainMenuManager get ()
     {
@@ -355,23 +357,27 @@ public class MainMenuManager : MonoBehaviour
         return true;
     }
 
-    public void open() {
+    public void open()
+    {
         //Debug.Log("MainMenuManager::open");
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
         gameObject.SetActive(true);
-        switchTo (MainMenuScreen.DEFAULT);
+        switchTo(MainMenuScreen.DEFAULT);
+        cullingMaskHandler.showMainMenu(true);
     }
 
-    public void close() {
+    public void close()
+    {
         //Debug.Log("MainMenuManager::close");
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
+        cullingMaskHandler.showMainMenu(false);
     }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         //Debug.Log("MainMenuManager::Start");
-        selectItem (0);
+        selectItem(0);
     }
 }

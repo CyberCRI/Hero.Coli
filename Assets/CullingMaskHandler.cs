@@ -1,28 +1,58 @@
 ﻿using UnityEngine;
 
-public class CullingMaskHandler : MonoBehaviour {
-
+public class CullingMaskHandler : MonoBehaviour
+{
+    [SerializeField]
     private Camera _uiCamera;
-    private int _originalCullingMask;
-
-	void Start () {
-        _uiCamera = this.GetComponent<Camera>();
-        _originalCullingMask = _uiCamera.cullingMask;
-	}
+    [SerializeField]
+    private Camera _cutSceneCamera;
+    private bool _isMenuMaskSet = false;
+    private int _cullingMaskBeforeMainMenu;
+    private int _originalCullingMask = int.MinValue;
+    private int originalCullingMask
+    {
+        get
+        {
+            if(int.MinValue == _originalCullingMask)
+            {
+                _originalCullingMask = _uiCamera.cullingMask;
+            }
+            return _originalCullingMask;
+        }
+    }
 
     public void hideInterface(bool hide)
     {
+        // Debug.LogError("hideInterface(" + hide + ")");
         GUITransitioner.showGraphs(!hide, GUITransitioner.GRAPH_HIDER.CUTSCENE);
-        if(null != _uiCamera)
+        if (hide)
         {
-            if (hide)
+            _uiCamera.cullingMask = 0;
+            _cutSceneCamera.enabled = true;
+        }
+        else
+        {
+            _uiCamera.cullingMask = originalCullingMask;
+            _cutSceneCamera.enabled = false;
+        }
+    }
+
+    public void showMainMenu(bool show)
+    {
+        // Debug.LogError("showMainMenu(" + show + ")");
+        if (show)
+        {
+            if(!_isMenuMaskSet)
             {
-                _uiCamera.cullingMask = 0;
+                _isMenuMaskSet = true;
+                _cullingMaskBeforeMainMenu = _uiCamera.cullingMask;
+                hideInterface(false);                
             }
-            else
-            {
-                _uiCamera.cullingMask = _originalCullingMask;
-            }
+        }
+        else
+        {
+            _isMenuMaskSet = false;
+            hideInterface(_cullingMaskBeforeMainMenu != originalCullingMask);
         }
     }
 }
