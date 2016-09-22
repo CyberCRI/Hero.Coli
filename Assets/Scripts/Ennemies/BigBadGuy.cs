@@ -15,7 +15,16 @@ public class BigBadGuy : MonoBehaviour
     private float _deathSpeed = 1f;
     [SerializeField]
     private GameObject _deadBigBadGuy;
-    public bool _injured = false;
+    private bool _injured = false;
+    [SerializeField]
+    private bool _isSleeping = false;
+    [SerializeField]
+    private Light _pointLight;
+    private float _maxPointLightIntensity;
+    private float _minPointLightIntensity;
+    private bool _lightIntensityIsIncreasing = false;
+    private float _blinkSpeed;
+    private slowDown _slowDown;
 
     void Awake ()
     {
@@ -26,6 +35,50 @@ public class BigBadGuy : MonoBehaviour
     void Start ()
     {
         step = transform.localScale.x / life;
+        _slowDown = this.GetComponent<slowDown>();
+    }
+
+    void Update()
+    {
+        if (_isSleeping == true)
+        {
+            _maxPointLightIntensity = 0.5f;
+            _minPointLightIntensity = 0f;
+            _blinkSpeed = 0.25f;
+            _slowDown.percentage = 20f;
+        }
+        else
+        {
+            _maxPointLightIntensity = 2.5f;
+            _minPointLightIntensity = 1.1f;
+            _blinkSpeed = 2f;
+            _slowDown.percentage = 100f;
+        }
+
+        if (_lightIntensityIsIncreasing == true)
+        {
+            if (_pointLight.intensity < _maxPointLightIntensity)
+            {
+                _pointLight.intensity += Time.deltaTime * _blinkSpeed;
+            }
+            else
+            {
+                _lightIntensityIsIncreasing = false;
+            }
+        }
+        else
+        {
+            if (_pointLight.intensity > _minPointLightIntensity)
+            {
+                _pointLight.intensity -= Time.deltaTime * _blinkSpeed;
+            }
+            else
+            {
+                _lightIntensityIsIncreasing = true;
+            }
+        }
+
+
     }
     
     public void Pause (bool isPause)
@@ -89,5 +142,10 @@ public class BigBadGuy : MonoBehaviour
         instance.transform.SetParent(this.transform.parent);
         this.gameObject.SetActive(false);
         yield return null;
+    }
+
+    public void WakeUp(bool value)
+    {
+        _isSleeping = !value;
     }
 }
