@@ -18,5 +18,6 @@ public class BasicMine : ResettableMine
         {
             collision.gameObject.GetComponent<DeathDummy>().startDeath();
         }
+        this.gameObject.SetActive(false);
     }
 }

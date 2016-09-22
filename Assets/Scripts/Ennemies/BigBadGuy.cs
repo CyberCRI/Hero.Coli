@@ -25,6 +25,7 @@ public class BigBadGuy : MonoBehaviour
     private bool _lightIntensityIsIncreasing = false;
     private float _blinkSpeed;
     private slowDown _slowDown;
+    private bool _isDying = false;
 
     void Awake ()
     {
@@ -40,41 +41,44 @@ public class BigBadGuy : MonoBehaviour
 
     void Update()
     {
-        if (_isSleeping == true)
+        if (_isDying == false)
         {
-            _maxPointLightIntensity = 0.5f;
-            _minPointLightIntensity = 0f;
-            _blinkSpeed = 0.25f;
-            _slowDown.percentage = 20f;
-        }
-        else
-        {
-            _maxPointLightIntensity = 2.5f;
-            _minPointLightIntensity = 1.1f;
-            _blinkSpeed = 2f;
-            _slowDown.percentage = 100f;
-        }
+            if (_isSleeping == true)
+            {
+                _maxPointLightIntensity = 0.5f;
+                _minPointLightIntensity = 0f;
+                _blinkSpeed = 0.25f;
+                _slowDown.percentage = 20f;
+            }
+            else
+            {
+                _maxPointLightIntensity = 2.5f;
+                _minPointLightIntensity = 1.1f;
+                _blinkSpeed = 2f;
+                _slowDown.percentage = 100f;
+            }
 
-        if (_lightIntensityIsIncreasing == true)
-        {
-            if (_pointLight.intensity < _maxPointLightIntensity)
+            if (_lightIntensityIsIncreasing == true)
             {
-                _pointLight.intensity += Time.deltaTime * _blinkSpeed;
+                if (_pointLight.intensity < _maxPointLightIntensity)
+                {
+                    _pointLight.intensity += Time.deltaTime * _blinkSpeed;
+                }
+                else
+                {
+                    _lightIntensityIsIncreasing = false;
+                }
             }
             else
             {
-                _lightIntensityIsIncreasing = false;
-            }
-        }
-        else
-        {
-            if (_pointLight.intensity > _minPointLightIntensity)
-            {
-                _pointLight.intensity -= Time.deltaTime * _blinkSpeed;
-            }
-            else
-            {
-                _lightIntensityIsIncreasing = true;
+                if (_pointLight.intensity > _minPointLightIntensity)
+                {
+                    _pointLight.intensity -= Time.deltaTime * _blinkSpeed;
+                }
+                else
+                {
+                    _lightIntensityIsIncreasing = true;
+                }
             }
         }
 
@@ -133,6 +137,7 @@ public class BigBadGuy : MonoBehaviour
 
     IEnumerator BadGuyDeath(slowDown slowDown, float deathSPeed)
     {
+        _isDying = true;
         while (slowDown.percentage > 0)
         {
             slowDown.percentage -= Time.deltaTime * deathSPeed;

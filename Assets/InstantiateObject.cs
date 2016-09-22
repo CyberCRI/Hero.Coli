@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class InstantiateObject : CutScene {
+public class InstantiateObject : CutSceneElements {
 
     [SerializeField]
     private GameObject _toInstantiate;
@@ -30,21 +30,6 @@ public class InstantiateObject : CutScene {
 	void Update () {
 	
 	}
-
-    public override void startCutScene()
-    {
-        
-    }
-
-    public override void endCutScene()
-    {
-        
-    }
-
-    public override void initialize()
-    {
-        
-    }
 
     void OnTriggerEnter(Collider col)
     {

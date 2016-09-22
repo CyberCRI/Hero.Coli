@@ -44,7 +44,7 @@ public class MineManager : MonoBehaviour
 
     public void resetSelectedMine(ResettableMine mine)
     {
-        GameObject target = mine.gameObject;
+        GameObject target = mine.gameObject;    
 
         iTween.Stop(target, true);
         
@@ -57,7 +57,7 @@ public class MineManager : MonoBehaviour
 
     public void resetAllMines()
     {
-        // Debug.Log("resetAllMines");
+        //Debug.Log("resetAllMines");
         foreach (ResettableMine mine in _minesToReset)
         {
             // Debug.Log("reset " + mine.gameObject.name);
