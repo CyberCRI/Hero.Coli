@@ -15,6 +15,8 @@ public class CutSceneConclusion : CutScene {
     [SerializeField]
     private GameObject _wayPoint2;
     [SerializeField]
+    private Transform _camPosition;
+    [SerializeField]
     private float _offSet;
 
     public override void initialize()
@@ -31,11 +33,15 @@ public class CutSceneConclusion : CutScene {
         _wayPoint1.transform.position = _CutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_wayPoint2.transform.position.x,_wayPoint1.transform.position.y + _offSet,_wayPoint2.transform.position.z);
         _CutSceneCam.GetComponent<PlatformMvt>().enabled = true;
+        StartCoroutine(WaitForTravellingCam(1));
     }
 
     public override void endCutScene()
     {
-        
+        StartCoroutine(WaitBetweenActivation(2f));
+        _CutSceneCam.gameObject.SetActive(false);
+        _boundCamera.gameObject.SetActive(true);
+        _cellControl.freezePlayer(false);
     }
 
     void OnTriggerEnter(Collider col)
@@ -45,10 +51,7 @@ public class CutSceneConclusion : CutScene {
             start();
             _collisionIteration += 1;
             //StartCoroutine(WaitBetweenActivation(2f));
-            for (int i = 0; i < _BigBadGuyPLatformMvt.Length; i++)
-            {
-                //_BigBadGuyPLatformMvt[i].GetComponent<BigBadGuy>().WakeUp(true);
-            }
+            
         }
     }
 
@@ -62,11 +65,53 @@ public class CutSceneConclusion : CutScene {
         }
     }
 
+    private void SecondPart()
+    {
+        _wayPoint1.transform.position = _wayPoint2.transform.position;
+        _wayPoint2.transform.position = _camPosition.transform.position;
+        _CutSceneCam.GetComponent<PlatformMvt>().restart();
+        StartCoroutine(WaitForTravellingCam(2));
+    }
+
+    private void ThirdPart()
+    {
+        Debug.Log("third");
+        end();
+        _wayPoint1.transform.position = _wayPoint2.transform.position;
+        _wayPoint2.transform.position = _boundCamera.transform.position;
+    }
+
     IEnumerator WaitBetweenActivation(float timeToWait)
     {
+        _cellControl.freezePlayer(false);
         yield return new WaitForSeconds(timeToWait);
         ActivateOneByOne();
         yield return null;
     }
 
+    IEnumerator WaitForTravellingCam(int iteration)
+    {
+        while (Vector3.Distance(_CutSceneCam.transform.position, _wayPoint2.transform.position) <= 0.5f)
+        {
+            yield return null;
+        }
+        if (iteration == 2)
+        {
+            for (int i = 0; i < _BigBadGuyPLatformMvt.Length; i++)
+            {
+                _BigBadGuyPLatformMvt[i].GetComponent<BigBadGuy>().WakeUp(true);
+            }
+        }
+        yield return new WaitForSeconds(2f);
+
+        if (iteration == 1)
+        {
+            SecondPart();
+        }
+        else if (iteration == 2)
+        {
+            ThirdPart();
+        }
+        yield return null;
+    }
 }
