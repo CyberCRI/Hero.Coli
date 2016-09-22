@@ -107,7 +107,6 @@ public abstract class CutScene : MonoBehaviour {
         StartCoroutine(waitForBlackBar(true));
         //startCutScene ();
         _cullingMaskHandler.hideInterface(true);
-        _cutSceneCamera.enabled = true;
 	}
 	
     // must be implemented in each cut scene
@@ -123,7 +122,6 @@ public abstract class CutScene : MonoBehaviour {
         _blackBar.closeBar(false);
         StartCoroutine(waitForBlackBar(false));
         _cullingMaskHandler.hideInterface(false);
-        _cutSceneCamera.enabled = false;
         _cellControl.freezePlayer(false);
         //endCutScene();
         //this.enabled = false;
@@ -149,6 +147,5 @@ public abstract class CutScene : MonoBehaviour {
     public void SetCutSceneCamera(bool value)
     {
         _cullingMaskHandler.hideInterface(value);
-        _cutSceneCamera.enabled = value;
     }
 }
