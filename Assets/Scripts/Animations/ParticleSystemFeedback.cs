@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ClickFeedback : MonoBehaviour {
+public class ParticleSystemFeedback : MonoBehaviour {
 
     public ParticleSystem system;
 

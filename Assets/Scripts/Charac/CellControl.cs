@@ -55,7 +55,7 @@ public class CellControl : MonoBehaviour
     public RightClickToMoveButton rightClickToMoveButton;
     public UISprite selectedMouseControlTypeSprite;
     public UISprite selectedKeyboardControlTypeSprite;
-    public GameObject clickFeedback;
+    public ParticleSystemFeedback clickFeedback;
 
     private bool _pause;
     private Vector3 _inputMovement;
@@ -129,11 +129,7 @@ public class CellControl : MonoBehaviour
 
     private void setClickFeedback(Vector3 position)
     {
-        ClickFeedback feedback = clickFeedback.GetComponent<ClickFeedback>();
-        if (null != feedback)
-        {
-            feedback.burst(position);
-        }
+        clickFeedback.burst(position);
     }
 
     private void clickToMoveUpdate(KeyCode mouseButtonCode)
