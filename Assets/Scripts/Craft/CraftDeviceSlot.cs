@@ -18,7 +18,7 @@ public class CraftDeviceSlot : MonoBehaviour
     private UISprite _resultSprite;
     private const string _resultActiveSprite = "craft_result_active";
     private const string _resultInactiveSprite = "craft_result_inactive";
-    
+
     [SerializeField]
     private BioBricksCollapse _bricksCollapse;
 
@@ -30,20 +30,22 @@ public class CraftDeviceSlot : MonoBehaviour
     private bool _hasToExpandBricks = false;
     private bool _isCollapsed = false;
     private bool _isExpanded = true;
-    
+
     private bool _isSelectedSlot = false;
-    
+
     private bool _interruptOnDisable = false;
-    
+
+    private bool _isCallingRecursively = false;
+
     [SerializeField]
     private GameObject[] dummyBrickGameObjects;
     [SerializeField]
     private UISprite[] dummyBrickGameObjectsSprites = new UISprite[4];
-    
+
     // logical elements
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
-    
-    
+
+
     protected bool _isEquiped;
     public bool isEquiped
     {
@@ -60,38 +62,59 @@ public class CraftDeviceSlot : MonoBehaviour
                 _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
                 if (_isEquiped)
                 {
-                    if(null != _resultSprite)
+                    if (null != _resultSprite)
                     {
                         _resultSprite.spriteName = _resultActiveSprite;
                     }
                     //set result device
-                    if(null != _resultDevice)
+                    if (null != _resultDevice)
                     {
                         _resultDevice.Initialize(currentDevice);
                         _resultDevice.gameObject.SetActive(true);
-                    }                    
+                    }
                 }
+                forcePositionIfNecessary(false);
             }
-            else if(_isEquiped && !value)
+            else if (_isEquiped && !value)
             {
                 //Debug.Log("set: _isEquiped && !value");
                 _isEquiped = false;
                 Debug.Log("CDS calls Equipment.get().removeDevice");
+                _isCallingRecursively = true;
                 Equipment.get().removeDevice(getCurrentDevice());
-                if(null != _resultSprite)
+                _isCallingRecursively = false;
+                if (null != _resultSprite)
                 {
                     _resultSprite.spriteName = _resultInactiveSprite;
                 }
                 //set result device
-                if(null != _resultDevice)
+                if (null != _resultDevice)
                 {
                     _resultDevice.gameObject.SetActive(false);
                 }
+                forcePositionIfNecessary(true);
             }
             else
             {
                 //Debug.Log("none");
             }
+        }
+    }
+
+    protected void forcePositionIfNecessary(bool expanded)
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            if (expanded)
+            {
+                onBricksExpandedCallback();
+            }
+            else
+            {
+                onBricksCollapsedCallback();
+            }
+            setPosition(expanded);
+            displayCraftSlotSprite();
         }
     }
 
@@ -168,7 +191,7 @@ public class CraftDeviceSlot : MonoBehaviour
         if (null != brick)
         {
             int index = getIndexFromBrick(brick);
-            
+
             //Debug.Log("!isLocked && (null != brick); index="+index);
 
             // create new CraftZoneDisplayedBioBrick 
@@ -181,7 +204,7 @@ public class CraftDeviceSlot : MonoBehaviour
             czdb.slot = this;
             addBrick(czdb);
             AvailableBioBricksManager.get().addBrickAmount(brick, -1);
-            
+
             // Debug.Log("added "+brick);
         }
     }
@@ -197,15 +220,15 @@ public class CraftDeviceSlot : MonoBehaviour
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
             dummyBrickGameObjectsSprites[index].enabled = false;
-            
+
             checkDevice();
-            
+
             updateDisplay();
-            
+
             // Debug.Log("added "+brick);
         }
     }
-    
+
     private bool areAllBricksNonNull()
     {
         return (
@@ -216,18 +239,18 @@ public class CraftDeviceSlot : MonoBehaviour
         );
     }
     public delegate void Callback();
-    public static void noneCallback() {}
+    public static void noneCallback() { }
     public Callback onBricksCollapsedCallback = noneCallback;
     public Callback onBricksExpandedCallback = noneCallback;
-    
+
     private void displayCraftSlotSprite()
     {
         _craftSlotSprite.gameObject.SetActive(_isExpanded);
     }
-    
+
     private void checkDevice()
     {
-        if(areAllBricksNonNull())
+        if (areAllBricksNonNull())
         {
             // Debug.Log("checkDevice");
             _isCraftSuccess = (Inventory.get().canAddDevice(getCurrentDevice()) == Inventory.AddingResult.SUCCESS);
@@ -244,41 +267,42 @@ public class CraftDeviceSlot : MonoBehaviour
     public void animateCollapseCompleted()
     {
         // Debug.Log("animateCollapseCompleted");
-        
+
         equip();
-        
+
         // Debug.Log("animateCollapseCompleted _isCraftSuccess="+_isCraftSuccess);
-        
-        if(_isCraftSuccess)
-        {            
+
+        if (_isCraftSuccess)
+        {
             // feedback on new listed device
             CraftFinalizer.get().finalizeCraft();
             // feedback on crafted device
             _resultDevice.playFeedback();
-            
+
             // feedback on new listed device
             CraftFinalizer.get().finalizeCraft();
-            
+
             _isCraftSuccess = false;
         }
         // Debug.Log("animateCollapseCompleted done");
     }
 
-    public Device getCurrentDevice() {
+    public Device getCurrentDevice()
+    {
         //Debug.Log("CraftDeviceSlot getCurrentDevice");
-        if(areAllBricksNonNull())
+        if (areAllBricksNonNull())
         {
-            List<BioBrick> currentBricksL = new List<BioBrick>{currentBricks[0]._biobrick,currentBricks[1]._biobrick,currentBricks[2]._biobrick,currentBricks[3]._biobrick};
+            List<BioBrick> currentBricksL = new List<BioBrick> { currentBricks[0]._biobrick, currentBricks[1]._biobrick, currentBricks[2]._biobrick, currentBricks[3]._biobrick };
             LinkedList<BioBrick> currentBricksLL = new LinkedList<BioBrick>(currentBricksL);
             return CraftZoneManager.get().getDeviceFromBricks(currentBricksLL);
         }
         return null;
     }
-    
+
     public LinkedList<BioBrick> getCurrentBricks()
     {
         LinkedList<BioBrick> result = new LinkedList<BioBrick>();
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (null != currentBricks[i])
             {
@@ -287,7 +311,7 @@ public class CraftDeviceSlot : MonoBehaviour
         }
         return result;
     }
-    
+
     public bool removeBrick(BioBrick brick)
     {
         //Debug.Log("removeBrick(brick)");
@@ -307,15 +331,13 @@ public class CraftDeviceSlot : MonoBehaviour
         return false;
     }
 
-
-
     private void askCollapseBricks()
     {
         //Debug.Log("askCollapseBricks "+getDebugBoolsString());
-        if(_isCollapsed)
+        if (_isCollapsed)
         {
             _isCollapsingBricks = false;
-            _hasToCollapseBricks = false; 
+            _hasToCollapseBricks = false;
         }
         else
         {
@@ -332,7 +354,7 @@ public class CraftDeviceSlot : MonoBehaviour
             else if (_isCollapsingBricks)
             {
                 // Debug.Log("askCollapseBricks _hasToCollapseBricks = false;");
-                
+
                 //do nothing
                 _hasToCollapseBricks = false;
                 //Debug.Log("askExpandBricks denied: _isCollapsingBricks "+getDebugBoolsString());
@@ -340,7 +362,7 @@ public class CraftDeviceSlot : MonoBehaviour
             else if (_isExpandingBricks)
             {
                 // Debug.Log("askCollapseBricks _hasToCollapseBricks = true;");
-                
+
                 _hasToCollapseBricks = true;
                 //Debug.Log("askExpandBricks denied: _isExpandingBricks "+getDebugBoolsString());
             }
@@ -355,8 +377,8 @@ public class CraftDeviceSlot : MonoBehaviour
     private void askExpandBricks()
     {
         //Debug.Log("askExpandBricks "+getDebugBoolsString());
-        
-        if(_isExpanded)
+
+        if (_isExpanded)
         {
             _isExpandingBricks = false;
             _hasToExpandBricks = false;
@@ -395,29 +417,29 @@ public class CraftDeviceSlot : MonoBehaviour
     private void collapseBricks()
     {
         // Debug.Log("collapseBricks");
-        
+
         //Debug.Log("collapseBricks "+getDebugBoolsString());
-        if(_isCollapsed)
+        if (_isCollapsed)
         {
             // Debug.Log("collapseBricks _isCollapsed");
             _isCollapsingBricks = false;
-            _hasToCollapseBricks = false; 
+            _hasToCollapseBricks = false;
         }
-        else if(!_isExpandingBricks && areAllBricksNonNull())
+        else if (!_isExpandingBricks && areAllBricksNonNull())
         {
             // Debug.Log("collapseBricks !_isExpandingBricks && areAllBricksNonNull");
-            
+
             string startString = getDebugBoolsString();
-            _isExpandingBricks = false; 
-            
+            _isExpandingBricks = false;
+
             _isCollapsingBricks = true;
             _hasToCollapseBricks = false;
-            
+
             _isExpanded = false;
             _isCollapsed = false;
-            
+
             _bricksCollapse.startCollapseBricks();
-            
+
             displayCraftSlotSprite();
             //Debug.Log("collapseBricks for reals start="+startString+"\nend="+getDebugBoolsString());
         }
@@ -426,24 +448,24 @@ public class CraftDeviceSlot : MonoBehaviour
     private void expandBricks()
     {
         //Debug.Log("expandBricks "+getDebugBoolsString());
-        if(_isExpanded)
+        if (_isExpanded)
         {
             _isExpandingBricks = false;
             _hasToExpandBricks = false;
         }
-        else if(!_isExpandingBricks)
+        else if (!_isExpandingBricks)
         {
             string startString = getDebugBoolsString();
             _isCollapsingBricks = false;
-            
+
             _isExpandingBricks = true;
             _hasToExpandBricks = false;
-            
+
             _isExpanded = false;
             _isCollapsed = false;
-            
+
             _bricksCollapse.startExpandBricks();
-            
+
             displayCraftSlotSprite();
             //Debug.Log("expandBricks for reals start="+startString+"\nend="+getDebugBoolsString());
         }
@@ -452,8 +474,8 @@ public class CraftDeviceSlot : MonoBehaviour
     public void onBricksStoppedMoving()
     {
         // Debug.Log("onBricksStoppedMoving");
-        string startString = getDebugBoolsString();
-        
+        // string startString = getDebugBoolsString();
+
         _isCollapsed = _isCollapsingBricks;
         _isExpanded = _isExpandingBricks;
 
@@ -483,18 +505,18 @@ public class CraftDeviceSlot : MonoBehaviour
 
     public bool removeBrick(CraftZoneDisplayedBioBrick brick)
     {
-        if(null != brick)
+        if (null != brick)
         {
             //Debug.Log("removeBrick(czdb="+brick._biobrick.getName()+")");   
             foreach (CraftZoneDisplayedBioBrick czdb in currentBricks)
             {
-                if(czdb == brick)
+                if (czdb == brick)
                 {
                     innerRemoveBrick(brick);
                     return true;
                 }
             }
-            Debug.LogError("failed to find czdb brick to remove called '"+brick._biobrick.getName()+"'");
+            Debug.LogError("failed to find czdb brick to remove called '" + brick._biobrick.getName() + "'");
         }
         else
         {
@@ -515,54 +537,57 @@ public class CraftDeviceSlot : MonoBehaviour
         dummyBrickGameObjectsSprites[index].enabled = true;
         expandBricks();
     }
-    
+
     public void removeAllBricks()
     {
-        removeBrick(currentBricks[0]);
-        removeBrick(currentBricks[1]);
-        removeBrick(currentBricks[2]);
-        removeBrick(currentBricks[3]);
-        if(isEquiped)
+        if (!_isCallingRecursively)
         {
-            unequip();
+            removeBrick(currentBricks[0]);
+            removeBrick(currentBricks[1]);
+            removeBrick(currentBricks[2]);
+            removeBrick(currentBricks[3]);
+            if (isEquiped)
+            {
+                unequip();
+            }
         }
     }
-    
+
     public void setDevice(Device device)
     {
         lazyInitialize();
-        
-        if(device != null)
+
+        if (device != null)
         {
             //Debug.Log("CDS setDevice");
             //check that can afford device            
             LinkedList<BioBrick> newBricks = device.getExpressionModules().First.Value.getBioBricks();
             LinkedList<BioBrick> currentBricks = getCurrentBricks();
-            AvailableBioBricksManager abbm = AvailableBioBricksManager.get(); 
-            
-            foreach(BioBrick brick in newBricks)
+            AvailableBioBricksManager abbm = AvailableBioBricksManager.get();
+
+            foreach (BioBrick brick in newBricks)
             {
-                if(!currentBricks.Contains(brick))
+                if (!currentBricks.Contains(brick))
                 {
                     BioBrick abb = abbm.getBioBrickFromAll(brick.getName());
-                    if(0 == abb.amount) 
+                    if (0 == abb.amount)
                     {
                         //Debug.Log("CDS setDevice abort with "+brick.getName());
                         // can't afford; abort
-                        Debug.LogWarning("abort: can't afford "+brick);
+                        Debug.LogWarning("abort: can't afford " + brick);
                         return;
                     }
                 }
             }
-            
+
             //Debug.Log("CDS setDevice removeAllBricks");
             removeAllBricks();
-            
-            foreach(BioBrick brick in newBricks)
+
+            foreach (BioBrick brick in newBricks)
             {
                 addBrick(brick);
             }
-            
+
             updateDisplay();
         }
     }
@@ -576,12 +601,12 @@ public class CraftDeviceSlot : MonoBehaviour
             lbczm.selectSlot(this);
         }
     }
-    
+
     public void setSelectedBackground(bool selected)
     {
         //Debug.Log("CraftDeviceSlot setSelectedBackground("+selected+")");
         _isSelectedSlot = selected;
-        _selectionSprite.spriteName = selected?_slotSelectedSprite:_slotUnselectedSprite;
+        _selectionSprite.spriteName = selected ? _slotSelectedSprite : _slotUnselectedSprite;
         _selectionSprite.type = UISprite.Type.Sliced;
     }
 
@@ -600,24 +625,24 @@ public class CraftDeviceSlot : MonoBehaviour
             }
         }
     }
-    
+
     void lazyInitialize()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             // Debug.Log("not yet initialized");
             _initialized = true;
 
             _selectionSprite.name = gameObject.name + _selectionSprite.name;
-            
+
             _isEquiped = true;
             isEquiped = false;
-            
-            for(int index = 0; index < 4; index++)
+
+            for (int index = 0; index < 4; index++)
             {
                 dummyBrickGameObjectsSprites[index] = dummyBrickGameObjects[index].GetComponent<UISprite>();
             }
-                
+
             _bricksCollapse.onBricksStoppedMoving = onBricksStoppedMoving;
         }
         // else
@@ -636,23 +661,23 @@ public class CraftDeviceSlot : MonoBehaviour
         return currentBricks;
     }
 
-/*
-    void Update()
-    {
-        if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
+    /*
+        void Update()
         {
-            Debug.LogError(getDebugBoolsString());
-            _interruptOnDisable = !_interruptOnDisable;
-        }        
-    }
-    */
-    
+            if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
+            {
+                Debug.LogError(getDebugBoolsString());
+                _interruptOnDisable = !_interruptOnDisable;
+            }        
+        }
+        */
+
     void OnDisable()
     {
-        if(!_interruptOnDisable)
+        if (!_interruptOnDisable)
         {
             // finish craft & equip if needed
-            if(_isCollapsingBricks || _hasToCollapseBricks)
+            if (_isCollapsingBricks || _hasToCollapseBricks)
             {
                 onBricksCollapsedCallback();
                 setPosition(false);
@@ -664,9 +689,9 @@ public class CraftDeviceSlot : MonoBehaviour
             }
         }
         else
-        {   
+        {
             // interrupt and abort equip & craft
-            if(_isCollapsingBricks || _hasToCollapseBricks)
+            if (_isCollapsingBricks || _hasToCollapseBricks)
             {
                 removeAllBricks();
             }
@@ -674,22 +699,22 @@ public class CraftDeviceSlot : MonoBehaviour
         }
         displayCraftSlotSprite();
     }
-    
+
     private void setPosition(bool isExpanded)
-    {   
+    {
         _isCollapsingBricks = false;
         _isExpandingBricks = false;
         _hasToCollapseBricks = false;
         _hasToExpandBricks = false;
         _isCollapsed = !isExpanded;
         _isExpanded = isExpanded;
-        
+
         _bricksCollapse.setPosition(isExpanded);
     }
-    
+
     private string getDebugBoolsString()
     {
-        return  "bools:\n_isCollapsingBricks = " + _isCollapsingBricks + ";" +
+        return "bools:\n_isCollapsingBricks = " + _isCollapsingBricks + ";" +
                 "\n_isExpandingBricks = " + _isExpandingBricks + ";" +
                 "\n_hasToCollapseBricks = " + _hasToCollapseBricks + ";" +
                 "\n_hasToExpandBricks = " + _hasToExpandBricks + ";" +

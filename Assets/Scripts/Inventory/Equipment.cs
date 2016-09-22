@@ -115,6 +115,11 @@ public class Equipment : DeviceContainer
         }
     }
 
+    public void removeDevice(Device device, bool removeBricks)
+    {
+        removeDevice(device);
+    }
+
     // not optimized
     public override void removeDevices(List<Device> toRemove)
     {
