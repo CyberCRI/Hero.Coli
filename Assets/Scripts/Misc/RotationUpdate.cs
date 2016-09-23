@@ -7,7 +7,8 @@ public class RotationUpdate : MonoBehaviour {
     private PlatformMvt _platformMvt;
     private float rotationSpeed = 6f;
 	private Vector3 _previousPosition;
-
+    [SerializeField]
+    private bool _isControlledExternally = false;
 	// Use this for initialization
 	void Start () {
 		_previousPosition = this.transform.position;
@@ -17,19 +18,29 @@ public class RotationUpdate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		/*if (_platformMvt != null) {
+        /*if (_platformMvt != null) {
 			_inputMovement = _platformMvt.getCurrentDestination () - this.transform.position;
 		} else 
 		{
 			_inputMovement = this.transform.position - _previousPosition;
 		}*/
-        if ((Vector3.Distance(_previousPosition,this.transform.position) <= 0.05f))
+        if (_isControlledExternally == false)
         {
-		    _inputMovement = this.transform.position - _previousPosition;
-		    rotationUpdate();
-		    _previousPosition = this.transform.position;
+            if ((Vector3.Distance(_previousPosition,this.transform.position) <= 0.05f))
+            {
+		        _inputMovement = this.transform.position - _previousPosition;
+		        _previousPosition = this.transform.position;
+            }
         }
-	}
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            ObjectDirectedRotationUpdate(player);
+        }
+
+        rotationUpdate();
+    }
 
     private void rotationUpdate()
     {
@@ -39,5 +50,22 @@ public class RotationUpdate : MonoBehaviour {
             float rotation = Mathf.Atan2(_inputMovement.x, _inputMovement.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotation, Vector3.up), Time.deltaTime * rotationSpeed);
         }
+    }
+
+    public void ObjectDirectedRotationUpdate(GameObject obj)
+    {
+        _inputMovement = obj.transform.localPosition - this.transform.localPosition;
+        rotationUpdate();
+    }
+
+    IEnumerator SmoothRotate(float time)
+    {
+        float originTime = time;
+        while(time >=0)
+        {
+            time -= Time.deltaTime;
+            rotationUpdate();
+        }
+        yield return null;
     }
 }
