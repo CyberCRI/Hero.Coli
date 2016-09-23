@@ -4,7 +4,7 @@
       <name>ANTIAMPI</name>
       <substrate>AMPI</substrate>
       <enzyme>AMPR</enzyme>
-      <Kcat>0.086</Kcat>
+      <Kcat>0.09</Kcat>
       <effector>False</effector>
       <alpha>1000</alpha>
       <beta>0</beta>
