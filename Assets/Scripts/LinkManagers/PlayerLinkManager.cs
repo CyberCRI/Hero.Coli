@@ -7,6 +7,36 @@ using UnityEngine;
 
 public class PlayerLinkManager : LinkManager
 {
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    public static string gameObjectName = "PlayerLinkManager";
+    private static PlayerLinkManager _instance;
+
+    public static PlayerLinkManager get()
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("PlayerLinkManager::get was badly initialized");
+            GameObject go = GameObject.Find(gameObjectName);
+            if (go)
+            {
+                _instance = go.GetComponent<PlayerLinkManager>();
+            }
+        }
+        return _instance;
+    }
+
+    void Awake()
+    {
+        _instance = this;
+        //Debug.LogError("PlayerLinkManager awakes with (_instance == null)=="+(_instance == null));
+    }
+
+    void OnDestroy()
+    {
+        //Debug.LogError("PlayerLinkManager OnDestroy");
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
     public override void initialize()
     {
 

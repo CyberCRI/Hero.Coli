@@ -23,7 +23,7 @@ public class RotationUpdate : MonoBehaviour {
 		{
 			_inputMovement = this.transform.position - _previousPosition;
 		}*/
-        if ((Vector3.Distance(_previousPosition,this.transform.position) <= 0.05f))
+        if ((Vector3.Distance(_previousPosition,this.transform.position) >= 0.05f))
         {
 		    _inputMovement = this.transform.position - _previousPosition;
 		    rotationUpdate();
