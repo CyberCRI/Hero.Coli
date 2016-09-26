@@ -38,7 +38,7 @@ public class GameStateController : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("GameStateController::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("GameStateController::get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
         }
 
@@ -83,11 +83,11 @@ public class GameStateController : MonoBehaviour
 
     void Awake()
     {
-        Logger.Log("GameStateController::Awake", Logger.Level.INFO);
-
-        SceneManager.sceneLoaded += SceneLoaded;
-
+        Debug.Log("GameStateController::Awake");
         GameStateController.get();
+        _gameState = GameState.Start;
+        resetPauseStack();
+        SceneManager.sceneLoaded += SceneLoaded;
         loadLevels();
         updateAdminStatus();
     }
@@ -95,15 +95,13 @@ public class GameStateController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Logger.Log("GameStateController::Start", Logger.Level.INFO);
-        _gameState = GameState.Start;
-        resetPauseStack();
+        Debug.Log("GameStateController::Start");
         Logger.Log("GameStateController::Start game starts in " + Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
     }
 
     public static void updateAdminStatus()
     {
-        _isAdminMode = Application.isEditor || MemoryManager.get().configuration.isTestGUID();
+        _isAdminMode = Application.isEditor || MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
     }
 
     bool isInterfaceLoaded = false;
@@ -119,6 +117,8 @@ public class GameStateController : MonoBehaviour
 
     void SceneLoaded(Scene scene, LoadSceneMode m)
     {
+        Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
+
         int level = scene.buildIndex;
 
         isInterfaceLoaded = isInterfaceLoaded || (3 == level);
@@ -127,36 +127,34 @@ public class GameStateController : MonoBehaviour
 
         if (isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
         {
-            _finishLoadLevels = true;
+            finishLoadLevels();
+            //_finishLoadLevels = true;
         }
     }
 
     private void loadLevels()
     {
-        Logger.Log("GameStateController::loadLevels", Logger.Level.INFO);
+        Debug.Log("GameStateController::loadLevels");
         SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
         SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
-        SceneManager.LoadScene(MemoryManager.get().configuration.getSceneName(), LoadSceneMode.Additive);
+        SceneManager.LoadScene(MemoryManager.get("loadLevels").configuration.getSceneName(), LoadSceneMode.Additive);
     }
 
     private void finishLoadLevels()
     {
+        Debug.Log("GameStateController::finishLoadLevels");
 
         // get the linkers
-        GameObject go = null;
         InterfaceLinkManager ilm = InterfaceLinkManager.get();
         PlayerLinkManager blm = PlayerLinkManager.get();
         WorldLinkManager wlm = WorldLinkManager.get();
 
-        Debug.LogError("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
-
+        Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
         ilm.initialize();
-
         blm.initialize();
-
         wlm.initialize();
 
-        Debug.LogError("finishInitialize");
+        Debug.Log("finishInitialize");
         ilm.finishInitialize();
         blm.finishInitialize();
         wlm.finishInitialize();
@@ -307,7 +305,7 @@ public class GameStateController : MonoBehaviour
             mainMenu.setResume();
 
             //TODO remove this temporary hack
-            switch (MemoryManager.get().configuration.getMode())
+            switch (MemoryManager.get("prepareGameLevelIfNecessary").configuration.getMode())
             {
                 case GameConfiguration.GameMode.ADVENTURE:
                     fadeSprite.gameObject.SetActive(true);
@@ -317,7 +315,7 @@ public class GameStateController : MonoBehaviour
                 case GameConfiguration.GameMode.SANDBOX:
                     break;
                 default:
-                    Logger.Log("GameStateController::Update unknown game mode=" + MemoryManager.get().configuration.getMode(), Logger.Level.WARN);
+                    Logger.Log("GameStateController::Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode(), Logger.Level.WARN);
                     break;
             }
             _isGameLevelPrepared = true;
@@ -326,6 +324,7 @@ public class GameStateController : MonoBehaviour
 
     public void goToMainMenu()
     {
+        Debug.Log("GameStateController::goToMainMenu");
         goToMainMenuFrom(_gameState);
     }
 
@@ -339,6 +338,8 @@ public class GameStateController : MonoBehaviour
 
     public void leaveMainMenu()
     {
+        Debug.Log("GameStateController::leaveMainMenu");
+
         //restart
         if (GameState.MainMenu == _stateBeforeMainMenu)
         {
@@ -356,13 +357,13 @@ public class GameStateController : MonoBehaviour
     void Update()
     {
 
-        if (_finishLoadLevels)
-        {
-            _finishLoadLevels = false;
-            finishLoadLevels();
-        }
+        // if (_finishLoadLevels)
+        // {
+        //     _finishLoadLevels = false;
+        //     finishLoadLevels();
+        // }
 
-        if (!_finishedLoadLevels)
+        if (_finishedLoadLevels)
         {
 
             if (_isAdminMode)
@@ -392,7 +393,7 @@ public class GameStateController : MonoBehaviour
 
                     endWindow.SetActive(false);
                     mainMenu.setNewGame();
-                    if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get().configuration.restartBehavior)
+                    if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get("Update").configuration.restartBehavior)
                     {
                         leaveMainMenu();
                     }
@@ -537,7 +538,7 @@ public class GameStateController : MonoBehaviour
     {
         Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
         GameConfiguration.GameMap destination =
-            (GameConfiguration.getMode(MemoryManager.get().configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
+            (GameConfiguration.getMode(MemoryManager.get("goToOtherGameMode").configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
                 GameConfiguration.GameMap.TUTORIAL1;
 
@@ -622,7 +623,7 @@ public class GameStateController : MonoBehaviour
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart
                 //whereas MemoryManager won't
-                MemoryManager.get().configuration.gameMap = newMap;
+                MemoryManager.get("setAndSaveLevelName").configuration.gameMap = newMap;
                 break;
 
             default:
@@ -653,7 +654,7 @@ public class GameStateController : MonoBehaviour
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
 
-        MemoryManager.get().configuration.restartBehavior = GameConfiguration.RestartBehavior.GAME;
+        MemoryManager.get("internalRestart").configuration.restartBehavior = GameConfiguration.RestartBehavior.GAME;
         Application.LoadLevel(_masterScene);
     }
 

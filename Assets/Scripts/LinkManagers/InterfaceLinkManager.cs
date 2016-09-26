@@ -41,10 +41,6 @@ public class InterfaceLinkManager : LinkManager
     private Fade fade;
     [SerializeField]
     private TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
-    [SerializeField]
-    private GameObject inventoryDevicePrefab;
-    [SerializeField]
-    private GameObject listedDevicePrefab;
 
     [SerializeField]
     private GameObject craftZoneDisplayedBioBrickPrefab;
@@ -67,20 +63,8 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private Transform craftSlotsGrid;
 
-
-    [SerializeField]
-    private GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
-    [SerializeField]
-    private UIPanel equipedDevicesSlotsPanel;
-    [SerializeField]
-    private GameObject equipedDevice, equipedDevice2;
-    
-    public GameObject tinyBioBrickIconPrefabPos, tinyBioBrickIconPrefabPos2;
-
     [SerializeField]
     private CraftFinalizer craftFinalizer;
-    [SerializeField]
-    private UIPanel inventoryDevicesSlotsPanel;
 
     [SerializeField]
     private GameObject tutorialArrow;
@@ -141,7 +125,7 @@ public class InterfaceLinkManager : LinkManager
         guiTransitioner.celliaGraph = celliaGraph;
         guiTransitioner.roomGraph = roomGraph;
 
-        guiTransitioner.worldScreen = GameObject.Find("WorldScreensPanel");
+        guiTransitioner.worldScreen = worldScreensPanel;
 
         if (isCraftMode1)
         {
@@ -195,19 +179,10 @@ public class InterfaceLinkManager : LinkManager
 
 
         //DevicesDisplayer
-
-        devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
-        devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
         devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
         devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
         devicesDisplayer.graphMoleculeList = graphMoleculeList;
-
-        devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
-        devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
-
-        devicesDisplayer.inventoryDevice = inventoryDevicePrefab;
-        devicesDisplayer.listedInventoryDevice = listedDevicePrefab;
 
 
         //InfoWindowManager

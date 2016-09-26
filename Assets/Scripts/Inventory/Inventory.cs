@@ -120,26 +120,24 @@ public class Inventory : DeviceContainer
 
     private void addDevice(Device device)
     {
-        Logger.Log("Inventory::addDevice(" + device + "), count before=" + _devices.Count, Logger.Level.TRACE);
+        // Debug.Log("Inventory::addDevice(" + device + "), count before=" + _devices.Count);
         Device copy = Device.buildDevice(device);
         if (device == null)
         {
-            Logger.Log("Inventory::addDevice device==null", Logger.Level.WARN);
+            Debug.LogWarning("Inventory::addDevice device==null");
             return;
         }
 
         string displayerString = _displayer != null ? "name=" + _displayer.name : "null";
-        Logger.Log("Inventory::addDevice(" + device + ")"
-          + ", copy=" + copy
-          + ", count before=" + _devices.Count
-          + ", _devices=" + _devices
-          + ", _displayer=" + displayerString
-          , Logger.Level.TRACE
-          );
+        // Debug.Log("Inventory::addDevice(" + device + ")"
+        //   + ", copy=" + copy
+        //   + ", count before=" + _devices.Count
+        //   + ", _devices=" + _devices
+        //   + ", _displayer=" + displayerString
+        //   );
         _devices.Add(copy);
-        Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
         _displayer.addInventoriedDevice(copy);
-        Logger.Log("Inventory::addDevice(" + device + "), count after=" + _devices.Count, Logger.Level.TRACE);
+        // Debug.Log("Inventory::addDevice _devices.Add(copy); done");
     }
 
     public AddingResult canAddDevice(Device device)

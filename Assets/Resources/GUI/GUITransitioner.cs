@@ -27,8 +27,6 @@ public class GUITransitioner : MonoBehaviour
 
     private float _timeDelta = 0.2f;
 
-    private float _timeAtLastFrame = 0f;
-    private float _timeAtCurrentFrame = 0f;
     private float _deltaTime = 0f;
 
     private bool _pauseTransition = false;
@@ -60,6 +58,8 @@ public class GUITransitioner : MonoBehaviour
     public Hero hero;
     public CellControl control;
 
+    private bool _initialized, _screen1, _screen2, _screen3;
+
     // Use this for initialization
     void Start()
     {
@@ -67,34 +67,65 @@ public class GUITransitioner : MonoBehaviour
         _reactionEngine = ReactionEngine.get();
         _devicesDisplayer = DevicesDisplayer.get();
 
-        SetScreen2(false);
-        SetScreen3(false);
-        SetScreen1(true);
-
+        setScreen2(false);
+        setScreen3(false);
+        setScreen1(true);
 
         _devicesDisplayer.UpdateScreen();
         _currentScreen = GameScreen.screen1;
-
-        _timeAtLastFrame = Time.realtimeSinceStartup;
     }
 
-
-    private void SetScreen1(bool active)
+    private void trySetScreens()
     {
-        if (active) ZoomOut();
-        worldScreen.SetActive(active);
-        //_craftScreen.SetActive(!active);
+        if (!_initialized)
+        {
+            if (null != worldScreen && null != craftScreen)
+            {
+                _initialized = true;
+                setScreen1(_screen1);
+                setScreen2(_screen2);
+                setScreen3(_screen3);
+            }
+        }
     }
 
-    private void SetScreen2(bool active)
+    private void setScreen1(bool active)
     {
-        if (active) ZoomIn();
-        worldScreen.SetActive(active);
+        _screen1 = active;
+        if (null != worldScreen && null != craftScreen)
+        {
+            _initialized = true;
+            if (active)
+            {
+                ZoomOut();
+            }
+            worldScreen.SetActive(active);
+            //_craftScreen.SetActive(!active);
+        }
     }
 
-    private void SetScreen3(bool active)
+    private void setScreen2(bool active)
     {
-        craftScreen.SetActive(active);
+        _screen2 = active;
+        if (null != worldScreen && null != craftScreen)
+        {
+            _initialized = true;
+            if (active)
+            {
+                ZoomIn();
+            }
+            worldScreen.SetActive(active);
+        }
+    }
+
+    private void setScreen3(bool active)
+    {
+        _screen3 = active;
+        if (null != worldScreen && null != craftScreen)
+        {
+            _initialized = true;
+            craftScreen.SetActive(active);
+        }
     }
 
     /*
@@ -209,8 +240,8 @@ public class GUITransitioner : MonoBehaviour
                 //add devices
                 //add life/energy
                 //add medium info
-                SetScreen3(false);
-                SetScreen1(true);
+                setScreen3(false);
+                setScreen1(true);
             }
             GameStateController.get().tryUnlockPause();
             ZoomOut();
@@ -241,8 +272,8 @@ public class GUITransitioner : MonoBehaviour
                 //add devices
                 //add life/energy
                 //add medium info
-                SetScreen3(false);
-                SetScreen2(true);
+                setScreen3(false);
+                setScreen2(true);
             }
 
             ZoomIn();
@@ -260,8 +291,8 @@ public class GUITransitioner : MonoBehaviour
                 //add device inventory, parameters
                 //remove graphs
                 //move devices and potions?
-                SetScreen1(false);
-                SetScreen3(true);
+                setScreen1(false);
+                setScreen3(true);
                 GameStateController.get().tryLockPause();
 
             }
@@ -271,8 +302,8 @@ public class GUITransitioner : MonoBehaviour
                 //2 -> 3
                 //remove everything
                 //add craft screen
-                SetScreen2(false);
-                SetScreen3(true);
+                setScreen2(false);
+                setScreen3(true);
 
             }
             ZoomIn();
@@ -309,8 +340,9 @@ public class GUITransitioner : MonoBehaviour
     void Update()
     {
 
-        _timeAtCurrentFrame = Time.realtimeSinceStartup;
-        _deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+        trySetScreens();
+
+        _deltaTime += Time.fixedDeltaTime;
 
         if (_deltaTime > _timeDelta)
         {
@@ -326,7 +358,7 @@ public class GUITransitioner : MonoBehaviour
             {
                 GoToScreen(GameScreen.screen3);
             }
-            _timeAtLastFrame = _timeAtCurrentFrame;
+            _deltaTime = 0f;
         }
     }
 
@@ -341,8 +373,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else
             {
-                Logger.Log("GUITransitioner::LateUpdate Time.timeScale=" + Time.timeScale
-                  + ", _timeScale=" + _timeScale + ", _timeDelta=" + _timeDelta, Logger.Level.TRACE);
+                // Logger.Log("GUITransitioner::LateUpdate Time.timeScale=" + Time.timeScale + ", _timeScale=" + _timeScale + ", _timeDelta=" + _timeDelta, Logger.Level.TRACE);
                 Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScale, _deltaTime * _unpauseAcceleration);
             }
         }

@@ -7,11 +7,11 @@ public class MemoryManager : MonoBehaviour
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public static string gameObjectName = "MemoryManager";
     private static MemoryManager _instance;
-    public static MemoryManager get()
+    public static MemoryManager get(string origin = "")
     {
         if (_instance == null)
         {
-            Logger.Log("MemoryManager::get was badly initialized", Logger.Level.WARN);
+            Debug.Log("MemoryManager::get badly initialized called by " + origin);
             _instance = GameObject.Find(gameObjectName).GetComponent<MemoryManager>();
             if (null != _instance)
             {

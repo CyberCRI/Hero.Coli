@@ -80,6 +80,7 @@ public class PlayerLinkManager : LinkManager
         guiTransitioner.mainBoundCamera = GameObject.Find("Main Camera").GetComponent<BoundCamera>();
 
         //MemoryManager reporting
+        Debug.Log("PlayerLinkManager calls MemoryManager.get()");
         MemoryManager.get().hero = hero;
     }
 

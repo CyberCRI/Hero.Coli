@@ -12,6 +12,9 @@ public abstract class CutScene : CutSceneElements {
     private const float blackBarWait2 = 1.5f;
 #endif
 
+    private const float normalTimeScale = 1f;
+    private const float highTimeScale = 50f;
+
     void OnEnable()
     {
         // cut scene initialization
@@ -56,7 +59,7 @@ public abstract class CutScene : CutSceneElements {
     // must be called when starting a cut scene
 	public void start () {
 #if QUICKTEST
-        Time.timeScale = 50f;
+        Time.timeScale = highTimeScale;
         saveAndEditAlliTweenEvents();
 #endif        
         _cellControl.freezePlayer(true);
@@ -73,7 +76,7 @@ public abstract class CutScene : CutSceneElements {
     // must be called when ending a cut scene
     public void end () {
 #if QUICKTEST
-        Time.timeScale = 1f;
+        Time.timeScale = normalTimeScale;
         reinitializeiTweenEvents();
 #endif
 		FocusMaskManager.get().blockClicks(false);
