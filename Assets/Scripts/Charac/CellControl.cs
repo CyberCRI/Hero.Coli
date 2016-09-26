@@ -8,7 +8,7 @@ public class CellControl : MonoBehaviour
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public const string gameObjectName = Hero.gameObjectName;
     private static CellControl _instance;
-    public static CellControl get()
+    public static CellControl get(string origin)
     {
         if (_instance == null)
         {
@@ -27,19 +27,20 @@ public class CellControl : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("GameObject " + gameObjectName + " not found");
+                Debug.LogWarning("GameObject " + gameObjectName + " not found by " + origin);
             }
         }
         return _instance;
     }
     void Awake()
     {
-        Logger.Log("CellControl::Awake", Logger.Level.INFO);
-        CellControl.get();
+        // Debug.Log("CellControl::Awake");
+        _instance = this;
+        initializeIfNecessary();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    private bool _initialized = false;
 
     public float baseMoveSpeed;
     public float rotationSpeed;
@@ -107,9 +108,13 @@ public class CellControl : MonoBehaviour
 
     private void initializeIfNecessary()
     {
-        _isAbsoluteWASD = MemoryManager.get().configuration.isAbsoluteWASD;
-        _isLeftClickToMove = MemoryManager.get().configuration.isLeftClickToMove;
-        reset();
+        if (!_initialized)
+        {
+            _isAbsoluteWASD = MemoryManager.get().configuration.isAbsoluteWASD;
+            _isLeftClickToMove = MemoryManager.get().configuration.isLeftClickToMove;
+            reset();
+            _initialized = false;
+        }
     }
 
     public void Pause(bool pause)
@@ -286,9 +291,6 @@ public class CellControl : MonoBehaviour
 
     void Start()
     {
-        CellControl.get();
-
-        //gameObject.GetComponent<PhenoSpeed>().setBaseSpeed(baseMoveSpeed);
 
         _targetPosition = transform.position;
 
@@ -410,7 +412,7 @@ public class CellControl : MonoBehaviour
     private void switchControlTypeTo(ControlType newControlType, Vector3 position)
     {
 
-        Logger.Log("CellControl::switchControlTypeTo(" + newControlType + ") with old isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.DEBUG);
+        // Debug.Log("CellControl::switchControlTypeTo(" + newControlType + ") with old isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
 
         if (ControlType.LeftClickToMove == newControlType)
         {
@@ -442,12 +444,12 @@ public class CellControl : MonoBehaviour
 
         _targetPosition = transform.position;
 
-        Logger.Log("CellControl::switchControlTypeTo(" + newControlType + ") with new isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.DEBUG);
+        // Debug.Log("CellControl::switchControlTypeTo(" + newControlType + ") with new isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
     }
 
     public void refreshControlType()
     {
-        Logger.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.INFO);
+        // Debug.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
         if (isLeftClickToMove)
         {
             switchControlTypeToLeftClickToMove();
@@ -464,7 +466,7 @@ public class CellControl : MonoBehaviour
         {
             switchControlTypeToRelativeWASD();
         }
-        Logger.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD, Logger.Level.INFO);
+        // Debug.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
     }
 
     void OnCollisionStay(Collision col)

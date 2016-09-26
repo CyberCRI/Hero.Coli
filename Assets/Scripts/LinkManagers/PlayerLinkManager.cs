@@ -59,7 +59,7 @@ public class PlayerLinkManager : LinkManager
         cellControl.selectedMouseControlTypeSprite = interfaceLinkManager.selectedMouseControlTypeSprite;
 
         interfaceLinkManager.controlsArray.cellControl = cellControl;
-
+        interfaceLinkManager.focusMaskManager.cellControl = cellControl;
 
         //Hero connections
         hero.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
@@ -80,7 +80,6 @@ public class PlayerLinkManager : LinkManager
         guiTransitioner.mainBoundCamera = GameObject.Find("Main Camera").GetComponent<BoundCamera>();
 
         //MemoryManager reporting
-        Debug.Log("PlayerLinkManager calls MemoryManager.get()");
         MemoryManager.get().hero = hero;
     }
 

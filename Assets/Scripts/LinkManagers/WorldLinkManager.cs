@@ -51,7 +51,7 @@ public class WorldLinkManager : LinkManager
 
         if (null != startPosition)
         {
-            CellControl.get().teleport(startPosition.transform.position, startPosition.transform.rotation);
+            CellControl.get(gameObjectName).teleport(startPosition.transform.position, startPosition.transform.rotation);
             startPosition.gameObject.SetActive(false);
         }
 

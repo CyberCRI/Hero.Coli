@@ -13,7 +13,7 @@ public class Hero : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("Hero::get called too early", Logger.Level.WARN);
+            Debug.LogWarning("Hero::get called too early");
             GameObject go = GameObject.Find(gameObjectName);
             if (null != go)
             {
@@ -37,8 +37,7 @@ public class Hero : MonoBehaviour
 
     void Awake()
     {
-        Logger.Log("Hero::Awake", Logger.Level.DEBUG);
-        //Debug.Log("Hero Awake");
+        // Debug.Log("Hero::Awake");
         initializeIfNecessary();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -362,7 +361,7 @@ public class Hero : MonoBehaviour
         PickableItem item = col.GetComponent<PickableItem>();
         if (null != item)
         {
-            Logger.Log("Hero::managePickUp collided with DNA! bit=" + item.getDNABit(), Logger.Level.INFO);
+            // Debug.Log("Hero::managePickUp collided with DNA! bit=" + item.getDNABit());
             item.pickUp();
             //RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, item.getDNABit().getInternalName()));
         }
@@ -374,7 +373,7 @@ public class Hero : MonoBehaviour
         Sector sector = col.GetComponent<Sector>();
         if (null != sector)
         {
-            Logger.Log("Hero::manageSector collided with sector=" + sector.ToString(), Logger.Level.INFO);
+            // Debug.Log("Hero::manageSector collided with sector=" + sector.ToString());
             sector.activate();
         }
     }
@@ -573,7 +572,7 @@ public class Hero : MonoBehaviour
         }
         else
         {
-            Logger.Log("Hero::popEffectCoroutine unexpected null savedCell", Logger.Level.WARN);
+            Debug.LogWarning("Hero::popEffectCoroutine unexpected null savedCell");
         }
     }
 }

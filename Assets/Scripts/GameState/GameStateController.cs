@@ -83,8 +83,8 @@ public class GameStateController : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("GameStateController::Awake");
-        GameStateController.get();
+        // Debug.Log("GameStateController::Awake");
+        _instance = this;
         _gameState = GameState.Start;
         resetPauseStack();
         SceneManager.sceneLoaded += SceneLoaded;
@@ -95,8 +95,8 @@ public class GameStateController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("GameStateController::Start");
-        Logger.Log("GameStateController::Start game starts in " + Localization.Localize("MAIN.LANGUAGE"), Logger.Level.INFO);
+        // Debug.Log("GameStateController::Start");
+        // Debug.Log("GameStateController::Start game starts in " + Localization.Localize("MAIN.LANGUAGE"));
     }
 
     public static void updateAdminStatus()
@@ -117,7 +117,7 @@ public class GameStateController : MonoBehaviour
 
     void SceneLoaded(Scene scene, LoadSceneMode m)
     {
-        Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
+        // Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
 
         int level = scene.buildIndex;
 
@@ -134,7 +134,7 @@ public class GameStateController : MonoBehaviour
 
     private void loadLevels()
     {
-        Debug.Log("GameStateController::loadLevels");
+        // Debug.Log("GameStateController::loadLevels");
         SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
         SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
         SceneManager.LoadScene(MemoryManager.get("loadLevels").configuration.getSceneName(), LoadSceneMode.Additive);
@@ -142,25 +142,25 @@ public class GameStateController : MonoBehaviour
 
     private void finishLoadLevels()
     {
-        Debug.Log("GameStateController::finishLoadLevels");
+        // Debug.Log("GameStateController::finishLoadLevels");
 
         // get the linkers
         InterfaceLinkManager ilm = InterfaceLinkManager.get();
         PlayerLinkManager blm = PlayerLinkManager.get();
         WorldLinkManager wlm = WorldLinkManager.get();
 
-        Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
+        // Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
         ilm.initialize();
         blm.initialize();
         wlm.initialize();
 
-        Debug.Log("finishInitialize");
+        // Debug.Log("finishInitialize");
         ilm.finishInitialize();
         blm.finishInitialize();
         wlm.finishInitialize();
 
         // open the Main Menu
-        Debug.Log("finishLoadLevels => MainMenuManager.get().open()");
+        // Debug.Log("finishLoadLevels => MainMenuManager.get().open()");
 
         _finishedLoadLevels = true;
 
@@ -183,39 +183,39 @@ public class GameStateController : MonoBehaviour
     private int pushPauseInStack()
     {
         _pausesStacked++;
-        Logger.Log("pushPauseInStack() returns " + _pausesStacked, Logger.Level.INFO);
+        // Debug.Log("pushPauseInStack() returns " + _pausesStacked);
         return _pausesStacked;
     }
     public int popPauseInStack()
     {
-        Logger.Log("popPauseInStack() starts with _pausesStacked==" + _pausesStacked, Logger.Level.DEBUG);
+        // Debug.Log("popPauseInStack() starts with _pausesStacked==" + _pausesStacked);
         if (_pausesStacked > 0)
         {
             _pausesStacked--;
         }
         else
         {
-            Logger.Log("GameStateController::popPauseInStack tried to pop a pause from empty stack", Logger.Level.WARN);
+            Debug.LogWarning("GameStateController::popPauseInStack tried to pop a pause from empty stack");
             _pausesStacked = 0;
         }
-        Logger.Log("popPauseInStack() returns _pausesStacked==" + _pausesStacked, Logger.Level.INFO);
+        // Debug.Log("popPauseInStack() returns _pausesStacked==" + _pausesStacked);
         return _pausesStacked;
     }
     public void tryUnlockPause()
     {
-        Logger.Log("tryUnlockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        // Debug.Log("tryUnlockPause() with previous _pausesStacked=" + _pausesStacked);
         if (0 == popPauseInStack())
         {
             changeState(GameState.Game);
         }
-        Logger.Log("tryUnlockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
+        // Debug.Log("tryUnlockPause() with final _pausesStacked=" + _pausesStacked);
     }
     public void tryLockPause()
     {
-        Logger.Log("tryLockPause() with previous _pausesStacked=" + _pausesStacked, Logger.Level.DEBUG);
+        // Debug.Log("tryLockPause() with previous _pausesStacked=" + _pausesStacked);
         pushPauseInStack();
         changeState(GameState.Pause);
-        Logger.Log("tryLockPause() with final _pausesStacked=" + _pausesStacked, Logger.Level.INFO);
+        // Debug.Log("tryLockPause() with final _pausesStacked=" + _pausesStacked);
     }
 
     //TODO optimize for frequent calls & refactor out of GameStateController
@@ -276,7 +276,7 @@ public class GameStateController : MonoBehaviour
                 result = GameState.Default;
                 break;
             default:
-                Logger.Log("GameStateController::getStateFromTarget unknown target state " + target, Logger.Level.WARN);
+                Debug.LogWarning("GameStateController::getStateFromTarget unknown target state " + target);
                 result = GameState.Default;
                 break;
         }
@@ -286,7 +286,7 @@ public class GameStateController : MonoBehaviour
 
     public void endGame()
     {
-        Logger.Log("endGame", Logger.Level.INFO);
+        // Debug.Log("endGame");
         _isGameLevelPrepared = false;
         reinitializeLoadingVariables();
         mainMenu.setNewGame();
@@ -315,7 +315,7 @@ public class GameStateController : MonoBehaviour
                 case GameConfiguration.GameMode.SANDBOX:
                     break;
                 default:
-                    Logger.Log("GameStateController::Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode(), Logger.Level.WARN);
+                    Debug.LogWarning("GameStateController::Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode());
                     break;
             }
             _isGameLevelPrepared = true;
@@ -324,21 +324,21 @@ public class GameStateController : MonoBehaviour
 
     public void goToMainMenu()
     {
-        Debug.Log("GameStateController::goToMainMenu");
+        // Debug.Log("GameStateController::goToMainMenu");
         goToMainMenuFrom(_gameState);
     }
 
     public void goToMainMenuFrom(GameState state)
     {
         _stateBeforeMainMenu = state;
-        Debug.Log("goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
+        // Debug.Log("goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
         mainMenu.open();
         changeState(GameState.MainMenu);
     }
 
     public void leaveMainMenu()
     {
-        Debug.Log("GameStateController::leaveMainMenu");
+        // Debug.Log("GameStateController::leaveMainMenu");
 
         //restart
         if (GameState.MainMenu == _stateBeforeMainMenu)
@@ -370,19 +370,19 @@ public class GameStateController : MonoBehaviour
             {
                 if (isShortcutKeyDown(KeyCode.X))
                 {
-                    Logger.Log("pressed shortcut to teleport Cellia to the pursuit", Logger.Level.INFO);
-                    CellControl.get().teleport(new Vector3(500, 0, 637));
+                    // Debug.Log("pressed shortcut to teleport Cellia to the pursuit");
+                    CellControl.get(gameObjectName).teleport(new Vector3(500, 0, 637));
                 }
                 else if (isShortcutKeyDown(KeyCode.V))
                 {
-                    Logger.Log("pressed shortcut to teleport Cellia to the GFP BioBrick", Logger.Level.INFO);
-                    CellControl.get().teleport(new Vector3(168, 0, 724));
+                    // Debug.Log("pressed shortcut to teleport Cellia to the GFP BioBrick");
+                    CellControl.get(gameObjectName).teleport(new Vector3(168, 0, 724));
 
                 }
                 else if (isShortcutKeyDown(KeyCode.W))
                 {
-                    Logger.Log("pressed shortcut to teleport Cellia to the end of the game", Logger.Level.INFO);
-                    CellControl.get().teleport(new Vector3(-150, 0, 1110));
+                    // Debug.Log("pressed shortcut to teleport Cellia to the end of the game");
+                    CellControl.get(gameObjectName).teleport(new Vector3(-150, 0, 1110));
                 }
             }
 
@@ -429,7 +429,7 @@ public class GameStateController : MonoBehaviour
                     //pause
                     if (isShortcutKeyDown(_pauseKey))
                     {
-                        Logger.Log("GameStateController::Update - Escape/Pause key pressed", Logger.Level.DEBUG);
+                        // Debug.Log("GameStateController::Update - Escape/Pause key pressed");
                         ModalManager.setModal(pauseIndicator, false);
                         changeState(GameState.Pause);
                     }
@@ -442,19 +442,19 @@ public class GameStateController : MonoBehaviour
                     //TODO add DNA damage accumulation management when player equips/unequips too often
                     // else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                     // {
-                    //     Logger.Log("GameStateController::Update inventory key pressed", Logger.Level.INFO);
+                    // Debug     Logger.Log("GameStateController::Update inventory key pressed");
                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                     // }
                     //crafting
                     else if (isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
                     {
-                        Logger.Log("GameStateController::Update craft key pressed", Logger.Level.INFO);
+                        // Debug.Log("GameStateController::Update craft key pressed");
                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                     }
                     /*
                     else if(isShortcutKeyDown(_sandboxKey))
                     {
-                        Logger.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName(), Logger.Level.INFO);
+                        // Debug.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName());
                         goToOtherGameMode();
                     }*/
                     //TODO fix this feature
@@ -492,29 +492,29 @@ public class GameStateController : MonoBehaviour
                                 case GUITransitioner.GameScreen.screen2:
                                     if (isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
                                     {
-                                        Logger.Log("GameStateController::Update out of inventory key pressed", Logger.Level.INFO);
+                                        // Debug.Log("GameStateController::Update out of inventory key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                                     }
                                     else if (isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
                                     {
-                                        Logger.Log("GameStateController::Update inventory to craft key pressed", Logger.Level.INFO);
+                                        // Debug.Log("GameStateController::Update inventory to craft key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                                     }
                                     break;
                                 case GUITransitioner.GameScreen.screen3:
                                     if (isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                                     {
-                                        Logger.Log("GameStateController::Update craft to inventory key pressed", Logger.Level.INFO);
+                                        // Debug.Log("GameStateController::Update craft to inventory key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                                     }
                                     else if (isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                                     {
-                                        Logger.Log("GameStateController::Update out of craft key pressed", Logger.Level.INFO);
+                                        // Debug.Log("GameStateController::Update out of craft key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                                     }
                                     break;
                                 default:
-                                    Logger.Log("GameStateController::Update unknown screen " + gUITransitioner._currentScreen, Logger.Level.WARN);
+                                    Debug.LogWarning("GameStateController::Update unknown screen " + gUITransitioner._currentScreen);
                                     break;
                             }
                         }
@@ -536,7 +536,7 @@ public class GameStateController : MonoBehaviour
 
     public void goToOtherGameMode()
     {
-        Logger.Log("GameStateController::goToOtherGameMode", Logger.Level.INFO);
+        // Debug.Log("GameStateController::goToOtherGameMode");
         GameConfiguration.GameMap destination =
             (GameConfiguration.getMode(MemoryManager.get("goToOtherGameMode").configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
@@ -574,7 +574,7 @@ public class GameStateController : MonoBehaviour
     public void changeState(GameState newState)
     {
         _gameState = newState;
-        Logger.Log("GameStateController::StateChange _gameState=" + _gameState, Logger.Level.DEBUG);
+        // Debug.Log("GameStateController::StateChange _gameState=" + _gameState);
 
         switch (_gameState)
         {
@@ -598,7 +598,7 @@ public class GameStateController : MonoBehaviour
                 break;
 
             default:
-                Logger.Log("GameStateController::changeState unexpected game state " + newState, Logger.Level.WARN);
+                Debug.LogWarning("GameStateController::changeState unexpected game state " + newState);
                 break;
         }
     }
@@ -607,11 +607,11 @@ public class GameStateController : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(cause))
         {
-            Logger.Log("GameStateController::setAndSaveLevelName by " + cause, Logger.Level.DEBUG);
+            // Debug.Log("GameStateController::setAndSaveLevelName by " + cause);
         }
         else
         {
-            Logger.Log("GameStateController::setAndSaveLevelName", Logger.Level.DEBUG);
+            // Debug.Log("GameStateController::setAndSaveLevelName");
         }
 
         switch (newMap)
@@ -627,7 +627,7 @@ public class GameStateController : MonoBehaviour
                 break;
 
             default:
-                Logger.Log("GameStateController::setAndSaveLevelName unmanaged level=" + newMap, Logger.Level.WARN);
+                Debug.LogWarning("GameStateController::setAndSaveLevelName unmanaged level=" + newMap);
                 break;
         }
     }
@@ -645,7 +645,7 @@ public class GameStateController : MonoBehaviour
 
     private static void internalRestart()
     {
-        Logger.Log("GameStateController::restart", Logger.Level.INFO);
+        // Debug.Log("GameStateController::restart");
         //TODO reload scene but reset all of its components without using MemoryManager
         //note: ways to transfer data from one scene to another
         //get data from previous instance
@@ -660,7 +660,7 @@ public class GameStateController : MonoBehaviour
 
     void OnDestroy()
     {
-        Logger.Log("GameStateController::OnDestroy", Logger.Level.DEBUG);
+        // Debug.Log("GameStateController::OnDestroy");
     }
 
     public void FadeScreen(bool fade, float speed)

@@ -12,14 +12,14 @@ public class DevicesDisplayer : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("DevicesDisplayer::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("DevicesDisplayer::get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<DevicesDisplayer>();
         }
         return _instance;
     }
     void Awake()
     {
-        Logger.Log("DevicesDisplayer::Awake", Logger.Level.DEBUG);
+        // Debug.Log("DevicesDisplayer::Awake");
         _instance = this;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,10 +93,10 @@ public class DevicesDisplayer : MonoBehaviour
      *  ADD
      *
      */
-     
+
     public void addInventoriedDevice(Device device)
     {
-        Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+        //  Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
 
         if (device == null)
         {
@@ -109,7 +109,7 @@ public class DevicesDisplayer : MonoBehaviour
         {
 
             Transform parent = listedDevicesGrid;
-            Debug.Log("DevicesDisplayer::addInventoriedDevice: parent=" + parent);
+            //  Debug.Log("DevicesDisplayer::addInventoriedDevice: parent=" + parent);
 
             DisplayedDevice newListedDevice =
               ListedDevice.Create(
@@ -121,7 +121,7 @@ public class DevicesDisplayer : MonoBehaviour
                 , DevicesDisplayer.DeviceType.Listed
               );
 
-            Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice=" + newListedDevice);
+            //  Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice=" + newListedDevice);
 
             _listedInventoriedDevices.Add(newListedDevice);
             listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;
@@ -130,15 +130,15 @@ public class DevicesDisplayer : MonoBehaviour
         {
             Debug.LogWarning("DevicesDisplayer::addInventoriedDevice failed: alreadyInventoried=" + alreadyInventoried);
         }
-        Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") ends with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+        //  Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") ends with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
     }
 
     public void addEquipedDevice(Device device)
     {
-        Logger.Log("addEquipedDevice(" + device.ToString() + ")", Logger.Level.TRACE);
+        // Debug.Log("addEquipedDevice(" + device.ToString() + ")");
         if (device == null)
         {
-            Logger.Log("DevicesDisplayer::addEquipedDevice device == null", Logger.Level.WARN);
+            Debug.LogWarning("DevicesDisplayer::addEquipedDevice device == null");
         }
         bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device));
         if (newEquiped)
@@ -159,7 +159,7 @@ public class DevicesDisplayer : MonoBehaviour
         }
         else
         {
-            Logger.Log("addDevice failed: alreadyEquiped=" + newEquiped, Logger.Level.TRACE);
+            // Debug.Log("addDevice failed: alreadyEquiped=" + newEquiped);
         }
     }
 
@@ -167,7 +167,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         if (device == null)
         {
-            Logger.Log("DevicesDisplayer::askAddEquipedDevice device==null", Logger.Level.WARN);
+            Debug.LogWarning("DevicesDisplayer::askAddEquipedDevice device==null");
             return DeviceContainer.AddingResult.FAILURE_DEFAULT;
         }
         return Equipment.get().askAddDevice(device);
@@ -198,7 +198,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void UpdateScreen()
     {
-        Logger.Log("DevicesDisplayer::UpdateScreen " + SafeGetTransitioner()._currentScreen, Logger.Level.TRACE);
+        // Debug.Log("DevicesDisplayer::UpdateScreen " + SafeGetTransitioner()._currentScreen);
         if (initialized)
         {
             if (IsScreen(1))
@@ -215,7 +215,7 @@ public class DevicesDisplayer : MonoBehaviour
             }
             else
             {
-                Logger.Log("DevicesDisplayer::UpdateScreen unknown current screen", Logger.Level.WARN);
+                Debug.LogWarning("DevicesDisplayer::UpdateScreen unknown current screen");
             }
         }
     }
@@ -285,7 +285,7 @@ public class DevicesDisplayer : MonoBehaviour
         }
         else
         {
-            Logger.Log("DevicesDisplayer::removeDevice unknown type=" + type, Logger.Level.WARN);
+            Debug.LogWarning("DevicesDisplayer::removeDevice unknown type=" + type);
             devices = new List<DisplayedDevice>();
         }
         found = devices.Find(device => device._device.Equals(toRemove));
@@ -296,7 +296,7 @@ public class DevicesDisplayer : MonoBehaviour
         }
         else
         {
-            Logger.Log("removeDevice(type=" + type + ", toRemove=" + toRemove + ") found no matching device", Logger.Level.WARN);
+            Debug.LogWarning("removeDevice(type=" + type + ", toRemove=" + toRemove + ") found no matching device");
         }
     }
 
@@ -320,7 +320,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     void Start()
     {
-        Logger.Log("DevicesDisplayer::Start()", Logger.Level.DEBUG);
+        // Debug.Log("DevicesDisplayer::Start()");
 
         initialize();
     }

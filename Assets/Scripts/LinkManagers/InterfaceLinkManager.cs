@@ -15,7 +15,7 @@ public class InterfaceLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Logger.Log("InterfaceLinkManager::get was badly initialized", Logger.Level.WARN);
+            // Debug.LogWarning("InterfaceLinkManager::get was badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {
@@ -101,11 +101,12 @@ public class InterfaceLinkManager : LinkManager
     private GraphMoleculeList graphMoleculeList;
     [SerializeField] // WorldScreensPanel
     private GameObject worldScreensPanel;
+    public FocusMaskManager focusMaskManager;
 
     public override void initialize()
     {
 
-        Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
+       //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
 
         // activate everything
         activateAllChildren(true);
@@ -249,7 +250,7 @@ public class InterfaceLinkManager : LinkManager
 
         CraftZoneManager.get().initialize();
         AvailableBioBricksManager.get().initialize();
-        FocusMaskManager.get().reinitialize();
+        focusMaskManager.reinitialize();
         DevicesDisplayer.get().initialize();
     }
 
