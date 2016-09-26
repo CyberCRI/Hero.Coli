@@ -10,6 +10,7 @@ public class NanobotsCounter : MonoBehaviour {
         _totalNanobots = GameObject.FindGameObjectsWithTag("Droid").Length;
         _label = this.GetComponent<UILabel>();
         updateLabel(0);
+        GameObject.Find("StartZoneSetter").GetComponent<SwitchZoneOnOff>().TriggerSwitchZone();
     }
 
     public void updateLabel(int numNanoBots)

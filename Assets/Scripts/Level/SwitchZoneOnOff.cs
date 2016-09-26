@@ -32,4 +32,16 @@ public class SwitchZoneOnOff : MonoBehaviour {
             }
         }
     }
+
+    public void TriggerSwitchZone()
+    {
+        for (var i = 0; i < _activeZone.Length; i++)
+        {
+            _activeZone[i].SetActive(true);
+        }
+        for (var i = 0; i < _inactiveZone.Length; i++)
+        {
+            _inactiveZone[i].SetActive(false);
+        }
+    }
 }
