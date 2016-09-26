@@ -3,13 +3,15 @@
 public class NanobotsCounter : MonoBehaviour {
 
     private UILabel _label;
-    [SerializeField]
     private int _totalNanobots;
 
 	// Use this for initialization
 	void Start () {
+        Debug.Log("11");
+        _totalNanobots = GameObject.FindGameObjectsWithTag("Droid").Length;
         _label = this.GetComponent<UILabel>();
-	}
+        updateLabel(0);
+    }
 
     public void updateLabel(int numNanoBots)
     {
