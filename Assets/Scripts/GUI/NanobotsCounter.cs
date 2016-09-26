@@ -7,7 +7,6 @@ public class NanobotsCounter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Debug.Log("11");
         _totalNanobots = GameObject.FindGameObjectsWithTag("Droid").Length;
         _label = this.GetComponent<UILabel>();
         updateLabel(0);

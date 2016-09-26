@@ -26,11 +26,8 @@ public class RotationUpdate : MonoBehaviour {
 		}*/
         if (_isControlledExternally == false)
         {
-            if ((Vector3.Distance(_previousPosition,this.transform.position) <= 0.05f))
-            {
-		        _inputMovement = this.transform.position - _previousPosition;
-		        _previousPosition = this.transform.position;
-            }
+            _inputMovement = this.transform.position - _previousPosition;
+            _previousPosition = this.transform.position;
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))

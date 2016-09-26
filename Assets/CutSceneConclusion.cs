@@ -75,7 +75,6 @@ public class CutSceneConclusion : CutScene {
 
     private void ThirdPart()
     {
-        Debug.Log("third");
         end();
         _wayPoint1.transform.position = _wayPoint2.transform.position;
         _wayPoint2.transform.position = _boundCamera.transform.position;

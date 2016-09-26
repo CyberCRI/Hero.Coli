@@ -123,7 +123,6 @@ public class BigBadGuy : MonoBehaviour
     
     void OnTriggerEnter(Collider col)
     {
-        // Debug.Log(col.tag);
         if (col.tag == "Ampicillin")
         {
             if (_injured == false)
