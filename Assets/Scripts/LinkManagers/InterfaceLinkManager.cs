@@ -37,42 +37,61 @@ public class InterfaceLinkManager : LinkManager
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static string interfaceLinkManagerGameObjectName = "InterfaceLinkManager";
+    [SerializeField]
+    private Fade fade;
+    [SerializeField]
+    private TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
+    [SerializeField]
+    private GameObject inventoryDevicePrefab;
+    [SerializeField]
+    private GameObject listedDevicePrefab;
 
-    public Fade fade;
-    public TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
-    public GameObject inventoryDevicePrefab;
-    public GameObject listedDevicePrefab;
-
-    public GameObject craftZoneDisplayedBioBrickPrefab;
-    public GameObject lastHoveredInfo;
-    public GameObject genericInfoWindow;
+    [SerializeField]
+    private GameObject craftZoneDisplayedBioBrickPrefab;
+    [SerializeField]
+    private GameObject lastHoveredInfo;
+    [SerializeField]
+    private GameObject genericInfoWindow;
 
 
     bool isCraftMode1 = true;
 
     // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
-    public GameObject craftScreenPanel1;
+    [SerializeField]
+    private GameObject craftScreenPanel1;
     // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
-    public GameObject craftScreenPanel2;
+    [SerializeField]
+    private GameObject craftScreenPanel2;
 
     private GameObject craftScreenPanel;
-    public Transform craftSlotsGrid;
+    [SerializeField]
+    private Transform craftSlotsGrid;
 
 
-    public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
-    public UIPanel equipedDevicesSlotsPanel;
-    public GameObject equipedDevice, equipedDevice2;
+    [SerializeField]
+    private GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
+    [SerializeField]
+    private UIPanel equipedDevicesSlotsPanel;
+    [SerializeField]
+    private GameObject equipedDevice, equipedDevice2;
+    
     public GameObject tinyBioBrickIconPrefabPos, tinyBioBrickIconPrefabPos2;
-    public CraftFinalizer craftFinalizer;
-    public UIPanel inventoryDevicesSlotsPanel;
 
-    public GameObject tutorialArrow;
+    [SerializeField]
+    private CraftFinalizer craftFinalizer;
+    [SerializeField]
+    private UIPanel inventoryDevicesSlotsPanel;
 
-    public GameObject tutorialPanels;
+    [SerializeField]
+    private GameObject tutorialArrow;
 
-    public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
-    public EndMainMenuButton endMainMenuButton;
+    [SerializeField]
+    private GameObject tutorialPanels;
+
+    [SerializeField]
+    private GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
+    [SerializeField]
+    private EndMainMenuButton endMainMenuButton;
 
     // main menu
     public ControlsMainMenuItemArray controlsArray;
@@ -82,14 +101,22 @@ public class InterfaceLinkManager : LinkManager
     public RightClickToMoveButton rightClickToMoveButton;
     public UISprite selectedKeyboardControlTypeSprite;
     public UISprite selectedMouseControlTypeSprite;
-    public GameObject modalBackground;
-    public GameObject genericModalWindow;
+    [SerializeField]
+    private GameObject modalBackground;
+    [SerializeField]
+    private GameObject genericModalWindow;
+    
     public MainMenuManager mainMenu;
 
-    public LoggerLabel loggerGUIComponent;
+    [SerializeField]
+    private LoggerLabel loggerGUIComponent;
 
-    public VectrosityPanel celliaGraph, roomGraph;
-    public GraphMoleculeList graphMoleculeList;
+    [SerializeField]
+    private VectrosityPanel celliaGraph, roomGraph;
+    [SerializeField]
+    private GraphMoleculeList graphMoleculeList;
+    [SerializeField] // WorldScreensPanel
+    private GameObject worldScreensPanel;
 
     public override void initialize()
     {

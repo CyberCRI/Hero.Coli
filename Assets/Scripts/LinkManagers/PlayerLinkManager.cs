@@ -49,7 +49,7 @@ public class PlayerLinkManager : LinkManager
         //Cellcontrol connection
         guiTransitioner.control = cellControl;
 
-        InterfaceLinkManager interfaceLinkManager = GameObject.Find(InterfaceLinkManager.interfaceLinkManagerGameObjectName).GetComponent<InterfaceLinkManager>();
+        InterfaceLinkManager interfaceLinkManager = GameObject.Find(InterfaceLinkManager.gameObjectName).GetComponent<InterfaceLinkManager>();
         cellControl.absoluteWASDButton = interfaceLinkManager.absoluteWASDButton;
         cellControl.leftClickToMoveButton = interfaceLinkManager.leftClickToMoveButton;
         cellControl.relativeWASDButton = interfaceLinkManager.relativeWASDButton;

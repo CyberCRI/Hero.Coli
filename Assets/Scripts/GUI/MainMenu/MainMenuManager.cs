@@ -19,7 +19,7 @@ public class MainMenuManager : MonoBehaviour
             Logger.Log("MainMenuManager::get was badly initialized", Logger.Level.WARN);
 
             //set from InterfaceLinkManager
-            setInstance(InterfaceLinkManager.get().mainMenu);
+            _instance = InterfaceLinkManager.get().mainMenu;
 
             if (_instance == null)
             {

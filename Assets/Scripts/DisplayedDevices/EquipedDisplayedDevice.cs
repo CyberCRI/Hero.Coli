@@ -84,8 +84,8 @@ public class EquipedDisplayedDevice : DisplayedDevice {
     {
 			equipedDevice = DevicesDisplayer.get().equipedDevice;
 
-			tinyBioBrickIcon = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos;
-			tinyBioBrickIcon2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().tinyBioBrickIconPrefabPos2;
+			tinyBioBrickIcon = InterfaceLinkManager.get().tinyBioBrickIconPrefabPos;
+			tinyBioBrickIcon2 = InterfaceLinkManager.get().tinyBioBrickIconPrefabPos2;
     }
     
     if(null != tinyBioBrickIcon)

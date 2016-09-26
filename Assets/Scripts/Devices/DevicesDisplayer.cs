@@ -388,10 +388,10 @@ public class DevicesDisplayer : MonoBehaviour {
     SafeGetTransitioner();
 	  inventoryPanel.gameObject.SetActive(false);
     if(null == equipedDevice) {
-      Logger.Log("DevicesDisplayer::Start null==equipedDevice", Logger.Level.WARN);
+      Debug.Log("DevicesDisplayer::Start null==equipedDevice");
             
-      equipedDevice = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice;
-      equipedDevice2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice2;
+      // equipedDevice = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice;
+      // equipedDevice2 = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevice2;
     }
     if(_equipedHeight == 0.0f)
     {
@@ -402,7 +402,8 @@ public class DevicesDisplayer : MonoBehaviour {
     inventoryDevice.SetActive (false);
     if(null == equipPanel)
     {
-      equipPanel = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevicesSlotsPanel;
+      Debug.Log("DevicesDisplayer::Start null==equipPanel");
+      // equipPanel = GameObject.Find("InterfaceLinkManager").GetComponent<InterfaceLinkManager>().equipedDevicesSlotsPanel;
     }
     equipPanel.gameObject.SetActive(false);
   }
