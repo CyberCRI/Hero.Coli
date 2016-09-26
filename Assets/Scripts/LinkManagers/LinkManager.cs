@@ -4,20 +4,40 @@ using UnityEngine;
  * This class creates the links between the Interface's Scene, classes and GameObject and the others
  * */
 
-public abstract class LinkManager : MonoBehaviour {
-    
+public abstract class LinkManager : MonoBehaviour
+{
     public GameObject root;
+    protected abstract int getLMIndex();
 
-    public abstract void initialize ();
-    public abstract void finishInitialize ();
-    
+    protected void Start ()
+    {
+         GameStateController.get().setSceneLoaded(getLMIndex());
+    }
+
+    public virtual void initialize()
+    {
+        Debug.Log(this.GetType() + " initialize");
+    }
+
+    public virtual void finishInitialize()
+    {
+        Debug.Log(this.GetType() + " finishInitialize");
+    }
+
     public virtual void activateAllChildren(bool active)
     {
-        for(int index = 0 ; index < root.transform.childCount ; index++)
+        if (null != root)
         {
-            root.transform.GetChild(index).gameObject.SetActive(active);
-        }        
+            for (int index = 0; index < root.transform.childCount; index++)
+            {
+                root.transform.GetChild(index).gameObject.SetActive(active);
+            }
+        }
+        else
+        {
+            Debug.Log(this.GetType() + " has null root");
+        }
     }
-    
+
 }
 

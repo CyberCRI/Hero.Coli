@@ -46,7 +46,7 @@ public class CutSceneConclusion : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player" && _collisionIteration == 0)
+        if (col.tag == Hero.playerTag && _collisionIteration == 0)
         {
             start();
             _collisionIteration += 1;

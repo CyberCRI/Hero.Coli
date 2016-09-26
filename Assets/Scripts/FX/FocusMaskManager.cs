@@ -27,7 +27,7 @@ public class FocusMaskManager : MonoBehaviour
     //*/
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public const string gameObjectName = "FocusMaskSystem";
+    private const string gameObjectName = "FocusMaskSystem";
     protected static FocusMaskManager _instance;
     public static FocusMaskManager get()
     {
@@ -36,17 +36,47 @@ public class FocusMaskManager : MonoBehaviour
         {
             Logger.Log("FocusMaskManager::get was badly initialized", Logger.Level.WARN);
             _instance = GameObject.Find(gameObjectName).GetComponent<FocusMaskManager>();
-            _instance.initialize();
-            _instance.reinitialize();
         }
         return _instance;
     }
 
     void Awake()
     {
-        Logger.Log("FocusMaskManager::Awake", Logger.Level.DEBUG);
-        initialize();
-        reinitialize();
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+
+            _instance = this;
+            _baseFocusMaskScale = focusMask.transform.localScale;
+            _baseHoleScale = hole.transform.localScale;
+        }
+    }
+
+    void Start ()
+    {
+        Debug.Log(this.GetType() + " Start");
+        reinitialize ();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -89,7 +119,7 @@ public class FocusMaskManager : MonoBehaviour
         // Debug.Log("isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
         if (!isInterfaceObject)
         {
-            Camera camera = GameObject.Find("Player").GetComponentInChildren<Camera>();
+            Camera camera = GameObject.Find(Hero.playerTag).GetComponentInChildren<Camera>();
             position = camera.WorldToScreenPoint(go.transform.position);
             position -= focusMask.transform.localScale / 4;
         }
@@ -200,13 +230,6 @@ public class FocusMaskManager : MonoBehaviour
         {
             cellControl.freezePlayer(show);
         }
-    }
-
-    public void initialize()
-    {        
-        _instance = this;
-        _baseFocusMaskScale = focusMask.transform.localScale;
-        _baseHoleScale = hole.transform.localScale;
     }
 
     public void reinitialize()

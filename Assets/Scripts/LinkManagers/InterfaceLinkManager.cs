@@ -8,32 +8,60 @@ using UnityEngine;
 public class InterfaceLinkManager : LinkManager
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "InterfaceLinkManager";
+    public const string gameObjectName = "InterfaceLinkManager";
     private static InterfaceLinkManager _instance;
 
     public static InterfaceLinkManager get()
     {
         if (_instance == null)
         {
-            // Debug.LogWarning("InterfaceLinkManager::get was badly initialized");
+            Debug.LogWarning("InterfaceLinkManager::get was badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {
                 _instance = go.GetComponent<InterfaceLinkManager>();
             }
+            else
+            {
+                Debug.LogError(gameObjectName + " not found");
+            }
         }
         return _instance;
     }
-
+    
     void Awake()
     {
-        _instance = this;
-        //Debug.LogError("InterfaceLinkManager awakes with (_instance == null)=="+(_instance == null));
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
     }
 
     void OnDestroy()
     {
-        //Debug.LogError("InterfaceLinkManager OnDestroy");
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    new void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        base.Start();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,9 +83,6 @@ public class InterfaceLinkManager : LinkManager
     // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
     [SerializeField]
     private GameObject craftScreenPanel1;
-    // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
-    [SerializeField]
-    private GameObject craftScreenPanel2;
 
     private GameObject craftScreenPanel;
     [SerializeField]
@@ -103,8 +128,14 @@ public class InterfaceLinkManager : LinkManager
     private GameObject worldScreensPanel;
     public FocusMaskManager focusMaskManager;
 
+    protected override int getLMIndex()
+    {
+        return GameStateController.ilmIndex;
+    }
+
     public override void initialize()
     {
+        base.initialize ();
 
        //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
 
@@ -128,14 +159,7 @@ public class InterfaceLinkManager : LinkManager
 
         guiTransitioner.worldScreen = worldScreensPanel;
 
-        if (isCraftMode1)
-        {
-            craftScreenPanel = craftScreenPanel1;
-        }
-        else
-        {
-            craftScreenPanel = craftScreenPanel2;
-        }
+        craftScreenPanel = craftScreenPanel1;
 
         guiTransitioner.craftScreen = craftScreenPanel;
 
@@ -150,7 +174,6 @@ public class InterfaceLinkManager : LinkManager
         EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
         gameStateController.endMainMenuButton = emmb;
         gameStateController.mainMenu = mainMenu;
-        MainMenuManager.setInstance(mainMenu);
 
         gameStateController.pauseIndicator = pauseIndicator;
 
@@ -232,6 +255,8 @@ public class InterfaceLinkManager : LinkManager
 
     public override void finishInitialize()
     {
+        base.finishInitialize ();
+
         GameObject bars = GameObject.Find("CutSceneBlackBars");
 
         activateAllChildren(false);
@@ -248,10 +273,12 @@ public class InterfaceLinkManager : LinkManager
         // in WorldScreensPanel
         pauseIndicator.SetActive(false);
 
-        CraftZoneManager.get().initialize();
+        CraftZoneManager.get().initializeIfNecessary();
         AvailableBioBricksManager.get().initialize();
         focusMaskManager.reinitialize();
-        DevicesDisplayer.get().initialize();
+
+        Inventory.get().initialize();
+        GUITransitioner.get().initialize();
     }
 
 }

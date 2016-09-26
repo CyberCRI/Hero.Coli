@@ -12,7 +12,7 @@ public class RedMetricsManager : MonoBehaviour
 {    
   
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "RedMetricsManager";
+    private const string gameObjectName = "RedMetricsManager";
     private static RedMetricsManager _instance;
 
     public static RedMetricsManager get ()
@@ -25,34 +25,51 @@ public class RedMetricsManager : MonoBehaviour
             if (null != _instance) {
                 //RedMetricsManager object is not destroyed when game restarts
                 DontDestroyOnLoad (_instance.gameObject);
-                _instance.initializeIfNecessary ();
             } else {
                 logMessage (MessageLevel.ERROR, "get couldn't find game object");
             }
         }
         return _instance;
     }
-
-    void Awake ()
+    
+    void Awake()
     {
-        antiDuplicateInitialization ();
-    }
-  
-    void antiDuplicateInitialization ()
-    {
-        RedMetricsManager.get ();
-        if (this != _instance) {
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances: anti duplicate initialization");
             Destroy (this.gameObject);
         }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
   
     //TODO interface to automatize data extraction for data gathering through sendEvent
     //eg: section, position
-
-    private void initializeIfNecessary ()
-    {
-    }
   
     private string redMetricsURL = "https://api.redmetrics.io/v1/";
     private string redMetricsPlayer = "player";

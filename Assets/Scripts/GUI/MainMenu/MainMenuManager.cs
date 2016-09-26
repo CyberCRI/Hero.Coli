@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "MainMenu";
+    private const string gameObjectName = "MainMenu";
     private static MainMenuManager _instance;
     [SerializeField]
     private bool _first = true;
@@ -33,21 +33,41 @@ public class MainMenuManager : MonoBehaviour
         return _instance;
     }
 
-    public static void setInstance(MainMenuManager instance)
-    {
-        _instance = instance;
-    }
-
     void Awake()
     {
-        Logger.Log("MainMenuManager::Awake", Logger.Level.DEBUG);
-        _instance = this;
-        get();
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
     }
 
     void OnDestroy()
     {
-        //Debug.LogError("MainMenuManager OnDestroy");
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        
+        selectItem(0);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -168,7 +188,7 @@ public class MainMenuManager : MonoBehaviour
                 deselect();
                 _items[normalizedIndex].select();
                 _currentIndex = normalizedIndex;
-                Logger.Log("MainMenuManager::selected item " + normalizedIndex, Logger.Level.DEBUG);
+                // Debug.Log("MainMenuManager selected item " + normalizedIndex);
                 return true;
             }
 
@@ -220,7 +240,7 @@ public class MainMenuManager : MonoBehaviour
                 return;
             }
         }
-        Logger.Log("MainMenuManager::MainMenuItem::replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement, Logger.Level.WARN);
+        Debug.LogWarning("MainMenuManager::MainMenuItem::replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
     }
 
     private void replaceTextBy(string target, string replacement, string debug = "")
@@ -302,7 +322,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            Logger.Log("MainMenuManager::redraw static no item", Logger.Level.WARN);
+            Debug.LogWarning("MainMenuManager redraw static no item");
         }
     }
 
@@ -431,12 +451,5 @@ public class MainMenuManager : MonoBehaviour
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
         cullingMaskHandler.showMainMenu(false);
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        //Debug.Log("MainMenuManager::Start");
-        selectItem(0);
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class WorldLinkManager : LinkManager
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "WorldLinkManager";
+    private const string gameObjectName = "WorldLinkManager";
     private static WorldLinkManager _instance;
 
     public static WorldLinkManager get()
@@ -21,27 +21,61 @@ public class WorldLinkManager : LinkManager
             {
                 _instance = go.GetComponent<WorldLinkManager>();
             }
+            else
+            {
+                Debug.LogError(gameObjectName + " not found");
+            }
         }
         return _instance;
     }
-
+    
     void Awake()
     {
-        _instance = this;
-        //Debug.LogError("WorldLinkManager awakes with (_instance == null)=="+(_instance == null));
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
     }
 
     void OnDestroy()
     {
-        //Debug.LogError("WorldLinkManager OnDestroy");
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    new void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        base.Start();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected override int getLMIndex()
+    {
+        return GameStateController.wlmIndex;
+    }
 
     public MineManager mineManager;
     public Transform startPosition;
 
     public override void initialize()
     {
+        base.initialize ();
 
         GameObject perso = Hero.get().gameObject;
         if (null == perso)
@@ -88,5 +122,6 @@ public class WorldLinkManager : LinkManager
 
     public override void finishInitialize()
     {
+        base.finishInitialize ();
     }
 }

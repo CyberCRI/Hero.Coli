@@ -43,7 +43,7 @@ public class BadGuyCutSceneTrigger : CutScene {
             StartCoroutine(killDummy(_iTweenEventBigGuy.gameObject));
         }
 
-        if (col.tag == "Player")
+        if (col.tag == Hero.playerTag)
         {
             if (_first)
             {

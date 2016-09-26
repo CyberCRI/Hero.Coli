@@ -5,35 +5,68 @@ public class GUITransitioner : MonoBehaviour
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "GUITransitioner";
+    private const string gameObjectName = "GUITransitioner";
     private static GUITransitioner _instance;
     public static GUITransitioner get()
     {
         if (_instance == null)
         {
-            Logger.Log("GUITransitioner::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("GUITransitioner was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<GUITransitioner>();
         }
         return _instance;
     }
     void Awake()
     {
-        Logger.Log("GUITransitioner::Awake", Logger.Level.DEBUG);
-        _instance = this;
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+    }
+
+    private bool _initialized = false;
+    public void initialize()
+    {
+        if (!_initialized)
+        {
+            _reactionEngine = ReactionEngine.get();
+            _devicesDisplayer = DevicesDisplayer.get();
+
+            setScreen2(false);
+            setScreen3(false);
+            setScreen1(true);
+
+            _devicesDisplayer.UpdateScreen();
+            _currentScreen = GameScreen.screen1;
+
+            _initialized = true;
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     private ReactionEngine _reactionEngine;
 
-    private float _timeDelta = 0.2f;
-
-    private float _deltaTime = 0f;
-
     private bool _pauseTransition = false;
     private float _timeScale = 1.0f;
 
     //regulates at which speed the game will get back to its original speed when pause is switched off
-    private float _unpauseAcceleration = 0.25f;
+    private float _unpauseAcceleration = 1f;
 
     public GameScreen _currentScreen = GameScreen.screen1;
     public enum GameScreen
@@ -58,43 +91,14 @@ public class GUITransitioner : MonoBehaviour
     public Hero hero;
     public CellControl control;
 
-    private bool _initialized, _screen1, _screen2, _screen3;
-
-    // Use this for initialization
-    void Start()
-    {
-
-        _reactionEngine = ReactionEngine.get();
-        _devicesDisplayer = DevicesDisplayer.get();
-
-        setScreen2(false);
-        setScreen3(false);
-        setScreen1(true);
-
-        _devicesDisplayer.UpdateScreen();
-        _currentScreen = GameScreen.screen1;
-    }
-
-    private void trySetScreens()
-    {
-        if (!_initialized)
-        {
-            if (null != worldScreen && null != craftScreen)
-            {
-                _initialized = true;
-                setScreen1(_screen1);
-                setScreen2(_screen2);
-                setScreen3(_screen3);
-            }
-        }
-    }
+    private bool _screen1, _screen2, _screen3;
 
     private void setScreen1(bool active)
     {
+        // Debug.Log(this.GetType() + " setScreen1(" + active + ") " + _screen1);
         _screen1 = active;
         if (null != worldScreen && null != craftScreen)
         {
-            _initialized = true;
             if (active)
             {
                 ZoomOut();
@@ -106,10 +110,10 @@ public class GUITransitioner : MonoBehaviour
 
     private void setScreen2(bool active)
     {
+        // Debug.Log(this.GetType() + " setScreen2(" + active + ") " + _screen2);
         _screen2 = active;
         if (null != worldScreen && null != craftScreen)
         {
-            _initialized = true;
             if (active)
             {
                 ZoomIn();
@@ -120,10 +124,10 @@ public class GUITransitioner : MonoBehaviour
 
     private void setScreen3(bool active)
     {
+        // Debug.Log(this.GetType() + " setScreen3(" + active + ") " + _screen3);
         _screen3 = active;
         if (null != worldScreen && null != craftScreen)
         {
-            _initialized = true;
             craftScreen.SetActive(active);
         }
     }
@@ -216,12 +220,12 @@ public class GUITransitioner : MonoBehaviour
 
     public void GoToScreen(GameScreen destination)
     {
-        Logger.Log("GUITransitioner::GoToScreen(" + destination + ")");
+        // Debug.Log("GUITransitioner::GoToScreen(" + destination + ")");
         if (destination == GameScreen.screen1)
         {
             if (_currentScreen == GameScreen.screen2)
             {
-                Logger.Log("2->1", Logger.Level.INFO);
+                // Debug.Log("2->1");
                 //2 -> 1
                 //set zoom1
                 //remove inventory device, deviceID
@@ -231,7 +235,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen3)
             {
-                Logger.Log("3->1");
+                // Debug.Log("3->1");
                 //3 -> 1
                 //set zoom1
                 //remove craft screen
@@ -253,7 +257,7 @@ public class GUITransitioner : MonoBehaviour
         {
             if (_currentScreen == GameScreen.screen1)
             {
-                Logger.Log("GUITransitioner::GoToScreen 1->2", Logger.Level.INFO);
+                // Debug.Log("GUITransitioner::GoToScreen 1->2");
                 //1 -> 2
                 //set zoom2
                 //add inventory device, deviceID
@@ -263,7 +267,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen3)
             {
-                Logger.Log("GUITransitioner::GoToScreen 3->2", Logger.Level.INFO);
+                // Debug.Log("GUITransitioner::GoToScreen 3->2");
                 //3 -> 2
                 //set zoom2
                 //remove craft screen
@@ -285,7 +289,7 @@ public class GUITransitioner : MonoBehaviour
         {
             if (_currentScreen == GameScreen.screen1)
             {
-                Logger.Log("GUITransitioner::GoToScreen 1->3", Logger.Level.INFO);
+                // Debug.Log("GUITransitioner::GoToScreen 1->3");
                 //1 -> 3
                 //remove everything
                 //add device inventory, parameters
@@ -298,7 +302,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen2)
             {
-                Logger.Log("GUITransitioner::GoToScreen 2->3", Logger.Level.INFO);
+                // Debug.Log("GUITransitioner::GoToScreen 2->3");
                 //2 -> 3
                 //remove everything
                 //add craft screen
@@ -312,7 +316,7 @@ public class GUITransitioner : MonoBehaviour
         }
         else
         {
-            Logger.Log("GuiTransitioner::GoToScreen(" + destination + "): error: unmanaged destination", Logger.Level.ERROR);
+            Debug.LogError("GuiTransitioner::GoToScreen(" + destination + "): error: unmanaged destination");
         }
 
         _devicesDisplayer.UpdateScreen();
@@ -321,7 +325,7 @@ public class GUITransitioner : MonoBehaviour
 
     public void SwitchScreen(GameScreen alternate1, GameScreen alternate2)
     {
-        Logger.Log("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + ")");
+        // Debug.Log("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + ")");
         if (_currentScreen == alternate1)
         {
             GoToScreen(alternate2);
@@ -332,34 +336,25 @@ public class GUITransitioner : MonoBehaviour
         }
         else
         {
-            Logger.Log("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + "): error: unmanaged alternate", Logger.Level.WARN);
+            Debug.LogError("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + "): error: unmanaged alternate");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        trySetScreens();
-
-        _deltaTime += Time.fixedDeltaTime;
-
-        if (_deltaTime > _timeDelta)
-        {
-            if (Input.GetKey(KeyCode.Alpha1))
-            {
-                GoToScreen(GameScreen.screen1);
-            }
-            else if (Input.GetKey(KeyCode.Alpha2))
-            {
-                GoToScreen(GameScreen.screen2);
-            }
-            else if (Input.GetKey(KeyCode.Alpha3))
-            {
-                GoToScreen(GameScreen.screen3);
-            }
-            _deltaTime = 0f;
-        }
+        // if (Input.GetKeyUp(KeyCode.Alpha1))
+        // {
+        //     GoToScreen(GameScreen.screen1);
+        // }
+        // else if (Input.GetKeyUp(KeyCode.Alpha2))
+        // {
+        //     GoToScreen(GameScreen.screen2);
+        // }
+        // else if (Input.GetKeyUp(KeyCode.Alpha3))
+        // {
+        //     GoToScreen(GameScreen.screen3);
+        // }
     }
 
     void LateUpdate()
@@ -373,8 +368,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else
             {
-                // Logger.Log("GUITransitioner::LateUpdate Time.timeScale=" + Time.timeScale + ", _timeScale=" + _timeScale + ", _timeDelta=" + _timeDelta, Logger.Level.TRACE);
-                Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScale, _deltaTime * _unpauseAcceleration);
+                Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScale, Time.fixedDeltaTime * _unpauseAcceleration);
             }
         }
     }

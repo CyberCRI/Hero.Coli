@@ -8,7 +8,7 @@ public class MineManager : MonoBehaviour
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private List<ResettableMine> _minesToReset = new List<ResettableMine>();
     private List<GameObject> _particleSystems = new List<GameObject>();
-    public static string gameObjectName = "MineManager";
+    private const string gameObjectName = "MineManager";
     private static MineManager _instance;
     public static MineManager get()
     {
@@ -18,11 +18,40 @@ public class MineManager : MonoBehaviour
             _instance = GameObject.Find(gameObjectName).GetComponent<MineManager>();
         }
         return _instance;
-    }
+    }    
+    
     void Awake()
     {
-        Logger.Log("MineManager::Awake", Logger.Level.DEBUG);
-        _instance = this;
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

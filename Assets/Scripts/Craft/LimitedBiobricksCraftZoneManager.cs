@@ -8,7 +8,6 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     private const int sandboxSlotCount = 10;
     private const int tutorialSlotCount = 2;
 
-    private bool _initialized = false;
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
     protected int slotCount;
@@ -32,7 +31,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
 
-    public override void initialize ()
+    public override void initializeIfNecessary ()
     {
         //Debug.LogError("LimitedBiobricksCraftZoneManager initialize");
 
@@ -56,7 +55,7 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
                 // Debug.Log("done children slots");
                 selectSlot(slots[0]);
 
-                base.initialize();
+                base.initializeIfNecessary();
 
                 _initialized = true;
             }

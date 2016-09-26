@@ -6,7 +6,7 @@ public class DevicesDisplayer : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "DeviceDisplayer";
+    private const string gameObjectName = "DeviceDisplayer";
     private static DevicesDisplayer _instance;
     public static DevicesDisplayer get()
     {
@@ -17,10 +17,44 @@ public class DevicesDisplayer : MonoBehaviour
         }
         return _instance;
     }
+
     void Awake()
     {
-        // Debug.Log("DevicesDisplayer::Awake");
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
         _instance = this;
+        initializeIfNecessary();
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    public bool initializeIfNecessary()
+    {
+        if (!_initialized)
+        {
+            if (null != listedInventoryPanel)
+            {
+                for (int index = 0; index < listedDevicesGrid.childCount; index++)
+                {
+                    Destroy(listedDevicesGrid.GetChild(index).gameObject);
+                }
+
+                _initialized = true;
+            }
+        }
+        return _initialized;
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -66,29 +100,6 @@ public class DevicesDisplayer : MonoBehaviour
     private CraftZoneManager craftZoneManager;
 
 
-    public bool initialize()
-    {
-        if (!_initialized)
-        {
-            if (
-                  (null != listedInventoryPanel)
-              )
-            {
-
-                for (int index = 0; index < listedDevicesGrid.childCount; index++)
-                {
-                    Destroy(listedDevicesGrid.GetChild(index).gameObject);
-                }
-
-                SafeGetTransitioner();
-
-                _initialized = true;
-            }
-        }
-        return _initialized;
-    }
-
-
     /*
      *  ADD
      *
@@ -108,12 +119,9 @@ public class DevicesDisplayer : MonoBehaviour
         if (!alreadyInventoried)
         {
 
-            Transform parent = listedDevicesGrid;
-            //  Debug.Log("DevicesDisplayer::addInventoriedDevice: parent=" + parent);
-
             DisplayedDevice newListedDevice =
               ListedDevice.Create(
-                parent
+                listedDevicesGrid
                 , Vector3.zero
                 , null
                 , device
@@ -175,7 +183,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public bool IsScreen(int screen)
     {
-        SafeGetTransitioner();
+        safeGetTransitioner();
         return (((transitioner._currentScreen == GUITransitioner.GameScreen.screen1) && (screen == 1))
             || ((transitioner._currentScreen == GUITransitioner.GameScreen.screen2) && (screen == 2))
             || ((transitioner._currentScreen == GUITransitioner.GameScreen.screen3) && (screen == 3)));
@@ -183,7 +191,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public bool IsEquipScreen()
     {
-        return (SafeGetTransitioner()._currentScreen == GUITransitioner.GameScreen.screen2);
+        return (safeGetTransitioner()._currentScreen == GUITransitioner.GameScreen.screen2);
     }
 
     private bool _initialized;
@@ -191,7 +199,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         get
         {
-            _initialized = _initialized || initialize();
+            _initialized = _initialized || initializeIfNecessary();
             return _initialized;
         }
     }
@@ -309,19 +317,12 @@ public class DevicesDisplayer : MonoBehaviour
         }
     }
 
-    private GUITransitioner SafeGetTransitioner()
+    private GUITransitioner safeGetTransitioner()
     {
         if (null == transitioner)
         {
             transitioner = GUITransitioner.get();
         }
         return transitioner;
-    }
-
-    void Start()
-    {
-        // Debug.Log("DevicesDisplayer::Start()");
-
-        initialize();
     }
 }

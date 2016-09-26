@@ -6,7 +6,7 @@ public class CellControl : MonoBehaviour
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public const string gameObjectName = Hero.gameObjectName;
+    private const string gameObjectName = Hero.gameObjectName;
     private static CellControl _instance;
     public static CellControl get(string origin)
     {
@@ -32,11 +32,52 @@ public class CellControl : MonoBehaviour
         }
         return _instance;
     }
+    
     void Awake()
     {
-        // Debug.Log("CellControl::Awake");
-        _instance = this;
-        initializeIfNecessary();
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        
+        _targetPosition = transform.position;
+    }
+
+    public void initialize ()
+    {
+        if (isAbsoluteWASD)
+        {
+            switchControlTypeToAbsoluteWASD();
+        }
+        else
+        {
+            switchControlTypeToRelativeWASD();
+        }
+        if (isLeftClickToMove)
+        {
+            switchControlTypeToLeftClickToMove();
+        }
+        else
+        {
+            switchControlTypeToRightClickToMove();
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -287,29 +328,6 @@ public class CellControl : MonoBehaviour
         float cost = 0;
 
         hero.subEnergy(cost);
-    }
-
-    void Start()
-    {
-
-        _targetPosition = transform.position;
-
-        if (isAbsoluteWASD)
-        {
-            switchControlTypeToAbsoluteWASD();
-        }
-        else
-        {
-            switchControlTypeToRelativeWASD();
-        }
-        if (isLeftClickToMove)
-        {
-            switchControlTypeToLeftClickToMove();
-        }
-        else
-        {
-            switchControlTypeToRightClickToMove();
-        }
     }
 
     IEnumerator blockClicksAfterPause()

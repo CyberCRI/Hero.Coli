@@ -22,7 +22,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    *    select this already existing device
    */
 
-  protected static string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+  protected const string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,

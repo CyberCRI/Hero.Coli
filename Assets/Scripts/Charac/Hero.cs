@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class Hero : MonoBehaviour
 {
 
+    public const string playerTag = "Player";
+
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     public const string gameObjectName = "Perso";
     protected static Hero _instance;
@@ -18,11 +20,7 @@ public class Hero : MonoBehaviour
             if (null != go)
             {
                 _instance = go.GetComponent<Hero>();
-                if(null != _instance)
-                {
-                    _instance.initializeIfNecessary();
-                }
-                else
+                if(null == _instance)
                 {
                     Debug.LogError("component Hero of " + gameObjectName + " not found");
                 }
@@ -34,35 +32,57 @@ public class Hero : MonoBehaviour
         }
         return _instance;
     }
-
     void Awake()
     {
-        // Debug.Log("Hero::Awake");
-        initializeIfNecessary();
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////
-
-    private float _originOffsetY;
-    [SerializeField]
-    private AmbientLighting _ambientLighting;
-    [SerializeField]
-    private GameObject[] _childrenToDestroy;
-    private bool _isInitialized = false;
-
-    public void destroyChildren()
-    {
-        foreach (GameObject child in _childrenToDestroy)
-        {
-            Destroy(child);
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
         }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    private bool _isInitialized = false;
+    private void initializeIfNecessary()
+    {
+        if(!_isInitialized)
+        {
+            _instance = this;
+            //???
+            //gameObject.SetActive(true);
+            _isAlive = true;
+
+            //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
+            _isInitialized = true;
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
     }
 
     void Start()
     {
-        _originOffsetY = 41.11548f;
+        Debug.Log(this.GetType() + " Start");
+
         _ambientLighting = this.GetComponent<AmbientLighting>();
+        _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
+        _maxMediumEnergy = _medium.getMaxEnergy();
+        _energy = _medium.getEnergy() / _maxMediumEnergy;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
+
+    private const float _originOffsetY = 41.11548f;
+    [SerializeField]
+    private AmbientLighting _ambientLighting;
+    [SerializeField]
+    private GameObject[] _childrenToDestroy;
 
     public LifeLogoAnimation lifeAnimation;
     public EnergyLogoAnimation energyAnimation;
@@ -153,20 +173,11 @@ public class Hero : MonoBehaviour
         }
     }
 
-    private void initializeIfNecessary()
+    public void destroyChildren()
     {
-        if(!_isInitialized)
+        foreach (GameObject child in _childrenToDestroy)
         {
-            _instance = this;
-            //???
-            //gameObject.SetActive(true);
-            _isAlive = true;
-
-            //LinkedList<Medium> mediums = ReactionEngine.get ().getMediumList();
-            _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
-            _maxMediumEnergy = _medium.getMaxEnergy();
-            _energy = _medium.getEnergy() / _maxMediumEnergy;
-            _isInitialized = true;
+            Destroy(child);
         }
     }
 

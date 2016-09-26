@@ -32,7 +32,7 @@ public class GameStateController : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "GameStateController";
+    private const string gameObjectName = "GameStateController";
     private static GameStateController _instance;
     public static GameStateController get()
     {
@@ -43,6 +43,45 @@ public class GameStateController : MonoBehaviour
         }
 
         return _instance;
+    }
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+            _gameState = GameState.Start;
+            resetPauseStack();
+            reinitializeLoadingVariables();
+            // SceneManager.sceneLoaded += SceneLoaded;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        loadLevels();
+        updateAdminStatus();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,8 +108,10 @@ public class GameStateController : MonoBehaviour
     private bool _isGameLevelPrepared = false;
     private GameState _stateBeforeMainMenu = GameState.Game;
 
-    private bool _finishLoadLevels = false;
-    private bool _finishedLoadLevels = false;
+    // private bool _finishLoadLevels = false;
+    private bool _finishedLoadingLevels = false;
+    private bool[] _loadingFlags = new bool[3] { false, false, false};
+    public const int ilmIndex = 0, plmIndex = 1, wlmIndex = 2;
 
     private static bool _isAdminMode = false;
     public static bool isAdminMode
@@ -81,54 +122,65 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        // Debug.Log("GameStateController::Awake");
-        _instance = this;
-        _gameState = GameState.Start;
-        resetPauseStack();
-        SceneManager.sceneLoaded += SceneLoaded;
-        loadLevels();
-        updateAdminStatus();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        // Debug.Log("GameStateController::Start");
-        // Debug.Log("GameStateController::Start game starts in " + Localization.Localize("MAIN.LANGUAGE"));
-    }
-
     public static void updateAdminStatus()
     {
         _isAdminMode = Application.isEditor || MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
     }
 
-    bool isInterfaceLoaded = false;
-    bool isPlayerLoaded = false;
-    bool isWorldLoaded = false;
+    // bool isInterfaceLoaded = false;
+    // bool isPlayerLoaded = false;
+    // bool isWorldLoaded = false;
 
     private void reinitializeLoadingVariables()
     {
-        isInterfaceLoaded = false;
-        isPlayerLoaded = false;
-        isWorldLoaded = false;
+        // isInterfaceLoaded = false;
+        // isPlayerLoaded = false;
+        // isWorldLoaded = false;
+
+        _loadingFlags = new bool[3] { false, false, false};
+        _finishedLoadingLevels = false;
+        _isGameLevelPrepared = false;
     }
 
-    void SceneLoaded(Scene scene, LoadSceneMode m)
+    // void SceneLoaded(Scene scene, LoadSceneMode m)
+    // {
+    //     // Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
+
+    //     int level = scene.buildIndex;
+
+    //     isInterfaceLoaded = isInterfaceLoaded || (3 == level);
+    //     isPlayerLoaded = isPlayerLoaded || (2 == level);
+    //     isWorldLoaded = isWorldLoaded || (1 == level) || (4 == level) || (5 == level);
+
+    //     if (isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
+    //     {
+    //         Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
+    //         // finishLoadLevels();
+    //         _finishLoadLevels = true;
+    //     }
+    // }
+    
+
+    public void setSceneLoaded(int index)
     {
-        // Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
-
-        int level = scene.buildIndex;
-
-        isInterfaceLoaded = isInterfaceLoaded || (3 == level);
-        isPlayerLoaded = isPlayerLoaded || (2 == level);
-        isWorldLoaded = isWorldLoaded || (1 == level) || (4 == level) || (5 == level);
-
-        if (isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
+        if(index < _loadingFlags.Length && index >= 0)
         {
-            finishLoadLevels();
-            //_finishLoadLevels = true;
+            _loadingFlags[index] = true;
+
+            bool allLoaded = true;
+            foreach(bool flag in _loadingFlags)
+            {
+                allLoaded &= flag;
+            }
+            if(allLoaded)
+            {
+                Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
+                finishLoadLevels();
+            }
+        }        
+        else
+        {
+            Debug.LogError("incorrect index " + index);
         }
     }
 
@@ -142,29 +194,28 @@ public class GameStateController : MonoBehaviour
 
     private void finishLoadLevels()
     {
-        // Debug.Log("GameStateController::finishLoadLevels");
+        Debug.Log("GameStateController::finishLoadLevels");
 
         // get the linkers
         InterfaceLinkManager ilm = InterfaceLinkManager.get();
         PlayerLinkManager blm = PlayerLinkManager.get();
         WorldLinkManager wlm = WorldLinkManager.get();
 
-        // Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
+        Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
         ilm.initialize();
         blm.initialize();
         wlm.initialize();
 
-        // Debug.Log("finishInitialize");
+        Debug.Log("finishInitialize");
         ilm.finishInitialize();
         blm.finishInitialize();
         wlm.finishInitialize();
 
-        // open the Main Menu
-        // Debug.Log("finishLoadLevels => MainMenuManager.get().open()");
-
-        _finishedLoadLevels = true;
+        _finishedLoadingLevels = true;
 
         MainMenuManager.get().open();
+
+        Debug.Log("finishLoadLevels done");
     }
 
     public static bool isPause()
@@ -287,7 +338,6 @@ public class GameStateController : MonoBehaviour
     public void endGame()
     {
         // Debug.Log("endGame");
-        _isGameLevelPrepared = false;
         reinitializeLoadingVariables();
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
@@ -359,11 +409,12 @@ public class GameStateController : MonoBehaviour
 
         // if (_finishLoadLevels)
         // {
+        //     Debug.Log("GameStateController _finishLoadLevels = true => finishLoadLevels()");
         //     _finishLoadLevels = false;
         //     finishLoadLevels();
         // }
 
-        if (_finishedLoadLevels)
+        if (_finishedLoadingLevels)
         {
 
             if (_isAdminMode)
@@ -654,13 +705,15 @@ public class GameStateController : MonoBehaviour
         //that automatically take new GameStateController object
         //and leave old GameStateController object with old dead links to destroyed objects
 
+        _instance._initialized = false;
         MemoryManager.get("internalRestart").configuration.restartBehavior = GameConfiguration.RestartBehavior.GAME;
-        Application.LoadLevel(_masterScene);
-    }
 
-    void OnDestroy()
-    {
-        // Debug.Log("GameStateController::OnDestroy");
+        // manual reset
+        iTween.Stop();
+        iTweenPath.paths.Clear();
+        CutSceneElements.clear();
+
+        SceneManager.LoadScene(_masterScene);
     }
 
     public void FadeScreen(bool fade, float speed)

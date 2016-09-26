@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class TooltipManager : MonoBehaviour
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "TooltipManager";
+    private const string gameObjectName = "TooltipManager";
     private static TooltipManager _instance;
     public static TooltipManager get()
     {
@@ -15,11 +15,47 @@ public class TooltipManager : MonoBehaviour
         }
         return _instance;
     }
+
     void Awake()
     {
-        Logger.Log("TooltipManager::Awake", Logger.Level.DEBUG);
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
         _instance = this;
         loadDataIntoDico(inputFiles, _loadedInfoWindows);
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;
+
+    private bool initialize()
+    {
+        if (!_initialized)
+        {
+            if ((null != bioBrickTooltipPanel) && (null != deviceTooltipPanel))
+            {
+                bioBrickTooltipPanel.gameObject.SetActive(false);
+                deviceTooltipPanel.gameObject.SetActive(false);
+            }
+        }
+        return _initialized;
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        initialize();
+    }
+
+    void Update()
+    {
         initialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +97,6 @@ public class TooltipManager : MonoBehaviour
     private Dictionary<string, TooltipInfo> _loadedInfoWindows = new Dictionary<string, TooltipInfo>();
     private const string _bioBrickPrefix = "b_";
     private const string _devicePrefix = "d_";
-    private bool _initialized;
 
     public enum Quadrant
     {
@@ -286,28 +321,5 @@ public class TooltipManager : MonoBehaviour
             else
                 return Quadrant.BOTTOM_RIGHT;
         }
-    }
-
-    void Start()
-    {
-        initialize();
-    }
-
-    void Update()
-    {
-        initialize();
-    }
-
-    private bool initialize()
-    {
-        if (!_initialized)
-        {
-            if ((null != bioBrickTooltipPanel) && (null != deviceTooltipPanel))
-            {
-                bioBrickTooltipPanel.gameObject.SetActive(false);
-                deviceTooltipPanel.gameObject.SetActive(false);
-            }
-        }
-        return _initialized;
     }
 }

@@ -20,18 +20,103 @@ using System.Collections.Generic;
  */
 public class ReactionEngine : MonoBehaviour {
 
-  // singleton fields & methods
-  public static string gameObjectName = "ReactionEngine";
-  private static ReactionEngine _instance;
-  public static ReactionEngine get() {
-    if(_instance == null) {
-      Logger.Log("ReactionEngine::get was badly initialized", Logger.Level.WARN);
-      _instance = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    private const string gameObjectName = "ReactionEngine";
+    private static ReactionEngine _instance;
+    public static ReactionEngine get()
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("ReactionEngine::get was badly initialized");
+            _instance = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
+        }
+        return _instance;
     }
-    return _instance;
-  }
 
-  private Fick _fick;                                   //!< The Fick class that manages molecules diffusions between medium
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        _instance = this;
+        initializeIfNecessary();
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;
+    private void initializeIfNecessary()
+    {
+        if (!_initialized)
+        {
+            FileLoader fileLoader = new FileLoader();
+            _reactionsSets = new LinkedList<ReactionSet>();
+            _moleculesSets = new LinkedList<MoleculeSet>();
+            _mediums = new LinkedList<Medium>();
+
+            //TODO there is only one file in _moleculesFiles and in _reactionsFiles
+            foreach (string file in _reactionsFiles)
+            {
+                LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file, "reactions");
+                if (null != lr)
+                    LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
+            }
+            foreach (string file in _moleculesFiles)
+            {
+                // Debug.Log("ReactionEngine::Awake() loading molecules from file");
+
+                LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file, "molecules");
+                if (null != lm)
+                    LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
+
+                // Debug.Log("ReactionEngine::Awake() loading molecules from file done"
+                //            + ": _moleculesSets=" + Logger.ToString<MoleculeSet>(_moleculesSets));
+            }
+
+            foreach (string file in _mediumsFiles)
+            {
+                LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file, "Medium");
+                if (null != lmed)
+                    LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
+            }
+
+            foreach (Medium medium in _mediums)
+            {
+                medium.Init(_reactionsSets, _moleculesSets);
+                medium.enableSequential(enableSequential);
+                medium.enableNoise(enableNoise);
+                medium.enableEnergy(enableEnergy);
+                medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
+            }
+
+            // Debug.Log("ReactionEngine::Awake() FickReactions starting");
+
+            _fick = new Fick();
+            _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
+
+            // Debug.Log("ReactionEngine::Awake() activeTransport starting");
+
+            _activeTransport = new ActiveTransport();
+            _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
+
+            // Debug.Log("ReactionEngine::Awake() done");
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    private Fick _fick;                                   //!< The Fick class that manages molecules diffusions between medium
   private ActiveTransport       _activeTransport;       //!< The class that manages Active transport reactions.
   private LinkedList<Medium>    _mediums;               //!< The list that contains all the mediums
   private LinkedList<ReactionSet> _reactionsSets;      //!< The list that contains the reactions sets
@@ -59,11 +144,11 @@ public class ReactionEngine : MonoBehaviour {
    */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
-	Logger.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")", Logger.Level.INFO);
+	// Debug.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")");
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
     if (med == null) {
-	  Logger.Log("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found", Logger.Level.WARN);
+	  Debug.LogWarning("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found");
       return ;
 	}
 	
@@ -76,7 +161,7 @@ public class ReactionEngine : MonoBehaviour {
 	if (reactionsSet != null) {
 	  reactionsSet.reactions.AddLast(IReaction.copyReaction(reaction));
 	} else {
-	  Logger.Log("ReactionEngine::addReactionToMedium reactionsSet == null", Logger.Level.WARN);
+	  Debug.LogWarning("ReactionEngine::addReactionToMedium reactionsSet == null");
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////*/
 		
@@ -109,7 +194,7 @@ public class ReactionEngine : MonoBehaviour {
 
     if (med == null)
     {
-      Logger.Log("ReactionEngine::removeReaction could not find medium with id "+mediumId, Logger.Level.WARN);
+      Debug.LogWarning("ReactionEngine::removeReaction could not find medium with id "+mediumId);
       return ;
     }
 
@@ -226,66 +311,6 @@ public class ReactionEngine : MonoBehaviour {
 	  return null;
 	}
   }
-
-  //! This function is called at the initialisation of the simulation (like a Constructor)
-  void Awake()
-  {
-    _instance = this;
-
-    FileLoader fileLoader = new FileLoader();
-    _reactionsSets = new LinkedList<ReactionSet>();
-    _moleculesSets = new LinkedList<MoleculeSet>();
-    _mediums = new LinkedList<Medium>();
-    
-
-		//TODO there is only one file in _moleculesFiles and in _reactionsFiles
-    foreach (string file in _reactionsFiles)
-		{
-			LinkedList<ReactionSet> lr = fileLoader.loadObjectsFromFile<ReactionSet>(file,"reactions");
-      if(null != lr)
-        LinkedListExtensions.AppendRange<ReactionSet>(_reactionsSets, lr);
-		}
-    foreach (string file in _moleculesFiles)
-		{
-      Logger.Log("ReactionEngine::Awake() loading molecules from file", Logger.Level.DEBUG);
-
-			LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file,"molecules");
-      if(null != lm)
-			  LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
-
-            Logger.Log("ReactionEngine::Awake() loading molecules from file done"
-                       +": _moleculesSets="+Logger.ToString<MoleculeSet>(_moleculesSets)
-                       , Logger.Level.DEBUG);
-		}
-    
-    foreach (string file in _mediumsFiles)
-		{
-      LinkedList<Medium> lmed = fileLoader.loadObjectsFromFile<Medium>(file,"Medium");
-      if(null != lmed)
-			  LinkedListExtensions.AppendRange<Medium>(_mediums, lmed);
-		}
-
-    foreach (Medium medium in _mediums)
-    {
-      medium.Init(_reactionsSets, _moleculesSets);
-      medium.enableSequential(enableSequential);
-      medium.enableNoise(enableNoise);
-      medium.enableEnergy(enableEnergy);
-      medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
-    }
-
-        Logger.Log("ReactionEngine::Awake() FickReactions starting", Logger.Level.INFO);
-
-    _fick = new Fick();
-    _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
-
-        Logger.Log("ReactionEngine::Awake() activeTransport starting", Logger.Level.INFO);
-
-    _activeTransport = new ActiveTransport();        
-    _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
-
-        Logger.Log("ReactionEngine::Awake() done", Logger.Level.INFO);
-  }
 	
   //TODO manage reaction speed for smooth pausing
   public void Pause(bool pause) {
@@ -301,7 +326,7 @@ public class ReactionEngine : MonoBehaviour {
   public void Update()
   {		
 	  if(_paused) {
-	    Logger.Log("ReactionEngine::Update paused", Logger.Level.TRACE);
+	    // Debug.Log("ReactionEngine::Update paused");
 	  } else {
 	    _fick.react();
       if (enableShufflingMediumOrder)
@@ -310,11 +335,11 @@ public class ReactionEngine : MonoBehaviour {
       foreach (Medium medium in _mediums)
         medium.Update();
 
-	    Logger.Log("ReactionEngine::Update() update of mediums done", Logger.Level.TRACE);
+	    // Debug.Log("ReactionEngine::Update() update of mediums done");
       if (!enableSequential) {
         foreach (Medium medium in _mediums)
           medium.updateMoleculesConcentrations();
-		    Logger.Log("ReactionEngine::Update() update of mol cc in mediums done", Logger.Level.TRACE);
+		    // Debug.Log("ReactionEngine::Update() update of mol cc in mediums done");
       }
 	  }
   }

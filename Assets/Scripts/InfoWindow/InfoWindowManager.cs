@@ -4,22 +4,50 @@ using System.Collections.Generic;
 //TODO: merge with ModalManager
 public class InfoWindowManager : MonoBehaviour {
 
-  //////////////////////////////// singleton fields & methods ////////////////////////////////
-  public static string gameObjectName = "InfoWindowManager";
-  private static InfoWindowManager _instance;
-  public static InfoWindowManager get() {
-    if(_instance == null) {
-      Logger.Log("InfoWindowManager::get was badly initialized", Logger.Level.WARN);
-      _instance = GameObject.Find(gameObjectName).GetComponent<InfoWindowManager>();
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    private const string gameObjectName = "InfoWindowManager";
+    private static InfoWindowManager _instance;
+    public static InfoWindowManager get()
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("InfoWindowManager::get was badly initialized");
+            _instance = GameObject.Find(gameObjectName).GetComponent<InfoWindowManager>();
+        }
+        return _instance;
     }
-    return _instance;
-  }
-  void Awake()
-  {
-    Logger.Log("InfoWindowManager::Awake", Logger.Level.DEBUG);
-    _instance = this;
-    loadDataIntoDico(inputFiles, _loadedInfoWindows);
-  }
+
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        _instance = this;
+        initializeIfNecessary();
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;
+    private void initializeIfNecessary()
+    {
+        if (!_initialized)
+        {
+            loadDataIntoDico(inputFiles, _loadedInfoWindows);
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+    }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   public string[] inputFiles;
@@ -73,7 +101,7 @@ public class InfoWindowManager : MonoBehaviour {
     }
     else
     {
-      Logger.Log("InfoWindowManager::displayInfoWindow("+code+") failed", Logger.Level.WARN);
+      Debug.LogWarning("InfoWindowManager::displayInfoWindow("+code+") failed");
       return false;
     }
   }
@@ -109,7 +137,7 @@ public class InfoWindowManager : MonoBehaviour {
     StandardInfoWindowInfo info;
     if(!_instance._loadedInfoWindows.TryGetValue(code, out info))
     {
-      Logger.Log("InfoWindowManager::retrieveFromDico("+code+") failed", Logger.Level.WARN);
+      Debug.LogWarning("InfoWindowManager::retrieveFromDico("+code+") failed");
       info = null;
     }
     return info;
@@ -132,7 +160,7 @@ public class InfoWindowManager : MonoBehaviour {
       loadedFiles += file;
     }
 
-    Logger.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles, Logger.Level.DEBUG);
+    // Debug.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles);
   }
 
   public static void next ()
@@ -143,18 +171,18 @@ public class InfoWindowManager : MonoBehaviour {
 
         switch (_instance.nextAction) {
             case NextAction.GOTOWORLD:
-                Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOWORLD");
                 break;
             case NextAction.GOTOEQUIP:
-                Logger.Log ("InfoWindowManager::next GOTOEQUIP", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOEQUIP");
                 GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen2);
                 break;
             case NextAction.GOTOCRAFT:
-                Logger.Log ("InfoWindowManager::next GOTOCRAFT", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOCRAFT");
                 GUITransitioner.get ().GoToScreen (GUITransitioner.GameScreen.screen3);
                 break;
             case NextAction.GOTOCRAFTTUTO:
-                Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOCRAFTTUTO");
                 CraftHint hint = Hero.get().gameObject.GetComponent<CraftHint>();
                 if(null == hint)
                 {
@@ -163,11 +191,11 @@ public class InfoWindowManager : MonoBehaviour {
                 hint.bricks++;
                 break;
             case NextAction.GOTOCRAFTTUTO2:
-                Logger.Log ("InfoWindowManager::next GOTOCRAFTTUTO2", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOCRAFTTUTO2");
                 Hero.get().gameObject.AddComponent<RBS2CraftHint>();
                 break;
             default:
-                Logger.Log ("InfoWindowManager::next GOTOWORLD", Logger.Level.DEBUG);
+                // Debug.Log ("InfoWindowManager::next GOTOWORLD");
                 break;
         }
     }
@@ -187,7 +215,7 @@ public class InfoWindowManager : MonoBehaviour {
            || Input.GetKeyUp (KeyCode.KeypadEnter)
           )
         {
-            Logger.Log("InfoWindowManager::manageKeyPresses() - key pressed", Logger.Level.DEBUG);
+            // Debug.Log("InfoWindowManager::manageKeyPresses() - key pressed");
             next();
             return GameStateTarget.NoTarget;
         }
