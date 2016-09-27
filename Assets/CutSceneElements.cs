@@ -1,4 +1,4 @@
-﻿//#define QUICKTEST
+﻿//////#define QUICKTEST
 using UnityEngine;
 using System.Collections;
 
@@ -48,7 +48,7 @@ public class CutSceneElements : MonoBehaviour {
         }
     }
 
-    void OnEnable()
+    protected void OnEnable()
     {
         // initialization of static elements
         _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBars");

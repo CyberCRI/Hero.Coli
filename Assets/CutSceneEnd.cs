@@ -38,7 +38,6 @@ public class CutSceneEnd : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col.tag);
         if (col.tag == "CutSceneElement")
         {
             start();

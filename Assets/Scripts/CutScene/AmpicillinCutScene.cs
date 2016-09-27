@@ -18,6 +18,10 @@ public class AmpicillinCutScene : CutScene {
     private List<GameObject> _points = new List<GameObject>();
     [SerializeField]
     private InstantiateObject _instantiateObj;
+
+    //Events
+    public delegate void HaveSeenCutScene();
+    public static event HaveSeenCutScene OnPlayerSeen;
     
     bool _played = false;
     
@@ -59,8 +63,6 @@ public class AmpicillinCutScene : CutScene {
         if (col.tag == "Door2")
         {
             Debug.Log("1");
-            Destroy(_instantiateObj);
-            Destroy(this.transform.parent.gameObject);
         }
     }
 
@@ -85,6 +87,9 @@ public class AmpicillinCutScene : CutScene {
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
+        Destroy(_instantiateObj);
+        Destroy(this.transform.parent.gameObject);
+        OnPlayerSeen();
     }
 
     IEnumerator waitForSecondBacteria()

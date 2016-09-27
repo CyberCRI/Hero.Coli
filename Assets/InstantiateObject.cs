@@ -20,6 +20,12 @@ public class InstantiateObject : CutSceneElements {
     private Transform _resetCamera;
     private GameObject _newInstance;
     
+    protected void OnEnable()
+    {
+        base.OnEnable();
+        AmpicillinCutScene.OnPlayerSeen += DestroyThis;
+    }
+
 
 	// Use this for initialization
 	void Start () {
@@ -76,5 +82,10 @@ public class InstantiateObject : CutSceneElements {
     public void InstantiatePrefab(Vector3 position, Quaternion rotation)
     {
         Instantiate(_toInstantiate, position, rotation);
+    }
+
+    private void DestroyThis()
+    {
+        Destroy(this);
     }
 }
