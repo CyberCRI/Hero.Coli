@@ -8,244 +8,277 @@ using UnityEngine;
 public class InterfaceLinkManager : LinkManager
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "InterfaceLinkManager";
+    public const string gameObjectName = "InterfaceLinkManager";
     private static InterfaceLinkManager _instance;
 
-    public static InterfaceLinkManager get ()
+    public static InterfaceLinkManager get()
     {
-        if (_instance == null) {
-            Logger.Log("InterfaceLinkManager::get was badly initialized", Logger.Level.WARN);
-            GameObject go = GameObject.Find (gameObjectName);
-            if(go)
+        if (_instance == null)
+        {
+            Debug.LogWarning("InterfaceLinkManager::get was badly initialized");
+            GameObject go = GameObject.Find(gameObjectName);
+            if (go)
             {
-                _instance = go.GetComponent<InterfaceLinkManager> ();
+                _instance = go.GetComponent<InterfaceLinkManager>();
+            }
+            else
+            {
+                Debug.LogError(gameObjectName + " not found");
             }
         }
         return _instance;
     }
-
-    void Awake ()
-    {
-        _instance = this;
-        //Debug.LogError("InterfaceLinkManager awakes with (_instance == null)=="+(_instance == null));
-    }
     
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
     void OnDestroy()
     {
-        //Debug.LogError("InterfaceLinkManager OnDestroy");
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    new void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        base.Start();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-  public static string interfaceLinkManagerGameObjectName = "InterfaceLinkManager";
+    [SerializeField]
+    private Fade fade;
+    [SerializeField]
+    private TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
 
-	public Fade fade;
-	public TooltipPanel biobrickTooltipPanel,deviceTooltipPanel;
-	public GameObject inventoryDevicePrefab;
-	public GameObject listedDevicePrefab;
+    [SerializeField]
+    private GameObject craftZoneDisplayedBioBrickPrefab;
+    [SerializeField]
+    private GameObject lastHoveredInfo;
+    [SerializeField]
+    private GameObject genericInfoWindow;
 
-	public GameObject craftZoneDisplayedBioBrickPrefab;
-	public GameObject lastHoveredInfo;
-	public GameObject genericInfoWindow;
-    
-    
+
     bool isCraftMode1 = true;
-    
+
     // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
-	public GameObject craftScreenPanel1;
-    // craft screen with craft button, biobrick-sorting buttons, recipes, inventory link, craft table
-    public GameObject craftScreenPanel2;
-    
+    [SerializeField]
+    private GameObject craftScreenPanel1;
+
     private GameObject craftScreenPanel;
-    public Transform craftSlotsGrid;
+    [SerializeField]
+    private Transform craftSlotsGrid;
+
+    [SerializeField]
+    private CraftFinalizer craftFinalizer;
+
+    [SerializeField]
+    private GameObject tutorialArrow;
+
+    [SerializeField]
+    private GameObject tutorialPanels;
+
+    [SerializeField]
+    private GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
+    [SerializeField]
+    private EndMainMenuButton endMainMenuButton;
+
+    // main menu
+    public ControlsMainMenuItemArray controlsArray;
+    public AbsoluteWASDButton absoluteWASDButton;
+    public LeftClickToMoveButton leftClickToMoveButton;
+    public RelativeWASDButton relativeWASDButton;
+    public RightClickToMoveButton rightClickToMoveButton;
+    public UISprite selectedKeyboardControlTypeSprite;
+    public UISprite selectedMouseControlTypeSprite;
+    [SerializeField]
+    private GameObject modalBackground;
+    [SerializeField]
+    private GameObject genericModalWindow;
     
-    
-  public GameObject equipedDeviceButtonPrefabPos, equipedDeviceButtonPrefabPos2;
-  public UIPanel equipedDevicesSlotsPanel;
-  public GameObject equipedDevice ,equipedDevice2;
-  public GameObject tinyBioBrickIconPrefabPos ,tinyBioBrickIconPrefabPos2;
-	public CraftFinalizer craftFinalizer;
-	public UIPanel inventoryDevicesSlotsPanel;
+    public MainMenuManager mainMenu;
 
-	public GameObject tutorialArrow;
+    [SerializeField]
+    private LoggerLabel loggerGUIComponent;
 
-  public GameObject tutorialPanels;
+    [SerializeField]
+    private VectrosityPanel celliaGraph, roomGraph;
+    [SerializeField]
+    private GraphMoleculeList graphMoleculeList;
+    [SerializeField] // WorldScreensPanel
+    private GameObject worldScreensPanel;
+    public FocusMaskManager focusMaskManager;
 
-  public GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
-  public EndMainMenuButton endMainMenuButton;
-
-  // main menu
-  public ControlsMainMenuItemArray controlsArray;
-  public AbsoluteWASDButton absoluteWASDButton;
-  public LeftClickToMoveButton leftClickToMoveButton;
-  public RelativeWASDButton relativeWASDButton;
-  public RightClickToMoveButton rightClickToMoveButton;
-  public UISprite selectedKeyboardControlTypeSprite;
-  public UISprite selectedMouseControlTypeSprite;
-  public GameObject modalBackground;
-  public GameObject genericModalWindow;
-  public MainMenuManager mainMenu;
-
-    public LoggerLabel loggerGUIComponent;
-
-    public VectrosityPanel celliaGraph, roomGraph;
-    public GraphMoleculeList graphMoleculeList;
-
-	public override void initialize ()
+    protected override int getLMIndex()
     {
-        
-    // activate everything
-    activateAllChildren(true);
-        
-	//shortcut
-	CraftZoneManager craftZoneManager = CraftZoneManager.get();
-	GameStateController gameStateController = GameStateController.get();
-	//CraftFinalizer _craftfinalizer = craftFinalizer;
-	GUITransitioner guiTransitioner = GUITransitioner.get ();
-    DevicesDisplayer devicesDisplayer = DevicesDisplayer.get();
-    InfoWindowManager infoWindowManager = InfoWindowManager.get();
-    AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
-    TooltipManager tooltipManager = TooltipManager.get();
-    ModalManager modalManager = ModalManager.get();
+        return GameStateController.ilmIndex;
+    }
 
-		//GUITransitioner
-    guiTransitioner.celliaGraph = celliaGraph;
-	guiTransitioner.roomGraph = roomGraph;
-	
-	guiTransitioner.worldScreen = GameObject.Find ("WorldScreensPanel");
-    
-    if(isCraftMode1)
+    public override void initialize()
     {
+        base.initialize ();
+
+       //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
+
+        // activate everything
+        activateAllChildren(true);
+
+        //shortcut
+        CraftZoneManager craftZoneManager = CraftZoneManager.get();
+        GameStateController gameStateController = GameStateController.get();
+        //CraftFinalizer _craftfinalizer = craftFinalizer;
+        GUITransitioner guiTransitioner = GUITransitioner.get();
+        DevicesDisplayer devicesDisplayer = DevicesDisplayer.get();
+        InfoWindowManager infoWindowManager = InfoWindowManager.get();
+        AvailableBioBricksManager availableBioBricksManager = AvailableBioBricksManager.get();
+        TooltipManager tooltipManager = TooltipManager.get();
+        ModalManager modalManager = ModalManager.get();
+
+        //GUITransitioner
+        guiTransitioner.celliaGraph = celliaGraph;
+        guiTransitioner.roomGraph = roomGraph;
+
+        guiTransitioner.worldScreen = worldScreensPanel;
+
         craftScreenPanel = craftScreenPanel1;
-    }
-    else
-    {
-        craftScreenPanel = craftScreenPanel2;
-    }
-        
-	guiTransitioner.craftScreen = craftScreenPanel;
 
-    ContinueButton cb = okButton1.GetComponent<ContinueButton>();
-    StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
-        
-    //GameStateController
-    gameStateController.intro = introduction1;
-    gameStateController.introContinueButton = cb;
-    gameStateController.fadeSprite = fade;
-    gameStateController.endWindow = end;
-    EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
-    gameStateController.endMainMenuButton = emmb;
-    gameStateController.mainMenu = mainMenu;
-    MainMenuManager.setInstance(mainMenu);
-    
-    gameStateController.pauseIndicator = pauseIndicator;
+        guiTransitioner.craftScreen = craftScreenPanel;
 
-    //initialization of intro panels
-    cb.nextInfoPanel = introduction2;
-    cb.nextInfoPanelContinue = sgb;
+        ContinueButton cb = okButton1.GetComponent<ContinueButton>();
+        StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
 
-		//CraftZoneManager
-		craftZoneManager.craftFinalizer = craftFinalizer;
+        //GameStateController
+        gameStateController.intro = introduction1;
+        gameStateController.introContinueButton = cb;
+        gameStateController.fadeSprite = fade;
+        gameStateController.endWindow = end;
+        EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
+        gameStateController.endMainMenuButton = emmb;
+        gameStateController.mainMenu = mainMenu;
 
-		//CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
-    if(null == craftFinalizer.craftFinalizationButton)
-      craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
+        gameStateController.pauseIndicator = pauseIndicator;
 
-		craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
-		craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
-        
-        
-        string assemblyZoneName = isCraftMode1?"CraftSlotsPanel":"AssemblyZonePanel";
-		craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild ("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
-        
-        if(isCraftMode1)
+        //initialization of intro panels
+        cb.nextInfoPanel = introduction2;
+        cb.nextInfoPanelContinue = sgb;
+
+        //CraftZoneManager
+        craftZoneManager.craftFinalizer = craftFinalizer;
+
+        //CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
+        if (null == craftFinalizer.craftFinalizationButton)
+            craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
+
+        craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
+        craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
+
+
+        string assemblyZoneName = isCraftMode1 ? "CraftSlotsPanel" : "AssemblyZonePanel";
+        craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
+
+        if (isCraftMode1)
         {
-            LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) craftZoneManager; 
+            LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager)craftZoneManager;
             lbczm.slotsGrid = craftSlotsGrid;
         }
 
 
-		//DevicesDisplayer
-        
-    devicesDisplayer.equipPanel = equipedDevicesSlotsPanel;
-    devicesDisplayer.inventoryPanel = inventoryDevicesSlotsPanel;
-    devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
-    devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
+        //DevicesDisplayer
+        devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
+        devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
 
-    devicesDisplayer.graphMoleculeList = graphMoleculeList;
-            
-    devicesDisplayer.equipedDevice = equipedDeviceButtonPrefabPos;
-    devicesDisplayer.equipedDevice2 = equipedDeviceButtonPrefabPos2;
+        devicesDisplayer.graphMoleculeList = graphMoleculeList;
 
-    devicesDisplayer.inventoryDevice = inventoryDevicePrefab;
-		devicesDisplayer.listedInventoryDevice =listedDevicePrefab;
-		
 
-		//InfoWindowManager
-		infoWindowManager.infoPanel = genericInfoWindow;
-		infoWindowManager.titleLabel = genericInfoWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
-		infoWindowManager.subtitleLabel = genericInfoWindow.transform.FindChild("SubtitleLabel").GetComponent<UILocalize>();
-		infoWindowManager.explanationLabel = genericInfoWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
-		infoWindowManager.bottomLabel = genericInfoWindow.transform.FindChild("BottomLabel").GetComponent<UILocalize>();
-		infoWindowManager.infoSprite = genericInfoWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
-                        
-    //ModalManager
-    modalManager.modalBackground = modalBackground;
-    modalManager.genericModalWindow = genericModalWindow;
-    modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
-    modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
-    modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
-    modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
-    modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
-    modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
+        //InfoWindowManager
+        infoWindowManager.infoPanel = genericInfoWindow;
+        infoWindowManager.titleLabel = genericInfoWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
+        infoWindowManager.subtitleLabel = genericInfoWindow.transform.FindChild("SubtitleLabel").GetComponent<UILocalize>();
+        infoWindowManager.explanationLabel = genericInfoWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
+        infoWindowManager.bottomLabel = genericInfoWindow.transform.FindChild("BottomLabel").GetComponent<UILocalize>();
+        infoWindowManager.infoSprite = genericInfoWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
 
-    //BiobrickInventory
-    
-    //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
-    availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild ("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
-    
-    if(isCraftMode1)
-    {
-        availableBioBricksManager.promoterBrickCategoryGrid     = GameObject.Find("PromoterBrickCategoryGrid").transform;
-        availableBioBricksManager.rbsBrickCategoryGrid          = GameObject.Find("RBSBrickCategoryGrid").transform;
-        availableBioBricksManager.geneBrickCategoryGrid         = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
-        availableBioBricksManager.terminatorBrickCategoryGrid   = GameObject.Find("TerminatorBrickCategoryGrid").transform;
+        //ModalManager
+        modalManager.modalBackground = modalBackground;
+        modalManager.genericModalWindow = genericModalWindow;
+        modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
+        modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
+        modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
+        modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
+        modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
+        modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
+
+        //BiobrickInventory
+
+        //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
+        availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
+
+        if (isCraftMode1)
+        {
+            availableBioBricksManager.promoterBrickCategoryGrid = GameObject.Find("PromoterBrickCategoryGrid").transform;
+            availableBioBricksManager.rbsBrickCategoryGrid = GameObject.Find("RBSBrickCategoryGrid").transform;
+            availableBioBricksManager.geneBrickCategoryGrid = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
+            availableBioBricksManager.terminatorBrickCategoryGrid = GameObject.Find("TerminatorBrickCategoryGrid").transform;
+        }
+        else
+        {
+            availableBioBricksManager.availableBioBrick = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
+        }
+
+        //TooltipManager
+        tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
+        tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
+        tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
+
+        Logger.get().loggerGUIComponent = loggerGUIComponent;
     }
-    else
+
+
+    public override void finishInitialize()
     {
-        availableBioBricksManager.availableBioBrick         = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
+        base.finishInitialize ();
+
+        GameObject bars = GameObject.Find("CutSceneBlackBars");
+
+        activateAllChildren(false);
+
+        //TODO should be done in gameStateController instead
+
+        // in TutorialPanels
+        tutorialPanels.SetActive(true);
+        introduction1.SetActive(false);
+        introduction2.SetActive(false);
+        end.SetActive(false);
+        bars.SetActive(true);
+
+        // in WorldScreensPanel
+        pauseIndicator.SetActive(false);
+
+        CraftZoneManager.get().initializeIfNecessary();
+        AvailableBioBricksManager.get().initialize();
+        focusMaskManager.reinitialize();
+
+        Inventory.get().initialize();
+        GUITransitioner.get().initialize();
     }
-    
-    //TooltipManager
-    tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;
-    tooltipManager.deviceTooltipPanel = deviceTooltipPanel;
-    tooltipManager.uiCamera = GameObject.Find("Camera").GetComponent<Camera>();
 
-    Logger.get ().loggerGUIComponent = loggerGUIComponent;
-  }
-  
-  
-  public override void finishInitialize ()
-  {
-      GameObject bars = GameObject.Find("CutSceneBlackBars");
-
-      activateAllChildren(false);
-      
-      //TODO should be done in gameStateController instead
-      
-      // in TutorialPanels
-      tutorialPanels.SetActive (true);
-      introduction1.SetActive(false);
-      introduction2.SetActive(false);
-      end.SetActive(false);
-      bars.SetActive(true);
-      
-      // in WorldScreensPanel
-      pauseIndicator.SetActive(false);      
-      
-      CraftZoneManager.get().initialize();
-      AvailableBioBricksManager.get().initialize();
-      FocusMaskManager.get().reinitialize();
-      DevicesDisplayer.get().initialize();
-  }
-  
 }

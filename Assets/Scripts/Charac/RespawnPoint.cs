@@ -17,7 +17,7 @@ public class RespawnPoint : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == Hero.playerTag)
         {
             AmbientLighting ambLight = col.GetComponent<AmbientLighting>();
             if (_colNumber == 0)

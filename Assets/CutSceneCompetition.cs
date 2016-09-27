@@ -66,7 +66,7 @@ public class CutSceneCompetition : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == Hero.playerTag)
         {
 			if (_iterationPlayer == 0) 
 			{

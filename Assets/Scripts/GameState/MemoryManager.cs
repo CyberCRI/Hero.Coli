@@ -5,46 +5,77 @@ public class MemoryManager : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "MemoryManager";
+    private const string gameObjectName = "MemoryManager";
     private static MemoryManager _instance;
-    public static MemoryManager get()
+    public static MemoryManager get(string origin = "")
     {
         if (_instance == null)
         {
-            Logger.Log("MemoryManager::get was badly initialized", Logger.Level.WARN);
+            // Debug.Log("MemoryManager::get badly initialized called by " + origin);
             _instance = GameObject.Find(gameObjectName).GetComponent<MemoryManager>();
-            if (null != _instance)
+            if (null == _instance)
             {
-                DontDestroyOnLoad(_instance.gameObject);
-                _instance.initializeIfNecessary();
-            }
-            else
-            {
-                Logger.Log("MemoryManager::get couldn't find game object", Logger.Level.ERROR);
+                Debug.LogError("MemoryManager get couldn't find game object");
             }
         }
         return _instance;
     }
+
     void Awake()
     {
-        Logger.Log("MemoryManager::Awake", Logger.Level.INFO);
-        antiDuplicateInitialization();
-    }
-
-    void Start()
-    {
-        Logger.Log("MemoryManager::Start", Logger.Level.INFO);
-    }
-
-    void antiDuplicateInitialization()
-    {
-        MemoryManager.get();
-        Logger.Log("MemoryManager::antiDuplicateInitialization with hashcode=" + this.GetHashCode() + " and _instance.hashcode=" + _instance.GetHashCode(), Logger.Level.INFO);
-        if (this != _instance)
-        {
-            Logger.Log("MemoryManager::antiDuplicateInitialization self-destruction", Logger.Level.INFO);
-            Destroy(this.gameObject);
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+             Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
+             Destroy(this.gameObject);
         }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false; 
+    private void initializeIfNecessary(bool onlyIfEmpty = true)
+    {
+        if (!_initialized)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            Debug.Log(this.GetType() + " initializeIfNecessary");
+            if (!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
+            {
+                loadLevelData(inputFiles, _loadedLevelInfo);
+            }
+            _initialized = true;
+        }
+    } 
+
+    void Start ()
+    {
+        Debug.Log(this.GetType() + " Start");
+        
+        //TODO manage RedMetricsManager's globalPlayerGUID
+        string playerGUID = configuration.playerGUID;
+                
+        Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
+            + " & configuration.isTestGUID()=" + configuration.isTestGUID()
+            + " & Application.isEditor=" + Application.isEditor
+        );
+
+        RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
+        RedMetricsManager.get().sendStartEvent();
+                
+        Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
+                                    , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,30 +96,7 @@ public class MemoryManager : MonoBehaviour
     public string[] inputFiles;
     private Dictionary<string, string> _savedData = new Dictionary<string, string>();
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
-    public string playerDataKey = "player";
-
-    private void initializeIfNecessary(bool onlyIfEmpty = true)
-    {
-        Logger.Log("MemoryManager::initializeIfNecessary", Logger.Level.DEBUG);
-        if (!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
-        {
-            loadLevelData(inputFiles, _loadedLevelInfo);
-
-            string playerGUID = configuration.playerGUID;
-            Logger.Log(
-                "MemoryManager::initializeIfNecessary: playerGUID=" + playerGUID
-                + " & configuration.isTestGUID()=" + configuration.isTestGUID()
-                + " & Application.isEditor=" + Application.isEditor
-            );
-
-            //TODO manage RedMetricsManager's globalPlayerGUID
-            RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
-            RedMetricsManager.get().sendStartEvent();
-            Logger.Log(string.Format("MemoryManager::initializeIfNecessary initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
-                                     , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID)
-                       , Logger.Level.INFO);
-        }
-    }
+    private const string playerDataKey = "player";
 
     public bool addData(string key, string value)
     {
@@ -156,11 +164,6 @@ public class MemoryManager : MonoBehaviour
         Logger.Log("MemoryManager::tryGetCurrentLevelInfo", Logger.Level.DEBUG);
         levelInfo = null;
         return _loadedLevelInfo.TryGetValue(MemoryManager.get().configuration.getSceneName(), out levelInfo);
-    }
-
-    void OnDestroy()
-    {
-        Logger.Log("MemoryManager::OnDestroy", Logger.Level.DEBUG);
     }
 
     public void sendCompletionEvent()

@@ -5,22 +5,50 @@ public class CraftFinalizer : MonoBehaviour {
     
   //////////////////////////////// singleton fields & methods ////////////////////////////////
   protected const string gameObjectName = "FinalizationZonePanel";
-  protected static CraftFinalizer _instance;
-  public static CraftFinalizer get() {
-      //Debug.LogError("CraftFinalizer get");
-    if(_instance == null) {
-      Logger.Log("CraftFinalizer::get was badly initialized", Logger.Level.WARN);      
-      _instance = GameObject.Find(gameObjectName).GetComponent<CraftFinalizer>();
+    protected static CraftFinalizer _instance;
+    public static CraftFinalizer get()
+    {
+        //Debug.LogError("CraftFinalizer get");
+        if (_instance == null)
+        {
+            Logger.Log("CraftFinalizer::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find(gameObjectName).GetComponent<CraftFinalizer>();
+        }
+        return _instance;
     }
-    return _instance;
-  }
-  
-  void Awake()
-  {
-    Logger.Log("CraftFinalizer::Awake", Logger.Level.DEBUG);
-    //Debug.LogError("CraftFinalizer Awake");
-    _instance = this;
-  }
+
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        _instance = this;
+        initializeIfNecessary();
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;
+    private void initializeIfNecessary()
+    {
+        if (!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+        
+        craftZoneManager = CraftZoneManager.get();
+    }
   ////////////////////////////////////////////////////////////////////////////////////////////
   private CraftZoneManager _craftZoneManager;
 
@@ -178,11 +206,6 @@ public class CraftFinalizer : MonoBehaviour {
                        +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
         }
     }
-
-  void Start()
-  {
-    craftZoneManager = CraftZoneManager.get();
-  }
 
 
 }

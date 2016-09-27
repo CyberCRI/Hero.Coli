@@ -1,6 +1,5 @@
-﻿//////#define QUICKTEST
+﻿// #define QUICKTEST
 using UnityEngine;
-using System.Collections;
 
 public class CutSceneElements : MonoBehaviour {
 
@@ -16,7 +15,7 @@ public class CutSceneElements : MonoBehaviour {
     {
         get
         {
-            __cellControl = (null == __cellControl) ? GameObject.FindGameObjectWithTag("Player").GetComponent<CellControl>() : __cellControl;
+            __cellControl = (null == __cellControl) ? GameObject.FindGameObjectWithTag(Hero.playerTag).GetComponent<CellControl>() : __cellControl;
             return __cellControl;
         }
     }
@@ -48,12 +47,20 @@ public class CutSceneElements : MonoBehaviour {
         }
     }
 
-    protected void OnEnable()
+    void OnEnable()
     {
         // initialization of static elements
         _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBars");
         _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
         _cutSceneCamera = lazyInitObject<Camera>(_cutSceneCamera, "CutSceneCamera");
         _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
+    }
+
+    public static void clear()
+    {
+        _blackBar = null;
+        _cullingMaskHandler = null;
+        _cutSceneCamera = null;
+        _boundCamera = null;
     }
 }

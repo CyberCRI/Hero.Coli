@@ -12,7 +12,7 @@ public abstract class DeviceContainer : MonoBehaviour {
   }
 
   //TODO DeviceDisplayer
-  public static string _displayerName = "DevicesDisplayersPanel";
+  public const string _displayerName = "DevicesDisplayersPanel";
 
   protected List<Device> _devices = new List<Device>();
   protected static DevicesDisplayer _displayer;
@@ -49,13 +49,13 @@ public abstract class DeviceContainer : MonoBehaviour {
     foreach (Device device in added ) {
       askAddDevice(device);
     }
-    Logger.Log("DeviceContainer::UpdateData added done", Logger.Level.TRACE);
+    // Debug.Log("DeviceContainer::UpdateData added done");
     removeDevices(removed);
-    Logger.Log("DeviceContainer::UpdateData removed done", Logger.Level.TRACE);
+    // Debug.Log("DeviceContainer::UpdateData removed done");
     foreach (Device device in edited ) {
       editDevice(device);
     }
-    Logger.Log("DeviceContainer::UpdateData edited done", Logger.Level.TRACE);
+    // Debug.Log("DeviceContainer::UpdateData edited done");
   }
   
   abstract public AddingResult askAddDevice(Device device, bool reportToRedMetrics = false);
@@ -65,7 +65,7 @@ public abstract class DeviceContainer : MonoBehaviour {
 
  // Use this for initialization
  protected virtual void Start () {
-   Logger.Log("DeviceContainer::Start()", Logger.Level.TRACE);
+   Debug.Log(this.GetType() + " Start()");
    _displayer = safeGetDisplayer();
  }
 

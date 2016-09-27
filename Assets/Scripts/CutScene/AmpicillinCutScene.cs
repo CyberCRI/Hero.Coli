@@ -1,4 +1,4 @@
-﻿////#define QUICKTEST
+﻿// #define QUICKTEST
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,12 +16,6 @@ public class AmpicillinCutScene : CutScene {
     private bool _moveCam2 = false;
     [SerializeField]
     private List<GameObject> _points = new List<GameObject>();
-    [SerializeField]
-    private InstantiateObject _instantiateObj;
-
-    //Events
-    public delegate void HaveSeenCutScene();
-    public static event HaveSeenCutScene OnPlayerSeen;
     
     bool _played = false;
     
@@ -34,7 +28,7 @@ public class AmpicillinCutScene : CutScene {
         private const float _bacterium1Speed = 10f;
         private const float _bacterium2Speed = 25f;
         private const float _waitDuration1 = 4.5f;
-        private const float _waitDuration2 = 5f;
+        private const float _waitDuration2 = 3f;
 #endif
 
     public override void initialize() { }
@@ -59,11 +53,6 @@ public class AmpicillinCutScene : CutScene {
         {
             Destroy(col.gameObject);
         }
-
-        if (col.tag == "Door2")
-        {
-            Debug.Log("1");
-        }
     }
 
     void startEscape(PlatformMvt _pltMvt, float speed)
@@ -84,12 +73,9 @@ public class AmpicillinCutScene : CutScene {
         StartCoroutine(waitForSecondBacteria());
     }
 
-    public override void endCutScene()
-    {
-        _cellControl.freezePlayer(false);
-        Destroy(_instantiateObj);
+    public override void endCutScene() {
         Destroy(this.transform.parent.gameObject);
-        OnPlayerSeen();
+        _cellControl.freezePlayer(false);
     }
 
     IEnumerator waitForSecondBacteria()

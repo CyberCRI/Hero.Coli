@@ -15,23 +15,56 @@ public class CraftZoneManager : MonoBehaviour {
 
 
   //////////////////////////////// singleton fields & methods ////////////////////////////////
-  protected const string gameObjectName = "CraftZoneManager";
-  protected static CraftZoneManager _instance;
-  public static CraftZoneManager get() {
-      //Debug.LogError("CraftZoneManager get");
-    if(_instance == null) {
-      Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);      
-      _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
+    protected const string gameObjectName = "CraftZoneManager";
+    protected static CraftZoneManager _instance;
+    public static CraftZoneManager get()
+    {
+        //Debug.LogError("CraftZoneManager get");
+        if (_instance == null)
+        {
+            Logger.Log("CraftZoneManager::get was badly initialized", Logger.Level.WARN);
+            _instance = GameObject.Find(gameObjectName).GetComponent<CraftZoneManager>();
+        }
+        return _instance;
     }
-    return _instance;
-  }
+
+    void Awake()
+    {
+        Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        _instance = this;
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    protected bool _initialized = false;
+    public virtual void initializeIfNecessary()
+    {
+        if (!_initialized)
+        {
+            if(null != displayedBioBrick)
+            {
+                displayedBioBrick.SetActive(false);
+            }
+                _initialized = true;
+            }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
+
+        initializeIfNecessary();
+        displayDevice();
+    }
   
-  void Awake()
-  {
-    Logger.Log("CraftZoneManager::Awake", Logger.Level.DEBUG);
-    //Debug.LogError("CraftZoneManager Awake");
-    _instance = this;
-  }
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   protected LinkedList<BioBrick>                      _currentBioBricks = new LinkedList<BioBrick>();
@@ -386,21 +419,5 @@ public class CraftZoneManager : MonoBehaviour {
   {
     //FIXME doesn't work with test null != _instance._currentDevice
     return !(0 == AvailableBioBricksManager.get().getAvailableBioBricks().Count || Hero.isBeingInjured);
-  }
-
-  void Start()
-  {
-      //Debug.LogError("CraftZoneManager Start");
-      
-      initialize();
-      displayDevice();
-  }
-  
-  public virtual void initialize()
-  {
-      if(null != displayedBioBrick)
-      {
-          displayedBioBrick.SetActive(false);
-      }
   }
 }

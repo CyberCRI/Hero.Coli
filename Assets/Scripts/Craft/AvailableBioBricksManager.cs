@@ -7,7 +7,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "BioBrickInventory";
+    private const string gameObjectName = "BioBrickInventory";
     private static AvailableBioBricksManager _instance;
     public static AvailableBioBricksManager get()
     {
@@ -18,11 +18,40 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         return _instance;
     }
+    
     void Awake()
     {
-        Logger.Log("AvailableBioBricksManager::Awake", Logger.Level.DEBUG);
-        _instance = this;
-        initialize();
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+            initialize();
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

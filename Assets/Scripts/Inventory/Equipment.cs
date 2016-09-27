@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Equipment : DeviceContainer
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "DeviceEquipment";
+    private const string gameObjectName = "DeviceEquipment";
     private static Equipment _instance;
     public static Equipment get()
     {
@@ -15,10 +15,41 @@ public class Equipment : DeviceContainer
         }
         return _instance;
     }
+    
     void Awake()
     {
-        // Debug.Log("Equipment::Awake");
-        _instance = this;
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    new void Start()
+    {
+        base.Start();
+        // Debug.Log("Equipment::Start()");
+        _reactionEngine = ReactionEngine.get();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -135,13 +166,6 @@ public class Equipment : DeviceContainer
     {
         //TODO
         Debug.LogError("Equipment::editeDevice NOT IMPLEMENTED");
-    }
-
-    new void Start()
-    {
-        base.Start();
-        // Debug.Log("Equipment::Start()");
-        _reactionEngine = ReactionEngine.get();
     }
 
     public override string ToString()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PhenoAmpicillinProducer : MonoBehaviour
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public const string gameObjectName = Hero.gameObjectName;
+    private const string gameObjectName = Hero.gameObjectName;
     private static PhenoAmpicillinProducer _instance;
     public static PhenoAmpicillinProducer get()
     {
@@ -14,11 +14,7 @@ public class PhenoAmpicillinProducer : MonoBehaviour
             if (null != go)
             {
                 _instance = go.GetComponent<PhenoAmpicillinProducer>();
-                if (null != _instance)
-                {
-                    _instance.initialize();
-                }
-                else
+                if (null == _instance)
                 {
                     Debug.LogError("Component PhenoAmpicillinProducer of GameObject " + gameObjectName + " not found");
                 }
@@ -29,11 +25,40 @@ public class PhenoAmpicillinProducer : MonoBehaviour
             }
         }
         return _instance;
-    }
+    }    
+    
     void Awake()
     {
-        Logger.Log("PhenoAmpicillinProducer::Awake", Logger.Level.INFO);
-        PhenoAmpicillinProducer.get();
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -61,10 +86,6 @@ public class PhenoAmpicillinProducer : MonoBehaviour
             _isSpawningAmpicillin = value;
             _timeUntilNextSpawn = _timeBetweenSpawns;
         }
-    }
-
-    private void initialize()
-    {
     }
 
     // TODO replace using event system

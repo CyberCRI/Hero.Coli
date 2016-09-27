@@ -8,7 +8,6 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     private const int sandboxSlotCount = 10;
     private const int tutorialSlotCount = 2;
 
-    private bool _initialized = false;
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
     protected int slotCount;
@@ -17,44 +16,49 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
     private const string _slotNameRoot = "slot";
     public Transform slotsGrid;
 
-    protected new LinkedList<BioBrick> _currentBioBricks {
-        get {
-            if(null != selectedSlot)
+    protected new LinkedList<BioBrick> _currentBioBricks
+    {
+        get
+        {
+            if (null != selectedSlot)
             {
                 return selectedSlot.getCurrentBricks();
             }
             else
             {
-                return new LinkedList<BioBrick>();   
-            } 
+                return new LinkedList<BioBrick>();
+            }
         }
     }
 
-    public override void initialize()
+    public override void initializeIfNecessary ()
     {
         //Debug.LogError("LimitedBiobricksCraftZoneManager initialize");
 
         if (!_initialized)
         {
-            slots.Clear();
-            
-            slotCount = MemoryManager.get().configuration.gameMap==GameConfiguration.GameMap.SANDBOX2?sandboxSlotCount:tutorialSlotCount;
-            // Debug.Log("going to destroy children slots");
-            for(int index = 0; index < slotsGrid.childCount; index++)
+            if (null != slotsGrid)
             {
-                Destroy(slotsGrid.GetChild(index).gameObject);
-            }
-            // Debug.Log("going to add children slots");
-            for (int index = 0; index < slotCount; index++)
-            {
-                addSlot();
-            }
-            // Debug.Log("done children slots");
-            selectSlot(slots[0]);
+                slots.Clear();
 
-            base.initialize();
+                slotCount = MemoryManager.get().configuration.gameMap == GameConfiguration.GameMap.SANDBOX2 ? sandboxSlotCount : tutorialSlotCount;
+                // Debug.Log("going to destroy children slots");
+                for (int index = 0; index < slotsGrid.childCount; index++)
+                {
+                    Destroy(slotsGrid.GetChild(index).gameObject);
+                }
+                // Debug.Log("going to add children slots");
+                for (int index = 0; index < slotCount; index++)
+                {
+                    addSlot();
+                }
+                // Debug.Log("done children slots");
+                selectSlot(slots[0]);
 
-            _initialized = true;
+                base.initializeIfNecessary();
+
+                _initialized = true;
+            }
         }
     }
 
@@ -98,29 +102,29 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
 
-/*
-    public void addBrick(CraftZoneDisplayedBioBrick brick)
-    {
-        if (null != selectedSlot)
+    /*
+        public void addBrick(CraftZoneDisplayedBioBrick brick)
         {
-            selectedSlot.addBrick(brick);
+            if (null != selectedSlot)
+            {
+                selectedSlot.addBrick(brick);
+            }
         }
-    }
-    */
-    
+        */
+
     public void removeBioBrick(CraftZoneDisplayedBioBrick brick)
     {
         //Debug.LogError("LimitedBiobricksCraftZoneManager::removeBioBrick(czdb)");
-        if(null != brick)
+        if (null != brick)
         {
             //Debug.LogError("removeBioBrick null != brick");
-            foreach(CraftDeviceSlot slot in slots)
+            foreach (CraftDeviceSlot slot in slots)
             {
                 //Debug.LogError("removeBioBrick slot "+slot);
-                if(null != slot && slot.removeBrick(brick))
+                if (null != slot && slot.removeBrick(brick))
                 {
                     return;
-                }   
+                }
             }
         }
     }
@@ -143,29 +147,30 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
         }
     }
     */
-    
-    public override Device getCurrentDevice() {
+
+    public override Device getCurrentDevice()
+    {
         //Debug.LogError("LimitedBiobricksCraftZoneManager getCurrentDevice");
         return selectedSlot.getCurrentDevice();
     }
-    
+
     public override void OnBioBricksChanged()
     {
-        foreach(CraftDeviceSlot slot in slots)
+        foreach (CraftDeviceSlot slot in slots)
         {
             slot.updateDisplay();
         }
     }
-    
+
     public override void addAndEquipDevice(Device device, bool replace = true)
     {
-        if(Device.isValid(device))
+        if (Device.isValid(device))
         {
-            if(!replace)
+            if (!replace)
             {
-                foreach(CraftDeviceSlot slot in slots)
+                foreach (CraftDeviceSlot slot in slots)
                 {
-                    if(!slot.isEquiped)
+                    if (!slot.isEquiped)
                     {
                         slot.setSelected(true);
                         break;
@@ -175,36 +180,39 @@ public class LimitedBiobricksCraftZoneManager : CraftZoneManager
             //add every brick to the stock
             foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
             {
-                AvailableBioBricksManager.get ().addAvailableBioBrick (brick, false);
+                AvailableBioBricksManager.get().addAvailableBioBrick(brick, false);
             }
             //set device
             setDevice(device);
         }
     }
-    
-    public override void setDevice(Device device) {
+
+    public override void setDevice(Device device)
+    {
         //Debug.LogError("LimitedBioBricksCraftZoneManager::setDevice("+device+")");
-        if(null != selectedSlot)
-       {
-           selectedSlot.setDevice(device);
-       } 
+        if (null != selectedSlot)
+        {
+            selectedSlot.setDevice(device);
+        }
     }
-    
-    protected override void removeAllBricksFromCraftZone() {
-       if(null != selectedSlot)
-       {
-           selectedSlot.removeAllBricks();
-       }
+
+    protected override void removeAllBricksFromCraftZone()
+    {
+        if (null != selectedSlot)
+        {
+            selectedSlot.removeAllBricks();
+        }
     }
-    
-    public override void craft () {
+
+    public override void craft()
+    {
         //Debug.LogError("LimitedBioBricksCraftZoneManager::craft");
     }
 
     public override void unequip(Device device)
     {
         // Debug.Log("LBCZM unequip");
-        foreach(CraftDeviceSlot slot in slots)
+        foreach (CraftDeviceSlot slot in slots)
         {
             // TODO check why Device.Equals fails
             if (device.hasSameBricks(slot.getCurrentDevice()))

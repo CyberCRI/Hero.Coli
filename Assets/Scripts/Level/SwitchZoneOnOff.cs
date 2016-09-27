@@ -20,7 +20,7 @@ public class SwitchZoneOnOff : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == Hero.playerTag)
         {
             for (var i = 0; i < _activeZone.Length; i++)
             {

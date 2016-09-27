@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ControlsMainMenuItemArray : MainMenuItemArray {    
     
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "ControlsItems";
+    private const string gameObjectName = "ControlsItems";
     private static ControlsMainMenuItemArray _instance;
     public static ControlsMainMenuItemArray get() {
         if(_instance == null) {
@@ -13,10 +12,39 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
         }
         return _instance;
     }
+    
     void Awake()
     {
-        Logger.Log("ControlsMainMenuItemArray::Awake", Logger.Level.DEBUG);
-        _instance = this;
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _initialized = true;
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

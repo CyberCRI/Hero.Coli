@@ -5,28 +5,57 @@ public class Inventory : DeviceContainer
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public static string gameObjectName = "DeviceInventory";
+    private const string gameObjectName = "DeviceInventory";
     private static Inventory _instance;
     public static Inventory get()
     {
         if (_instance == null)
         {
-            Logger.Log("Inventory::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("Inventory::get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<Inventory>();
         }
         return _instance;
     }
 
-    public static bool isOpenable()
-    {
-        return 0 != _instance._devices.Count;
-    }
-
     void Awake()
     {
-        Logger.Log("Inventory::Awake", Logger.Level.DEBUG);
-        _deviceAdded = false;
-        _instance = this;
+        Debug.Log(this.GetType() + " Awake");
+        if((_instance != null) && (_instance != this))
+        {            
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+       _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;  
+    private void initializeIfNecessary()
+    {
+        if(!_initialized)
+        {
+            _deviceAdded = false;
+            _initialized = true;
+        }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        // Debug.Log("Inventory::Start()");        
+    }
+
+    public void initialize ()
+    {
+        loadDevices();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,8 +72,8 @@ public class Inventory : DeviceContainer
     //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePathRead };
     //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/repressilatorDevices", Inventory._saveFilePathRead };
 
-    private static string _saveFilePathRead = "Parameters/Devices/exported.xml";
-    private static string _saveFilePathWrite = "Assets/Resources/" + _saveFilePathRead;
+    private const string _saveFilePathRead = "Parameters/Devices/exported.xml";
+    private const string _saveFilePathWrite = "Assets/Resources/" + _saveFilePathRead;
 
     private string _genericDeviceNamePrefix = "device";
 
@@ -66,6 +95,11 @@ public class Inventory : DeviceContainer
     "Integrin",
     "Selectin"
   };
+
+    public static bool isOpenable()
+    {
+        return 0 != _instance._devices.Count;
+    }
 
     private static float getTestBeta() { return Random.Range(0.0f, 10.0f); }
     private static string getTestFormula()
@@ -89,7 +123,7 @@ public class Inventory : DeviceContainer
 
     private Device getTestDevice(string name)
     {
-        Logger.Log("Inventory::getTestDevice()", Logger.Level.TRACE);
+        // Debug.Log("Inventory::getTestDevice()");
         Device testDevice = Device.buildDevice(
         name,
         getTestBeta(),
@@ -98,57 +132,50 @@ public class Inventory : DeviceContainer
         getTestProtein(),
         getTestTerminator()
         );
-        Logger.Log("Inventory::getTestDevice() testDevice=" + testDevice, Logger.Level.TRACE);
+        // Debug.Log("Inventory::getTestDevice() testDevice=" + testDevice);
         return testDevice;
     }
 
     private List<Device> getTestDevices()
     {
-        Logger.Log("Inventory::getTestDevices()", Logger.Level.TRACE);
+        // Debug.Log("Inventory::getTestDevices()");
         List<Device> result = new List<Device>();
         result.Add(getTestDevice("MyDevice"));
         result.Add(getTestDevice("MonDispositif"));
         result.Add(getTestDevice("MeinGeraet"));
-        Logger.Log("Inventory::getTestDevices() result=" + Logger.ToString<Device>(result), Logger.Level.TRACE);
+        // Debug.Log("Inventory::getTestDevices() result=" + Logger.ToString<Device>(result));
         return result;
-    }
-
-    public Inventory()
-    {
-        Logger.Log("Inventory() done", Logger.Level.TRACE);
     }
 
     private void addDevice(Device device)
     {
-        Logger.Log("Inventory::addDevice(" + device + "), count before=" + _devices.Count, Logger.Level.TRACE);
+        // Debug.Log("Inventory::addDevice(" + device + "), count before=" + _devices.Count);
         Device copy = Device.buildDevice(device);
         if (device == null)
         {
-            Logger.Log("Inventory::addDevice device==null", Logger.Level.WARN);
+            Debug.LogWarning("Inventory::addDevice device==null");
             return;
         }
 
         string displayerString = _displayer != null ? "name=" + _displayer.name : "null";
-        Logger.Log("Inventory::addDevice(" + device + ")"
-          + ", copy=" + copy
-          + ", count before=" + _devices.Count
-          + ", _devices=" + _devices
-          + ", _displayer=" + displayerString
-          , Logger.Level.TRACE
-          );
+        // Debug.Log("Inventory::addDevice(" + device + ")"
+        //   + ", copy=" + copy
+        //   + ", count before=" + _devices.Count
+        //   + ", _devices=" + _devices
+        //   + ", _displayer=" + displayerString
+        //   );
         _devices.Add(copy);
-        Logger.Log("Inventory::addDevice _devices.Add(copy); done", Logger.Level.TRACE);
         _displayer.addInventoriedDevice(copy);
-        Logger.Log("Inventory::addDevice(" + device + "), count after=" + _devices.Count, Logger.Level.TRACE);
+        // Debug.Log("Inventory::addDevice _devices.Add(copy); done");
     }
 
     public AddingResult canAddDevice(Device device)
     {
-        Logger.Log("Inventory::canAddDevice(" + device + ") with _devices=" + Logger.ToString<Device>(_devices), Logger.Level.TRACE);
+        // Debug.Log("Inventory::canAddDevice(" + device + ") with _devices=" + Logger.ToString<Device>(_devices));
 
         if (device == null)
         {
-            Logger.Log("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT", Logger.Level.WARN);
+            Debug.LogWarning("Inventory::canAddDevice: device is null: AddingResult.FAILURE_DEFAULT");
             return AddingResult.FAILURE_DEFAULT;
         }
         else
@@ -159,23 +186,23 @@ public class Inventory : DeviceContainer
             {
                 if (_devices.Exists(d => d.hasSameBricks(device)))
                 {
-                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE", Logger.Level.TRACE);
+                    // Debug.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_DEVICE");
                     return AddingResult.FAILURE_SAME_DEVICE;
                 }
                 else
                 {
-                    Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME", Logger.Level.TRACE);
+                    // Debug.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_NAME");
                     return AddingResult.FAILURE_SAME_NAME;
                 }
             }
             else if (_devices.Exists(d => d.hasSameBricks(device)))
             {
-                Logger.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS", Logger.Level.TRACE);
+                // Debug.Log("Inventory::canAddDevice: AddingResult.FAILURE_SAME_BRICKS");
                 return AddingResult.FAILURE_SAME_BRICKS;
             }
             else
             {
-                Logger.Log("Inventory::canAddDevice: AddingResult.SUCCESS", Logger.Level.TRACE);
+                // Debug.Log("Inventory::canAddDevice: AddingResult.SUCCESS");
                 return AddingResult.SUCCESS;
             }
         }
@@ -183,11 +210,11 @@ public class Inventory : DeviceContainer
 
     public override AddingResult askAddDevice(Device device, bool reportToRedMetrics = false)
     {
-        Logger.Log("Inventory::askAddDevice", Logger.Level.TRACE);
+        // Debug.Log("Inventory::askAddDevice");
         AddingResult addingResult = canAddDevice(device);
         if (addingResult == AddingResult.SUCCESS)
         {
-            Logger.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device=" + device, Logger.Level.INFO);
+            // Debug.Log("Inventory::askAddDevice: AddingResult.SUCCESS, will add device=" + device);
             addDevice(device);
 
             if (reportToRedMetrics)
@@ -202,7 +229,7 @@ public class Inventory : DeviceContainer
         }
         else
         {
-            Logger.Log("Inventory::askAddDevice: " + addingResult + ", didn't add device=" + device, Logger.Level.INFO);
+            // Debug.Log("Inventory::askAddDevice: " + addingResult + ", didn't add device=" + device);
         }
         return addingResult;
     }
@@ -216,7 +243,7 @@ public class Inventory : DeviceContainer
 
     public override void removeDevices(List<Device> toRemove)
     {
-        Logger.Log("Inventory::removeDevices", Logger.Level.INFO);
+        // Debug.Log("Inventory::removeDevices");
 
         foreach (Device device in toRemove)
         {
@@ -228,13 +255,13 @@ public class Inventory : DeviceContainer
     public override void editDevice(Device device)
     {
         //TODO
-        Debug.Log("Inventory::editeDevice NOT IMPLEMENTED");
+        Debug.LogError("Inventory::editeDevice NOT IMPLEMENTED");
     }
 
     //
     public string getAvailableDeviceDisplayedName()
     {
-        Logger.Log("Inventory::getAvailableDeviceDisplayedName()", Logger.Level.TRACE);
+        // Debug.Log("Inventory::getAvailableDeviceDisplayedName()");
         bool taken;
         string currentName;
         int number = _devices.Count;
@@ -251,7 +278,7 @@ public class Inventory : DeviceContainer
                 return currentName;
             }
         } while (taken);
-        Logger.Log("Inventory::getAvailableDeviceDisplayedName() returns " + currentName, Logger.Level.TRACE);
+        // Debug.Log("Inventory::getAvailableDeviceDisplayedName() returns " + currentName);
         return currentName;
     }
 
@@ -284,7 +311,7 @@ public class Inventory : DeviceContainer
         foreach (string file in filesToLoad)
         {
             string fullPathFile = deviceFilesPathPrefix + file;
-            Logger.Log("Inventory::loadDevices loads device file " + fullPathFile, Logger.Level.TRACE);
+            // Debug.Log("Inventory::loadDevices loads device file " + fullPathFile);
             devices.AddRange(dLoader.loadDevicesFromFile(fullPathFile));
         }
         UpdateData(devices, new List<Device>(), new List<Device>());
@@ -294,19 +321,19 @@ public class Inventory : DeviceContainer
     {
         if (0 == _devices.Count)
         {
-            Logger.Log("Inventory::switchDeviceKnowledge calls loadDevices", Logger.Level.DEBUG);
+            // Debug.Log("Inventory::switchDeviceKnowledge calls loadDevices");
             loadDevices();
         }
         else
         {
-            Logger.Log("Inventory::switchDeviceKnowledge calls forgetDevices", Logger.Level.DEBUG);
+            // Debug.Log("Inventory::switchDeviceKnowledge calls forgetDevices");
             forgetDevices();
         }
     }
 
     private void forgetDevices()
     {
-        Logger.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), " + Logger.ToString<Device>(_devices) + "), List())", Logger.Level.INFO);
+        // Debug.Log("Inventory::forgetDevices calls inventory.UpdateData(List(), " + Logger.ToString<Device>(_devices) + "), List())");
         foreach (Device device in _devices)
         {
             //ask Equipment instead
@@ -317,12 +344,5 @@ public class Inventory : DeviceContainer
             _displayer.removeInventoriedDevice(device);
         }
         UpdateData(new List<Device>(), _devices, new List<Device>());
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        Logger.Log("Inventory::Start()", Logger.Level.DEBUG);
-        loadDevices();
     }
 }
