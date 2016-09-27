@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class TriggeredDoor : TriggeredBehaviour {
 
-	public Transform moveTo;
+
+    public Transform moveTo;
 	public float speed = 10f;
 	public float closeDelay = 0f;
     private bool _isTriggered = false;
@@ -31,27 +32,15 @@ public class TriggeredDoor : TriggeredBehaviour {
 	}
 	
 	public override void triggerExit(){
-        if (transform.position != moveTo.position)
-        {
             iTween.MoveTo(gameObject, iTween.Hash(
             "position", origin,
             "speed", speed,
             "easetype", iTween.EaseType.easeInOutQuad,
-            "delay", closeDelay
-        ));
-            _isTriggered = false;
-        }
-        else
-        {
-            iTween.MoveTo(gameObject, iTween.Hash(
-            "position", origin,
-            "speed", speed,
-            "easetype", iTween.EaseType.easeInOutQuad,
-            "delay", 0
-        ));
-        }
-		
-	}
+            "delay", closeDelay));
+        _isTriggered = false;
+
+
+    }
 	
 	public override void triggerStay(){
         iTween.MoveTo(gameObject, iTween.Hash(
