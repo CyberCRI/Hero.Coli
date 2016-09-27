@@ -21,7 +21,7 @@ public class TutorialMineCutSceneTrigger : CutScene {
 
     private void StartDummy(GameObject dummy)
     {
-        if (iteration < 4)
+        if (iteration < 3)
         {
             Destroy(dummy.GetComponent<PlatformMvt>());
             dummy.GetComponent<iTweenEvent>().enabled = true;

@@ -57,7 +57,7 @@ public class NpcLighting : MonoBehaviour {
             ChangeLightProperty(_phenoLight, _color, 250, 8);
             EnableLight(_spotLight, true);
             EnableLight(_phenoLight, true);
-            _triggeredDoor.triggerStay();
+            _triggeredDoor.triggerStart();
         }
     }
 
