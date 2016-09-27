@@ -1,4 +1,4 @@
-﻿//#define QUICKTEST
+﻿////#define QUICKTEST
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -89,11 +89,11 @@ public abstract class CutScene : CutSceneElements {
     {
         yield return new WaitForSeconds(blackBarWait1);
         SetCutSceneCamera(start);
-        _cellControl.freezePlayer(true);
         yield return new WaitForSeconds(blackBarWait2);
         if (start == true)
         {
             startCutScene();
+            _cellControl.freezePlayer(true);
         }
         else
         {
