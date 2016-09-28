@@ -16,12 +16,12 @@ public abstract class LinkManager : MonoBehaviour
 
     public virtual void initialize()
     {
-        Debug.Log(this.GetType() + " initialize");
+        // Debug.Log(this.GetType() + " initialize");
     }
 
     public virtual void finishInitialize()
     {
-        Debug.Log(this.GetType() + " finishInitialize");
+        // Debug.Log(this.GetType() + " finishInitialize");
     }
 
     public virtual void activateAllChildren(bool active)

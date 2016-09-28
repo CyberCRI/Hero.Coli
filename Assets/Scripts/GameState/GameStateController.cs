@@ -46,7 +46,7 @@ public class GameStateController : MonoBehaviour
     }
     void Awake()
     {
-        Debug.Log(this.GetType() + " Awake");
+        // Debug.Log(this.GetType() + " Awake");
         if((_instance != null) && (_instance != this))
         {            
             Debug.LogError(this.GetType() + " has two running instances");
@@ -60,7 +60,7 @@ public class GameStateController : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
        _instance = (_instance == this) ? null : _instance;
     }
 
@@ -79,7 +79,7 @@ public class GameStateController : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
         loadLevels();
         updateAdminStatus();
     }
@@ -174,7 +174,7 @@ public class GameStateController : MonoBehaviour
             }
             if(allLoaded)
             {
-                Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
+                // Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
                 finishLoadLevels();
             }
         }        
@@ -194,19 +194,19 @@ public class GameStateController : MonoBehaviour
 
     private void finishLoadLevels()
     {
-        Debug.Log("GameStateController::finishLoadLevels");
+        // Debug.Log("GameStateController::finishLoadLevels");
 
         // get the linkers
         InterfaceLinkManager ilm = InterfaceLinkManager.get();
         PlayerLinkManager blm = PlayerLinkManager.get();
         WorldLinkManager wlm = WorldLinkManager.get();
 
-        Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
+        // Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
         ilm.initialize();
         blm.initialize();
         wlm.initialize();
 
-        Debug.Log("finishInitialize");
+        // Debug.Log("finishInitialize");
         ilm.finishInitialize();
         blm.finishInitialize();
         wlm.finishInitialize();
@@ -215,7 +215,7 @@ public class GameStateController : MonoBehaviour
 
         MainMenuManager.get().open();
 
-        Debug.Log("finishLoadLevels done");
+        // Debug.Log("finishLoadLevels done");
     }
 
     public static bool isPause()

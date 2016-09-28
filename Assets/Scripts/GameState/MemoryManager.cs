@@ -23,7 +23,7 @@ public class MemoryManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log(this.GetType() + " Awake");
+        // Debug.Log(this.GetType() + " Awake");
         if((_instance != null) && (_instance != this))
         {            
              Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
@@ -38,7 +38,7 @@ public class MemoryManager : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
        _instance = (_instance == this) ? null : _instance;
     }
 
@@ -50,7 +50,8 @@ public class MemoryManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
 
-            Debug.Log(this.GetType() + " initializeIfNecessary");
+            // Debug.Log(this.GetType() + " initializeIfNecessary");
+            
             if (!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
             {
                 loadLevelData(inputFiles, _loadedLevelInfo);
@@ -61,21 +62,21 @@ public class MemoryManager : MonoBehaviour
 
     void Start ()
     {
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
         
         //TODO manage RedMetricsManager's globalPlayerGUID
         string playerGUID = configuration.playerGUID;
                 
-        Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
-            + " & configuration.isTestGUID()=" + configuration.isTestGUID()
-            + " & Application.isEditor=" + Application.isEditor
-        );
+        // Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
+        //     + " & configuration.isTestGUID()=" + configuration.isTestGUID()
+        //     + " & Application.isEditor=" + Application.isEditor
+        // );
 
         RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
         RedMetricsManager.get().sendStartEvent();
                 
-        Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
-                                    , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
+        // Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
+        //                             , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -19,7 +19,7 @@ public class Inventory : DeviceContainer
 
     void Awake()
     {
-        Debug.Log(this.GetType() + " Awake");
+        // Debug.Log(this.GetType() + " Awake");
         if((_instance != null) && (_instance != this))
         {            
             Debug.LogError(this.GetType() + " has two running instances");
@@ -33,7 +33,7 @@ public class Inventory : DeviceContainer
 
     void OnDestroy()
     {
-        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
        _instance = (_instance == this) ? null : _instance;
     }
 
