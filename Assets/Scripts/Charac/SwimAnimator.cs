@@ -1,26 +1,28 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-public class SwimAnimator : MonoBehaviour {
+public class SwimAnimator : MonoBehaviour
+{
+    public List<Animation> anims = new List<Animation>();
 
-  public List<Animation> anims = new List<Animation>();
-
-  public void setSpeed(float speed)
-  {
-    safeInitAnims();
-    foreach(Animation anim in anims) {
-      foreach (AnimationState state in anim) {
-        state.speed = speed;
-      }
-    }
-  }
-
-	public void safeInitAnims() {
-    if(0 == anims.Count)
+    public void setSpeed(float speed)
     {
-      Logger.Log("SwimAnimator::safeInitAnims initializing anims", Logger.Level.INFO);
-      anims = new List<Animation>(GetComponentsInChildren<Animation>());
+        safeInitAnims();
+        foreach (Animation anim in anims)
+        {
+            foreach (AnimationState state in anim)
+            {
+                state.speed = speed;
+            }
+        }
     }
-	}
+
+    public void safeInitAnims()
+    {
+        if (0 == anims.Count)
+        {
+            // Debug.Log("SwimAnimator::safeInitAnims initializing anims");
+            anims = new List<Animation>(GetComponentsInChildren<Animation>());
+        }
+    }
 }

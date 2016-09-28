@@ -82,7 +82,7 @@ public class Hero : MonoBehaviour
     [SerializeField]
     private AmbientLighting _ambientLighting;
     [SerializeField]
-    private GameObject[] _childrenToDestroy;
+    private GameObject _savedCellPrefab;
 
     public LifeLogoAnimation lifeAnimation;
     public EnergyLogoAnimation energyAnimation;
@@ -170,14 +170,6 @@ public class Hero : MonoBehaviour
         get
         {
             return _instance._isBeingInjured;
-        }
-    }
-
-    public void destroyChildren()
-    {
-        foreach (GameObject child in _childrenToDestroy)
-        {
-            Destroy(child);
         }
     }
 
@@ -419,10 +411,11 @@ public class Hero : MonoBehaviour
             ModalManager.setModal("FirstCheckpoint");
         }
 
-        _lastNewCell = (GameObject)Instantiate(this.gameObject);
+        _lastNewCell = (GameObject)Instantiate(_savedCellPrefab, this.gameObject.transform.position, this.gameObject.transform.localRotation, this.transform.parent);
 
-        SavedCell savedCell = (SavedCell)_lastNewCell.AddComponent<SavedCell>();
-        savedCell.initialize(this, _lastCheckpoint.transform.position);
+        SavedCell savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
+        savedCell.initialize(this);
+        _lastNewCell.SetActive(true);
 
         StartCoroutine(popEffectCoroutine(savedCell));
     }
@@ -538,6 +531,7 @@ public class Hero : MonoBehaviour
         iTween.ScaleTo(gameObject, _optionsIn);
         safeFadeTo(_optionsInAlpha);
 
+        // reset all pushable rocks
         cc.enabled = true;
         foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox)))
         {

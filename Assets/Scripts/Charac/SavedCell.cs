@@ -13,40 +13,14 @@ public class SavedCell : MonoBehaviour {
       "easetype", iTween.EaseType.easeInQuint
       );
 
-    public void initialize (Hero playableCell, Vector3 checkpointPosition)
+    public void initialize (Hero playableCell)
     {
-        //TODO find systematic way of doing this
-
-        Hero hero = GetComponent<Hero>();
-        //Destroy(this.transform.GetChild(9).gameObject);
-        //Destroy(this.transform.GetChild(8).gameObject);
-        hero.destroyChildren();
-        Destroy(hero);
-        Destroy(GetComponent<CellControl>());
-        Destroy(GetComponent<PhysicalMedium>());
-        Destroy(GetComponent<PhenoSpeed>());
-        Destroy(GetComponent<PhenoLight>());
-        Destroy(GetComponent<PhenoToxic>());
-        Destroy(GetComponent<PhenoFickContact>());
-        Destroy(GetComponent<BlackLight>());        
-        Destroy(GetComponent<Rigidbody>());
-        Destroy(GetComponent<AmbientLighting>());
-        Destroy(GetComponent<MovementHint>());
-        Destroy(GetComponent<PhenoAmpicillinProducer>());
-        
-        SphereCollider[] colliders = GetComponentsInChildren<SphereCollider>();
-        for(int i = 0; i<colliders.Length; i++) {
-            if (colliders[i].gameObject.name == "PhenoLight") {
-                colliders[i].enabled = false;
-            }
-        }
-
         resetCollisionState();
         
         SwimAnimator newCellSwimAnimator = (SwimAnimator)GetComponent<SwimAnimator>();
         newCellSwimAnimator.setSpeed(_waitAnimationSpeed);
         
-        transform.position = playableCell.transform.position;
+        // transform.position = playableCell.transform.position;
         transform.localScale = playableCell.transform.localScale;
 
         //TODO set slow animation

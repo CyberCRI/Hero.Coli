@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SwitchZoneOnOff : MonoBehaviour {
 
@@ -10,7 +9,7 @@ public class SwitchZoneOnOff : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    
+	    triggerSwitchZone();
 	}
 	
 	// Update is called once per frame
@@ -22,24 +21,24 @@ public class SwitchZoneOnOff : MonoBehaviour {
     {
         if (col.tag == Hero.playerTag)
         {
-            for (var i = 0; i < _activeZone.Length; i++)
+            for (int i = 0; i < _activeZone.Length; i++)
             {
                 _activeZone[i].SetActive(true);                
             }
-            for (var i = 0; i < _inactiveZone.Length; i++)
+            for (int i = 0; i < _inactiveZone.Length; i++)
             {
                 _inactiveZone[i].SetActive(false);
             }
         }
     }
 
-    public void TriggerSwitchZone()
+    private void triggerSwitchZone()
     {
-        for (var i = 0; i < _activeZone.Length; i++)
+        for (int i = 0; i < _activeZone.Length; i++)
         {
             _activeZone[i].SetActive(true);
         }
-        for (var i = 0; i < _inactiveZone.Length; i++)
+        for (int i = 0; i < _inactiveZone.Length; i++)
         {
             _inactiveZone[i].SetActive(false);
         }

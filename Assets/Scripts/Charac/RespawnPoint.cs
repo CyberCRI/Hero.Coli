@@ -23,7 +23,7 @@ public class RespawnPoint : MonoBehaviour {
             if (_colNumber == 0)
             {
                 ambLight.saveCurrentLighting();
-                _colNumber += 1;
+                _colNumber++;
             }
             else
             {
