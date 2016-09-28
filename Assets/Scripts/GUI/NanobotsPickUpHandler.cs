@@ -19,4 +19,10 @@ public class NanobotsPickUpHandler : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
+
+    public static void clear()
+    {
+        _nanoCounter = null;
+        _pickedUpNumber = 0;
+    }
 }

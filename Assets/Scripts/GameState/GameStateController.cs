@@ -713,6 +713,8 @@ public class GameStateController : MonoBehaviour
         iTweenPath.paths.Clear();
         CutSceneElements.clear();
         DisplayedDevice.clear();
+        NanobotsPickUpHandler.clear();
+        PickablePlasmid.clear();
 
         SceneManager.LoadScene(_masterScene);
     }

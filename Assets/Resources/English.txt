@@ -250,6 +250,8 @@ MODAL.T1_NANOBOT.TITLE=STRANDED NANOBOT!
 MODAL.T1_NANOBOT.EXPLANATION=These little guys need you to get them back home. Try to find them all, and they'll help you in your quest!
 MODAL.T1_FLUO2.TITLE=RED FLUORESCENCE!
 MODAL.T1_FLUO2.EXPLANATION=This brick will allow you to glow red under green light. Use it to open some passage in the maze!
+MODAL.T1_PLASMID.TITLE=A PLASMID!
+MODAL.T1_PLASMID.EXPLANATION=You can insert new genetic devices in your bacterium with a plasmid. Go and equip an additional device!
 MODAL.T1_END.TITLE=THIS IS THE END...
 MODAL.T1_END.EXPLANATION=To be continued!
 

@@ -37,6 +37,10 @@
     <texture>t_rfp_needed</texture>
     <next>QuitModalWindow</next>
   </info>
+  <info code="T1_PLASMID">
+    <texture>i_nanobot</texture>
+    <next>QuitModalWindow</next>
+  </info>
   <info code="T1_END">
     <texture>i_end</texture>
     <next>QuitModalWindow</next>
