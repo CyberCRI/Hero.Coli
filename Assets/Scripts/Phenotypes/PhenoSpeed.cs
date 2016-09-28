@@ -2,44 +2,38 @@ using UnityEngine;
 
 public class PhenoSpeed : Phenotype
 {
+    [SerializeField]
+    private FlagellaSetter _flagellaSetter;
+
     public bool devMode = false;
 
-	//public float minSpeed;
-	//public float maxSpeed;
-  public float baseSpeed;
-  public float lowSpeed;
-  public float medSpeed;
-  public float zeroCC;
-  public float lowCC;
-  public float medCC;
+    //public float minSpeed;
+    //public float maxSpeed;
+    public float baseSpeed;
+    public float lowSpeed;
+    public float medSpeed;
+    public float zeroCC;
+    public float lowCC;
+    public float medCC;
 
-  /*
-  public float add2ndFlagellumThresholdPerc;
-  public float rem2ndFlagellumThresholdPerc;
-  public float add3rdFlagellumThresholdPerc;
-  public float rem3rdFlagellumThresholdPerc;
-  */
+    /*
+    public float add2ndFlagellumThresholdPerc;
+    public float rem2ndFlagellumThresholdPerc;
+    public float add3rdFlagellumThresholdPerc;
+    public float rem3rdFlagellumThresholdPerc;
+    */
 
-  public float add1stFlagellumThreshold;
-  public float rem1stFlagellumThreshold;
-  public float add2ndFlagellumThreshold;
-  public float rem2ndFlagellumThreshold;
-  public float add3rdFlagellumThreshold;
-  public float rem3rdFlagellumThreshold;
-  public float add4thFlagellumThreshold;
-  public float rem4thFlagellumThreshold;
-
-
-  //public float threshold = 50f;
-  //public float steepness = 1f;
-	public GameObject centralFlagellum;
-  public GameObject leftFlagellum;
-  public GameObject rightFlagellum;
-  public GameObject sideFlagellum;
-	
-	private int flagellaCount = 0;
-	private Molecule _mol = null;
-	private const string _speedName = "MOV";
+    public float add1stFlagellumThreshold;
+    public float rem1stFlagellumThreshold;
+    public float add2ndFlagellumThreshold;
+    public float rem2ndFlagellumThreshold;
+    public float add3rdFlagellumThreshold;
+    public float rem3rdFlagellumThreshold;
+    public float add4thFlagellumThreshold;
+    public float rem4thFlagellumThreshold;
+    
+    private Molecule _mol = null;
+    private const string _speedName = "MOV";
 
     private float _steepness0;
     private float _steepness1;
@@ -58,7 +52,7 @@ public class PhenoSpeed : Phenotype
 	public override void StartPhenotype ()
 	{
         gameObject.GetComponent<SwimAnimator>().safeInitAnims();
-    set1Flagella();
+    _flagellaSetter.setFlagellaCount(1);
 		initMoleculePhenotype();
 	}
 
@@ -88,85 +82,46 @@ public class PhenoSpeed : Phenotype
     baseSpeed = speed;
   }
 
-  private void updateFlagellaCount(float speed)
-  {
-    switch(flagellaCount)
+    private void updateFlagellaCount(float speed)
     {
-        case 0:
-        if(speed > add1stFlagellumThreshold)
-          set1Flagella();
-        break;
-      case 1:
-        if(speed > add2ndFlagellumThreshold)
-          set2Flagella();
-        else if(speed < rem1stFlagellumThreshold)
-          set0Flagella();
-        break;
-      case 2:
-        if(speed > add3rdFlagellumThreshold)
-          set3Flagella();
-        else if(speed < rem2ndFlagellumThreshold)
-          set1Flagella();
-        break;
-      case 3:
-        if(speed > add4thFlagellumThreshold)
-          set4Flagella();
-        else if(speed < rem3rdFlagellumThreshold)
-          set2Flagella();
-        break;
-      case 4:
-        if(speed < rem4thFlagellumThreshold)
-          set3Flagella();
-        break;
-      default:
-        Logger.Log("PhenoSpeed::updateFlagellaCount bad flagellaCount="+flagellaCount, Logger.Level.WARN);
-        break;
+        switch (_flagellaSetter.flagellaCount)
+        {
+            case 0:
+                if (speed > add1stFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(1);
+                break;
+            case 1:
+                if (speed > add2ndFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(2);
+                else if (speed < rem1stFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(0);
+                break;
+            case 2:
+                if (speed > add3rdFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(3);
+                else if (speed < rem2ndFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(1);
+                break;
+            case 3:
+                if (speed > add4thFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(4);
+                else if (speed < rem3rdFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(2);
+                break;
+            case 4:
+                if (speed < rem4thFlagellumThreshold)
+                    _flagellaSetter.setFlagellaCount(3);
+                break;
+            default:
+                Debug.LogWarning("PhenoSpeed::updateFlagellaCount bad flagellaCount=" + _flagellaSetter.flagellaCount);
+                break;
+        }
+          
     }
-  }
 
-  private void set0Flagella()
+  public int getFlagellaCount()
   {
-    flagellaCount = 0;
-    leftFlagellum.SetActive(false);
-    centralFlagellum.SetActive(false);
-    rightFlagellum.SetActive(false);
-    sideFlagellum.SetActive(false);
-  }
-
-  private void set1Flagella()
-  {
-    flagellaCount = 1;
-    leftFlagellum.SetActive(false);
-    centralFlagellum.SetActive(true);
-    rightFlagellum.SetActive(false);
-    sideFlagellum.SetActive(false);
-  }
-
-  private void set2Flagella()
-  {
-    flagellaCount = 2;
-    leftFlagellum.SetActive(true);
-    centralFlagellum.SetActive(false);
-    rightFlagellum.SetActive(true);
-    sideFlagellum.SetActive(false);
-  }
-
-  private void set3Flagella()
-  {
-    flagellaCount = 3;
-    leftFlagellum.SetActive(true);
-    centralFlagellum.SetActive(true);
-    rightFlagellum.SetActive(true);
-    sideFlagellum.SetActive(false);
-  }
-
-  private void set4Flagella()
-  {
-    flagellaCount = 4;
-    leftFlagellum.SetActive(true);
-    centralFlagellum.SetActive(true);
-    rightFlagellum.SetActive(true);
-    sideFlagellum.SetActive(true);
+    return _flagellaSetter.flagellaCount;
   }
 
 	/*!
@@ -211,7 +166,7 @@ public class PhenoSpeed : Phenotype
     {
         base.initialize();
         
-        set0Flagella();
+        _flagellaSetter.setFlagellaCount(0);
         if(null == cellControl)
         {
             cellControl = gameObject.GetComponent<CellControl>(); 

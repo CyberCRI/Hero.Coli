@@ -3,6 +3,9 @@ using System.Collections;
 
 public class SavedCell : MonoBehaviour {
 
+  [SerializeField]
+  private FlagellaSetter _flagellaSetter;
+
   private Rigidbody _rigidbody;
   private CapsuleCollider _cellCollider;
   private float _waitAnimationSpeed = 0.1f;
@@ -22,6 +25,8 @@ public class SavedCell : MonoBehaviour {
         
         // transform.position = playableCell.transform.position;
         transform.localScale = playableCell.transform.localScale;
+
+        _flagellaSetter.setFlagellaCount(playableCell.gameObject.GetComponent<PhenoSpeed>().getFlagellaCount());
 
         //TODO set slow animation
         //TODO change appearance to make it different from playable bacterium: maybe remove eyes?
