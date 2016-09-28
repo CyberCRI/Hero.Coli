@@ -42,15 +42,27 @@ public class CutSceneZone8 : CutScene {
             {
                 start();
                 _collisionIteration++;
+                StartCoroutine(WaitForOpeningDoor());
             }
             else
             {
-                Destroy(_dummy.GetComponent<RotationUpdate>());
+                /*Destroy(_dummy.GetComponent<RotationUpdate>());
                 Destroy(_dummy.GetComponent<PlatformMvt>());
                 _dummy.GetComponent<iTweenEvent>().enabled = true;
-                StartCoroutine(WaitForEnd());
+                StartCoroutine(WaitForEnd());*/
             }
         }
+    }
+
+
+    IEnumerator WaitForOpeningDoor()
+    {
+        yield return new WaitForSeconds(3f);
+        Destroy(_dummy.GetComponent<RotationUpdate>());
+        Destroy(_dummy.GetComponent<PlatformMvt>());
+        _dummy.GetComponent<iTweenEvent>().enabled = true;
+        StartCoroutine(WaitForEnd());
+        yield return null;
     }
 
     IEnumerator WaitForEnd()
