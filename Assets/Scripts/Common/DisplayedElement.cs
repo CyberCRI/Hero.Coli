@@ -5,7 +5,6 @@ public class DisplayedElement : ExternalOnPressButton
 
     protected static int _idCounter = 0;
 
-    protected string _currentSpriteName;
     public UIAtlas _atlas;
     public int _id;
     public UISprite _sprite;
@@ -24,50 +23,47 @@ public class DisplayedElement : ExternalOnPressButton
     {
         string nullSpriteName = (spriteName != null) ? "" : "(null)";
 
-        Logger.Log("DisplayedElement::Create("
-        + "parentTransform=" + parentTransform
-        + ", localPosition=" + localPosition
-        + ", spriteName=" + spriteName + nullSpriteName
-        + ", prefab=" + prefab
-        + ")"
-        , Logger.Level.INFO
-        );
+        // Debug.Log("DisplayedElement::Create("
+        // + "parentTransform=" + parentTransform
+        // + ", localPosition=" + localPosition
+        // + ", spriteName=" + spriteName + nullSpriteName
+        // + ", prefab=" + prefab
+        // + ")"
+        // );
 
-        GameObject newElement = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity) as GameObject;
-        Logger.Log("DisplayedElement::Create instantiated", Logger.Level.TRACE);
+        GameObject newElement = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+        // Debug.Log("DisplayedElement::Create instantiated");
 
         newElement.transform.parent = parentTransform;
         newElement.transform.localPosition = localPosition;
-        newElement.transform.localScale = new Vector3(1f, 1f, 0);
-        Logger.Log("DisplayedElement::Create GetComponent<DisplayedElement>()", Logger.Level.TRACE);
+        newElement.transform.localScale = Vector3.one;
+        // Debug.Log("DisplayedElement::Create GetComponent<DisplayedElement>()");
         DisplayedElement script = newElement.GetComponent<DisplayedElement>();
 
         if (null == script)
         {
             //TODO remove hack
-            Logger.Log("DisplayedElement::Create (null == script) 1 with name=" + newElement.name, Logger.Level.DEBUG);
+            Debug.LogWarning("DisplayedElement::Create (null == script) with name=" + newElement.name);
             InventoryDevice inventoryDevice = newElement.GetComponent<InventoryDevice>();
             if (inventoryDevice != null)
             {
-                Logger.Log("DisplayedElement::Create found inventory device", Logger.Level.DEBUG);
+                // Debug.Log("DisplayedElement::Create found inventory device");
                 script = inventoryDevice.inventoriedDisplayedDevice;
                 if (script != null)
                 {
-                    Logger.Log("DisplayedElement::Create found inventory device script", Logger.Level.DEBUG);
+                    // Debug.Log("DisplayedElement::Create found inventory device script");
                 }
                 else
                 {
-                    Logger.Log("DisplayedElement::Create failed to find inventory device script", Logger.Level.WARN);
+                    Debug.LogWarning("DisplayedElement::Create failed to find inventory device script");
                 }
             }
         }
 
         script._id = ++_idCounter;
-        Logger.Log("DisplayedElement::Create script._id = " + script._id, Logger.Level.TRACE);
-        script._currentSpriteName = spriteName;
-        script.setSprite(script._currentSpriteName);
-        Logger.Log("DisplayedElement::Create script._currentSpriteName = " + script._currentSpriteName, Logger.Level.TRACE);
-        Logger.Log("DisplayedDevice::Create ends", Logger.Level.TRACE);
+        // Debug.Log("DisplayedElement::Create script._id = " + script._id);
+        script.setSprite(spriteName);
+        // Debug.Log("DisplayedDevice::Create ends");
 
         return script;
     }
@@ -84,12 +80,12 @@ public class DisplayedElement : ExternalOnPressButton
 
     protected void setSprite(string spriteName)
     {
-        Logger.Log("DisplayedElement::setSprite(" + spriteName + ")", Logger.Level.TRACE);
+        // Debug.Log("DisplayedElement::setSprite(" + spriteName + ")");
         _sprite.spriteName = spriteName;
     }
 
     public override void OnPress(bool isPressed)
     {
-        Logger.Log("DisplayedElement::OnPress " + _id, Logger.Level.INFO);
+        // Debug.Log("DisplayedElement::OnPress " + _id);
     }
 }

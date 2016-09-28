@@ -77,6 +77,10 @@ public class DisplayedDevice : DisplayedElement
     private const string _craftSlotPrefix = "c_"; 
     private string[] _deviceNamePrefixes = new string[4]{_equipedPrefix,_inventoriedPrefix,_listedPrefix,_craftSlotPrefix};
 
+    public Device _device;
+    protected static DevicesDisplayer _devicesDisplayer;
+    public DevicesDisplayer.DeviceType _deviceType;
+
     private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
   {
         {"ARAC", _defaultTextureWithText},
@@ -88,6 +92,11 @@ public class DisplayedDevice : DisplayedElement
         {"REPR3", _defaultTextureWithText},
         {"REPR4", _defaultTextureWithText}
   };
+
+  public static void clear()
+  {
+      _devicesDisplayer = null;
+  }
   
     public void playFeedback()
     {
@@ -182,16 +191,17 @@ public class DisplayedDevice : DisplayedElement
         {
             levelIndex = getLevelIndex();
         }
-        _currentSpriteName = getTextureName();
 
-        string withLevelSuffix = _currentSpriteName + _separator + getLevelSuffix(levelIndex);
+        string withLevelSuffix = getTextureName() + _separator + getLevelSuffix(levelIndex);
 
         if (_atlas.GetListOfSprites().Contains(withLevelSuffix))
         {
-            _currentSpriteName = withLevelSuffix;
+            setSprite(withLevelSuffix);
         }
-
-        setSprite(_currentSpriteName);
+        else
+        {
+            setSprite(getTextureName());
+        }
     }
 
     private int getLevelIndex()
@@ -289,10 +299,6 @@ public class DisplayedDevice : DisplayedElement
         }
         return spriteName;
     }
-
-    public Device _device;
-    protected static DevicesDisplayer _devicesDisplayer;
-    public DevicesDisplayer.DeviceType _deviceType;
 
     public static DisplayedDevice Create(
             Transform parentTransform

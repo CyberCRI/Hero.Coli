@@ -73,8 +73,6 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private GameObject craftZoneDisplayedBioBrickPrefab;
     [SerializeField]
-    private GameObject lastHoveredInfo;
-    [SerializeField]
     private GameObject genericInfoWindow;
 
 
@@ -189,7 +187,6 @@ public class InterfaceLinkManager : LinkManager
             craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
 
         craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
-        craftZoneManager.lastHoveredInfoManager = lastHoveredInfo.GetComponent<LastHoveredInfoManager>();
 
 
         string assemblyZoneName = isCraftMode1 ? "CraftSlotsPanel" : "AssemblyZonePanel";

@@ -712,6 +712,7 @@ public class GameStateController : MonoBehaviour
         iTween.Stop();
         iTweenPath.paths.Clear();
         CutSceneElements.clear();
+        DisplayedDevice.clear();
 
         SceneManager.LoadScene(_masterScene);
     }

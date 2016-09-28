@@ -7,10 +7,9 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     [SerializeField]
     protected UILocalize _biobrickLabel;
     
-	public LastHoveredInfoManager     _lastHoveredInfoManager;
 	public static UnityEngine.Object prefab    = null;
     
-	protected new static string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
+	protected new const string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
     
     private const string _jigsawSpriteNamePrefix     = "jigsaw_";
     private const string _promoterJigsawSpriteName   = _jigsawSpriteNamePrefix + "promoter";
@@ -46,12 +45,11 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 		if (null == prefab) prefab = Resources.Load(prefabURI);
 		Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
 		
-		Logger.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
-		           + ", localPosition="+localPosition
-		           + ", spriteName="+spriteName+nullSpriteName
-		           + ", biobrick="+biobrick
-		           , Logger.Level.DEBUG
-		           );
+		// Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+		//            + ", localPosition="+localPosition
+		//            + ", spriteName="+spriteName+nullSpriteName
+		//            + ", biobrick="+biobrick
+		//            );
 		
 		DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
 			parentTransform
@@ -68,7 +66,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     protected void Initialize(BioBrick biobrick)
     {
 
-        // Logger.Log("DisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts", Logger.Level.TRACE);
+        // Debug.Log("DisplayedBioBrick::Initialize(" + biobrick + ") starts");
         GenericDisplayedBioBrick.Initialize(this, biobrick);
 
         setJigsawSprite();
@@ -80,9 +78,6 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
         this.transform.localScale = Vector3.one;
         this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0);
-
-        Logger.Log("DisplayedBioBrick::Initialize ends with biobrickScript._lastHoveredInfoManager=" + _lastHoveredInfoManager, Logger.Level.TRACE);
-
     }
 
     protected virtual void setJigsawSprite()
@@ -171,6 +166,6 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
   }
 
 	public override void OnPress(bool isPressed) {
-		Logger.Log("DisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
+		// Debug.Log("DisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed);
   }
 }

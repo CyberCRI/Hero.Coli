@@ -79,7 +79,6 @@ public class CraftZoneManager : MonoBehaviour {
 */
 
   public GameObject                         displayedBioBrick;
-  public LastHoveredInfoManager             lastHoveredInfoManager;
   public CraftFinalizer                     craftFinalizer;
   public GameObject                         assemblyZonePanel;
   

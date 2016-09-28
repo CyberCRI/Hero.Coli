@@ -67,8 +67,6 @@ public class CraftFinalizer : MonoBehaviour {
             _craftZoneManager = value;
         }
     }
-        
-  public FinalizationInfoPanelManager   finalizationInfoPanelManager;
   
   // these three objects are affected by the craft status of the currently displayed device
   public CraftFinalizationButton        craftFinalizationButton;
@@ -189,8 +187,6 @@ public class CraftFinalizer : MonoBehaviour {
     setCraftedStatus(mode);
     //Debug.LogError("new mode="+mode);
     //Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
-    //finalizationInfoPanelManager.setDisplayedDevice(device, status);
-    //Logger.Log("CraftFinalizer::setDisplayedDevice(): finalizationInfoPanelManager.setDisplayedDevice("+device+", "+status+")", Logger.Level.TRACE);
   }
 
     public void randomRename() {
