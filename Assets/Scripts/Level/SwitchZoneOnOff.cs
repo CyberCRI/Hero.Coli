@@ -1,21 +1,28 @@
 ﻿using UnityEngine;
 
-public class SwitchZoneOnOff : MonoBehaviour {
-
+public class SwitchZoneOnOff : MonoBehaviour
+{
     [SerializeField]
     private GameObject[] _activeZone;
     [SerializeField]
     private GameObject[] _inactiveZone;
+    private static SwitchZoneOnOff _instance;
 
-	// Use this for initialization
-	void Start () {
-	    triggerSwitchZone();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    void Awake()
+    {
+        _instance = this;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -23,7 +30,7 @@ public class SwitchZoneOnOff : MonoBehaviour {
         {
             for (int i = 0; i < _activeZone.Length; i++)
             {
-                _activeZone[i].SetActive(true);                
+                _activeZone[i].SetActive(true);
             }
             for (int i = 0; i < _inactiveZone.Length; i++)
             {
@@ -32,15 +39,18 @@ public class SwitchZoneOnOff : MonoBehaviour {
         }
     }
 
-    private void triggerSwitchZone()
+    public static void triggerSwitchZone()
     {
-        for (int i = 0; i < _activeZone.Length; i++)
+        if (_instance)
         {
-            _activeZone[i].SetActive(true);
-        }
-        for (int i = 0; i < _inactiveZone.Length; i++)
-        {
-            _inactiveZone[i].SetActive(false);
+            for (int i = 0; i < _instance._activeZone.Length; i++)
+            {
+                _instance._activeZone[i].SetActive(true);
+            }
+            for (int i = 0; i < _instance._inactiveZone.Length; i++)
+            {
+                _instance._inactiveZone[i].SetActive(false);
+            }
         }
     }
 }
