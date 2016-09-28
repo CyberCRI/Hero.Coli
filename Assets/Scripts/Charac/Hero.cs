@@ -74,6 +74,7 @@ public class Hero : MonoBehaviour
         _ambientLighting = this.GetComponent<AmbientLighting>();
         _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
         _maxMediumEnergy = _medium.getMaxEnergy();
+        _medium.setEnergy(_maxMediumEnergy);
         _energy = _medium.getEnergy() / _maxMediumEnergy;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -555,7 +556,7 @@ public class Hero : MonoBehaviour
         _isAlive = true;
         cc.reset();
         setLife(1f);
-
+        setEnergy(1f);
 
         Molecule ampicillin = ReactionEngine.getMoleculeFromName(PhenoToxic.ampicillinMoleculeName, _medium.getMolecules());
         if (null != ampicillin)
