@@ -37,12 +37,11 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       _craftZoneManager = CraftZoneManager.get();
     }
 
-    Logger.Log("AvailableDisplayedBioBrick::Create(parentTransform="+parentTransform
-      + ", localPosition="+localPosition
-      + ", spriteName="+spriteName+nullSpriteName
-      + ", biobrick="+biobrick
-      , Logger.Level.DEBUG
-      );
+    // Debug.Log("AvailableDisplayedBioBrick::Create(parentTransform="+parentTransform
+    //   + ", localPosition="+localPosition
+    //   + ", spriteName="+spriteName+nullSpriteName
+    //   + ", biobrick="+biobrick
+    //   );
 
     AvailableDisplayedBioBrick result = (AvailableDisplayedBioBrick)DisplayedBioBrick.Create(
       parentTransform
@@ -95,7 +94,7 @@ public void Initialize()
     {
         if (isPressed)
         {
-            Logger.Log("AvailableDisplayedBioBrick::OnPress _id=" + _id, Logger.Level.INFO);
+            // Debug.Log(this.GetType() + " OnPress of " + _biobrick.getInternalName());
             //Debug.LogError("pressed");
             if (CraftZoneManager.isDeviceEditionOn())
             {
@@ -119,5 +118,10 @@ public void Initialize()
                 //Debug.LogError("!isDeviceEditionOn");
             }
         }
+    }
+
+    public static void clear()
+    {
+        _craftZoneManager = null;
     }
 }

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// #define QUICKTEST
+using UnityEngine;
 using System.Collections.Generic;
 
 /**
@@ -311,7 +311,6 @@ public class ModalManager : MonoBehaviour {
                                 GameObject cancelButton = null, string cancelButtonClass = null
                                 )
     {
-
         //hide previous modal component
         if(null != _instance._currentModalElement) {
             // Debug.Log(string.Format("ModalManager::setModal there was previous modal element {0}!", _instance._currentModalElement));
@@ -349,6 +348,9 @@ public class ModalManager : MonoBehaviour {
   
   public static bool setModal(string code, bool lockPause = true)
   {
+#if QUICKTEST
+        return true;
+#endif
         // Debug.Log("ModalManager::setModal("+code+")");
     if(null != _instance.genericModalWindow && fillInFieldsFromCode(code))
     {

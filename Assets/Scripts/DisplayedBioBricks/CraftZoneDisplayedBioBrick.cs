@@ -20,12 +20,11 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab = Resources.Load(_prefabURICraftZone);
 
-    Logger.Log("CraftZoneDisplayedBioBrick::Create(parentTransform="+parentTransform
-      + ", localPosition="+localPosition
-      + ", spriteName="+spriteName+nullSpriteName
-      + ", biobrick="+biobrick
-      , Logger.Level.DEBUG
-      );
+    // Debug.Log("CraftZoneDisplayedBioBrick::Create(parentTransform="+parentTransform
+    //   + ", localPosition="+localPosition
+    //   + ", spriteName="+spriteName+nullSpriteName
+    //   + ", biobrick="+biobrick
+    //   );
 
     CraftZoneDisplayedBioBrick result = (CraftZoneDisplayedBioBrick)DisplayedBioBrick.Create(
       parentTransform
@@ -39,7 +38,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
  }
 
   public override void OnPress(bool isPressed) {
-    Logger.Log("CraftZoneDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed, Logger.Level.INFO);
+    // Debug.Log(this.GetType() + " OnPress of " + _biobrick.getInternalName());
     //Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
     if(CraftZoneManager.isDeviceEditionOn())
     {

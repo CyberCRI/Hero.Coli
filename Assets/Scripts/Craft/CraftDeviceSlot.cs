@@ -19,6 +19,8 @@ public class CraftDeviceSlot : MonoBehaviour
     private const string _resultActiveSprite = "craft_result_active";
     private const string _resultInactiveSprite = "craft_result_inactive";
 
+    private const float _brickZ = -0.08789063f;
+
     [SerializeField]
     private BioBricksCollapse _bricksCollapse;
 
@@ -194,13 +196,16 @@ public class CraftDeviceSlot : MonoBehaviour
 
             //Debug.Log("!isLocked && (null != brick); index="+index);
 
-            // create new CraftZoneDisplayedBioBrick 
+            // create new CraftZoneDisplayedBioBrick
+            Vector3 dummyPosition = dummyBrickGameObjects[index].transform.localPosition;
             CraftZoneDisplayedBioBrick czdb = CraftZoneDisplayedBioBrick.Create(
                 this.transform,
-                dummyBrickGameObjects[index].transform.localPosition,
+                Vector3.zero,
                 null,
                 brick
             );
+            czdb.transform.localPosition = new Vector3(dummyPosition.x, dummyPosition.y, _brickZ);
+            // Debug.Log("added " + brick.getInternalName() + " at z=" + czdb.transform.localPosition.z);
             czdb.slot = this;
             addBrick(czdb);
             AvailableBioBricksManager.get().addBrickAmount(brick, -1);

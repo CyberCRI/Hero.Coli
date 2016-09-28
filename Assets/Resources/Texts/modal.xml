@@ -38,7 +38,7 @@
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_PLASMID">
-    <texture>i_nanobot</texture>
+    <texture>i_plasmid</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_END">

@@ -1,3 +1,4 @@
+// #define QUICKTEST
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -94,6 +95,9 @@ public class InfoWindowManager : MonoBehaviour {
 
   public static bool displayInfoWindow(string code)
   {
+#if QUICKTEST
+        return true;
+#endif
     if(fillInFieldsFromCode(code))
     {
       ModalManager.setModal(_instance.infoPanel);

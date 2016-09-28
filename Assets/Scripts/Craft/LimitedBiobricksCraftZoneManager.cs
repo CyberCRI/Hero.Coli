@@ -4,9 +4,8 @@ using System.Collections.Generic;
 
 public class LimitedBiobricksCraftZoneManager : CraftZoneManager
 {
-
-    private const int sandboxSlotCount = 1; //10;
-    private const int tutorialSlotCount = 2;
+    private const int sandboxSlotCount = 10;
+    private const int tutorialSlotCount = 1;
 
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
