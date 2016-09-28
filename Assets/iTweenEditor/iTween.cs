@@ -6357,7 +6357,10 @@ public class iTween : MonoBehaviour{
 		for (int i = 0; i < tweens.Count; i++) {
 			Hashtable currentTween = (Hashtable)tweens[i];
 			GameObject target = (GameObject)currentTween["target"];
-			Stop(target);
+			if(target != null)
+			{
+				Stop(target);
+			}
 		}
 		tweens.Clear();
 	}	
