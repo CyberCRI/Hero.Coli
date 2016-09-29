@@ -12,7 +12,7 @@ public class PickablePlasmid : MonoBehaviour {
                 ModalManager.setModal("T1_PLASMID");
             }
             _alreadyPicked = true;
-            ((LimitedBiobricksCraftZoneManager)LimitedBiobricksCraftZoneManager.get()).addSlot();
+            CraftZoneManager.get().addSlot();
             Destroy(this.gameObject);
         }
     }

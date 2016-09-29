@@ -11,7 +11,7 @@ public class CraftFinalizer : MonoBehaviour {
         //Debug.LogError("CraftFinalizer get");
         if (_instance == null)
         {
-            Logger.Log("CraftFinalizer::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("CraftFinalizer get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<CraftFinalizer>();
         }
         return _instance;
@@ -69,14 +69,12 @@ public class CraftFinalizer : MonoBehaviour {
     }
   
   // these three objects are affected by the craft status of the currently displayed device
-  public CraftFinalizationButton        craftFinalizationButton;
   public GameObject                     isCraftedStatus;
   public GameObject                     isUncraftedStatus;
 
   private void setCraftedStatus(CraftFinalizationButton.CraftMode mode) {
       if(isCraftedStatus && isUncraftedStatus)
       {
-          craftFinalizationButton.setCraftMode(mode);
           
           isCraftedStatus.SetActive(CraftFinalizationButton.CraftMode.UNCRAFT != mode);
           isUncraftedStatus.SetActive(CraftFinalizationButton.CraftMode.UNCRAFT == mode);
@@ -99,7 +97,7 @@ public class CraftFinalizer : MonoBehaviour {
   public bool finalizeCraft() {
       bool newCraft = false;
     //create new device from current biobricks in craft zone
-    Logger.Log("CraftFinalizer::finalizeCraft()", Logger.Level.DEBUG);
+    // Debug.Log(this.GetType() + " finalizeCraft()");
     Device currentDevice = craftZoneManager.getCurrentDevice();
     if(currentDevice != null){
         // TODO pipeline when recipe is unknown
@@ -108,9 +106,9 @@ public class CraftFinalizer : MonoBehaviour {
         craftZoneManager.craft();
         newCraft = true;
       }
-      Logger.Log("CraftFinalizer::finalizeCraft(): device="+currentDevice, Logger.Level.TRACE);
+    // Debug.Log(this.GetType() + " finalizeCraft(): device="+currentDevice);
     } else {
-      Logger.Log("CraftFinalizer::finalizeCraft() failed: invalid device (null)", Logger.Level.WARN);
+      Debug.LogWarning(this.GetType() + " finalizeCraft() failed: invalid device (null)");
     }
     return newCraft;
         //TODO RedMetrics reporting
@@ -162,11 +160,7 @@ public class CraftFinalizer : MonoBehaviour {
   }
 
   public void setDisplayedDevice(Device device){
-    Logger.Log("CraftFinalizer::setDisplayedDevice("+device+")", Logger.Level.TRACE);
-
-    //Inventory.AddingResult addingResult = Inventory.get().canAddDevice(device);
-    //string status = statusMessagesDictionary[addingResult];
-    //Logger.Log("CraftFinalizer::updateButtonStatus(): addingResult="+addingResult+", status="+status, Logger.Level.TRACE);
+    // Debug.Log(this.GetType() + " setDisplayedDevice("+device+")");
     
     bool equiped = isEquiped(device);
     bool equipable = isEquipable(device);
@@ -179,29 +173,10 @@ public class CraftFinalizer : MonoBehaviour {
     if(null == device)
     {
         mode = CraftFinalizationButton.CraftMode.NOTHING;   
-    }    
-            
-    if(null == craftFinalizationButton)
-        craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
+    }
     //craftFinalizationButton.setEnabled(enabled);
     setCraftedStatus(mode);
     //Debug.LogError("new mode="+mode);
-    //Logger.Log("CraftFinalizer::setDisplayedDevice(): "+craftFinalizationButton+".setEnabled("+enabled+")", Logger.Level.TRACE);
   }
-
-    public void randomRename() {
-        Logger.Log("CraftFinalizer::randomRename", Logger.Level.TRACE);
-        Device currentDevice = craftZoneManager.getCurrentDevice();
-        string newName = Inventory.get().getAvailableDeviceDisplayedName();
-        Device newDevice = Device.buildDevice(newName, currentDevice.getExpressionModules());
-        if(newDevice != null){
-            Logger.Log("CraftFinalizer::randomRename craftZoneManager.setDevice("+newDevice+")", Logger.Level.TRACE);
-            craftZoneManager.setDevice(newDevice);
-        } else {
-            Logger.Log("CraftFinalizer::randomRename failed Device.buildDevice(name="+newName
-                       +", modules="+Logger.ToString<ExpressionModule>(currentDevice.getExpressionModules())+")", Logger.Level.WARN);
-        }
-    }
-
 
 }

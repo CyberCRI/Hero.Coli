@@ -1,3 +1,5 @@
+using UnityEngine;
+
 class ListedDevice : DisplayedDevice
 {
 
@@ -14,12 +16,11 @@ class ListedDevice : DisplayedDevice
 
     public override void OnPress(bool isPressed)
     {
-        // Debug.Log("ListedDevice::OnPress("+isPressed+")");
-
         if (CraftZoneManager.isDeviceEditionOn())
         {
             if (isPressed)
             {
+                Debug.Log(this.GetType() + " OnPress()");
                 //ask craft zone to display biobricks associated to this device
                 CraftZoneManager.get().setDevice(_device);
             }

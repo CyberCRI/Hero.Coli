@@ -42,8 +42,8 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
     //Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
     if(CraftZoneManager.isDeviceEditionOn())
     {
-        LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager) CraftZoneManager.get ();
-        if(null != lbczm)
+        CraftZoneManager czm = CraftZoneManager.get ();
+        if(null != czm)
         {
             if(null != _slot)
             {
@@ -51,7 +51,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
             }
             else
             {
-                lbczm.removeBioBrick(this);
+                czm.removeBioBrick(this);
             }
         }
         TooltipManager.displayTooltip();

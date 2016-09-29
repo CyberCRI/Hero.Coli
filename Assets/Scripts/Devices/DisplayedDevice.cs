@@ -312,40 +312,39 @@ public class DisplayedDevice : DisplayedElement
 
         if (device == null)
         {
-            Logger.Log("DisplayedDevice::Create device==null", Logger.Level.WARN);
+            Debug.LogWarning("DisplayedDevice Create device==null");
         }
 
         string nullSpriteName = (spriteName != null) ? "" : "(null)";
         Object prefab;
         if (deviceType == DevicesDisplayer.DeviceType.Equiped)
         {
-            Logger.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI, Logger.Level.DEBUG);
+            // Debug.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI);
             prefab = Resources.Load(equipedPrefabURI);
         }
         else if (deviceType == DevicesDisplayer.DeviceType.Inventoried)
         {
-            Logger.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI, Logger.Level.DEBUG);
+            // Debug.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI);
             prefab = Resources.Load(inventoriedPrefabURI);
         }
         else if (deviceType == DevicesDisplayer.DeviceType.Listed)
         {
-            Logger.Log("DisplayedDevice: will create Listed " + listedPrefabURI, Logger.Level.DEBUG);
+            // Debug.Log("DisplayedDevice: will create Listed " + listedPrefabURI);
             prefab = Resources.Load(listedPrefabURI);
         }
         else
         {
-            Logger.Log("DisplayedDevice::Create : unmanaged device type " + deviceType, Logger.Level.WARN);
+            Debug.LogWarning("DisplayedDevice Create : unmanaged device type " + deviceType);
             return null;
         }
 
-        Logger.Log("DisplayedDevice::Create(type=" + deviceType
-        + ", parentTransform=" + parentTransform
-        + ", localPosition=" + localPosition
-        + ", device=" + device
-        + ", devicesDisplayer=" + devicesDisplayer
-    + ", spriteName=" + spriteName + nullSpriteName
-    , Logger.Level.DEBUG
-    );
+        // Debug.Log("DisplayedDevice Create(type=" + deviceType
+        // + ", parentTransform=" + parentTransform
+        // + ", localPosition=" + localPosition
+        // + ", device=" + device
+        // + ", devicesDisplayer=" + devicesDisplayer
+        // + ", spriteName=" + spriteName + nullSpriteName
+        // );
 
         DisplayedDevice result = (DisplayedDevice)DisplayedElement.Create(
           parentTransform
@@ -397,7 +396,7 @@ public class DisplayedDevice : DisplayedElement
         */
 
 
-        Logger.Log("DisplayedDevice::getTextureName usedSpriteName=" + usedSpriteName, Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " getTextureName usedSpriteName=" + usedSpriteName);
         return usedSpriteName;
     }
 
@@ -409,21 +408,21 @@ public class DisplayedDevice : DisplayedElement
 
         if (device == null)
         {
-            Logger.Log("DisplayedDevice::Initialize device==null", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " Initialize device==null");
         }
 
         _device = Device.buildDevice(device);
         if (_device == null)
         {
-            Logger.Log("DisplayedDevice::Initialize _device==null", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " Initialize _device==null");
         }
-        Logger.Log("DisplayedDevice::Create built device " + _device + " from " + device, Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " Create built device " + _device + " from " + device);
         if (_devicesDisplayer == null)
         {
             _devicesDisplayer = DevicesDisplayer.get();
         }
         
-        Logger.Log("DisplayedDevice::Initialize ends", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " Initialize ends");
 
         setName();
         setBackgroundSprite();
@@ -447,12 +446,12 @@ public class DisplayedDevice : DisplayedElement
     {
         if (_device == null)
         {
-            Logger.Log("DisplayedDevice::toggleEquiped _device==null", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " toggleEquiped _device==null");
             return;
         }
 
         DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
-        Logger.Log("DisplayedDevice::toggleEquiped added device result=" + addingResult + ", " + getDebugInfos(), Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " toggleEquiped added device result=" + addingResult + ", " + getDebugInfos());
         if (DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
            || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
         {
@@ -477,12 +476,12 @@ public class DisplayedDevice : DisplayedElement
 
     public override void OnPress(bool isPressed)
     {
-        Logger.Log("DisplayedDevice::OnPress " + _id + " device=" + _device, Logger.Level.INFO);
+        Debug.Log(this.GetType() + " OnPress() of " + _device.getInternalName());
     }
 
     protected virtual void OnHover(bool isOver)
     {
-        Logger.Log("DisplayedDevice::OnHover(" + isOver + ") with _device=" + _device, Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " OnHover() of " + _device.getInternalName());
         TooltipManager.displayTooltip(isOver, _device, transform.position);
     }
 

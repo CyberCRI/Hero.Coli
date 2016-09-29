@@ -557,53 +557,58 @@ public class CraftDeviceSlot : MonoBehaviour
             }
         }
     }
+    
+    private bool canAfford(Device device)
+    {
+        lazyInitialize();
+        if (device != null)
+        {
+            AvailableBioBricksManager abbm = AvailableBioBricksManager.get();
+            LinkedList<BioBrick> currentBricks = getCurrentBricks();
+            
+            foreach (BioBrick brick in device.getBioBricks())
+            {
+                if((abbm.getBrickAmount(brick) == 0) && !currentBricks.Contains(brick))
+                {
+                    Debug.Log("can't afford " + brick.getInternalName());
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " device was null");
+            return false;
+        }
+    }
 
     public void setDevice(Device device)
     {
-        lazyInitialize();
-
         if (device != null)
         {
-            //Debug.Log("CDS setDevice");
-            //check that can afford device            
-            LinkedList<BioBrick> newBricks = device.getExpressionModules().First.Value.getBioBricks();
-            LinkedList<BioBrick> currentBricks = getCurrentBricks();
-            AvailableBioBricksManager abbm = AvailableBioBricksManager.get();
-
-            foreach (BioBrick brick in newBricks)
+            if(canAfford(device))
             {
-                if (!currentBricks.Contains(brick))
+                //Debug.Log("CDS setDevice removeAllBricks");
+                removeAllBricks();
+
+                foreach (BioBrick brick in device.getBioBricks())
                 {
-                    BioBrick abb = abbm.getBioBrickFromAll(brick.getName());
-                    if (0 == abb.amount)
-                    {
-                        //Debug.Log("CDS setDevice abort with "+brick.getName());
-                        // can't afford; abort
-                        Debug.LogWarning("abort: can't afford " + brick);
-                        return;
-                    }
+                    addBrick(brick);
                 }
+
+                updateDisplay();
             }
-
-            //Debug.Log("CDS setDevice removeAllBricks");
-            removeAllBricks();
-
-            foreach (BioBrick brick in newBricks)
-            {
-                addBrick(brick);
-            }
-
-            updateDisplay();
         }
     }
 
     public void setSelected(bool selected)
     {
         //Debug.Log("CraftDeviceSlot selectSlot("+selected+")");
-        LimitedBiobricksCraftZoneManager lbczm = ((LimitedBiobricksCraftZoneManager)CraftZoneManager.get());
-        if (null != lbczm)
+        CraftZoneManager czm = CraftZoneManager.get();
+        if (null != czm)
         {
-            lbczm.selectSlot(this);
+            czm.selectSlot(this);
         }
     }
 

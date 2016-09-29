@@ -126,6 +126,16 @@ public class Device: DNABit
     return null;
   }
 
+  public LinkedList<BioBrick> getBioBricks()
+  {
+    LinkedList<BioBrick> result = new LinkedList<BioBrick>();
+    foreach (ExpressionModule module in _modules)
+    {
+      result.AppendRange(module.getBioBricks());
+    }
+    return result;
+  }
+
   public float getExpressionLevel()
   {
     foreach (ExpressionModule module in _modules)

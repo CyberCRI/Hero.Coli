@@ -13,7 +13,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("AvailableBioBricksManager::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("AvailableBioBricksManager get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<AvailableBioBricksManager>();
         }
         return _instance;
@@ -55,23 +55,19 @@ public class AvailableBioBricksManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-
-    public string[] _allBioBrickFiles;
+    [SerializeField]
+    private string[] _allBioBrickFiles;
 
     //Parameters/BioBricks/availablebiobricks
-    public string[] _availableBioBrickFiles;
-    public string biobrickFilesPathPrefix;
-
-    //width of a displayed BioBrick
-    //set in Unity editor
-    public int _width;
-    public int _bricksPerRow;
+    [SerializeField]
+    private string[] _availableBioBrickFiles;
+    [SerializeField]
+    private string biobrickFilesPathPrefix;
 
     // the panel on which the BioBricks will be drawn
     public GameObject bioBricksPanel;
 
     //prefab for available biobricks
-    public GameObject availableBioBrick;
     public Transform promoterBrickCategoryGrid, rbsBrickCategoryGrid, geneBrickCategoryGrid, terminatorBrickCategoryGrid;
 
     private List<GameObject> dummies = new List<GameObject>();
@@ -89,8 +85,8 @@ public class AvailableBioBricksManager : MonoBehaviour
     private static LinkedList<GeneBrick>            _availableGenes       = new LinkedList<GeneBrick>();
     private static LinkedList<TerminatorBrick>      _availableTerminators = new LinkedList<TerminatorBrick>();
     */
-    private static LinkedList<BioBrick> _allBioBricks = new LinkedList<BioBrick>();
-    private static LinkedList<BioBrick> _availableBioBricks = new LinkedList<BioBrick>();
+    private LinkedList<BioBrick> _allBioBricks = new LinkedList<BioBrick>();
+    private LinkedList<BioBrick> _availableBioBricks = new LinkedList<BioBrick>();
 
     //visual, clickable biobrick catalog
     LinkedList<AvailableDisplayedBioBrick> _displayableAvailablePromoters = new LinkedList<AvailableDisplayedBioBrick>();
@@ -100,7 +96,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     public void initialize()
     {
-        Logger.Log("AvailableBioBricksManager::initialize()", Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " initialize()");
         _allBioBricks.Clear();
         loadAllBioBricksIfNecessary();
         _availableBioBricks.Clear();
@@ -131,20 +127,20 @@ public class AvailableBioBricksManager : MonoBehaviour
     
     void initializeDummies()
     {
-        //Debug.LogError("initializeDummies");
-        dummies.Clear();
-        dummies.AddRange(new List<GameObject>{
-            availableBioBrick
-            });
+        // Debug.Log("initializeDummies");
+        // dummies.Clear();
+        // dummies.AddRange(new List<GameObject>{
+            
+        //     });
         
-        foreach(GameObject dummy in dummies)
-        {
-            if(null != dummy)
-            {
-                //Debug.LogError("initializeDummies dummy="+dummy.name);
-                dummy.SetActive(false);
-            }
-        }
+        // foreach(GameObject dummy in dummies)
+        // {
+        //     if(null != dummy)
+        //     {
+        //         //Debug.Log("initializeDummies dummy="+dummy.name);
+        //         dummy.SetActive(false);
+        //     }
+        // }
 
         dummyGrids.Clear();
         dummyGrids.AddRange(new List<Transform>{
@@ -166,6 +162,26 @@ public class AvailableBioBricksManager : MonoBehaviour
             }
         }
     }
+
+    public double getBrickAmount(BioBrick brick)
+    {
+        BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
+                _availableBioBricks
+                , b => b.getName() == brick.getName()
+                , false
+                , " " + this.GetType() + " getBrickAmount(" + brick + ")"
+                );
+                
+                if(null != currentBrick)
+                {
+                    return currentBrick.amount;
+                }
+                else
+                {
+                    Debug.LogWarning(this.GetType() + " brick " + brick.getInternalName() + "not found");
+                    return 0;
+                }
+    }
     
     public void addBrickAmount(BioBrick brick, double amount)
     {
@@ -174,7 +190,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 _availableBioBricks
                 , b => b.getName() == brick.getName()
                 , false
-                , " AvailableBioBricksManager::addBrickAmount(" + brick + ", " + amount + ")"
+                , " " + this.GetType() + " addBrickAmount(" + brick + ", " + amount + ")"
                 );
                 
                 if(null != currentBrick)
@@ -185,7 +201,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     private void updateDisplayedBioBricks()
     {
-        Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " updateDisplayedBioBricks");
 
 
         //Debug.LogError("updateDisplayedBioBricks");
@@ -222,17 +238,17 @@ public class AvailableBioBricksManager : MonoBehaviour
           , terminatorBrickCategoryGrid
           );
 
-        Logger.Log("AvailableBioBricksManager::updateDisplayedBioBricks"
-          + "\n\navailablePromoters=" + Logger.ToString<BioBrick>(availablePromoters)
-          + ",\n\navailableRBS=" + Logger.ToString<BioBrick>(availableRBS)
-          + ",\n\navailableGenes=" + Logger.ToString<BioBrick>(availableGenes)
-          + ",\n\navailableTerminators=" + Logger.ToString<BioBrick>(availableTerminators)
+        // Debug.Log(this.GetType() + " updateDisplayedBioBricks"
+        //   + "\n\navailablePromoters=" + Logger.ToString<BioBrick>(availablePromoters)
+        //   + ",\n\navailableRBS=" + Logger.ToString<BioBrick>(availableRBS)
+        //   + ",\n\navailableGenes=" + Logger.ToString<BioBrick>(availableGenes)
+        //   + ",\n\navailableTerminators=" + Logger.ToString<BioBrick>(availableTerminators)
 
-          + ",\n\n_displayableAvailablePromoters=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailablePromoters)
-          + ",\n\n_displayableAvailableRBS=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableRBS)
-          + ",\n\n_displayableAvailableGenes=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableGenes)
-          + ",\n\n_displayableAvailableTerminators=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
-          , Logger.Level.TRACE);
+        //   + ",\n\n_displayableAvailablePromoters=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailablePromoters)
+        //   + ",\n\n_displayableAvailableRBS=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableRBS)
+        //   + ",\n\n_displayableAvailableGenes=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableGenes)
+        //   + ",\n\n_displayableAvailableTerminators=" + Logger.ToString<AvailableDisplayedBioBrick>(_displayableAvailableTerminators)
+        // );
 
         displayAll();
 
@@ -240,25 +256,25 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     private LinkedList<BioBrick> getAvailableBioBricksOfType(BioBrick.Type type)
     {
-        Logger.Log("AvailableBioBricksManager::getAvailableBioBricksOfType(" + type + ")", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " getAvailableBioBricksOfType(" + type + ")");
         return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => ((b.getType() == type)));// && (b.amount > 0)));
     }
 
     public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
     {
-        Logger.Log("AvailableBioBricksManager::addAvailableBioBrick(" + brick + ")", Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ")");
         string bbName = brick.getName();
         if ((null != brick))
         // TODO deeper safety check
-        // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " AvailableBioBricksManager::addAvailableBioBrick("+brick+", "+updateView+")")
+        // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " " + this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
         {
-            Logger.Log("AvailableBioBricksManager::addAvailableBioBrick(" + brick + ") will _availableBioBricks.AddLast(" + brick + ")", Logger.Level.INFO);
+            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") will _availableBioBricks.AddLast(" + brick + ")");
 
             BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
                 _availableBioBricks
                 , b => b.getName() == bbName
                 , false
-                , " AvailableBioBricksManager::addAvailableBioBrick(" + brick + ", " + updateView + ")"
+                , " " + this.GetType() + " addAvailableBioBrick(" + brick + ", " + updateView + ")"
                 );
 
             if (null == currentBrick)
@@ -280,14 +296,14 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         else
         {
-            Logger.Log("AvailableBioBricksManager::addAvailableBioBrick(" + brick + ") fail", Logger.Level.INFO);
+            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") fail");
             return false;
         }
     }
 
     public void OnPanelEnabled()
     {
-        Logger.Log("AvailableBioBricksManager::OnEnable", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " OnEnable");
         updateDisplayedBioBricks();
     }
 
@@ -318,14 +334,12 @@ public class AvailableBioBricksManager : MonoBehaviour
         string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
         BioBrick biobrickParam = brick;
 
-        Logger.Log("AvailableBioBricksManager::getDisplayableAvailableBioBrick(brick=" + brick + ", index=" + index + "),"
-          + ", parentTransformParam=" + parentTransformParam
-          + ", localPositionParam=" + localPositionParam
-          + " (width=" + _width + ")"
-          + ", spriteNameParam=" + spriteNameParam
-          + ", biobrickParam=" + biobrickParam
-          , Logger.Level.TRACE
-          );
+        // Debug.Log(this.GetType() + " getDisplayableAvailableBioBrick(brick=" + brick + ", index=" + index + "),"
+        //   + ", parentTransformParam=" + parentTransformParam
+        //   + ", localPositionParam=" + localPositionParam
+        //   + ", spriteNameParam=" + spriteNameParam
+        //   + ", biobrickParam=" + biobrickParam
+        //   );
 
         AvailableDisplayedBioBrick resultBrick = AvailableDisplayedBioBrick.Create(
           parentTransformParam
@@ -359,22 +373,22 @@ public class AvailableBioBricksManager : MonoBehaviour
     }
     public void displayPromoters()
     {
-        Logger.Log("AvailableBioBricksManager::displayPromoters", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " displayPromoters");
         switchTo(_displayableAvailablePromoters);
     }
     public void displayRBS()
     {
-        Logger.Log("AvailableBioBricksManager::displayRBS", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " displayRBS");
         switchTo(_displayableAvailableRBS);
     }
     public void displayGenes()
     {
-        Logger.Log("AvailableBioBricksManager::displayGenes", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " displayGenes");
         switchTo(_displayableAvailableGenes);
     }
     public void displayTerminators()
     {
-        Logger.Log("AvailableBioBricksManager::displayTerminators", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " displayTerminators");
         switchTo(_displayableAvailableTerminators);
     }
     private void switchTo(LinkedList<AvailableDisplayedBioBrick> list)
@@ -385,7 +399,7 @@ public class AvailableBioBricksManager : MonoBehaviour
             listToString += brick.ToString() + ", ";
         }
         listToString += "]";
-        Logger.Log("AvailableBioBricksManager::switchTo(" + listToString + ")", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " switchTo(" + listToString + ")");
         display(_displayedBioBricks, false);
         _displayedBioBricks.Clear();
         _displayedBioBricks.AppendRange(list);
@@ -402,7 +416,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     public LinkedList<BioBrick> getAllBioBricks()
     {
-        Logger.Log("AvailableBioBricksManager::getAllBioBricks", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " getAllBioBricks");
 
         loadAllBioBricksIfNecessary();
 
@@ -419,37 +433,37 @@ public class AvailableBioBricksManager : MonoBehaviour
 
     public BioBrick getBioBrickFromAll(string brickName)
     {
-        Logger.Log("AvailableBioBricksManager::getBioBrickFromAll", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " getBioBrickFromAll");
 
         BioBrick brick = LinkedListExtensions.Find<BioBrick>(
             getAllBioBricks()
             , b => (b.getName() == brickName)
             , false
-            , "AvailableBioBricksManager::getBioBrickFromAll(" + brickName + ")"
+            , this.GetType() + " getBioBrickFromAll(" + brickName + ")"
             );
         if (brick != null)
         {
-            Logger.Log("AvailableBioBricksManager::getBioBrickFromAll found " + brick, Logger.Level.TRACE);
+            // Debug.Log(this.GetType() + " getBioBrickFromAll found " + brick);
             return brick;
         }
         else
         {
-            Logger.Log("AvailableBioBricksManager::getBioBrickFromAll failed to find brick with name " + brickName + "!", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " getBioBrickFromAll failed to find brick with name " + brickName + "!");
             return null;
         }
     }
 
     private void loadAllBioBricks()
     {
-        Logger.Log("AvailableBioBricksManager::loadAllBioBricks", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " loadAllBioBricks");
         loadBioBricks(_allBioBrickFiles, _allBioBricks);
-        Logger.Log("AvailableBioBricksManager::loadAllBioBricks _allBioBricks=" + _allBioBricks.Count, Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " loadAllBioBricks _allBioBricks=" + _allBioBricks.Count);
     }
 
     // Warning: inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
     private void loadBioBricks(string[] inputFiles, LinkedList<BioBrick> destination)
     {
-        Logger.Log("AvailableBioBricksManager::loadBioBricks", Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " loadBioBricks");
         //load biobricks from xml
         BioBrickLoader bLoader = new BioBrickLoader();
 
@@ -459,9 +473,9 @@ public class AvailableBioBricksManager : MonoBehaviour
         foreach (string file in inputFiles)
         {
             string fullPath = biobrickFilesPathPrefix + file;
-            Logger.Log("AvailableBioBricksManager::loadBioBricks loads biobrick file " + fullPath, Logger.Level.DEBUG);
+            // Debug.Log(this.GetType() + " loadBioBricks loads biobrick file " + fullPath);
             LinkedList<BioBrick> bb = bLoader.loadBioBricksFromFile(fullPath);
-            Logger.Log("AvailableBioBricksManager::loadBioBricks appended bb=" + bb.Count.ToString() + " from file " + fullPath, Logger.Level.DEBUG);
+            // Debug.Log(this.GetType() + " loadBioBricks appended bb=" + bb.Count.ToString() + " from file " + fullPath);
             LinkedListExtensions.AppendRange<BioBrick>(destination, bb);
             if (!string.IsNullOrEmpty(files))
             {
@@ -469,26 +483,26 @@ public class AvailableBioBricksManager : MonoBehaviour
             }
             files += fullPath;
         }
-        Logger.Log("AvailableBioBricksManager::loadBioBricks loaded " + files + " so that destination=" + destination.Count, Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " loadBioBricks loaded " + files + " so that destination=" + destination.Count);
     }
 
 
     public LinkedList<BioBrick> getAvailableBioBricks()
     {
         string availableBB = null == _availableBioBricks ? "null" : _availableBioBricks.Count.ToString();
-        Logger.Log("AvailableBioBricksManager::getAvailableBioBricks with initial _availableBioBricks=" + availableBB, Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " getAvailableBioBricks with initial _availableBioBricks=" + availableBB);
         if (_availableBioBricks == null || _availableBioBricks.Count == 0)
         {
             loadAvailableBioBricks();
         }
-        Logger.Log("AvailableBioBricksManager::getAvailableBioBricks returns " + _availableBioBricks.Count + " elements", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " getAvailableBioBricks returns " + _availableBioBricks.Count + " elements");
         return _availableBioBricks;
     }
 
 
     private void loadAvailableBioBricks()
     {
-        Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks", Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " loadAvailableBioBricks");
         LevelInfo levelInfo = null;
         MemoryManager.get().tryGetCurrentLevelInfo(out levelInfo);
         if (null != levelInfo && levelInfo.areAllBioBricksAvailable)
@@ -508,14 +522,14 @@ public class AvailableBioBricksManager : MonoBehaviour
             filesToLoad.Add(MemoryManager.get().configuration.getGameMapName());
             loadBioBricks(filesToLoad.ToArray(), _availableBioBricks);
         }
-        Logger.Log("AvailableBioBricksManager::loadAvailableBioBricks _availableBioBricks=" + _availableBioBricks.Count, Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " loadAvailableBioBricks _availableBioBricks=" + _availableBioBricks.Count);
     }
 
 /*
     // Use this for initialization
     void Start()
     {
-        Logger.Log("AvailableBioBricksManager::Start()", Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " Start()");
         displayPromoters();
     }
     */

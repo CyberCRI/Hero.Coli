@@ -41,21 +41,21 @@ public abstract class DeviceContainer : MonoBehaviour {
   }
 	
   public void UpdateData(List<Device> added, List<Device> removed, List<Device> edited) {
-    Logger.Log("DeviceContainer::UpdateData("
-      +"added="+Logger.ToString<Device>(added)
-      +", removed="+Logger.ToString<Device>(removed)
-      +", edited="+Logger.ToString<Device>(edited)
-      +")", Logger.Level.DEBUG);
+    // Debug.Log(this.GetType() + " UpdateData("
+    //   +"added="+Logger.ToString<Device>(added)
+    //   +", removed="+Logger.ToString<Device>(removed)
+    //   +", edited="+Logger.ToString<Device>(edited)
+    //   +")");
     foreach (Device device in added ) {
       askAddDevice(device);
     }
-    // Debug.Log("DeviceContainer::UpdateData added done");
+    // Debug.Log(this.GetType() + " UpdateData added done");
     removeDevices(removed);
-    // Debug.Log("DeviceContainer::UpdateData removed done");
+    // Debug.Log(this.GetType() + " UpdateData removed done");
     foreach (Device device in edited ) {
       editDevice(device);
     }
-    // Debug.Log("DeviceContainer::UpdateData edited done");
+    // Debug.Log(this.GetType() + " UpdateData edited done");
   }
   
   abstract public AddingResult askAddDevice(Device device, bool reportToRedMetrics = false);

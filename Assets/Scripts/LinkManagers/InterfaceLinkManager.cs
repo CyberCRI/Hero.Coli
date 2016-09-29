@@ -70,18 +70,14 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
 
+//deprecated
     [SerializeField]
     private GameObject craftZoneDisplayedBioBrickPrefab;
     [SerializeField]
     private GameObject genericInfoWindow;
 
-
-    bool isCraftMode1 = true;
-
     // craft screen with activate/deactivate button, device slots, recipes, biobricks sorted by columns
     [SerializeField]
-    private GameObject craftScreenPanel1;
-
     private GameObject craftScreenPanel;
     [SerializeField]
     private Transform craftSlotsGrid;
@@ -152,13 +148,10 @@ public class InterfaceLinkManager : LinkManager
         ModalManager modalManager = ModalManager.get();
 
         //GUITransitioner
+
         guiTransitioner.celliaGraph = celliaGraph;
         guiTransitioner.roomGraph = roomGraph;
-
         guiTransitioner.worldScreen = worldScreensPanel;
-
-        craftScreenPanel = craftScreenPanel1;
-
         guiTransitioner.craftScreen = craftScreenPanel;
 
         ContinueButton cb = okButton1.GetComponent<ContinueButton>();
@@ -172,7 +165,6 @@ public class InterfaceLinkManager : LinkManager
         EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
         gameStateController.endMainMenuButton = emmb;
         gameStateController.mainMenu = mainMenu;
-
         gameStateController.pauseIndicator = pauseIndicator;
 
         //initialization of intro panels
@@ -181,30 +173,13 @@ public class InterfaceLinkManager : LinkManager
 
         //CraftZoneManager
         craftZoneManager.craftFinalizer = craftFinalizer;
-
-        //CraftFinalizer _craftFinalizer2 = CraftZoneManager.get().GetComponent<CraftZoneManager>().craftFinalizer;
-        if (null == craftFinalizer.craftFinalizationButton)
-            craftFinalizer.craftFinalizationButton = GameObject.Find("CraftButton").GetComponent<CraftFinalizationButton>();
-
-        craftZoneManager.displayedBioBrick = craftZoneDisplayedBioBrickPrefab;
-
-
-        string assemblyZoneName = isCraftMode1 ? "CraftSlotsPanel" : "AssemblyZonePanel";
-        craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild("TopPanel").transform.FindChild(assemblyZoneName).gameObject;
-
-        if (isCraftMode1)
-        {
-            LimitedBiobricksCraftZoneManager lbczm = (LimitedBiobricksCraftZoneManager)craftZoneManager;
-            lbczm.slotsGrid = craftSlotsGrid;
-        }
-
+        craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild("TopPanel").transform.FindChild("CraftSlotsPanel").gameObject;
+        craftZoneManager.slotsGrid = craftSlotsGrid;
 
         //DevicesDisplayer
         devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
         devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
-
         devicesDisplayer.graphMoleculeList = graphMoleculeList;
-
 
         //InfoWindowManager
         infoWindowManager.infoPanel = genericInfoWindow;
@@ -228,18 +203,10 @@ public class InterfaceLinkManager : LinkManager
 
         //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
         availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
-
-        if (isCraftMode1)
-        {
-            availableBioBricksManager.promoterBrickCategoryGrid = GameObject.Find("PromoterBrickCategoryGrid").transform;
-            availableBioBricksManager.rbsBrickCategoryGrid = GameObject.Find("RBSBrickCategoryGrid").transform;
-            availableBioBricksManager.geneBrickCategoryGrid = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
-            availableBioBricksManager.terminatorBrickCategoryGrid = GameObject.Find("TerminatorBrickCategoryGrid").transform;
-        }
-        else
-        {
-            availableBioBricksManager.availableBioBrick = availableBioBricksManager.bioBricksPanel.transform.FindChild("AvailableDisplayedBioBrickPrefab").gameObject;
-        }
+        availableBioBricksManager.promoterBrickCategoryGrid = GameObject.Find("PromoterBrickCategoryGrid").transform;
+        availableBioBricksManager.rbsBrickCategoryGrid = GameObject.Find("RBSBrickCategoryGrid").transform;
+        availableBioBricksManager.geneBrickCategoryGrid = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
+        availableBioBricksManager.terminatorBrickCategoryGrid = GameObject.Find("TerminatorBrickCategoryGrid").transform;
 
         //TooltipManager
         tooltipManager.bioBrickTooltipPanel = biobrickTooltipPanel;

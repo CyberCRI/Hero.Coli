@@ -141,7 +141,7 @@ public class Equipment : DeviceContainer
             _devices.RemoveAll(d => d.Equals(device));
             safeGetDisplayer().removeEquippedDevice(device);
             removeFromReactionEngine(device);
-            LimitedBiobricksCraftZoneManager.get().unequip(device);
+            CraftZoneManager.get().unequip(device);
             PhenoAmpicillinProducer.get().onUnequippedDevice(device);
         }
     }
