@@ -9,7 +9,7 @@ public abstract class CutScene : CutSceneElements {
 #if QUICKTEST
     private const float blackBarWait2 = 0.1f;
 #else
-    private const float blackBarWait2 = 1.5f;
+    private const float blackBarWait2 = 2.5f;
 #endif
 
     private const float normalTimeScale = 1f;
@@ -82,17 +82,22 @@ public abstract class CutScene : CutSceneElements {
 		FocusMaskManager.get().blockClicks(false);
         _blackBar.closeBar(false);
         StartCoroutine(waitForBlackBar(false));
-        _cullingMaskHandler.hideInterface(false);
-        _cellControl.freezePlayer(false);
+        //_cullingMaskHandler.hideInterface(false);
+        //_cellControl.freezePlayer(false);
         //endCutScene();
         //this.enabled = false;
     }
 
     IEnumerator waitForBlackBar(bool start)
     {
+        if (start == true)
+        {
+            SetCutSceneCamera(start);
+            _cellControl.freezePlayer(true);
+        }
         yield return new WaitForSeconds(blackBarWait1);
-        SetCutSceneCamera(start);
-        _cellControl.freezePlayer(true);
+        
+        
         yield return new WaitForSeconds(blackBarWait2);
         if (start == true)
         {
@@ -101,6 +106,7 @@ public abstract class CutScene : CutSceneElements {
         else
         {
             endCutScene();
+            SetCutSceneCamera(start);
         }
         yield return null;
     }

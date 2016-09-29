@@ -33,7 +33,11 @@ public class CutSceneCompetition : CutScene {
 	
 	// Update is called once per frame
 	void Update () {
-	    
+	    if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            _iterationPlayer++;
+            start();
+        }
 	}
 
     public override void startCutScene()
@@ -66,7 +70,7 @@ public class CutSceneCompetition : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Hero.playerTag || col.tag == "Player")
         {
 			if (_iterationPlayer == 0) 
 			{
