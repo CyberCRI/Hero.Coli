@@ -20,9 +20,9 @@ public class NanobotsPickUpHandler : MonoBehaviour {
         }
     }
 
-    void OnDestroy()
+    /*void OnDestroy()
     {
         _nanoCounter = null;
         _pickedUpNumber = 0;
-    }
+    }*/
 }

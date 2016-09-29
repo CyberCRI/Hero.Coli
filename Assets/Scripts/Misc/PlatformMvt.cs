@@ -88,5 +88,11 @@ public class PlatformMvt : MonoBehaviour {
     {
         currentDestination = index;
     }
+
+    public void ChangeWayPointPosition(Vector3 position, Quaternion rotation, int id)
+    {
+        points[id].transform.position = position;
+        points[id].transform.rotation = rotation;
+    }
 	
 }
