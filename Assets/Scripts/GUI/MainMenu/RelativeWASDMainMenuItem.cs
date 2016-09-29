@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RelativeWASDMainMenuItem : ControlMainMenuItem {
     public override void click() {
-        Debug.LogWarning("the game will relative wasd...");
+        // Debug.Log(this.GetType());
         controlsArray.switchControlTypeToRelativeWASD();
     }
 }

@@ -41,7 +41,7 @@ public class MainMenuItem : MonoBehaviour
             }
         }
     }
-    public float hoverExpandingFactor = 1.2f;
+    private const float hoverExpandingFactor = 1.2f;
     private UIAnchor _anchor;
     public UIAnchor anchor
     {
