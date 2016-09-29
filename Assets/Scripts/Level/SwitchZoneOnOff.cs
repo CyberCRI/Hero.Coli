@@ -6,16 +6,17 @@ public class SwitchZoneOnOff : MonoBehaviour
     private GameObject[] _activeZone;
     [SerializeField]
     private GameObject[] _inactiveZone;
-    private static SwitchZoneOnOff _instance;
+    //private static SwitchZoneOnOff _instance;
 
     void Awake()
     {
-        _instance = this;
+        //_instance = this;
     }
 
     // Use this for initialization
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -39,18 +40,17 @@ public class SwitchZoneOnOff : MonoBehaviour
         }
     }
 
-    public static void triggerSwitchZone()
+    public void triggerSwitchZone()
     {
-        if (_instance)
+        for (int i = 0; i < _activeZone.Length; i++)
         {
-            for (int i = 0; i < _instance._activeZone.Length; i++)
-            {
-                _instance._activeZone[i].SetActive(true);
-            }
-            for (int i = 0; i < _instance._inactiveZone.Length; i++)
-            {
-                _instance._inactiveZone[i].SetActive(false);
-            }
+            _activeZone[i].SetActive(true);
+        }
+        for (int i = 0; i < _inactiveZone.Length; i++)
+        {
+            _inactiveZone[i].SetActive(false);
+
         }
     }
 }
+
