@@ -10,7 +10,11 @@ public class NanobotsCounter : MonoBehaviour {
 	void Start () {
         _totalNanobots = GameObject.FindGameObjectsWithTag("NanoBot").Length;
         updateLabel(0);
-        GameObject.Find("StartZoneSetter").GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
+        GameObject go = GameObject.Find("StartZoneSetter");
+        if(null != go)
+        {
+            go.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
+        }
     }
 
     public void updateLabel(int numNanoBots)

@@ -36,8 +36,8 @@ public class MainMenuManager : MonoBehaviour
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -50,13 +50,13 @@ public class MainMenuManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -66,7 +66,7 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-        
+
         selectItem(0);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +74,7 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItem[] _items;
 
     public MainMenuItemArray mainMenuItems;
+    public MainMenuItemArray settingsItems;
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
     public MainMenuItemArray soundItems;
@@ -92,10 +93,11 @@ public class MainMenuManager : MonoBehaviour
     private static string restartKey = menuKeyPrefix + "RESTART";
     public enum MainMenuScreen
     {
+        SETTINGS,
+        LEARNMOREOPTIONS,
         CONTROLS,
         LANGUAGES,
         SOUNDOPTIONS,
-        LEARNMOREOPTIONS,
         DEFAULT
     }
 
@@ -104,13 +106,13 @@ public class MainMenuManager : MonoBehaviour
 
     private bool isAnItemSelected()
     {
-        //Debug.Log("MainMenuManager::isAnItemSelected");
+        // Debug.Log("MainMenuManager::isAnItemSelected");
         return _currentIndex >= 0 && _currentIndex < _items.Length;
     }
 
     public MainMenuItem getCurrentItem()
     {
-        //Debug.Log("MainMenuManager::getCurrentItem");
+        // Debug.Log("MainMenuManager::getCurrentItem");
         if (isAnItemSelected())
         {
             return _items[_currentIndex];
@@ -123,7 +125,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void deselect()
     {
-        //Debug.Log("MainMenuManager::deselect");
+        // Debug.Log("MainMenuManager::deselect");
         if (isAnItemSelected())
         {
             _items[_currentIndex].deselect();
@@ -143,7 +145,7 @@ public class MainMenuManager : MonoBehaviour
 
     private bool selectItem(string name)
     {
-        //Debug.Log(string.Format("selectItem({0})", name));
+        // Debug.Log(string.Format("selectItem({0})", name));
         if (isAnItemSelected() && name == _items[_currentIndex].itemName)
         {
             Logger.Log("MainMenuManager::item " + name + " was already selected", Logger.Level.DEBUG);
@@ -175,7 +177,7 @@ public class MainMenuManager : MonoBehaviour
 
     private bool selectItem(int index, SelectionMode mode = SelectionMode.NEXT)
     {
-        //Debug.Log(string.Format("selectItem({0}, {1})", index, mode.ToString()));
+        // Debug.Log(string.Format("selectItem({0}, {1})", index, mode.ToString()));
         int previousIndex = index;
         int normalizedIndex;
         int remainingTries = _items.Length;
@@ -211,26 +213,26 @@ public class MainMenuManager : MonoBehaviour
 
     public bool selectNext()
     {
-        //Debug.Log("MainMenuManager::selectNext");
+        // Debug.Log("MainMenuManager::selectNext");
         return selectItem(_currentIndex + 1, SelectionMode.NEXT);
     }
 
     public bool selectPrevious()
     {
-        //Debug.Log("MainMenuManager::selectPrevious");
+        // Debug.Log("MainMenuManager::selectPrevious");
         return selectItem(_currentIndex - 1, SelectionMode.PREVIOUS);
     }
 
     public void onHover(MainMenuItem item)
     {
-        //Debug.Log(string.Format("onHover({0})", item._itemName));
+        // Debug.Log(string.Format("onHover({0})", item._itemName));
         Logger.Log(item.itemName + " onHover", Logger.Level.DEBUG);
         selectItem(item.itemName);
     }
 
     public static void replaceTextBy(string target, string replacement, MainMenuItem[] items, string debug = "")
     {
-        //Debug.Log(string.Format("replaceTextBy({0}, {1}, {2}, {3})", target, replacement, MainMenuItemArray.ToString(items), debug));
+        // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2}, {3})", target, replacement, MainMenuItemArray.ToString(items), debug));
         for (int index = 0; index < items.Length; index++)
         {
             if (items[index].itemName == target)
@@ -245,36 +247,36 @@ public class MainMenuManager : MonoBehaviour
 
     private void replaceTextBy(string target, string replacement, string debug = "")
     {
-        //Debug.Log(string.Format("replaceTextBy({0}, {1}, {2})", target, replacement, debug));
+        // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2})", target, replacement, debug));
         MainMenuManager.replaceTextBy(target, replacement, _items, debug);
     }
 
     public void setNewGame()
     {
-        //Debug.Log("MainMenuManager::setNewGame");
+        // Debug.Log("MainMenuManager::setNewGame");
         replaceTextBy(resumeKey, newGameKey, "setNewGame");
         setVisibility(restartKey, false);
     }
 
     public void setResume()
     {
-        //Debug.Log("MainMenuManager::setResume");
+        // Debug.Log("MainMenuManager::setResume");
         replaceTextBy(newGameKey, resumeKey, "setResume");
         setVisibility(restartKey, true);
     }
 
     private void setVisibility(string itemKey, bool isVisible)
     {
-        //Debug.Log(string.Format("setVisibility({0},{1})", itemKey, isVisible.ToString()));
+        // Debug.Log(string.Format("setVisibility({0},{1})", itemKey, isVisible.ToString()));
         setVisibility(_items, itemKey, isVisible, "MainMenuManager");
     }
 
     public static void setVisibility(MainMenuItem[] items, string itemKey, bool isVisible, string debug = null, float spacing = defaultVerticalSpacing)
     {
-        //Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
+        // Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.LogError("MainMenuManager::setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
+            //Debug.Log("MainMenuManager::setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
         }
         for (int index = 0; index < items.Length; index++)
         {
@@ -284,13 +286,13 @@ public class MainMenuManager : MonoBehaviour
                 items[index].displayed = isVisible;
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.LogError("MainMenuManager::setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                    //Debug.Log("MainMenuManager::setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
                 }
                 break;
             }
             else if (!string.IsNullOrEmpty(debug))
             {
-                //Debug.LogError("MainMenuManager::setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
+                //Debug.Log("MainMenuManager::setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
             }
         }
         MainMenuManager.redraw(items, debug, spacing);
@@ -298,10 +300,10 @@ public class MainMenuManager : MonoBehaviour
 
     public static void redraw(MainMenuItem[] items, string debug = null, float spacing = defaultVerticalSpacing)
     {
-        //Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
+        // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.LogError("MainMenuManager::redraw "+debug);
+            //Debug.Log("MainMenuManager::redraw "+debug);
         }
         if (items.Length != 0)
         {
@@ -311,7 +313,7 @@ public class MainMenuManager : MonoBehaviour
                 item.gameObject.SetActive(item.displayed);
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.LogError("MainMenuManager::redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
+                    //Debug.Log("MainMenuManager::redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
                 }
                 if (item.displayed)
                 {
@@ -328,83 +330,80 @@ public class MainMenuManager : MonoBehaviour
 
     private void redraw()
     {
-        //Debug.Log("MainMenuManager::redraw");
+        // Debug.Log("MainMenuManager::redraw");
         MainMenuManager.redraw(_items, null, verticalSpacing);
+    }
+
+    private MainMenuItemArray[] arrays;
+    private bool _initializedArrays = false;
+    private void initializeArrays()
+    {
+        if (!_initializedArrays)
+        {
+            arrays = new MainMenuItemArray[6] { mainMenuItems, controlItems, languageItems, soundItems, settingsItems, learnMoreItems };
+            _initializedArrays = true;
+        }
+    }
+
+    private void activateArray(MainMenuItemArray toActivate)
+    {
+        // Debug.Log("activateArray " + toActivate);
+        initializeArrays();
+
+        deselect();
+        foreach (MainMenuItemArray array in arrays)
+        {
+            array.gameObject.SetActive(array == toActivate);
+            // Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
+        }
+        copyItemsFrom(toActivate);
+        selectItem(0);
     }
 
     public void switchTo(MainMenuScreen screen)
     {
-        //Debug.Log(string.Format("switchTo({0})", screen.ToString()));
+        // Debug.Log(string.Format("switchTo({0})", screen.ToString()));
+        MainMenuItemArray toActivate = mainMenuItems;
         switch (screen)
         {
-            case MainMenuScreen.CONTROLS:
-                deselect();
-                mainMenuItems.gameObject.SetActive(false);
-                controlItems.gameObject.SetActive(true);
-                languageItems.gameObject.SetActive(false);
-                soundItems.gameObject.SetActive(false);
-                learnMoreItems.gameObject.SetActive(false);
-                copyItemsFrom(controlItems);
-                selectItem(0);
-                break;
-            case MainMenuScreen.LANGUAGES:
-                deselect();
-                mainMenuItems.gameObject.SetActive(false);
-                controlItems.gameObject.SetActive(false);
-                languageItems.gameObject.SetActive(true);
-                soundItems.gameObject.SetActive(false);
-                learnMoreItems.gameObject.SetActive(false);
-                copyItemsFrom(languageItems);
-                selectItem(0);
-                break;
-            case MainMenuScreen.SOUNDOPTIONS:
-                deselect();
-                mainMenuItems.gameObject.SetActive(false);
-                controlItems.gameObject.SetActive(false);
-                languageItems.gameObject.SetActive(false);
-                soundItems.gameObject.SetActive(true);
-                learnMoreItems.gameObject.SetActive(false);
-                copyItemsFrom(soundItems);
-                selectItem(0);
+            case MainMenuScreen.SETTINGS:
+                // Debug.Log("toActivate = " + settingsItems);
+                toActivate = settingsItems;
                 break;
             case MainMenuScreen.LEARNMOREOPTIONS:
-                deselect();
-                mainMenuItems.gameObject.SetActive(false);
-                controlItems.gameObject.SetActive(false);
-                languageItems.gameObject.SetActive(false);
-                soundItems.gameObject.SetActive(false);
-                learnMoreItems.setPlatform();
-                learnMoreItems.gameObject.SetActive(true);
-                copyItemsFrom(learnMoreItems);
-                selectItem(0);
+                toActivate = learnMoreItems;
+                break;
+            case MainMenuScreen.CONTROLS:
+                toActivate = controlItems;
+                break;
+            case MainMenuScreen.LANGUAGES:
+                toActivate = languageItems;
+                break;
+            case MainMenuScreen.SOUNDOPTIONS:
+                toActivate = soundItems;
                 break;
             case MainMenuScreen.DEFAULT:
             default:
-                deselect();
-                mainMenuItems.gameObject.SetActive(true);
-                controlItems.gameObject.SetActive(false);
-                languageItems.gameObject.SetActive(false);
-                soundItems.gameObject.SetActive(false);
-                learnMoreItems.gameObject.SetActive(false);
-                copyItemsFrom(mainMenuItems);
-                selectItem(0);
+                toActivate = mainMenuItems;
                 break;
         }
+        activateArray(toActivate);
     }
 
     private void copyItemsFrom(MainMenuItemArray array)
     {
-        //Debug.Log(string.Format("copyItemsFrom({0})", array.ToString()));
+        // Debug.Log(string.Format("copyItemsFrom({0})", array.ToString()));
         _items = new MainMenuItem[array._items.Length];
         for (int index = 0; index < array._items.Length; index++)
         {
+            // Debug.Log(string.Format("_items[{0}]={1}", index.ToString(), array._items[index].ToString()));
             _items[index] = array._items[index];
         }
     }
 
     public bool escape()
     {
-        //Debug.Log("MainMenuManager::escape");
+        // Debug.Log("MainMenuManager::escape");
         BackMainMenuItem bmmi;
         ResumeMainMenuItem rmmi;
         foreach (MainMenuItem item in _items)
@@ -438,7 +437,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void open()
     {
-        //Debug.Log("MainMenuManager::open");
+        // Debug.Log("MainMenuManager::open");
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
         gameObject.SetActive(true);
         switchTo(MainMenuScreen.DEFAULT);
@@ -447,7 +446,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void close()
     {
-        //Debug.Log("MainMenuManager::close");
+        // Debug.Log("MainMenuManager::close");
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
         cullingMaskHandler.showMainMenu(false);

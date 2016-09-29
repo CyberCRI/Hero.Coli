@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 
-public class ControlsMainMenuItemArray : MainMenuItemArray {    
-    
+public class ControlsMainMenuItemArray : MainMenuItemArray
+{
+
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "ControlsItems";
     private static ControlsMainMenuItemArray _instance;
-    public static ControlsMainMenuItemArray get() {
-        if(_instance == null) {
-            Logger.Log("ControlsMainMenuItemArray::get was badly initialized", Logger.Level.WARN);
+    public static ControlsMainMenuItemArray get()
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("ControlsMainMenuItemArray::get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<ControlsMainMenuItemArray>();
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -30,13 +33,13 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -56,15 +59,17 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
     private void updateIconsPosition(bool active)
     {
         ControlMainMenuItem cmmi;
-        foreach(MainMenuItem item in _items) {
+        foreach (MainMenuItem item in _items)
+        {
             cmmi = item as ControlMainMenuItem;
-            if(null != cmmi) {
+            if (null != cmmi)
+            {
                 cmmi.resetIcon(active);
             }
         }
     }
 
-    void OnEnable ()
+    void OnEnable()
     {
         //hide control selection sprites before moving them
         selectedKeyboardControlSprite.SetActive(false);
@@ -77,7 +82,7 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
         cellControlPanel.SetActive(true);
 
         //select control
-        cellControl.refreshControlType ();
+        cellControl.refreshControlType();
 
         //show control selection sprites
         selectedKeyboardControlSprite.SetActive(true);
@@ -86,35 +91,35 @@ public class ControlsMainMenuItemArray : MainMenuItemArray {
 
     }
 
-    void OnDisable ()
+    void OnDisable()
     {
         cellControlPanel.SetActive(false);
         selectedKeyboardControlSprite.SetActive(false);
         selectedMouseControlSprite.SetActive(false);
     }
-    
 
-        public void switchControlTypeToAbsoluteWASD()
-        {
-            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.AbsoluteWASD.ToString()));
-            cellControl.switchControlTypeToAbsoluteWASD();
-        }
-    
-        public void switchControlTypeToRelativeWASD()
-        {
-            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RelativeWASD.ToString()));
-            cellControl.switchControlTypeToRelativeWASD();
-        }
-    
-        public void switchControlTypeToLeftClickToMove()
-        {
-            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.LeftClickToMove.ToString()));
-            cellControl.switchControlTypeToLeftClickToMove();
-        }
-    
-        public void switchControlTypeToRightClickToMove()
-        {
-            RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RightClickToMove.ToString()));
-            cellControl.switchControlTypeToRightClickToMove();
-        }
+
+    public void switchControlTypeToAbsoluteWASD()
+    {
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.AbsoluteWASD.ToString()));
+        cellControl.switchControlTypeToAbsoluteWASD();
     }
+
+    public void switchControlTypeToRelativeWASD()
+    {
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RelativeWASD.ToString()));
+        cellControl.switchControlTypeToRelativeWASD();
+    }
+
+    public void switchControlTypeToLeftClickToMove()
+    {
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.LeftClickToMove.ToString()));
+        cellControl.switchControlTypeToLeftClickToMove();
+    }
+
+    public void switchControlTypeToRightClickToMove()
+    {
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RightClickToMove.ToString()));
+        cellControl.switchControlTypeToRightClickToMove();
+    }
+}

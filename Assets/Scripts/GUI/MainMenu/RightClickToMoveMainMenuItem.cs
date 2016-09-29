@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RightClickToMoveMainMenuItem : MouseControlMainMenuItem {
     public override void click() {
-        Debug.LogWarning("the game will right click to move...");
+        // Debug.Log(this.GetType());
         controlsArray.switchControlTypeToRightClickToMove();
     }
 }

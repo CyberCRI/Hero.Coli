@@ -127,6 +127,7 @@ public enum CustomDataValue
     RESTART,
     ADVENTURE,
     SANDBOX,
+    SETTINGS,
     CONTROLS,
     LANGUAGE,
     SOUND,
