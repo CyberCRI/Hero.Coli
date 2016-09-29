@@ -3,20 +3,30 @@
 public class FocusMaskManager : MonoBehaviour
 {
 
-    public GameObject focusMask, hole;
-    public UISprite focusMaskSprite;
-    public GameObject clickBlocker;
+    [SerializeField]
+    private GameObject focusMask;
+    [SerializeField]
+    private GameObject hole;
+    [SerializeField]
+    private GameObject arrowSystem;
+    [SerializeField]
+    private UISprite arrowSprite;
+    [SerializeField]
+    private GameObject clickBlocker;
     private ExternalOnPressButton _target;
     private bool _isBlinking = false;
     private bool _isAlphaIncreasing = false;
     private const float _blinkingSpeed = 0.5f;
+    private float _translatingSpeed = 100f;
     private const float _minAlpha = 0.7f;
     private const float _maxAlpha = 1f;
     private float _newAlpha;
     private bool _isClicksBlocked = false;
     private Vector3 _baseFocusMaskScale, _baseHoleScale;
+    private float _baseHoleArrowDistance;
     [SerializeField]
     private Advisor _advisor;
+    [HideInInspector]
     public CellControl cellControl;
 
     // test code
@@ -34,7 +44,7 @@ public class FocusMaskManager : MonoBehaviour
         //Debug.Log("FocusMaskManager get");
         if (_instance == null)
         {
-            Logger.Log("FocusMaskManager::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("FocusMaskManager::get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<FocusMaskManager>();
         }
         return _instance;
@@ -43,8 +53,8 @@ public class FocusMaskManager : MonoBehaviour
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -57,26 +67,27 @@ public class FocusMaskManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
 
             _instance = this;
             _baseFocusMaskScale = focusMask.transform.localScale;
             _baseHoleScale = hole.transform.localScale;
+            _baseHoleArrowDistance = arrowSprite.transform.localPosition.y;
         }
     }
 
-    void Start ()
+    void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-        reinitialize ();
+        reinitialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -190,6 +201,8 @@ public class FocusMaskManager : MonoBehaviour
                 //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);                
             }
 
+            pointAt(position);
+
             _callback = callback;
 
             if (!string.IsNullOrEmpty(advisorTextKey))
@@ -225,8 +238,9 @@ public class FocusMaskManager : MonoBehaviour
         _isBlinking = show;
         focusMask.SetActive(show);
         hole.SetActive(show);
+        arrowSprite.gameObject.SetActive(show);
         _advisor.gameObject.SetActive(show);
-        if(null != cellControl)
+        if (null != cellControl)
         {
             cellControl.freezePlayer(show);
         }
@@ -242,10 +256,11 @@ public class FocusMaskManager : MonoBehaviour
 
         _isBlinking = false;
         _isAlphaIncreasing = false;
-        focusMaskSprite.alpha = 1;
+        arrowSprite.alpha = 1;
         focusMask.transform.localScale = _baseFocusMaskScale;
         hole.transform.localScale = _baseHoleScale;
-
+        Vector3 lp = arrowSprite.transform.localPosition;
+        arrowSprite.transform.localPosition = new Vector3(lp.x, _baseHoleArrowDistance, lp.z);
         _callback = null;
     }
 
@@ -269,9 +284,11 @@ public class FocusMaskManager : MonoBehaviour
     {
         if (_isBlinking)
         {
+            Vector3 lp = arrowSprite.transform.localPosition;
             if (_isAlphaIncreasing)
             {
-                _newAlpha = focusMaskSprite.alpha + _blinkingSpeed * Time.unscaledDeltaTime;
+                _newAlpha = arrowSprite.alpha + _blinkingSpeed * Time.unscaledDeltaTime;
+                arrowSprite.transform.localPosition = new Vector3(lp.x, lp.y + _translatingSpeed * Time.unscaledDeltaTime, lp.z);
                 if (_newAlpha > _maxAlpha)
                 {
                     _newAlpha = _maxAlpha;
@@ -280,15 +297,44 @@ public class FocusMaskManager : MonoBehaviour
             }
             else
             {
-                _newAlpha = focusMaskSprite.alpha - _blinkingSpeed * Time.unscaledDeltaTime;
+                _newAlpha = arrowSprite.alpha - _blinkingSpeed * Time.unscaledDeltaTime;
+                arrowSprite.transform.localPosition = new Vector3(lp.x, lp.y - _translatingSpeed * Time.unscaledDeltaTime, lp.z);
                 if (_newAlpha < _minAlpha)
                 {
                     _newAlpha = _minAlpha;
                     _isAlphaIncreasing = true;
                 }
             }
-            focusMaskSprite.alpha = _newAlpha;
+            arrowSprite.alpha = _newAlpha;
+            float currentDistance = arrowSprite.transform.localPosition.y;
         }
+    }
+
+    private void pointAt(Vector3 position)
+    {
+        float rotZ = 0f;
+
+        TooltipManager.Quadrant quadrant = TooltipManager.getQuadrant(position);
+        float quarterTurns = 0f;
+        switch (quadrant)
+        {
+            case TooltipManager.Quadrant.BOTTOM_RIGHT:
+                quarterTurns = 0;
+                break;
+            case TooltipManager.Quadrant.TOP_RIGHT:
+                quarterTurns = 1f;
+                break;
+            case TooltipManager.Quadrant.TOP_LEFT:
+                quarterTurns = 2f;
+                break;
+            case TooltipManager.Quadrant.BOTTOM_LEFT:
+                quarterTurns = 3f;
+                break;
+            default:
+                break;
+        }
+        rotZ = 45f + quarterTurns * 90f;
+        arrowSystem.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
     }
 
     //test code

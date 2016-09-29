@@ -304,7 +304,7 @@ public class TooltipManager : MonoBehaviour
         _instance._tooltipPanel.transform.localPosition += new Vector3(xShift, yShift, 0f);
     }
 
-    private static Quadrant getQuadrant(Vector3 pos)
+    public static Quadrant getQuadrant(Vector3 pos)
     {
         Vector3 screenPos = _instance.uiCamera.WorldToScreenPoint(pos);
         bool top = screenPos.y > _instance.uiCamera.pixelHeight / 2;
