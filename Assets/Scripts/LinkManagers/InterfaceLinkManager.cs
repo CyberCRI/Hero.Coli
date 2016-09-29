@@ -28,12 +28,12 @@ public class InterfaceLinkManager : LinkManager
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -46,13 +46,13 @@ public class InterfaceLinkManager : LinkManager
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -70,7 +70,7 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private TooltipPanel biobrickTooltipPanel, deviceTooltipPanel;
 
-//deprecated
+    //deprecated
     [SerializeField]
     private GameObject craftZoneDisplayedBioBrickPrefab;
     [SerializeField]
@@ -108,7 +108,7 @@ public class InterfaceLinkManager : LinkManager
     private GameObject modalBackground;
     [SerializeField]
     private GameObject genericModalWindow;
-    
+
     public MainMenuManager mainMenu;
 
     [SerializeField]
@@ -129,9 +129,9 @@ public class InterfaceLinkManager : LinkManager
 
     public override void initialize()
     {
-        base.initialize ();
+        base.initialize();
 
-       //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
+        //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
 
         // activate everything
         activateAllChildren(true);
@@ -219,7 +219,7 @@ public class InterfaceLinkManager : LinkManager
 
     public override void finishInitialize()
     {
-        base.finishInitialize ();
+        base.finishInitialize();
 
         GameObject bars = GameObject.Find("CutSceneBlackBars");
 
@@ -241,6 +241,7 @@ public class InterfaceLinkManager : LinkManager
         AvailableBioBricksManager.get().initialize();
         focusMaskManager.reinitialize();
 
+        DevicesDisplayer.get().initializeIfNecessary();
         Inventory.get().initialize();
         GUITransitioner.get().initialize();
     }

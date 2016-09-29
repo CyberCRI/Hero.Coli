@@ -24,8 +24,11 @@ public class CraftFinalizer : MonoBehaviour {
         {
             Debug.LogError(this.GetType() + " has two running instances");
         }
-        _instance = this;
-        initializeIfNecessary();
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
     }
 
     void OnDestroy()

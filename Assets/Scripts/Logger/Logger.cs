@@ -125,13 +125,17 @@ public class Logger : MonoBehaviour {
     }
   }
 
+public delegate string toStringMethod<T>(T t);
   //TODO optimize
   public static string ToString<T>(ICollection<T> objects, string separator = defaultSeparator) {
+    return ToString<T>(objects, t => t.ToString(), separator);
+  }
+  public static string ToString<T>(ICollection<T> objects, toStringMethod<T> method, string separator = defaultSeparator) {
     if(null != objects && 0 != objects.Count)
     {
       T[] array = new T[objects.Count];
       objects.CopyTo(array, 0);
-      return string.Join(separator, Array.ConvertAll(array, o => o.ToString()));
+      return string.Join(separator, Array.ConvertAll(array, o => method(o)));
     }
     else
     {

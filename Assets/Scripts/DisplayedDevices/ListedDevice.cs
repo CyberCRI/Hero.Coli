@@ -20,8 +20,7 @@ class ListedDevice : DisplayedDevice
         {
             if (isPressed)
             {
-                Debug.Log(this.GetType() + " OnPress()");
-                //ask craft zone to display biobricks associated to this device
+                // Debug.Log(this.GetType() + " OnPress()");
                 CraftZoneManager.get().setDevice(_device);
             }
         }
@@ -31,4 +30,10 @@ class ListedDevice : DisplayedDevice
     {
         base.OnHover(isOver);
     }
+
+    // protected override void OnDestroy()
+    // {
+    //     base.OnDestroy();
+    //     Debug.Log(this.gameObject.name + " gets destroyed");
+    // }
 }

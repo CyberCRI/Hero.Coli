@@ -143,7 +143,7 @@ public class Inventory : DeviceContainer
         result.Add(getTestDevice("MyDevice"));
         result.Add(getTestDevice("MonDispositif"));
         result.Add(getTestDevice("MeinGeraet"));
-        // Debug.Log(this.GetType() + " getTestDevices() result=" + Logger.ToString<Device>(result));
+        // Debug.Log(this.GetType() + " getTestDevices() result=" + Logger.ToString<Device>(result, d => d.getInternalName()));
         return result;
     }
 
@@ -165,47 +165,48 @@ public class Inventory : DeviceContainer
         //   + ", _displayer=" + displayerString
         //   );
         _devices.Add(copy);
+        // Debug.Log(this.GetType() + " addDevice calls addInventoriedDevice");
         _displayer.addInventoriedDevice(copy);
         // Debug.Log(this.GetType() + " addDevice _devices.Add(copy); done");
     }
 
     public AddingResult canAddDevice(Device device)
     {
-        // Debug.Log(this.GetType() + " canAddDevice(" + device + ") with _devices=" + Logger.ToString<Device>(_devices));
-
+        // Debug.Log(this.GetType() + " canAddDevice(" + device.getInternalName() + ") with _devices=" + Logger.ToString<Device>(_devices, d => d.getInternalName()));
+        AddingResult result = AddingResult.FAILURE_DEFAULT;
         if (device == null)
         {
-            Debug.LogWarning(this.GetType() + " canAddDevice: device is null");
-            return AddingResult.FAILURE_DEFAULT;
+            Debug.LogWarning(this.GetType() + " canAddDevice device is null");
+            result = AddingResult.FAILURE_DEFAULT;
         }
         else
         {
-            //TODO test BioBricks equality (cf next line)
             if (_devices.Exists(d => d.Equals(device)))
-            //if (_devices.Exists(d => d.getInternalName() == device.getInternalName()))
             {
                 if (_devices.Exists(d => d.hasSameBricks(device)))
                 {
                     // Debug.Log(this.GetType() + " canAddDevice: AddingResult.FAILURE_SAME_DEVICE");
-                    return AddingResult.FAILURE_SAME_DEVICE;
+                    result = AddingResult.FAILURE_SAME_DEVICE;
                 }
                 else
                 {
                     // Debug.Log(this.GetType() + " canAddDevice: AddingResult.FAILURE_SAME_NAME");
-                    return AddingResult.FAILURE_SAME_NAME;
+                    result = AddingResult.FAILURE_SAME_NAME;
                 }
             }
             else if (_devices.Exists(d => d.hasSameBricks(device)))
             {
                 // Debug.Log(this.GetType() + " canAddDevice: AddingResult.FAILURE_SAME_BRICKS");
-                return AddingResult.FAILURE_SAME_BRICKS;
+                result = AddingResult.FAILURE_SAME_BRICKS;
             }
             else
             {
                 // Debug.Log(this.GetType() + " canAddDevice: AddingResult.SUCCESS");
-                return AddingResult.SUCCESS;
+                result = AddingResult.SUCCESS;
             }
-        }
+            // Debug.Log(this.GetType() + " canAddDevice(" + device.getInternalName() +") = " + result);
+        }        
+        return result;
     }
 
     public override AddingResult askAddDevice(Device device, bool reportToRedMetrics = false)
@@ -214,7 +215,7 @@ public class Inventory : DeviceContainer
         AddingResult addingResult = canAddDevice(device);
         if (addingResult == AddingResult.SUCCESS)
         {
-            // Debug.Log(this.GetType() + " askAddDevice: AddingResult.SUCCESS, will add device=" + device);
+            // Debug.Log(this.GetType() + " askAddDevice: AddingResult.SUCCESS, will add device=" + device.getInternalName());
             addDevice(device);
 
             if (reportToRedMetrics)
@@ -285,6 +286,7 @@ public class Inventory : DeviceContainer
     // Warning: loads from inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
     void loadDevices()
     {
+        // Debug.Log(this.GetType() + " loadDevices");
         LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
         LinkedList<BioBrick> allBioBricks = AvailableBioBricksManager.get().getAllBioBricks();
 
@@ -311,8 +313,10 @@ public class Inventory : DeviceContainer
         foreach (string file in filesToLoad)
         {
             string fullPathFile = deviceFilesPathPrefix + file;
-            // Debug.Log(this.GetType() + " loadDevices loads device file " + fullPathFile);
-            devices.AddRange(dLoader.loadDevicesFromFile(fullPathFile));
+            // Debug.Log(this.GetType() + " loads " + fullPathFile);
+            LinkedList<Device> loadedDevices = dLoader.loadDevicesFromFile(fullPathFile);
+            // Debug.Log(this.GetType() + " loaded devices " + Logger.ToString<Device>(loadedDevices, d => d.getInternalName()));
+            devices.AddRange(loadedDevices);
         }
         UpdateData(devices, new List<Device>(), new List<Device>());
     }
@@ -333,7 +337,7 @@ public class Inventory : DeviceContainer
 
     private void forgetDevices()
     {
-        // Debug.Log(this.GetType() + " forgetDevices calls inventory.UpdateData(List(), " + Logger.ToString<Device>(_devices) + "), List())");
+        // Debug.Log(this.GetType() + " forgetDevices calls inventory.UpdateData(List(), " + Logger.ToString<Device>(_devices, d => d.getInternalName()) + "), List())");
         foreach (Device device in _devices)
         {
             //ask Equipment instead

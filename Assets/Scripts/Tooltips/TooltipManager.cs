@@ -23,8 +23,11 @@ public class TooltipManager : MonoBehaviour
         {
             Debug.LogError(this.GetType() + " has two running instances");
         }
-        _instance = this;
-        loadDataIntoDico(inputFiles, _loadedInfoWindows);
+        else
+        {
+            _instance = this;
+            loadDataIntoDico(inputFiles, _loadedInfoWindows);
+        }
     }
 
     void OnDestroy()

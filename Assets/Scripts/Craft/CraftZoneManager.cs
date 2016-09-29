@@ -36,7 +36,10 @@ public class CraftZoneManager : MonoBehaviour
         {
             Debug.LogError(this.GetType() + " has two running instances");
         }
-        _instance = this;
+        else
+        {
+            _instance = this;
+        }
     }
 
     void OnDestroy()

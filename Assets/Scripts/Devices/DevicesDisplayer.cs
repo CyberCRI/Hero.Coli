@@ -25,8 +25,11 @@ public class DevicesDisplayer : MonoBehaviour
         {
             Debug.LogError(this.GetType() + " has two running instances");
         }
-        _instance = this;
-        initializeIfNecessary();
+        else
+        {
+            _instance = this;
+            initializeIfNecessary();
+        }
     }
 
     void OnDestroy()
@@ -43,9 +46,14 @@ public class DevicesDisplayer : MonoBehaviour
             {
                 for (int index = 0; index < listedDevicesGrid.childCount; index++)
                 {
-                    Destroy(listedDevicesGrid.GetChild(index).gameObject);
+                    GameObject child = listedDevicesGrid.GetChild(index).gameObject;
+                    Destroy(child);
+                    // DisplayedDevice device = child.GetComponent<DisplayedDevice>();
+                    // if(!_listedInventoriedDevices.Contains(device))
+                    // { 
+                    //     Destroy(child);
+                    // }
                 }
-
                 _initialized = true;
             }
         }
@@ -107,7 +115,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void addInventoriedDevice(Device device)
     {
-        //  Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+        //  Debug.Log("DevicesDisplayer::addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices, d => d._device.getInternalName()));
 
         if (device == null)
         {
@@ -129,7 +137,7 @@ public class DevicesDisplayer : MonoBehaviour
                 , DevicesDisplayer.DeviceType.Listed
               );
 
-            //  Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice=" + newListedDevice);
+            //  Debug.Log("DevicesDisplayer::addInventoriedDevice: newListedDevice=" + newListedDevice.gameObject.name + " " + newListedDevice._device.getInternalName());
 
             _listedInventoriedDevices.Add(newListedDevice);
             listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;

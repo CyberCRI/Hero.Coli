@@ -87,7 +87,7 @@ public static class LinkedListExtensions
     {
       level = Logger.Level.WARN;
     }
-    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!"+debugMsg, level);
+    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!\n"+debugMsg, level);
     return default(T);
   }
 

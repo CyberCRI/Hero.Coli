@@ -169,7 +169,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 _availableBioBricks
                 , b => b.getName() == brick.getName()
                 , false
-                , " " + this.GetType() + " getBrickAmount(" + brick + ")"
+                , this.GetType() + " getBrickAmount(" + brick + ")"
                 );
                 
                 if(null != currentBrick)
@@ -190,7 +190,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 _availableBioBricks
                 , b => b.getName() == brick.getName()
                 , false
-                , " " + this.GetType() + " addBrickAmount(" + brick + ", " + amount + ")"
+                , this.GetType() + " addBrickAmount(" + brick + ", " + amount + ")"
                 );
                 
                 if(null != currentBrick)
@@ -266,7 +266,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         string bbName = brick.getName();
         if ((null != brick))
         // TODO deeper safety check
-        // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, " " + this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
+        // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
         {
             // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") will _availableBioBricks.AddLast(" + brick + ")");
 
@@ -274,7 +274,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 _availableBioBricks
                 , b => b.getName() == bbName
                 , false
-                , " " + this.GetType() + " addAvailableBioBrick(" + brick + ", " + updateView + ")"
+                , this.GetType() + " addAvailableBioBrick(" + brick + ", " + updateView + ")"
                 );
 
             if (null == currentBrick)
