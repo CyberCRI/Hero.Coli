@@ -42,6 +42,7 @@ public class CutScenePursuit : CutScene {
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
+        _badGuy.GetComponent<PlatformMvt>().speed = 32f;
         this.enabled = false;
     }
 
