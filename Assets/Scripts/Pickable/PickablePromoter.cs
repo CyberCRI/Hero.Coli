@@ -1,13 +1,18 @@
 using UnityEngine;
-using System.Collections;
 
-public class PickablePromoter : PickableBioBrick {
-  public string bioBrickName;
-  public float beta;
-  public string formula;
+public class PickablePromoter : PickableBioBrick
+{
+    [SerializeField]
+    private string bioBrickName;
+    [SerializeField]
+    private float beta;
+    [SerializeField]
+    private string formula;
+    [SerializeField]
+    private int size;
 
     protected override DNABit produceDNABit()
-  {
-    return new PromoterBrick(bioBrickName, beta, formula);
-  }
+    {
+        return new PromoterBrick(bioBrickName, beta, formula, size);
+    }
 }

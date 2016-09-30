@@ -476,7 +476,7 @@ public class DisplayedDevice : DisplayedElement
 
     public override void OnPress(bool isPressed)
     {
-        Debug.Log(this.GetType() + " OnPress() of " + _device.getInternalName());
+        // Debug.Log(this.GetType() + " OnPress() of " + _device.getInternalName());
     }
 
     protected virtual void OnHover(bool isOver)

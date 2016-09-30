@@ -570,7 +570,9 @@ public class CraftDeviceSlot : MonoBehaviour
             {
                 if((abbm.getBrickAmount(brick) == 0) && !currentBricks.Contains(brick))
                 {
-                    Debug.Log("can't afford " + brick.getInternalName());
+                    // Debug.Log("can't afford " + brick.getInternalName());
+                    // Debug.Log("brick = " + brick.getInternalName() + "\nbricks = " + Logger.ToString<BioBrick>(currentBricks, b => b.getInternalName()));
+                    // Debug.Log("brick = " + brick + "\nbricks = " + Logger.ToString<BioBrick>(currentBricks));
                     return false;
                 }
             }

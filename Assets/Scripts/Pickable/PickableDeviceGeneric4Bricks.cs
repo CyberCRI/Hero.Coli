@@ -4,29 +4,48 @@ using System.Collections.Generic;
 
 public class PickableDeviceGeneric4Bricks : PickableDevice {
 
-  public string promoterName;
-  public float promoterBeta;
-  public string promoterFormula;
+  [SerializeField]
+  private string promoterName;
+  [SerializeField]
+  private float promoterBeta;
+  [SerializeField]
+  private string promoterFormula;
+  [SerializeField]
+  private int promoterSize;
 
-  public string rbsName;
-  public float rbsFactor;
+  [SerializeField]
+  private string rbsName;
+  [SerializeField]
+  private float rbsFactor;
+  [SerializeField]
+  private int rbsSize;
 
-  public string geneName;
-  public string geneProteinName;
+  [SerializeField]
+  private string geneName;
+  [SerializeField]
+  private string geneProteinName;
+  [SerializeField]
+  private int geneSize;
 
-  public string terminatorName;
-  public float terminatorFactor;
+  [SerializeField]
+  private string terminatorName;
+  [SerializeField]
+  private float terminatorFactor;
+  [SerializeField]
+  private int terminatorSize;
 
-  public string expressionModuleName;
+  [SerializeField]
+  private string expressionModuleName;
 
-  public string deviceName;
+  [SerializeField]
+  private string deviceName;
 
   protected override DNABit produceDNABit()
   {
-    PromoterBrick prom = new PromoterBrick(promoterName, promoterBeta, promoterFormula);
-    RBSBrick rbs = new RBSBrick(rbsName, rbsFactor);
-    GeneBrick gene = new GeneBrick(geneName, geneProteinName);
-    TerminatorBrick term = new TerminatorBrick(terminatorName, terminatorFactor);
+    PromoterBrick prom = new PromoterBrick(promoterName, promoterBeta, promoterFormula, promoterSize);
+    RBSBrick rbs = new RBSBrick(rbsName, rbsFactor, rbsSize);
+    GeneBrick gene = new GeneBrick(geneName, geneProteinName, geneSize);
+    TerminatorBrick term = new TerminatorBrick(terminatorName, terminatorFactor, terminatorSize);
 
     LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(new List<BioBrick>(){prom, rbs, gene, term});
     ExpressionModule module = new ExpressionModule(expressionModuleName, bricks);

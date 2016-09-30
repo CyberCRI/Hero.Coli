@@ -1,13 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
 public class PickableTerminator : PickableBioBrick {
-  public string bioBrickName;
-  public float terminatorFactor;
+  [SerializeField]
+  private string bioBrickName;
+  [SerializeField]
+  private float terminatorFactor;
+  [SerializeField]
+  private int size;
 
     protected override DNABit produceDNABit()
   {
-    return new TerminatorBrick(bioBrickName, terminatorFactor);
+    return new TerminatorBrick(bioBrickName, terminatorFactor, size);
   }
 }
 
