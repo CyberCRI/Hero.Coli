@@ -8,7 +8,7 @@ public class MovementHint : MonoBehaviour {
     private int _mousePressCount = 0;
     private float _keyboardPressedTime = 0f;
     
-    private const float _waitThreshold = 5.0f;
+    private const float _waitThreshold = 10.0f;
     private const float _pressedWaitThreshold = 1f;
     private const int _clicksThreshold = 5;
 	
@@ -16,8 +16,6 @@ public class MovementHint : MonoBehaviour {
         
 	// Update is called once per frame
 	void Update () {
-        
-        
 	   if(_elapsedTime > _waitThreshold)
        {
            InfoWindowManager.displayInfoWindow(_infoWindowCode);
