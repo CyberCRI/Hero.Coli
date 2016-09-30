@@ -19,7 +19,7 @@ public class CutSceneCompetition : CutScene {
     [SerializeField]
     private GameObject _wayPointNPC2;
     [SerializeField]
-    private float _offset = 40f;
+    private float _offset = 20f;
 	[SerializeField]
 	private Transform _camPosition;
 	[SerializeField]
@@ -81,12 +81,12 @@ public class CutSceneCompetition : CutScene {
 
 		if (col.tag == "Door") 
 		{
+			_boundCamera.target = _cellControl.gameObject.transform;
+			_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);
 			_cutSceneCam.transform.position = _boundCamera.transform.position;
 			_cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-			_boundCamera.target = _cellControl.gameObject.transform;
-			_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y - _offset, _boundCamera.offset.z);
 			_wayPoint1.transform.position = _cutSceneCam.transform.position;
-			_wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y - _offset, _cellControl.transform.position.z);
+			_wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y - _boundCamera.offset.y, _cellControl.transform.position.z);
 			_boundCamera.gameObject.SetActive(false);
 			_cutSceneCam.gameObject.SetActive(true);
 			_cutSceneCam.GetComponent<PlatformMvt> ().restart ();
@@ -99,7 +99,7 @@ public class CutSceneCompetition : CutScene {
 			_cutSceneCam.transform.position = _boundCamera.transform.position;
 			_cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
 			_boundCamera.target = _npc.gameObject.transform;
-			_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y - _offset, _boundCamera.offset.z);
+			_boundCamera.offset = new Vector3(_boundCamera.offset.x, _offset, _boundCamera.offset.z);
 			_wayPoint1.transform.position = _cutSceneCam.transform.position;
 			_wayPoint2.transform.position = new Vector3(_npc.transform.position.x, _cutSceneCam.transform.position.y - _offset, _npc.transform.position.z);
 			_boundCamera.gameObject.SetActive(false);
@@ -143,10 +143,10 @@ public class CutSceneCompetition : CutScene {
     {
 		_cutSceneCam.transform.position = _boundCamera.transform.position;
 		_cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-		_boundCamera.target = _camPosition;
-		_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);
 		_wayPoint1.transform.position = _cutSceneCam.transform.position;
-		_wayPoint2.transform.position = new Vector3(_camPosition.position.x, _cutSceneCam.transform.position.y + 40f, _camPosition.transform.position.z);
+		_wayPoint2.transform.position = new Vector3(_camPosition.position.x, _camPosition.position.y + _boundCamera.offset.y, _camPosition.transform.position.z);
+		_boundCamera.target = _camPosition;
+		_boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y - (_boundCamera.offset.y / 2), _boundCamera.offset.z);
 		_boundCamera.gameObject.SetActive(false);
 		_cutSceneCam.gameObject.SetActive(true);
 		StartCoroutine(waitForEnd());
