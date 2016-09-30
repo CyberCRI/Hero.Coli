@@ -1,6 +1,7 @@
 using System.Xml;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 //TODO refactor with FileLoader
 public class BioBrickLoader
@@ -15,6 +16,8 @@ public class BioBrickLoader
     string rbsfactor;
     string protein;
     string terminatorfactor;
+
+    int size;
 
     BioBrick bioBrick;
 
@@ -31,11 +34,13 @@ public class BioBrickLoader
         terminatorfactor = null;
 
         bioBrick = null;
+
+        size = 0;
     }
 
     public BioBrickLoader()
     {
-        Logger.Log("BioBrickLoader::BioBrickLoader()");
+        // Debug.Log(this.GetType() + " BioBrickLoader()");
     }
 
     public BioBrick loadBioBrick(XmlNode bioBrickNode)
@@ -51,21 +56,21 @@ public class BioBrickLoader
         }
         catch (NullReferenceException exc)
         {
-            Logger.Log("BioBrickLoader::loadBioBricksFromFile bad xml, missing field\n" + exc, Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " loadBioBricksFromFile bad xml, missing field\n" + exc);
             return null;
         }
         catch (Exception exc)
         {
-            Logger.Log("BioBrickLoader::loadBioBricksFromFile failed, got exc=" + exc, Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " loadBioBricksFromFile failed, got exc=" + exc);
             return null;
         }
-        Logger.Log("BioBrickLoader::loadBioBricksFromFile got id=" + bioBrickName
-          + ", size=" + bioBrickSize
-          + ", type=" + bioBrickType
-          , Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " loadBioBricksFromFile got id=" + bioBrickName
+        //   + ", size=" + bioBrickSize
+        //   + ", type=" + bioBrickType);
 
-        if (checkString(bioBrickName))
+        if (checkString(bioBrickName) && checkString(bioBrickSize))
         {
+            size = parseInt(bioBrickSize);
             switch (bioBrickType)
             {
                 case BioBricksXMLTags.PROMOTER:
@@ -89,7 +94,7 @@ public class BioBrickLoader
                     }
                     if (checkString(beta) && checkString(formula))
                     {
-                        bioBrick = new PromoterBrick(bioBrickName, parseFloat(beta), formula);
+                        bioBrick = new PromoterBrick(bioBrickName, parseFloat(beta), formula, size);
                     }
                     break;
                 case BioBricksXMLTags.RBS:
@@ -110,7 +115,7 @@ public class BioBrickLoader
                     }
                     if (checkString(rbsfactor))
                     {
-                        bioBrick = new RBSBrick(bioBrickName, parseFloat(rbsfactor));
+                        bioBrick = new RBSBrick(bioBrickName, parseFloat(rbsfactor), size);
                     }
                     break;
                 case BioBricksXMLTags.GENE:
@@ -131,7 +136,7 @@ public class BioBrickLoader
                     }
                     if (checkString(protein))
                     {
-                        bioBrick = new GeneBrick(bioBrickName, protein);
+                        bioBrick = new GeneBrick(bioBrickName, protein, size);
                     }
                     break;
                 case BioBricksXMLTags.TERMINATOR:
@@ -152,29 +157,25 @@ public class BioBrickLoader
                     }
                     if (checkString(terminatorfactor))
                     {
-                        bioBrick = new TerminatorBrick(bioBrickName, parseFloat(terminatorfactor));
+                        bioBrick = new TerminatorBrick(bioBrickName, parseFloat(terminatorfactor), size);
                     }
                     break;
                 default:
-                    Logger.Log("BioBrickLoader::loadBioBricksFromFile wrong type " + bioBrickType, Logger.Level.WARN);
+                    Debug.LogWarning(this.GetType() + " loadBioBricksFromFile wrong type " + bioBrickType);
                     break;
-            }
-            if (null != bioBrick && checkString(bioBrickSize))
-            {
-                bioBrick.setSize(parseInt(bioBrickSize));
             }
             return bioBrick;
         }
         else
         {
-            Logger.Log("BioBrickLoader::loadBioBricksFromFile Error : missing attribute id in BioBrick node", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " loadBioBricksFromFile Error : missing attribute id in BioBrick node");
             return null;
         }
     }
 
     public LinkedList<BioBrick> loadBioBricksFromFile(string filePath)
     {
-        Logger.Log("BioBrickLoader::loadBioBricksFromFile(" + filePath + ")", Logger.Level.INFO);
+        // Debug.Log(this.GetType() + " loadBioBricksFromFile(" + filePath + ")");
 
         LinkedList<BioBrick> resultBioBricks = new LinkedList<BioBrick>();
 
@@ -205,12 +206,12 @@ public class BioBrickLoader
 
     private static void logUnknownAttr(XmlNode attr, string type)
     {
-        Logger.Log("BioBrickLoader::loadBioBricksFromFile unknown attr " + attr.Name + " for " + type + " node", Logger.Level.WARN);
+        Debug.LogWarning("BioBrickLoader loadBioBricksFromFile unknown attr " + attr.Name + " for " + type + " node");
     }
 
     private static void logCurrentBioBrick(string type)
     {
-        Logger.Log("BioBrickLoader::loadBioBricksFromFile type=" + type, Logger.Level.TRACE);
+        // Debug.Log("BioBrickLoader loadBioBricksFromFile type=" + type);
     }
 
     private bool checkString(string toCheck)

@@ -365,7 +365,11 @@ public class Device: DNABit
 		string formula,//promoter
 		float rbsFactor,//rbs
 		string proteinName,//gene
-		float terminatorFactor//terminator
+		float terminatorFactor,//terminator
+    int pSize = 0,
+    int rSize = 0,
+    int gSize = 0,
+    int tSize = 0
 		) {
 
     string nullName = (name==null)?"(null)":"";
@@ -383,10 +387,10 @@ public class Device: DNABit
     }
 		
 		BioBrick[] bioBrickArray = {
-			new PromoterBrick(notNullName+"_promoter", beta, formula),
-			new RBSBrick(notNullName+"_rbs", rbsFactor),
-			new GeneBrick(notNullName+"_gene", proteinName),
-			new TerminatorBrick(notNullName+"_terminator", terminatorFactor)
+			new PromoterBrick(notNullName+"_promoter", beta, formula, pSize),
+			new RBSBrick(notNullName+"_rbs", rbsFactor, rSize),
+			new GeneBrick(notNullName+"_gene", proteinName, gSize),
+			new TerminatorBrick(notNullName+"_terminator", terminatorFactor, tSize)
 		};
 
 		LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBrickArray);

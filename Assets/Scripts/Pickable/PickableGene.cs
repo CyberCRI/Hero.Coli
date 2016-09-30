@@ -1,12 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
-public class PickableGene : PickableBioBrick {
-  public string bioBrickName;
-  public string proteinName;
+public class PickableGene : PickableBioBrick
+{
+    [SerializeField]
+    private string bioBrickName;
+    [SerializeField]
+    private string proteinName;
+    [SerializeField]
+    private int geneSize;
 
     protected override DNABit produceDNABit()
-  {
-    return new GeneBrick(bioBrickName, proteinName);
-  }
+    {
+        return new GeneBrick(bioBrickName, proteinName, geneSize);
+    }
 }
