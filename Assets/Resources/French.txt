@@ -211,9 +211,9 @@ INFO.T1_CDS.EXPLANATION=Les Séquences Codantes déterminent ce sur quoi agit un
 INFO.T1_CDS.BOTTOM=Trouvez d'autres briques pour créer votre première construction génétique !
 
 INFO.T1_RBS.TITLE=NOUVELLE BIOBRIQUE !
-INFO.T1_RBS.SUBTITLE=Vous avez trouvé votre premier RBS !
-INFO.T1_RBS.EXPLANATION=Les RBS servent à déterminer la puissance des constructions génétiques, appelé niveau d'expression. Ce RBS a un niveau d'expression de 12,6%.
-INFO.T1_RBS.BOTTOM =Trouvez d'autres briques pour créer votre première construction génétique !
+INFO.T1_RBS.SUBTITLE=Vous avez trouvé un nouveau RBS !
+INFO.T1_RBS.EXPLANATION=Les RBS servent à déterminer la puissance des constructions génétiques, appelé niveau d'expression.
+INFO.T1_RBS.BOTTOM=Ce RBS a un niveau d'expression de 12,6%.
 
 INFO.T1_TER.TITLE=NOUVELLE BIOBRIQUE !
 INFO.T1_TER.SUBTITLE=Vous avez trouvé votre premier Terminateur !
@@ -288,7 +288,7 @@ CRAFT.FINALIZATION.FAILURE_DEFAULT=Le résultat de la construction s'affiche ici
 CRAFT.BANK.TITLE=Réserve de BioBriques
 CRAFT.BANK.PROMOTER=Promoteurs
 CRAFT.BANK.RBS=RBS
-CRAFT.BANK.GENE=Séquence Codantes
+CRAFT.BANK.GENE=Séquences Codantes
 CRAFT.BANK.TERMINATOR=Terminateurs
 CRAFT.BANK.TIP=Cliquez sur une catégorie pour afficher les BioBriques.
 
@@ -299,7 +299,8 @@ CRAFT.RECIPES.TIP=Cliquez sur une construction génétique pour l'équiper - si 
 
 CRAFT.BIOBRICK.NONELEFT=ÉPUISÉ
 
-HINT.NEXT = Cliquez n'importe où dans la zone éclairée.
+HINT.NEXT=Cliquez n'importe où dans la zone éclairée.
+HINT.NEXTBUTTON=Suivant
 HINT.CRAFT.0=Vous avez assez de briques pour créer une construction, cliquez ici !
 HINT.CRAFT.1=C'est ici que vous pourrez créer des constructions génétiques.
 HINT.CRAFT.2=Commencez par cliquer sur le Promoteur.
@@ -308,10 +309,29 @@ HINT.CRAFT.4=Et maintenant, la Séquence Codante.
 HINT.CRAFT.5=Et pour finir, le Terminateur.
 HINT.CRAFT.6=Et voilà, vous avez une nouvelle construction, en haut à droite.
 HINT.CRAFT.7=Maintenant, quittez cette interface et testez votre construction.
-HINT.GFPCRAFT.0=Créons une construction à base de GFP !
+HINT.CRAFTDISCOVERY.0=Super ! Vous pouvez bouger grâce à ce flagelle !
+HINT.CRAFTDISCOVERY.1=C'est parce qu'une autre bactérie a donné cette construction génétique.
+HINT.CRAFTDISCOVERY.2=Jetons un oeil. Cliquez là-bas !
+HINT.CRAFTDISCOVERY.3=C'est ici que vous pourrez gérer vos constructions génétiques.
+HINT.CRAFTDISCOVERY.4=Votre nouvelle construction est ici à droite...
+HINT.CRAFTDISCOVERY.5=Et ici ce sont les briques qu'elle contient. On verra les détails plus tard.
+HINT.CRAFTDISCOVERY.6=Je vais vous montrer quelque chose. Cliquez sur votre construction pour la déséquiper.
+HINT.CRAFTDISCOVERY.7=Maintenant, fermez cette fenêtre pour voir ce qui s'est passé.
+HINT.CRAFTDISCOVERY.8=Le flagelle a disparu, comme on pouvait s'y attendre.
+HINT.CRAFTDISCOVERY.9=Remettons-le.
+HINT.CRAFTDISCOVERY.10=Cliquez ici, dans votre liste de constructions connues.
+HINT.CRAFTDISCOVERY.11=Super ! Vous avez compris. Partons explorer !
+HINT.RBS2CRAFT.0=C'est parti, améliorons la construction gérant les flagelles.
+HINT.RBS2CRAFT.1=Vous voyez ? C'est votre construction actuelle.
+HINT.RBS2CRAFT.2=Elle contient un RBS d'une puissance de 6% power. Nous allons l'améliorer.
+HINT.RBS2CRAFT.3=Utilisez votre nouveau RBS d'une puissance de 12.6%. Cliquez dessus !
+HINT.RBS2CRAFT.4=Vous avez vu ? Le nouveau RBS est là.
+HINT.RBS2CRAFT.5=Et voilà votre toute nouvelle construction, fraîchement améliorée.
+HINT.RBS2CRAFT.6=Fermez la fenêtre et regardez la différence !
+HINT.GFPCRAFT.0=Créons une construction utilisant cette brique !
 HINT.GFPCRAFT.1=Voilà votre construction précédente. Cliquez dessus pour l'éditer.
-HINT.GFPCRAFT.2=Cliquez sur la brique de GFP.
-HINT.GFPCRAFT.3=Et voilà votre construction à base de GFP.
+HINT.GFPCRAFT.2=Cliquez sur la brique permettant la production de GFP.
+HINT.GFPCRAFT.3=Et voilà votre construction produisant de la GFP.
 HINT.GFPCRAFT.4=Quittez pour voir ce que cette construction fait !
 HINT.RBS1CRAFT.0=Pour aller plus vite, améliorez votre construction de déplacement !
 
