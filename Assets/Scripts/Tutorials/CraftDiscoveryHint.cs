@@ -50,7 +50,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
     protected override void end()
     {
         Hero.get().gameObject.AddComponent<MovementHint>();
-        Destroy(this);
+        base.end();
     }
 }
 #endif

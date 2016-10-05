@@ -233,13 +233,14 @@ public class InterfaceLinkManager : LinkManager
         introduction2.SetActive(false);
         end.SetActive(false);
         bars.SetActive(true);
+        fade.gameObject.SetActive(true);
 
         // in WorldScreensPanel
         pauseIndicator.SetActive(false);
 
         CraftZoneManager.get().initializeIfNecessary();
         AvailableBioBricksManager.get().initialize();
-        focusMaskManager.reinitialize();
+        focusMaskManager.reset(false);
 
         DevicesDisplayer.get().initializeIfNecessary();
         Inventory.get().initialize();

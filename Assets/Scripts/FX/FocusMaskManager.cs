@@ -87,7 +87,7 @@ public class FocusMaskManager : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-        reinitialize();
+        reset(false);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -168,6 +168,8 @@ public class FocusMaskManager : MonoBehaviour
         //Debug.Log("focusOn("+position+")");
         if (null != position)
         {
+            reset(true);
+
             _target = null;
 
             //Debug.Log("old pos="+this.transform.position);
@@ -246,13 +248,12 @@ public class FocusMaskManager : MonoBehaviour
         }
     }
 
-    public void reinitialize()
+    public void reset(bool keepDisplayed)
     {
-
         //Debug.Log("FocusMaskManager reinitialize");
         this.gameObject.SetActive(true);
-        show(false);
-        clickBlocker.SetActive(false);
+        show(keepDisplayed);
+        clickBlocker.SetActive(keepDisplayed);
 
         _isBlinking = false;
         _isAlphaIncreasing = false;
@@ -276,7 +277,6 @@ public class FocusMaskManager : MonoBehaviour
             {
                 _callback();
             }
-            reinitialize();
         }
     }
 
@@ -335,6 +335,11 @@ public class FocusMaskManager : MonoBehaviour
         }
         rotZ = 45f + quarterTurns * 90f;
         arrowSystem.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
+    }
+
+    public void stopFocusOn()
+    {
+        reset(false);
     }
 
     //test code

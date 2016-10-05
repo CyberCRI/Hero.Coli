@@ -76,6 +76,7 @@ public class GFPCraftHint : MonoBehaviour
         }
         else
         {
+            FocusMaskManager.get().stopFocusOn();
             Destroy(this);
         }
     }

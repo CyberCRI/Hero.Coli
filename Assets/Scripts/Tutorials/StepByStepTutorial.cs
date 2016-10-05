@@ -32,6 +32,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected abstract string[] focusObjects { get; }
 
     private Vector3 manualScale = new Vector3(440, 77, 1);
+    private static FocusMaskManager focusMaskManager;
 
     public void next()
     {
@@ -59,6 +60,14 @@ public abstract class StepByStepTutorial : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        if (null == focusMaskManager)
+        {
+            focusMaskManager = FocusMaskManager.get();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -82,12 +91,12 @@ public abstract class StepByStepTutorial : MonoBehaviour
                         if (null != target)
                         {
                             // Debug.Log("target != null at step=" + step);
-                            FocusMaskManager.get().focusOn(target, next, textHints[step]);
+                            focusMaskManager.focusOn(target, next, textHints[step]);
                         }
                         else
                         {
                             // Debug.Log("target == null at step=" + step);
-                            FocusMaskManager.get().focusOn(go, next, textHints[step], true);
+                            focusMaskManager.focusOn(go, next, textHints[step], true);
                         }
                         // Debug.Log(this.GetType() + " prepared step=" + step);
                         prepared = true;
@@ -104,6 +113,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     protected virtual void end()
     {
+        focusMaskManager.stopFocusOn();
         Destroy(this);
     }
 }

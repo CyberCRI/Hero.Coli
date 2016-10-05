@@ -34,12 +34,12 @@ public class CraftHint : MonoBehaviour
         prepared = false;
         step++;
     }
-    
+
     void Awake()
     {
-        for(int index = 0; index < textHints.Length; index++)
+        for (int index = 0; index < textHints.Length; index++)
         {
-            textHints[index] = _textKeyPrefix+index;
+            textHints[index] = _textKeyPrefix + index;
         }
     }
 
@@ -54,14 +54,14 @@ public class CraftHint : MonoBehaviour
                 if (!prepared)
                 {
                     GameObject go = GameObject.Find(focusObjects[step]);
-                    if(go == null)
+                    if (go == null)
                     {
-                        Debug.LogError("couldn't find "+focusObjects[step]);
+                        Debug.LogError("couldn't find " + focusObjects[step]);
                     }
                     else
                     {
                         ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                        if(null != target)
+                        if (null != target)
                         {
                             FocusMaskManager.get().focusOn(target, next, textHints[step]);
                         }
@@ -70,11 +70,12 @@ public class CraftHint : MonoBehaviour
                             FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
                         prepared = true;
-                    }                    
+                    }
                 }
             }
             else
             {
+                FocusMaskManager.get().stopFocusOn();
                 Destroy(this);
             }
         }

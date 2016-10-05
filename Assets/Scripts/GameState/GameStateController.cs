@@ -363,6 +363,7 @@ public class GameStateController : MonoBehaviour
                     changeState(GameState.Pause);
                     break;
                 case GameConfiguration.GameMode.SANDBOX:
+                    fadeSprite.gameObject.SetActive(false);
                     break;
                 default:
                     Debug.LogWarning("GameStateController::Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode());
