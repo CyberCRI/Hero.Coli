@@ -4,17 +4,15 @@ public class AmbientLighting : MonoBehaviour
 {
 
     [SerializeField]
-    private Light _directionaleLight;
+    private Light _directionalLight;
     [SerializeField]
-    private Light _phenoLight;
-    [SerializeField]
-    private Light _spotLight;
+    private Light _phenoLight, _spotLight, _blackLightSpotLight;
     [SerializeField]
     private Color[] _color;
     [SerializeField]
-    private GameObject _background;
+    private Renderer _backgroundRenderer;
     [SerializeField]
-    private Renderer _backgroundBlood;
+    private Renderer _backgroundBloodRenderer;
     [SerializeField]
     private LightingSave _lightingSave;
     private float _originalDirectionalIntensity;
@@ -27,6 +25,7 @@ public class AmbientLighting : MonoBehaviour
     private Vector3 _limitGradient;
     private Hero _hero;
     private bool _blackLight = false;
+    private const string _blackLightTag = "BlackLight", _blackLightInverseTag = "BlackLightInverse";
     private bool _injured = false;
     private bool _dead = false;
     private Color _alphaColor;
@@ -62,52 +61,50 @@ public class AmbientLighting : MonoBehaviour
         light.intensity = intensity;
     }
 
-    public void enableLight(Light light, bool value)
-    {
-        light.enabled = value;
-    }
-
-
 
     ////////////Tests
 
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            changeLightProperty(_phenoLight, _color[1], 24, 4);
-            changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
-        }
-    }
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.M))
+    //     {
+    //         changeLightProperty(_phenoLight, _color[1], 24, 4);
+    //         changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
+    //     }
+    // }
 
     void Start()
     {
-        _originalDirectionalIntensity = _directionaleLight.intensity;
+        _originalDirectionalIntensity = _directionalLight.intensity;
         changeLightProperty(_phenoLight, _color[1], 24, 4);
         changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
         _ampicillinPulsingLight = GameObject.Find("AmpicillinPulsingLight").GetComponent<PulsingLight>();
         _originMaxPulse = _ampicillinPulsingLight.GetMaxIntensityValue();
         _originMinPulse = _ampicillinPulsingLight.GetMinIntensityValue();
-        _hero = this.GetComponent<Hero>();
-        Color color = _backgroundBlood.material.color;
+        _hero = Hero.get();
+        Color color = _backgroundBloodRenderer.material.color;
         color.a = 0;
-        _backgroundBlood.material.color = color;
+        _backgroundBloodRenderer.material.color = color;
         saveCurrentLighting();
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "BlackLight")
+        if (col.tag == _blackLightTag)
         {
             _blackLight = true;
+            _blackLightSpotLight.enabled = true;
+            _spotLight.enabled = false;
             _originGradient = col.transform.position;
             _limitGradient = col.transform.GetChild(0).transform.position;
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
         }
-        if (col.tag == "BlackLightInverse")
+        if (col.tag == _blackLightInverseTag)
         {
             _blackLight = true;
+            _blackLightSpotLight.enabled = true;
+            _spotLight.enabled = false;
             _originGradient = col.transform.position;
             _limitGradient = col.transform.GetChild(0).transform.position;
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
@@ -116,22 +113,26 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == "BlackLight")
+        if (col.tag == _blackLightTag)
         {
             if (this.transform.position.x <= col.transform.position.x)
             {
                 _blackLight = false;
-                changeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+                _blackLightSpotLight.enabled = false;
+                _spotLight.enabled = true;
+                changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
                 startReset();
             }
         }
-        if (col.tag == "BlackLightInverse")
+        if (col.tag == _blackLightInverseTag)
         {
             if (this.transform.position.x >= col.transform.position.x)
             {
                 _blackLight = false;
-                changeLightIntensity(_directionaleLight, _originalDirectionalIntensity);
+                _blackLightSpotLight.enabled = false;
+                _spotLight.enabled = true;
+                changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
                 startReset();
             }
@@ -140,44 +141,44 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
-        if (col.tag == "BlackLight")
+        if (col.tag == _blackLightTag)
         {
             float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
             float distance = Vector3.Distance(_originGradient, this.transform.position);
-            changeLightIntensity(_directionaleLight, 1 - (distance / distanceMax));
-            Color color = _background.GetComponent<Renderer>().material.color;
+            changeLightIntensity(_directionalLight, 1 - (distance / distanceMax));
+            Color color = _backgroundRenderer.material.color;
             color.a = 1 - (distance / distanceMax);
-            _background.GetComponent<Renderer>().material.color = color;
+            _backgroundRenderer.material.color = color;
         }
-        if (col.tag == "BlackLightInverse")
+        if (col.tag == _blackLightInverseTag)
         {
             float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
             float distance = Vector3.Distance(_originGradient, this.transform.position);
-            changeLightIntensity(_directionaleLight, distance / distanceMax);
-            Color color = _background.GetComponent<Renderer>().material.color;
+            changeLightIntensity(_directionalLight, distance / distanceMax);
+            Color color = _backgroundRenderer.material.color;
             color.a = distance / distanceMax;
-            _background.GetComponent<Renderer>().material.color = color;
+            _backgroundRenderer.material.color = color;
         }
     }
 
     public void setInjured(float life)
     {
-        if (_blackLight == false)
+        if (!_blackLight)
         {
-            changeLightIntensity(_directionaleLight, _lightingSave.GetOriginDirectional() * life);
+            changeLightIntensity(_directionalLight, _lightingSave.GetOriginDirectional() * life);
             changeLightIntensity(_phenoLight, _lightingSave.GetOriginPheno() * life);
             changeLightIntensity(_spotLight, _lightingSave.GetOriginSpot() * life);
         }
-        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor = _backgroundBloodRenderer.material.color;
         _alphaColor.a = 0.5f - life;
-        _backgroundBlood.material.color = _alphaColor;
+        _backgroundBloodRenderer.material.color = _alphaColor;
     }
 
     public void setDead()
     {
-        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor = _backgroundBloodRenderer.material.color;
         _alphaColor.a = 1f;
-        _backgroundBlood.material.color = _alphaColor;
+        _backgroundBloodRenderer.material.color = _alphaColor;
     }
 
     public void startReset()
@@ -187,20 +188,20 @@ public class AmbientLighting : MonoBehaviour
 
     public void resetLighting(float directional, float pheno, float spotLight)
     {
-        _alphaColor = _backgroundBlood.material.color;
+        _alphaColor = _backgroundBloodRenderer.material.color;
         _alphaColor.a = 0f;
-        _backgroundBlood.material.color = _alphaColor;
-        _alphaColor = _background.GetComponent<Renderer>().material.color;
+        _backgroundBloodRenderer.material.color = _alphaColor;
+        _alphaColor = _backgroundRenderer.material.color;
         _alphaColor.a = 1f;
-        _background.GetComponent<Renderer>().material.color = _alphaColor;
-        changeLightIntensity(_directionaleLight, directional);
+        _backgroundRenderer.material.color = _alphaColor;
+        changeLightIntensity(_directionalLight, directional);
         changeLightIntensity(_phenoLight, pheno);
         changeLightIntensity(_spotLight, spotLight);
     }
 
     public void saveCurrentLighting()
     {
-        _originalDirectionalIntensity = _directionaleLight.intensity;
+        _originalDirectionalIntensity = _directionalLight.intensity;
         _originalPhenoLightIntensity = _phenoLight.intensity;
         _originalSpotLightIntensity = _spotLight.intensity;
     }

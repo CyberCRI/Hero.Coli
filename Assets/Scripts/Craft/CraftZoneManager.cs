@@ -57,7 +57,7 @@ public class CraftZoneManager : MonoBehaviour
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     private const int sandboxSlotCount = 10;
-    private const int tutorialSlotCount = 1;
+    private const int tutorialSlotCount = 3;
     protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
     protected CraftDeviceSlot selectedSlot;
     protected int slotCount;

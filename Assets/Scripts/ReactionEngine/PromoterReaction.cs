@@ -51,14 +51,14 @@ using System.Xml;
 
                 - [1.3,1]X*([2.4,2]Y|[2.5,1]Z)  Activated when  [X] >= 1.3 with Stepness = 1 AND
                                                                  ([Y] >= 2.4 with Stepness = 2 OR
-                                                                  [Z] >= 2.5 with stepness = 1)
+                                                                  [Z] >= 2.5 with steepness = 1)
 
-                - !([1.3,2]X|[1.4,1]Y)          Activated when  [X] <= 1.3 with stepness = 2 OR
-                                                                [Y] <= 1.4 with stepness = 1
+                - !([1.3,2]X|[1.4,1]Y)          Activated when  [X] <= 1.3 with steepness = 2 OR
+                                                                [Y] <= 1.4 with steepness = 1
                                                                 ... But not only. See below to understand
 
-                - ![0.8,1]LacI*[3.4,2]GFP       Activated when  [LacI] <= 0.8 with stepness = 1 AND
-                                                                [GFP] >= 3.4 with stepness = 2
+                - ![0.8,1]LacI*[3.4,2]GFP       Activated when  [LacI] <= 0.8 with steepness = 1 AND
+                                                                [GFP] >= 3.4 with steepness = 2
         
 
 Synthax tree and execution:

@@ -11,19 +11,22 @@ public class PhenoLight : Phenotype {
 
   // TODO use a LinkedList to manage overlapping light sources
 
-    public Light phenoLight;   //!< The light that will be affected by the phenotype
     [SerializeField]
-    private Light _spotLight;
+    private Light _phenoLight, _spotLight, _blackLightSpotLight;
     
-    private string fluorescenceProtein;
-    private bool isSystemTriggered = false;
+    private bool _active = false;
+    private string _fluorescenceProtein;
+    private bool _isSystemTriggered = false;
     private Molecule _mol = null;
     private TriggeredLightEmitter _triggered;
+
+    private const float _maxConcentration = 270f, _maxValue = 8f;
+    private const float _steepness = _maxValue / _maxConcentration;
 
   //! Called at the beginning
   public override void StartPhenotype()
   {
-    //affectedLight.color = color;
+      
   }
 
   	/*!
@@ -34,28 +37,23 @@ public class PhenoLight : Phenotype {
    */
     public override void UpdatePhenotype()
     {
-        if(!String.IsNullOrEmpty(fluorescenceProtein))
+        if(_active)
         {
-            _mol = ReactionEngine.getMoleculeFromName(fluorescenceProtein, _molecules);
             if (_mol == null) {
-                return;   
+                _mol = ReactionEngine.getMoleculeFromName(_fluorescenceProtein, _molecules);   
             }
                 
-            float intensity = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
-            float colRadius = Phenotype.hill(_mol.getConcentration(), 100.0f, 1f, 0f, 7f);
+            float intensity = Mathf.Min(_steepness * _mol.getConcentration(), _maxValue);
     
-            phenoLight.intensity = intensity;
-            phenoLight.range = _mol.getConcentration() / 5;
-            _spotLight.color = phenoLight.color;
+            _phenoLight.intensity = intensity;
             _spotLight.intensity = intensity;
-            _spotLight.range = _mol.getConcentration() / 2;
-            _spotLight.spotAngle = _mol.getConcentration();
+            _blackLightSpotLight.intensity = intensity;
             
             if(null != _triggered)
             {
                 if(_mol.getConcentration() > _triggered.threshold)
                 {
-                    if(!isSystemTriggered)
+                    if(!_isSystemTriggered)
                     {
                         turnLightOn();
                     }
@@ -66,7 +64,7 @@ public class PhenoLight : Phenotype {
                 }
                 // The concentration fell below the threshold and the light must
                 // consequently be switched off
-                else if (isSystemTriggered)
+                else if (_isSystemTriggered)
                 {                    
                     turnLightOff();
                 }
@@ -81,7 +79,8 @@ public class PhenoLight : Phenotype {
 		if(null != lm)
         {
             _triggered = lm;
-            fluorescenceProtein = lm.protein;
+            _fluorescenceProtein = lm.protein;
+            _active = !String.IsNullOrEmpty(_fluorescenceProtein);
 		}
  	}
      
@@ -91,7 +90,8 @@ public class PhenoLight : Phenotype {
 		if(null != lm){
             turnLightOff();
             _triggered = null;
-            fluorescenceProtein = "";
+            _fluorescenceProtein = "";
+            _active = false;
 		}
 	}
     
@@ -101,11 +101,12 @@ public class PhenoLight : Phenotype {
         {
             _triggered.triggerExit();
         }
-        isSystemTriggered = false;
-        if(phenoLight)
+        _isSystemTriggered = false;
+        if(_phenoLight)
         {
-            phenoLight.enabled = false;
-            _spotLight.enabled = false;
+            _phenoLight.gameObject.SetActive(false);
+            _spotLight.gameObject.SetActive(false);
+            _blackLightSpotLight.gameObject.SetActive(false);
         }
     }
     
@@ -114,13 +115,16 @@ public class PhenoLight : Phenotype {
         if(_triggered)
         {
             _triggered.triggerStart();
-            isSystemTriggered = true;
-            if(phenoLight)
-            {
-                phenoLight.enabled = true;
-                phenoLight.color = _triggered.colorTo;
-                _spotLight.enabled = true;
-            }
+            _isSystemTriggered = true;
+            
+            _phenoLight.gameObject.SetActive(true);
+            _phenoLight.color = _triggered.colorTo;
+
+            _spotLight.gameObject.SetActive(true);
+            _spotLight.color = _triggered.colorTo;
+
+            _blackLightSpotLight.gameObject.SetActive(true);
+            _spotLight.color = _triggered.colorTo;
         }
     }
 }

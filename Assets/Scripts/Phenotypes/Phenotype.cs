@@ -47,14 +47,14 @@ public abstract class Phenotype : MonoBehaviour
     \brief Execute a hill function.
     \param x The variable of hill function (commonly the concentration of the molecule)
     \param threshold The threshold of the function (K)
-    \param stepness The stepness of the Hill function (n)
+    \param steepness The steepness of the Hill function (n)
     \param min The minimum value to return
     \param max the maximum value to return
     \return Return the value of the Hill function between min and max value.
    */
-  public static float hill(float x, float threshold, float stepness, float min, float max)
+  public static float hill(float x, float threshold, float steepness, float min, float max)
   {
-    return (float)(Math.Pow(x, stepness) / (threshold + Math.Pow(x, stepness)) * (max - min) + min);
+    return (float)(Math.Pow(x, steepness) / (threshold + Math.Pow(x, steepness)) * (max - min) + min);
   }
 
   /*!
