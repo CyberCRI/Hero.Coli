@@ -15,13 +15,16 @@ public class GFPCraftHint : MonoBehaviour
     private const string _listedPrefix = "Listed";
     private const string _device1 = "PRCONS:RBS3:MOV:DTER";
     private const string _device2 = "PRCONS:RBS2:MOV:DTER";
+    private const string _GFPdevice = "PRCONS:RBS2:FLUO1:DTER";
     private const string _brick = "AvailableDisplayedFLUO1";
     private const string _craftWindow = "CraftPanelSprite";
     private const string _exitCross = "CraftCloseButton";
     private const string _textKeyPrefix = "HINT.GFPCRAFT.";
+    private const string _craftResultPrefix = "c_";
+    private const string _backgroundSuffix = "Background";
 
     private const int _stepCount = 5;
-    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device1, _brick, _craftWindow, _exitCross };
+    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device1, _brick, _craftResultPrefix + _GFPdevice + _backgroundSuffix, _exitCross };
 
     private string[] textHints = new string[_stepCount];
 

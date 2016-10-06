@@ -247,7 +247,7 @@ MODAL.T1_NANOBOT.EXPLANATION=Aidez les nanorobots à rentrer chez eux, trouvez-l
 MODAL.T1_FLUO2.TITLE=FLUORESCENCE ROUGE !
 MODAL.T1_FLUO2.EXPLANATION=Cette brique contrôle la fluorescence rouge, qui fonctionne sous lumière verte.
 MODAL.T1_PLASMID.TITLE=UN PLASMIDE !
-MODAL.T1_PLASMID.EXPLANATION=Vous pouvez implanter de nouvelles constructions You can insert new genetic devices in your bacterium with a plasmid. Équipez une construction supplémentaire !
+MODAL.T1_PLASMID.EXPLANATION=Avec un plasmide vous pouvez équiper de nouvelles constructions. Équipez une construction supplémentaire !
 MODAL.T1_END.TITLE=FIN
 MODAL.T1_END.EXPLANATION=À suivre !
 
