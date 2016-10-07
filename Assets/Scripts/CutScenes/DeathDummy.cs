@@ -16,7 +16,7 @@ public class DeathDummy : MonoBehaviour {
     private bool _locked = false;
     private Vector3 _positionLock;
     [SerializeField]
-    private AmpicillinCutScene _ampCutScene;
+    private Zone2WallCutScene _ampCutScene;
 
     private Hashtable _optionsIn = iTween.Hash(
         "scale", _baseScaleVector,
