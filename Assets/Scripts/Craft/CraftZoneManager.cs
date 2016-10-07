@@ -16,8 +16,8 @@ public class CraftZoneManager : MonoBehaviour
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    protected const string gameObjectName = "CraftZoneManager";
-    protected static CraftZoneManager _instance;
+    private const string gameObjectName = "CraftZoneManager";
+    private static CraftZoneManager _instance;
     public static CraftZoneManager get()
     {
         // Debug.Log("CraftZoneManager get");
@@ -56,23 +56,30 @@ public class CraftZoneManager : MonoBehaviour
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    private const int sandboxSlotCount = 10;
-    private const int tutorialSlotCount = 3;
-    protected List<CraftDeviceSlot> slots = new List<CraftDeviceSlot>();
-    protected CraftDeviceSlot selectedSlot;
-    protected int slotCount;
+    private const int _sandboxSlotCount = 10;
+    private const int _tutorialSlotCount = 1;
+    private List<CraftDeviceSlot> _slots = new List<CraftDeviceSlot>();
+    public int getSlotCount()
+    {
+        return _slots.Count;
+    }
+    private CraftDeviceSlot _selectedSlot;
+    private int _slotCount;
     [SerializeField]
-    private GameObject slotPrefab;
+    private GameObject _slotPrefab;
     private const string _slotNameRoot = "slot";
+    [HideInInspector]
     public Transform slotsGrid;
-    protected LinkedList<CraftZoneDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
-    protected Device _currentDevice = null;
+    private LinkedList<CraftZoneDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
+    private Device _currentDevice = null;
+    [HideInInspector]
     public CraftFinalizer craftFinalizer;
+    [HideInInspector]
     public GameObject assemblyZonePanel;
-    protected static EditMode editMode = EditMode.UNLOCKED;
-    protected bool _initialized = false;
+    private static EditMode _editMode = EditMode.UNLOCKED;
+    private bool _initialized = false;
 
-    protected enum EditMode
+    private enum EditMode
     {
         LOCKED,
         UNLOCKED
@@ -85,21 +92,21 @@ public class CraftZoneManager : MonoBehaviour
 
     public static bool isDeviceEditionOn()
     {
-        return EditMode.UNLOCKED == editMode;
+        return EditMode.UNLOCKED == _editMode;
     }
 
     public static void setDeviceEdition(bool editionOn)
     {
-        editMode = editionOn ? EditMode.UNLOCKED : EditMode.LOCKED;
+        _editMode = editionOn ? EditMode.UNLOCKED : EditMode.LOCKED;
     }
 
-    protected LinkedList<BioBrick> _currentBioBricks
+    private LinkedList<BioBrick> _currentBioBricks
     {
         get
         {
-            if (null != selectedSlot)
+            if (null != _selectedSlot)
             {
-                return selectedSlot.getCurrentBricks();
+                return _selectedSlot.getCurrentBricks();
             }
             else
             {
@@ -113,21 +120,21 @@ public class CraftZoneManager : MonoBehaviour
         {
             if (null != slotsGrid)
             {
-                slots.Clear();
+                _slots.Clear();
 
-                slotCount = MemoryManager.get().configuration.gameMap == GameConfiguration.GameMap.SANDBOX2 ? sandboxSlotCount : tutorialSlotCount;
+                _slotCount = MemoryManager.get().configuration.gameMap == GameConfiguration.GameMap.SANDBOX2 ? _sandboxSlotCount : _tutorialSlotCount;
                 // Debug.Log("going to destroy children slots");
                 for (int index = 0; index < slotsGrid.childCount; index++)
                 {
                     Destroy(slotsGrid.GetChild(index).gameObject);
                 }
                 // Debug.Log("going to add children slots");
-                for (int index = 0; index < slotCount; index++)
+                for (int index = 0; index < _slotCount; index++)
                 {
                     addSlot();
                 }
                 // Debug.Log("done children slots");
-                selectSlot(slots[0]);
+                selectSlot(_slots[0]);
 
                 displayDevice();
                 
@@ -172,7 +179,7 @@ public class CraftZoneManager : MonoBehaviour
     public void unequip(Device device)
     {
         // Debug.Log("LBCZM unequip");
-        foreach (CraftDeviceSlot slot in slots)
+        foreach (CraftDeviceSlot slot in _slots)
         {
             // TODO check why Device.Equals fails
             if (device.hasSameBricks(slot.getCurrentDevice()))
@@ -186,13 +193,13 @@ public class CraftZoneManager : MonoBehaviour
 
     public void OnBioBricksChanged()
     {
-        foreach (CraftDeviceSlot slot in slots)
+        foreach (CraftDeviceSlot slot in _slots)
         {
             slot.updateDisplay();
         }
     }
 
-    protected static int getIndex(BioBrick brick)
+    private static int getIndex(BioBrick brick)
     {
         int idx;
         switch (brick.getType())
@@ -217,7 +224,7 @@ public class CraftZoneManager : MonoBehaviour
         return idx;
     }
 
-    protected void removePreviousDisplayedBricks()
+    private void removePreviousDisplayedBricks()
     {
         // Debug.Log(this.GetType() + " removePreviousDisplayedBricks()");
         //remove all previous biobricks
@@ -234,7 +241,7 @@ public class CraftZoneManager : MonoBehaviour
         if (null != brick)
         {
             // Debug.Log("removeBioBrick null != brick");
-            foreach (CraftDeviceSlot slot in slots)
+            foreach (CraftDeviceSlot slot in _slots)
             {
                 // Debug.Log("removeBioBrick slot "+slot);
                 if (null != slot && slot.removeBrick(brick))
@@ -252,11 +259,11 @@ public class CraftZoneManager : MonoBehaviour
     public void addSlot()
     {
         // Debug.Log("adding slot #"+slotsGrid.childCount);
-        GameObject slotGO = GameObject.Instantiate(slotPrefab, Vector3.zero, Quaternion.identity, slotsGrid) as GameObject;
+        GameObject slotGO = GameObject.Instantiate(_slotPrefab, Vector3.zero, Quaternion.identity, slotsGrid) as GameObject;
         slotGO.transform.localPosition = new Vector3(slotGO.transform.localPosition.x, slotGO.transform.localPosition.y, 0);
-        slotGO.name = _slotNameRoot + slots.Count;
+        slotGO.name = _slotNameRoot + _slots.Count;
         CraftDeviceSlot slot = slotGO.GetComponent<CraftDeviceSlot>();
-        slots.Add(slot);
+        _slots.Add(slot);
         slotsGrid.GetComponent<UIGrid>().repositionNow = true;
     }
 
@@ -265,20 +272,20 @@ public class CraftZoneManager : MonoBehaviour
         // Debug.Log(this.GetType() + " selectSlot");
         if (null != slot)
         {
-            if (null != selectedSlot)
+            if (null != _selectedSlot)
             {
-                selectedSlot.setSelectedBackground(false);
+                _selectedSlot.setSelectedBackground(false);
             }
-            selectedSlot = slot;
+            _selectedSlot = slot;
             // Debug.Log("selectSlot selectedSlot.setSelectedBackground(true); with selectedSlot="+selectedSlot);
-            selectedSlot.setSelectedBackground(true);
+            _selectedSlot.setSelectedBackground(true);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // utilities
 
-    protected BioBrick findFirstBioBrick(BioBrick.Type type)
+    private BioBrick findFirstBioBrick(BioBrick.Type type)
     {
         foreach (BioBrick brick in _currentBioBricks)
         {
@@ -291,10 +298,10 @@ public class CraftZoneManager : MonoBehaviour
     public void replaceWithBioBrick(BioBrick brick)
     {
         // Debug.Log("replaceWithBioBrick("+brick.getName()+")");
-        if (null != selectedSlot)
+        if (null != _selectedSlot)
         {
             // Debug.Log("null != selectedSlot");
-            selectedSlot.addBrick(brick);
+            _selectedSlot.addBrick(brick);
         }
         else
         {
@@ -302,7 +309,7 @@ public class CraftZoneManager : MonoBehaviour
         }
     }
 
-    protected void insertOrdered(BioBrick toInsert)
+    private void insertOrdered(BioBrick toInsert)
     {
         // Debug.Log("insertOrdered("+toInsert.getName()+")");
         BioBrick sameBrick = LinkedListExtensions.Find(_currentBioBricks, b => b.getName() == toInsert.getName());
@@ -379,7 +386,7 @@ public class CraftZoneManager : MonoBehaviour
         {
             if (!replace)
             {
-                foreach (CraftDeviceSlot slot in slots)
+                foreach (CraftDeviceSlot slot in _slots)
                 {
                     if (!slot.isEquiped)
                     {
@@ -415,17 +422,17 @@ public class CraftZoneManager : MonoBehaviour
     public void setDevice(Device device)
     {
         // Debug.Log(this.GetType() + " setDevice("+device+")");
-        if (null != selectedSlot)
+        if (null != _selectedSlot)
         {
-            selectedSlot.setDevice(device);
+            _selectedSlot.setDevice(device);
         }
     }
 
-    protected void removeAllBricksFromCraftZone()
+    private void removeAllBricksFromCraftZone()
     {
-        if (null != selectedSlot)
+        if (null != _selectedSlot)
         {
-            selectedSlot.removeAllBricks();
+            _selectedSlot.removeAllBricks();
         }
     }
 
@@ -434,7 +441,7 @@ public class CraftZoneManager : MonoBehaviour
         // Debug.Log(this.GetType() + " craft");
     }
 
-    protected void consumeBricks()
+    private void consumeBricks()
     {
         // Debug.Log(this.GetType() + " consumeBricks()");
         foreach (BioBrick brick in _currentBioBricks)
@@ -443,7 +450,7 @@ public class CraftZoneManager : MonoBehaviour
         }
     }
 
-    protected void displayDevice()
+    private void displayDevice()
     {
         // Debug.Log(this.GetType() + " displayDevice()");
         if (null != craftFinalizer)
@@ -484,7 +491,7 @@ public class CraftZoneManager : MonoBehaviour
     public Device getCurrentDevice()
     {
         // Debug.Log(this.GetType() + " getCurrentDevice");
-        return selectedSlot.getCurrentDevice();
+        return _selectedSlot.getCurrentDevice();
     }
 
     public static bool isOpenable()

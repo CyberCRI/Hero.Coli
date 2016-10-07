@@ -16,6 +16,10 @@ public class StartCutSceneController : CutScene {
     [SerializeField]
     private PickableDeviceRef4Bricks[] _devices;
     [SerializeField]
+    private PickableDeviceRef4Bricks[] _developmentDevices;
+    [SerializeField]
+    private bool _devMode;
+    [SerializeField]
     private TweenScale _tweenScale;
     [SerializeField]
     private GameObject _dialogBubble;
@@ -162,9 +166,21 @@ public class StartCutSceneController : CutScene {
                 _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 _scaling = false;
                 
-                foreach(PickableDeviceRef4Bricks device in _devices)
+                PickableDeviceRef4Bricks[] addedDevices = _devMode ? _developmentDevices : _devices;
+                CraftZoneManager czm = CraftZoneManager.get();
+                if(_devMode)
                 {
-                    CraftZoneManager.get().addAndEquipDevice(device.getDNABit() as Device, false);
+                    int currentCount = czm.getSlotCount();
+                    int targetCount = _developmentDevices.Length;
+                    for (int index = 0; index < targetCount - currentCount; index++)
+                    {
+                        czm.addSlot();
+                    }
+                }
+                
+                foreach(PickableDeviceRef4Bricks device in addedDevices)
+                {
+                    czm.addAndEquipDevice(device.getDNABit() as Device, false);
                 }
             }
 
