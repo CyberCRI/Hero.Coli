@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Potion : MonoBehaviour {
-	private static string _normalSuffix = "Normal";
-	private static string _hoverSuffix = "Hover";
-	private static string _pressedSuffix = "Pressed";
+	private const string _normalSuffix = "Normal";
+	private const string _hoverSuffix = "Hover";
+	private const string _pressedSuffix = "Pressed";
 	private static List<string> _spriteNames = new List<string>( new string[] {
 		"promoter",
     "PRCONS",

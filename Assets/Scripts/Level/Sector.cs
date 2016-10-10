@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Sector : MonoBehaviour {
 
-    protected static string staticName = "Sector";
+    protected const string staticName = "Sector";
     public int id;
     public string genericName {
         get {

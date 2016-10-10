@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 public class GenericDisplayedBioBrick : DisplayedElement {
 
-  public static string                              prefabURI               = "GUI/screen1/Devices/TinyBioBrickIconPrefab";
+  public const string                              prefabURI               = "GUI/screen1/Devices/TinyBioBrickIconPrefab";
   public static UnityEngine.Object                  genericPrefab           = null;
 
 

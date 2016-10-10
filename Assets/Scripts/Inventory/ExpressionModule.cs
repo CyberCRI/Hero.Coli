@@ -4,7 +4,7 @@ public class ExpressionModule
 {
     private string                _name;
     private LinkedList<BioBrick>  _bioBricks;
-    private static string _invalidEMName = "invalidEMName";
+    private const string _invalidEMName = "invalidEMName";
 
     //TODO factorize code with Device's
     public string displayedName { get; set; }

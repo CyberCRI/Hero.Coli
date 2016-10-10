@@ -80,15 +80,15 @@ public class ModalManager : MonoBehaviour {
   private GameObject _currentModalElement;
   private float _previousZ;
   private Dictionary<string, StandardInfoWindowInfo> _loadedModalWindows = new Dictionary<string, StandardInfoWindowInfo>();
-  private static string _genericPrefix = "MODAL.";
-  private static string _genericTitle = ".TITLE";
-  private static string _genericExplanation = ".EXPLANATION";
-    private static string _quitModalClassName = "QuitModalWindow"+completeNameSuffix;
+  private const string _genericPrefix = "MODAL.";
+  private const string _genericTitle = ".TITLE";
+  private const string _genericExplanation = ".EXPLANATION";
+    private const string _quitModalClassName = "QuitModalWindow"+completeNameSuffix;
   //the class of the component attached to the cancel button of the ModalWindow
-    private static string _cancelModalClassName = "CancelModal"+completeNameSuffix;
+    private const string _cancelModalClassName = "CancelModal"+completeNameSuffix;
     
     //TODO find a (more) robust method
-    public static string completeNameSuffix = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+    private const string completeNameSuffix = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
     
   private static StandardInfoWindowInfo retrieveFromDico(string code)
   {

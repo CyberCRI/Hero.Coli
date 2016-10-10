@@ -15,10 +15,10 @@ public class GameConfiguration {
         //TODO unlock Sandbox if Adventure was finished 
     }
     
-    private static string _adventureLevel1 = "World1.0";
-    private static string _tutorial = "Tutorial1";
-    private static string _sandboxLevel1 = "Sandbox-0.1";
-    private static string _sandboxLevel2 = "Sandbox-0.2";
+    private const string _adventureLevel1 = "World1.0";
+    private const string _tutorial = "Tutorial1";
+    private const string _sandboxLevel1 = "Sandbox-0.1";
+    private const string _sandboxLevel2 = "Sandbox-0.2";
     
     private string localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
     private string gameVersionGUIDPlayerPrefsKey = "gameVersionGUID";
@@ -76,19 +76,19 @@ public class GameConfiguration {
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //test
-    public static string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
+    public const string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";    
     //v 1.0
-    //private static string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
+    //private const string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     //v 1.31
-    //private static string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
+    //private const string gameVersionGuid = "\"5832732e-6bfb-4ac7-8df4-270c6f20b72a\"";
     //v 1.32
-    //public static string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
+    //public const string labelledGameVersionGUID = "be209fe8-0ef3-4291-a5f4-c2b389f5d77d";
     //v 1.33
-    //public static string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
+    //public const string labelledGameVersionGUID = "51b8a78a-8dd3-4a5e-9f41-01e6805e0f52";
     //v 1.40
-    //public static string labelledGameVersionGUID = "81ee441f-6cbc-45ba-a306-160905c80b97";
+    //public const string labelledGameVersionGUID = "81ee441f-6cbc-45ba-a306-160905c80b97";
     //v1.50
-    public static string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
+    public const string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
         

@@ -18,6 +18,7 @@ public class RedMetricsManager : MonoBehaviour
     public static RedMetricsManager get ()
     {
         if (_instance == null) {
+            Debug.LogWarning("RedMetricsManager badly initialized");
             _instance = GameObject.Find (gameObjectName).GetComponent<RedMetricsManager> ();
             if (null == _instance) {
                 _instance = GameObject.FindObjectOfType<RedMetricsManager> ();
@@ -26,7 +27,7 @@ public class RedMetricsManager : MonoBehaviour
                 //RedMetricsManager object is not destroyed when game restarts
                 DontDestroyOnLoad (_instance.gameObject);
             } else {
-                logMessage (MessageLevel.ERROR, "get couldn't find game object");
+                Debug.LogError("get couldn't find game object");
             }
         }
         return _instance;
@@ -34,7 +35,7 @@ public class RedMetricsManager : MonoBehaviour
     
     void Awake()
     {
-        // Debug.Log(this.GetType() + " Awake");
+        Debug.Log(this.GetType() + " Awake");
         if((_instance != null) && (_instance != this))
         {            
             Debug.LogError(this.GetType() + " has two running instances: anti duplicate initialization");
@@ -49,7 +50,7 @@ public class RedMetricsManager : MonoBehaviour
 
     void OnDestroy()
     {
-        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
        _instance = (_instance == this) ? null : _instance;
     }
 
@@ -64,7 +65,7 @@ public class RedMetricsManager : MonoBehaviour
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start");
+        Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -76,11 +77,11 @@ public class RedMetricsManager : MonoBehaviour
     private string redMetricsEvent = "event";
 
     //Redmetrics-Unity's test game version
-    private static string defaultGameVersion = "0bcc8bbb-b557-4b58-b133-761861df633b";
+    private const string defaultGameVersion = "0bcc8bbb-b557-4b58-b133-761861df633b";
     private static System.Guid defaultGameVersionGuid = new System.Guid (defaultGameVersion);
     private System.Guid gameVersionGuid = new System.Guid (defaultGameVersionGuid.ToByteArray());
 
-    private static string defaultGameSession = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
+    private const string defaultGameSession = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
     private static System.Guid defaultGameSessionGUID = new System.Guid (defaultGameSession);
     private System.Guid gameSessionGUID = new System.Guid (defaultGameSessionGUID.ToByteArray());
 
@@ -109,51 +110,20 @@ public class RedMetricsManager : MonoBehaviour
     {
         gameVersionGuid = new System.Guid (gVersion);
     }
-
-    private static void logMessage (MessageLevel level, string formattedMessage, params System.Object[] args) {
-        logMessage(level, string.Format(formattedMessage, args));
-    }
-
-    private static void logMessage (MessageLevel level, string formattedMessage, IFormatProvider format, System.Object[] args) {
-        logMessage(level, string.Format(format, formattedMessage, args));
-    }
-    
-    private static void logMessage (string message) {
-        logMessage(MessageLevel.DEFAULT, message);
-    }
-
-    private static void logMessage(MessageLevel level, string message)
-    {
-        switch (level)
-        {
-            case MessageLevel.DEFAULT:
-                //Debug.Log (message);
-                break;
-            case MessageLevel.WARNING:
-                Debug.LogWarning(message);
-                break;
-            case MessageLevel.ERROR:
-                Debug.LogError(message);
-                break;
-            default:
-                Debug.Log(message);
-                break;
-        }
-    }
   
     //////////////////////////////////////////////////
     /// standalone methods
   
     public static IEnumerator GET (string url, System.Action<WWW> callback)
     {
-        //logMessage ("GET");
+        //Debug.Log ("GET");
         WWW www = new WWW (url);
         return waitForWWW (www, callback);
     }
   
     public static IEnumerator POST (string url, Dictionary<string,string> post, System.Action<WWW> callback)
     {
-        //logMessage ("POST");
+        //Debug.Log ("POST");
         WWWForm form = new WWWForm ();
         foreach (KeyValuePair<string,string> post_arg in post) {
             form.AddField (post_arg.Key, post_arg.Value);
@@ -165,25 +135,25 @@ public class RedMetricsManager : MonoBehaviour
   
     public static IEnumerator POST (string url, byte[] post, Dictionary<string, string> headers, System.Action<WWW> callback)
     {
-        //logMessage (MessageLevel.DEFAULT, "POST url: {0}", url);
+        //Debug.Log("POST url: {0}", url);
         WWW www = new WWW (url, post, headers);
         return waitForWWW (www, callback);
     }
   
     private static IEnumerator waitForWWW (WWW www, System.Action<WWW> callback)
     {
-        //logMessage ("waitForWWW");
+        //Debug.Log ("waitForWWW");
         float elapsedTime = 0.0f;
     
         if (null == www) {
-            logMessage (MessageLevel.ERROR, "waitForWWW: null www");
+            Debug.LogError("waitForWWW: null www");
             yield return null;
         }
     
         while (!www.isDone) {
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= 30.0f) {
-                logMessage (MessageLevel.ERROR, "waitForWWW: TimeOut!");
+                Debug.LogError("waitForWWW: TimeOut!");
                 break;
             }
             yield return null;
@@ -191,12 +161,12 @@ public class RedMetricsManager : MonoBehaviour
     
         if (!www.isDone || !string.IsNullOrEmpty (www.error)) {
             string errmsg = string.IsNullOrEmpty (www.error) ? "timeout" : www.error;
-            logMessage (MessageLevel.ERROR, "waitForWWW Error: Load Failed: {0}", errmsg);
+            Debug.LogError(string.Format("waitForWWW Error: Load Failed: {0}", errmsg));
             callback (null);    // Pass null result.
             yield break;
         }
     
-        //logMessage (MessageLevel.DEFAULT, "waitForWWW: message successfully transmitted");
+        //Debug.Log("waitForWWW: message successfully transmitted");
         callback (www); // Pass retrieved result.
     }
   
@@ -206,18 +176,18 @@ public class RedMetricsManager : MonoBehaviour
   
     private void sendDataStandalone (string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
-        //logMessage("RedMetricsManager::sendDataStandalone");
+        //Debug.Log("RedMetricsManager::sendDataStandalone");
         string url = redMetricsURL + urlSuffix;
         Dictionary<string, string> headers = new Dictionary<string, string> ();
         headers.Add ("Content-Type", "application/json");
         byte[] pData = System.Text.Encoding.ASCII.GetBytes (pDataString.ToCharArray ());
-        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::sendDataStandalone StartCoroutine POST with data={0} ...", pDataString);
+        //Debug.Log("RedMetricsManager::sendDataStandalone StartCoroutine POST with data={0} ...", pDataString);
         StartCoroutine (RedMetricsManager.POST (url, pData, headers, callback));
     }
   
     private void createPlayer (System.Action<WWW> callback)
     {
-        //logMessage("RedMetricsManager::createPlayer");
+        //Debug.Log("RedMetricsManager::createPlayer");
         CreatePlayerData data = new CreatePlayerData ();
         string json = getJsonString (data);
         sendDataStandalone (redMetricsPlayer, json, callback);
@@ -225,7 +195,7 @@ public class RedMetricsManager : MonoBehaviour
   
     private void testGet (System.Action<WWW> callback)
     {
-        //logMessage("RedMetricsManager::testGet");
+        //Debug.Log("RedMetricsManager::testGet");
         string url = redMetricsURL + redMetricsPlayer;
         StartCoroutine (RedMetricsManager.GET (url, callback));
     }
@@ -233,19 +203,19 @@ public class RedMetricsManager : MonoBehaviour
     private void wwwLogger (WWW www, string origin = "default")
     {
         if (null == www) {
-            logMessage (MessageLevel.ERROR, "wwwLogger null == www from {0}", origin);
+            Debug.LogError(string.Format("wwwLogger null == www from {0}", origin));
         } else {
             if (www.error == null) {
-                logMessage (MessageLevel.DEFAULT, "RedMetricsManager::wwwLogger Success: {0} from {1}", www.text, origin);
+                Debug.Log(string.Format("RedMetricsManager::wwwLogger Success: {0} from {1}", www.text, origin));
             } else {
-                logMessage (MessageLevel.ERROR, "wwwLogger Error: {0} from {1}", www.error, origin);
+                Debug.LogError(string.Format("wwwLogger Error: {0} from {1}", www.error, origin));
             } 
         }
     }
   
     private string extractPID (WWW www)
     {
-        //logMessage("RedMetricsManager::extractPID");
+        //Debug.Log("RedMetricsManager::extractPID");
         string result = null;
         wwwLogger (www, "extractPID");
         if(www != null && www.text != null)
@@ -253,7 +223,7 @@ public class RedMetricsManager : MonoBehaviour
             string trimmed = www.text.Trim ();
             string[] split1 = trimmed.Split ('\n');
             foreach (string s1 in split1) {
-                //logMessage(s1);
+                //Debug.Log(s1);
                 if (s1.Length > 5) {
                     string[] split2 = s1.Trim ().Split (':');
                     foreach (string s2 in split2) {
@@ -274,7 +244,7 @@ public class RedMetricsManager : MonoBehaviour
     }
   
     private void trackStart (WWW www) {
-        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::trackStart: www =? null:{0}", (null == www));
+        //Debug.Log("RedMetricsManager::trackStart: www =? null:{0}", (null == www));
         string pID = extractPID (www);
         if(null != pID)
         {
@@ -297,7 +267,7 @@ public class RedMetricsManager : MonoBehaviour
         //TODO manage GLOBALPLAYERGUID
         CustomData guidCD = new CustomData (CustomDataTag.LOCALPLAYERGUID, localPlayerGUID);
         guidCD.Add(CustomDataTag.PLATFORM, Application.platform.ToString().ToLowerInvariant());
-        //logMessage(MessageLevel.DEFAULT, "generated guidCD={0}", guidCD);
+        //Debug.Log("generated guidCD={0}", guidCD);
         return guidCD;        
     } 
 
@@ -305,7 +275,7 @@ public class RedMetricsManager : MonoBehaviour
     // Should be called only after localPlayerGUID is set
     public void sendStartEvent ()
     {
-        //logMessage("RedMetricsManager::sendStartEvent");
+        //Debug.Log("RedMetricsManager::sendStartEvent");
         if (!isStartEventSent) {
             
             // all web players
@@ -318,7 +288,7 @@ public class RedMetricsManager : MonoBehaviour
             // other players + editor
             } else { 
                     //gameSessionGUID hasn't been initialized
-                    //logMessage("RedMetricsManager::sendStartEvent other players/editor: createPlayer");
+                    //Debug.Log("RedMetricsManager::sendStartEvent other players/editor: createPlayer");
                     createPlayer (www => trackStart (www));
             }   
             isStartEventSent = true;
@@ -362,7 +332,7 @@ public class RedMetricsManager : MonoBehaviour
             Debug.Log("Unity RedMetricsManager: connect");
             ConnectionData data = new ConnectionData (gameVersionGuid);
             string json = getJsonString (data);
-            //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::connect will rmConnect json={0}", json);
+            //Debug.Log("RedMetricsManager::connect will rmConnect json={0}", json);
             Application.ExternalCall ("rmConnect", json);
         }
         //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
@@ -418,6 +388,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendEvent (TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
+        Debug.Log(this.GetType() + " sendEvent " + trackingEvent);
         string checkedSection = section;
 
         //TODO remove dependency to Hero class
@@ -441,7 +412,7 @@ public class RedMetricsManager : MonoBehaviour
             }
         }
              
-        //logMessage(MessageLevel.DEFAULT, "RedMetricsManager::sendEvent({0})", trackingEvent.ToString());
+        //Debug.Log("RedMetricsManager::sendEvent({0})", trackingEvent.ToString());
         if (Application.platform == RuntimePlatform.WebGLPlayer) {
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs (trackingEvent, customData, checkedSection, checkedCoordinates, userTime);   
             if(isGameSessionGUIDCreated) {
@@ -456,12 +427,12 @@ public class RedMetricsManager : MonoBehaviour
             //TODO wait on gameSessionGUID using an IEnumerator
             if (defaultGameSessionGUID != gameSessionGUID) {
             } else {
-                logMessage (MessageLevel.ERROR, "sendEvent default player guid: no registered player!");
+                Debug.LogError("sendEvent default player guid: no registered player!");
             }
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs (gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString (data);
-            //logMessage (MessageLevel.DEFAULT, string.Format ("RedMetricsManager::sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json));
+            //Debug.Log(string.Format ("RedMetricsManager::sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone (redMetricsEvent, json, value => wwwLogger (value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
         }

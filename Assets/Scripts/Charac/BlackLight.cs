@@ -31,9 +31,9 @@ public class BlackLight : MonoBehaviour {
 	
 
 	private bool _shaderChanged = false;
-  private static string _blackLight = "BL.";
-  private static string _blackLightOn = _blackLight+"ON";
-  private static string _blackLightOff = _blackLight+"OFF";
+  private const string _blackLight = "BL.";
+  private const string _blackLightOn = _blackLight+"ON";
+  private const string _blackLightOff = _blackLight+"OFF";
 
 	// Use this for initialization
 	void Start () {

@@ -68,11 +68,11 @@ public class InfoWindowManager : MonoBehaviour {
   public GameStateController gameStateController;
 
   private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
-  private static string _genericPrefix = "INFO.";
-  private static string _genericTitle = ".TITLE";
-  private static string _genericSubtitle = ".SUBTITLE";
-  private static string _genericExplanation = ".EXPLANATION";
-  private static string _genericBottom = ".BOTTOM";
+  private const string _genericPrefix = "INFO.";
+  private const string _genericTitle = ".TITLE";
+  private const string _genericSubtitle = ".SUBTITLE";
+  private const string _genericExplanation = ".EXPLANATION";
+  private const string _genericBottom = ".BOTTOM";
 
   public enum NextAction
   {

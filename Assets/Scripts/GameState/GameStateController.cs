@@ -85,17 +85,17 @@ public class GameStateController : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static string _masterScene = "Master-Demo-0.1";
-    public static string _interfaceScene = "Interface1.0";
-    public static string _bacteriumScene = "Bacterium1.0";
+    public const string _masterScene = "Master-Demo-0.1";
+    public const string _interfaceScene = "Interface1.0";
+    public const string _bacteriumScene = "Bacterium1.0";
 
 
-    public static string keyPrefix = "KEY.";
-    public static string _inventoryKey = keyPrefix + "INVENTORY";
-    public static string _craftingKey = keyPrefix + "CRAFTING";
-    public static string _pauseKey = keyPrefix + "PAUSE";
-    public static string _sandboxKey = keyPrefix + "SANDBOX";
-    public static string _forgetDevicesKey = keyPrefix + "FORGETDEVICES";
+    public const string keyPrefix = "KEY.";
+    public const string _inventoryKey = keyPrefix + "INVENTORY";
+    public const string _craftingKey = keyPrefix + "CRAFTING";
+    public const string _pauseKey = keyPrefix + "PAUSE";
+    public const string _sandboxKey = keyPrefix + "SANDBOX";
+    public const string _forgetDevicesKey = keyPrefix + "FORGETDEVICES";
 
     private GameState _gameState;
     public GUITransitioner gUITransitioner;

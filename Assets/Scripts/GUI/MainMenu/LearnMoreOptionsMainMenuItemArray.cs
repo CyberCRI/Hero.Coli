@@ -27,10 +27,10 @@ public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray
         URLOpener.open(urlKey, newTab);
     }
 
-    private static string learnMoreKeyPrefix = "MENU.LEARNMORE.";
-    private static string sameTabKey = learnMoreKeyPrefix + "GOTOSAMETAB";
-    private static string newTabKey = learnMoreKeyPrefix + "GOTONEWTAB";
-    private static string browserKey = learnMoreKeyPrefix + "GOTOBROWSER";
+    private const string learnMoreKeyPrefix = "MENU.LEARNMORE.";
+    private const string sameTabKey = learnMoreKeyPrefix + "GOTOSAMETAB";
+    private const string newTabKey = learnMoreKeyPrefix + "GOTONEWTAB";
+    private const string browserKey = learnMoreKeyPrefix + "GOTOBROWSER";
 
     public void setPlatform()
     {

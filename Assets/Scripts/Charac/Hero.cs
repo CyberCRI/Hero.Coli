@@ -122,15 +122,15 @@ public class Hero : MonoBehaviour
     private GameObject _lastNewCell = null;
 
 
-    private static float _respawnTimeS = 1.5f;
-    private static float _disappearingTimeSRatio = 0.9f;
-    private static float _disappearingTimeS = _disappearingTimeSRatio * _respawnTimeS;
+    private const float _respawnTimeS = 1.5f;
+    private const float _disappearingTimeSRatio = 0.9f;
+    private const float _disappearingTimeS = _disappearingTimeSRatio * _respawnTimeS;
     private float _popEffectTimeS = 1.0f;
-    private static float _baseScale = 145.4339f;
+    private const float _baseScale = 145.4339f;
     private static Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
     private static Vector3 _reducedScaleVector = 0.7f * _baseScaleVector;
     private List<GameObject> _flagella = new List<GameObject>();
-    private static string checkpointSeparator = ".";
+    private const string checkpointSeparator = ".";
     private const string _keyLife = "KEY.LIFE";
     private const string _keyEnergy = "KEY.ENERGY";
 

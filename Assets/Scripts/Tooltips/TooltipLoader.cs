@@ -19,8 +19,22 @@ public class TooltipLoader {
     private string biobrickUpperString = TooltipManager.TooltipType.BIOBRICK.ToString().ToLowerInvariant();
     private string deviceUpperString = TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant();
     
-    public static string biobrickKey = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.BIOBRICK.ToString().ToUpperInvariant();
-    public static string deviceKey   = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.DEVICE.ToString().ToUpperInvariant();
+    private static string _biobrickKey = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.BIOBRICK.ToString().ToUpperInvariant();
+    public static string biobrickKey
+    {
+        get
+        {
+            return _biobrickKey;
+        }
+    }
+    private static string _deviceKey = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.DEVICE.ToString().ToUpperInvariant();
+    public static string deviceKey
+    {
+        get
+        {
+            return _deviceKey;
+        }
+    }   
 
     private string _code;
     private string _title;

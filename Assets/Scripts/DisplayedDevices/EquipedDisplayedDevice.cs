@@ -11,9 +11,9 @@ public class EquipedDisplayedDevice : DisplayedDevice
     private static float _tinyIconVerticalShift = 0.0f;
     private static float _width = 0.0f;
 
-    private static string _equipedDeviceButtonPrefabPosString = "EquipedDeviceButtonPrefabPos";
-    private static string _tinyBioBrickPosString = "TinyBioBrickIconPrefabPos";
-    private static string _tinyBioBrickPosString2 = _tinyBioBrickPosString + "2";
+    private const string _equipedDeviceButtonPrefabPosString = "EquipedDeviceButtonPrefabPos";
+    private const string _tinyBioBrickPosString = "TinyBioBrickIconPrefabPos";
+    private const string _tinyBioBrickPosString2 = _tinyBioBrickPosString + "2";
 
     private bool _displayBricks;
     private bool _isEquipScreen;

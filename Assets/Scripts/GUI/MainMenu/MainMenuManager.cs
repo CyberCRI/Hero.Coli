@@ -87,10 +87,10 @@ public class MainMenuManager : MonoBehaviour
     public float verticalSpacing;
     private const float defaultVerticalSpacing = -0.1f;
 
-    private static string menuKeyPrefix = "MENU.";
-    private static string newGameKey = menuKeyPrefix + "NEWGAME";
-    private static string resumeKey = menuKeyPrefix + "RESUME";
-    private static string restartKey = menuKeyPrefix + "RESTART";
+    private const string menuKeyPrefix = "MENU.";
+    private const string newGameKey = menuKeyPrefix + "NEWGAME";
+    private const string resumeKey = menuKeyPrefix + "RESUME";
+    private const string restartKey = menuKeyPrefix + "RESTART";
     public enum MainMenuScreen
     {
         SETTINGS,
