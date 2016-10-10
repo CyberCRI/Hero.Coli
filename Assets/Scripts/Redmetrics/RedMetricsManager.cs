@@ -95,19 +95,23 @@ public class RedMetricsManager : MonoBehaviour
     private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();
     
     public void setGameSessionGUID(string _gameSessionGUID) {
+        Debug.Log(this.GetType() + " setGameSessionGUID " + _gameSessionGUID);
         gameSessionGUID = new System.Guid (_gameSessionGUID);
     }
     
     public void setLocalPlayerGUID(string _localPlayerGUID) {     
+        Debug.Log(this.GetType() + " setLocalPlayerGUID " + _localPlayerGUID);
         localPlayerGUID = _localPlayerGUID;
     }
     
     public void setGlobalPlayerGUID(string _globalPlayerGUID) {
+        Debug.Log(this.GetType() + " setGlobalPlayerGUID " + _globalPlayerGUID);
         globalPlayerGUID = _globalPlayerGUID;
     }
   
     public void setGameVersion (string gVersion)
     {
+        Debug.Log(this.GetType() + " setGameVersion " + gVersion);
         gameVersionGuid = new System.Guid (gVersion);
     }
   
@@ -244,7 +248,7 @@ public class RedMetricsManager : MonoBehaviour
     }
   
     private void trackStart (WWW www) {
-        //Debug.Log("RedMetricsManager::trackStart: www =? null:{0}", (null == www));
+        Debug.Log("RedMetricsManager::trackStart: www =? null:" + (null == www));
         string pID = extractPID (www);
         if(null != pID)
         {
@@ -255,6 +259,7 @@ public class RedMetricsManager : MonoBehaviour
     //////////////////////////////////////////////////
   
     private void sendStartEventWithPlayerGUID() {
+        Debug.Log(this.GetType() + " sendStartEventWithPlayerGUID");
         if(string.IsNullOrEmpty(localPlayerGUID)) {
             sendEvent (TrackingEvent.START);
         } else {
@@ -275,18 +280,20 @@ public class RedMetricsManager : MonoBehaviour
     // Should be called only after localPlayerGUID is set
     public void sendStartEvent ()
     {
-        //Debug.Log("RedMetricsManager::sendStartEvent");
+        Debug.Log(this.GetType() + " sendStartEvent");
         if (!isStartEventSent) {
-            
+            Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
             // all web players
             // management of game start for webglplayer
-            if (Application.platform == RuntimePlatform.WebGLPlayer) {
-                    Debug.Log("Unity RedMetricsManager: sendStartEvent");
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                    Debug.Log(this.GetType() + " sendStartEvent calls connect");
                     connect ();
                     StartCoroutine (waitAndSendStart ());
             
             // other players + editor
             } else { 
+                    Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
                     //gameSessionGUID hasn't been initialized
                     //Debug.Log("RedMetricsManager::sendStartEvent other players/editor: createPlayer");
                     createPlayer (www => trackStart (www));
@@ -295,7 +302,7 @@ public class RedMetricsManager : MonoBehaviour
         }
     }
 
-    //called by the bowser when connection is established
+    //called by the browser when connection is established
     public void ConfirmWebplayerConnection() {
         Debug.Log("Unity RedMetricsManager: ConfirmWebplayerConnection");
         isGameSessionGUIDCreated = true;
@@ -328,8 +335,10 @@ public class RedMetricsManager : MonoBehaviour
     //webplayer
     public void connect ()
     {
+        Debug.Log(this.GetType() + " connect");
         if (Application.platform == RuntimePlatform.WebGLPlayer) {
             Debug.Log("Unity RedMetricsManager: connect");
+            // force to wait for MemoryManager
             ConnectionData data = new ConnectionData (gameVersionGuid);
             string json = getJsonString (data);
             //Debug.Log("RedMetricsManager::connect will rmConnect json={0}", json);
@@ -388,7 +397,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendEvent (TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
-        Debug.Log(this.GetType() + " sendEvent " + trackingEvent);
+        Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
         string checkedSection = section;
 
         //TODO remove dependency to Hero class

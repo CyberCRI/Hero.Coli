@@ -62,21 +62,28 @@ public class MemoryManager : MonoBehaviour
 
     void Start ()
     {
-        // Debug.Log(this.GetType() + " Start");
+        Debug.Log(this.GetType() + " Start");
         
         //TODO manage RedMetricsManager's globalPlayerGUID
         string playerGUID = configuration.playerGUID;
                 
+        Debug.Log(this.GetType() + " Start set playerGUID to " + playerGUID);
+
         // Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
         //     + " & configuration.isTestGUID()=" + configuration.isTestGUID()
         //     + " & Application.isEditor=" + Application.isEditor
         // );
 
         RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
+
+        Debug.Log(this.GetType() + " Start called RedMetricsManager setLocalPlayerGUID");
+
+        Debug.Log(this.GetType() + "configuration.gameVersionGUID = " + configuration.gameVersionGUID);
+
         RedMetricsManager.get().sendStartEvent();
                 
-        // Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
-        //                             , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
+        Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
+                                    , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 

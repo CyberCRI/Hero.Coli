@@ -95,49 +95,67 @@ public class GameConfiguration {
     private string _playerGUID;
     public string playerGUID {
         get {
+            Debug.Log(this.GetType() + " playerGUID get");
             if (string.IsNullOrEmpty(_playerGUID)) {
+                Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(_playerGUID)");
                 //TODO make it work through different versions of the game,
                 //     so that memory is not erased every time a new version of the game is published
                 string storedGUID = PlayerPrefs.GetString(localPlayerGUIDPlayerPrefsKey);
                 if(string.IsNullOrEmpty(storedGUID)) {
+                    Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(storedGUID)");
                     _playerGUID = Guid.NewGuid().ToString();
                     PlayerPrefs.SetString(localPlayerGUIDPlayerPrefsKey, _playerGUID);
                 } else {
+                    Debug.Log(this.GetType() + " playerGUID get _playerGUID = storedGUID");
                     _playerGUID = storedGUID;
                 }
             }
+            Debug.Log(this.GetType() + " playerGUID get returns " + _playerGUID);
             return _playerGUID;
         }
     }
     
     private string _gameVersionGUID;
-    public string gameVersionGUID {
-        get {
-            if (string.IsNullOrEmpty(_gameVersionGUID)) {
+    public string gameVersionGUID
+    {
+        get
+        {
+            Debug.Log(this.GetType() + "gameVersionGUID get");
+            if (string.IsNullOrEmpty(_gameVersionGUID))
+            {
                 string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
-                if(string.IsNullOrEmpty(storedGUID)) {
-                    
+                if (string.IsNullOrEmpty(storedGUID))
+                {
+
                     //if the game is launched in the editor,
                     // sets the localPlayerGUID to a test GUID 
                     // so that events are logged onto a test version
                     // instead of the regular game version
                     // to prevent data from being contaminated by tests
                     setMetricsDestination(!Application.isEditor);
-                } else {
+                }
+                else
+                {
+                    Debug.Log(this.GetType() + "gameVersionGUID get calls set to storedGUID = " + storedGUID);
                     gameVersionGUID = storedGUID;
                 }
             }
             return _gameVersionGUID;
         }
-        set {
+        set
+        {
+            Debug.Log(this.GetType() + " gameVersionGUID set to " + value);
             _gameVersionGUID = value;
             PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, _gameVersionGUID);
-            if(Application.platform == RuntimePlatform.WebGLPlayer) {
-                RedMetricsManager.get().disconnect ();
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                RedMetricsManager.get().disconnect();
             }
-            RedMetricsManager.get ().setGameVersion(_gameVersionGUID);
-            if(Application.platform == RuntimePlatform.WebGLPlayer) {
-                RedMetricsManager.get().connect ();
+            Debug.Log(this.GetType() + " gameVersionGUID set calls RedMetricsManager setGameVersion");
+            RedMetricsManager.get().setGameVersion(_gameVersionGUID);
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                RedMetricsManager.get().connect();
             }
             GameStateController.updateAdminStatus();
         }
@@ -145,6 +163,7 @@ public class GameConfiguration {
     
     //sets the destination to which logs will be sent
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion) {
+        Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
         if(wantToBecomeLabelledGameVersion) { //sets the default destination: a labelled game version
             gameVersionGUID = labelledGameVersionGUID;
         } else { //sets a test version destination
@@ -163,6 +182,7 @@ public class GameConfiguration {
     }
     
     public bool isTestGUID() {
+        Debug.Log(this.GetType() + " isTestGUID");
         return testVersionGUID == gameVersionGUID;
     }
 
