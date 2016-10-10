@@ -9,9 +9,21 @@ public class EndCutScene : CutScene {
     private GameObject _nanoBot;
     private NanobotsCounter _nanoCounter;
     private int iteration = 0;
+    private bool _started = false;
+    private PlatformMvt _platformMvt;
+    [SerializeField]
+    private GameObject _waypoint1;
+    [SerializeField]
+    private GameObject _waypoint2;
+    [SerializeField]
+    private GameObject _waypoint1NPC1;
+    [SerializeField]
+    private GameObject _waypoint2NPC1;
+    [SerializeField]
+    private GameObject _waypoint3NPC1;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         _nanoCounter = GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>();
 	}
 	
@@ -41,8 +53,9 @@ public class EndCutScene : CutScene {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "CutSceneElement")
+        if (col.tag == "CutSceneElement" && _started == false)
         {
+            _started = true;
             start();
         }
     }
@@ -58,8 +71,28 @@ public class EndCutScene : CutScene {
         }
         else
         {
-            end();
+            StartCoroutine(WaitForSecondPart());
+            iteration = 0;
         }
+    }
+
+    void SecondPart()
+    {
+        CopyComponent(NPCs[0].GetComponent<PlatformMvt>(), _cellControl.gameObject);
+        _cellControl.gameObject.AddComponent<RotationUpdate>();
+        _platformMvt = _cellControl.GetComponent<PlatformMvt>();
+        _waypoint1.transform.position = _cellControl.transform.position;
+        _platformMvt.ClearWaypoints();
+        _platformMvt.AddWayPoint(_waypoint1);
+        _platformMvt.AddWayPoint(_waypoint2);
+        _platformMvt.speed = 4;
+
+        _platformMvt = NPCs[0].GetComponent<PlatformMvt>();
+        _platformMvt.ClearWaypoints();
+        _platformMvt.AddWayPoint(_waypoint1NPC1);
+        _platformMvt.AddWayPoint(_waypoint2NPC1);
+        _platformMvt.AddWayPoint(_waypoint3NPC1);
+        StartCoroutine(GoOneByOne());
     }
 
     IEnumerator InstantiateNanobot()
@@ -72,5 +105,41 @@ public class EndCutScene : CutScene {
         yield return new WaitForSeconds(1.5f);
         CheckForNext();
         yield return null;
+    }
+
+    IEnumerator WaitForSecondPart()
+    {
+        yield return new WaitForSeconds(5f);
+        SecondPart();
+        yield return null;
+    }
+
+    IEnumerator GoOneByOne()
+    {
+        while (iteration < _nanoCounter.GetNanoCount())
+        {
+            yield return new WaitForSeconds(1.5f);
+            NPCs[iteration].GetComponent<PlatformMvt>().enabled = true;
+            NPCs[iteration].GetComponent<RotationUpdate>().SetIsControlledExternally(false);
+            iteration++;
+            yield return null;
+        }
+        yield return null;
+    }
+
+
+
+
+    Component CopyComponent(Component original, GameObject destination)
+    {
+        System.Type type = original.GetType();
+        Component copy = destination.AddComponent(type);
+        // Copied fields can be restricted with BindingFlags
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+        return copy;
     }
 }

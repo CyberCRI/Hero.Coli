@@ -94,5 +94,15 @@ public class PlatformMvt : MonoBehaviour {
         points[id].transform.position = position;
         points[id].transform.rotation = rotation;
     }
+
+    public void AddWayPoint(GameObject waypoint)
+    {
+        points.Add(waypoint);
+    }
+
+    public void ClearWaypoints()
+    {
+        points.Clear();
+    }
 	
 }

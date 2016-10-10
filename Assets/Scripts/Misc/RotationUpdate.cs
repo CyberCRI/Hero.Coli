@@ -65,4 +65,9 @@ public class RotationUpdate : MonoBehaviour {
         }
         yield return null;
     }
+
+    public void SetIsControlledExternally(bool  value)
+    {
+        _isControlledExternally = value;
+    }
 }
