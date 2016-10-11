@@ -227,7 +227,7 @@ public class RedMetricsManager : MonoBehaviour
         {
             if (www.error == null)
             {
-                // Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
+                Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
             }
             else
             {
