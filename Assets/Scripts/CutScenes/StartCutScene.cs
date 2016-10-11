@@ -168,14 +168,12 @@ public class StartCutScene : CutScene {
                 
                 PickableDeviceRef4Bricks[] addedDevices = _devMode ? _developmentDevices : _devices;
                 CraftZoneManager czm = CraftZoneManager.get();
-                if(_devMode)
+                
+                int currentCount = czm.getSlotCount();
+                int targetCount = addedDevices.Length;
+                for (int index = 0; index < targetCount - currentCount; index++)
                 {
-                    int currentCount = czm.getSlotCount();
-                    int targetCount = _developmentDevices.Length;
-                    for (int index = 0; index < targetCount - currentCount; index++)
-                    {
-                        czm.addSlot();
-                    }
+                    czm.addSlot();
                 }
                 
                 foreach(PickableDeviceRef4Bricks device in addedDevices)
