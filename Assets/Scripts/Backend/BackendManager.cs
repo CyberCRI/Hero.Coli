@@ -11,7 +11,7 @@ public class BackendManager : MonoBehaviour
     void Update()
     {
         //logging mode: to test or to production RedMetrics version
-        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl))
         {
             MemoryManager.get().configuration.switchMetricsGameVersion();
             isTestGUID = MemoryManager.get().configuration.isTestGUID();
@@ -29,24 +29,24 @@ public class BackendManager : MonoBehaviour
 
             StartCoroutine(waitAndDestroy(createMessage(msg)));
         }
-        //toggle tutorial mode
-        else if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        {
-            string msg;
-            if(MemoryManager.get().configuration.tutorialMode == GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER)
-            {
-                MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START1FLAGELLUM4BRICKS;
-                msg = "MODE = 1FLAGELLUM 4BRICKS";
-            }
-            else
-            {
-                 MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER;
-                 msg = "MODE = START0FLAGELLUM HORIZONTALTRANSFER";
-            }
-            StartCoroutine(waitAndDestroy(createMessage(msg)));
-        }
+        // //toggle tutorial mode
+        // else if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        // {
+        //     string msg;
+        //     if(MemoryManager.get().configuration.tutorialMode == GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER)
+        //     {
+        //         MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START1FLAGELLUM4BRICKS;
+        //         msg = "MODE = 1FLAGELLUM 4BRICKS";
+        //     }
+        //     else
+        //     {
+        //          MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER;
+        //          msg = "MODE = START0FLAGELLUM HORIZONTALTRANSFER";
+        //     }
+        //     StartCoroutine(waitAndDestroy(createMessage(msg)));
+        // }
     }
-    
+
     public GameObject createMessage(string msg)
     {
         GameObject go = new GameObject();

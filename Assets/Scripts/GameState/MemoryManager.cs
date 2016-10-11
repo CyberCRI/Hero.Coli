@@ -24,10 +24,10 @@ public class MemoryManager : MonoBehaviour
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
-             Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
-             Destroy(this.gameObject);
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
+            Destroy(this.gameObject);
         }
         else
         {
@@ -39,10 +39,10 @@ public class MemoryManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false; 
+    private bool _initialized = false;
     private void initializeIfNecessary(bool onlyIfEmpty = true)
     {
         if (!_initialized)
@@ -51,23 +51,23 @@ public class MemoryManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
             // Debug.Log(this.GetType() + " initializeIfNecessary");
-            
+
             if (!onlyIfEmpty || 0 == _loadedLevelInfo.Count)
             {
                 loadLevelData(inputFiles, _loadedLevelInfo);
             }
             _initialized = true;
         }
-    } 
+    }
 
-    void Start ()
+    void Start()
     {
-        Debug.Log(this.GetType() + " Start");
-        
+        // Debug.Log(this.GetType() + " Start");
+
         //TODO manage RedMetricsManager's globalPlayerGUID
         string playerGUID = configuration.playerGUID;
-                
-        Debug.Log(this.GetType() + " Start set playerGUID to " + playerGUID);
+
+        // Debug.Log(this.GetType() + " Start set playerGUID to " + playerGUID);
 
         // Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
         //     + " & configuration.isTestGUID()=" + configuration.isTestGUID()
@@ -76,14 +76,15 @@ public class MemoryManager : MonoBehaviour
 
         RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
 
-        Debug.Log(this.GetType() + " Start called RedMetricsManager setLocalPlayerGUID");
+        // Debug.Log(this.GetType() + " Start called RedMetricsManager setLocalPlayerGUID");
 
-        Debug.Log(this.GetType() + "configuration.gameVersionGUID = " + configuration.gameVersionGUID);
+        configuration.initializeGameVersionGUID();
+
+        // Debug.Log(this.GetType() + "configuration.gameVersionGUID = " + configuration.gameVersionGUID);
 
         RedMetricsManager.get().sendStartEvent();
-                
-        Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}"
-                                    , configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
+
+        // Debug.Log(string.Format(this.GetType() + " Start initial game configuration={0}, labelledGameVersionGUID={1}, playerGUID={2}", configuration, GameConfiguration.labelledGameVersionGUID, playerGUID));
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,7 +122,7 @@ public class MemoryManager : MonoBehaviour
 
     public bool addOrUpdateData(string key, string value)
     {
-        Logger.Log("MemoryManager::addOrUpdateData", Logger.Level.DEBUG);
+        // Debug.Log("MemoryManager::addOrUpdateData");
         if (_savedData.ContainsKey(key))
         {
             _savedData.Remove(key);
@@ -131,13 +132,13 @@ public class MemoryManager : MonoBehaviour
 
     public bool tryGetData(string key, out string value)
     {
-        Logger.Log("MemoryManager::tryGetData", Logger.Level.DEBUG);
+        // Debug.Log("MemoryManager::tryGetData");
         return _savedData.TryGetValue(key, out value);
     }
 
     private void loadLevelData(string[] inputFiles, Dictionary<string, LevelInfo> dico)
     {
-        Logger.Log("MemoryManager::loadLevelData", Logger.Level.DEBUG);
+        // Debug.Log("MemoryManager::loadLevelData");
         FileLoader loader = new FileLoader();
 
         foreach (string file in inputFiles)
@@ -156,12 +157,12 @@ public class MemoryManager : MonoBehaviour
 
     private LevelInfo retrieveFromDico(string code)
     {
-        Logger.Log("MemoryManager::retrieveFromDico", Logger.Level.DEBUG);
+        // Debug.Log("MemoryManager::retrieveFromDico");
         LevelInfo info;
         //TODO set case-insensitive
         if (!_loadedLevelInfo.TryGetValue(code, out info))
         {
-            Logger.Log("MemoryManager::retrieveFromDico(" + code + ") failed", Logger.Level.WARN);
+            Debug.LogWarning("MemoryManager::retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;
@@ -169,7 +170,7 @@ public class MemoryManager : MonoBehaviour
 
     public bool tryGetCurrentLevelInfo(out LevelInfo levelInfo)
     {
-        Logger.Log("MemoryManager::tryGetCurrentLevelInfo", Logger.Level.DEBUG);
+        // Debug.Log("MemoryManager::tryGetCurrentLevelInfo");
         levelInfo = null;
         return _loadedLevelInfo.TryGetValue(MemoryManager.get().configuration.getSceneName(), out levelInfo);
     }
