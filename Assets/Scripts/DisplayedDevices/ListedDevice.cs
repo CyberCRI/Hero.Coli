@@ -22,6 +22,7 @@ class ListedDevice : DisplayedDevice
             {
                 // Debug.Log(this.GetType() + " OnPress()");
                 CraftZoneManager.get().setDevice(_device);
+                RedMetricsManager.get ().sendEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
             }
         }
     }

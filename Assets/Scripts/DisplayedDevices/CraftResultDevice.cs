@@ -10,6 +10,7 @@ public class CraftResultDevice : DisplayedDevice {
     if(null != slot)
     {
         // Debug.Log("CraftResultDevice OnPress("+isPressed+") slot != null");
+        RedMetricsManager.get ().sendEvent(TrackingEvent.REMOVE, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
         slot.removeAllBricks();
     }
     // else

@@ -27,6 +27,9 @@ public enum TrackingEvent {
     REACH,
     SWITCH,
     UNEQUIP,
+    SELECT,
+    ADD,
+    REMOVE,
 	//main menu
 	SELECTMENU,
     CONFIGURE,

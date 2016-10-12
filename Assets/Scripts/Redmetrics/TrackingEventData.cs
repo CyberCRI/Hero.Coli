@@ -106,6 +106,13 @@ public enum CustomDataTag
     BIOBRICK,
     DEVICE,
 
+    NANOBOT,
+    PLASMID,
+
+    SOURCE,
+
+    SLOT,
+
     GAMELEVEL,
 
     OPTION,
@@ -131,7 +138,11 @@ public enum CustomDataValue
     CONTROLS,
     LANGUAGE,
     SOUND,
-    LEARNMORE
+    LEARNMORE,
+
+    MINE,
+    ENEMY,
+    SUICIDEBUTTON
 }
 
 public class CustomData: Dictionary<string, string>

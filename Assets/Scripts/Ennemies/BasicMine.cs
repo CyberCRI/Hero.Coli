@@ -12,6 +12,7 @@ public class BasicMine : ResettableMine
         detonate();
         if (collision.gameObject.name == Hero.gameObjectName)
         {
+            RedMetricsManager.get ().sendEvent(TrackingEvent.DEATH, new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
             Hero.get().getLifeManager().setSuddenDeath(true);
         }
         else if (collision.gameObject.tag == "NPC")

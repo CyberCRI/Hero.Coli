@@ -16,8 +16,15 @@ public class NanobotsPickUpHandler : MonoBehaviour {
             }
             _nanoCounter = (null==_nanoCounter)?GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>():_nanoCounter;
             _nanoCounter.updateLabel(_pickedUpNumber);
+            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.NANOBOT, transform.parent.transform.gameObject.name));
             Destroy(this.gameObject);
         }
+    }
+
+    public static void clear()
+    {
+        _nanoCounter = null;
+        _pickedUpNumber = 0;
     }
 
     /*void OnDestroy()

@@ -107,6 +107,7 @@ public void Initialize()
                 {
                     //Debug.LogError("_biobrick.amount > 0");
                     _craftZoneManager.replaceWithBioBrick(_biobrick);
+                    RedMetricsManager.get ().sendEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.BIOBRICK, _biobrick.getInternalName()));
                 }
                 else
                 {

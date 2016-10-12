@@ -716,6 +716,7 @@ public class GameStateController : MonoBehaviour
         DisplayedDevice.clear();
         PickablePlasmid.clear();
         AvailableDisplayedBioBrick.clear();
+        NanobotsPickUpHandler.clear();
 
         SceneManager.LoadScene(_masterScene);
     }
