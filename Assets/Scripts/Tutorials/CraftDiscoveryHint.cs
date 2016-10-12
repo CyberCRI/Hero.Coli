@@ -6,7 +6,12 @@ public class CraftDiscoveryHint : FakeStepByStepTutorial { }
 using UnityEngine;
 public class CraftDiscoveryHint : StepByStepTutorial
 {
-    private const string _cellPanelEquippedDeviceBackground = _equippedPrefix + _moveDevice1 + _backgroundSuffix;
+    // different possibilities for bugfix
+    private const string _cellPanelEquippedDeviceBackground1 = _equippedPrefix + _moveDevice1 + _backgroundSuffix;
+    private const string _cellPanelEquippedDeviceBackground2 = "EquipedDisplayedDeviceWithMoleculesPrefab(Clone)" + _backgroundSuffix;
+    private const string _cellPanelEquippedDeviceBackground3 =  "EquippedDisplayedDeviceWithMoleculeList";
+    private const string _cellPanelEquippedDeviceBackground4 = "EquippedDisplayedDeviceWithMoleculeGrid";
+
     private const string _craftResultDevice = _craftResultPrefix + _moveDevice1;
     private const string _craftResultDeviceBackground = _craftResultDevice + _backgroundSuffix;
 
@@ -27,7 +32,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
     }
     private string[] _focusObjects = new string[_stepCount] { 
         _bacterium,
-        _cellPanelEquippedDeviceBackground,
+        _cellPanelEquippedDeviceBackground2,
         _craftButton,
         _craftWindow,
         _craftResultDeviceBackground,
