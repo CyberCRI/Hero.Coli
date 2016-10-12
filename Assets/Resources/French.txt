@@ -248,6 +248,8 @@ MODAL.T1_FLUO2.TITLE=FLUORESCENCE ROUGE !
 MODAL.T1_FLUO2.EXPLANATION=Cette brique contrôle la fluorescence rouge, qui fonctionne sous lumière verte.
 MODAL.T1_PLASMID.TITLE=UN PLASMIDE !
 MODAL.T1_PLASMID.EXPLANATION=Avec un plasmide vous pouvez équiper de nouvelles constructions.
+MODAL.T1_PRBAD3.TITLE=PROMOTEUR RÉGULÉ
+MODAL.T1_PRBAD3.EXPLANATION=Ce nouveau promoteur n'est actif que dans les zones riches en l-arabinose.
 MODAL.T1_END.TITLE=FIN
 MODAL.T1_END.EXPLANATION=Félicitations, vous êtes parvenu à vous évader !
 
@@ -334,6 +336,15 @@ HINT.GFPCRAFT.2=Cliquez sur la brique permettant la production de GFP.
 HINT.GFPCRAFT.3=Et voilà votre construction produisant de la GFP.
 HINT.GFPCRAFT.4=Quittez pour voir ce que cette construction fait !
 HINT.RBS1CRAFT.0=Pour aller plus vite, améliorez votre construction de déplacement !
+HINT.PLASMID.0=Allons voir comment utiliser le plasmide !
+HINT.PLASMID.1=Il permet d'avoir un nouvel emplacement pour les briques, ici. Sélectionnez-le !
+HINT.PLASMID.2=Vous pouvez commencer à mettre des briques dedans.
+HINT.PLASMID.3=Mais vous n'en avez pas encore assez pour créer une nouvelle construction complète.
+HINT.PLASMID.4=Explorez pour trouver d'autres briques !
+HINT.INDUCEDPROMOTER.0=Grâce à lui vous pouvez finir votre construction génétique !
+HINT.INDUCEDPROMOTER.1=L'ancien promoteur est plus puissant et est tout le temps actif.
+HINT.INDUCEDPROMOTER.2=Le nouveau promoteur n'est actif qu'en présence de l-arabinose.
+HINT.INDUCEDPROMOTER.3=Mais il permet de finir la construction et d'avoir une deuxième construction équipée !
 
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=un nanorobot
 TUTORIAL.INTRODUCTION1.CELLLABEL=C'est vous, Cellia !

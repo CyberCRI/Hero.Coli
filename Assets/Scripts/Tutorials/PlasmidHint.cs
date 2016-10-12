@@ -23,9 +23,9 @@ public class PlasmidHint : StepByStepTutorial
     }
     private string[] _focusObjects = new string[_stepCount] {
         _craftButton,
-        _craftSlot1, // slot 2
+        _craftSlot2,
         _RBS2brick,  // rbs
-        _RBS2brick,  // gfp
+        _GFPbrick,  // gfp
         _exitCross
         };
     protected override string[] focusObjects

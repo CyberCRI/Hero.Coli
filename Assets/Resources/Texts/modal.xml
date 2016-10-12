@@ -41,6 +41,10 @@
     <texture>i_plasmid</texture>
     <next>PlasmidHintModal</next>
   </info>
+  <info code="T1_PRBAD3">
+    <texture>i_lara</texture>
+    <next>InducedPromoterHintModal</next>
+  </info>
   <info code="T1_END">
     <texture>i_end</texture>
     <next>QuitModalWindow</next>

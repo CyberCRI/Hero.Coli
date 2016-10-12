@@ -12,6 +12,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _craftWindow = "CraftPanelSprite";
     protected const string _craftButton = "CraftButton";
     protected const string _backgroundSuffix = "Background";
+    protected const string _bioBrickIconBackgroundSuffix = "BioBrickIconBackground";    
     protected const string _exitCross = "CraftCloseButton";
 
     protected const string _availableDisplayedPrefix = "AvailableDisplayed";
@@ -21,8 +22,14 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _moveDevice1 = "PRCONS:RBS3:MOV:DTER";
     protected const string _moveDevice2 = "PRCONS:RBS2:MOV:DTER";
     protected const string _moveDevice3 = "PRCONS:RBS1:MOV:DTER";
-    protected const string _craftSlot1 = "slot0SelectionSprite";
+    protected const string _slotBaseName = "slot";
+    protected const string _slotSelectionSpriteSuffix = "SelectionSprite";
+    protected const string _craftSlot1 = _slotBaseName + "0" + _slotSelectionSpriteSuffix;
+    protected const string _craftSlot2 = _slotBaseName + "1" + _slotSelectionSpriteSuffix;
     protected const string _RBS2brick = _availableDisplayedPrefix + "RBS2";
+    protected const string _GFPbrick = _availableDisplayedPrefix + "FLUO1";
+    protected const string _PCONSBrickBackground = _availableDisplayedPrefix + "PRCONS" + _bioBrickIconBackgroundSuffix;
+    protected const string _PBAD3BrickBackground = _availableDisplayedPrefix + "PRBAD3" + _bioBrickIconBackgroundSuffix;
 
     protected const string _genericTextKeyPrefix = "HINT.";
     private string[] textHints;
