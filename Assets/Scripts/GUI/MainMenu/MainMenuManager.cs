@@ -11,6 +11,8 @@ public class MainMenuManager : MonoBehaviour
     private bool _first = true;
     [SerializeField]
     private CullingMaskHandler cullingMaskHandler;
+    [SerializeField]
+    private SoundOptionsMainMenuItemArray _sommia;
 
     public static MainMenuManager get()
     {
@@ -66,7 +68,7 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-
+        _sommia.setSoundTo(false);
         selectItem(0);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////

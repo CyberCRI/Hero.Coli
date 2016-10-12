@@ -4,13 +4,20 @@ using System.Collections;
 public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
     
     public GameObject soundOptionsPanel;
-    public bool isSoundOn = true;
-    public float baseVolume = -1;
-    
-    public void toggleSound()
+    private bool _isSoundOn = false;
+    public bool isSoundOn
     {
-        isSoundOn = !isSoundOn;
-        string soundValue = isSoundOn?CustomDataValue.ON.ToString():CustomDataValue.OFF.ToString();
+        get
+        {
+            return _isSoundOn;
+        }
+    }
+    public float baseVolume = -1;
+
+    public void setSoundTo(bool setOn)
+    {
+        _isSoundOn = setOn;
+        string soundValue = _isSoundOn?CustomDataValue.ON.ToString():CustomDataValue.OFF.ToString();
         RedMetricsManager.get ().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
 
         if(baseVolume < 0) {
@@ -20,7 +27,7 @@ public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
                 baseVolume = AudioListener.volume;
             }
         }
-        AudioListener.volume = isSoundOn?baseVolume:0f;
+        AudioListener.volume = _isSoundOn?baseVolume:0f;
 
         SoundOptionMainMenuItem lmmi;
         foreach(MainMenuItem item in _items) {
@@ -29,6 +36,11 @@ public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
                 lmmi.updateSelection ();
             }
         }
+    }
+    
+    public void toggleSound()
+    {
+        setSoundTo(!_isSoundOn);
     }
     
     void OnEnable ()
