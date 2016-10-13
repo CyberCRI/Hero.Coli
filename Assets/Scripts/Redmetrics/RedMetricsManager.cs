@@ -94,7 +94,14 @@ public class RedMetricsManager : MonoBehaviour
     private string globalPlayerGUID; //TODO login system
 
     private bool isGameSessionGUIDCreated = false;
-    private bool isStartEventSent = false;
+    private bool _isStartEventSent = false;
+    public bool isStartEventSent
+    {
+        get
+        {
+            return _isStartEventSent;
+        }
+    }    
 
     // list of events to be stacked while the player guid is not created yet, ie rmConnect's callback has not been called yet and isGameSessionGUIDCreated is still false
     private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();
@@ -121,6 +128,22 @@ public class RedMetricsManager : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " setGameVersion " + gVersion);
         gameVersionGuid = new System.Guid(gVersion);
+    }
+
+    public void setGameVersion(System.Guid gVersion)
+    {
+        // Debug.Log(this.GetType() + " setGameVersion " + gVersion);
+        gameVersionGuid = gVersion;
+    }
+
+    public Guid getGameVersion()
+    {
+        return gameVersionGuid;
+    }
+
+    public bool isGameVersionInitialized()
+    {
+        return defaultGameVersionGuid != gameVersionGuid;
     }
 
     //////////////////////////////////////////////////
@@ -312,7 +335,7 @@ public class RedMetricsManager : MonoBehaviour
     public void sendStartEvent()
     {
         // Debug.Log(this.GetType() + " sendStartEvent");
-        if (!isStartEventSent)
+        if (!_isStartEventSent)
         {
             // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
             // all web players
@@ -332,7 +355,7 @@ public class RedMetricsManager : MonoBehaviour
                 // Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
                 createPlayer(www => trackStart(www));
             }
-            isStartEventSent = true;
+            _isStartEventSent = true;
         }
     }
 
@@ -382,6 +405,10 @@ public class RedMetricsManager : MonoBehaviour
             string json = getJsonString(data);
             // Debug.Log(this.GetType() + " connect will rmConnect json={0}", json);
             Application.ExternalCall("rmConnect", json);
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " called connect, but not from WebGLPlayer");
         }
         //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
     }
