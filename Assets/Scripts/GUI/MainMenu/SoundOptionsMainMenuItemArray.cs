@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
-    
+public class SoundOptionsMainMenuItemArray : MainMenuItemArray
+{
     public GameObject soundOptionsPanel;
     private bool _isSoundOn = false;
     public bool isSoundOn
@@ -17,38 +16,42 @@ public class SoundOptionsMainMenuItemArray : MainMenuItemArray {
     public void setSoundTo(bool setOn)
     {
         _isSoundOn = setOn;
-        string soundValue = _isSoundOn?CustomDataValue.ON.ToString():CustomDataValue.OFF.ToString();
-        RedMetricsManager.get ().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
 
-        if(baseVolume < 0) {
-            if(0 == AudioListener.volume) {
+        if (baseVolume < 0)
+        {
+            if (0 == AudioListener.volume)
+            {
                 baseVolume = 1f;
-            } else {
+            }
+            else
+            {
                 baseVolume = AudioListener.volume;
             }
         }
-        AudioListener.volume = _isSoundOn?baseVolume:0f;
+        AudioListener.volume = _isSoundOn ? baseVolume : 0f;
 
         SoundOptionMainMenuItem lmmi;
-        foreach(MainMenuItem item in _items) {
+        foreach (MainMenuItem item in _items)
+        {
             lmmi = item as SoundOptionMainMenuItem;
-            if(null != lmmi) {
-                lmmi.updateSelection ();
+            if (null != lmmi)
+            {
+                lmmi.updateSelection();
             }
         }
     }
-    
+
     public void toggleSound()
     {
         setSoundTo(!_isSoundOn);
     }
-    
-    void OnEnable ()
+
+    void OnEnable()
     {
         soundOptionsPanel.SetActive(true);
     }
-    
-    void OnDisable ()
+
+    void OnDisable()
     {
         soundOptionsPanel.SetActive(false);
     }
