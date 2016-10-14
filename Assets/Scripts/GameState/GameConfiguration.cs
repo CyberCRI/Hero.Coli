@@ -130,6 +130,7 @@ public class GameConfiguration
     // must be called before the connection through RedMetrics.js initiated by the "rmConnect" call
     public void initializeGameVersionGUID()
     {
+        // Debug.Log(this.GetType() + " initializeGameVersionGUID");
         if (!RedMetricsManager.get().isGameVersionInitialized())
         {
             string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
@@ -153,6 +154,7 @@ public class GameConfiguration
     //sets the destination to which logs will be sent
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion)
     {
+        // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
         System.Guid guid = wantToBecomeLabelledGameVersion?labelledGameVersionGUID:testVersionGUID;
 
         if(guid != RedMetricsManager.get().getGameVersion())

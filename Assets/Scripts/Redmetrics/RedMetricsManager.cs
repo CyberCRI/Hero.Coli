@@ -32,7 +32,7 @@ public class RedMetricsManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("get couldn't find game object");
+                Debug.LogError("RedMetricsManager get couldn't find game object");
             }
         }
         return _instance;
@@ -126,13 +126,13 @@ public class RedMetricsManager : MonoBehaviour
 
     public void setGameVersion(string gVersion)
     {
-        // Debug.Log(this.GetType() + " setGameVersion " + gVersion);
+        // Debug.Log(this.GetType() + " setGameVersion str " + gVersion);
         gameVersionGuid = new System.Guid(gVersion);
     }
 
     public void setGameVersion(System.Guid gVersion)
     {
-        // Debug.Log(this.GetType() + " setGameVersion " + gVersion);
+        // Debug.Log(this.GetType() + " setGameVersion Guid " + gVersion);
         gameVersionGuid = gVersion;
     }
 
@@ -143,6 +143,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public bool isGameVersionInitialized()
     {
+        // Debug.Log(this.GetType() + " isGameVersionInitialized");
         return defaultGameVersionGuid != gameVersionGuid;
     }
 
@@ -183,7 +184,7 @@ public class RedMetricsManager : MonoBehaviour
 
         if (null == www)
         {
-            Debug.LogError("waitForWWW: null www");
+            Debug.LogError("RedMetricsManager waitForWWW: null www");
             yield return null;
         }
 
@@ -192,7 +193,7 @@ public class RedMetricsManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= 30.0f)
             {
-                Debug.LogError("waitForWWW: TimeOut!");
+                Debug.LogError("RedMetricsManager waitForWWW: TimeOut!");
                 break;
             }
             yield return null;
@@ -201,7 +202,7 @@ public class RedMetricsManager : MonoBehaviour
         if (!www.isDone || !string.IsNullOrEmpty(www.error))
         {
             string errmsg = string.IsNullOrEmpty(www.error) ? "timeout" : www.error;
-            Debug.LogError(string.Format("waitForWWW Error: Load Failed: {0}", errmsg));
+            Debug.LogError(string.Format("RedMetricsManager waitForWWW Error: Load Failed: {0}", errmsg));
             callback(null);    // Pass null result.
             yield break;
         }
@@ -250,7 +251,7 @@ public class RedMetricsManager : MonoBehaviour
         {
             if (www.error == null)
             {
-                Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
+                // Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
             }
             else
             {
@@ -344,7 +345,7 @@ public class RedMetricsManager : MonoBehaviour
             {
                 // Debug.Log(this.GetType() + " sendStartEvent calls connect");
                 connect();
-                StartCoroutine(waitAndSendStart());
+                sendStartEventWithPlayerGUID();
 
                 // other players + editor
             }
@@ -362,18 +363,20 @@ public class RedMetricsManager : MonoBehaviour
     //called by the browser when connection is established
     public void ConfirmWebplayerConnection()
     {
-        // Debug.Log("Unity RedMetricsManager: ConfirmWebplayerConnection");
+        // Debug.Log(this.GetType() + " ConfirmWebplayerConnection");
         isGameSessionGUIDCreated = true;
         executeAndClearAllWaitingEvents();
     }
 
     private void addEventToSendLater(TrackingEventDataWithoutIDs data)
     {
+        // Debug.Log(this.GetType() + " addEventToSendLater " + data);
         waitingList.AddLast(data);
     }
 
     private void executeAndClearAllWaitingEvents()
     {
+        // Debug.Log(this.GetType() + " executeAndClearAllWaitingEvents");
         foreach (TrackingEventDataWithoutIDs data in waitingList)
         {
             sendEvent(data);
@@ -381,25 +384,13 @@ public class RedMetricsManager : MonoBehaviour
         waitingList.Clear();
     }
 
-    private IEnumerator waitAndSendStart()
-    {
-        sendStartEventWithPlayerGUID();
-
-        yield return new WaitForSeconds(5.0f);
-        //all waiting events are flushed so that if the players disconnects, at least there's a trace that a player started the game
-        executeAndClearAllWaitingEvents();
-
-        //TODO: what if connection fails? Here all those events will be sent but the next, later ones won't
-    }
-
-
     //webplayer
     public void connect()
     {
         // Debug.Log(this.GetType() + " connect");
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            Debug.Log(this.GetType() + " Unity connect");
+            // Debug.Log(this.GetType() + " Unity connect");
             // force to wait for MemoryManager
             ConnectionData data = new ConnectionData(gameVersionGuid);
             string json = getJsonString(data);
@@ -410,14 +401,13 @@ public class RedMetricsManager : MonoBehaviour
         {
             Debug.LogWarning(this.GetType() + " called connect, but not from WebGLPlayer");
         }
-        //TODO treat answer by RedMetrics server by executeAndClearAllWaitingEvents so that all waiting events can be sent now that there's a user id
     }
 
     public void disconnect()
     {
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            Debug.Log(this.GetType() + " Unity disconnect");
+            // Debug.Log(this.GetType() + " Unity disconnect");
             Application.ExternalCall("rmDisconnect");
             resetConnectionVariables();
         }
@@ -503,7 +493,7 @@ public class RedMetricsManager : MonoBehaviour
             if (isGameSessionGUIDCreated)
             {
                 string json = getJsonString(data);
-                // Debug.Log("Unity RedMetricsManager: sendEvent("+json+")");
+                // Debug.Log(this.GetType() + " sendEvent("+json+")");
                 Application.ExternalCall("rmPostEvent", json);
             }
             else
@@ -520,7 +510,7 @@ public class RedMetricsManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("sendEvent default player guid: no registered player!");
+                Debug.LogError(this.GetType() + " sendEvent default player guid: no registered player!");
             }
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
