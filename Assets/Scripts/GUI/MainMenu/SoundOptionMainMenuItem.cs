@@ -7,25 +7,27 @@ public class SoundOptionMainMenuItem : MainMenuItem
     public UISprite soundONSprite;
     public GameObject soundOFFIcon;
     public UISprite soundOFFSprite;
-    public SoundOptionsMainMenuItemArray soundOptionsArray;
     public UILocalize label;
-    private string keySoundON = "MENU.SOUND.ON";
-    private string keySoundOFF = "MENU.SOUND.OFF";
+    private const string _keySoundON = "MENU.SOUND.ON";
+    private const string _keySoundOFF = "MENU.SOUND.OFF";
 
     public override void click()
     {
         // Debug.Log(this.GetType() + " clicked " + itemName);
-        soundOptionsArray.toggleSound();
-        string soundValue = soundOptionsArray.isSoundOn ? CustomDataValue.ON.ToString() : CustomDataValue.OFF.ToString();
+        bool wasOn = MemoryManager.get().configuration.isSoundOn;
+        MemoryManager.get().configuration.isSoundOn = !MemoryManager.get().configuration.isSoundOn;
+        string soundValue = wasOn ? CustomDataValue.OFF.ToString() : CustomDataValue.ON.ToString();
         RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
+        updateSelection();
     }
 
     public void updateSelection()
     {
-        label.key = soundOptionsArray.isSoundOn ? keySoundON : keySoundOFF;
+        bool isOn = MemoryManager.get().configuration.isSoundOn;
+        label.key = isOn ? _keySoundON : _keySoundOFF;
         label.Localize();
-        soundONIcon.SetActive(soundOptionsArray.isSoundOn);
-        soundOFFIcon.SetActive(!soundOptionsArray.isSoundOn);
+        soundONIcon.SetActive(isOn);
+        soundOFFIcon.SetActive(!isOn);
     }
 
     void OnEnable()

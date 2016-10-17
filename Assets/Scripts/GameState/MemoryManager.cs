@@ -65,20 +65,10 @@ public class MemoryManager : MonoBehaviour
         // Debug.Log(this.GetType() + " Start");
 
         //TODO manage RedMetricsManager's globalPlayerGUID
-        string playerGUID = configuration.playerGUID;
 
-        // Debug.Log(this.GetType() + " Start set playerGUID to " + playerGUID);
+        // Debug.Log(this.GetType() + " configuration.load()");
 
-        // Debug.Log(this.GetType() + " Start: playerGUID=" + playerGUID
-        //     + " & configuration.isTestGUID()=" + configuration.isTestGUID()
-        //     + " & Application.isEditor=" + Application.isEditor
-        // );
-
-        RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
-
-        // Debug.Log(this.GetType() + " Start called RedMetricsManager setLocalPlayerGUID");
-
-        configuration.initializeGameVersionGUID();
+        configuration.load();
 
         // Debug.Log(this.GetType() + "configuration.gameVersionGUID = " + configuration.gameVersionGUID);
 

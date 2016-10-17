@@ -47,8 +47,8 @@ public class GameStateController : MonoBehaviour
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -61,13 +61,13 @@ public class GameStateController : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
             _gameState = GameState.Start;
@@ -110,7 +110,7 @@ public class GameStateController : MonoBehaviour
 
     // private bool _finishLoadLevels = false;
     private bool _finishedLoadingLevels = false;
-    private bool[] _loadingFlags = new bool[3] { false, false, false};
+    private bool[] _loadingFlags = new bool[3] { false, false, false };
     public const int ilmIndex = 0, plmIndex = 1, wlmIndex = 2;
 
     private static bool _isAdminMode = false;
@@ -137,7 +137,7 @@ public class GameStateController : MonoBehaviour
         // isPlayerLoaded = false;
         // isWorldLoaded = false;
 
-        _loadingFlags = new bool[3] { false, false, false};
+        _loadingFlags = new bool[3] { false, false, false };
         _finishedLoadingLevels = false;
         _isGameLevelPrepared = false;
     }
@@ -159,25 +159,25 @@ public class GameStateController : MonoBehaviour
     //         _finishLoadLevels = true;
     //     }
     // }
-    
+
 
     public void setSceneLoaded(int index)
     {
-        if(index < _loadingFlags.Length && index >= 0)
+        if (index < _loadingFlags.Length && index >= 0)
         {
             _loadingFlags[index] = true;
 
             bool allLoaded = true;
-            foreach(bool flag in _loadingFlags)
+            foreach (bool flag in _loadingFlags)
             {
                 allLoaded &= flag;
             }
-            if(allLoaded)
+            if (allLoaded)
             {
                 // Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
                 finishLoadLevels();
             }
-        }        
+        }
         else
         {
             Debug.LogError("incorrect index " + index);
@@ -590,7 +590,7 @@ public class GameStateController : MonoBehaviour
     {
         // Debug.Log("GameStateController::goToOtherGameMode");
         GameConfiguration.GameMap destination =
-            (GameConfiguration.getMode(MemoryManager.get("goToOtherGameMode").configuration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
+            (GameConfiguration.getMode(GameConfiguration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
                 GameConfiguration.GameMap.TUTORIAL1;
 
@@ -668,14 +668,14 @@ public class GameStateController : MonoBehaviour
 
         switch (newMap)
         {
-            case GameConfiguration.GameMap.ADVENTURE1:
-            case GameConfiguration.GameMap.SANDBOX1:
+            // case GameConfiguration.GameMap.ADVENTURE1:
+            // case GameConfiguration.GameMap.SANDBOX1:
             case GameConfiguration.GameMap.SANDBOX2:
             case GameConfiguration.GameMap.TUTORIAL1:
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart
                 //whereas MemoryManager won't
-                MemoryManager.get("setAndSaveLevelName").configuration.gameMap = newMap;
+                GameConfiguration.gameMap = newMap;
                 break;
 
             default:

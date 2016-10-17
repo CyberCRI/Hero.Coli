@@ -15,6 +15,7 @@ public class BackendManager : MonoBehaviour
         {
             MemoryManager.get().configuration.switchMetricsGameVersion();
             isTestGUID = MemoryManager.get().configuration.isTestGUID();
+            GameConfiguration.isAdmin = isTestGUID;
 
             //display feedback for logging mode
             string msg;
@@ -29,22 +30,6 @@ public class BackendManager : MonoBehaviour
 
             StartCoroutine(waitAndDestroy(createMessage(msg)));
         }
-        // //toggle tutorial mode
-        // else if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        // {
-        //     string msg;
-        //     if(MemoryManager.get().configuration.tutorialMode == GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER)
-        //     {
-        //         MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START1FLAGELLUM4BRICKS;
-        //         msg = "MODE = 1FLAGELLUM 4BRICKS";
-        //     }
-        //     else
-        //     {
-        //          MemoryManager.get().configuration.tutorialMode = GameConfiguration.TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER;
-        //          msg = "MODE = START0FLAGELLUM HORIZONTALTRANSFER";
-        //     }
-        //     StartCoroutine(waitAndDestroy(createMessage(msg)));
-        // }
     }
 
     public GameObject createMessage(string msg)

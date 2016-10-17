@@ -122,7 +122,7 @@ public class CraftZoneManager : MonoBehaviour
             {
                 _slots.Clear();
 
-                _slotCount = MemoryManager.get().configuration.gameMap == GameConfiguration.GameMap.SANDBOX2 ? _sandboxSlotCount : _tutorialSlotCount;
+                _slotCount = GameConfiguration.gameMap == GameConfiguration.GameMap.SANDBOX2 ? _sandboxSlotCount : _tutorialSlotCount;
                 // Debug.Log("going to destroy children slots");
                 for (int index = 0; index < slotsGrid.childCount; index++)
                 {

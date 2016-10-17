@@ -6,14 +6,12 @@ public class GameConfiguration
 
     public GameConfiguration()
     {
-        restartBehavior = RestartBehavior.MAINMENU;
-        gameMap = GameMap.TUTORIAL1;
-        language = I18n.Language.English;
-        isAbsoluteWASD = true;
-        isLeftClickToMove = true;
+        // Debug.Log(this.GetType() + " ctor");
+
+        _gameMap.initialize();
 
         //TODO send playerGUID to RedMetrics
-        //TODO unlock Sandbox if Adventure was finished 
+        //TODO unlock Sandbox if Adventure was finished
     }
 
     private const string _adventureLevel1 = "World1.0";
@@ -26,26 +24,28 @@ public class GameConfiguration
 
     public enum RestartBehavior
     {
+        UNINITIALIZED,
         MAINMENU,
         GAME
     }
 
     public enum GameMap
     {
-        ADVENTURE1,
-        SANDBOX1,
+        UNINITIALIZED,
+        // ADVENTURE1,
+        // SANDBOX1,
         SANDBOX2,
         TUTORIAL1
     }
 
-    public enum TutorialMode
-    {
-        START1FLAGELLUM,
-        START1FLAGELLUM4BRICKS,
-        START1FLAGELLUMDEVICE,
-        START0FLAGELLUM,
-        START0FLAGELLUMHORIZONTALTRANSFER
-    }
+    // public enum TutorialMode
+    // {
+    //     START1FLAGELLUM,
+    //     START1FLAGELLUM4BRICKS,
+    //     START1FLAGELLUMDEVICE,
+    //     START0FLAGELLUM,
+    //     START0FLAGELLUMHORIZONTALTRANSFER
+    // }
 
     public enum GameMode
     {
@@ -59,20 +59,162 @@ public class GameConfiguration
         LIMITEDDEVICES
     }
 
-    public RestartBehavior restartBehavior;
-    public GameMap gameMap;
+    // restartBehavior = RestartBehavior.MAINMENU;
+    // gameMap = GameMap.TUTORIAL1;
+    // language = I18n.Language.English;
+    // isAbsoluteWASD = true;
+    // isLeftClickToMove = true;
+
+
+
+    // _restartBehavior = new EnumConfigurationParameter<RestartBehavior>(startValue, defaultValue, uninitializedValue, key);
+
+    private EnumConfigurationParameter<RestartBehavior> _restartBehavior
+        = new EnumConfigurationParameter<RestartBehavior>(RestartBehavior.MAINMENU, RestartBehavior.MAINMENU, RestartBehavior.UNINITIALIZED, _restartBehaviorKey);
+    private static EnumConfigurationParameter<GameMap> _gameMap
+        = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL1, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
+    private BoolConfigurationParameter _isAbsoluteWASD
+        = new BoolConfigurationParameter(true, true, _isAbsoluteWASDKey);
+    private BoolConfigurationParameter _isLeftClickToMove
+        = new BoolConfigurationParameter(true, true, _isLeftClickToMoveKey);
+    private static float _baseVolume = -1;
+    private static BoolConfigurationParameter _isSoundOn
+        = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
+    private static BoolConfigurationParameter _isAdmin
+        = new BoolConfigurationParameter(false, false, _isAdminKey);
+
+
+    private const RestartBehavior _restartBehaviorDefaultValue = RestartBehavior.MAINMENU;
+    public RestartBehavior restartBehavior
+    {
+        get
+        {
+            return _restartBehavior.val;
+        }
+        set
+        {
+            _restartBehavior.val = value;
+
+        }
+    }
+
+    private static string _gameMapName;
+    public static GameMap gameMap
+    {
+        get
+        {
+            // Debug.Log("gameMap get returns " + _gameMap.val);
+            return _gameMap.val;
+        }
+        set
+        {
+            _gameMap.val = value;
+        }
+    }
+    private static void onMapChanged(GameMap newMap)
+    {
+        _gameMapName = newMap.ToString().ToLowerInvariant();
+        // Debug.Log("onMapChanged newMap = " + newMap + ", _gameMapName = " + _gameMapName);
+    }
     public string getGameMapName()
     {
-        return gameMap.ToString().ToLowerInvariant();
+        return _gameMapName;
     }
-    public I18n.Language language;
-    public bool isAbsoluteWASD;
-    public bool isLeftClickToMove;
-    //TODO manage sound configuration
-    public bool isSoundOn;
-    public bool isAdmin = false;
-    public CraftInterface craftInterface = CraftInterface.LIMITEDDEVICES;
-    public TutorialMode tutorialMode = TutorialMode.START0FLAGELLUMHORIZONTALTRANSFER;
+
+    public bool isAbsoluteWASD
+    {
+        get
+        {
+            return _isAbsoluteWASD.val;
+        }
+        set
+        {
+            _isAbsoluteWASD.val = value;
+        }
+    }
+
+    public bool isLeftClickToMove
+    {
+        get
+        {
+            return _isLeftClickToMove.val;
+        }
+        set
+        {
+            _isLeftClickToMove.val = value;
+
+        }
+    }
+
+    public bool isSoundOn
+    {
+        get
+        {
+            // Debug.Log("getting sound = " + _isSoundOn.val);
+            return _isSoundOn.val;
+        }
+        set
+        {
+            // Debug.Log("setting sound to " + value);
+            _isSoundOn.val = value;
+        }
+    }
+
+    private static void onSoundChanged(bool newSoundValue)
+    {
+        // Debug.Log("onSoundChanged");
+        if (_baseVolume < 0)
+        {
+            if (0 == AudioListener.volume)
+            {
+                _baseVolume = 1f;
+            }
+            else
+            {
+                _baseVolume = AudioListener.volume;
+            }
+        }
+        AudioListener.volume = newSoundValue ? _baseVolume : 0f;
+    }
+
+    public static bool isAdmin
+    {
+        get
+        {
+            return _isAdmin.val;
+        }
+        set
+        {
+            _isAdmin.val = value;
+        }
+    }
+
+    private const string _restartBehaviorKey = "restartBehavior";
+    private const string _gameMapKey = "gameMap";
+    private const string _isAbsoluteWASDKey = "isAbsoluteWASD";
+    private const string _isLeftClickToMoveKey = "isLeftClickToMove";
+    private const string _isSoundOnKey = "isSoundOn";
+    private const string _isAdminKey = "isAdmin";
+
+    public void load()
+    {
+        //  already taken care of
+        // language = I18n.Language.English;
+
+        // Debug.Log(this.GetType() + " load");
+
+        RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
+
+        initializeGameVersionGUID();
+        _restartBehavior.initialize();
+        // _gameMap.initialize();
+        _isAbsoluteWASD.initialize();
+        _isLeftClickToMove.initialize();
+        _isSoundOn.initialize();
+        _isAdmin.initialize();
+
+        // Debug.Log(this.GetType() + " load done");
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ///REDMETRICS TRACKING ///////////////////////////////////////////////////////////////////////////
@@ -93,7 +235,7 @@ public class GameConfiguration
     // v1.50
     // public const string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
     // v1.51
-    public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");    
+    public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
 
@@ -155,13 +297,13 @@ public class GameConfiguration
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion)
     {
         // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
-        System.Guid guid = wantToBecomeLabelledGameVersion?labelledGameVersionGUID:testVersionGUID;
+        System.Guid guid = wantToBecomeLabelledGameVersion ? labelledGameVersionGUID : testVersionGUID;
 
-        if(guid != RedMetricsManager.get().getGameVersion())
+        if (guid != RedMetricsManager.get().getGameVersion())
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
             PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, guid.ToString());
-            if(RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
+            if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
             {
                 RedMetricsManager.get().disconnect();
             }
@@ -201,10 +343,10 @@ public class GameConfiguration
     {
         switch (map)
         {
-            case GameMap.ADVENTURE1:
+            // case GameMap.ADVENTURE1:
             case GameMap.TUTORIAL1:
                 return GameMode.ADVENTURE;
-            case GameMap.SANDBOX1:
+            // case GameMap.SANDBOX1:
             case GameMap.SANDBOX2:
                 return GameMode.SANDBOX;
             default:
@@ -222,10 +364,10 @@ public class GameConfiguration
     {
         switch (map)
         {
-            case GameMap.ADVENTURE1:
-                return _adventureLevel1;
-            case GameMap.SANDBOX1:
-                return _sandboxLevel1;
+            // case GameMap.ADVENTURE1:
+            //     return _adventureLevel1;
+            // case GameMap.SANDBOX1:
+            //     return _sandboxLevel1;
             case GameMap.SANDBOX2:
                 return _sandboxLevel2;
             case GameMap.TUTORIAL1:

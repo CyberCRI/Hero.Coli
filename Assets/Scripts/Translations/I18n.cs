@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class I18n {
+public class I18n
+{
 
-    public enum Language {
+    public enum Language
+    {
         English,
         French,
         Russian
@@ -10,17 +12,17 @@ public class I18n {
 
     public static void changeLanguageTo(Language lang)
     {
-        RedMetricsManager.get ().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
 
         Localization.instance.currentLanguage = lang.ToString();
 
-        MemoryManager.get ().configuration.language = lang;
-        
-        foreach(UILocalize localize in GameObject.FindObjectsOfType<UILocalize>()) {
+        foreach (UILocalize localize in GameObject.FindObjectsOfType<UILocalize>())
+        {
             localize.Localize();
         }
-        
-        foreach(TextMeshLocalizer localizer in GameObject.FindObjectsOfType<TextMeshLocalizer>()) {
+
+        foreach (TextMeshLocalizer localizer in GameObject.FindObjectsOfType<TextMeshLocalizer>())
+        {
             localizer.localize();
         }
     }
@@ -28,7 +30,7 @@ public class I18n {
     public static Language getCurrentLanguage()
     {
         string language = Localization.instance.currentLanguage.ToLower();
-        switch(language)
+        switch (language)
         {
             case "english": return Language.English;
             case "french": return Language.French;
