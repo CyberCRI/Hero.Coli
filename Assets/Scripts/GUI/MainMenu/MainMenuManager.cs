@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    private const string gameObjectName = "MainMenu";
+    private const string gameObjectName = "MainMenuManager";
     private static MainMenuManager _instance;
     [SerializeField]
     private bool _first = true;
@@ -16,7 +16,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("MainMenuManager::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("MainMenuManager get was badly initialized");
 
             //set from InterfaceLinkManager
             _instance = InterfaceLinkManager.get().mainMenu;
@@ -80,16 +80,18 @@ public class MainMenuManager : MonoBehaviour
     public LearnMoreOptionsMainMenuItemArray learnMoreItems;
 
     [SerializeField]
-    private ParticleSystemFeedback feedback;
-    private Vector3 shift = new Vector3(0, 0, -0.4f);
+    private ParticleSystemFeedback _feedback;
+    [SerializeField]
+    private ResumeMainMenuItem _rmmi;
+    private Vector3 _shift = new Vector3(0, 0, -0.4f);
 
-    public float verticalSpacing;
-    private const float defaultVerticalSpacing = -0.1f;
+    private const float _verticalSpacing = -0.1f;
+    private const float _defaultVerticalSpacing = -0.1f;
 
-    private const string menuKeyPrefix = "MENU.";
-    private const string newGameKey = menuKeyPrefix + "NEWGAME";
-    private const string resumeKey = menuKeyPrefix + "RESUME";
-    private const string restartKey = menuKeyPrefix + "RESTART";
+    private const string _menuKeyPrefix = "MENU.";
+    public const string newGameKey = _menuKeyPrefix + "NEWGAME";
+    public const string resumeKey = _menuKeyPrefix + "RESUME";
+    private const string _restartKey = _menuKeyPrefix + "RESTART";
     public enum MainMenuScreen
     {
         SETTINGS,
@@ -105,13 +107,13 @@ public class MainMenuManager : MonoBehaviour
 
     private bool isAnItemSelected()
     {
-        // Debug.Log("MainMenuManager::isAnItemSelected");
+        // Debug.Log(this.GetType() + " isAnItemSelected");
         return _currentIndex >= 0 && _currentIndex < _items.Length;
     }
 
     public MainMenuItem getCurrentItem()
     {
-        // Debug.Log("MainMenuManager::getCurrentItem");
+        // Debug.Log(this.GetType() + " getCurrentItem");
         if (isAnItemSelected())
         {
             return _items[_currentIndex];
@@ -124,22 +126,22 @@ public class MainMenuManager : MonoBehaviour
 
     private void deselect()
     {
-        // Debug.Log("MainMenuManager::deselect");
+        // Debug.Log(this.GetType() + " deselect");
         if (isAnItemSelected())
         {
             _items[_currentIndex].deselect();
-            Logger.Log("MainMenuManager::deselected item " + _currentIndex, Logger.Level.DEBUG);
+            // Debug.Log(this.GetType() + " deselected item " + _currentIndex);
         }
         else
         {
-            Logger.Log("MainMenuManager::no item selected: current index is " + _currentIndex, Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " no item selected: current index is " + _currentIndex);
         }
         _currentIndex = -1;
     }
 
     public void playFeedback(Vector3 position)
     {
-        feedback.burst(position + shift);
+        _feedback.burst(position + _shift);
     }
 
     private bool selectItem(string name)
@@ -147,7 +149,7 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(string.Format("selectItem({0})", name));
         if (isAnItemSelected() && name == _items[_currentIndex].itemName)
         {
-            Logger.Log("MainMenuManager::item " + name + " was already selected", Logger.Level.DEBUG);
+            // Debug.Log(this.GetType() + " item " + name + " was already selected");
             return true;
         }
         else
@@ -159,7 +161,7 @@ public class MainMenuManager : MonoBehaviour
                     deselect();
                     _items[index].select();
                     _currentIndex = index;
-                    Logger.Log("MainMenuManager::selected item " + index + " via its name '" + name + "'", Logger.Level.DEBUG);
+                    // Debug.Log(this.GetType() + " selected item " + index + " via its name '" + name + "'");
                     return true;
                 }
             }
@@ -212,20 +214,20 @@ public class MainMenuManager : MonoBehaviour
 
     public bool selectNext()
     {
-        // Debug.Log("MainMenuManager::selectNext");
+        // Debug.Log(this.GetType() + " selectNext");
         return selectItem(_currentIndex + 1, SelectionMode.NEXT);
     }
 
     public bool selectPrevious()
     {
-        // Debug.Log("MainMenuManager::selectPrevious");
+        // Debug.Log(this.GetType() + " selectPrevious");
         return selectItem(_currentIndex - 1, SelectionMode.PREVIOUS);
     }
 
     public void onHover(MainMenuItem item)
     {
         // Debug.Log(string.Format("onHover({0})", item._itemName));
-        Logger.Log(item.itemName + " onHover", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " " + item.itemName + " onHover");
         selectItem(item.itemName);
     }
 
@@ -241,7 +243,7 @@ public class MainMenuManager : MonoBehaviour
                 return;
             }
         }
-        Debug.LogWarning("MainMenuManager::MainMenuItem::replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
+        Debug.LogWarning("MainMenuManager replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
     }
 
     private void replaceTextBy(string target, string replacement, string debug = "")
@@ -252,16 +254,16 @@ public class MainMenuManager : MonoBehaviour
 
     public void setNewGame()
     {
-        // Debug.Log("MainMenuManager::setNewGame");
+        // Debug.Log(this.GetType() + " setNewGame");
         replaceTextBy(resumeKey, newGameKey, "setNewGame");
-        setVisibility(restartKey, false);
+        setVisibility(_restartKey, false);
     }
 
     public void setResume()
     {
-        // Debug.Log("MainMenuManager::setResume");
+        // Debug.Log(this.GetType() + " setResume");
         replaceTextBy(newGameKey, resumeKey, "setResume");
-        setVisibility(restartKey, true);
+        setVisibility(_restartKey, true);
     }
 
     private void setVisibility(string itemKey, bool isVisible)
@@ -270,12 +272,12 @@ public class MainMenuManager : MonoBehaviour
         setVisibility(_items, itemKey, isVisible, "MainMenuManager");
     }
 
-    public static void setVisibility(MainMenuItem[] items, string itemKey, bool isVisible, string debug = null, float spacing = defaultVerticalSpacing)
+    public static void setVisibility(MainMenuItem[] items, string itemKey, bool isVisible, string debug = null, float spacing = _defaultVerticalSpacing)
     {
         // Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.Log("MainMenuManager::setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
+            //Debug.Log(this.GetType() + " setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
         }
         for (int index = 0; index < items.Length; index++)
         {
@@ -285,24 +287,24 @@ public class MainMenuManager : MonoBehaviour
                 items[index].displayed = isVisible;
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.Log("MainMenuManager::setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                    //Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
                 }
                 break;
             }
             else if (!string.IsNullOrEmpty(debug))
             {
-                //Debug.Log("MainMenuManager::setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
+                //Debug.Log(this.GetType() + " setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
             }
         }
         MainMenuManager.redraw(items, debug, spacing);
     }
 
-    public static void redraw(MainMenuItem[] items, string debug = null, float spacing = defaultVerticalSpacing)
+    public static void redraw(MainMenuItem[] items, string debug = null, float spacing = _defaultVerticalSpacing)
     {
         // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.Log("MainMenuManager::redraw "+debug);
+            //Debug.Log(this.GetType() + " redraw "+debug);
         }
         if (items.Length != 0)
         {
@@ -312,7 +314,7 @@ public class MainMenuManager : MonoBehaviour
                 item.gameObject.SetActive(item.displayed);
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.Log("MainMenuManager::redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
+                    //Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
                 }
                 if (item.displayed)
                 {
@@ -329,8 +331,8 @@ public class MainMenuManager : MonoBehaviour
 
     private void redraw()
     {
-        // Debug.Log("MainMenuManager::redraw");
-        MainMenuManager.redraw(_items, null, verticalSpacing);
+        // Debug.Log(this.GetType() + " redraw");
+        MainMenuManager.redraw(_items, null, _verticalSpacing);
     }
 
     private MainMenuItemArray[] arrays;
@@ -402,9 +404,8 @@ public class MainMenuManager : MonoBehaviour
 
     public bool escape()
     {
-        // Debug.Log("MainMenuManager::escape");
+        // Debug.Log(this.GetType() + " escape");
         BackMainMenuItem bmmi;
-        ResumeMainMenuItem rmmi;
         foreach (MainMenuItem item in _items)
         {
             bmmi = item as BackMainMenuItem;
@@ -413,30 +414,29 @@ public class MainMenuManager : MonoBehaviour
                 bmmi.click();
                 return true;
             }
+        }
+        
+        if (null != _rmmi && _rmmi.gameObject.activeInHierarchy)
+        {
+            if (!_rmmi.isStart())
+            {
+                _rmmi.click();
+                return true;
+            }
             else
             {
-                rmmi = item as ResumeMainMenuItem;
-                if (null != rmmi)
-                {
-                    if (resumeKey == rmmi.itemName)
-                    {
-                        rmmi.click();
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
         }
+        
+        // Debug.Log(this.GetType() + " neither 'resume' nor 'back' button found");
         GameStateController.get().leaveMainMenu();
         return true;
     }
 
     public void open()
     {
-        // Debug.Log("MainMenuManager::open");
+        // Debug.Log(this.GetType() + " open");
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
         gameObject.SetActive(true);
         switchTo(MainMenuScreen.DEFAULT);
@@ -445,7 +445,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void close()
     {
-        // Debug.Log("MainMenuManager::close");
+        // Debug.Log(this.GetType() + " close");
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);
         cullingMaskHandler.showMainMenu(false);

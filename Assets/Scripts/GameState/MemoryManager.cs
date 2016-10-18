@@ -26,7 +26,7 @@ public class MemoryManager : MonoBehaviour
         // Debug.Log(this.GetType() + " Awake");
         if ((_instance != null) && (_instance != this))
         {
-            Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
+            // Debug.LogWarning(this.GetType() + " anti duplication self-destruction");
             Destroy(this.gameObject);
         }
         else

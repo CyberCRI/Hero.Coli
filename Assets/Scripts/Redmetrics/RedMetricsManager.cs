@@ -456,7 +456,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
-        // Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
+        Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
         string checkedSection = section;
 
         //TODO remove dependency to Hero class
@@ -504,14 +504,14 @@ public class RedMetricsManager : MonoBehaviour
         }
         else
         {
-            //TODO wait on gameSessionGUID using an IEnumerator
-            if (defaultGameSessionGUID != gameSessionGUID)
-            {
-            }
-            else
-            {
-                Debug.LogError(this.GetType() + " sendEvent default player guid: no registered player!");
-            }
+            // TODO wait on gameSessionGUID using an IEnumerator
+            // if (defaultGameSessionGUID != gameSessionGUID)
+            // {
+            // }
+            // else
+            // {
+            //     Debug.LogError(this.GetType() + " sendEvent default player guid: no registered player!");
+            // }
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString(data);

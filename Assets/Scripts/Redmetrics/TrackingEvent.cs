@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
-//v1.32
-public enum TrackingEvent {
-    //standard events
+﻿//v1.51
+public enum TrackingEvent
+{
+    // standard events
     DEFAULT,
     CREATEPLAYER,
     START,
@@ -14,28 +12,30 @@ public enum TrackingEvent {
     GAIN,
     LOSE,
 
-    //example events
+    // example events
     JUMP,
     BOUNCE,
 
-    //specific events
-    COMPLETE,
-    CRAFT,
-    DEATH,
-    EQUIP,
-    PICKUP,
-    REACH,
-    SWITCH,
-    UNEQUIP,
-    SELECT,
-    ADD,
-    REMOVE,
-	//main menu
-	SELECTMENU,
+    // specific events
+    COMPLETE,           // finished the game
+    CRAFT,              // successfully crafted a new device
+    DEATH,              // player died
+    EQUIP,              // using listed device
+    PICKUP,             // picked up a device or a brick
+    REACH,              // reached a checkpoint
+    SWITCH,             // changed game level
+    UNEQUIP,            // using listed device
+    SELECT,             // selected a slot
+    ADD,                // using available bricks
+    REMOVE,             // using craft result device / craft zone bricks                        
+
+    // main menu
+    SELECTMENU,
     CONFIGURE,
-	GOTOMOOC,
+    GOTOMOOC,
     GOTOURL,
-    //backend events
+
+    // backend events
     SWITCHFROMGAMEVERSION,
     SWITCHTOGAMEVERSION
 }

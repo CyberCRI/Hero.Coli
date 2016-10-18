@@ -176,7 +176,7 @@ public class Inventory : DeviceContainer
         AddingResult result = AddingResult.FAILURE_DEFAULT;
         if (device == null)
         {
-            Debug.LogWarning(this.GetType() + " canAddDevice device is null");
+            // Debug.LogWarning(this.GetType() + " canAddDevice device is null");
             result = AddingResult.FAILURE_DEFAULT;
         }
         else
@@ -216,12 +216,12 @@ public class Inventory : DeviceContainer
         if (addingResult == AddingResult.SUCCESS)
         {
             // Debug.Log(this.GetType() + " askAddDevice: AddingResult.SUCCESS, will add device=" + device.getInternalName());
-            addDevice(device);
 
             if (reportToRedMetrics)
             {
                 RedMetricsManager.get().sendEvent(TrackingEvent.CRAFT, new CustomData(CustomDataTag.DEVICE, device.getInternalName()));
             }
+            addDevice(device);
 
             //uncomment to save user-created devices
             //TODO FIXME uncommenting this entails bugs on loading devices from _saveFilePath

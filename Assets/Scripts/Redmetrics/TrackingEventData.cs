@@ -130,6 +130,7 @@ public enum CustomDataValue
     ON,
     OFF,
 
+    START,
     RESUME,
     RESTART,
     ADVENTURE,
