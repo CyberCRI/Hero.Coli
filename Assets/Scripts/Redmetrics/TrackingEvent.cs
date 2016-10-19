@@ -17,17 +17,17 @@ public enum TrackingEvent
     BOUNCE,
 
     // specific events
-    COMPLETE,           // finished the game
+    COMPLETE,           // successfully finished the game
     CRAFT,              // successfully crafted a new device
     DEATH,              // player died
-    EQUIP,              // using listed device
+    EQUIP,              // equipped a device using a listed device
     PICKUP,             // picked up a device or a brick
     REACH,              // reached a checkpoint
-    SWITCH,             // changed game level
-    UNEQUIP,            // using listed device
+    SWITCH,             // changed game level adventure / sandbox
+    UNEQUIP,            // unequipped a device using a listed device
     SELECT,             // selected a slot
-    ADD,                // using available bricks
-    REMOVE,             // using craft result device / craft zone bricks                        
+    ADD,                // added a brick to the crafting zone using available bricks, or equipped a device through this process
+    REMOVE,             // removed a brick from the crafting zone using craft zone bricks, or unequipped a device through this process or using a craft result device                         
 
     // main menu
     SELECTMENU,

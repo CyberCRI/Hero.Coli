@@ -1,43 +1,51 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public abstract class PickableItem : MonoBehaviour
 {
     protected DNABit _dnaBit;
-    public GameObject toDestroy;
+
+    // true => parent; false => self
+    [SerializeField]
+    private bool _destroyParent;
     
-    protected abstract DNABit produceDNABit ();
-    protected abstract void addTo ();
-    
-    void Awake ()
+    protected abstract DNABit produceDNABit();
+    protected abstract void addTo();
+
+    void Awake()
     {
-        _dnaBit = produceDNABit ();
+        _dnaBit = produceDNABit();
     }
 
-    public DNABit getDNABit ()
+    public DNABit getDNABit()
     {
-        if (null == _dnaBit) {
-            Logger.Log ("PickableItem::getDNABit() - null == _dnaBit => produceDNABit", Logger.Level.DEBUG);
-            _dnaBit = produceDNABit ();
+        if (null == _dnaBit)
+        {
+            // Debug.Log(this.GetType() + " getDNABit() - null == _dnaBit => produceDNABit");
+            _dnaBit = produceDNABit();
         }
         return _dnaBit;
     }
 
-    public void pickUp ()
+    public void pickUp()
     {
-        Logger.Log ("PickableItem::pickUp ()", Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " pickUp ()");
+        RedMetricsManager.get().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, getDNABit().getInternalName()));
         List<IPickable> pickables;
-        Tools.GetInterfaces<IPickable> (out pickables, gameObject);
-        foreach (IPickable pickable in pickables) {
-            pickable.OnPickedUp ();
+        Tools.GetInterfaces<IPickable>(out pickables, gameObject);
+        foreach (IPickable pickable in pickables)
+        {
+            pickable.OnPickedUp();
         }
-    
-        addTo ();
-        if (toDestroy) {
-            Destroy (toDestroy);
-        } else {
-            Destroy (gameObject);
+
+        addTo();
+        if (_destroyParent)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 }

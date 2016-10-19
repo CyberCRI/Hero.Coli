@@ -9,6 +9,7 @@ public class NanobotsPickUpHandler : MonoBehaviour {
     {
         if (col.tag == Hero.playerTag)
         {
+            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.NANOBOT, transform.parent.transform.gameObject.name));
             _pickedUpNumber += 1;
             if(_pickedUpNumber == 1)
             {
@@ -16,7 +17,6 @@ public class NanobotsPickUpHandler : MonoBehaviour {
             }
             _nanoCounter = (null==_nanoCounter)?GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>():_nanoCounter;
             _nanoCounter.updateLabel(_pickedUpNumber);
-            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.NANOBOT, transform.parent.transform.gameObject.name));
             Destroy(this.gameObject);
         }
     }
