@@ -5,10 +5,11 @@ using System.Collections;
 public class StartCutScene : CutScene {
 
     [SerializeField]
-    private iTweenEvent _iTweenEventBacteria;
+    private iTweenEvent _npcStartITweenEvent;
     [SerializeField]
-    private iTweenEvent _itweenEventBacteria2;
-    private Transform _bacteriaTransform;
+    private iTweenEvent _npcEndITweenEvent;
+    [SerializeField]
+    private Transform _npcTransform;
     [SerializeField]
     private GameObject _dnaTube;
     [SerializeField]
@@ -22,13 +23,13 @@ public class StartCutScene : CutScene {
     [SerializeField]
     private TweenScale _tweenScale;
     [SerializeField]
-    private GameObject _dialogBubble;
+    private GameObject _npcDialogBubble;
     [SerializeField]
-    private GameObject _dialogBubblePlayer;
+    private GameObject _playerDialogBubble;
     [SerializeField]
-    private TextMesh _textFieldDummy;
+    private TextMesh _npcTextField;
     [SerializeField]
-    private TextMesh _textFieldPlayer;
+    private TextMesh _playerTextField;
     private Vector3 _originFromTweenScale;
     private Vector3 _originToTweenScale;
     private bool _scaleUp = true;
@@ -44,13 +45,28 @@ public class StartCutScene : CutScene {
     private const float _pulseSpeed = 1f;
 #endif
 
+    void say(string s, GameObject bubble, TextMesh text)
+    {
+        bubble.SetActive(true);
+        text.text = s;
+    }
+
+    void makePlayerSay(string s)
+    {
+        say(s, _playerDialogBubble, _playerTextField);
+    }
+
+    void makeNPCSay(string s)
+    {
+        say(s, _npcDialogBubble, _npcTextField);
+    }
+
     // Use this for initialization
     public override void initialize()
     {
 
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
-        _bacteriaTransform = _iTweenEventBacteria.GetComponent<Transform>();
 
         StartCoroutine(waitForBeginning());
         //start();
@@ -72,14 +88,14 @@ public class StartCutScene : CutScene {
         _tweenScale.enabled = true;
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        /*if (col.gameObject.name == "dummyPlayer")
-        {
-            end ();
-            Destroy(col.gameObject);
-        }*/
-    }
+    // void OnTriggerEnter(Collider col)
+    // {
+    //     if (col.gameObject.name == "dummyPlayer")
+    //     {
+    //         end ();
+    //         Destroy(col.gameObject);
+    //     }
+    // }
     
     public override void endCutScene()
     {
@@ -92,28 +108,20 @@ public class StartCutScene : CutScene {
     public override void startCutScene()
     {
         _cellControl.freezePlayer(true);
-        _iTweenEventBacteria.enabled = true;
+        _npcStartITweenEvent.enabled = true;
         StartCoroutine(waitForFirstPart());
-    }
-
-    void firstPart()
-    {
-        _dialogBubble.SetActive(true);
-        _textFieldDummy.text = "!";
     }
 
     void secondPart()
     {
         _dnaTube.SetActive(true);
-        _dialogBubblePlayer.SetActive(true);
-        _textFieldPlayer.text = "?";
+        makePlayerSay("?");
         StartCoroutine(waitForThirdPart());
     }
 
     void thirdPart()
     {
-        _dialogBubblePlayer.SetActive(true);
-        _textFieldPlayer.text = "!?";
+        makePlayerSay("!?");
         _iTweenEventDNA.enabled = true;
         _iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(true);
         StartCoroutine(waitForFourthPart());
@@ -121,7 +129,7 @@ public class StartCutScene : CutScene {
 
     void fourthPart()
     {
-        _dialogBubblePlayer.SetActive(false);
+        _playerDialogBubble.SetActive(false);
         reverseAnim();
         //_iTweenEventDNA.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         StartCoroutine(waitForFifthPart());
@@ -131,7 +139,7 @@ public class StartCutScene : CutScene {
 
     void fifthPart()
     {
-        _itweenEventBacteria2.enabled = true;
+        _npcEndITweenEvent.enabled = true;
         //_iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
 
         StartCoroutine(waitForEnd());
@@ -191,19 +199,17 @@ public class StartCutScene : CutScene {
     IEnumerator waitForFirstPart()
     {
         yield return new WaitForSeconds(waitTimes[1]);
-        _dialogBubble.SetActive(true);
-        _textFieldDummy.text = "!";
+        makeNPCSay("!");
         yield return new WaitForSeconds(waitTimes[2]);
-        _dialogBubblePlayer.SetActive(true);
-        _textFieldPlayer.text = "!";
-        _iTweenEventBacteria.enabled = false;
+        makePlayerSay("!");
+        _npcStartITweenEvent.enabled = false;
         yield return new WaitForSeconds(waitTimes[3]);
         float currentAngle = 0;
-        _dialogBubble.SetActive(false);
-        _dialogBubblePlayer.SetActive(false);
+        _npcDialogBubble.SetActive(false);
+        _playerDialogBubble.SetActive(false);
         while (currentAngle < 810)
         {
-            _bacteriaTransform.eulerAngles = new Vector3(_bacteriaTransform.eulerAngles.x, _bacteriaTransform.eulerAngles.y + Time.deltaTime * 1000, _bacteriaTransform.eulerAngles.z);
+            _npcTransform.eulerAngles = new Vector3(_npcTransform.eulerAngles.x, _npcTransform.eulerAngles.y + Time.deltaTime * 1000, _npcTransform.eulerAngles.z);
             currentAngle += Time.deltaTime * 1000;
             yield return null;
         }
@@ -221,7 +227,7 @@ public class StartCutScene : CutScene {
     IEnumerator waitForThirdPart()
     {
         yield return new WaitForSeconds(waitTimes[5]);
-        _dialogBubblePlayer.SetActive(false);
+        _playerDialogBubble.SetActive(false);
         thirdPart();
         yield return null;
     }

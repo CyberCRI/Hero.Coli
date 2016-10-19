@@ -134,7 +134,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning(this.GetType() + " no item selected: current index is " + _currentIndex);
+            // Debug.LogWarning(this.GetType() + " no item selected: current index is " + _currentIndex);
         }
         _currentIndex = -1;
     }
