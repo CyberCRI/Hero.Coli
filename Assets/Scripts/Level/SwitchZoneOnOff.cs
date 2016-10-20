@@ -8,6 +8,13 @@ public class SwitchZoneOnOff : MonoBehaviour
     private GameObject[] _inactiveZone;
     //private static SwitchZoneOnOff _instance;
 
+    [SerializeField]
+    private bool _devMode;
+    [SerializeField]
+    private GameObject[] _devActiveZone;
+    [SerializeField]
+    private GameObject[] _devInactiveZone;
+
     void Awake()
     {
         //_instance = this;
@@ -29,26 +36,32 @@ public class SwitchZoneOnOff : MonoBehaviour
     {
         if (col.tag == Hero.playerTag)
         {
-            for (int i = 0; i < _activeZone.Length; i++)
+            GameObject[] activeZone = _devMode?_devActiveZone:_activeZone;
+            GameObject[] inactiveZone = _devMode?_devInactiveZone:_inactiveZone;
+
+            for (int i = 0; i < activeZone.Length; i++)
             {
-                _activeZone[i].SetActive(true);
+                activeZone[i].SetActive(true);
             }
-            for (int i = 0; i < _inactiveZone.Length; i++)
+            for (int i = 0; i < inactiveZone.Length; i++)
             {
-                _inactiveZone[i].SetActive(false);
+                inactiveZone[i].SetActive(false);
             }
         }
     }
 
     public void triggerSwitchZone()
     {
-        for (int i = 0; i < _activeZone.Length; i++)
+        GameObject[] activeZone = _devMode?_devActiveZone:_activeZone;
+        GameObject[] inactiveZone = _devMode?_devInactiveZone:_inactiveZone;
+
+        for (int i = 0; i < activeZone.Length; i++)
         {
-            _activeZone[i].SetActive(true);
+            activeZone[i].SetActive(true);
         }
-        for (int i = 0; i < _inactiveZone.Length; i++)
+        for (int i = 0; i < inactiveZone.Length; i++)
         {
-            _inactiveZone[i].SetActive(false);
+            inactiveZone[i].SetActive(false);
 
         }
     }

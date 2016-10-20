@@ -109,6 +109,13 @@ public abstract class StepByStepTutorial : MonoBehaviour
                         prepared = true;
                     }
                 }
+                // else
+                // {
+                //     if(Input.GetKeyUp(KeyCode.Space))
+                //     {
+                //         next();
+                //     }
+                // }
             }
             waited += Time.fixedDeltaTime;
         }
