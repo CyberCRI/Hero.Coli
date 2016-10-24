@@ -124,7 +124,14 @@ public class GameStateController : MonoBehaviour
 
     public static void updateAdminStatus()
     {
-        _isAdminMode = Application.isEditor || MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
+        bool previousStatus = _isAdminMode;
+        bool isTestGUID = MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
+        _isAdminMode = Application.isEditor || isTestGUID;
+        Debug.Log("GameStateController updateAdminStatus " + previousStatus + " to " + _isAdminMode
+        + " because isTestGUID=" + isTestGUID
+        + " because testGUID=" + MemoryManager.get("updateAdminStatus").configuration.testVersionGUID
+        + " and isEditor=" + Application.isEditor
+        );
     }
 
     // bool isInterfaceLoaded = false;

@@ -15,15 +15,14 @@ public class CutSceneBlackBarHandler : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            closeBar(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            closeBar(false);
-        }
-
+	    // if (Input.GetKeyDown(KeyCode.Keypad5))
+        // {
+        //     closeBar(true);
+        // }
+        // if (Input.GetKeyDown(KeyCode.Keypad6))
+        // {
+        //     closeBar(false);
+        // }
     }
 
     public void closeBar(bool close)

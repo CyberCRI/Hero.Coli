@@ -296,7 +296,7 @@ public class GameConfiguration
     //sets the destination to which logs will be sent
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion)
     {
-        // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
+        Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
         System.Guid guid = wantToBecomeLabelledGameVersion ? labelledGameVersionGUID : testVersionGUID;
 
         if (guid != RedMetricsManager.get().getGameVersion())
@@ -307,7 +307,7 @@ public class GameConfiguration
             {
                 RedMetricsManager.get().disconnect();
             }
-            // Debug.Log(this.GetType() + " gameVersionGUID set calls RedMetricsManager setGameVersion");
+            Debug.Log(this.GetType() + " gameVersionGUID set calls RedMetricsManager setGameVersion");
             RedMetricsManager.get().setGameVersion(guid);
             if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
             {

@@ -673,16 +673,14 @@ public class CraftDeviceSlot : MonoBehaviour
         return currentBricks;
     }
 
-    /*
-        void Update()
-        {
-            if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
-            {
-                Debug.LogError(getDebugBoolsString());
-                _interruptOnDisable = !_interruptOnDisable;
-            }        
-        }
-        */
+    void Update()
+    {
+    //     if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
+    //     {
+    //         Debug.LogError(getDebugBoolsString());
+    //         _interruptOnDisable = !_interruptOnDisable;
+    //     }        
+    }
 
     void OnDisable()
     {
