@@ -394,11 +394,10 @@ public class Medium : LoadableFromXmlImpl
         //TODO refactor interactions out of medium
         if (_name == "Cellia")
         {
-            manageMoleculeConcentrationWithKey("AMPI");
-
             if (GameStateController.isAdminMode)
             {
-                //TODO manage this differently
+                //TODO optimize
+                manageMoleculeConcentrationWithKey("AMPI");
                 manageMoleculeConcentrationWithKey("AMPR");
                 manageMoleculeConcentrationWithKey("ATC");
                 manageMoleculeConcentrationWithKey("FLUO1");
@@ -408,27 +407,65 @@ public class Medium : LoadableFromXmlImpl
                 manageMoleculeConcentrationWithKey("REPR1");
                 manageMoleculeConcentrationWithKey("REPR2");
                 manageMoleculeConcentrationWithKey("REPR3");
-                manageMoleculeConcentrationWithKey("REPR4");
+                // manageMoleculeConcentrationWithKey("REPR4");
             }
         }
     }
 
+    private class MoleculeShortcut
+    {
+        public string _shortCutPlus;
+        public string _shortCutMinus;
+        public Molecule _molecule;
+
+        public MoleculeShortcut(string shortCutPlus, string shortCutMinus, Molecule molecule)
+        {
+            _shortCutPlus = shortCutPlus;
+            _shortCutMinus = shortCutMinus;
+            _molecule = molecule;
+        }
+    }
+    private Dictionary<string, MoleculeShortcut> _shortcuts = new Dictionary<string, MoleculeShortcut>();
+    private MoleculeShortcut _shortCut;
+    private Molecule _molecule;
+
     //TODO refactor interactions out of medium
     private void manageMoleculeConcentrationWithKey(String molecule)
     {
-        if (GameStateController.isShortcutKey(GameStateController.keyPrefix + molecule + _shortkeyPlusSuffix))
+        _shortCut = null;
+        _shortcuts.TryGetValue(molecule, out _shortCut);
+        if (null == _shortCut)
         {
-            if (_enableSequential)
-                ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(10f);
+            _molecule = ReactionEngine.getMoleculeFromName(molecule, _molecules);
+            if (null != _molecule)
+            {
+                _shortCut = new MoleculeShortcut(
+                    GameStateController.keyPrefix + molecule + _shortkeyPlusSuffix,
+                    GameStateController.keyPrefix + molecule + _shortkeyMinusSuffix,
+                    _molecule
+                );
+                _shortcuts.Add(molecule, _shortCut);
+            }
             else
-                ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(100f);
+            {
+                Debug.LogWarning(this.GetType() + " molecule " + molecule + " not found");
+                return;
+            }
         }
-        if (GameStateController.isShortcutKey(GameStateController.keyPrefix + molecule + _shortkeyMinusSuffix))
+
+        if (GameStateController.isShortcutKey(_shortCut._shortCutPlus))
         {
             if (_enableSequential)
-                ReactionEngine.getMoleculeFromName(molecule, _molecules).addConcentration(-10f);
+                _shortCut._molecule.addConcentration(10f);
             else
-                ReactionEngine.getMoleculeFromName(molecule, _molecules).addNewConcentration(-100f);
+                _shortCut._molecule.addNewConcentration(100f);
+        }
+        if (GameStateController.isShortcutKey(_shortCut._shortCutMinus))
+        {
+            if (_enableSequential)
+                _shortCut._molecule.addConcentration(-10f);
+            else
+                _shortCut._molecule.addNewConcentration(-100f);
         }
     }
 

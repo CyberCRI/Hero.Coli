@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿// #define DEV
+using UnityEngine;
 
 public class AmbientLighting : MonoBehaviour
 {
@@ -63,16 +64,16 @@ public class AmbientLighting : MonoBehaviour
 
 
     ////////////Tests
-
-
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.M))
-    //     {
-    //         changeLightProperty(_phenoLight, _color[1], 24, 4);
-    //         changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
-    //     }
-    // }
+#if DEV
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            changeLightProperty(_phenoLight, _color[1], 24, 4);
+            changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
+        }
+    }
+#endif
 
     void Start()
     {

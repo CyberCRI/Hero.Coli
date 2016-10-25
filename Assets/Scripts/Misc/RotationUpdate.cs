@@ -1,40 +1,49 @@
-﻿using UnityEngine;
+﻿// #define DEV
+using UnityEngine;
 using System.Collections;
 
-public class RotationUpdate : MonoBehaviour {
+public class RotationUpdate : MonoBehaviour
+{
 
     private Vector3 _inputMovement;
     private PlatformMvt _platformMvt;
     private float rotationSpeed = 6f;
-	private Vector3 _previousPosition;
+    private Vector3 _previousPosition;
     [SerializeField]
     private bool _isControlledExternally = false;
-	// Use this for initialization
-	void Start () {
-		_previousPosition = this.transform.position;
+    // Use this for initialization
+    void Start()
+    {
+        _previousPosition = this.transform.position;
         _platformMvt = this.GetComponent<PlatformMvt>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
 
-        /*if (_platformMvt != null) {
-			_inputMovement = _platformMvt.getCurrentDestination () - this.transform.position;
-		} else 
-		{
-			_inputMovement = this.transform.position - _previousPosition;
-		}*/
+    // Update is called once per frame
+    void Update()
+    {
+
+        // if (_platformMvt != null)
+        // {
+        //     _inputMovement = _platformMvt.getCurrentDestination() - this.transform.position;
+        // }
+        // else
+        // {
+        //     _inputMovement = this.transform.position - _previousPosition;
+        // }
+
         if (_isControlledExternally == false)
         {
             _inputMovement = this.transform.position - _previousPosition;
             _previousPosition = this.transform.position;
         }
 
+#if DEV
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             ObjectDirectedRotationUpdate(player);
         }
+#endif
 
         rotationUpdate();
     }
@@ -58,7 +67,7 @@ public class RotationUpdate : MonoBehaviour {
     IEnumerator SmoothRotate(float time)
     {
         float originTime = time;
-        while(time >=0)
+        while (time >= 0)
         {
             time -= Time.deltaTime;
             rotationUpdate();
@@ -66,7 +75,7 @@ public class RotationUpdate : MonoBehaviour {
         yield return null;
     }
 
-    public void SetIsControlledExternally(bool  value)
+    public void SetIsControlledExternally(bool value)
     {
         _isControlledExternally = value;
     }

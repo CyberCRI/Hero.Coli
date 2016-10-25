@@ -157,7 +157,7 @@ public class BlackLight : MonoBehaviour {
 	// light on/off for the black light
 	public void switchLight ()
 	{
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOn, true)
+    if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOn, true)
                 && !isActive
        )
 		{
@@ -166,7 +166,7 @@ public class BlackLight : MonoBehaviour {
 				setDiffuseTransparentPlane();
 			isActive = true;
 		}
-    if (GameStateController.isShortcutKey(GameStateController.keyPrefix+_blackLightOff, true)
+    if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOff, true)
             && isActive
        )
 		{

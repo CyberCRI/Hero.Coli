@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// #define DEV
+using UnityEngine;
 
-public class SimpleTeleportation : MonoBehaviour {
-
+public class SimpleTeleportation : MonoBehaviour
+{
     [SerializeField]
     private Vector3 _tpPoint1;
     [SerializeField]
@@ -10,8 +10,9 @@ public class SimpleTeleportation : MonoBehaviour {
     [SerializeField]
     private Vector3 _tpPoint3;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
         var tpObj1 = GameObject.FindGameObjectWithTag("TP1");
         var tpObj2 = GameObject.FindGameObjectWithTag("TP2");
@@ -20,10 +21,10 @@ public class SimpleTeleportation : MonoBehaviour {
         _tpPoint2 = tpObj2.transform.position;
         _tpPoint3 = tpObj3.transform.position;
     }
-	
+
+#if DEV
 	// Update is called once per frame
-	void Update () {
-	    
+	void Update () {	    
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
             this.transform.position = _tpPoint1;
@@ -36,6 +37,6 @@ public class SimpleTeleportation : MonoBehaviour {
         {
             this.transform.position = _tpPoint3;
         }
-
 	}
+#endif
 }

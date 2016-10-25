@@ -1,3 +1,4 @@
+// #define DEV
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 */
 public class VectrosityPanel : MonoBehaviour
 {
-
     public Camera GUICam; //!< The Isometric camera which will display the layer
     public bool draw = true; //!< Toggles drawing of the lines
     public RectTransform graphPlaceHolder;
@@ -121,11 +121,11 @@ public class VectrosityPanel : MonoBehaviour
         //bool resize = refreshInfos();
         //drawLines(resize);
 
-        /*
+#if DEV
         if(Input.GetKeyDown(KeyCode.W)) {
           draw = !draw;
         }
-        */
+#endif
 
         if (draw)
         {
@@ -134,37 +134,46 @@ public class VectrosityPanel : MonoBehaviour
             drawLines(false);
         }
 
-        /*    
-            if(Input.GetKeyDown(KeyCode.Z)) {
-                if(_mediumId == 1) {
-                    foreach(Line line in _lines) {
-                        line.doDebugAction();
-                    }
+#if DEV
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (_mediumId == 1)
+            {
+                foreach (Line line in _lines)
+                {
+                    line.doDebugAction();
                 }
             }
-         //*/
+        }
 
-        /*   
-           if(Input.GetKeyDown(KeyCode.E)) {
-               if(_mediumId == 1) {
-                   if(areLinesNull) {
-                       Logger.Log("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": creating lines", Logger.Level.ERROR);
-                       foreach(Line line in _lines) {
-                           line.initializeVectorLine();
-                           Logger.Log("VectrosityPanel initialized line "+line.name, Logger.Level.ERROR);
-                       }
-                       areLinesNull = false;
-                   } else {
-                       Logger.Log("VectrosityPanel toggling lines with areLinesNull="+areLinesNull+": destroying lines", Logger.Level.ERROR);
-                       foreach(Line line in _lines) {
-                           line.destroyLine();
-                           Logger.Log("VectrosityPanel destroyed line "+line.name, Logger.Level.ERROR);
-                       }
-                       areLinesNull = true;
-                   }
-               }
-           }
-       //*/
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (_mediumId == 1)
+            {
+                if (areLinesNull)
+                {
+                    Logger.Log("VectrosityPanel toggling lines with areLinesNull=" + areLinesNull + ": creating lines", Logger.Level.ERROR);
+                    foreach (Line line in _lines)
+                    {
+                        line.initializeVectorLine();
+                        Logger.Log("VectrosityPanel initialized line " + line.name, Logger.Level.ERROR);
+                    }
+                    areLinesNull = false;
+                }
+                else
+                {
+                    Logger.Log("VectrosityPanel toggling lines with areLinesNull=" + areLinesNull + ": destroying lines", Logger.Level.ERROR);
+                    foreach (Line line in _lines)
+                    {
+                        line.destroyLine();
+                        Logger.Log("VectrosityPanel destroyed line " + line.name, Logger.Level.ERROR);
+                    }
+                    areLinesNull = true;
+                }
+            }
+        }
+#endif
+
     }
 
     // can only be called directly by GUITransitioner

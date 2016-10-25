@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿// #define DEV
+using UnityEngine;
 
 public class FocusMaskManager : MonoBehaviour
 {
@@ -30,11 +31,11 @@ public class FocusMaskManager : MonoBehaviour
     public CellControl cellControl;
 
     // test code
-    /*
+#if DEV
     public ExternalOnPressButton testClickable;
     public GameObject testObject;
     public Vector3 testPosition;
-    //*/
+#endif
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "FocusMaskSystem";
@@ -308,35 +309,37 @@ public class FocusMaskManager : MonoBehaviour
             arrowSprite.alpha = _newAlpha;
             float currentDistance = arrowSprite.transform.localPosition.y;
         }
-        
+
         // test code
-        // if (Input.GetKeyDown(KeyCode.KeypadDivide))
-        // {
-        //     testClickable = GameObject.Find("CraftButton").GetComponent<ExternalOnPressButton>();
-        //     focusOn(testClickable);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.KeypadMultiply))
-        // {
-        //     testClickable = GameObject.Find("AvailableDisplayedDTER").GetComponent<ExternalOnPressButton>();
-        //     focusOn(testClickable);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        // {
-        //     focusOn(testPosition);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Keypad1))
-        // {
-        //     focusOn(GameObject.Find("CraftButton"), true);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Keypad2))
-        // {
-        //     focusOn(Hero.get().gameObject, false);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Keypad3))
-        // {
-        //     testObject = GameObject.Find("TestRock12");
-        //     focusOn(testObject, false);
-        // }
+#if DEV
+        if (Input.GetKeyDown(KeyCode.KeypadDivide))
+        {
+            testClickable = GameObject.Find("CraftButton").GetComponent<ExternalOnPressButton>();
+            focusOn(testClickable);
+        }
+        else if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+        {
+            testClickable = GameObject.Find("AvailableDisplayedDTER").GetComponent<ExternalOnPressButton>();
+            focusOn(testClickable);
+        }
+        else if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            focusOn(testPosition);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            focusOn(GameObject.Find("CraftButton"), null, null, true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            focusOn(Hero.get().gameObject, null, null, false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            GameObject testObject = GameObject.Find("TestRock12");
+            focusOn(testObject, null, null, false);
+        }
+#endif
     }
 
     private void pointAt(Vector3 position)

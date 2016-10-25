@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿// #define DEV
+using UnityEngine;
 using System.Collections;
 
 public class BioBricksCollapse : MonoBehaviour {
@@ -89,7 +90,7 @@ public class BioBricksCollapse : MonoBehaviour {
         onBricksStoppedMoving();
     }
 
-/*
+#if DEV
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -97,7 +98,7 @@ public class BioBricksCollapse : MonoBehaviour {
             StartCoroutine(expandBricks(50f));
         }
     }
-    */
+#endif
 
     IEnumerator collapseBricks(float speed)
     {
