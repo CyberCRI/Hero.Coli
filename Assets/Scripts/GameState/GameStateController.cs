@@ -113,6 +113,8 @@ public class GameStateController : MonoBehaviour
     private bool[] _loadingFlags = new bool[3] { false, false, false };
     public const int ilmIndex = 0, plmIndex = 1, wlmIndex = 2;
 
+    public Teleporter teleporter;
+
     private static bool _isAdminMode = false;
     public static bool isAdminMode
     {
@@ -284,18 +286,6 @@ public class GameStateController : MonoBehaviour
     }
 
     //TODO optimize for frequent calls
-    public static bool isShortcutKeyDown(KeyCode code, bool restricted = false)
-    {
-        return (!restricted || isAdminMode) && Input.GetKeyDown(code);
-    }
-
-    //TODO optimize for frequent calls
-    public static bool isShortcutKey(KeyCode code, bool restricted = false)
-    {
-        return (!restricted || isAdminMode) && Input.GetKey(code);
-    }
-
-    //TODO optimize for frequent calls
     public static bool isShortcutKeyDown(string localizationKey, bool restricted = false)
     {
         return (!restricted || isAdminMode) && Input.GetKeyDown(getKeyCode(localizationKey));
@@ -412,6 +402,44 @@ public class GameStateController : MonoBehaviour
         }
     }
 
+    private class CheckpointShortcut
+    {
+        public int index;
+        public KeyCode keyCode;
+
+        public CheckpointShortcut(int idx, KeyCode kc)
+        {
+            this.index = idx;
+            this.keyCode = kc;
+        }
+    }
+
+    private CheckpointShortcut[] _shortcuts = new CheckpointShortcut[14]
+    {
+        new CheckpointShortcut(0, KeyCode.Alpha0),
+        new CheckpointShortcut(1, KeyCode.Alpha1),
+        new CheckpointShortcut(2, KeyCode.Alpha2),
+        new CheckpointShortcut(3, KeyCode.Alpha3),
+        new CheckpointShortcut(4, KeyCode.Alpha4),
+        new CheckpointShortcut(5, KeyCode.Alpha5),
+        new CheckpointShortcut(6, KeyCode.Alpha6),
+        new CheckpointShortcut(7, KeyCode.Alpha7),
+        new CheckpointShortcut(8, KeyCode.Alpha8),
+        new CheckpointShortcut(9, KeyCode.Alpha9),
+        new CheckpointShortcut(10, KeyCode.Keypad0),
+        new CheckpointShortcut(11, KeyCode.Keypad1),
+        new CheckpointShortcut(12, KeyCode.Keypad2),
+        new CheckpointShortcut(13, KeyCode.Keypad3)
+    };
+
+    public void goToCheckpoint(int index)
+    {
+        if (null != teleporter)
+        {
+            teleporter.teleport(index);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -427,25 +455,17 @@ public class GameStateController : MonoBehaviour
         {
 
             // TODO replace by per-checkpoint teleportation
-            // if (_isAdminMode)
-            // {
-            //     if (isShortcutKeyDown(KeyCode.X))
-            //     {
-            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the pursuit");
-            //         CellControl.get(gameObjectName).teleport(new Vector3(500, 0, 637));
-            //     }
-            //     else if (isShortcutKeyDown(KeyCode.V))
-            //     {
-            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the GFP BioBrick");
-            //         CellControl.get(gameObjectName).teleport(new Vector3(168, 0, 724));
-
-            //     }
-            //     else if (isShortcutKeyDown(KeyCode.W))
-            //     {
-            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the end of the game");
-            //         CellControl.get(gameObjectName).teleport(new Vector3(-150, 0, 1110));
-            //     }
-            // }
+            if (_isAdminMode)
+            {
+                foreach (CheckpointShortcut sc in _shortcuts)
+                {
+                    if (Input.GetKeyDown(sc.keyCode))
+                    {
+                        // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to checkpoint " + sc.index);
+                        goToCheckpoint(sc.index);
+                    }
+                }
+            }
 
             switch (_gameState)
             {
@@ -599,7 +619,7 @@ public class GameStateController : MonoBehaviour
     {
         // can press shortcut when no cutscene, no modal, no infowindow, no step by step tutorial
         bool result = !CutScene.isPlaying() && !ModalManager.isDisplayed() && !StepByStepTutorial.isPlaying();
-        return result; 
+        return result;
     }
 
     public void goToOtherGameMode()

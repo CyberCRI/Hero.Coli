@@ -72,6 +72,12 @@ public class WorldLinkManager : LinkManager
 
     public MineManager mineManager;
     public Transform startPosition;
+    [SerializeField]
+    private Teleporter teleporter;
+    [SerializeField]
+    private EndGameCollider endGameCollider;
+    [SerializeField]
+    private InfoWindowCollisionTrigger rfpTutorialTrigger;
 
     public override void initialize()
     {
@@ -90,34 +96,19 @@ public class WorldLinkManager : LinkManager
         }
 
         //specific code for adventure1
-        GameObject endGameColliderGameObject = GameObject.Find("TutoEnd");
-        if (null != endGameColliderGameObject)
+        if (null != rfpTutorialTrigger && null != perso)
         {
-            EndGameCollider endGameCollider = endGameColliderGameObject.GetComponent<EndGameCollider>();
+            rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
+        }
+        if (null != endGameCollider)
+        {
             endGameCollider.hero = perso;
             endGameCollider.endInfoPanel = GameStateController.get().endWindow;
             endGameCollider.endMainMenuButton = GameStateController.get().endMainMenuButton;
             Logger.Log("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel, Logger.Level.INFO);
         }
 
-        //specific code for adventure1
-        GameObject tutoRFPGameObject = GameObject.Find("TutoRFP");
-        if (null != tutoRFPGameObject && null != perso)
-        {
-            InfoWindowCollisionTrigger tutoRFP = tutoRFPGameObject.GetComponent<InfoWindowCollisionTrigger>();
-            tutoRFP.heroCollider = perso.GetComponent<CapsuleCollider>();
-        }
-
-        //specific code for tutorial1
-        endGameColliderGameObject = GameObject.Find("Tutorial1End");
-        if (null != endGameColliderGameObject)
-        {
-            EndGameCollider endGameCollider = endGameColliderGameObject.GetComponent<EndGameCollider>();
-            endGameCollider.hero = perso;
-            endGameCollider.endInfoPanel = GameStateController.get().endWindow;
-            endGameCollider.endMainMenuButton = GameStateController.get().endMainMenuButton;
-            Logger.Log("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel, Logger.Level.INFO);
-        }
+        GameStateController.get().teleporter = teleporter;
     }
 
     public override void finishInitialize()

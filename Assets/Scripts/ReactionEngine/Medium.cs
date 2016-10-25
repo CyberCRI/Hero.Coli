@@ -414,15 +414,15 @@ public class Medium : LoadableFromXmlImpl
 
     private class MoleculeShortcut
     {
-        public string _shortCutPlus;
-        public string _shortCutMinus;
-        public Molecule _molecule;
+        public string shortCutPlus;
+        public string shortCutMinus;
+        public Molecule molecule;
 
-        public MoleculeShortcut(string shortCutPlus, string shortCutMinus, Molecule molecule)
+        public MoleculeShortcut(string sCPlus, string sCMinus, Molecule mol)
         {
-            _shortCutPlus = shortCutPlus;
-            _shortCutMinus = shortCutMinus;
-            _molecule = molecule;
+            this.shortCutPlus = sCPlus;
+            this.shortCutMinus = sCMinus;
+            this.molecule = mol;
         }
     }
     private Dictionary<string, MoleculeShortcut> _shortcuts = new Dictionary<string, MoleculeShortcut>();
@@ -453,19 +453,19 @@ public class Medium : LoadableFromXmlImpl
             }
         }
 
-        if (GameStateController.isShortcutKey(_shortCut._shortCutPlus))
+        if (GameStateController.isShortcutKey(_shortCut.shortCutPlus))
         {
             if (_enableSequential)
-                _shortCut._molecule.addConcentration(10f);
+                _shortCut.molecule.addConcentration(10f);
             else
-                _shortCut._molecule.addNewConcentration(100f);
+                _shortCut.molecule.addNewConcentration(100f);
         }
-        if (GameStateController.isShortcutKey(_shortCut._shortCutMinus))
+        if (GameStateController.isShortcutKey(_shortCut.shortCutMinus))
         {
             if (_enableSequential)
-                _shortCut._molecule.addConcentration(-10f);
+                _shortCut.molecule.addConcentration(-10f);
             else
-                _shortCut._molecule.addNewConcentration(-100f);
+                _shortCut.molecule.addNewConcentration(-100f);
         }
     }
 
