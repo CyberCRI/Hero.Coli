@@ -288,7 +288,7 @@ public class GameConfiguration
             else
             {
                 // Debug.Log(this.GetType() + "gameVersionGUID get calls set to storedGUID = " + storedGUID);
-                RedMetricsManager.get().setGameVersion(storedGUID);
+                setGameVersion(storedGUID);
             }
         }
     }
@@ -307,14 +307,25 @@ public class GameConfiguration
             {
                 RedMetricsManager.get().disconnect();
             }
-            Debug.Log(this.GetType() + " gameVersionGUID set calls RedMetricsManager setGameVersion");
-            RedMetricsManager.get().setGameVersion(guid);
+            // Debug.Log(this.GetType() + " gameVersionGUID set calls setGameVersion");
+            setGameVersion(guid);
             if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
             {
                 RedMetricsManager.get().connect();
             }
-            GameStateController.updateAdminStatus();
         }
+    }
+
+    private void setGameVersion(string guid)
+    {
+        setGameVersion(new System.Guid(guid));
+    }
+
+    private void setGameVersion(System.Guid guid)
+    {
+        // Debug.Log(this.GetType() + " setGameVersion " + guid);
+        RedMetricsManager.get().setGameVersion(guid);
+        GameStateController.updateAdminStatus();
     }
 
     //switches the logging mode from test to normal and conversely
