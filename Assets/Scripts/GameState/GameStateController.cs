@@ -91,7 +91,7 @@ public class GameStateController : MonoBehaviour
 
 
     public const string keyPrefix = "KEY.";
-    public const string _inventoryKey = keyPrefix + "INVENTORY";
+    // public const string _inventoryKey = keyPrefix + "INVENTORY";
     public const string _craftingKey = keyPrefix + "CRAFTING";
     public const string _pauseKey = keyPrefix + "PAUSE";
     public const string _sandboxKey = keyPrefix + "SANDBOX";
@@ -127,11 +127,12 @@ public class GameStateController : MonoBehaviour
         bool previousStatus = _isAdminMode;
         bool isTestGUID = MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
         _isAdminMode = Application.isEditor || isTestGUID;
-        Debug.Log("GameStateController updateAdminStatus " + previousStatus + " to " + _isAdminMode
-        + " because isTestGUID=" + isTestGUID
-        + " because testGUID=" + MemoryManager.get("updateAdminStatus").configuration.testVersionGUID
-        + " and isEditor=" + Application.isEditor
-        );
+        // Debug.Log(this.GetType() + " updateAdminStatus " + previousStatus + " to " + _isAdminMode
+        // + " because isTestGUID=" + isTestGUID
+        // + " because testGUID=" + MemoryManager.get("updateAdminStatus").configuration.testVersionGUID
+        // + " and GUID=" + RedMetricsManager.get().getGameVersion()
+        // + " and isEditor=" + Application.isEditor
+        // );
     }
 
     // bool isInterfaceLoaded = false;
@@ -151,7 +152,7 @@ public class GameStateController : MonoBehaviour
 
     // void SceneLoaded(Scene scene, LoadSceneMode m)
     // {
-    //     // Debug.Log("GameStateController::SceneLoaded(" + scene + ", " + m + ")");
+    // Debug.Log(this.GetType() + " SceneLoaded(" + scene + ", " + m + ")");
 
     //     int level = scene.buildIndex;
 
@@ -161,7 +162,7 @@ public class GameStateController : MonoBehaviour
 
     //     if (isInterfaceLoaded && isPlayerLoaded && isWorldLoaded)
     //     {
-    //         Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
+    //         Debug.Log(this.GetType() + " all scenes loaded => _finishLoadLevels = true");
     //         // finishLoadLevels();
     //         _finishLoadLevels = true;
     //     }
@@ -181,19 +182,19 @@ public class GameStateController : MonoBehaviour
             }
             if (allLoaded)
             {
-                // Debug.Log("GameStateController all scenes loaded => _finishLoadLevels = true");
+                // Debug.Log(this.GetType() + " all scenes loaded => _finishLoadLevels = true");
                 finishLoadLevels();
             }
         }
         else
         {
-            Debug.LogError("incorrect index " + index);
+            Debug.LogError(this.GetType() + " incorrect index " + index);
         }
     }
 
     private void loadLevels()
     {
-        // Debug.Log("GameStateController::loadLevels");
+        // Debug.Log(this.GetType() + " loadLevels");
         SceneManager.LoadScene(_interfaceScene, LoadSceneMode.Additive);
         SceneManager.LoadScene(_bacteriumScene, LoadSceneMode.Additive);
         SceneManager.LoadScene(MemoryManager.get("loadLevels").configuration.getSceneName(), LoadSceneMode.Additive);
@@ -201,19 +202,19 @@ public class GameStateController : MonoBehaviour
 
     private void finishLoadLevels()
     {
-        // Debug.Log("GameStateController::finishLoadLevels");
+        // Debug.Log(this.GetType() + " finishLoadLevels");
 
         // get the linkers
         InterfaceLinkManager ilm = InterfaceLinkManager.get();
         PlayerLinkManager blm = PlayerLinkManager.get();
         WorldLinkManager wlm = WorldLinkManager.get();
 
-        // Debug.Log("GameStateController initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
+        // Debug.Log(this.GetType() + " initialization: ilm=" + ilm + ", blm=" + blm + ", wlm=" + wlm);
         ilm.initialize();
         blm.initialize();
         wlm.initialize();
 
-        // Debug.Log("finishInitialize");
+        // Debug.Log(this.GetType() + " finishInitialize");
         ilm.finishInitialize();
         blm.finishInitialize();
         wlm.finishInitialize();
@@ -222,7 +223,7 @@ public class GameStateController : MonoBehaviour
 
         MainMenuManager.get().open();
 
-        // Debug.Log("finishLoadLevels done");
+        // Debug.Log(this.GetType() + " finishLoadLevels done");
     }
 
     public static bool isPause()
@@ -241,39 +242,39 @@ public class GameStateController : MonoBehaviour
     private int pushPauseInStack()
     {
         _pausesStacked++;
-        // Debug.Log("pushPauseInStack() returns " + _pausesStacked);
+        // Debug.Log(this.GetType() + " pushPauseInStack() returns " + _pausesStacked);
         return _pausesStacked;
     }
     public int popPauseInStack()
     {
-        // Debug.Log("popPauseInStack() starts with _pausesStacked==" + _pausesStacked);
+        // Debug.Log(this.GetType() + " popPauseInStack() starts with _pausesStacked==" + _pausesStacked);
         if (_pausesStacked > 0)
         {
             _pausesStacked--;
         }
         else
         {
-            Debug.LogWarning("GameStateController::popPauseInStack tried to pop a pause from empty stack");
+            Debug.LogWarning(this.GetType() + " popPauseInStack tried to pop a pause from empty stack");
             _pausesStacked = 0;
         }
-        // Debug.Log("popPauseInStack() returns _pausesStacked==" + _pausesStacked);
+        // Debug.Log(this.GetType() + " popPauseInStack() returns _pausesStacked==" + _pausesStacked);
         return _pausesStacked;
     }
     public void tryUnlockPause()
     {
-        // Debug.Log("tryUnlockPause() with previous _pausesStacked=" + _pausesStacked);
+        // Debug.Log(this.GetType() + " tryUnlockPause() with previous _pausesStacked=" + _pausesStacked);
         if (0 == popPauseInStack())
         {
             changeState(GameState.Game);
         }
-        // Debug.Log("tryUnlockPause() with final _pausesStacked=" + _pausesStacked);
+        // Debug.Log(this.GetType() + " tryUnlockPause() with final _pausesStacked=" + _pausesStacked);
     }
     public void tryLockPause()
     {
-        // Debug.Log("tryLockPause() with previous _pausesStacked=" + _pausesStacked);
+        // Debug.Log(this.GetType() + " tryLockPause() with previous _pausesStacked=" + _pausesStacked);
         pushPauseInStack();
         changeState(GameState.Pause);
-        // Debug.Log("tryLockPause() with final _pausesStacked=" + _pausesStacked);
+        // Debug.Log(this.GetType() + " tryLockPause() with final _pausesStacked=" + _pausesStacked);
     }
 
     //TODO optimize for frequent calls & refactor out of GameStateController
@@ -344,7 +345,7 @@ public class GameStateController : MonoBehaviour
 
     public void endGame()
     {
-        // Debug.Log("endGame");
+        // Debug.Log(this.GetType() + " endGame");
         reinitializeLoadingVariables();
         mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
@@ -382,21 +383,21 @@ public class GameStateController : MonoBehaviour
 
     public void goToMainMenu()
     {
-        // Debug.Log("GameStateController::goToMainMenu");
+        // Debug.Log(this.GetType() + " goToMainMenu");
         goToMainMenuFrom(_gameState);
     }
 
     public void goToMainMenuFrom(GameState state)
     {
         _stateBeforeMainMenu = state;
-        // Debug.Log("goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
+        // Debug.Log(this.GetType() + " goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
         mainMenu.open();
         changeState(GameState.MainMenu);
     }
 
     public void leaveMainMenu()
     {
-        // Debug.Log("GameStateController::leaveMainMenu");
+        // Debug.Log(this.GetType() + " leaveMainMenu");
 
         //restart
         if (GameState.MainMenu == _stateBeforeMainMenu)
@@ -417,7 +418,7 @@ public class GameStateController : MonoBehaviour
 
         // if (_finishLoadLevels)
         // {
-        //     Debug.Log("GameStateController _finishLoadLevels = true => finishLoadLevels()");
+        // Debug.Log(this.GetType() + " _finishLoadLevels = true => finishLoadLevels()");
         //     _finishLoadLevels = false;
         //     finishLoadLevels();
         // }
@@ -425,25 +426,26 @@ public class GameStateController : MonoBehaviour
         if (_finishedLoadingLevels)
         {
 
-            if (_isAdminMode)
-            {
-                if (isShortcutKeyDown(KeyCode.X))
-                {
-                    // Debug.Log("pressed shortcut to teleport Cellia to the pursuit");
-                    CellControl.get(gameObjectName).teleport(new Vector3(500, 0, 637));
-                }
-                else if (isShortcutKeyDown(KeyCode.V))
-                {
-                    // Debug.Log("pressed shortcut to teleport Cellia to the GFP BioBrick");
-                    CellControl.get(gameObjectName).teleport(new Vector3(168, 0, 724));
+            // TODO replace by per-checkpoint teleportation
+            // if (_isAdminMode)
+            // {
+            //     if (isShortcutKeyDown(KeyCode.X))
+            //     {
+            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the pursuit");
+            //         CellControl.get(gameObjectName).teleport(new Vector3(500, 0, 637));
+            //     }
+            //     else if (isShortcutKeyDown(KeyCode.V))
+            //     {
+            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the GFP BioBrick");
+            //         CellControl.get(gameObjectName).teleport(new Vector3(168, 0, 724));
 
-                }
-                else if (isShortcutKeyDown(KeyCode.W))
-                {
-                    // Debug.Log("pressed shortcut to teleport Cellia to the end of the game");
-                    CellControl.get(gameObjectName).teleport(new Vector3(-150, 0, 1110));
-                }
-            }
+            //     }
+            //     else if (isShortcutKeyDown(KeyCode.W))
+            //     {
+            //         // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to the end of the game");
+            //         CellControl.get(gameObjectName).teleport(new Vector3(-150, 0, 1110));
+            //     }
+            // }
 
             switch (_gameState)
             {
@@ -463,11 +465,11 @@ public class GameStateController : MonoBehaviour
                     break;
 
                 case GameState.MainMenu:
-                    if (Input.GetKeyUp(KeyCode.UpArrow))
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         mainMenu.selectPrevious();
                     }
-                    else if (Input.GetKeyUp(KeyCode.DownArrow))
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         mainMenu.selectNext();
                     }
@@ -488,7 +490,7 @@ public class GameStateController : MonoBehaviour
                     //pause
                     if (isShortcutKeyDown(_pauseKey))
                     {
-                        // Debug.Log("GameStateController::Update - Escape/Pause key pressed");
+                        // Debug.Log(this.GetType() + " Update - Escape/Pause key pressed");
                         ModalManager.setModal(pauseIndicator, false);
                         changeState(GameState.Pause);
                     }
@@ -505,23 +507,21 @@ public class GameStateController : MonoBehaviour
                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                     // }
                     //crafting
-                    else if (isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
+                    else if ((isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable()) && canPressCraftShortcut())
                     {
-                        // Debug.Log("GameStateController::Update craft key pressed");
+                        // Debug.Log(this.GetType() + " Update craft key pressed");
                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                     }
-                    /*
-                    else if(isShortcutKeyDown(_sandboxKey))
-                    {
-                        // Debug.Log("GameStateController::Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName());
-                        goToOtherGameMode();
-                    }*/
-                    //TODO fix this feature
-                    /*
-                    else if(isShortcutKeyDown(_forgetDevicesKey))
-                    {
-                        Inventory.get ().switchDeviceKnowledge();
-                    }*/
+                    // else if(isShortcutKeyDown(_sandboxKey))
+                    // {
+                    //     // Debug.Log(this.GetType() + " Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName());
+                    //     goToOtherGameMode();
+                    // }
+                    //TODO fix this feature                    
+                    // else if(isShortcutKeyDown(_forgetDevicesKey))
+                    // {
+                    //     Inventory.get ().switchDeviceKnowledge();
+                    // }
                     break;
 
                 case GameState.Pause:
@@ -549,26 +549,28 @@ public class GameStateController : MonoBehaviour
                                 case GUITransitioner.GameScreen.screen1:
                                     break;
                                 case GUITransitioner.GameScreen.screen2:
-                                    if (isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+                                    // if (isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+                                    // {
+                                    //     // Debug.Log(this.GetType() + " Update out of inventory key pressed");
+                                    //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                                    // }
+                                    // else
+                                    if ((isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable()) && canPressCraftShortcut())
                                     {
-                                        // Debug.Log("GameStateController::Update out of inventory key pressed");
-                                        gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                                    }
-                                    else if (isShortcutKeyDown(_craftingKey) && CraftZoneManager.isOpenable())
-                                    {
-                                        // Debug.Log("GameStateController::Update inventory to craft key pressed");
+                                        // Debug.Log(this.GetType() + " Update inventory to craft key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
                                     }
                                     break;
                                 case GUITransitioner.GameScreen.screen3:
-                                    if (isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                                    // if (isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
+                                    // {
+                                    //     // Debug.Log(this.GetType() + " Update craft to inventory key pressed");
+                                    //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
+                                    // }
+                                    // else 
+                                    if ((isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter)) && canPressCraftShortcut())
                                     {
-                                        // Debug.Log("GameStateController::Update craft to inventory key pressed");
-                                        gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-                                    }
-                                    else if (isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
-                                    {
-                                        // Debug.Log("GameStateController::Update out of craft key pressed");
+                                        // Debug.Log(this.GetType() + " Update out of craft key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                                     }
                                     break;
@@ -593,9 +595,16 @@ public class GameStateController : MonoBehaviour
         }
     }
 
+    private bool canPressCraftShortcut()
+    {
+        // can press shortcut when no cutscene, no modal, no infowindow, no step by step tutorial
+        bool result = !CutScene.isPlaying() && !ModalManager.isDisplayed() && !StepByStepTutorial.isPlaying();
+        return result; 
+    }
+
     public void goToOtherGameMode()
     {
-        // Debug.Log("GameStateController::goToOtherGameMode");
+        // Debug.Log(this.GetType() + " goToOtherGameMode");
         GameConfiguration.GameMap destination =
             (GameConfiguration.getMode(GameConfiguration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
@@ -633,7 +642,7 @@ public class GameStateController : MonoBehaviour
     public void changeState(GameState newState)
     {
         _gameState = newState;
-        // Debug.Log("GameStateController::StateChange _gameState=" + _gameState);
+        // Debug.Log(this.GetType() + " StateChange _gameState=" + _gameState);
 
         switch (_gameState)
         {
@@ -666,11 +675,11 @@ public class GameStateController : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(cause))
         {
-            // Debug.Log("GameStateController::setAndSaveLevelName by " + cause);
+            // Debug.Log(this.GetType() + " setAndSaveLevelName by " + cause);
         }
         else
         {
-            // Debug.Log("GameStateController::setAndSaveLevelName");
+            // Debug.Log(this.GetType() + " setAndSaveLevelName");
         }
 
         switch (newMap)
@@ -704,7 +713,7 @@ public class GameStateController : MonoBehaviour
 
     private static void internalRestart()
     {
-        // Debug.Log("GameStateController::restart");
+        // Debug.Log(this.GetType() + " restart");
         //TODO reload scene but reset all of its components without using MemoryManager
         //note: ways to transfer data from one scene to another
         //get data from previous instance
@@ -719,11 +728,12 @@ public class GameStateController : MonoBehaviour
         // manual reset
         iTween.Stop();
         iTweenPath.paths.Clear();
-        CutSceneElements.clear();
+        CutScene.clear();
         DisplayedDevice.clear();
         PickablePlasmid.clear();
         AvailableDisplayedBioBrick.clear();
         NanobotsPickUpHandler.clear();
+        StepByStepTutorial.clear();
 
         SceneManager.LoadScene(_masterScene);
     }

@@ -1,3 +1,4 @@
+// #define DEV
 using UnityEngine;
 
 public abstract class StepByStepTutorial : MonoBehaviour
@@ -12,7 +13,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _craftWindow = "CraftPanelSprite";
     protected const string _craftButton = "CraftButton";
     protected const string _backgroundSuffix = "Background";
-    protected const string _bioBrickIconBackgroundSuffix = "BioBrickIconBackground";    
+    protected const string _bioBrickIconBackgroundSuffix = "BioBrickIconBackground";
     protected const string _exitCross = "CraftCloseButton";
 
     protected const string _availableDisplayedPrefix = "AvailableDisplayed";
@@ -41,6 +42,16 @@ public abstract class StepByStepTutorial : MonoBehaviour
     private Vector3 manualScale = new Vector3(440, 77, 1);
     private static FocusMaskManager focusMaskManager;
 
+    private static bool _isPlaying = false;
+    public static bool isPlaying()
+    {
+        return _isPlaying;
+    }
+    public static void clear()
+    {
+        _isPlaying = false;
+    }
+
     public void next()
     {
         // Debug.Log("StepByStepTutorial next");
@@ -60,6 +71,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
         // + " stepCount=" + stepCount
         // + " focusObjects=" + focusObjects
         // );
+        StepByStepTutorial._isPlaying = true;
         textHints = new string[stepCount];
         for (int index = 0; index < textHints.Length; index++)
         {
@@ -109,13 +121,15 @@ public abstract class StepByStepTutorial : MonoBehaviour
                         prepared = true;
                     }
                 }
-                // else
-                // {
-                //     if(Input.GetKeyUp(KeyCode.Space))
-                //     {
-                //         next();
-                //     }
-                // }
+#if DEV
+                else
+                {
+                    if(Input.GetKeyUp(KeyCode.Space))
+                    {
+                        next();
+                    }
+                }
+#endif
             }
             waited += Time.fixedDeltaTime;
         }
@@ -128,6 +142,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected virtual void end()
     {
         focusMaskManager.stopFocusOn();
+        StepByStepTutorial._isPlaying = false;
         Destroy(this);
     }
 }

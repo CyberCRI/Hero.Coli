@@ -58,6 +58,7 @@ public class CutSceneElements : MonoBehaviour {
 
     public static void clear()
     {
+        // Debug.Log("CutSceneElements clear");
         _blackBar = null;
         _cullingMaskHandler = null;
         _cutSceneCamera = null;

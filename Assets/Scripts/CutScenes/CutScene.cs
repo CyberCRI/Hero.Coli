@@ -5,15 +5,22 @@ using System.Collections.Generic;
 
 public abstract class CutScene : CutSceneElements {
 
-    private const float blackBarWait1 = 0.1f;
+    private const float _blackBarWait1 = 0.1f;
 #if QUICKTEST
-    private const float blackBarWait2 = 0.1f;
+    private const float _blackBarWait2 = 0.1f;
 #else
-    private const float blackBarWait2 = 2.5f;
+    private const float _blackBarWait2 = 2.5f;
 #endif
 
-    private const float normalTimeScale = 1f;
-    private const float highTimeScale = 50f;
+    private const float _normalTimeScale = 1f;
+    private const float _highTimeScale = 50f;
+
+    public static new void clear()
+    {
+        // Debug.Log("CutScene clear");
+        CutSceneElements.clear();
+        _isPlaying = false;
+    }
 
     void OnEnable()
     {
@@ -27,9 +34,9 @@ public abstract class CutScene : CutSceneElements {
 	// must be implemented in each cut scene
     public abstract void startCutScene ();    
     
-    private const string iTweenSpeedKey = "speed";
+    private const string _iTweenSpeedKey = "speed";
     private const float _speedIncreaseFactor = 10;
-    private Dictionary<iTweenEvent, float> iTweenSpeeds = new Dictionary<iTweenEvent, float>();
+    private Dictionary<iTweenEvent, float> _iTweenSpeeds = new Dictionary<iTweenEvent, float>();
 
     private void saveAndEditAlliTweenEvents()
     {
@@ -37,27 +44,34 @@ public abstract class CutScene : CutSceneElements {
         float speed;
         foreach(iTweenEvent itEvent in GameObject.FindObjectsOfType<iTweenEvent>())
         {
-            if((null != itEvent) && itEvent.Values.TryGetValue(iTweenSpeedKey, out speedObject))
+            if((null != itEvent) && itEvent.Values.TryGetValue(_iTweenSpeedKey, out speedObject))
             {
                 speed = (float)speedObject;
-                iTweenSpeeds.Add(itEvent, speed);
-                itEvent.Values.Remove(iTweenSpeedKey);
-                itEvent.Values.Add(iTweenSpeedKey, speed * _speedIncreaseFactor);
+                _iTweenSpeeds.Add(itEvent, speed);
+                itEvent.Values.Remove(_iTweenSpeedKey);
+                itEvent.Values.Add(_iTweenSpeedKey, speed * _speedIncreaseFactor);
             }
         }
     }
 
     private void reinitializeiTweenEvents()
     {
-        foreach(KeyValuePair<iTweenEvent, float> entry in iTweenSpeeds)
+        foreach(KeyValuePair<iTweenEvent, float> entry in _iTweenSpeeds)
         {
-            entry.Key.Values.Remove(iTweenSpeedKey);
-            entry.Key.Values.Add(iTweenSpeedKey, entry.Value);
+            entry.Key.Values.Remove(_iTweenSpeedKey);
+            entry.Key.Values.Add(_iTweenSpeedKey, entry.Value);
         }
+    }
+
+    private static bool _isPlaying = false;
+    public static bool isPlaying()
+    {
+        return _isPlaying;
     }
 
     // must be called when starting a cut scene
 	public void start () {
+        _isPlaying = true;
 #if QUICKTEST
         Time.timeScale = highTimeScale;
         saveAndEditAlliTweenEvents();
@@ -95,10 +109,10 @@ public abstract class CutScene : CutSceneElements {
             SetCutSceneCamera(start);
             _cellControl.freezePlayer(true);
         }
-        yield return new WaitForSeconds(blackBarWait1);
+        yield return new WaitForSeconds(_blackBarWait1);
         
         
-        yield return new WaitForSeconds(blackBarWait2);
+        yield return new WaitForSeconds(_blackBarWait2);
         if (start == true)
         {
             startCutScene();
@@ -107,6 +121,7 @@ public abstract class CutScene : CutSceneElements {
         {
             endCutScene();
             SetCutSceneCamera(start);
+            _isPlaying = false;
         }
         yield return null;
     }
