@@ -51,7 +51,7 @@ public class CutSceneInstantiator : CutSceneElements
             _boundCamera.transform.rotation = _resetCamera.rotation;
             _boundCamera.target = _cellControl.gameObject.transform;
             _boundCamera.gameObject.SetActive(true);
-            _cutSceneCamera.enabled = false;
+            _cutSceneCameraUI.enabled = false;
             _blackBar.closeBar(false);
             _cellControl.freezePlayer(false);
         }

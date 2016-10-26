@@ -23,7 +23,7 @@ public class CutSceneElements : MonoBehaviour {
     protected static CutSceneBlackBarHandler _blackBar;
     protected  static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
-    protected static Camera _cutSceneCamera;
+    protected static Camera _cutSceneCameraUI;
     protected static BoundCamera _boundCamera;
 
     private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
@@ -52,7 +52,7 @@ public class CutSceneElements : MonoBehaviour {
         // initialization of static elements
         _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBars");
         _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
-        _cutSceneCamera = lazyInitObject<Camera>(_cutSceneCamera, "CutSceneCamera");
+        _cutSceneCameraUI = lazyInitObject<Camera>(_cutSceneCameraUI, "CutSceneCamera");
         _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
     }
 
@@ -61,7 +61,7 @@ public class CutSceneElements : MonoBehaviour {
         // Debug.Log("CutSceneElements clear");
         _blackBar = null;
         _cullingMaskHandler = null;
-        _cutSceneCamera = null;
+        _cutSceneCameraUI = null;
         _boundCamera = null;
     }
 }

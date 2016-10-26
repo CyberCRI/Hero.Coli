@@ -16,8 +16,6 @@ public class AmpicillinTutorialCutScene : CutScene {
     [SerializeField]
     private iTweenEvent _iTweenEventBigGuy;
     private bool _isSlowingAnimation = false;
-    [SerializeField]
-    private GameObject _deadBigBadGuy;
     private Transform _initialTarget;
     [SerializeField]
     private Camera _cutSceneCam;
@@ -57,6 +55,7 @@ public class AmpicillinTutorialCutScene : CutScene {
     {
         _cutSceneCam.transform.position = _boundCamera.transform.position;
         _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
+        _cutSceneCam.fieldOfView = _boundCamera.GetComponent<Camera>().fieldOfView;
         _boundCamera.target = _iTweenEventBigGuy.gameObject.transform;
         _boundCamera.gameObject.SetActive(false);
         _cutSceneCam.gameObject.SetActive(true);
