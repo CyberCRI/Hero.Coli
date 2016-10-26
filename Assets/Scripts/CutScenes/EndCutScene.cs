@@ -38,7 +38,8 @@ public class EndCutScene : CutScene {
         {
             NPCs[i].GetComponent<RotationUpdate>().ObjectDirectedRotationUpdate(_cellControl.gameObject);
         }
-        StartCoroutine(InstantiateNanobot());
+        CheckForNext();
+        //StartCoroutine(InstantiateNanobot());
     }
 
     public override void endCutScene()
@@ -62,7 +63,7 @@ public class EndCutScene : CutScene {
 
     void CheckForNext()
     {
-        if (iteration < _nanoCounter.GetNanoCount() -1)
+        if (iteration < _nanoCounter.GetNanoCount())
         {
             Debug.Log(_nanoCounter.GetNanoCount());
             iteration++;

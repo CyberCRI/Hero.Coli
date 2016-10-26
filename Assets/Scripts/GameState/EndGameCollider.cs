@@ -3,7 +3,9 @@ using UnityEngine;
 public class EndGameCollider : MonoBehaviour
 {
   
+    [HideInInspector]
     public GameObject endInfoPanel, hero;
+    [HideInInspector]
     public EndMainMenuButton endMainMenuButton;
     private bool _alreadyDisplayed;
     // Use this for initialization
