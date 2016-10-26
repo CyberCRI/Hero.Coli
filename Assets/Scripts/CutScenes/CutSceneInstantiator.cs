@@ -33,6 +33,11 @@ public class CutSceneInstantiator : CutSceneElements
             {
                 _newInstance = (GameObject)Instantiate(_cutScene, _originTransform.position, _originTransform.rotation);
             }
+            else if (_newInstance != null)
+            {
+                Destroy(_newInstance);
+                _newInstance = (GameObject)Instantiate(_cutScene, _originTransform.position, _originTransform.rotation);
+            }
         }
 
         if (_first)
