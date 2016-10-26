@@ -73,7 +73,7 @@ public abstract class CutScene : CutSceneElements {
 	public void start () {
         _isPlaying = true;
 #if QUICKTEST
-        Time.timeScale = highTimeScale;
+        Time.timeScale = _highTimeScale;
         saveAndEditAlliTweenEvents();
 #endif        
         _cellControl.freezePlayer(true);
@@ -90,7 +90,7 @@ public abstract class CutScene : CutSceneElements {
     // must be called when ending a cut scene
     public void end () {
 #if QUICKTEST
-        Time.timeScale = normalTimeScale;
+        Time.timeScale = _normalTimeScale;
         reinitializeiTweenEvents();
 #endif
 		FocusMaskManager.get().blockClicks(false);

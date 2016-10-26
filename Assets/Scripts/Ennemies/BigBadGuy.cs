@@ -3,7 +3,6 @@ using System.Collections;
 
 public class BigBadGuy : MonoBehaviour
 {
-  
     public int life = 50;
     public float shrinkSpeed = 3;
     public Hero hero;
@@ -27,13 +26,13 @@ public class BigBadGuy : MonoBehaviour
     private slowDown _slowDown;
     private bool _isDying = false;
 
-    void Awake ()
+    void Awake()
     {
-        _iTP = this.gameObject.GetComponent<iTweenPath> ();
+        _iTP = this.gameObject.GetComponent<iTweenPath>();
         EnemiesManager.register(this);
     }
 
-    void Start ()
+    void Start()
     {
         step = transform.localScale.x / life;
         _slowDown = this.GetComponent<slowDown>();
@@ -84,43 +83,49 @@ public class BigBadGuy : MonoBehaviour
 
 
     }
-    
-    public void Pause (bool isPause)
+
+    public void Pause(bool isPause)
     {
-        if (isPause && null != _iTP && _iTP.IsInvoking ()) {
-            iTween.Pause (gameObject);
-        } else if (!isPause && null != _iTP && !_iTP.IsInvoking ()) {
-            iTween.Resume (gameObject);
+        if (isPause && null != _iTP && _iTP.IsInvoking())
+        {
+            iTween.Pause(gameObject);
+        }
+        else if (!isPause && null != _iTP && !_iTP.IsInvoking())
+        {
+            iTween.Resume(gameObject);
         }
     }
 
-    void OnParticleCollision (GameObject obj)
+    void OnParticleCollision(GameObject obj)
     {
-        AmpicillinCollider collider = obj.GetComponent<AmpicillinCollider> ();
-        if (null != collider) {
-      
-            Vector3 newScale = Vector3.Max (transform.localScale - new Vector3 (step, step, step), Vector3.zero);
+        AmpicillinCollider collider = obj.GetComponent<AmpicillinCollider>();
+        if (null != collider)
+        {
+            Vector3 newScale = Vector3.Max(transform.localScale - new Vector3(step, step, step), Vector3.zero);
             transform.localScale = newScale;
             life--;
-      
-            if (life == 0) {
+
+            if (life == 0)
+            {
                 EnemiesManager.unregister(this);
-                Destroy (gameObject);
+                Destroy(gameObject);
             }
         }
     }
 
-    void OnCollisionEnter (Collision col)
+    void OnCollisionEnter(Collision col)
     {
-        if (col.collider) {
-            Hero hero = col.gameObject.GetComponent<Hero> ();
-            if (null != hero) {
-                Logger.Log ("BigBadGuy::OnCollisionEnter hit hero", Logger.Level.INFO);
-                hero.subLife (_dpt);
+        if (col.collider)
+        {
+            Hero hero = col.gameObject.GetComponent<Hero>();
+            if (null != hero)
+            {
+                Debug.Log(this.GetType() + " OnCollisionEnter hit hero");
+                hero.subLife(_dpt);
             }
         }
     }
-    
+
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Ampicillin")
@@ -128,13 +133,13 @@ public class BigBadGuy : MonoBehaviour
             if (_injured == false)
             {
                 float deathSpeed = _deathSpeed * Random.Range(0.5f, 2f);
-                StartCoroutine(BadGuyDeath(this.GetComponent<slowDown>(),deathSpeed));
+                StartCoroutine(die(this.GetComponent<slowDown>(), deathSpeed));
                 _injured = true;
             }
         }
     }
 
-    IEnumerator BadGuyDeath(slowDown slowDown, float deathSPeed)
+    IEnumerator die(slowDown slowDown, float deathSPeed)
     {
         _isDying = true;
         while (slowDown.percentage > 0)
@@ -142,13 +147,13 @@ public class BigBadGuy : MonoBehaviour
             slowDown.percentage -= Time.deltaTime * deathSPeed;
             yield return null;
         }
-        GameObject instance = (GameObject) Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
+        GameObject instance = (GameObject)Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
         instance.transform.SetParent(this.transform.parent);
         this.gameObject.SetActive(false);
         yield return null;
     }
 
-    public void WakeUp(bool value)
+    public void wakeUp(bool value)
     {
         _isSleeping = !value;
     }

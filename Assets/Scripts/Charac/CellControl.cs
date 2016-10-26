@@ -83,13 +83,18 @@ public class CellControl : MonoBehaviour
 
     private bool _initialized = false;
 
-    public float baseMoveSpeed;
-    public float rotationSpeed;
-    public float relativeRotationSpeed;
-    public Hero hero;
-    public float moveEnergyCost;
+    // public float baseMoveSpeed;
+    [SerializeField]
+    private float rotationSpeed;
+    [SerializeField]
+    private float relativeRotationSpeed;
+    [SerializeField]
+    private Hero hero;
+    [SerializeField]
+    private float moveEnergyCost;
     public float currentMoveSpeed;
-    public string wallname;
+    [SerializeField]
+    private string wallname;
 
     public AbsoluteWASDButton absoluteWASDButton;
     public LeftClickToMoveButton leftClickToMoveButton;
@@ -98,6 +103,8 @@ public class CellControl : MonoBehaviour
     public UISprite selectedMouseControlTypeSprite;
     public UISprite selectedKeyboardControlTypeSprite;
     public ParticleSystemFeedback clickFeedback;
+    [SerializeField]
+    private FlagellaSetter _flagellaSetter;
 
     private bool _pause;
     private Vector3 _inputMovement;
@@ -493,5 +500,10 @@ public class CellControl : MonoBehaviour
         {
             stopMovement();
         }
+    }
+
+    public bool hasAtLeastFlagellaCount(int count)
+    {
+        return count <= _flagellaSetter.flagellaCount;
     }
 }

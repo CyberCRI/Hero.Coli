@@ -174,10 +174,10 @@ public class Hero : MonoBehaviour
         }
     }
 
-    public Life getLifeManager() { return _lifeManager; }
-
-    public void kill()
+    public void kill(CustomData data)
     {
+        // report the cause of death to RedMetrics
+        RedMetricsManager.get ().sendEvent(TrackingEvent.DEATH, data);
         _lifeManager.setSuddenDeath(true);
     }
 

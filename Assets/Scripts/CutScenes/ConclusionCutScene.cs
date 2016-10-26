@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConclusionCutScene : CutScene {
-
+public class ConclusionCutScene : CutScene
+{
     [SerializeField]
     private PlatformMvt[] _BigBadGuyPLatformMvt;
     private int iteration = 0;
@@ -20,7 +20,7 @@ public class ConclusionCutScene : CutScene {
 
     public override void initialize()
     {
-        
+
     }
 
     public override void startCutScene()
@@ -30,14 +30,14 @@ public class ConclusionCutScene : CutScene {
         _boundCamera.gameObject.SetActive(false);
         _CutSceneCam.gameObject.SetActive(true);
         _wayPoint1.transform.position = _CutSceneCam.transform.position;
-        _wayPoint2.transform.position = new Vector3(_wayPoint2.transform.position.x,_wayPoint1.transform.position.y + _offSet,_wayPoint2.transform.position.z);
+        _wayPoint2.transform.position = new Vector3(_wayPoint2.transform.position.x, _wayPoint1.transform.position.y + _offSet, _wayPoint2.transform.position.z);
         _CutSceneCam.GetComponent<PlatformMvt>().enabled = true;
-        StartCoroutine(WaitForTravellingCam(1));
+        StartCoroutine(waitForTravellingCam(1));
     }
 
     public override void endCutScene()
     {
-        StartCoroutine(WaitBetweenActivation(2f));
+        StartCoroutine(waitBetweenActivation(2f));
         _CutSceneCam.gameObject.SetActive(false);
         _boundCamera.gameObject.SetActive(true);
         _cellControl.freezePlayer(false);
@@ -50,44 +50,44 @@ public class ConclusionCutScene : CutScene {
             start();
             _collisionIteration += 1;
             //StartCoroutine(WaitBetweenActivation(2f));
-            
+
         }
     }
 
-    private void ActivateOneByOne()
+    private void activateOneByOne()
     {
         if (iteration < _BigBadGuyPLatformMvt.Length)
         {
             _BigBadGuyPLatformMvt[iteration].enabled = true;
             iteration++;
-            StartCoroutine(WaitBetweenActivation(0.8f));
+            StartCoroutine(waitBetweenActivation(0.8f));
         }
     }
 
-    private void SecondPart()
+    private void secondPart()
     {
         _wayPoint1.transform.position = _wayPoint2.transform.position;
         _wayPoint2.transform.position = _camPosition.transform.position;
         _CutSceneCam.GetComponent<PlatformMvt>().restart();
-        StartCoroutine(WaitForTravellingCam(2));
+        StartCoroutine(waitForTravellingCam(2));
     }
 
-    private void ThirdPart()
+    private void thirdPart()
     {
         end();
         _wayPoint1.transform.position = _wayPoint2.transform.position;
         _wayPoint2.transform.position = _boundCamera.transform.position;
     }
 
-    IEnumerator WaitBetweenActivation(float timeToWait)
+    IEnumerator waitBetweenActivation(float timeToWait)
     {
         _cellControl.freezePlayer(false);
         yield return new WaitForSeconds(timeToWait);
-        ActivateOneByOne();
+        activateOneByOne();
         yield return null;
     }
 
-    IEnumerator WaitForTravellingCam(int iteration)
+    IEnumerator waitForTravellingCam(int iteration)
     {
         while (Vector3.Distance(_CutSceneCam.transform.position, _wayPoint2.transform.position) <= 0.5f)
         {
@@ -97,18 +97,18 @@ public class ConclusionCutScene : CutScene {
         {
             for (int i = 0; i < _BigBadGuyPLatformMvt.Length; i++)
             {
-                _BigBadGuyPLatformMvt[i].GetComponent<BigBadGuy>().WakeUp(true);
+                _BigBadGuyPLatformMvt[i].GetComponent<BigBadGuy>().wakeUp(true);
             }
         }
         yield return new WaitForSeconds(2f);
 
         if (iteration == 1)
         {
-            SecondPart();
+            secondPart();
         }
         else if (iteration == 2)
         {
-            ThirdPart();
+            thirdPart();
         }
         yield return null;
     }

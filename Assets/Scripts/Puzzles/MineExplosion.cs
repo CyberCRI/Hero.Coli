@@ -75,7 +75,7 @@ public class MineExplosion : MonoBehaviour {
 
                 transform.parent.GetComponent<Mine>().detonate();
 
-                collision.gameObject.GetComponent<Hero>().getLifeManager().setSuddenDeath(true);
+                collision.gameObject.GetComponent<Hero>().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
             }
         }
         else if (collision.gameObject.tag == "NPC")
