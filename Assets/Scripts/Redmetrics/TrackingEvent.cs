@@ -4,8 +4,8 @@ public enum TrackingEvent
     // standard events
     DEFAULT,
     CREATEPLAYER,
-    START,
-    END,
+    START,              // launched the game
+    END,                // quit the game
     WIN,
     FAIL,
     RESTART,

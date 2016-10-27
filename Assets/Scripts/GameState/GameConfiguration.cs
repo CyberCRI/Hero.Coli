@@ -80,9 +80,13 @@ public class GameConfiguration
     private static float _baseVolume = -1;
     private static BoolConfigurationParameter _isSoundOn
         = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
-    private static BoolConfigurationParameter _isAdmin
-        = new BoolConfigurationParameter(false, false, _isAdminKey);
 
+#if UNITY_EDITOR
+    private static bool _adminStartValue = true, _adminDefaultValue = true;
+#else
+    private static bool _adminStartValue = false, _adminDefaultValue = false;
+#endif
+    private static BoolConfigurationParameter _isAdmin = new BoolConfigurationParameter(_adminStartValue, _adminDefaultValue, _isAdminKey);
 
     private const RestartBehavior _restartBehaviorDefaultValue = RestartBehavior.MAINMENU;
     public RestartBehavior restartBehavior
@@ -296,7 +300,7 @@ public class GameConfiguration
     //sets the destination to which logs will be sent
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion)
     {
-        Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
+        // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
         System.Guid guid = wantToBecomeLabelledGameVersion ? labelledGameVersionGUID : testVersionGUID;
 
         if (guid != RedMetricsManager.get().getGameVersion())
@@ -325,15 +329,14 @@ public class GameConfiguration
     {
         // Debug.Log(this.GetType() + " setGameVersion " + guid);
         RedMetricsManager.get().setGameVersion(guid);
-        GameStateController.updateAdminStatus();
+        isAdmin = isTestGUID();
     }
 
     //switches the logging mode from test to normal and conversely
     //returns true if switched to normal
     public bool switchMetricsGameVersion()
     {
-        //TODO
-        //RedMetricsManager.get ().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
+        RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
         setMetricsDestination(isTestGUID());
         RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHTOGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
         return !isTestGUID();

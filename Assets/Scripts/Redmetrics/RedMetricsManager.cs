@@ -56,7 +56,18 @@ public class RedMetricsManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-        _instance = (_instance == this) ? null : _instance;
+        if (this == _instance)
+        {
+            _instance = null;
+        }
+    }
+
+    // does not work on iOS, Windows Store Apps and Windows Phone 8.1
+    // see details on https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnApplicationQuit.html
+    void OnApplicationQuit()
+    {
+        CustomData guidCD = generateCustomDataForGuidInit();
+        sendEvent(TrackingEvent.END, guidCD);
     }
 
     private bool _initialized = false;

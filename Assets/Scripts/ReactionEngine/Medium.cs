@@ -394,7 +394,7 @@ public class Medium : LoadableFromXmlImpl
         //TODO refactor interactions out of medium
         if (_name == "Cellia")
         {
-            if (GameStateController.isAdminMode)
+            if (GameConfiguration.isAdmin)
             {
                 //TODO optimize
                 manageMoleculeConcentrationWithKey("AMPI");

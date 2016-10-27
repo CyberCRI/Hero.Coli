@@ -14,8 +14,6 @@ public class BackendManager : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl))
         {
             MemoryManager.get().configuration.switchMetricsGameVersion();
-            isTestGUID = MemoryManager.get().configuration.isTestGUID();
-            GameConfiguration.isAdmin = isTestGUID;
 
             //display feedback for logging mode
             string msg;

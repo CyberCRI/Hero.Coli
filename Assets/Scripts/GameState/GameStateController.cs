@@ -81,7 +81,6 @@ public class GameStateController : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " Start");
         loadLevels();
-        updateAdminStatus();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -114,28 +113,6 @@ public class GameStateController : MonoBehaviour
     public const int ilmIndex = 0, plmIndex = 1, wlmIndex = 2;
 
     public Teleporter teleporter;
-
-    private static bool _isAdminMode = false;
-    public static bool isAdminMode
-    {
-        get
-        {
-            return _isAdminMode;
-        }
-    }
-
-    public static void updateAdminStatus()
-    {
-        bool previousStatus = _isAdminMode;
-        bool isTestGUID = MemoryManager.get("updateAdminStatus").configuration.isTestGUID();
-        _isAdminMode = Application.isEditor || isTestGUID;
-        // Debug.Log(this.GetType() + " updateAdminStatus " + previousStatus + " to " + _isAdminMode
-        // + " because isTestGUID=" + isTestGUID
-        // + " because testGUID=" + MemoryManager.get("updateAdminStatus").configuration.testVersionGUID
-        // + " and GUID=" + RedMetricsManager.get().getGameVersion()
-        // + " and isEditor=" + Application.isEditor
-        // );
-    }
 
     // bool isInterfaceLoaded = false;
     // bool isPlayerLoaded = false;
@@ -288,13 +265,13 @@ public class GameStateController : MonoBehaviour
     //TODO optimize for frequent calls
     public static bool isShortcutKeyDown(string localizationKey, bool restricted = false)
     {
-        return (!restricted || isAdminMode) && Input.GetKeyDown(getKeyCode(localizationKey));
+        return (!restricted || GameConfiguration.isAdmin) && Input.GetKeyDown(getKeyCode(localizationKey));
     }
 
     //TODO optimize for frequent calls
     public static bool isShortcutKey(string localizationKey, bool restricted = false)
     {
-        return (!restricted || isAdminMode) && Input.GetKey(getKeyCode(localizationKey));
+        return (!restricted || GameConfiguration.isAdmin) && Input.GetKey(getKeyCode(localizationKey));
     }
 
     private static GameState getStateFromTarget(GameStateTarget target)
@@ -455,7 +432,7 @@ public class GameStateController : MonoBehaviour
         {
 
             // TODO replace by per-checkpoint teleportation
-            if (_isAdminMode)
+            if (GameConfiguration.isAdmin)
             {
                 foreach (CheckpointShortcut sc in _shortcuts)
                 {
