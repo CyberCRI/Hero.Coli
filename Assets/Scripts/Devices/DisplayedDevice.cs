@@ -481,7 +481,7 @@ public class DisplayedDevice : DisplayedElement
 
     protected virtual void OnHover(bool isOver)
     {
-        // Debug.Log(this.GetType() + " OnHover() of " + _device.getInternalName());
+        // Debug.Log(this.GetType() + " OnHover("+isOver+") device=" + _device.getInternalName());
         TooltipManager.displayTooltip(isOver, _device, transform.position);
     }
 

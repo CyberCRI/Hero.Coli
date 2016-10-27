@@ -74,6 +74,8 @@ public class TooltipManager : MonoBehaviour
     private UILocalize _energyConsumptionValueLabel;
     private UILocalize _explanationLabel;
 
+    private const string _emptyField = TooltipLoader._tooltipPrefix + "EMPTYFIELD";
+
     //public GameObject _tooltipPanel;
     private UIPanel _tooltipPanel;
     public TooltipPanel bioBrickTooltipPanel;
@@ -201,6 +203,8 @@ public class TooltipManager : MonoBehaviour
 
     private static bool fillInFieldsFromCode(string code)
     {
+        // Debug.Log("fillInFieldsFromCode(" + code + ")");
+
         //TooltipInfo info = produceTooltipInfo(code);
 
         TooltipInfo info = retrieveFromDico(code);
@@ -219,8 +223,8 @@ public class TooltipManager : MonoBehaviour
 
             if ((null != _instance._customFieldLabel) && (null != _instance._customValueLabel))
             {
-                _instance._customFieldLabel.key = info._customField;
-                _instance._customValueLabel.key = info._customValue;
+                _instance._customFieldLabel.key = string.IsNullOrEmpty(info._customField) ? _emptyField : info._customField;
+                _instance._customValueLabel.key = string.IsNullOrEmpty(info._customValue) ? _emptyField : info._customValue;
             }
 
             _instance._lengthValueLabel.key = info._length;
