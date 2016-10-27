@@ -465,6 +465,12 @@ TOOLTIP.B_RBS3.REFERENCE=fictif
 TOOLTIP.B_RBS3.EXPLANATION=Séquence de site de fixation de ribosome (RBS) avec initialisation de traduction très faible.
 
 
+TOOLTIP.B_AMPI.TITLE=Séquence Codante de l'Ampicilline
+TOOLTIP.B_AMPI.SUBTITLE=Fonction : produit une toxine tuant les organismes ennemis. 
+TOOLTIP.B_AMPI.LENGTH=943bp
+TOOLTIP.B_AMPI.REFERENCE=fictitious
+TOOLTIP.B_AMPI.EXPLANATION=Séquence codant pour un antibiotique puissant, l'ampicilline.
+
 TOOLTIP.B_AMPR.TITLE=Séquence Codante de Résistance à l'Ampicilline
 TOOLTIP.B_AMPR.SUBTITLE=Fonction : permet de résister aux antibiotiques de type ampicilline.
 TOOLTIP.B_AMPR.LENGTH=943bp

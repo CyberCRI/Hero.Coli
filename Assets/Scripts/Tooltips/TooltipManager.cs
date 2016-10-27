@@ -10,7 +10,7 @@ public class TooltipManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Logger.Log("TooltipManager::get was badly initialized", Logger.Level.WARN);
+            Debug.LogWarning("TooltipManager get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<TooltipManager>();
         }
         return _instance;
@@ -46,6 +46,7 @@ public class TooltipManager : MonoBehaviour
             {
                 bioBrickTooltipPanel.gameObject.SetActive(false);
                 deviceTooltipPanel.gameObject.SetActive(false);
+                _initialized = true;
             }
         }
         return _initialized;
@@ -53,12 +54,7 @@ public class TooltipManager : MonoBehaviour
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start");
-        initialize();
-    }
-
-    void Update()
-    {
+        Debug.Log(this.GetType() + " Start");
         initialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,20 +166,26 @@ public class TooltipManager : MonoBehaviour
 
     public static bool displayTooltip(bool isOver, BioBrick brick, Vector3 pos)
     {
+        // Debug.Log("TooltipManager displayTooltip(" + isOver + ", brick=" + brick.getInternalName() + ", " + pos + ")");
         string code = (null == brick) ? null : _bioBrickPrefix + brick.getName();
         return displayTooltip(isOver, code, pos);
     }
 
     private static bool displayTooltip(bool isOver, string code, Vector3 pos)
     {
+        // Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ")");
+
         if (!isOver || (null == code))
         {
+            // Debug.Log("TooltipManager hides tooltip");
             return displayTooltip();
         }
         else
         {
             if (fillInFieldsFromCode(code))
             {
+                // Debug.Log("TooltipManager fillInFieldsFromCode succeeded");
+
                 _instance._tooltipPanel.gameObject.SetActive(true);
 
                 setPosition(pos);
@@ -191,7 +193,7 @@ public class TooltipManager : MonoBehaviour
             }
             else
             {
-                Logger.Log("TooltipManager::displayTooltip(" + code + ") failed", Logger.Level.WARN);
+                Debug.LogWarning("TooltipManager displayTooltip(" + code + ") failed");
                 return false;
             }
         }
@@ -242,7 +244,7 @@ public class TooltipManager : MonoBehaviour
         TooltipInfo info;
         if (!_instance._loadedInfoWindows.TryGetValue(code, out info))
         {
-            Logger.Log("TooltipManager::retrieveFromDico(" + code + ") failed", Logger.Level.WARN);
+            Debug.LogWarning("TooltipManager retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;
@@ -268,7 +270,7 @@ public class TooltipManager : MonoBehaviour
             loadedFiles += file;
         }
 
-        Logger.Log("TooltipManager::loadDataIntoDico loaded " + loadedFiles, Logger.Level.DEBUG);
+        // Debug.Log(this.GetType() + " loadDataIntoDico loaded " + loadedFiles);
     }
 
     private static void setPosition(Vector3 pos)
@@ -297,7 +299,7 @@ public class TooltipManager : MonoBehaviour
                 xShift = -xShift;
                 break;
             default:
-                Logger.Log("TooltipManager::setPosition default case", Logger.Level.WARN);
+                Debug.LogWarning("TooltipManager setPosition default case");
                 break;
         }
         _instance._tooltipPanel.transform.position = new Vector3(pos.x, pos.y, _instance._tooltipPanel.transform.position.z);

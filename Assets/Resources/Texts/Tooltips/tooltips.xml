@@ -43,6 +43,10 @@
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>
   </tooltip>
+  <tooltip code="b_AMPI">
+    <type>BioBrick</type>
+    <illustration>tuto_intro-01</illustration>
+  </tooltip>
   <tooltip code="b_AMPR">
     <type>BioBrick</type>
     <illustration>tuto_intro-01</illustration>

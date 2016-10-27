@@ -468,10 +468,10 @@ TOOLTIP.B_RBS3.EXPLANATION=Ribosome Binding Site sequence with very 3weak transl
 
 
 TOOLTIP.B_AMPI.TITLE=Ampicillin Coding Sequence
-TOOLTIP.B_AMPI.SUBTITLE=Use: entails the production of ampicillin.
+TOOLTIP.B_AMPI.SUBTITLE=Use: entails the production of a toxin that kills enemy organisms.
 TOOLTIP.B_AMPI.LENGTH=943bp
 TOOLTIP.B_AMPI.REFERENCE=fictitious
-TOOLTIP.B_AMPI.EXPLANATION=Coding sequence for the Ampicillin antibiotic.
+TOOLTIP.B_AMPI.EXPLANATION=Coding Sequence for ampicillin, a powerful antibiotic.
 
 TOOLTIP.B_AMPR.TITLE=Ampicillin Resistance Coding Sequence
 TOOLTIP.B_AMPR.SUBTITLE=Use: provides resistance against ampicillin antibiotic.

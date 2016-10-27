@@ -28,7 +28,7 @@ public class TinyBioBrickIcon : GenericDisplayedBioBrick {
       , localPosition
       , spriteName
       , biobrick
-      , genericPrefab
+      , _genericPrefab
       );
 
     return result;
