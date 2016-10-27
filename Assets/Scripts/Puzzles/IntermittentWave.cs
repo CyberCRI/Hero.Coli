@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class IntermittentWave : MonoBehaviour {
-
+public class IntermittentWave : MonoBehaviour
+{
+    [SerializeField]
     private ParticleSystem _child;
     [SerializeField]
     private float _timer = 3f;
@@ -14,26 +14,24 @@ public class IntermittentWave : MonoBehaviour {
     [SerializeField]
     private float _timerWait;
 
-	// Use this for initialization
-	void Start () {
-        _child = transform.GetChild(0).GetComponent<ParticleSystem>();
+    // Use this for initialization
+    void Start()
+    {
         _timerOrigin = _timer;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
         _timer -= Time.deltaTime;
         if (_timer <= 0f)
         {
             _timer = _timerOrigin;
-            ActivateChild();
+            activateChild();
         }
-
-        
     }
 
-    void ActivateChild()
+    void activateChild()
     {
         if (_on == false)
         {

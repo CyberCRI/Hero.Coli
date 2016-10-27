@@ -2,11 +2,14 @@
 
 public class ForceFlowParticle : MonoBehaviour
 {
-
-    public float force;
-    public float period;
-    public float startPhase;
-    public ParticleSystem system;
+    [SerializeField]
+    private float force;
+    [SerializeField]
+    private float period;
+    [SerializeField]
+    private float startPhase;
+    [SerializeField]
+    private ParticleSystem system;
 
     private ParticleSystem.EmissionModule _em;
     private float _deltaTime = 0f;
@@ -14,14 +17,14 @@ public class ForceFlowParticle : MonoBehaviour
 
     void OnParticleCollision(GameObject obj)
     {
-        Hero cellia = obj.GetComponent<Hero>();
-        if (cellia)
+        Hero hero = obj.GetComponent<Hero>();
+        if (hero)
         {
-            Rigidbody body = cellia.GetComponent<Rigidbody>();
+            Rigidbody body = hero.GetComponent<Rigidbody>();
             if (body)
             {
                 Vector3 push = this.transform.rotation * new Vector3(0, 0, 1);
-                body.AddForce((push * force));
+                body.AddForce(push * force);
             }
         }
     }
