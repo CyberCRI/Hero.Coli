@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 public class BackendManager : MonoBehaviour
@@ -28,6 +29,24 @@ public class BackendManager : MonoBehaviour
 
             StartCoroutine(waitAndDestroy(createMessage(msg)));
         }
+/*
+#if UNITY_EDITOR
+        // for optimization process
+        float _minFPSThreshold = 30; // frames per second
+        float _maxDeltaTime = 1/_minFPSThreshold; // seconds
+
+        // TODO check difference
+        // Time.fixedDeltaTime
+        // Time.unscaledDeltaTime
+
+        if (Time.deltaTime > _maxDeltaTime)
+        {
+            // pause the game in editor
+            // EditorApplication.
+            
+        }
+#endif
+*/
     }
 
     public GameObject createMessage(string msg)

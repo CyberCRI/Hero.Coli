@@ -467,6 +467,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
+        // test Application.internetReachability
         // Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
         string checkedSection = section;
 
