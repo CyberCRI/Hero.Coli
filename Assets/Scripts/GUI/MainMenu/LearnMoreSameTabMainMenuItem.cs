@@ -6,7 +6,7 @@ public class LearnMoreSameTabMainMenuItem : MainMenuItem {
     public LearnMoreOptionsMainMenuItemArray learnMoreOptionsArray;
     
     public override void click () {
-        Debug.Log(this.GetType() + " clicked "+itemName);
+        // Debug.Log(this.GetType() + " clicked "+itemName);
 		learnMoreOptionsArray.goToMOOCSameTab();
     }
 }

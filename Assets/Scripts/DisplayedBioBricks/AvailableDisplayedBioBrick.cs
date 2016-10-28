@@ -37,7 +37,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       _craftZoneManager = CraftZoneManager.get();
     }
 
-    // Debug.Log("AvailableDisplayedBioBrick::Create(parentTransform="+parentTransform
+    // Debug.Log("AvailableDisplayedBioBrick Create(parentTransform="+parentTransform
     //   + ", localPosition="+localPosition
     //   + ", spriteName="+spriteName+nullSpriteName
     //   + ", biobrick="+biobrick

@@ -138,7 +138,7 @@ public class PromoterLexer
             tokStr = "END";
             break;
           }
-        Debug.Log(this.GetType() + " Token " + i + " : " + t.c + " -> " + tokStr);
+        // Debug.Log(this.GetType() + " Token " + i + " : " + t.c + " -> " + tokStr);
         i++;
       }
   }
@@ -273,7 +273,7 @@ public class PromoterParser
         if ((right = ParseORExpr(tokenList)) == null)
           {
             restoreListState(tokenList, restoreStatus);
-            Debug.Log(this.GetType() + " Syntax error : bad OR expr");
+            // Debug.Log(this.GetType() + " Syntax error : bad OR expr");
             return null;
           }
         data.token = PromoterParser.eNodeType.OR;
@@ -309,7 +309,7 @@ public class PromoterParser
         if ((right = ParseAndExpr(tokenList)) == null)
           {
             restoreListState(tokenList, restoreStatus);
-            Debug.Log(this.GetType() + " Syntax error : bad AND expr");
+            // Debug.Log(this.GetType() + " Syntax error : bad AND expr");
             return null;
           }
         data.token = PromoterParser.eNodeType.AND;
@@ -337,13 +337,13 @@ public class PromoterParser
         if ((node = ParseORExpr(tokenList)) == null)
           {
             restoreListState(tokenList, restoreStatus);
-            Debug.Log(this.GetType() + " Syntax error : bad ParExpr");
+            // Debug.Log(this.GetType() + " Syntax error : bad ParExpr");
             return null;
           }
         if (tokenList.First().token != PromoterLexer.eToken.RPAR)
           {
             restoreListState(tokenList, restoreStatus);
-            Debug.Log(this.GetType() + " Syntax error : bad ParExpr : missing closing parenthis");
+            // Debug.Log(this.GetType() + " Syntax error : bad ParExpr : missing closing parenthis");
             return null;
           }
         popToken(tokenList);
@@ -377,7 +377,7 @@ public class PromoterParser
         if ((node = ParseOperandExpr(tokenList)) == null)
           {
             restoreListState(tokenList, restoreStatus);
-            Debug.Log(this.GetType() + " Syntax Error: Bad Not Expr");
+            // Debug.Log(this.GetType() + " Syntax Error: Bad Not Expr");
             return null;
           }
         data.token = PromoterParser.eNodeType.NOT;
@@ -410,13 +410,13 @@ public class PromoterParser
     if ((left = ParseConstants(tokenList)) == null)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : No constant defined");
+        // Debug.Log(this.GetType() + " Syntax error : No constant defined");
         return null;
       }
     if ((right = ParseWord(tokenList)) == null)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : Need name for operand");
+        // Debug.Log(this.GetType() + " Syntax error : Need name for operand");
         return null; 
       }
     data.token = PromoterParser.eNodeType.CONSTANT;
@@ -435,7 +435,7 @@ public class PromoterParser
       {
         restoreListState(tokenList, restoreStatus);
         //TODO FIXME message gets displayed all the time
-        //Debug.Log(this.GetType() + " Syntax error : A word needs to begin with a Character.");
+        // Debug.Log(this.GetType() + " Syntax error : A word needs to begin with a Character.");
         return null;
       }
     value += tokenList.First().c;
@@ -466,7 +466,7 @@ public class PromoterParser
     restoreStatus = getRestoreListStatus();
     if ((nodeK = ParseNumber(tokenList)) == null)
       {
-        Debug.Log(this.GetType() + " Synthax error : Missing Beta parameter constant number list in formula");
+        // Debug.Log(this.GetType() + " Synthax error : Missing Beta parameter constant number list in formula");
         restoreListState(tokenList, restoreStatus);
         return null;
       }
@@ -474,13 +474,13 @@ public class PromoterParser
     if (tokenList.First().token != PromoterLexer.eToken.COMMA)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : Need a ',' character to separate constants numbers");
+        // Debug.Log(this.GetType() + " Syntax error : Need a ',' character to separate constants numbers");
         return null;
       }
     popToken(tokenList);
     if ((nodeN = ParseNumber(tokenList)) == null)
       {
-        Debug.Log(this.GetType() + " Synthax error : Missing \"n\" parameter constant number list in formula");
+        // Debug.Log(this.GetType() + " Synthax error : Missing \"n\" parameter constant number list in formula");
         restoreListState(tokenList, restoreStatus);
         return null;
       }
@@ -501,7 +501,7 @@ public class PromoterParser
     restoreStatus = getRestoreListStatus();
     if (tokenList.First().token != PromoterLexer.eToken.LHOOK)
       {
-        Debug.Log(this.GetType() + " Syntax error : Need a '[' character to define constants");
+        // Debug.Log(this.GetType() + " Syntax error : Need a '[' character to define constants");
         return null;
       }
     popToken(tokenList);
@@ -513,7 +513,7 @@ public class PromoterParser
     if (tokenList.First().token != PromoterLexer.eToken.RHOOK)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : Need a ']' character to define constants");
+        // Debug.Log(this.GetType() + " Syntax error : Need a ']' character to define constants");
         return null;
       }
     popToken(tokenList);
@@ -535,7 +535,7 @@ public class PromoterParser
     if (tokenList.First().token != PromoterLexer.eToken.CHAR)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : A word need to begin with a Character.");        
+        // Debug.Log(this.GetType() + " Syntax error : A word need to begin with a Character.");        
         return null;
       }
     value += tokenList.First().c;
@@ -565,7 +565,7 @@ public class PromoterParser
     if (tokenList.First().token != PromoterLexer.eToken.NUM)
       {
         restoreListState(tokenList, restoreStatus);
-        Debug.Log(this.GetType() + " Syntax error : A Number need to begin with a number.");
+        // Debug.Log(this.GetType() + " Syntax error : A Number need to begin with a number.");
         return null;
       }
     value += tokenList.First().c;
@@ -594,7 +594,7 @@ public class PromoterParser
     TreeNode<PromoterNodeData> tree = ParseFormula(tokenList);
     if (tokenList.First().token == PromoterLexer.eToken.END)
       return tree;
-    Debug.Log(this.GetType() + " Parsing Error for expression " + str);
+    // Debug.Log(this.GetType() + " Parsing Error for expression " + str);
     return null;
   }
 
@@ -637,7 +637,9 @@ public class PromoterParser
   {
     string output;
     if (tree == null)
-      Debug.Log(this.GetType() + " failed");
+    {
+      Debug.LogWarning(this.GetType() + " failed");
+    }
     output = "Digraph G {";
     PPRecTree(tree, ref output);
     output += "}";

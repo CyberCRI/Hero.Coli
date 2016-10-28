@@ -54,7 +54,7 @@ public class TooltipManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
         initialize();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////

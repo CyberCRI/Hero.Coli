@@ -11,7 +11,7 @@ public class ExpressionModule
     public string displayedName { get; set; }
     private string _internalName;
     public string getInternalName() {
-        Debug.Log(this.GetType() + " getInternalName()");
+        // Debug.Log(this.GetType() + " getInternalName()");
         if(string.IsNullOrEmpty(_internalName))
         {
             _internalName = generateInternalName();
@@ -33,13 +33,13 @@ public class ExpressionModule
     //generates internal name from biobricks sequence
     private string generateInternalName()
     {
-        Debug.Log(this.GetType() + " generateName(bricks)");
+        // Debug.Log(this.GetType() + " generateName(bricks)");
         return generateInternalName(_bioBricks);
     }
 
     private static string generateInternalName(LinkedList<BioBrick> bricks)
     {
-        Debug.Log("ExpressionModule generateInternalName(bricks)");
+        // Debug.Log("ExpressionModule generateInternalName(bricks)");
 
         if(isBioBricksSequenceValid(bricks))
         {
@@ -65,7 +65,7 @@ public class ExpressionModule
     //TODO generate name from BioBricks sequence
     public ExpressionModule(LinkedList<BioBrick> bricks)
     {
-        Debug.Log(this.GetType() + " ExpressionModule(bricks)");
+        // Debug.Log(this.GetType() + " ExpressionModule(bricks)");
         if(isBioBricksSequenceValid(bricks))
         {
             new ExpressionModule("test", bricks);
@@ -94,7 +94,7 @@ public class ExpressionModule
     //copy constructor
     public ExpressionModule(ExpressionModule m)
     {
-        Debug.Log(this.GetType() + " ExpressionModule("+m+")");
+        // Debug.Log(this.GetType() + " ExpressionModule("+m+")");
         _name = m._name;
         _bioBricks = new LinkedList<BioBrick>();
         foreach (BioBrick b in m.getBioBricks())
@@ -122,37 +122,37 @@ public class ExpressionModule
 
     private static string generateInternalNameFromBricks(LinkedList<BioBrick> bricks)
     {
-        Debug.Log("ExpressionModule generateInternalNameFromBricks("+bricks+")");
+        // Debug.Log("ExpressionModule generateInternalNameFromBricks("+bricks+")");
         return "test";
     }
 
     private static bool checkPromoter(BioBrick b)
     {
-        Debug.Log("ExpressionModule checkPromoter("+b+")");
+        // Debug.Log("ExpressionModule checkPromoter("+b+")");
         return (b.getType() == BioBrick.Type.PROMOTER);
     }
     
     private static bool checkRBS(BioBrick b)
     {
-        Debug.Log("ExpressionModule checkRBS("+b+")");
+        // Debug.Log("ExpressionModule checkRBS("+b+")");
         return (b.getType() == BioBrick.Type.RBS);
     }
     
     private static bool checkGene(BioBrick b)
     {
-        Debug.Log("ExpressionModule checkGene("+b+")");
+        // Debug.Log("ExpressionModule checkGene("+b+")");
         return (b.getType() == BioBrick.Type.GENE);
     }
     
     private static bool checkTerminator(BioBrick b)
     {
-        Debug.Log("ExpressionModule checkTerminator("+b+")");
+        // Debug.Log("ExpressionModule checkTerminator("+b+")");
         return (b.getType() == BioBrick.Type.TERMINATOR);
     }  
     
     private static bool checkRBSGene(LinkedList<BioBrick> bricks)
     {
-        Debug.Log("ExpressionModule checkRBSGene("+bricks+")");
+        // Debug.Log("ExpressionModule checkRBSGene("+bricks+")");
         if (bricks == null)
             return false;
         if (bricks.Count == 0 || bricks.First.Value == null)
@@ -170,7 +170,7 @@ public class ExpressionModule
     
     private static bool checkOperon(LinkedList<BioBrick> bricks)
     {
-        Debug.Log("ExpressionModule checkOperon("+bricks+")");
+        // Debug.Log("ExpressionModule checkOperon("+bricks+")");
         bool b = false;
         
         while (checkRBSGene(bricks))
@@ -182,7 +182,7 @@ public class ExpressionModule
     public static bool isBioBricksSequenceValid(LinkedList<BioBrick> bioBricksToCheck)
     {
         if (bioBricksToCheck == null) {
-            Debug.Log("ExpressionModule isBioBricksSequenceValid failed (bioBricksToCheck == null)");
+            // Debug.Log("ExpressionModule isBioBricksSequenceValid failed (bioBricksToCheck == null)");
             return false;
         }
         LinkedList<BioBrick> bricks = new LinkedList<BioBrick>(bioBricksToCheck);
@@ -190,31 +190,31 @@ public class ExpressionModule
         
         //PROMOTER
         if (bricks.Count == 0 || bricks.First.Value == null) {
-            Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no promoter");
+            // Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no promoter");
             return false;
         }
         if (checkPromoter(bricks.First.Value) == false) {
-            Debug.Log("ExpressionModule isBioBricksSequenceValid failed (checkPromoter(bricks.First.Value) == false)");
+            // Debug.Log("ExpressionModule isBioBricksSequenceValid failed (checkPromoter(bricks.First.Value) == false)");
             return false;
         }
         bricks.RemoveFirst();
         
         //RBS & ORF
         if (bricks.Count == 0 || bricks.First.Value == null) {
-            Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no RBS/ORF/Terminator");
+            // Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no RBS/ORF/Terminator");
             return false;
         }
         if (checkOperon(bricks) == false) {
-            Debug.Log("ExpressionModule isBioBricksSequenceValid failed (checkOperon(bricks) == false)");
+            // Debug.Log("ExpressionModule isBioBricksSequenceValid failed (checkOperon(bricks) == false)");
             return false;
         }        
         bool b1 = (bricks.Count == 0);
         bool b2 = (b1 || (bricks.First.Value == null));
         bool b3 = (b2 || checkTerminator(bricks.First.Value) == false);
         if (b1 || b2 || b3) {
-            if (b1) Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no terminator");
-            if (b2) Debug.Log("ExpressionModule isBioBricksSequenceValid failed: terminator is null");
-            if (b3) Debug.Log("ExpressionModule isBioBricksSequenceValid failed: not a terminator");
+            if (b1) // Debug.Log("ExpressionModule isBioBricksSequenceValid failed: no terminator");
+            if (b2) // Debug.Log("ExpressionModule isBioBricksSequenceValid failed: terminator is null");
+            if (b3) // Debug.Log("ExpressionModule isBioBricksSequenceValid failed: not a terminator");
             return false;
         }
         bricks.RemoveFirst();
@@ -227,7 +227,7 @@ public class ExpressionModule
     
     public bool isValid()
     {
-        Debug.Log(this.GetType() + " checkModuleValidity("+this.ToString()+")");
+        // Debug.Log(this.GetType() + " checkModuleValidity("+this.ToString()+")");
         return isBioBricksSequenceValid(this.getBioBricks());
     }
 

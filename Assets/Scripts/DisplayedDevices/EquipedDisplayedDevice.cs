@@ -25,7 +25,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void OnEnable()
     {
-        Debug.Log(this.GetType() + " OnEnable " + _device);
+        // Debug.Log(this.GetType() + " OnEnable " + _device);
 
         //quick fix to remove closeButton
         //TODO fixme
@@ -37,7 +37,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void OnDisable()
     {
-        Debug.Log(this.GetType() + " OnDisable " + _device);
+        // Debug.Log(this.GetType() + " OnDisable " + _device);
         setBricksVisibilityTo(false);
     }
 
@@ -58,7 +58,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
     {
         if (isPressed)
         {
-            Debug.Log(this.GetType() + " OnPress() " + getDebugInfos());
+            // Debug.Log(this.GetType() + " OnPress() " + getDebugInfos());
             if (_device == null)
             {
                 Debug.LogWarning(this.GetType() + " OnPress _device == null");
@@ -82,7 +82,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void initIfNecessary()
     {
-        Debug.Log(this.GetType() + " initIfNecessary starts");
+        // Debug.Log(this.GetType() + " initIfNecessary starts");
 
         if (!_initialized)
         {
@@ -107,14 +107,14 @@ public class EquipedDisplayedDevice : DisplayedDevice
                 tinyBioBrickIcon.SetActive(false);
                 tinyBioBrickIcon2.SetActive(false);
                 _initialized = true;
-                Debug.Log(this.GetType() + " initIfNecessary ends");
+                // Debug.Log(this.GetType() + " initIfNecessary ends");
             }
         }
     }
 
     void createBioBricksIfNecessary()
     {
-        Debug.Log(this.GetType() + " createBioBricksIfNecessary");
+        // Debug.Log(this.GetType() + " createBioBricksIfNecessary");
         initIfNecessary();
         if (0 == _currentDisplayedBricks.Count)
         {
@@ -163,7 +163,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     protected override void OnHover(bool isOver)
     {
-        Debug.Log(this.GetType() + " OnHover(" + isOver + ") with _device=" + _device);
+        // Debug.Log(this.GetType() + " OnHover(" + isOver + ") with _device=" + _device);
         base.OnHover(isOver);
 
         if (null != closeButton && !_devicesDisplayer.IsEquipScreen())
@@ -205,7 +205,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
     void Start()
     {
         Debug.LogWarning("EquipedDisplayedDevice Starts");
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
         createBioBricksIfNecessary();
         updateVisibility();
     }

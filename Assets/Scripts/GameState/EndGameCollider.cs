@@ -16,7 +16,7 @@ public class EndGameCollider : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        //Debug.Log(this.GetType() + " OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
+        // Debug.Log(this.GetType() + " OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
         if (!_alreadyDisplayed) {
             if (other == hero.GetComponent<Collider> ()) {
                 triggerEnd();
@@ -26,7 +26,7 @@ public class EndGameCollider : MonoBehaviour
 
     public void displayEndMessage()
     {
-        //Debug.Log(this.GetType() + " EndGameCollider:displayEndMessage");
+        // Debug.Log(this.GetType() + " EndGameCollider:displayEndMessage");
         ModalManager.setModal (endInfoPanel, true, endMainMenuButton.gameObject, endMainMenuButton.GetType ().AssemblyQualifiedName);
     }
 

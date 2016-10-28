@@ -123,14 +123,14 @@ public class JsonExample : MonoBehaviour {
 		JsonMapper.ToJson(serializedClass,writer);
 
 		string json = writer.ToString();
-		Debug.Log(json);
+		// Debug.Log(json);
 
 		// If you don't need a JsonWriter, use this.
 		//string json = JsonMapper.ToJson(exampleClass);
 
 		ExampleSerializedClass deserializedClass = JsonMapper.ToObject<ExampleSerializedClass>(savedJsonString);
 
-		Debug.Log(deserializedClass.myString);
+		// Debug.Log(deserializedClass.myString);
 
 	}
 

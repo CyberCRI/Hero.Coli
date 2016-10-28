@@ -38,7 +38,7 @@ public class GameStateController : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("GameStateController::get was badly initialized");
+            Debug.LogWarning("GameStateController getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
         }
 
@@ -302,7 +302,7 @@ public class GameStateController : MonoBehaviour
                 result = GameState.Default;
                 break;
             default:
-                Debug.LogWarning("GameStateController::getStateFromTarget unknown target state " + target);
+                Debug.LogWarning("GameStateController getStateFromTarget unknown target state " + target);
                 result = GameState.Default;
                 break;
         }
@@ -511,7 +511,7 @@ public class GameStateController : MonoBehaviour
                     }
                     // else if(isShortcutKeyDown(_sandboxKey))
                     // {
-                    //     // Debug.Log(this.GetType() + " Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName());
+                    //     Debug.Log(this.GetType() + " Update sandbox key pressed from scene="+MemoryManager.get ().configuration.getSceneName());
                     //     goToOtherGameMode();
                     // }
                     //TODO fix this feature                    
@@ -548,7 +548,7 @@ public class GameStateController : MonoBehaviour
                                 case GUITransitioner.GameScreen.screen2:
                                     // if (isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
                                     // {
-                                    //     // Debug.Log(this.GetType() + " Update out of inventory key pressed");
+                                    //     Debug.Log(this.GetType() + " Update out of inventory key pressed");
                                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
                                     // }
                                     // else
@@ -561,7 +561,7 @@ public class GameStateController : MonoBehaviour
                                 case GUITransitioner.GameScreen.screen3:
                                     // if (isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                                     // {
-                                    //     // Debug.Log(this.GetType() + " Update craft to inventory key pressed");
+                                    //     Debug.Log(this.GetType() + " Update craft to inventory key pressed");
                                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                                     // }
                                     // else 

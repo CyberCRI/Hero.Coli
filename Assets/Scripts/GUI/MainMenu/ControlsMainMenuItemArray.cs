@@ -10,7 +10,7 @@ public class ControlsMainMenuItemArray : MainMenuItemArray
     {
         if (_instance == null)
         {
-            Debug.LogWarning("ControlsMainMenuItemArray::get was badly initialized");
+            Debug.LogWarning("ControlsMainMenuItemArray getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<ControlsMainMenuItemArray>();
         }
         return _instance;

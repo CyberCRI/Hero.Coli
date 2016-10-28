@@ -50,10 +50,10 @@ class Tools
    */
   static public XmlDocument getXmlDocument(string filePath)
   {
-    //Debug.LogError ("Tools::getXmlDocument("+filePath+")");
+    //Debug.LogError ("Tools getXmlDocument("+filePath+")");
     TextAsset temp = Resources.Load(filePath) as TextAsset;
     //string tempStr = (temp==null)?"(null)":temp.ToString();
-    //Debug.Log(this.GetType() + " getXmlDocument "+tempStr);
+    // Debug.Log(this.GetType() + " getXmlDocument "+tempStr);
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.LoadXml(temp.text);
     return xmlDoc;

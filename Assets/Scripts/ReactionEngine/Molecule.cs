@@ -54,7 +54,7 @@ public class Molecule : LoadableFromXmlImpl
   {
     if (mol != null)
     {
-      if(_debug) Debug.Log(this.GetType() + " Molecule("+mol+")");
+      // if(_debug) Debug.Log(this.GetType() + " Molecule("+mol+")");
       setName(mol._name);
       _type = mol._type;
       _description = mol._description;
@@ -62,9 +62,9 @@ public class Molecule : LoadableFromXmlImpl
       _degradationRate = mol._degradationRate;
       _fickFactor = mol._fickFactor;
       _newConcentration = mol._newConcentration;
-      if(_debug) Debug.Log(this.GetType() + " Molecule("+mol+") built "+this);
+      // if(_debug) Debug.Log(this.GetType() + " Molecule("+mol+") built "+this);
     } else {
-      if(_debug) Debug.Log(this.GetType() + " Molecule(null)");
+      // if(_debug) Debug.Log(this.GetType() + " Molecule(null)");
     }
   }
 
@@ -73,7 +73,7 @@ public class Molecule : LoadableFromXmlImpl
   public eType getType() {return _type; }
   public string getDescription() {return _description; }
   public float getConcentration() {
-      if(_debug) Debug.Log(this.GetType() + " getConcentration "+_name+" "+_concentration);
+      // if(_debug) Debug.Log(this.GetType() + " getConcentration "+_name+" "+_concentration);
       return _concentration;
   }
   public float getDegradationRate() {return _degradationRate; }
@@ -92,23 +92,23 @@ public class Molecule : LoadableFromXmlImpl
   public void setConcentration(float concentration) {
       float oldConcentration = _concentration;
       _concentration = concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " setConcentration("+concentration+") "+_name+" old="+oldConcentration+", new="+_concentration);
+      // if(_debug) Debug.Log(this.GetType() + " setConcentration("+concentration+") "+_name+" old="+oldConcentration+", new="+_concentration);
   }
   public void setDegradationRate(float degradationRate) { _degradationRate = degradationRate; }
   public void addNewConcentration(float concentration) {
       float oldNewCC = _newConcentration;
       _newConcentration += concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " addNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration);
+      // if(_debug) Debug.Log(this.GetType() + " addNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration);
   }
   public void subNewConcentration(float concentration) {
       float oldNewCC = _newConcentration;
       _newConcentration -= concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " subNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration);
+      // if(_debug) Debug.Log(this.GetType() + " subNewConcentration("+concentration+") "+_name+" oldNewCC="+oldNewCC+", new="+_newConcentration);
   }
   public void setNewConcentration(float concentration) {
       float oldNewCC = _newConcentration;
       _newConcentration = concentration; if (_newConcentration < _negligibilityThreshold) _newConcentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " setNewConcentration("+concentration+") "+_name+" old="+oldNewCC+", new="+_newConcentration);
+      // if(_debug) Debug.Log(this.GetType() + " setNewConcentration("+concentration+") "+_name+" old="+oldNewCC+", new="+_newConcentration);
   }
   public void setFickFactor(float v) { _fickFactor = v; }
 
@@ -119,7 +119,7 @@ public class Molecule : LoadableFromXmlImpl
   public void addConcentration(float concentration) {
       float oldCC = _concentration;
       _concentration += concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " addConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration);
+      // if(_debug) Debug.Log(this.GetType() + " addConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration);
   }
 
   /*!
@@ -129,18 +129,18 @@ public class Molecule : LoadableFromXmlImpl
   public void subConcentration(float concentration) {
       float oldCC = _concentration;
       _concentration -= concentration; if (_concentration < _negligibilityThreshold) _concentration = 0;
-      if(_debug) Debug.Log(this.GetType() + " subConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration);
+      // if(_debug) Debug.Log(this.GetType() + " subConcentration("+concentration+") "+_name+" old="+oldCC+", new="+_concentration);
   }
 
   //! \brief This function set the actual concentration to it new value
   public void updateConcentration() {
-      if(_debug) Debug.Log(this.GetType() + " updateConcentration() "+_name+" old="+_concentration+", new="+_newConcentration);
+      // if(_debug) Debug.Log(this.GetType() + " updateConcentration() "+_name+" old="+_concentration+", new="+_newConcentration);
       _concentration = _newConcentration;
   }
 
   public override bool tryInstantiateFromXml(XmlNode moleculeNode)
   {
-      Debug.Log(this.GetType() + " Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+")");
+      // Debug.Log(this.GetType() + " Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+")");
       
       if (moleculeNode.Name == getTag())
       {
@@ -224,9 +224,9 @@ public class Molecule : LoadableFromXmlImpl
                 else
                 {
               
-                  Debug.Log(this.GetType() + " Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
-                          +" with molecule="+this
-                            );
+                //   Debug.Log(this.GetType() + " Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished"
+                //           +" with molecule="+this
+                //             );
                   return true;
                 }
           }

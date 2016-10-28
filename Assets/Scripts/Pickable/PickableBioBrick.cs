@@ -12,7 +12,7 @@ public abstract class PickableBioBrick : PickableItem
         if (null == biobrick) {
             Debug.LogWarning(this.GetType() + " addTo() - failed to produce non-null dna bit");
         } else {
-            Debug.Log(this.GetType() + " addTo " + _dnaBit);
+            // Debug.Log(this.GetType() + " addTo " + _dnaBit);
             AvailableBioBricksManager.get ().addAvailableBioBrick (biobrick, false);
         }
     }

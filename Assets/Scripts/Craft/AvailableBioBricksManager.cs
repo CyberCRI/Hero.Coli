@@ -137,7 +137,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         // {
         //     if(null != dummy)
         //     {
-        //         //Debug.Log(this.GetType() + " initializeDummies dummy="+dummy.name);
+        //         Debug.Log(this.GetType() + " initializeDummies dummy="+dummy.name);
         //         dummy.SetActive(false);
         //     }
         // }

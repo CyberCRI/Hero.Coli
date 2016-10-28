@@ -70,8 +70,8 @@ public class Fick : XmlLoaderImpl
             react.setPermCoef(prop.P);
             react.setSurface(prop.surface);
           }
-        else
-          Debug.Log("Fick Cannot initialize this fick reaction because there is some non-logical declaration of FickReaction. Please verify your files");
+        // else
+        //   Debug.Log("Fick Cannot initialize this fick reaction because there is some non-logical declaration of FickReaction. Please verify your files");
       }
   }
 
@@ -88,10 +88,10 @@ public class Fick : XmlLoaderImpl
     */
   public void loadFicksReactionsFromFiles (string[] files, LinkedList<Medium> mediums)
     {
-        Debug.Log(this.GetType() + " loadFicksReactionsFromFiles("
-            + Logger.EnumerableToString<string> (files)
-            + ") starts"
-                    );
+        // Debug.Log(this.GetType() + " loadFicksReactionsFromFiles("
+        //     + Logger.EnumerableToString<string> (files)
+        //     + ") starts"
+        //             );
         LinkedList<FickProperties> propsList = new LinkedList<FickProperties> ();
         LinkedList<FickProperties> newPropList;
 
@@ -103,10 +103,10 @@ public class Fick : XmlLoaderImpl
         _reactions = FickReaction.getFickReactionsFromMediumList (mediums);
         finalizeFickReactionFromProps (propsList, _reactions);
         
-        Debug.Log(this.GetType() + " loadFicksReactionsFromFiles("
-            + Logger.EnumerableToString<string> (files)
-            + ") starts"
-                    );
+        // Debug.Log(this.GetType() + " loadFicksReactionsFromFiles("
+        //     + Logger.EnumerableToString<string> (files)
+        //     + ") starts"
+        //             );
     }
 
     //! This function is called at each frame and does all the reactions of type FickReaction.

@@ -6,7 +6,7 @@ public class RelativeWASDButton : MonoBehaviour {
   private void OnPress(bool isPressed)
   {
     if(isPressed) {
-      Debug.Log(this.GetType() + " OnPress()");
+      // Debug.Log(this.GetType() + " OnPress()");
       ControlsMainMenuItemArray.get ().switchControlTypeToRelativeWASD();
     }
   }

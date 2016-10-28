@@ -14,7 +14,7 @@ public class MineManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("MineManager::get was badly initialized");
+            Debug.LogWarning("MineManager getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<MineManager>();
         }
         return _instance;
@@ -86,7 +86,7 @@ public class MineManager : MonoBehaviour
 
     public void resetAllMines()
     {
-        //Debug.Log(this.GetType() + " resetAllMines");
+        // Debug.Log(this.GetType() + " resetAllMines");
         foreach (ResettableMine mine in _minesToReset)
         {
             // Debug.Log(this.GetType() + " reset " + mine.gameObject.name);

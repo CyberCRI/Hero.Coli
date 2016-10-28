@@ -42,10 +42,10 @@ public class FocusMaskManager : MonoBehaviour
     protected static FocusMaskManager _instance;
     public static FocusMaskManager get()
     {
-        //Debug.Log("FocusMaskManager get");
+        // Debug.Log("FocusMaskManager get");
         if (_instance == null)
         {
-            Debug.LogWarning("FocusMaskManager::get was badly initialized");
+            Debug.LogWarning("FocusMaskManager getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<FocusMaskManager>();
         }
         return _instance;
@@ -104,7 +104,7 @@ public class FocusMaskManager : MonoBehaviour
     {
         if (null != target)
         {
-            //Debug.Log("FocusMaskManager focusOn "+target.name);
+            // Debug.Log("FocusMaskManager focusOn "+target.name);
             float scaleFactor = computeScaleFactor(scaleToComponent, target.transform.localScale, manualScale);
 
             focusOn(target.transform.position, callback, scaleFactor, false, advisorTextKey);
@@ -112,7 +112,7 @@ public class FocusMaskManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("FocusMaskManager focusOn null");
+            // Debug.Log("FocusMaskManager focusOn null");
         }
     }
 
@@ -166,14 +166,14 @@ public class FocusMaskManager : MonoBehaviour
 
     public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showButton = false)
     {
-        //Debug.Log("focusOn("+position+")");
+        // Debug.Log("focusOn("+position+")");
         if (null != position)
         {
             reset(true);
 
             _target = null;
 
-            //Debug.Log("old pos="+this.transform.position);
+            // Debug.Log("old pos="+this.transform.position);
 
             Vector3 newPosition;
             if (local)
@@ -186,22 +186,22 @@ public class FocusMaskManager : MonoBehaviour
                 newPosition = new Vector3(position.x, position.y, this.transform.position.z);
                 this.transform.position = newPosition;
             }
-            //Debug.Log("new glopos="+this.transform.position);
-            //Debug.Log("new pos="+newPosition);
+            // Debug.Log("new glopos="+this.transform.position);
+            // Debug.Log("new pos="+newPosition);
 
             if (1f != scaleFactor)
             {
-                //Debug.Log("will scale focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale+" with factor="+scaleFactor);
+                // Debug.Log("will scale focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale+" with factor="+scaleFactor);
                 focusMask.transform.localScale = scaleFactor * _baseFocusMaskScale;
                 hole.transform.localScale = scaleFactor * _baseHoleScale;
-                //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
+                // Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
             }
             else
             {
-                //Debug.Log("will scale back focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
+                // Debug.Log("will scale back focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
                 focusMask.transform.localScale = _baseFocusMaskScale;
                 hole.transform.localScale = _baseHoleScale;
-                //Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);                
+                // Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);                
             }
 
             pointAt(position);
@@ -251,7 +251,7 @@ public class FocusMaskManager : MonoBehaviour
 
     public void reset(bool keepDisplayed)
     {
-        //Debug.Log("FocusMaskManager reinitialize");
+        // Debug.Log("FocusMaskManager reinitialize");
         this.gameObject.SetActive(true);
         show(keepDisplayed);
         clickBlocker.SetActive(keepDisplayed);
@@ -307,7 +307,6 @@ public class FocusMaskManager : MonoBehaviour
                 }
             }
             arrowSprite.alpha = _newAlpha;
-            float currentDistance = arrowSprite.transform.localPosition.y;
         }
 
         // test code

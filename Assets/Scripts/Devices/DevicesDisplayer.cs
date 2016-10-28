@@ -12,7 +12,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("DevicesDisplayer::get was badly initialized");
+            Debug.LogWarning("DevicesDisplayer getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<DevicesDisplayer>();
         }
         return _instance;
@@ -115,7 +115,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void addInventoriedDevice(Device device)
     {
-        //  Debug.Log(this.GetType() + " addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices, d => d._device.getInternalName()));
+        // Debug.Log(this.GetType() + " addInventoriedDevice(" + device + ") starts with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices, d => d._device.getInternalName()));
 
         if (device == null)
         {
@@ -137,7 +137,7 @@ public class DevicesDisplayer : MonoBehaviour
                 , DevicesDisplayer.DeviceType.Listed
               );
 
-            //  Debug.Log(this.GetType() + " addInventoriedDevice: newListedDevice=" + newListedDevice.gameObject.name + " " + newListedDevice._device.getInternalName());
+            // Debug.Log(this.GetType() + " addInventoriedDevice: newListedDevice=" + newListedDevice.gameObject.name + " " + newListedDevice._device.getInternalName());
 
             _listedInventoriedDevices.Add(newListedDevice);
             listedDevicesGrid.GetComponent<UIGrid>().repositionNow = true;
@@ -146,7 +146,7 @@ public class DevicesDisplayer : MonoBehaviour
         {
             Debug.LogWarning(this.GetType() + " addInventoriedDevice failed: alreadyInventoried=" + alreadyInventoried);
         }
-        //  Debug.Log(this.GetType() + " addInventoriedDevice(" + device + ") ends with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
+        // Debug.Log(this.GetType() + " addInventoriedDevice(" + device + ") ends with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
     }
 
     public void addEquipedDevice(Device device)
@@ -214,7 +214,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void UpdateScreen()
     {
-        //  Debug.Log(this.GetType() + " UpdateScreen " + SafeGetTransitioner()._currentScreen);
+        // Debug.Log(this.GetType() + " UpdateScreen " + SafeGetTransitioner()._currentScreen);
         if (initialized)
         {
             if (IsScreen(1))

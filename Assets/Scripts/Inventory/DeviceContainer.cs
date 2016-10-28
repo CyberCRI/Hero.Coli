@@ -65,7 +65,7 @@ public abstract class DeviceContainer : MonoBehaviour {
 
  // Use this for initialization
  protected virtual void Start () {
-  //  Debug.Log(this.GetType() + " Start");
+  // Debug.Log(this.GetType() + " Start");
    _displayer = safeGetDisplayer();
  }
 

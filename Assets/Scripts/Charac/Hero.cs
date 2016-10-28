@@ -15,7 +15,7 @@ public class Hero : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("Hero::get called too early");
+            Debug.LogWarning("Hero getcalled too early");
             GameObject go = GameObject.Find(gameObjectName);
             if (null != go)
             {

@@ -144,14 +144,14 @@ public class Sector : MonoBehaviour {
 
     void Awake()
     {
-        //Debug.Log(string.Format("{0}::Awake starts with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
+        // Debug.Log(this.GetType() + string.Format("Awake {0} starts with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
         // Make inventory of all relevant elements
         
         if(!_initialized)
         {
             initialize();
         }
-        //Debug.Log(string.Format("{0}::Awake ends with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
+        // Debug.Log(this.GetType() + string.Format("Awake {0} ends with #emitters={1}, #systems={2}, #forceFlows={3}", sectorName, _particleEmitters.Count, _particleSystems.Count, _forceFlowParticles.Count));
     }
     
     void initialize()

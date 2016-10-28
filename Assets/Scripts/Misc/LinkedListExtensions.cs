@@ -66,7 +66,7 @@ public static class LinkedListExtensions
    */
   public static LinkedList<T> Filter<T>(LinkedList<T> list, Predicate<T> predicate) {
     string predicateString = predicate==null?"(null)":"predicate";
-    Debug.Log("LinkedListExtensions Filter("+Logger.ToString<T>(list)+", "+predicateString+")");
+    // Debug.Log("LinkedListExtensions Filter("+Logger.ToString<T>(list)+", "+predicateString+")");
     LinkedList<T> result = new LinkedList<T>();
     foreach (T t in list) {
       if (predicate(t)) {
@@ -91,7 +91,7 @@ public static class LinkedListExtensions
     }
     else
     {
-      Debug.Log(msg);
+      // Debug.Log(msg);
     } 
     return default(T);
   }

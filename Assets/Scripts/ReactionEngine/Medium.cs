@@ -130,13 +130,13 @@ public class Medium : LoadableFromXmlImpl
      */
     public void addReaction(IReaction reaction)
     {
-        //// Debug.Log(this.GetType() + " addReaction to medium#"+_numberId+" with "+reaction);
+        // Debug.Log(this.GetType() + " addReaction to medium#"+_numberId+" with "+reaction);
         if (reaction != null)
         {
             reaction.setMedium(this);
             reaction.enableEnergy = _enableEnergy;
             _reactions.AddLast(reaction);
-            //// Debug.Log(this.GetType() + " addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
+            // Debug.Log(this.GetType() + " addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
         }
         else
         {
@@ -365,7 +365,7 @@ public class Medium : LoadableFromXmlImpl
         {
             // PromoterReaction promoter = reaction as PromoterReaction;
             // if (promoter != null) {
-            //   // Debug.Log(this.GetType() + " Update reaction.react("+_molecules+") with reaction="+reaction);
+            //   Debug.Log(this.GetType() + " Update reaction.react("+_molecules+") with reaction="+reaction);
             // }
             reaction.react(_molecules);
         }
@@ -504,7 +504,7 @@ public class Medium : LoadableFromXmlImpl
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log(this.GetType() + " Error: Empty Energy field. default value = 0");
+            // Debug.Log(this.GetType() + " Error: Empty Energy field. default value = 0");
             setEnergy(0f);
         }
         else
@@ -525,7 +525,7 @@ public class Medium : LoadableFromXmlImpl
 
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
+            // Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
             productionRate = 0f;
         }
         else
@@ -547,7 +547,7 @@ public class Medium : LoadableFromXmlImpl
 
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
+            // Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
             prodMax = 0f;
         }
         else

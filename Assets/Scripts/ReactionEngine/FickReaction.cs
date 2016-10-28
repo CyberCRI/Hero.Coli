@@ -92,7 +92,7 @@ public class FickReaction : IReaction
     
     if (med1 == null || med2 == null)
     {
-      Debug.Log("Fick failed to build FickReaction from FickProperties beacause one or all the medium id don't exist");
+      // Debug.Log("Fick failed to build FickReaction from FickProperties beacause one or all the medium id don't exist");
       return null;
     }
     reaction.setSurface(props.surface);

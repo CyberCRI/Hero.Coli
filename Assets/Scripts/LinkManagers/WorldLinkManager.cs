@@ -15,7 +15,7 @@ public class WorldLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Debug.LogWarning("WorldLinkManager::get was badly initialized");
+            Debug.LogWarning("WorldLinkManager getwas badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {
@@ -105,7 +105,7 @@ public class WorldLinkManager : LinkManager
             endGameCollider.hero = perso;
             endGameCollider.endInfoPanel = GameStateController.get().endWindow;
             endGameCollider.endMainMenuButton = GameStateController.get().endMainMenuButton;
-            Debug.Log(this.GetType() + " EndGameCollider.infoPanel" + endGameCollider.endInfoPanel);
+            // Debug.Log(this.GetType() + " EndGameCollider.infoPanel" + endGameCollider.endInfoPanel);
         }
 
         GameStateController.get().teleporter = teleporter;

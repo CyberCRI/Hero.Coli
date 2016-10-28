@@ -141,7 +141,7 @@ public class Logger : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(timedMsg);
+                    // Debug.Log(timedMsg);
                 }
             }
         }

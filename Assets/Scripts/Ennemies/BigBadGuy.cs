@@ -120,7 +120,7 @@ public class BigBadGuy : MonoBehaviour
             Hero hero = col.gameObject.GetComponent<Hero>();
             if (null != hero)
             {
-                Debug.Log(this.GetType() + " OnCollisionEnter hit hero");
+                // Debug.Log(this.GetType() + " OnCollisionEnter hit hero");
                 hero.subLife(_dpt);
             }
         }

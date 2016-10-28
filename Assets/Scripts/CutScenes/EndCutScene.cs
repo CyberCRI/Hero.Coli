@@ -65,7 +65,7 @@ public class EndCutScene : CutScene {
     {
         if (iteration < _nanoCounter.GetNanoCount())
         {
-            Debug.Log(_nanoCounter.GetNanoCount());
+            // Debug.Log(_nanoCounter.GetNanoCount());
             iteration++;
             StopAllCoroutines();
             StartCoroutine(InstantiateNanobot());

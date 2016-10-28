@@ -14,14 +14,14 @@ public class CancelModal : ModalButton
         //TODO find more elegant and robust solution
 
         if (!isPressed) {
-            Debug.Log(this.GetType() + " OnPress()");
+            // Debug.Log(this.GetType() + " OnPress()");
             press ();
         }
     }
 
     public override void press ()
     {
-        Debug.Log(this.GetType() + " press()");
+        // Debug.Log(this.GetType() + " press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
     }

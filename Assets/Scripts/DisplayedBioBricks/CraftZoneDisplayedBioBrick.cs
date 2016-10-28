@@ -20,7 +20,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
     string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab = Resources.Load(_prefabURICraftZone);
 
-    // Debug.Log("CraftZoneDisplayedBioBrick::Create(parentTransform="+parentTransform
+    // Debug.Log("CraftZoneDisplayedBioBrick Create(parentTransform="+parentTransform
     //   + ", localPosition="+localPosition
     //   + ", spriteName="+spriteName+nullSpriteName
     //   + ", biobrick="+biobrick

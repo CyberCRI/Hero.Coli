@@ -15,7 +15,7 @@ public class InfoWindowTrigger : MonoBehaviour {
   {
     if(!_alreadyDisplayed)
     {
-      Debug.Log(this.GetType() + " call to InfoWindowManager");
+      // Debug.Log(this.GetType() + " call to InfoWindowManager");
       InfoWindowManager.displayInfoWindow(infoWindowCode);
       _alreadyDisplayed = true;
     }

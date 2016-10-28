@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 /*!
 \brief This class manages the display of BioBricks under the equiped devices icons

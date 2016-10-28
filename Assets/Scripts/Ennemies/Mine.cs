@@ -86,7 +86,7 @@ public class Mine : ResettableMine
 
             foreach (Molecule m in molecules)
             {
-                //If player has the Green Fluorescence with a sufficient concentration :: the mine appears
+                //If player has the Green Fluorescence with a sufficient concentration: the mine appears
                 if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
                 {
                     if (!_isNear)

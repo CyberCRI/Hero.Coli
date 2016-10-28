@@ -53,7 +53,7 @@ public class FindMissingScriptsRecursively : EditorWindow
         // Now recurse through each child GO (if there are any):
         foreach (Transform childT in g.transform)
         {
-            //Debug.Log("Searching " + childT.name  + " " );
+            // Debug.Log("Searching " + childT.name  + " " );
             FindInGO(childT.gameObject);
         }
     }

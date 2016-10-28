@@ -14,7 +14,7 @@ public class LanguageMainMenuItem : MainMenuItem {
     public UISprite languageSprite;
     
     public override void click () {
-        Debug.Log(this.GetType() + " clicked "+itemName);
+        // Debug.Log(this.GetType() + " clicked "+itemName);
         languagesArray.selectLanguage(language);
     }
 

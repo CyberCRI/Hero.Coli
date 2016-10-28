@@ -108,7 +108,7 @@ public class BioBricksCollapse : MonoBehaviour {
             multiplicator += 1f;
             for (int i = 0; i < _bricksCount; i++)
             {
-                //Debug.Log(this.GetType() + " executing");
+                // Debug.Log(this.GetType() + " executing");
                 _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _goTo[i], speed * Time.unscaledDeltaTime * multiplicator);
             }
             moveBricks();
@@ -127,7 +127,7 @@ public class BioBricksCollapse : MonoBehaviour {
             {
                 if (_bricksTransform[i] != null)
                 {
-                    //Debug.Log(this.GetType() + " executing");
+                    // Debug.Log(this.GetType() + " executing");
                     _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _origin[i], speed * Time.unscaledDeltaTime * multiplicator);
                 }
             }
@@ -152,7 +152,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startExpandBricks()
     {
-        //Debug.Log(this.GetType() + " startExpandBricks");
+        // Debug.Log(this.GetType() + " startExpandBricks");
         StopAllCoroutines();
         
         lazyInitialize();

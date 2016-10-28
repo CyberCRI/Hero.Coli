@@ -71,13 +71,11 @@ public class PhenoFickContact : Phenotype
         configureExternalDisplays(colliderMediumIdExt);
         _collidedMediumIds.AddLast(colliderMediumIdExt);
 
-        /*
         // Debug.Log(this.GetType() + " OnTriggerEnter"
-          +" reaction.setSurface("+surface+")"
-          +" _collidedMediumIds.Count="+_collidedMediumIds.Count
-          +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
-          );
-        */
+        //   +" reaction.setSurface("+surface+")"
+        //   +" _collidedMediumIds.Count="+_collidedMediumIds.Count
+        //   +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
+        //   );
     }
 
     public void onDied()

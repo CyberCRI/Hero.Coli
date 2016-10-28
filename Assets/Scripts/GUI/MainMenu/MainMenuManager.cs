@@ -277,7 +277,7 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.Log(this.GetType() + " setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
+            // Debug.Log(this.GetType() + " setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
         }
         for (int index = 0; index < items.Length; index++)
         {
@@ -287,13 +287,13 @@ public class MainMenuManager : MonoBehaviour
                 items[index].displayed = isVisible;
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                    // Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
                 }
                 break;
             }
             else if (!string.IsNullOrEmpty(debug))
             {
-                //Debug.Log(this.GetType() + " setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
+                // Debug.Log(this.GetType() + " setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
             }
         }
         MainMenuManager.redraw(items, debug, spacing);
@@ -304,7 +304,7 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
-            //Debug.Log(this.GetType() + " redraw "+debug);
+            // Debug.Log(this.GetType() + " redraw "+debug);
         }
         if (items.Length != 0)
         {
@@ -314,7 +314,7 @@ public class MainMenuManager : MonoBehaviour
                 item.gameObject.SetActive(item.displayed);
                 if (!string.IsNullOrEmpty(debug))
                 {
-                    //Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
+                    // Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
                 }
                 if (item.displayed)
                 {

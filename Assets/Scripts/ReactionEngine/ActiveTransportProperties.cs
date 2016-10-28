@@ -59,7 +59,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   */
   public override bool tryInstantiateFromXml(XmlNode node)
   {
-    Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load");
+    // Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load");
     
     foreach (XmlNode attr in node)
     {
@@ -125,12 +125,12 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       //TODO conditions on Kcat, alpha, beta, Km, Ki, energyCost
       )
     {
-      Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml failed to load");
+      // Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml failed to load");
       return false;
     }
     else
     {
-      Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this);
+      // Debug.Log(this.GetType() + " ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this);
       return true;
     }
   }
@@ -144,7 +144,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log(this.GetType() + " Error: Empty field");
+      // Debug.Log(this.GetType() + " Error: Empty field");
       return "";
     }
     return value;
@@ -159,7 +159,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log(this.GetType() + " Error: Empty field");
+      // Debug.Log(this.GetType() + " Error: Empty field");
       return 0f;
     }
     return(float.Parse(value.Replace(",", ".")));
@@ -174,7 +174,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log(this.GetType() + " Error: Empty field");
+      // Debug.Log(this.GetType() + " Error: Empty field");
       return 0;
     }
     return (int.Parse(value));
@@ -193,8 +193,10 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
     {
       if (attr.Name == "name")
       {
-        if (String.IsNullOrEmpty(attr.InnerText))
-          Debug.Log(this.GetType() + " Warning : Empty name field in ActiveTransport Reaction definition");
+        // if (String.IsNullOrEmpty(attr.InnerText))
+        // {
+        //   Debug.LogWarning(this.GetType() + " Empty name field in ActiveTransport Reaction definition");
+        // }
         Product prod = new Product();
         prod.setName(node.InnerText);
         products.AddLast(prod);

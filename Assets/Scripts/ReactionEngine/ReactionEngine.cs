@@ -27,7 +27,7 @@ public class ReactionEngine : MonoBehaviour {
     {
         if (_instance == null)
         {
-            Debug.LogWarning("ReactionEngine::get was badly initialized");
+            Debug.LogWarning("ReactionEngine getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
         }
         return _instance;
@@ -307,7 +307,7 @@ public class ReactionEngine : MonoBehaviour {
             _mediums
             , m => m.getId() == id
             , true
-            , " RE::getMoleculesFromMedium("+id+")");
+            , " ReactionEngine getMoleculesFromMedium("+id+")");
 		if (medium != null) {
 	  return medium.getMolecules();
 	} else {

@@ -208,7 +208,7 @@ public class Line
             allValues += ";" + vec.ToString();
         }
         allValues += "]";
-        Debug.Log(this.GetType() + " Line _pointsList=" + allValues);
+        // Debug.Log(this.GetType() + " Line _pointsList=" + allValues);
 
         allValues = "[";
         foreach (float flt in _floatList)
@@ -216,7 +216,7 @@ public class Line
             allValues += ";" + flt.ToString();
         }
         allValues += "]";
-        Debug.Log(this.GetType() + " Line _floatList=" + allValues);
+        // Debug.Log(this.GetType() + " Line _floatList=" + allValues);
     }
 
     public void setActive(bool isActive)

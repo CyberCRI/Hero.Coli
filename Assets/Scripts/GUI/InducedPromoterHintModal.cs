@@ -6,7 +6,7 @@ public class InducedPromoterHintModal : ModalButton
 {
     public override void press ()
     {
-        // Debug.Log (this.GetType() + " press()");
+        // Debug.Log(this.GetType() + " press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
         Hero.get().gameObject.AddComponent<InducedPromoterHint>();

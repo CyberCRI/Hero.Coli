@@ -25,7 +25,7 @@ public class CraftFinalizationButton : MonoBehaviour {
 
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Debug.Log(this.GetType() + " OnPress()");
+      // Debug.Log(this.GetType() + " OnPress()");
       switch(_mode)
       {
           // for craft / uncraft process

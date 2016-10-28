@@ -123,290 +123,289 @@ To see how the calculus is done, refer you to the react() function of this class
  */
 public class PromoterReaction : IReaction
 {
-  private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
-  private TreeNode<PromoterNodeData> _formula;          //! The formula described in the detailed description
-  protected float _beta;                                //! The maximal production of the promoter
+    private float _terminatorFactor;                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
+    private TreeNode<PromoterNodeData> _formula;          //! The formula described in the detailed description
+    protected float _beta;                                //! The maximal production of the promoter
 
-  public void setBeta(float beta) { _beta = beta; }
-  public float getBeta() { return _beta; }
-  public void setTerminatorFactor(float v) { _terminatorFactor = v; }
-  public float getTerminatorFactor() { return _terminatorFactor; }
-  public void setFormula(TreeNode<PromoterNodeData> tree) { _formula = tree; }
-  public TreeNode<PromoterNodeData> getFormula() { return _formula; }
-	
-  private static PromoterParser _parser = new PromoterParser();               //!< The Formula Parser
+    public void setBeta(float beta) { _beta = beta; }
+    public float getBeta() { return _beta; }
+    public void setTerminatorFactor(float v) { _terminatorFactor = v; }
+    public float getTerminatorFactor() { return _terminatorFactor; }
+    public void setFormula(TreeNode<PromoterNodeData> tree) { _formula = tree; }
+    public TreeNode<PromoterNodeData> getFormula() { return _formula; }
 
-  private bool _debug = false;
+    private static PromoterParser _parser = new PromoterParser();               //!< The Formula Parser
 
-  //! Default Constructor
-  public PromoterReaction()
-  {
-  }
+    private bool _debug = false;
 
-  //! Copy constructor
-  public PromoterReaction(PromoterReaction r) : base(r)
-  {
-    _terminatorFactor = r._terminatorFactor;
-    _formula = r._formula;
-    _beta = r._beta;
-  }
+    //! Default Constructor
+    public PromoterReaction()
+    {
+    }
 
-  //TODO improve this
-  private bool formulaEquals(TreeNode<PromoterNodeData> formula1, TreeNode<PromoterNodeData> formula2)
-  {
-    string f1 = Logger.ToString<PromoterNodeData>(formula1);
-    string f2 = Logger.ToString<PromoterNodeData>(formula2);
-    Debug.Log(this.GetType() + " formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2);
-    return f1 == f2;
-  }
+    //! Copy constructor
+    public PromoterReaction(PromoterReaction r) : base(r)
+    {
+        _terminatorFactor = r._terminatorFactor;
+        _formula = r._formula;
+        _beta = r._beta;
+    }
 
-  /* !
-    \brief Checks that two reactions have the same PromoterReaction field values.
-    \param reaction The reaction that will be compared to 'this'.
-   */
-  protected override bool PartialEquals(IReaction reaction)
-  {
-    PromoterReaction promoter = reaction as PromoterReaction;
+    //TODO improve this
+    private bool formulaEquals(TreeNode<PromoterNodeData> formula1, TreeNode<PromoterNodeData> formula2)
+    {
+        string f1 = Logger.ToString<PromoterNodeData>(formula1);
+        string f2 = Logger.ToString<PromoterNodeData>(formula2);
+        // Debug.Log(this.GetType() + " formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2);
+        return f1 == f2;
+    }
 
-    bool bnullProm = (promoter != null);
-    bool btermFac = (_terminatorFactor == promoter._terminatorFactor);
-    bool bformula = formulaEquals(_formula, promoter._formula);
-    bool bbeta = (_beta == promoter._beta);
+    /* !
+      \brief Checks that two reactions have the same PromoterReaction field values.
+      \param reaction The reaction that will be compared to 'this'.
+     */
+    protected override bool PartialEquals(IReaction reaction)
+    {
+        PromoterReaction promoter = reaction as PromoterReaction;
 
-    Debug.Log(this.GetType() + " PartialEquals"
-      +", bnullProm="+bnullProm
-      +", btermFac="+btermFac
-      +", bformula="+bformula
-      +", bbeta="+bbeta
-      );
+        bool bnullProm = (promoter != null);
+        bool btermFac = (_terminatorFactor == promoter._terminatorFactor);
+        bool bformula = formulaEquals(_formula, promoter._formula);
+        bool bbeta = (_beta == promoter._beta);
 
-    return (promoter != null)
-    && base.PartialEquals(reaction)
-    && (_terminatorFactor == promoter._terminatorFactor)
-    //&& _formula.Equals(promoter._formula)
-    && formulaEquals(_formula, promoter._formula)
-    && (_beta == promoter._beta);
-   }
+        // Debug.Log(this.GetType() + " PartialEquals"
+        //   +", bnullProm="+bnullProm
+        //   +", btermFac="+btermFac
+        //   +", bformula="+bformula
+        //   +", bbeta="+bbeta
+        //   );
 
-  /*!
-    \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
-    \param props The PromoterProperties which will serve to create the reaction
-    \return Return the new reaction or null if it fail.
-   */
-  public static IReaction       buildPromoterFromProps(PromoterProperties props)
-  {
-    if (props == null)
-      return null;
+        return (promoter != null)
+        && base.PartialEquals(reaction)
+        && (_terminatorFactor == promoter._terminatorFactor)
+        //&& _formula.Equals(promoter._formula)
+        && formulaEquals(_formula, promoter._formula)
+        && (_beta == promoter._beta);
+    }
 
-    PromoterParser parser = new PromoterParser();
-    PromoterReaction reaction = new PromoterReaction();
+    /*!
+      \brief This reaction build a PromoterReaction reaction from a PromoterProperties class
+      \param props The PromoterProperties which will serve to create the reaction
+      \return Return the new reaction or null if it fail.
+     */
+    public static IReaction buildPromoterFromProps(PromoterProperties props)
+    {
+        if (props == null)
+            return null;
 
-    reaction.setName(props.name);
-    reaction.setBeta(props.beta);
-    reaction.setTerminatorFactor(props.terminatorFactor);
-    reaction.setEnergyCost(props.energyCost);
-    TreeNode<PromoterNodeData> formula = parser.Parse(props.formula);
-    reaction.setFormula(formula);
-    Product newProd;
-    foreach (Product p in props.products)
-      {
-        newProd = new Product(p);
-        reaction.addProduct(newProd);
-      }
-		
-    return reaction;
-  }
+        PromoterParser parser = new PromoterParser();
+        PromoterReaction reaction = new PromoterReaction();
 
-  /*! 
-    Implementation of a Hill function
-    \param K Threshold value
-    \param concentration Quantity of the molecule
-    \param n Stepness parameter
-  */
-  public static float hillFunc(float K, float concentration, double n)
-  {
-    return (float)(Math.Pow(concentration, n) / (K + Math.Pow(concentration, n)));
-  }
+        reaction.setName(props.name);
+        reaction.setBeta(props.beta);
+        reaction.setTerminatorFactor(props.terminatorFactor);
+        reaction.setEnergyCost(props.energyCost);
+        TreeNode<PromoterNodeData> formula = parser.Parse(props.formula);
+        reaction.setFormula(formula);
+        Product newProd;
+        foreach (Product p in props.products)
+        {
+            newProd = new Product(p);
+            reaction.addProduct(newProd);
+        }
 
-  /*! 
-    Implementation of a step function function
-    \param K Threshold value
-    \param concentration Quantity of the molecule
-  */
-  public static float stepFunc(float K, float concentration)
-  {
-    if (concentration > K)
-      return 1f;
-    return 0f;
-  }
+        return reaction;
+    }
 
-  /*! 
-    Execute a Node of type : Constant
-    \param node The node of the tree to execute
-    \param molecules The list of molecules
-    \return The result of the hill function.
-  */
-  private float execConstant(TreeNode<PromoterNodeData> node, ArrayList molecules)
-  {
-    if (node == null)
-      return 0f;
+    /*! 
+      Implementation of a Hill function
+      \param K Threshold value
+      \param concentration Quantity of the molecule
+      \param n Stepness parameter
+    */
+    public static float hillFunc(float K, float concentration, double n)
+    {
+        return (float)(Math.Pow(concentration, n) / (K + Math.Pow(concentration, n)));
+    }
 
-    if (node.getRightNode().getData().token == PromoterParser.eNodeType.BOOL)
-      return execBool(node.getRightNode());
-    Molecule mol = execWord(node.getRightNode(), molecules);
-    float K = execNum(node.getLeftNode(), molecules);
-    float n = 1f;
-    if (node.getLeftNode() != null && node.getLeftNode().getLeftNode() != null)
-      n = execNum(node.getLeftNode().getLeftNode(), molecules);
-    return hillFunc(K, mol.getConcentration(), n);
-  }
+    /*! 
+      Implementation of a step function function
+      \param K Threshold value
+      \param concentration Quantity of the molecule
+    */
+    public static float stepFunc(float K, float concentration)
+    {
+        if (concentration > K)
+            return 1f;
+        return 0f;
+    }
 
-  /*! 
-    Execute a Node of type : Word
-    \param node The node of the tree to execute
-    \param molecules The list of molecules
-    \return return the concentration of the molecule in the node.
-  */
-  private Molecule execWord(TreeNode<PromoterNodeData> node, ArrayList molecules)
-  {
-    if (node == null || molecules == null)
-      return null;
-    return ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
-  }
+    /*! 
+      Execute a Node of type : Constant
+      \param node The node of the tree to execute
+      \param molecules The list of molecules
+      \return The result of the hill function.
+    */
+    private float execConstant(TreeNode<PromoterNodeData> node, ArrayList molecules)
+    {
+        if (node == null)
+            return 0f;
 
-  /*! 
-    Execute a Node of type : Bool
-    \param node The node of the tree to execute
-    \return 1 if the value of the node is True, 0 else
-  */
-  private float execBool(TreeNode<PromoterNodeData> node)
-  {
-    if (node == null)
-      return 0f;
-    if (node.getData().value == "T")
-      return 1f;
-    return 0f;
-  }
+        if (node.getRightNode().getData().token == PromoterParser.eNodeType.BOOL)
+            return execBool(node.getRightNode());
+        Molecule mol = execWord(node.getRightNode(), molecules);
+        float K = execNum(node.getLeftNode(), molecules);
+        float n = 1f;
+        if (node.getLeftNode() != null && node.getLeftNode().getLeftNode() != null)
+            n = execNum(node.getLeftNode().getLeftNode(), molecules);
+        return hillFunc(K, mol.getConcentration(), n);
+    }
 
-  /*! 
-    Execute a Node of type : Num
-    \param node The node of the tree to execute
-    \param molecules The list of molecules
-    \return The value that contains the node
-  */
-  private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
-  {
-    if (node == null || molecules == null)
-      return 0f;
-    return float.Parse(node.getData().value.Replace(",", "."));
-  }
+    /*! 
+      Execute a Node of type : Word
+      \param node The node of the tree to execute
+      \param molecules The list of molecules
+      \return return the concentration of the molecule in the node.
+    */
+    private Molecule execWord(TreeNode<PromoterNodeData> node, ArrayList molecules)
+    {
+        if (node == null || molecules == null)
+            return null;
+        return ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
+    }
 
-  /*! 
-    Execute a Node.
-    \param node The node of the tree to execute
-    \param molecules The list of molecules
-    \return The result of the function
-  */
-  private float execNode(TreeNode<PromoterNodeData> node, ArrayList molecules)
-  {
-    if (node != null)
-      {
-        if (node.getData().token == PromoterParser.eNodeType.OR)
-          return Math.Max(execNode(node.getLeftNode(), molecules), execNode(node.getRightNode(), molecules));
-        else if (node.getData().token == PromoterParser.eNodeType.AND)
-          return Math.Min(execNode(node.getLeftNode(), molecules), execNode(node.getRightNode(), molecules));
-        else if (node.getData().token == PromoterParser.eNodeType.NOT)
-          return 1f - execNode(node.getLeftNode(), molecules);
-        else if (node.getData().token == PromoterParser.eNodeType.CONSTANT)
-          return execConstant(node, molecules);
-        else if (node.getData().token == PromoterParser.eNodeType.BOOL)
-          return execBool(node);
-        else if (node.getData().token == PromoterParser.eNodeType.WORD)
-          {
-            Molecule mol = ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
-            if (mol != null)
-              return mol.getConcentration();
-          }
-        else if (node.getData().token == PromoterParser.eNodeType.NUM)
-          return float.Parse(node.getData().value.Replace(",", "."));
-      }
-    return 1.0f;
-  }
+    /*! 
+      Execute a Node of type : Bool
+      \param node The node of the tree to execute
+      \return 1 if the value of the node is True, 0 else
+    */
+    private float execBool(TreeNode<PromoterNodeData> node)
+    {
+        if (node == null)
+            return 0f;
+        if (node.getData().value == "T")
+            return 1f;
+        return 0f;
+    }
 
-  /*! 
-    \brief Execute a promoter reaction as describe in the detailled reaction
-    \details Once the tree is executed, the result is put in delta and used as follow :
-    
-    For each Product P in the operon :
-    
-                [P] += delta * RBSf * TerminatorFactor * beta(Maximal production)
-    
-    \param molecules The list of molecules
-  */
-  public override void react(ArrayList molecules)
-  {
-    if (!_isActive) {
-	  if(_debug) Debug.Log(this.GetType() + " react !_isActive");
-      return;
-	}
-    float delta = execNode(_formula, molecules);
+    /*! 
+      Execute a Node of type : Num
+      \param node The node of the tree to execute
+      \param molecules The list of molecules
+      \return The value that contains the node
+    */
+    private float execNum(TreeNode<PromoterNodeData> node, ArrayList molecules)
+    {
+        if (node == null || molecules == null)
+            return 0f;
+        return float.Parse(node.getData().value.Replace(",", "."));
+    }
 
-    float energyCoef;
-    float energyCostTot;    
-    if (delta > 0f && _energyCost > 0f && enableEnergy)
-      {
-        energyCostTot = _energyCost * delta;
-        energyCoef = _medium.getEnergy() / energyCostTot;
-        if (energyCoef > 1f)
-          energyCoef = 1f;
-        _medium.subEnergy(energyCostTot);
-      }
-    else
-      energyCoef = 1f;
+    /*! 
+      Execute a Node.
+      \param node The node of the tree to execute
+      \param molecules The list of molecules
+      \return The result of the function
+    */
+    private float execNode(TreeNode<PromoterNodeData> node, ArrayList molecules)
+    {
+        if (node != null)
+        {
+            if (node.getData().token == PromoterParser.eNodeType.OR)
+                return Math.Max(execNode(node.getLeftNode(), molecules), execNode(node.getRightNode(), molecules));
+            else if (node.getData().token == PromoterParser.eNodeType.AND)
+                return Math.Min(execNode(node.getLeftNode(), molecules), execNode(node.getRightNode(), molecules));
+            else if (node.getData().token == PromoterParser.eNodeType.NOT)
+                return 1f - execNode(node.getLeftNode(), molecules);
+            else if (node.getData().token == PromoterParser.eNodeType.CONSTANT)
+                return execConstant(node, molecules);
+            else if (node.getData().token == PromoterParser.eNodeType.BOOL)
+                return execBool(node);
+            else if (node.getData().token == PromoterParser.eNodeType.WORD)
+            {
+                Molecule mol = ReactionEngine.getMoleculeFromName(node.getData().value, molecules);
+                if (mol != null)
+                    return mol.getConcentration();
+            }
+            else if (node.getData().token == PromoterParser.eNodeType.NUM)
+                return float.Parse(node.getData().value.Replace(",", "."));
+        }
+        return 1.0f;
+    }
 
-    delta *= energyCoef;
-	
-    foreach (Product pro in _products)
-      {
-	    if(_debug) Debug.Log(this.GetType() + " react product="+pro);
-        Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
-			
-        if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
-        if( pro == null) Debug.Log("pro is null");
-			
-		float increase = delta * pro.v * _terminatorFactor * _beta
-                           * ReactionEngine.reactionsSpeed * _reactionSpeed;
-		
-		  if(_debug) Debug.Log(this.GetType() + " react increase="+increase
-					+", delta:"+delta
-					+", qFactor:"+pro.v
-					+", tFactor:"+_terminatorFactor
-					+", beta:"+_beta
-                    +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
-					+", reactionSpeed:"+_reactionSpeed					
-					);
-			
-        if (enableSequential) {
-		  float oldCC = mol.getConcentration();
-		  mol.addConcentration(increase);
-		  float newCC = mol.getConcentration();
-		  if(_debug) Debug.Log(this.GetType() + " react ["+mol.getName()+"]old="+oldCC
-					+" ["+mol.getName()+"]new="+newCC
-					
-					);
-        } else {
-		  mol.addNewConcentration(increase);
-		  if(_debug) Debug.Log(this.GetType() + " react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
-					
-					);
-	    }
-				
-      }
-  }
+    /*! 
+      \brief Execute a promoter reaction as describe in the detailled reaction
+      \details Once the tree is executed, the result is put in delta and used as follow :
+
+      For each Product P in the operon :
+
+                  [P] += delta * RBSf * TerminatorFactor * beta(Maximal production)
+
+      \param molecules The list of molecules
+    */
+    public override void react(ArrayList molecules)
+    {
+        if (!_isActive)
+        {
+            // if(_debug) Debug.Log(this.GetType() + " react !_isActive");
+            return;
+        }
+        float delta = execNode(_formula, molecules);
+
+        float energyCoef;
+        float energyCostTot;
+        if (delta > 0f && _energyCost > 0f && enableEnergy)
+        {
+            energyCostTot = _energyCost * delta;
+            energyCoef = _medium.getEnergy() / energyCostTot;
+            if (energyCoef > 1f)
+                energyCoef = 1f;
+            _medium.subEnergy(energyCostTot);
+        }
+        else
+            energyCoef = 1f;
+
+        delta *= energyCoef;
+
+        foreach (Product pro in _products)
+        {
+            // if(_debug) Debug.Log(this.GetType() + " react product="+pro);
+            Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
+
+            // if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
+            // if( pro == null) Debug.Log("pro is null");
+
+            float increase = delta * pro.v * _terminatorFactor * _beta
+                               * ReactionEngine.reactionsSpeed * _reactionSpeed;
+
+            // if(_debug) Debug.Log(this.GetType() + " react increase="+increase
+            // 		+", delta:"+delta
+            // 		+", qFactor:"+pro.v
+            // 		+", tFactor:"+_terminatorFactor
+            // 		+", beta:"+_beta
+            //               +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
+            // 		+", reactionSpeed:"+_reactionSpeed					
+            // 		);
+
+            if (enableSequential)
+            {
+                float oldCC = mol.getConcentration();
+                mol.addConcentration(increase);
+                float newCC = mol.getConcentration();
+                // if(_debug) Debug.Log(this.GetType() + " react ["+mol.getName()+"]old="+oldCC+" ["+mol.getName()+"]new="+newCC);
+            }
+            else
+            {
+                mol.addNewConcentration(increase);
+                // if(_debug) Debug.Log(this.GetType() + " react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")");
+            }
+
+        }
+    }
 
 
     // Xml loading
-    
+
     /*!
   \brief This class loads promoters reactions from xml files
   \details
@@ -434,83 +433,83 @@ A PromoterReaction should respect this syntax:
   \sa PromoterReaction
   
  */
-  public override bool tryInstantiateFromXml(XmlNode node)
-  {
-    bool b = true;
-    foreach (XmlNode attr in node)
+    public override bool tryInstantiateFromXml(XmlNode node)
     {
-      switch (attr.Name)
-      {
-        case "name":
-          b = b && loadPromoterName(attr.InnerText);
-          break;
-        case "productionMax":
-          b = b && loadPromoterProductionMax(attr.InnerText);
-          break;
-        case "terminatorFactor":
-          b = b && loadPromoterTerminatorFactor(attr.InnerText);
-          break;
-        case "EnergyCost":
-          b = b && loadEnergyCost(attr.InnerText);
-          break;
-        case "formula":
-          b = b && loadPromoterFormula(attr.InnerText);
-          break;
-        case "operon":
-          b = b && loadPromoterOperon(attr);
-          break;
-      }
+        bool b = true;
+        foreach (XmlNode attr in node)
+        {
+            switch (attr.Name)
+            {
+                case "name":
+                    b = b && loadPromoterName(attr.InnerText);
+                    break;
+                case "productionMax":
+                    b = b && loadPromoterProductionMax(attr.InnerText);
+                    break;
+                case "terminatorFactor":
+                    b = b && loadPromoterTerminatorFactor(attr.InnerText);
+                    break;
+                case "EnergyCost":
+                    b = b && loadEnergyCost(attr.InnerText);
+                    break;
+                case "formula":
+                    b = b && loadPromoterFormula(attr.InnerText);
+                    break;
+                case "operon":
+                    b = b && loadPromoterOperon(attr);
+                    break;
+            }
+        }
+        return b && hasValidData();
     }
-    return b && hasValidData();
-  }
 
     public override bool hasValidData()
-    {        
-      bool valid = base.hasValidData()
-          && 0 <= _terminatorFactor                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
-          && 1 >= _terminatorFactor
-          && null != _formula;                           //! The formula described in the detailed description
-      
-      if(valid)
-      {
-        if(0 == _beta)                                 //! The maximal production of the promoter
+    {
+        bool valid = base.hasValidData()
+            && 0 <= _terminatorFactor                      //! Determine the fiability of the terminator (0-1 which correspond to 0% to 100%)
+            && 1 >= _terminatorFactor
+            && null != _formula;                           //! The formula described in the detailed description
+
+        if (valid)
         {
-          Debug.LogWarning(this.GetType() + " hasValidData please check that you really intended a max production rate (beta) of 0 for promoter reaction "+this.getName());
+            if (0 == _beta)                                 //! The maximal production of the promoter
+            {
+                Debug.LogWarning(this.GetType() + " hasValidData please check that you really intended a max production rate (beta) of 0 for promoter reaction " + this.getName());
+            }
         }
-      }
-      else
-      {
-            Debug.LogError(this.GetType() + " hasValidData base.hasValidData()="+(base.hasValidData())
-                +" & 0 <= _terminatorFactor="+(0 <= _terminatorFactor)
-                +" & 1 >= _terminatorFactor="+(1 >= _terminatorFactor)
-                +" & null != _formula="+(null != _formula)
-                +" => valid="+valid
+        else
+        {
+            Debug.LogError(this.GetType() + " hasValidData base.hasValidData()=" + (base.hasValidData())
+                + " & 0 <= _terminatorFactor=" + (0 <= _terminatorFactor)
+                + " & 1 >= _terminatorFactor=" + (1 >= _terminatorFactor)
+                + " & null != _formula=" + (null != _formula)
+                + " => valid=" + valid
                 );
-      }
-      return valid;
+        }
+        return valid;
     }
 
 
-  public override string ToString ()
-  {
-    return string.Format ("Promoter[name:"+_name
-			+", beta:"+_beta
-			+", formula:"+Logger.ToString<PromoterNodeData>(_formula)
-			+", products:"+Logger.ToString<Product>(_products)
-			+", active:"+_isActive
-			+", medium:"+_medium
-			+", reactionSpeed:"+_reactionSpeed
-			+", energyCost:"+_energyCost
-			+", enableSequential:"+enableSequential
-			+", enableEnergy:"+enableEnergy
-			+"]");
-  }
+    public override string ToString()
+    {
+        return string.Format("Promoter[name:" + _name
+                + ", beta:" + _beta
+                + ", formula:" + Logger.ToString<PromoterNodeData>(_formula)
+                + ", products:" + Logger.ToString<Product>(_products)
+                + ", active:" + _isActive
+                + ", medium:" + _medium
+                + ", reactionSpeed:" + _reactionSpeed
+                + ", energyCost:" + _energyCost
+                + ", enableSequential:" + enableSequential
+                + ", enableEnergy:" + enableEnergy
+                + "]");
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
     /// loading ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    
+
     /*!
     \brief Load promoter name by checking the validity of the given string
     \param value The given name
@@ -520,13 +519,13 @@ A PromoterReaction should respect this syntax:
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty name field");
+            Debug.LogError(this.GetType() + " Empty name field");
             return false;
         }
         setName(value);
         return true;
     }
-    
+
     /*!
     \brief Load promoter maximal production speed by checking the validity of the given string
     \param value The given maximal production
@@ -536,13 +535,13 @@ A PromoterReaction should respect this syntax:
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty productionMax field");
+            Debug.LogError(this.GetType() + " Empty productionMax field");
             return false;
         }
         setBeta(float.Parse(value.Replace(",", ".")));
         return true;
     }
-    
+
     /*!
     \brief Load promoter terminator factor by checking the validity of the given string
     \param value The given terminator factor
@@ -552,13 +551,13 @@ A PromoterReaction should respect this syntax:
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty TerminatorFactor field");
+            Debug.LogError(this.GetType() + " Empty TerminatorFactor field");
             return false;
         }
         setTerminatorFactor(float.Parse(value.Replace(",", ".")));
         return true;
     }
-    
+
     /*!
     \brief Load promoter energy cost by checking the validity of the given string
     \param value The given energy cost
@@ -568,14 +567,14 @@ A PromoterReaction should respect this syntax:
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty EnergyCost field. default value = 0");
+            Debug.LogError(this.GetType() + " Empty EnergyCost field. default value = 0");
             setEnergyCost(0f);
         }
         else
             setEnergyCost(float.Parse(value.Replace(",", ".")));
         return true;
     }
-    
+
     /*!
     \brief Load promoter gene by checking the validity of the given strings
     \param name The name of the molecule that the gene will produce
@@ -586,7 +585,7 @@ A PromoterReaction should respect this syntax:
     {
         if (String.IsNullOrEmpty(name) || String.IsNullOrEmpty(RBSf))
         {
-            Debug.Log("Error: Empty Gene name field");
+            Debug.LogError(this.GetType() + " Empty Gene name field");
             return false;
         }
 
@@ -594,7 +593,7 @@ A PromoterReaction should respect this syntax:
         addProduct(gene);
         return true;
     }
-    
+
     /*!
     \brief Load promoter operon
     \param node the xml node
@@ -607,12 +606,12 @@ A PromoterReaction should respect this syntax:
         bool n = false;
         bool rbsf = false;
         bool b = true;
-        
+
         foreach (XmlNode gene in node)
         {
             n = false;
             rbsf = false;
-            foreach(XmlNode attr in gene)
+            foreach (XmlNode attr in gene)
             {
                 switch (attr.Name)
                 {
@@ -629,13 +628,13 @@ A PromoterReaction should respect this syntax:
             if (n && rbsf)
                 b = b && loadGene(name, RBSf);
             if (!n)
-                Debug.Log("Error : Missing Gene name in operon");
+                Debug.LogError(this.GetType() + " Missing Gene name in operon");
             if (!rbsf)
-                Debug.Log("Error : Missing RBSfactor in operon");
+                Debug.LogError(this.GetType() + " Missing RBSfactor in operon");
         }
         return b;
     }
-    
+
     /*!
     \brief Load promoter formula by checking the validity of the given string
     \param formula The given formula
@@ -644,10 +643,10 @@ A PromoterReaction should respect this syntax:
     private bool loadPromoterFormula(string formula)
     {
         TreeNode<PromoterNodeData> tree = _parser.Parse(formula);
-        
+
         if (tree == null)
         {
-            Debug.Log("Syntax Error in promoter Formula");
+            Debug.LogError(this.GetType() + " Syntax Error in promoter Formula");
             return false;
         }
         setFormula(tree);

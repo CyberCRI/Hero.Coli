@@ -15,7 +15,7 @@ public class InterfaceLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Debug.LogWarning("InterfaceLinkManager::get was badly initialized");
+            Debug.LogWarning("InterfaceLinkManager getwas badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {
@@ -131,7 +131,7 @@ public class InterfaceLinkManager : LinkManager
     {
         base.initialize();
 
-        //  Debug.Log(this.GetType() + " mainMenu=" + mainMenu);
+        // Debug.Log(this.GetType() + " mainMenu=" + mainMenu);
 
         // activate everything
         activateAllChildren(true);

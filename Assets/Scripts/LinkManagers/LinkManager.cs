@@ -35,7 +35,7 @@ public abstract class LinkManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(this.GetType() + " has null root");
+            // Debug.Log(this.GetType() + " has null root");
         }
     }
 

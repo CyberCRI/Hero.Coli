@@ -13,7 +13,7 @@ public class InfoWindowManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("InfoWindowManager::get was badly initialized");
+            Debug.LogWarning("InfoWindowManager getwas badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<InfoWindowManager>();
         }
         return _instance;
@@ -109,7 +109,7 @@ public class InfoWindowManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("InfoWindowManager::displayInfoWindow(" + code + ") failed");
+            Debug.LogWarning("InfoWindowManager displayInfoWindow(" + code + ") failed");
             return false;
         }
     }
@@ -145,7 +145,7 @@ public class InfoWindowManager : MonoBehaviour
         StandardInfoWindowInfo info;
         if (!_instance._loadedInfoWindows.TryGetValue(code, out info))
         {
-            Debug.LogWarning("InfoWindowManager::retrieveFromDico(" + code + ") failed");
+            Debug.LogWarning("InfoWindowManager retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;

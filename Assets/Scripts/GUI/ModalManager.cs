@@ -99,7 +99,7 @@ public class ModalManager : MonoBehaviour
         //TODO set case-insensitive
         if (!_instance._loadedModalWindows.TryGetValue(code, out info))
         {
-            Debug.LogWarning("InfoWindowManager::retrieveFromDico(" + code + ") failed");
+            Debug.LogWarning("InfoWindowManager retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;
@@ -392,7 +392,7 @@ public class ModalManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("InfoWindowManager::displayInfoWindow(" + code + ") failed");
+            Debug.LogWarning("InfoWindowManager displayInfoWindow(" + code + ") failed");
             return false;
         }
     }
@@ -488,7 +488,7 @@ public class ModalManager : MonoBehaviour
                     }
                     else
                     {
-                        // Debug.Log ("ModalManager manageKeyPresses no need for manageInfoWindows()");
+                        // Debug.Log("ModalManager manageKeyPresses no need for manageInfoWindows()");
                         //keyPressedEventConsumed but no specific game state was specified as target
                         return GameStateTarget.NoTarget;
                     }

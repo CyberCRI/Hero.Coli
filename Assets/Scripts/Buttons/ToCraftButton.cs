@@ -8,7 +8,7 @@ public class ToCraftButton : ExternalOnPressButton
         {
             if (CraftZoneManager.isOpenable())
             {
-                Debug.Log(this.GetType() + " OnPress()");
+                // Debug.Log(this.GetType() + " OnPress()");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
             }
             else

@@ -19,13 +19,11 @@ public abstract class XmlLoader
 
 		XmlNodeList objectNodeLists = xmlDoc.GetElementsByTagName(tag);
         
-        Debug.Log(this.GetType() + " loadObjectsFromFile with tag "+tag+" will load from "+filePath
-                    );
+        // Debug.Log(this.GetType() + " loadObjectsFromFile with tag "+tag+" will load from "+filePath);
 		
 		objectList = loadObjects <T>(objectNodeLists);
         
-        Debug.Log(this.GetType() + " loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath
-                    );
+        // Debug.Log(this.GetType() + " loadObjectsFromFile with tag "+tag+" loaded "+Logger.ToString<T>(objectList)+" from "+filePath);
 
 		return objectList;
 
@@ -46,8 +44,7 @@ public abstract class XmlLoaderImpl : XmlLoader
   public override LinkedList<T> loadObjects<T> (XmlNodeList objectNodeLists)
       //where T : LoadableFromXml, new()
   {
-        Debug.Log(this.GetType() + " loadObjects with tag="+xmlTag+" will load"
-                    );
+        // Debug.Log(this.GetType() + " loadObjects with tag="+xmlTag+" will load");
 
       LinkedList<T> objectList = new LinkedList<T>();
 
@@ -66,8 +63,7 @@ public abstract class XmlLoaderImpl : XmlLoader
         }
       }
 
-        Debug.Log(this.GetType() + " loadObjects with tag "+xmlTag+" loaded "+Logger.ToString<T>(objectList)
-                    );
+        // Debug.Log(this.GetType() + " loadObjects with tag "+xmlTag+" loaded "+Logger.ToString<T>(objectList));
 
       if (objectList.Count == 0)
         return null;
@@ -80,7 +76,7 @@ public abstract class XmlLoaderImpl : XmlLoader
         if(xmlTag == "molecules")
         {
             string tabulation = new string(' ', 4*level);
-            Debug.Log(tabulation + this.GetType() + " SpecificLog node="+node);
+            // Debug.Log(tabulation + this.GetType() + " SpecificLog node="+node);
         }
     }
 }

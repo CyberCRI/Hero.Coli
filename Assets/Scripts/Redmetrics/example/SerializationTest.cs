@@ -28,8 +28,8 @@ public class SerializationTest : MonoBehaviour {
 		JsonMapper.ToJson(data,writer);
 		
 		string json = writer.ToString();
-		Debug.Log("obj="+data);
-		Debug.Log("serialized="+json);
+		// Debug.Log("obj="+data);
+		// Debug.Log("serialized="+json);
 
 		TrackingEventData deserializedData = JsonMapper.ToObject<TrackingEventData>(json);
 		/*/
@@ -39,7 +39,7 @@ public class SerializationTest : MonoBehaviour {
 		
 		//*/
 		
-		Debug.Log("deserialized:"+deserializedData);
+		// Debug.Log("deserialized:"+deserializedData);
 
 	}
 	

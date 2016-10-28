@@ -17,14 +17,14 @@ public class I18nLoader {
   }
 
   public I18nLoader(Dictionary<I18n.Language, IDictionary<string, string>> dicos) {
-    Debug.Log(this.GetType() + " I18nLoader("+dicos+")");
+    // Debug.Log(this.GetType() + " I18nLoader("+dicos+")");
     _dicos = dicos;
   }
 
 
   public void loadFromFile(string filePath, I18n.Language lang)
   {
-    Debug.Log(this.GetType() + " loadFromFile("+filePath+")");
+    // Debug.Log(this.GetType() + " loadFromFile("+filePath+")");
 
     XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
     
@@ -46,8 +46,7 @@ public class I18nLoader {
         continue;
       }
 
-      Debug.Log(this.GetType() + " loadFromFile got "+I18nXMLTags.CODE+"="+_code
-        );
+      // Debug.Log(this.GetType() + " loadFromFile got "+I18nXMLTags.CODE+"="+_code);
 
       if (checkString(_code))
       {
@@ -65,9 +64,9 @@ public class I18nLoader {
 
         if(checkString(_translation))
         {
-          Debug.Log(this.GetType() + " loadFromFile adding "+I18nXMLTags.TRANSLATION
-          +"="+_translation+" for \""+I18nXMLTags.CODE+"\"="+_code+"\n"
-          );
+          // Debug.Log(this.GetType() + " loadFromFile adding "+I18nXMLTags.TRANSLATION
+          // +"="+_translation+" for \""+I18nXMLTags.CODE+"\"="+_code+"\n"
+          // );
           _dicos[lang].Add(_code, _translation);
         }
         else

@@ -28,14 +28,14 @@ public class LifeLogoAnimation : MonoBehaviour {
 				sprite.transform.localScale = originalScale*(3-dum);
 			}
 		}
-		//Debug.Log(this.GetType() + " time="+time, Logger.Level.ONSCREEN);
+		// Debug.Log(this.GetType() + " time="+time, Logger.Level.ONSCREEN);
 		if (time >= animationTime ){
 			isPlaying = false;
 		}
 	}
 	
 	public void Play() {
-		//Debug.Log(this.GetType() + " PLAY", Logger.Level.ONSCREEN);
+		// Debug.Log(this.GetType() + " PLAY", Logger.Level.ONSCREEN);
 		isPlaying = true;
 		time =0f;
 	}
