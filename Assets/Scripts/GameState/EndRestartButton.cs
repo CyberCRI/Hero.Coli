@@ -5,7 +5,7 @@ public class EndRestartButton : ModalButton
 {
     public override void press ()
     {
-        Logger.Log ("EndRestartButton::press()", Logger.Level.INFO);
+        Debug.Log(this.GetType() + " EndRestartButton::press()");
 
         //TODO manage stack of modal elements in ModalManager
         ModalManager.unsetModal ();

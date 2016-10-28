@@ -78,12 +78,12 @@ public class ActiveTransport : XmlLoaderImpl
    */
   public  void loadActiveTransportReactionsFromFiles(IEnumerable<string> filesPaths, LinkedList<Medium> mediums)
   {
-        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles starting");
+        Debug.Log(this.GetType() + " ActiveTransport::loadActiveTransportReactionsFromFiles starting");
 
     LinkedList<ActiveTransportProperties> properties = getActiveTransportPropertiesFromFiles(filesPaths);
         loadActiveTransportReactionsFromProperties(properties, mediums);    
         
-        Logger.Log ("ActiveTransport::loadActiveTransportReactionsFromFiles ends"
+        Debug.Log(this.GetType() + " ActiveTransport::loadActiveTransportReactionsFromFiles ends"
                     );
     }
     
@@ -97,7 +97,7 @@ public class ActiveTransport : XmlLoaderImpl
     public LinkedList<ActiveTransportProperties> getActiveTransportPropertiesFromFiles(IEnumerable<string> files)
     {
         
-        Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
+        Debug.Log(this.GetType() + " ActiveTransport::getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") starts"
                     );
@@ -114,7 +114,7 @@ public class ActiveTransport : XmlLoaderImpl
           }
         }
         
-        Logger.Log ("ActiveTransport::getActiveTransportPropertiesFromFiles("
+        Debug.Log(this.GetType() + " ActiveTransport::getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") returns "+Logger.ToString<ActiveTransportProperties>(propsList)
                     );

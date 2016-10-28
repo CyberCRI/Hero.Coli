@@ -6,7 +6,7 @@ public class GFPCraftHintModal : ModalButton
 {
     public override void press ()
     {
-        Logger.Log ("GFPCraftHintModal::press()");
+        Debug.Log(this.GetType() + " GFPCraftHintModal::press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
         Hero.get().gameObject.AddComponent<GFPCraftHint>();

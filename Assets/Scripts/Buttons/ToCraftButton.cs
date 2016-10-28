@@ -1,4 +1,6 @@
-﻿public class ToCraftButton : ExternalOnPressButton
+﻿using UnityEngine;
+
+public class ToCraftButton : ExternalOnPressButton
 {
     public override void OnPress(bool isPressed)
     {
@@ -6,7 +8,7 @@
         {
             if (CraftZoneManager.isOpenable())
             {
-                Logger.Log("ToCraftButton::OnPress()");
+                Debug.Log(this.GetType() + " ToCraftButton::OnPress()");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
             }
             else

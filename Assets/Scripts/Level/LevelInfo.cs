@@ -16,7 +16,7 @@ public class LevelInfo : LoadableFromXmlImpl
     //! \param node The XML node
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-        Logger.Log("LevelInfo.tryInstantiateFromXml("+node+") will load");
+        Debug.Log(this.GetType() + " LevelInfo.tryInstantiateFromXml("+node+") will load");
 
         if(node.Name == getTag())
         {
@@ -50,7 +50,7 @@ public class LevelInfo : LoadableFromXmlImpl
             Debug.LogWarning(this.GetType() + " tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'");
         }
         
-        Logger.Log("LevelInfo.tryInstantiateFromXml(node) loaded this="+this);
+        Debug.Log(this.GetType() + " LevelInfo.tryInstantiateFromXml(node) loaded this="+this);
         return true;
     }
     

@@ -5,7 +5,7 @@ public class CraftWorldButton : MonoBehaviour {
 
 	 private void OnPress(bool isPressed) {
 	    if(isPressed) {
-	      Logger.Log("CraftWorldButton::OnPress()");
+	      Debug.Log(this.GetType() + " CraftWorldButton::OnPress()");
 	      GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen1);
 	    }
 	  }

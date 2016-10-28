@@ -156,7 +156,7 @@ public class PromoterReaction : IReaction
   {
     string f1 = Logger.ToString<PromoterNodeData>(formula1);
     string f2 = Logger.ToString<PromoterNodeData>(formula2);
-    Logger.Log("PromoterReaction::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2);
+    Debug.Log(this.GetType() + " PromoterReaction::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2);
     return f1 == f2;
   }
 
@@ -173,7 +173,7 @@ public class PromoterReaction : IReaction
     bool bformula = formulaEquals(_formula, promoter._formula);
     bool bbeta = (_beta == promoter._beta);
 
-    Logger.Log("PromoterReaction::PartialEquals"
+    Debug.Log(this.GetType() + " PromoterReaction::PartialEquals"
       +", bnullProm="+bnullProm
       +", btermFac="+btermFac
       +", bformula="+bformula
@@ -346,7 +346,7 @@ public class PromoterReaction : IReaction
   public override void react(ArrayList molecules)
   {
     if (!_isActive) {
-	  if(_debug) Logger.Log("PromoterReaction::react !_isActive");
+	  if(_debug) Debug.Log(this.GetType() + " PromoterReaction::react !_isActive");
       return;
 	}
     float delta = execNode(_formula, molecules);
@@ -368,7 +368,7 @@ public class PromoterReaction : IReaction
 	
     foreach (Product pro in _products)
       {
-	    if(_debug) Logger.Log("PromoterReaction::react product="+pro);
+	    if(_debug) Debug.Log(this.GetType() + " PromoterReaction::react product="+pro);
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
 			
         if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
@@ -390,13 +390,13 @@ public class PromoterReaction : IReaction
 		  float oldCC = mol.getConcentration();
 		  mol.addConcentration(increase);
 		  float newCC = mol.getConcentration();
-		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]old="+oldCC
+		  if(_debug) Debug.Log(this.GetType() + " PromoterReaction::react ["+mol.getName()+"]old="+oldCC
 					+" ["+mol.getName()+"]new="+newCC
 					
 					);
         } else {
 		  mol.addNewConcentration(increase);
-		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
+		  if(_debug) Debug.Log(this.GetType() + " PromoterReaction::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
 					
 					);
 	    }

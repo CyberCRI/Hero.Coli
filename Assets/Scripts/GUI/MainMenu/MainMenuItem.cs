@@ -68,7 +68,7 @@ public class MainMenuItem : MonoBehaviour
 
     public virtual void click()
     {
-        Logger.Log("clicked " + itemName, Logger.Level.INFO);
+        Debug.Log(this.GetType() + " clicked " + itemName);
     }
 
     void OnPress(bool isPressed)

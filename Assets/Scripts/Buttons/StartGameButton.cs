@@ -9,7 +9,7 @@ public class StartGameButton : ModalButton
 
     public override void press ()
     {
-            Logger.Log ("StartGameButton::press()");
+            Debug.Log(this.GetType() + " StartGameButton::press()");
             fadeSprite.FadeOut (7f);
 
             //TODO manage stack of modal elements in ModalManager

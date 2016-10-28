@@ -5,7 +5,7 @@ public class NextButton : MonoBehaviour {
 
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("NextButton::OnPress()");
+      Debug.Log(this.GetType() + " NextButton::OnPress()");
       InfoWindowManager.next();
     }
   }

@@ -1,10 +1,12 @@
-﻿//ModalButton inheritor that quits modal window when isPressed is true,
+﻿using UnityEngine;
+
+//ModalButton inheritor that quits modal window when isPressed is true,
 //contrary to CancelModal
 public class QuitModalWindow : ModalButton
 {
     public override void press ()
     {
-        Logger.Log ("QuitModalWindow::press()", Logger.Level.INFO);
+        Debug.Log(this.GetType() + " QuitModalWindow::press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
     }

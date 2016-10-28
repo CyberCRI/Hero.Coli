@@ -6,7 +6,7 @@ public class AbsoluteWASDButton : MonoBehaviour {
   private void OnPress(bool isPressed)
   {
     if(isPressed) {
-      Logger.Log("AbsoluteWASDButton::OnPress()");
+      Debug.Log(this.GetType() + " AbsoluteWASDButton::OnPress()");
       ControlsMainMenuItemArray.get ().switchControlTypeToAbsoluteWASD();
     }
   }

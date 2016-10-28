@@ -10,7 +10,7 @@ public class ContinueButton : ModalButton
   
     public override void press ()
     {
-        Logger.Log ("ContinueButton::press()");
+        Debug.Log(this.GetType() + " ContinueButton::press()");
 
         parentPanel = gameObject.transform.parent.gameObject;
 

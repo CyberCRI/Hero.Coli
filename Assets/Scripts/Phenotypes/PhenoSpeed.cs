@@ -151,7 +151,7 @@ public class PhenoSpeed : Phenotype
 		cellControl.currentMoveSpeed = intensity;
 
     /*
-    Logger.Log("PhenoSpeed intensity="+intensity
+    Debug.Log(this.GetType() + " PhenoSpeed intensity="+intensity
       //+"\n_base="+baseSpeed
       //+"\n_steepness1="+_steepness1
       //+"\n_steepness2="+_steepness2

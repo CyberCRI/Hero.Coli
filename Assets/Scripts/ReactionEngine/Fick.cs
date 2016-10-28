@@ -88,7 +88,7 @@ public class Fick : XmlLoaderImpl
     */
   public void loadFicksReactionsFromFiles (string[] files, LinkedList<Medium> mediums)
     {
-        Logger.Log ("Fick::loadFicksReactionsFromFiles("
+        Debug.Log(this.GetType() + " Fick::loadFicksReactionsFromFiles("
             + Logger.EnumerableToString<string> (files)
             + ") starts"
                     );
@@ -103,7 +103,7 @@ public class Fick : XmlLoaderImpl
         _reactions = FickReaction.getFickReactionsFromMediumList (mediums);
         finalizeFickReactionFromProps (propsList, _reactions);
         
-        Logger.Log ("Fick::loadFicksReactionsFromFiles("
+        Debug.Log(this.GetType() + " Fick::loadFicksReactionsFromFiles("
             + Logger.EnumerableToString<string> (files)
             + ") starts"
                     );

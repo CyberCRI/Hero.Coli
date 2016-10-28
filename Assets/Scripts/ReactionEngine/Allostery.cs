@@ -259,7 +259,7 @@ public class Allostery : IReaction
 
         if(b)
         {
-            Logger.Log ("Allostery::tryInstantiateFromXml success"
+            Debug.Log(this.GetType() + " Allostery::tryInstantiateFromXml success"
                         );
             return true;
         }

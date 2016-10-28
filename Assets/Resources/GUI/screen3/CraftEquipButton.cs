@@ -5,7 +5,7 @@ public class CraftEquipButton : MonoBehaviour {
 
   private void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("CraftEquipButton::OnPress()");
+      Debug.Log(this.GetType() + " CraftEquipButton::OnPress()");
       GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
     }
   }

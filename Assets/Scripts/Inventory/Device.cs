@@ -14,7 +14,7 @@ public class Device: DNABit
     public string displayedName { get; set; }
     private string _internalName;
     public override string getInternalName() {
-        Logger.Log("ExpressionModule::getInternalName()");
+        Debug.Log(this.GetType() + " ExpressionModule::getInternalName()");
         if(string.IsNullOrEmpty(_internalName))
         {
             _internalName = generateInternalName();
@@ -48,13 +48,13 @@ public class Device: DNABit
     //generates internal name from expression modules sequence
     private string generateInternalName()
     {
-        Logger.Log("Device::generateName(bricks)");
+        Debug.Log(this.GetType() + " Device::generateName(bricks)");
         return generateInternalName(_modules);
     }
 
     private static string generateInternalName(LinkedList<ExpressionModule> modules)
     {
-        Logger.Log("Device::generateInternalName(modules="+Logger.ToString(modules)+")");
+        Debug.Log("Device generateInternalName(modules="+Logger.ToString(modules)+")");
 
         string name = "";
 
@@ -82,7 +82,7 @@ public class Device: DNABit
 
   private Device(string name, LinkedList<ExpressionModule> modules)
   {
-    Logger.Log("Device::Device("+name+", modules="+Logger.ToString(modules)+")");
+    Debug.Log(this.GetType() + " Device::Device("+name+", modules="+Logger.ToString(modules)+")");
 
     idInit();
     displayedName = name;
@@ -158,7 +158,7 @@ public class Device: DNABit
 
   private LinkedList<Product> getProductsFromBiobricks(LinkedList<BioBrick> list)
   {
-    Logger.Log("Device::getProductsFromBioBricks([list: "+Logger.ToString(list)+"])");
+    Debug.Log(this.GetType() + " Device::getProductsFromBioBricks([list: "+Logger.ToString(list)+"])");
     LinkedList<Product> products = new LinkedList<Product>();
     Product prod;
     RBSBrick rbs;
@@ -169,15 +169,15 @@ public class Device: DNABit
 
     foreach (BioBrick b in list)
       {
-        Logger.Log("Device::getProductsFromBioBricks: starting treatment of "+b.ToString());
+        Debug.Log(this.GetType() + " Device::getProductsFromBioBricks: starting treatment of "+b.ToString());
         rbs = b as RBSBrick;
         if (rbs != null) {
-          Logger.Log("Device::getProductsFromBioBricks: rbs spotted");
+          Debug.Log(this.GetType() + " Device::getProductsFromBioBricks: rbs spotted");
           RBSf = rbs.getRBSFactor();
       }
         else
           {
-            Logger.Log("Device::getProductsFromBioBricks: not an rbs");
+            Debug.Log(this.GetType() + " Device::getProductsFromBioBricks: not an rbs");
             gene = b as GeneBrick;
             if (gene != null)
               {
@@ -205,7 +205,7 @@ public class Device: DNABit
 
   private PromoterProperties getPromoterReaction(ExpressionModule em, int id)
   {
-    Logger.Log("Device::getPromoterReaction("+em.ToString()+", "+id+")");
+    Debug.Log(this.GetType() + " Device::getPromoterReaction("+em.ToString()+", "+id+")");
     PromoterProperties prom = new PromoterProperties();
 
     prom.energyCost = _energyPerBasePair*em.getSize();
@@ -228,7 +228,7 @@ public class Device: DNABit
     bricks.RemoveFirst();
 
     if(bricks.Count != 0) {
-      Logger.Log("Device::getPromoterReaction Warning: bricks.Count ="+bricks.Count);
+      Debug.Log(this.GetType() + " Device::getPromoterReaction Warning: bricks.Count ="+bricks.Count);
     }
     return prom;
   }
@@ -236,7 +236,7 @@ public class Device: DNABit
 
     private LinkedList<PromoterProperties> getPromoterReactions()
     {
-        Logger.Log("Device::getPromoterReactions() starting... device="+this);
+        Debug.Log(this.GetType() + " Device::getPromoterReactions() starting... device="+this);
 
         //cf issue #224
         //previously:
@@ -250,11 +250,11 @@ public class Device: DNABit
 
         LinkedList<PromoterProperties> reactions = new LinkedList<PromoterProperties>();
         PromoterProperties reaction;
-        Logger.Log("Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count);
+        Debug.Log(this.GetType() + " Device::getPromoterReactions() built #modules="+modules.Count+" and #reactions="+reactions.Count);
 
         foreach (ExpressionModule em in modules)
         {
-            Logger.Log("Device::getPromoterReactions() analyzing em="+em);
+            Debug.Log(this.GetType() + " Device::getPromoterReactions() analyzing em="+em);
             reaction = getPromoterReaction(em, em.GetHashCode());
             if (reaction != null)
                 reactions.AddLast(reaction);
@@ -265,16 +265,16 @@ public class Device: DNABit
     }
 
     public LinkedList<IReaction> getReactions() {
-        Logger.Log ("Device::getReactions(); device="+this);
+        Debug.Log(this.GetType() + " Device::getReactions(); device="+this);
 		
         LinkedList<IReaction> reactions = new LinkedList<IReaction>();	
         LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
         foreach (PromoterProperties promoterProps in props) {
-            Logger.Log("Device::getReactions() adding prop "+promoterProps);
+            Debug.Log(this.GetType() + " Device::getReactions() adding prop "+promoterProps);
             reactions.AddLast(PromoterReaction.buildPromoterFromProps(promoterProps));
         }
 		
-        Logger.Log("Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions));
+        Debug.Log(this.GetType() + " Device::getReactions() with device="+this+" returns "+Logger.ToString<IReaction>(reactions));
         return reactions;
     }
     
@@ -287,13 +287,13 @@ public class Device: DNABit
     {
         if(null == modules)
         {
-            Logger.Log("Device::isValid null==modules");
+            Debug.Log("Device isValid null==modules");
             return false;
         }
 
         if(0 == modules.Count)
         {
-            Logger.Log("Device::isValid 0==modules.Count");
+            Debug.Log("Device isValid 0==modules.Count");
             return false;
         }
 
@@ -308,7 +308,7 @@ public class Device: DNABit
 
     public static Device buildDevice(LinkedList<BioBrick> bricks)
     {
-        Logger.Log("Device::buildDevice(bricks) with bricks="+bricks);
+        Debug.Log("Device buildDevice(bricks) with bricks="+bricks);
 
         ExpressionModule em = new ExpressionModule(bricks);
         return buildDevice(em);
@@ -316,7 +316,7 @@ public class Device: DNABit
 
     public static Device buildDevice(ExpressionModule em)
     {
-        Logger.Log("Device::buildDevice(em) with em="+em+")");
+        Debug.Log("Device buildDevice(em) with em="+em+")");
         LinkedList<ExpressionModule> modules = new LinkedList<ExpressionModule>();
         modules.AddLast(em);
         return buildDevice(em.getInternalName(), modules);
@@ -324,7 +324,7 @@ public class Device: DNABit
 
     public static Device buildDevice(LinkedList<ExpressionModule> modules)
     {
-        Logger.Log("Device::buildDevice(modules)");
+        Debug.Log("Device buildDevice(modules)");
         if(!isValid(modules))
         {
             Debug.LogWarning("Device buildDevice(modules) failed: modules==null or modules are invalid");
@@ -336,7 +336,7 @@ public class Device: DNABit
 
     public static Device buildDevice(string name, LinkedList<ExpressionModule> modules)
     {
-        Logger.Log("Device::buildDevice(name, modules) with name="+name);
+        Debug.Log("Device buildDevice(name, modules) with name="+name);
         if (!isValid(modules))
         {
             Debug.LogWarning("Device buildDevice(name, modules) failed: modules==null or modules are invalid");
@@ -344,7 +344,7 @@ public class Device: DNABit
         }
 
         Device device = new Device(name, modules);
-        Logger.Log("Device::buildDevice returns "+device);
+        Debug.Log("Device buildDevice returns "+device);
         return device;
     }
 
@@ -373,7 +373,7 @@ public class Device: DNABit
 		) {
 
     string nullName = (name==null)?"(null)":"";
-		Logger.Log("Device::buildDevice(name="+name+nullName
+		Debug.Log("Device buildDevice(name="+name+nullName
       +", beta="+beta
       +", formula='"+formula
       +"', rbsFactor="+rbsFactor

@@ -4,7 +4,7 @@ using System.Collections;
 public class AvailableGenesButton : MonoBehaviour {
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("AvailableGenesButton::OnPress()");
+      Debug.Log(this.GetType() + " AvailableGenesButton::OnPress()");
       AvailableBioBricksManager.get().displayGenes();
     }
   }

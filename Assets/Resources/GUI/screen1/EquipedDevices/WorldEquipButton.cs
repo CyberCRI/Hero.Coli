@@ -5,7 +5,7 @@ public class WorldEquipButton : MonoBehaviour {
 
   private void OnPress(bool isPressed) {
     if(isPressed && Inventory.isOpenable()) {
-      Logger.Log("WorldEquipButton::OnPress()");
+      Debug.Log(this.GetType() + " WorldEquipButton::OnPress()");
       GUITransitioner.get().SwitchScreen(GUITransitioner.GameScreen.screen1, GUITransitioner.GameScreen.screen2);
     }
   }

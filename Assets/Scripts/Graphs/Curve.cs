@@ -105,7 +105,7 @@ public class Curve
   {
     if (_points.Count >= _maxPoints)
       removeFirstPoint();
-//     Logger.Log("add: "+pt.x+" pt.y="+pt.y);
+//     Debug.Log(this.GetType() + " add: "+pt.x+" pt.y="+pt.y);
     _points.AddLast(pt);
   }
 
@@ -138,7 +138,7 @@ public class Curve
         tmpPt.x = pt.x;
         tmpPt.x -= getMinX();
 //         if (i == 0)
-//           Logger.Log(tmpPt);
+//           Debug.Log(this.GetType() + " " + tmpPt);
         _pts[i] = tmpPt;
         i++;
       }    

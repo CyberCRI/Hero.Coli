@@ -500,7 +500,7 @@ public class GameStateController : MonoBehaviour
                     //TODO add DNA damage accumulation management when player equips/unequips too often
                     // else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                     // {
-                    // Debug     Logger.Log("GameStateController::Update inventory key pressed");
+                    // Debug     Debug.Log(this.GetType() + " GameStateController::Update inventory key pressed");
                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                     // }
                     //crafting
@@ -731,6 +731,7 @@ public class GameStateController : MonoBehaviour
         AvailableDisplayedBioBrick.clear();
         NanobotsPickUpHandler.clear();
         StepByStepTutorial.clear();
+        EnemiesManager.clear();
 
         SceneManager.LoadScene(_masterScene);
     }

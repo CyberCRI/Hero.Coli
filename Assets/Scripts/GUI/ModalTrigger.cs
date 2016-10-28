@@ -14,7 +14,7 @@ public class ModalTrigger : MonoBehaviour {
   {
     if(!_alreadyDisplayed)
     {
-      Logger.Log("call to ModalManager", Logger.Level.TRACE);
+      Debug.Log(this.GetType() + " call to ModalManager");
       ModalManager.setModal(modalCode);
       _alreadyDisplayed = true;
     }

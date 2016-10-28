@@ -105,7 +105,7 @@ public class WorldLinkManager : LinkManager
             endGameCollider.hero = perso;
             endGameCollider.endInfoPanel = GameStateController.get().endWindow;
             endGameCollider.endMainMenuButton = GameStateController.get().endMainMenuButton;
-            Logger.Log("EndGameCollider.infoPanel" + endGameCollider.endInfoPanel);
+            Debug.Log(this.GetType() + " EndGameCollider.infoPanel" + endGameCollider.endInfoPanel);
         }
 
         GameStateController.get().teleporter = teleporter;

@@ -25,7 +25,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void OnEnable()
     {
-        Logger.Log("EquipedDisplayedDevice::OnEnable " + _device);
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::OnEnable " + _device);
 
         //quick fix to remove closeButton
         //TODO fixme
@@ -37,7 +37,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void OnDisable()
     {
-        Logger.Log("EquipedDisplayedDevice::OnDisable " + _device);
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::OnDisable " + _device);
         setBricksVisibilityTo(false);
     }
 
@@ -58,7 +58,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
     {
         if (isPressed)
         {
-            Logger.Log("EquipedDisplayedDevice::OnPress() " + getDebugInfos());
+            Debug.Log(this.GetType() + " EquipedDisplayedDevice::OnPress() " + getDebugInfos());
             if (_device == null)
             {
                 Debug.LogWarning(this.GetType() + " OnPress _device == null");
@@ -82,7 +82,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     void initIfNecessary()
     {
-        Logger.Log("EquipedDisplayedDevice::initIfNecessary starts");
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::initIfNecessary starts");
 
         if (!_initialized)
         {
@@ -107,14 +107,14 @@ public class EquipedDisplayedDevice : DisplayedDevice
                 tinyBioBrickIcon.SetActive(false);
                 tinyBioBrickIcon2.SetActive(false);
                 _initialized = true;
-                Logger.Log("EquipedDisplayedDevice::initIfNecessary ends");
+                Debug.Log(this.GetType() + " EquipedDisplayedDevice::initIfNecessary ends");
             }
         }
     }
 
     void createBioBricksIfNecessary()
     {
-        Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary");
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::createBioBricksIfNecessary");
         initIfNecessary();
         if (0 == _currentDisplayedBricks.Count)
         {
@@ -163,7 +163,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
 
     protected override void OnHover(bool isOver)
     {
-        Logger.Log("EquipedDisplayedDevice::OnHover(" + isOver + ") with _device=" + _device);
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::OnHover(" + isOver + ") with _device=" + _device);
         base.OnHover(isOver);
 
         if (null != closeButton && !_devicesDisplayer.IsEquipScreen())
@@ -205,7 +205,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
     void Start()
     {
         Debug.LogWarning("EquipedDisplayedDevice Starts");
-        Logger.Log("EquipedDisplayedDevice::Start");
+        Debug.Log(this.GetType() + " EquipedDisplayedDevice::Start");
         createBioBricksIfNecessary();
         updateVisibility();
     }

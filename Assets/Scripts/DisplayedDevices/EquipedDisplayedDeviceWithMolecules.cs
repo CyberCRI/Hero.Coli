@@ -46,21 +46,21 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
   }
   
   void OnEnable() {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnEnable");
+    Debug.Log(this.GetType() + " EquipedDisplayedDeviceWithMolecules::OnEnable");
     //background.SetActive(true);
   }
   
   void OnDisable() {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::OnDisable");
+    Debug.Log(this.GetType() + " EquipedDisplayedDeviceWithMolecules::OnDisable");
     //background.SetActive(false);
   }
   
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos());
+      Debug.Log(this.GetType() + " EquipedDisplayedDeviceWithMolecules::OnPress() "+getDebugInfos());
       if(device == null)
       {
-        Logger.Log("EquipedDisplayedDeviceWithMolecules::OnPress _device == null");
+        Debug.Log(this.GetType() + " EquipedDisplayedDeviceWithMolecules::OnPress _device == null");
         return;
       }
     }
@@ -68,7 +68,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
   
   // Use this for initialization
   void Start () {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::Start");
+    Debug.Log(this.GetType() + " EquipedDisplayedDeviceWithMolecules::Start");
     
     namesLabel.text = "";
     valuesLabel.text = "";

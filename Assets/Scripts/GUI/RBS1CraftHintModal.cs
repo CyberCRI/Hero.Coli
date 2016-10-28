@@ -6,7 +6,7 @@ public class RBS1CraftHintModal : ModalButton
 {
     public override void press ()
     {
-        Logger.Log ("RBS1CraftHintModal::press()", Logger.Level.INFO);
+        Debug.Log(this.GetType() + " RBS1CraftHintModal::press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
         Hero.get().gameObject.AddComponent<RBS1CraftHint>();

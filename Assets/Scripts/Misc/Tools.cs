@@ -53,7 +53,7 @@ class Tools
     //Debug.LogError ("Tools::getXmlDocument("+filePath+")");
     TextAsset temp = Resources.Load(filePath) as TextAsset;
     //string tempStr = (temp==null)?"(null)":temp.ToString();
-    //Logger.Log ("Tools::getXmlDocument "+tempStr);
+    //Debug.Log(this.GetType() + " Tools::getXmlDocument "+tempStr);
     XmlDocument xmlDoc = new XmlDocument();
     xmlDoc.LoadXml(temp.text);
     return xmlDoc;

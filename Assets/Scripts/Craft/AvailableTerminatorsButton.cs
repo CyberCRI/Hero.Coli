@@ -4,7 +4,7 @@ using System.Collections;
 public class AvailableTerminatorsButton : MonoBehaviour {
   void OnPress(bool isPressed) {
     if(isPressed) {
-      Logger.Log("AvailableTerminatorsButton::OnPress()");
+      Debug.Log(this.GetType() + " AvailableTerminatorsButton::OnPress()");
       AvailableBioBricksManager.get().displayTerminators();
     }
   }
