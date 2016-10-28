@@ -75,7 +75,7 @@ public class Device: DNABit
         }
         else
         {
-            Logger.Log("Device::generateInternalName got invalid expression modules sequence", Logger.Level.WARN);
+            Debug.LogWarning("Device generateInternalName got invalid expression modules sequence");
             return "";
         }
     }
@@ -188,7 +188,7 @@ public class Device: DNABit
             else
               {
                 if (b as TerminatorBrick == null)
-                  Logger.Log("Device::getProductsFromBioBricks This case should never happen. Bad Biobrick in operon.", Logger.Level.WARN);
+                  Debug.LogWarning(this.GetType() + " getProductsFromBioBricks This case should never happen. Bad Biobrick in operon.");
                 else {
                  break;
                 }
@@ -300,7 +300,7 @@ public class Device: DNABit
         foreach (ExpressionModule em in modules)
             if (!em.isValid())
         {
-            Logger.Log("Device::isValid module "+em+" is invalid", Logger.Level.WARN);
+            Debug.LogWarning("Device isValid module "+em+" is invalid");
             return false;
         }
         return true;
@@ -327,7 +327,7 @@ public class Device: DNABit
         Logger.Log("Device::buildDevice(modules)", Logger.Level.INFO);
         if(!isValid(modules))
         {
-            Logger.Log("Device::buildDevice(modules) failed: modules==null or modules are invalid", Logger.Level.WARN);
+            Debug.LogWarning("Device buildDevice(modules) failed: modules==null or modules are invalid");
             return null;
         }
         //TODO take into account all modules in device name
@@ -339,7 +339,7 @@ public class Device: DNABit
         Logger.Log("Device::buildDevice(name, modules) with name="+name, Logger.Level.INFO);
         if (!isValid(modules))
         {
-            Logger.Log("Device::buildDevice(name, modules) failed: modules==null or modules are invalid", Logger.Level.WARN);
+            Debug.LogWarning("Device buildDevice(name, modules) failed: modules==null or modules are invalid");
             return null;
         }
 
@@ -353,7 +353,7 @@ public class Device: DNABit
   {
     if (device == null)
     {
-      Logger.Log("Device::buildDevice device == null", Logger.Level.WARN);
+      Debug.LogWarning("Device buildDevice device == null");
       return null;
     }
     return buildDevice(device.getInternalName(), device._modules);

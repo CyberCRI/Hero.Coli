@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ExpressionModule
 {
@@ -56,7 +57,7 @@ public class ExpressionModule
         }
         else
         {
-            Logger.Log("ExpressionModule::generateInternalName(bricks) was provided incorrect BioBrick sequence", Logger.Level.WARN);
+            Debug.LogWarning("Device generateInternalName(bricks) was provided incorrect BioBrick sequence");
             return _invalidEMName;
         }
     }
@@ -71,7 +72,7 @@ public class ExpressionModule
         }
         else
         {
-            Logger.Log("ExpressionModule::ExpressionModule(bricks) failed", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " ExpressionModule(bricks) failed");
         }
     }
 
@@ -86,7 +87,7 @@ public class ExpressionModule
         }
         else
         {
-            Logger.Log("ExpressionModule::ExpressionModule("+name+", bricks) failed", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " ExpressionModule("+name+", bricks) failed");
         }
     }
 
@@ -218,7 +219,7 @@ public class ExpressionModule
         }
         bricks.RemoveFirst();
         if (bricks.Count != 0) {
-            Logger.Log("ExpressionModule::isBioBricksSequenceValid failed: terminator wasn't last brick", Logger.Level.WARN);
+            Debug.LogWarning("Device isBioBricksSequenceValid failed: terminator wasn't last brick");
             return false;
         }
         return true;

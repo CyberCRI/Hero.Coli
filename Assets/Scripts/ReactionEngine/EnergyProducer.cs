@@ -60,9 +60,7 @@ public class ATPProducer : IReaction
     {
       if(0 == _production)
       {
-        Logger.Log ("Degradation::hasValidData please check that you really intended a production rate of 0 " +
-                      "for energy producer "+this.getName()
-                      , Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " hasValidData please check that you really intended a production rate of 0 for energy producer "+this.getName());
       }
     }
     return valid;

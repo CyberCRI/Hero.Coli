@@ -51,7 +51,7 @@ public class DeviceSaver {
                 writer.WriteElementString(BioBricksXMLTags.TERMINATORFACTOR, ((TerminatorBrick)brick).getTerminatorFactor().ToString());
                 break;
               default:
-                Logger.Log("DeviceSaver::saveDevicesToFile unknown biobrick type "+ bioBrickType, Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " saveDevicesToFile unknown biobrick type "+ bioBrickType);
                 break;
             }
           }

@@ -42,11 +42,11 @@ public class InfoWindowLoader {
         _code = infoNode.Attributes[InfoWindowXMLTags.CODE].Value;
       }
       catch (NullReferenceException exc) {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadInfoFromFile bad xml, missing field\n"+exc);
         continue;
       }
       catch (Exception exc) {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile failed, got exc="+exc, Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadInfoFromFile failed, got exc="+exc);
         continue;
       }
 
@@ -63,7 +63,7 @@ public class InfoWindowLoader {
               _cancel = attr.InnerText;
               break;
             default:
-                Logger.Log("InfoWindowLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr "+attr.Name+" for info node");
               break;
           }
         }
@@ -82,7 +82,7 @@ public class InfoWindowLoader {
       }
       else
       {
-        Logger.Log("InfoWindowLoader::loadInfoFromFile Error : missing attribute code in info node", Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadInfoFromFile Error : missing attribute code in info node");
       }
     }
     return resultInfo;

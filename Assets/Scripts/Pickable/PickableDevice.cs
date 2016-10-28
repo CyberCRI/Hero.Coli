@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class PickableDevice : PickableItem
 {
     protected override void addTo ()
@@ -7,7 +9,7 @@ public abstract class PickableDevice : PickableItem
             device = produceDNABit () as Device;
         }
         if (null == device) {
-            Logger.Log ("PickableDevice::addTo() - failed to produce non-null dna bit", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " addTo() - failed to produce non-null dna bit");
         } else {
             Logger.Log ("PickableDevice::addTo " + _dnaBit, Logger.Level.INFO);
             foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks()) {

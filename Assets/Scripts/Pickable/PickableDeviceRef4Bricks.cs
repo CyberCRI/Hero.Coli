@@ -24,7 +24,7 @@ public class PickableDeviceRef4Bricks : PickableDevice {
       if(brick != null) {
         deviceBricks.AddLast(brick);
       } else {
-        Logger.Log("PickableDeviceRef4Bricks::produceDNABit failed to add brick with name "+brickName+"!", Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " produceDNABit failed to add brick with name "+brickName+"!");
       }
     }
 
@@ -36,7 +36,7 @@ public class PickableDeviceRef4Bricks : PickableDevice {
             Device result = Device.buildDevice(deviceName, deviceModules);
             return result;
         } else {
-            Logger.Log("PickableDeviceRef4Bricks::produceDNABit failed to produce DNABit - BioBrick sequence is incorrect: list="+Logger.ToString<BioBrick>(deviceBricks), Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " produceDNABit failed to produce DNABit - BioBrick sequence is incorrect: list="+Logger.ToString<BioBrick>(deviceBricks));
             return null;
         }
   }

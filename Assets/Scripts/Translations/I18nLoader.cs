@@ -38,11 +38,11 @@ public class I18nLoader {
         _code = translation.Attributes[I18nXMLTags.CODE].Value;
       }
       catch (NullReferenceException exc) {
-        Logger.Log("I18nLoader::loadFromFile bad xml, missing field \""+I18nXMLTags.CODE+"\"\n"+exc, Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadFromFile bad xml, missing field \""+I18nXMLTags.CODE+"\"\n"+exc);
         continue;
       }
       catch (Exception exc) {
-        Logger.Log("I18nLoader::loadFromFile failed, got exc="+exc, Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadFromFile failed, got exc="+exc);
         continue;
       }
 
@@ -55,11 +55,11 @@ public class I18nLoader {
           _translation = translation.Attributes[I18nXMLTags.TRANSLATION].Value;
         }
         catch (NullReferenceException exc) {
-          Logger.Log("I18nLoader::loadFromFile bad xml, missing field \""+I18nXMLTags.TRANSLATION+"\"\n"+exc, Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " loadFromFile bad xml, missing field \""+I18nXMLTags.TRANSLATION+"\"\n"+exc);
           continue;
         }
         catch (Exception exc) {
-          Logger.Log("I18nLoader::loadFromFile failed, got exc="+exc, Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " loadFromFile failed, got exc="+exc);
           continue;
         }
 
@@ -72,12 +72,10 @@ public class I18nLoader {
         }
         else
         {
-          Logger.Log("I18nLoader::loadFromFile bad xml, missing "+I18nXMLTags.TRANSLATION
-          +" for \""+I18nXMLTags.CODE+"\"="+_code+"\n"
-          , Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " loadFromFile bad xml, missing "+I18nXMLTags.TRANSLATION+" for \""+I18nXMLTags.CODE+"\"="+_code+"\n");
         }
       } else {
-        Logger.Log("I18nLoader::loadFromFile Error : missing attribute "+I18nXMLTags.CODE+" in translation node", Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadFromFile Error : missing attribute "+I18nXMLTags.CODE+" in translation node");
       }
       reinitVars();
     }

@@ -1,6 +1,7 @@
 using System.Xml;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 //TODO refactor with FileLoader
 public class TooltipLoader {
@@ -85,11 +86,11 @@ public class TooltipLoader {
                 _code = infoNode.Attributes[TooltipXMLTags.CODE].Value;
             }
             catch (NullReferenceException exc) {
-                Logger.Log("TooltipLoader::loadInfoFromFile bad xml, missing field\n"+exc, Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile bad xml, missing field\n"+exc);
                 continue;
             }
             catch (Exception exc) {
-                Logger.Log("TooltipLoader::loadInfoFromFile failed, got exc="+exc, Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile failed, got exc="+exc);
                 continue;
             }
 
@@ -130,7 +131,7 @@ public class TooltipLoader {
                             _explanation = attr.InnerText;
                             break;
                         default:
-                            Logger.Log("TooltipLoader::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
+                            Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr "+attr.Name+" for info node");
                             break;
                     }
                 }
@@ -180,7 +181,7 @@ public class TooltipLoader {
                         resultInfo.AddLast(_info);
                 }
             } else {
-                Logger.Log("TooltipLoader::loadInfoFromFile Error : missing attribute code in info node", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile Error : missing attribute code in info node");
             }
         }
         return resultInfo;

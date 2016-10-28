@@ -62,7 +62,7 @@ public class CraftFinalizationButton : MonoBehaviour {
     if(_button == null) {
       _button = GetComponent<UIButton>();
     }
-		//Logger.Log ("bool enabled ====>"+enabled,Logger.Level.WARN);
+		// Debug.Log(this.GetType() + " bool enabled ====>"+enabled);
     _button.enabled = enabled;
     if(enabled)
       gameObject.GetComponentInChildren<UISprite>().alpha = 1f;

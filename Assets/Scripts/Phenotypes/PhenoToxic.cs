@@ -51,7 +51,7 @@ public class PhenoToxic : Phenotype
 
     public void CancelPhenotype()
     {
-        Logger.Log("PhenoToxic::CancelPhenotype", Logger.Level.WARN);
+        // Debug.Log(this.GetType() + " CancelPhenotype");
         _mol.setConcentration(0f);
     }
 

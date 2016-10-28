@@ -174,12 +174,12 @@ public class EnzymeReaction : IReaction
 
         if(null == substrate)
         {
-            Logger.Log("EnzymeReaction::react couldn't find substrate '"+_substrate+"'", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " react couldn't find substrate '"+_substrate+"'");
             return 0;
         }
         if(null == enzyme)
         {
-            Logger.Log("EnzymeReaction::react couldn't find enzyme '"+_enzyme+"'", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " react couldn't find enzyme '"+_enzyme+"'");
             return 0;
         }
 
@@ -196,23 +196,23 @@ public class EnzymeReaction : IReaction
             }
             else
             {
-                Logger.Log("EnzymeReaction::react couldn't find effector '"+_effector+"'", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " react couldn't find effector '"+_effector+"'");
             }
       }
     if (_alpha == 0)
     {
       _alpha = 0.0000000001f;
-      Logger.Log("_alpha == 0", Logger.Level.WARN);
+      Debug.LogWarning(this.GetType() + " = 0");
     }
     if (_Ki == 0)
     {
       _Ki = 0.0000000001f;
-      Logger.Log("_Ki == 0", Logger.Level.WARN);
+      Debug.LogWarning(this.GetType() + " = 0");
     }
     if (_Km == 0)
     {
       _Km = 0.0000000001f;
-      Logger.Log("_Km == 0", Logger.Level.WARN);
+      Debug.LogWarning(this.GetType() + " = 0");
     }
 
     float denominator = _alpha * _Km * _Ki;
@@ -221,7 +221,7 @@ public class EnzymeReaction : IReaction
     float bigDenominator = 1f + (substrate.getConcentration() / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration() * effectorConcentration / denominator);
     if(bigDenominator == 0)
     {
-      Logger.Log("big denominator == 0", Logger.Level.WARN);
+      Debug.LogWarning(this.GetType() + " enominator == 0");
       return 0;
     }
 
@@ -244,7 +244,7 @@ public class EnzymeReaction : IReaction
     Molecule substrate = ReactionEngine.getMoleculeFromName(_substrate, molecules);
     if (substrate == null)
         {
-            Logger.Log("EnzymeReaction::react couldn't find substrate '"+_substrate+"'", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " react couldn't find substrate '"+_substrate+"'");
             return ;
         }
 
@@ -287,7 +287,7 @@ public class EnzymeReaction : IReaction
             }
             else
             {
-                Logger.Log("EnzymeReaction::react couldn't find product '"+pro.getName()+"'", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " react couldn't find product '"+pro.getName()+"'");
             }
         }
     }
@@ -377,12 +377,11 @@ public class EnzymeReaction : IReaction
            || (0 == _Km))
         {
           //TODO check also _Kcat, _beta
-          Logger.Log ("EnzymeReaction::hasValidData please check values of "
+          Debug.LogWarning(this.GetType() + " hasValidData please check values of "
             + "alpha="+_alpha
             + ", Ki="+_Ki
             + ", Km="+_Km
-            +" for reaction "+this.getName()
-            , Logger.Level.WARN);
+            +" for reaction "+this.getName());
         }
       }
       else

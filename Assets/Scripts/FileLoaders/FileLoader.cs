@@ -30,7 +30,7 @@ public class FileLoader : XmlLoader
       }
       else
       {
-        Logger.Log("FileLoader.loadObjects incorrect data in "+Logger.ToString (objectNode), Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " loadObjects incorrect data in "+Logger.ToString (objectNode));
       }  	
 		}
 		return objectList;

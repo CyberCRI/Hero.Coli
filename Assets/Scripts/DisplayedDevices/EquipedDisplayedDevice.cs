@@ -61,7 +61,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
             Logger.Log("EquipedDisplayedDevice::OnPress() " + getDebugInfos(), Logger.Level.INFO);
             if (_device == null)
             {
-                Logger.Log("EquipedDisplayedDevice::OnPress _device == null", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " OnPress _device == null");
                 return;
             }
             if (_devicesDisplayer.IsEquipScreen())
@@ -134,7 +134,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
             }
             else
             {
-                Logger.Log("EquipedDisplayedDevice::createBioBricksIfNecessary _device == null", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " createBioBricksIfNecessary _device == null");
             }
         }
     }
@@ -145,7 +145,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
         Vector3 shiftPos = new Vector3(index * _width, _tinyIconVerticalShift, -1.0f);
         if (tinyBioBrickIcon == null)
         {
-            Logger.Log("EquipedDisplayedDevice::getNewPosition tinyBioBrickIcon == null", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " getNewPosition tinyBioBrickIcon == null");
             return new Vector3(index * _width, -95.0f, -0.1f) + shiftPos;
         }
         else

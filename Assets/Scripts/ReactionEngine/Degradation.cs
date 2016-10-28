@@ -71,9 +71,7 @@ public class Degradation : IReaction
         {
           if(0 == _degradationRate)
           {
-            Logger.Log ("Degradation::hasValidData please check that you really intended a degradation rate of 0 " +
-              "for molecule "+_molName
-              , Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " hasValidData please check that you really intended a degradation rate of 0 for molecule "+_molName);
           }
         }
         return valid;

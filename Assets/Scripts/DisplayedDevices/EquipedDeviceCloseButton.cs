@@ -18,32 +18,29 @@ public class EquipedDeviceCloseButton : MonoBehaviour {
   {
       //quick fix to remove closeButton
         //TODO fixme
-      /*
-    if(null != device)
-    {
-      if(device.askRemoveDevice())
-      {
-                RedMetricsManager.get ().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, device._device.getInternalName()));
-      }
-    }
-    else
-    {
-            Logger.Log("EquipedDeviceCloseButton::OnPress null==device", Logger.Level.WARN);
-    }
-    */
+      
+    // if(null != device)
+    // {
+    //   if(device.askRemoveDevice())
+    //   {
+    //             RedMetricsManager.get ().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, device._device.getInternalName()));
+    //   }
+    // }
+    // else
+    // {
+    //         Debug.LogWarning(this.GetType() + " OnPress null==device");
+    // }
   }
 
-    /*
-  void Update()
-  {
-    if(null == _devicesDisplayer)
-    {
-      _devicesDisplayer = DevicesDisplayer.get();
-    }
-    else
-    {
-      gameObject.SetActive(_devicesDisplayer.IsEquipScreen());
-    }
-  }
-  */
+  // void Update()
+  // {
+  //   if(null == _devicesDisplayer)
+  //   {
+  //     _devicesDisplayer = DevicesDisplayer.get();
+  //   }
+  //   else
+  //   {
+  //     gameObject.SetActive(_devicesDisplayer.IsEquipScreen());
+  //   }
+  // }
 }

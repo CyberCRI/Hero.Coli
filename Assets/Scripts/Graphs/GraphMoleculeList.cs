@@ -101,7 +101,7 @@ public class GraphMoleculeList : MonoBehaviour {
     {
         if (displayedDeviceScript == null)
         {
-            Logger.Log("GraphMoleculeList::addDeviceAndMoleculesComponent device == null", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " addDeviceAndMoleculesComponent device == null");
         }
         else
         {
@@ -159,7 +159,7 @@ public class GraphMoleculeList : MonoBehaviour {
         }
         else
         {
-            Logger.Log("GraphMoleculeList::removeDeviceAndMoleculesComponent failed to remove eddwm", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " removeDeviceAndMoleculesComponent failed to remove eddwm");
         }
     }
 

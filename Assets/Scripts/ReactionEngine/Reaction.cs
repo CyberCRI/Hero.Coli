@@ -408,8 +408,7 @@ public abstract class IReaction : LoadableFromXmlImpl
     {
         if (string.IsNullOrEmpty(value))
         {
-            Logger.Log("Reaction::loadReactionProduct Empty EnergyCost field. default value = 0"
-                           , Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " loadReactionProduct Empty EnergyCost field. default value = 0");
             setEnergyCost(0f);
         }
         else

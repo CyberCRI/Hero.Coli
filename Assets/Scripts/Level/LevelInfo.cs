@@ -40,14 +40,14 @@ public class LevelInfo : LoadableFromXmlImpl
                         areAllDevicesAvailable = Tools.safeGetBool(attr.InnerText);
                         break;
                     default:
-                        Logger.Log("LevelInfo::loadInfoFromFile unknown attr "+attr.Name+" for info node", Logger.Level.WARN);
+                        Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr "+attr.Name+" for info node");
                         break;
                 }
             }
         }
         else
         {
-            Logger.Log("LevelInfo::tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " tryInstantiateFromXml no appropriate tag: found '"+node.Name+"'≠ expected '"+getTag()+"'");
         }
         
         Logger.Log("LevelInfo.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.DEBUG);

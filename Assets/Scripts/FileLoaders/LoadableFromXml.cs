@@ -128,7 +128,7 @@ public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
                 if (elt.tryInstantiateFromXml (eltNode)) {
                     elementCollection.Add (elt);
                 } else {
-                    Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml could not load elt from " + Logger.ToString (eltNode), Logger.Level.WARN);
+                    Debug.LogWarning(this.GetType() + " innerInstantiateFromXml could not load elt from " + Logger.ToString (eltNode));
                 }
             } else {
                 Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml found comment", Logger.Level.DEBUG);

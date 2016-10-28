@@ -32,7 +32,7 @@ public class MainMenuItem : MonoBehaviour
             _localize = null == _localize ? gameObject.GetComponentInChildren<UILocalize>() : _localize;
             if (null == _localize)
             {
-                Logger.Log("no localize found", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " no localize found");
             }
             else
             {
@@ -96,7 +96,7 @@ public class MainMenuItem : MonoBehaviour
         UILocalize localize = gameObject.GetComponentInChildren<UILocalize>();
         if (null == localize)
         {
-            Logger.Log("no localize found", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " no localize found");
             itemName = gameObject.name;
             //Debug.LogError("no localize found, activeInHierarchy="+gameObject.activeInHierarchy+", activeSelf"+gameObject.activeSelf);
         }

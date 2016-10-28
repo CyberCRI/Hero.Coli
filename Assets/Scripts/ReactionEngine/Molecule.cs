@@ -170,8 +170,7 @@ public class Molecule : LoadableFromXmlImpl
                   break;
                 default:
                 {
-                  Logger.Log ("Molecule::tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value
-                              ,Logger.Level.WARN);
+                  Debug.LogWarning(this.GetType() + " :tryInstantiateFromXml unknown molecule type "+moleculeNode.Attributes["type"].Value);
                   return false;
                 }
               }
@@ -200,9 +199,7 @@ public class Molecule : LoadableFromXmlImpl
                       case XMLTags.COMMENT:
                           break;
                       default:
-                          Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"
-                                      +" - unknown attribute "+attr.Name
-                                      , Logger.Level.WARN);
+                          Debug.LogWarning(this.GetType() + " tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early");
                           return false;
                   }
               }
@@ -218,10 +215,11 @@ public class Molecule : LoadableFromXmlImpl
                     //private float _fickFactor;                          //!< The FickFactor is a coefficient for FickReaction
                     )
                 {
-                  Debug.LogError(this.GetType() + " tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
+                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
                                 +"_name="+_name
                                 +"& _realName="+_realName
-                                +"& _type="+_type);
+                                +"& _type="+_type
+                                , Logger.Level.ERROR);
                   return false;
                 }
                 else
@@ -235,15 +233,13 @@ public class Molecule : LoadableFromXmlImpl
           }
           else
           {
-              Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early"
-                          +"- no type in "+Logger.ToString(moleculeNode)
-                          , Logger.Level.WARN);
+              Debug.LogWarning(this.GetType() + " tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) finished early");
               return false;
           }
       }
       else
       {
-          Logger.Log("Molecule.tryInstantiateFromXml bad name in "+Logger.ToString(moleculeNode), Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " tryInstantiateFromXml bad name in "+Logger.ToString(moleculeNode));
           return false;
       }
   }

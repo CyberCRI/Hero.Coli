@@ -23,7 +23,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
         }
         else
         {
-            Logger.Log("EquipedDisplayedDeviceWithMolecules::initialize has null parameter", Logger.Level.WARN);
+            Debug.LogWarning (this.GetType() + " initialize has null parameter");
         }
     }
 
@@ -42,7 +42,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
   //TODO implement & allow multiple protein management
   public void removeDisplayedMolecule(string molecule)
   {
-    Logger.Log("EquipedDisplayedDeviceWithMolecules::removedDisplayedMolecule not implemented", Logger.Level.WARN);
+    Debug.LogWarning (this.GetType() + " removedDisplayedMolecule not implemented");
   }
   
   void OnEnable() {

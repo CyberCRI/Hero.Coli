@@ -478,9 +478,7 @@ A PromoterReaction should respect this syntax:
       {
         if(0 == _beta)                                 //! The maximal production of the promoter
         {
-          Logger.Log ("PromoterReaction::hasValidData please check that you really intended a max production rate (beta) of 0 " +
-                      "for promoter reaction "+this.getName()
-                      , Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " hasValidData please check that you really intended a max production rate (beta) of 0 for promoter reaction "+this.getName());
         }
       }
       else

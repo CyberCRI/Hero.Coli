@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 /*!
   \brief Usefull functions for LinkedList
@@ -39,7 +40,7 @@ public static class LinkedListExtensions
   public static void Shuffle<T>(LinkedList<T> list)
   {
     
-    Random rand = new Random();
+    System.Random rand = new System.Random();
 
     for (LinkedListNode<T> n = list.First; n != null; n = n.Next)
       {
@@ -82,12 +83,16 @@ public static class LinkedListExtensions
         return t;
       }
     }
-    Logger.Level level = Logger.Level.DEBUG;
+    
+    string msg = "LinkedListExtensions Find couldn't find any fitting element!\n"+debugMsg;
     if(warn)
     {
-      level = Logger.Level.WARN;
+      Debug.LogWarning(msg);
     }
-    Logger.Log("LinkedListExtensions::Find couldn't find any fitting element!\n"+debugMsg, level);
+    else
+    {
+      Debug.Log(msg);
+    } 
     return default(T);
   }
 

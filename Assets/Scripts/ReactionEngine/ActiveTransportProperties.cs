@@ -108,8 +108,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
         loadActiveTransportReactionProducts(attr);
         break;
       default:
-        Logger.Log("ActiveTransportProperties.tryInstantiateFromXml unrecognized attribute '"+attr.Name+"'"
-                   , Logger.Level.WARN);
+        Debug.LogWarning(this.GetType() + " tryInstantiateFromXml unrecognized attribute '"+attr.Name+"'");
         break;
       }
     }

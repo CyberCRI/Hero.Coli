@@ -299,7 +299,7 @@ public class Logger : MonoBehaviour
       if (Input.GetKeyUp(KeyCode.J))
       {
           interactiveDebug = !interactiveDebug;
-          Logger.Log("Logger::Update press J interactiveDebug=" + interactiveDebug, Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " Update press J interactiveDebug=" + interactiveDebug);
       }
       if (Input.GetKeyUp(KeyCode.H))
       {
@@ -312,7 +312,7 @@ public class Logger : MonoBehaviour
               _previousLevel = _level;
               _level = Level.TRACE;
           }
-          Logger.Log("Logger::Update press H _level=" + _level, Logger.Level.WARN);
+          Debug.LogWarning(this.GetType() + " Update press H _level=" + _level);
       }
 #endif
     }
