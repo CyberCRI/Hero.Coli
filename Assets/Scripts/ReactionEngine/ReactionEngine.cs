@@ -72,13 +72,13 @@ public class ReactionEngine : MonoBehaviour {
             }
             foreach (string file in _moleculesFiles)
             {
-                // Debug.Log("ReactionEngine::Awake() loading molecules from file");
+                // Debug.Log(this.GetType() + " Awake() loading molecules from file");
 
                 LinkedList<MoleculeSet> lm = fileLoader.loadObjectsFromFile<MoleculeSet>(file, "molecules");
                 if (null != lm)
                     LinkedListExtensions.AppendRange<MoleculeSet>(_moleculesSets, lm);
 
-                // Debug.Log("ReactionEngine::Awake() loading molecules from file done"
+                // Debug.Log(this.GetType() + " Awake() loading molecules from file done"
                 //            + ": _moleculesSets=" + Logger.ToString<MoleculeSet>(_moleculesSets));
             }
 
@@ -98,17 +98,17 @@ public class ReactionEngine : MonoBehaviour {
                 medium.enableShufflingReactionOrder = enableShufflingReactionOrder;
             }
 
-            // Debug.Log("ReactionEngine::Awake() FickReactions starting");
+            // Debug.Log(this.GetType() + " Awake() FickReactions starting");
 
             _fick = new Fick();
             _fick.loadFicksReactionsFromFiles(_fickFiles, _mediums);
 
-            // Debug.Log("ReactionEngine::Awake() activeTransport starting");
+            // Debug.Log(this.GetType() + " Awake() activeTransport starting");
 
             _activeTransport = new ActiveTransport();
             _activeTransport.loadActiveTransportReactionsFromFiles(_activeTransportFiles, _mediums);
 
-            // Debug.Log("ReactionEngine::Awake() done");
+            // Debug.Log(this.GetType() + " Awake() done");
             _initialized = true;
         }
     }
@@ -147,11 +147,11 @@ public class ReactionEngine : MonoBehaviour {
    */
   public void addReactionToMedium(int mediumId, IReaction reaction)
   {
-	// Debug.Log("ReactionEngine::addReactionToMedium("+mediumId+", "+reaction+")");
+	// Debug.Log(this.GetType() + " addReactionToMedium("+mediumId+", "+reaction+")");
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
     if (med == null) {
-	  Debug.LogWarning("ReactionEngine::addReactionToMedium medium #"+mediumId+"not found");
+	  Debug.LogWarning(this.GetType() + " addReactionToMedium medium #"+mediumId+"not found");
       return ;
 	}
 	
@@ -164,7 +164,7 @@ public class ReactionEngine : MonoBehaviour {
 	if (reactionsSet != null) {
 	  reactionsSet.reactions.AddLast(IReaction.copyReaction(reaction));
 	} else {
-	  Debug.LogWarning("ReactionEngine::addReactionToMedium reactionsSet == null");
+	  Debug.LogWarning(this.GetType() + " addReactionToMedium reactionsSet == null");
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////*/
 		
@@ -197,7 +197,7 @@ public class ReactionEngine : MonoBehaviour {
 
     if (med == null)
     {
-      Debug.LogWarning("ReactionEngine::removeReaction could not find medium with id "+mediumId);
+      Debug.LogWarning(this.GetType() + " removeReaction could not find medium with id "+mediumId);
       return ;
     }
 
@@ -329,7 +329,7 @@ public class ReactionEngine : MonoBehaviour {
   public void Update()
   {		
 	  if(_paused) {
-	    // Debug.Log("ReactionEngine::Update paused");
+	    // Debug.Log(this.GetType() + " Update paused");
 	  } else {
 	    _fick.react();
       if (enableShufflingMediumOrder)
@@ -338,11 +338,11 @@ public class ReactionEngine : MonoBehaviour {
       foreach (Medium medium in _mediums)
         medium.Update();
 
-	    // Debug.Log("ReactionEngine::Update() update of mediums done");
+	    // Debug.Log(this.GetType() + " Update() update of mediums done");
       if (!enableSequential) {
         foreach (Medium medium in _mediums)
           medium.updateMoleculesConcentrations();
-		    // Debug.Log("ReactionEngine::Update() update of mol cc in mediums done");
+		    // Debug.Log(this.GetType() + " Update() update of mol cc in mediums done");
       }
 	  }
   }

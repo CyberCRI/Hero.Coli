@@ -54,7 +54,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     public void next()
     {
-        // Debug.Log("StepByStepTutorial next");
+        // Debug.Log(this.GetType() + " next");
         prepared = false;
         waited = 0f;
         step++;
@@ -62,7 +62,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     void Awake()
     {
-        // Debug.Log("Awake " + this.GetType()
+        // Debug.Log(this.GetType() + " Awake " + this.GetType()
         // + " step=" + stepCount
         // + " prepared=" + prepared
         // + " waited=" + waited
@@ -105,16 +105,16 @@ public abstract class StepByStepTutorial : MonoBehaviour
                     }
                     else
                     {
-                        // Debug.Log("go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
+                        // Debug.Log(this.GetType() + " go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
                         ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
                         if (null != target)
                         {
-                            // Debug.Log("target != null at step=" + step);
+                            // Debug.Log(this.GetType() + " target != null at step=" + step);
                             focusMaskManager.focusOn(target, next, textHints[step]);
                         }
                         else
                         {
-                            // Debug.Log("target == null at step=" + step);
+                            // Debug.Log(this.GetType() + " target == null at step=" + step);
                             focusMaskManager.focusOn(go, next, textHints[step], true);
                         }
                         // Debug.Log(this.GetType() + " prepared step=" + step);

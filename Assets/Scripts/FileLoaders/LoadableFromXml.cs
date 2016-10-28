@@ -114,7 +114,7 @@ public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
     //warning: assumes that node contains correct information
     protected override void innerInstantiateFromXml (XmlNode node)
     {
-        Debug.Log(this.GetType() + " CompoundLoadableFromXmlImpl::innerInstantiateFromXml(" + Logger.ToString (node) + ")"
+        Debug.Log(this.GetType() + " innerInstantiateFromXml(" + Logger.ToString (node) + ")"
             + " with elementCollection=" + Logger.ToString<T> ("T", elementCollection)
                 );
     

@@ -113,7 +113,7 @@ public class PhenoSpeed : Phenotype
                     _flagellaSetter.setFlagellaCount(3);
                 break;
             default:
-                Debug.LogWarning("PhenoSpeed::updateFlagellaCount bad flagellaCount=" + _flagellaSetter.flagellaCount);
+                Debug.LogWarning(this.GetType() + " updateFlagellaCount bad flagellaCount=" + _flagellaSetter.flagellaCount);
                 break;
         }
           

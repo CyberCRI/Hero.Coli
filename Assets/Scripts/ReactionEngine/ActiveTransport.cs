@@ -49,21 +49,21 @@ public class ActiveTransport : XmlLoaderImpl
         med = ReactionEngine.getMediumFromId(prop.srcMediumId, mediums);
         if (med == null)
         {
-          Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
+          Debug.Log(this.GetType() + " Cannot load Active Transport properties because the medium Id : " + prop.srcMediumId + " is unknown.");
           break;
         }
         reaction.setSrcMedium(med);
         med = ReactionEngine.getMediumFromId(prop.dstMediumId, mediums);
             if (med == null)
           {
-            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.dstMediumId + " is unknown.");
+            Debug.Log(this.GetType() + " Cannot load Active Transport properties because the medium Id : " + prop.dstMediumId + " is unknown.");
             break;
           }
         reaction.setDstMedium(med);
         med = ReactionEngine.getMediumFromId(prop.mediumId, mediums);
             if (med == null)
           {
-            Debug.Log("Cannot load Active Transport properties because the medium Id : " + prop.mediumId + " is unknown.");
+            Debug.Log(this.GetType() + " Cannot load Active Transport properties because the medium Id : " + prop.mediumId + " is unknown.");
             break;
           }
         reaction.setMedium(med);
@@ -78,12 +78,12 @@ public class ActiveTransport : XmlLoaderImpl
    */
   public  void loadActiveTransportReactionsFromFiles(IEnumerable<string> filesPaths, LinkedList<Medium> mediums)
   {
-        Debug.Log(this.GetType() + " ActiveTransport::loadActiveTransportReactionsFromFiles starting");
+        Debug.Log(this.GetType() + " loadActiveTransportReactionsFromFiles starting");
 
     LinkedList<ActiveTransportProperties> properties = getActiveTransportPropertiesFromFiles(filesPaths);
         loadActiveTransportReactionsFromProperties(properties, mediums);    
         
-        Debug.Log(this.GetType() + " ActiveTransport::loadActiveTransportReactionsFromFiles ends"
+        Debug.Log(this.GetType() + " loadActiveTransportReactionsFromFiles ends"
                     );
     }
     
@@ -97,7 +97,7 @@ public class ActiveTransport : XmlLoaderImpl
     public LinkedList<ActiveTransportProperties> getActiveTransportPropertiesFromFiles(IEnumerable<string> files)
     {
         
-        Debug.Log(this.GetType() + " ActiveTransport::getActiveTransportPropertiesFromFiles("
+        Debug.Log(this.GetType() + " getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") starts"
                     );
@@ -114,7 +114,7 @@ public class ActiveTransport : XmlLoaderImpl
           }
         }
         
-        Debug.Log(this.GetType() + " ActiveTransport::getActiveTransportPropertiesFromFiles("
+        Debug.Log(this.GetType() + " getActiveTransportPropertiesFromFiles("
                     +Logger.EnumerableToString<string>(files)
                     +") returns "+Logger.ToString<ActiveTransportProperties>(propsList)
                     );

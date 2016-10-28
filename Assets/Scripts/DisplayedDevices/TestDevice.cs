@@ -5,33 +5,33 @@ public class TestDevice : MonoBehaviour {
 	public int _deviceID;
 	
 	void OnPress() {
-		Debug.Log("on press "+_deviceID);
+		Debug.Log(this.GetType() + " on press "+_deviceID);
 	}
 	void OnMouseUpAsButton() {		
-		Debug.Log("mouse up as button "+_deviceID);
+		Debug.Log(this.GetType() + " mouse up as button "+_deviceID);
 	}
 	
 	void OnMouseUp() {		
-		Debug.Log("mouse up "+_deviceID);
+		Debug.Log(this.GetType() + " mouse up "+_deviceID);
 	}
 	
 	void OnMouseDown() {		
-		Debug.Log("mouse down "+_deviceID);
+		Debug.Log(this.GetType() + " mouse down "+_deviceID);
 	}
 	
 	void OnMouseOver() {		
-		Debug.Log("mouse over "+_deviceID);
+		Debug.Log(this.GetType() + " mouse over "+_deviceID);
 	}
 	
 	void OnMouseDrag() {		
-		Debug.Log("mouse drag "+_deviceID);
+		Debug.Log(this.GetType() + " mouse drag "+_deviceID);
 	}
 	
 	void OnMouseEnter() {		
-		Debug.Log("mouse enter "+_deviceID);
+		Debug.Log(this.GetType() + " mouse enter "+_deviceID);
 	}
 	
 	void OnMouseExit() {		
-		Debug.Log("mouse exit "+_deviceID);
+		Debug.Log(this.GetType() + " mouse exit "+_deviceID);
 	}
 }

@@ -167,11 +167,11 @@ public class Allostery : IReaction
     Molecule product = ReactionEngine.getMoleculeFromName(_product, molecules);
 
     if (effector == null)
-      Debug.Log("Cannot find effector molecule named : " + effector);
+      Debug.Log(this.GetType() + " Cannot find effector molecule named : " + effector);
     else if (protein == null)
-      Debug.Log("Cannot find protein molecule named : " + protein);
+      Debug.Log(this.GetType() + " Cannot find protein molecule named : " + protein);
     else if (product == null)
-      Debug.Log("Cannot find product molecule named : " + product);
+      Debug.Log(this.GetType() + " Cannot find product molecule named : " + product);
     else
       {
         m = (float)Math.Pow(effector.getConcentration() / _K, _n);
@@ -259,7 +259,7 @@ public class Allostery : IReaction
 
         if(b)
         {
-            Debug.Log(this.GetType() + " Allostery::tryInstantiateFromXml success"
+            Debug.Log(this.GetType() + " tryInstantiateFromXml success"
                         );
             return true;
         }

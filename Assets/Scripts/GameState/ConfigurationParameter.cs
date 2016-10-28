@@ -41,7 +41,7 @@ public abstract class ConfigurationParameter<K>
         {
             PlayerPrefs.SetString(_key, kToString(value));
             _value = value;
-            // Debug.Log("_onValueChanged: set " + _key + " to " + kToString(value));
+            // Debug.Log(this.GetType() + " _onValueChanged: set " + _key + " to " + kToString(value));
             _onValueChanged(value);
         }
     }
@@ -67,7 +67,7 @@ public abstract class ConfigurationParameter<K>
             }
             else
             {
-                // Debug.Log("initialize: couldn't read value, found _key as " + storedValue);
+                // Debug.Log(this.GetType() + " initialize: couldn't read value, found _key as " + storedValue);
                 val = _defaultValue;
                 return true;
             }

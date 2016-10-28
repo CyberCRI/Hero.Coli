@@ -77,7 +77,7 @@ public class PhenoLight : Phenotype
 
     void OnTriggerEnter(Collider col)
     {
-        // Debug.Log("OnTriggerEnter " + col.name);
+        // Debug.Log(this.GetType() + " OnTriggerEnter " + col.name);
         // Prepares the future triggering of the light
         manageInactiveCollision(col);
     }
@@ -93,14 +93,14 @@ public class PhenoLight : Phenotype
                 _fluorescenceProtein = _lm.protein;
                 _mol = null;
                 _active = !String.IsNullOrEmpty(_fluorescenceProtein);
-                // Debug.Log("manageInactiveCollision _active=" + _active);
+                // Debug.Log(this.GetType() + " manageInactiveCollision _active=" + _active);
             }
         }
     }
 
     void OnTriggerExit(Collider col)
     {
-        // Debug.Log("OnTriggerExit " + col.name);
+        // Debug.Log(this.GetType() + " OnTriggerExit " + col.name);
         _lm = col.gameObject.GetComponent<TriggeredLightEmitter>();
         if (null != _lm)
         {
@@ -109,7 +109,7 @@ public class PhenoLight : Phenotype
             _fluorescenceProtein = "";
             _mol = null;
             _active = false;
-            // Debug.Log("OnTriggerExit _active=" + _active);
+            // Debug.Log(this.GetType() + " OnTriggerExit _active=" + _active);
         }
     }
     void OnTriggerStay(Collider col)

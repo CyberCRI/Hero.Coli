@@ -116,7 +116,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForSecondPart()
     {
-        Debug.Log("1");
+        Debug.Log(this.GetType() + " 1");
         while (Vector3.Distance(_cutSceneCam.transform.position, new Vector3(_npc.transform.position.x, _cutSceneCam.transform.position.y, _npc.transform.position.z)) >= 0.05f)
         {
             yield return null;
@@ -135,7 +135,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForThirdPart()
     {
-        Debug.Log("2");
+        Debug.Log(this.GetType() + " 2");
         while (Vector3.Distance(_npc.transform.position, _wayPointNPC2.transform.position) >= 0.05f)
         {
             yield return null;
@@ -159,7 +159,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForEnd()
     {
-        Debug.Log("3");
+        Debug.Log(this.GetType() + " 3");
         yield return new WaitForSeconds(3f);
         _boundCamera.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
@@ -171,7 +171,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForCamReset()
     {
-        Debug.Log("4");
+        Debug.Log(this.GetType() + " 4");
         while (Vector3.Distance(_cutSceneCam.transform.position, _wayPoint2.transform.position) >= 0.05f)
         {
             yield return null;
@@ -185,7 +185,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForWinNPC()
     {
-        Debug.Log("5");
+        Debug.Log(this.GetType() + " 5");
         while (Vector3.Distance(_cutSceneCam.transform.position, _wayPoint2.transform.position) >= 0.05f)
         {
             yield return null;
@@ -211,7 +211,7 @@ public class CompetitionCutScene : CutScene
 
     IEnumerator waitForEndNPC()
     {
-        Debug.Log("6");
+        Debug.Log(this.GetType() + " 6");
         yield return new WaitForSeconds(3f);
         this.enabled = false;
         yield return null;

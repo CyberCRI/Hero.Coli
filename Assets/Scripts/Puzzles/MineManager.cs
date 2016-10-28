@@ -86,16 +86,16 @@ public class MineManager : MonoBehaviour
 
     public void resetAllMines()
     {
-        //Debug.Log("resetAllMines");
+        //Debug.Log(this.GetType() + " resetAllMines");
         foreach (ResettableMine mine in _minesToReset)
         {
-            // Debug.Log("reset " + mine.gameObject.name);
+            // Debug.Log(this.GetType() + " reset " + mine.gameObject.name);
             resetSelectedMine(mine);
         }
 
         foreach (GameObject particleSystem in _particleSystems)
         {
-            // Debug.Log("Destroy " + particleSystem.gameObject.name);
+            // Debug.Log(this.GetType() + " Destroy " + particleSystem.gameObject.name);
             Destroy(particleSystem.gameObject);
         }
 

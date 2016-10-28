@@ -341,7 +341,7 @@ public class GameStateController : MonoBehaviour
                     fadeSprite.gameObject.SetActive(false);
                     break;
                 default:
-                    Debug.LogWarning("GameStateController::Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode());
+                    Debug.LogWarning(this.GetType() + " Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode());
                     break;
             }
             _isGameLevelPrepared = true;
@@ -500,7 +500,7 @@ public class GameStateController : MonoBehaviour
                     //TODO add DNA damage accumulation management when player equips/unequips too often
                     // else if(isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
                     // {
-                    // Debug     Debug.Log(this.GetType() + " GameStateController::Update inventory key pressed");
+                    //     Debug.Log(this.GetType() + " Update inventory key pressed");
                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                     // }
                     //crafting
@@ -572,7 +572,7 @@ public class GameStateController : MonoBehaviour
                                     }
                                     break;
                                 default:
-                                    Debug.LogWarning("GameStateController::Update unknown screen " + gUITransitioner._currentScreen);
+                                    Debug.LogWarning(this.GetType() + " Update unknown screen " + gUITransitioner._currentScreen);
                                     break;
                             }
                         }
@@ -663,7 +663,7 @@ public class GameStateController : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning("GameStateController::changeState unexpected game state " + newState);
+                Debug.LogWarning(this.GetType() + " changeState unexpected game state " + newState);
                 break;
         }
     }
@@ -692,7 +692,7 @@ public class GameStateController : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning("GameStateController::setAndSaveLevelName unmanaged level=" + newMap);
+                Debug.LogWarning(this.GetType() + " setAndSaveLevelName unmanaged level=" + newMap);
                 break;
         }
     }

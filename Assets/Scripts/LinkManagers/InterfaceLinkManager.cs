@@ -131,7 +131,7 @@ public class InterfaceLinkManager : LinkManager
     {
         base.initialize();
 
-        //  Debug.Log("InterfaceLinkManager: mainMenu=" + mainMenu);
+        //  Debug.Log(this.GetType() + " mainMenu=" + mainMenu);
 
         // activate everything
         activateAllChildren(true);

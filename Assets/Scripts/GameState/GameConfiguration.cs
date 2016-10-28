@@ -107,7 +107,7 @@ public class GameConfiguration
     {
         get
         {
-            // Debug.Log("gameMap get returns " + _gameMap.val);
+            // Debug.Log("GameConfiguration gameMap get returns " + _gameMap.val);
             return _gameMap.val;
         }
         set
@@ -118,7 +118,7 @@ public class GameConfiguration
     private static void onMapChanged(GameMap newMap)
     {
         _gameMapName = newMap.ToString().ToLowerInvariant();
-        // Debug.Log("onMapChanged newMap = " + newMap + ", _gameMapName = " + _gameMapName);
+        // Debug.Log("GameConfiguration onMapChanged newMap = " + newMap + ", _gameMapName = " + _gameMapName);
     }
     public string getGameMapName()
     {
@@ -154,19 +154,19 @@ public class GameConfiguration
     {
         get
         {
-            // Debug.Log("getting sound = " + _isSoundOn.val);
+            // Debug.Log(this.GetType() + " getting sound = " + _isSoundOn.val);
             return _isSoundOn.val;
         }
         set
         {
-            // Debug.Log("setting sound to " + value);
+            // Debug.Log(this.GetType() + " setting sound to " + value);
             _isSoundOn.val = value;
         }
     }
 
     private static void onSoundChanged(bool newSoundValue)
     {
-        // Debug.Log("onSoundChanged");
+        // Debug.Log("GameConfiguration onSoundChanged");
         if (_baseVolume < 0)
         {
             if (0 == AudioListener.volume)

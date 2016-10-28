@@ -30,7 +30,7 @@ public class BoolConfigurationParameter : ConfigurationParameter<bool>
     {
         if (base.initialize())
         {
-            // Debug.Log("BoolConfigurationParameter initialize to _value = " + _value);
+            // Debug.Log(this.GetType() + "  initialize to _value = " + _value);
             _isInitialized = true;
             return true;
         }

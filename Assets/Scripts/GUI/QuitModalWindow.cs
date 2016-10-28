@@ -6,7 +6,7 @@ public class QuitModalWindow : ModalButton
 {
     public override void press ()
     {
-        Debug.Log(this.GetType() + " QuitModalWindow::press()");
+        Debug.Log(this.GetType() + " press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
     }

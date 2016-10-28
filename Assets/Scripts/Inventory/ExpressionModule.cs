@@ -11,7 +11,7 @@ public class ExpressionModule
     public string displayedName { get; set; }
     private string _internalName;
     public string getInternalName() {
-        Debug.Log(this.GetType() + " ExpressionModule::getInternalName()");
+        Debug.Log(this.GetType() + " getInternalName()");
         if(string.IsNullOrEmpty(_internalName))
         {
             _internalName = generateInternalName();
@@ -33,7 +33,7 @@ public class ExpressionModule
     //generates internal name from biobricks sequence
     private string generateInternalName()
     {
-        Debug.Log(this.GetType() + " ExpressionModule::generateName(bricks)");
+        Debug.Log(this.GetType() + " generateName(bricks)");
         return generateInternalName(_bioBricks);
     }
 
@@ -65,7 +65,7 @@ public class ExpressionModule
     //TODO generate name from BioBricks sequence
     public ExpressionModule(LinkedList<BioBrick> bricks)
     {
-        Debug.Log(this.GetType() + " ExpressionModule::ExpressionModule(bricks)");
+        Debug.Log(this.GetType() + " ExpressionModule(bricks)");
         if(isBioBricksSequenceValid(bricks))
         {
             new ExpressionModule("test", bricks);
@@ -94,7 +94,7 @@ public class ExpressionModule
     //copy constructor
     public ExpressionModule(ExpressionModule m)
     {
-        Debug.Log(this.GetType() + " ExpressionModule::ExpressionModule("+m+")");
+        Debug.Log(this.GetType() + " ExpressionModule("+m+")");
         _name = m._name;
         _bioBricks = new LinkedList<BioBrick>();
         foreach (BioBrick b in m.getBioBricks())
@@ -227,7 +227,7 @@ public class ExpressionModule
     
     public bool isValid()
     {
-        Debug.Log(this.GetType() + " ExpressionModule::checkModuleValidity("+this.ToString()+")");
+        Debug.Log(this.GetType() + " checkModuleValidity("+this.ToString()+")");
         return isBioBricksSequenceValid(this.getBioBricks());
     }
 

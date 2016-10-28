@@ -144,7 +144,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log("Error: Empty field");
+      Debug.Log(this.GetType() + " Error: Empty field");
       return "";
     }
     return value;
@@ -159,7 +159,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log("Error: Empty field");
+      Debug.Log(this.GetType() + " Error: Empty field");
       return 0f;
     }
     return(float.Parse(value.Replace(",", ".")));
@@ -174,7 +174,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   {
     if (String.IsNullOrEmpty(value))
     {
-      Debug.Log("Error: Empty field");
+      Debug.Log(this.GetType() + " Error: Empty field");
       return 0;
     }
     return (int.Parse(value));
@@ -194,7 +194,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       if (attr.Name == "name")
       {
         if (String.IsNullOrEmpty(attr.InnerText))
-          Debug.Log("Warning : Empty name field in ActiveTransport Reaction definition");
+          Debug.Log(this.GetType() + " Warning : Empty name field in ActiveTransport Reaction definition");
         Product prod = new Product();
         prod.setName(node.InnerText);
         products.AddLast(prod);

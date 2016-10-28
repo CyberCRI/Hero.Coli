@@ -203,7 +203,7 @@ public class TooltipManager : MonoBehaviour
 
     private static bool fillInFieldsFromCode(string code)
     {
-        // Debug.Log("fillInFieldsFromCode(" + code + ")");
+        // Debug.Log("TooltipManager fillInFieldsFromCode(" + code + ")");
 
         //TooltipInfo info = produceTooltipInfo(code);
 

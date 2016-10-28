@@ -63,7 +63,7 @@ public class PhenoToxic : Phenotype
     public void OnCollisionEnter(Collision collision) {
       foreach (ContactPoint contact in collision.contacts) {
         //Debug.Log(contact.point);
-              Debug.Log ("contact "+contact);
+              Debug.Log("PhenoToxic contact "+contact);
         Debug.DrawRay(contact.point, new Vector3(contact.normal.x, 0.0f, contact.normal.z) * 10, Color.white, 5.0f);
       }
     }

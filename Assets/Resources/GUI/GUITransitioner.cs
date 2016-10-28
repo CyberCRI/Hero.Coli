@@ -172,7 +172,7 @@ public class GUITransitioner : MonoBehaviour
     {
         if (null != _instance)
         {
-            // Debug.Log("showGraphs("+show+", "+hider+")");
+            // Debug.Log("GUITransitioner showGraphs("+show+", "+hider+")");
 
             bool inactive = false;
 
@@ -220,12 +220,12 @@ public class GUITransitioner : MonoBehaviour
 
     public void GoToScreen(GameScreen destination)
     {
-        // Debug.Log("GUITransitioner::GoToScreen(" + destination + ")");
+        // Debug.Log(this.GetType() + " GoToScreen(" + destination + ")");
         if (destination == GameScreen.screen1)
         {
             if (_currentScreen == GameScreen.screen2)
             {
-                // Debug.Log("2->1");
+                // Debug.Log("GUITransitioner 2->1");
                 //2 -> 1
                 //set zoom1
                 //remove inventory device, deviceID
@@ -235,7 +235,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen3)
             {
-                // Debug.Log("3->1");
+                // Debug.Log("GUITransitioner 3->1");
                 //3 -> 1
                 //set zoom1
                 //remove craft screen
@@ -257,7 +257,7 @@ public class GUITransitioner : MonoBehaviour
         {
             if (_currentScreen == GameScreen.screen1)
             {
-                // Debug.Log("GUITransitioner::GoToScreen 1->2");
+                // Debug.Log(this.GetType() + " GoToScreen 1->2");
                 //1 -> 2
                 //set zoom2
                 //add inventory device, deviceID
@@ -267,7 +267,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen3)
             {
-                // Debug.Log("GUITransitioner::GoToScreen 3->2");
+                // Debug.Log(this.GetType() + " GoToScreen 3->2");
                 //3 -> 2
                 //set zoom2
                 //remove craft screen
@@ -289,7 +289,7 @@ public class GUITransitioner : MonoBehaviour
         {
             if (_currentScreen == GameScreen.screen1)
             {
-                // Debug.Log("GUITransitioner::GoToScreen 1->3");
+                // Debug.Log(this.GetType() + " GoToScreen 1->3");
                 //1 -> 3
                 //remove everything
                 //add device inventory, parameters
@@ -302,7 +302,7 @@ public class GUITransitioner : MonoBehaviour
             }
             else if (_currentScreen == GameScreen.screen2)
             {
-                // Debug.Log("GUITransitioner::GoToScreen 2->3");
+                // Debug.Log(this.GetType() + " GoToScreen 2->3");
                 //2 -> 3
                 //remove everything
                 //add craft screen
@@ -316,7 +316,7 @@ public class GUITransitioner : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GuiTransitioner::GoToScreen(" + destination + "): error: unmanaged destination");
+            Debug.LogError(this.GetType() + " GoToScreen(" + destination + "): error: unmanaged destination");
         }
 
         _devicesDisplayer.UpdateScreen();
@@ -325,7 +325,7 @@ public class GUITransitioner : MonoBehaviour
 
     public void SwitchScreen(GameScreen alternate1, GameScreen alternate2)
     {
-        // Debug.Log("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + ")");
+        // Debug.Log(this.GetType() + " SwitchScreen(" + alternate1 + "," + alternate2 + ")");
         if (_currentScreen == alternate1)
         {
             GoToScreen(alternate2);
@@ -336,7 +336,7 @@ public class GUITransitioner : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GuiTransitioner::SwitchScreen(" + alternate1 + "," + alternate2 + "): error: unmanaged alternate");
+            Debug.LogError(this.GetType() + " SwitchScreen(" + alternate1 + "," + alternate2 + "): error: unmanaged alternate");
         }
     }
 

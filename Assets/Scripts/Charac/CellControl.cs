@@ -437,7 +437,7 @@ public class CellControl : MonoBehaviour
     private void switchControlTypeTo(ControlType newControlType, Vector3 position)
     {
 
-        // Debug.Log("CellControl::switchControlTypeTo(" + newControlType + ") with old isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
+        // Debug.Log(this.GetType() + " switchControlTypeTo(" + newControlType + ") with old isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
 
         if (ControlType.LeftClickToMove == newControlType)
         {
@@ -469,12 +469,12 @@ public class CellControl : MonoBehaviour
 
         _targetPosition = transform.position;
 
-        // Debug.Log("CellControl::switchControlTypeTo(" + newControlType + ") with new isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
+        // Debug.Log(this.GetType() + " switchControlTypeTo(" + newControlType + ") with new isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
     }
 
     public void refreshControlType()
     {
-        // Debug.Log("CellControl::refreshControlType before refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
+        // Debug.Log(this.GetType() + " refreshControlType before refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
         if (isLeftClickToMove)
         {
             switchControlTypeToLeftClickToMove();
@@ -491,7 +491,7 @@ public class CellControl : MonoBehaviour
         {
             switchControlTypeToRelativeWASD();
         }
-        // Debug.Log("CellControl::refreshControlType after refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
+        // Debug.Log(this.GetType() + " refreshControlType after refreshControlType isLeftClickToMove=" + isLeftClickToMove + " & isAbsoluteWASD=" + isAbsoluteWASD);
     }
 
     void OnCollisionStay(Collision col)

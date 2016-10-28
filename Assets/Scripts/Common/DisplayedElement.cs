@@ -23,7 +23,7 @@ public class DisplayedElement : ExternalOnPressButton
     {
         string nullSpriteName = (spriteName != null) ? "" : "(null)";
 
-        // Debug.Log("DisplayedElement::Create("
+        // Debug.Log("DisplayedElement Create("
         // + "parentTransform=" + parentTransform
         // + ", localPosition=" + localPosition
         // + ", spriteName=" + spriteName + nullSpriteName
@@ -32,38 +32,38 @@ public class DisplayedElement : ExternalOnPressButton
         // );
 
         GameObject newElement = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
-        // Debug.Log("DisplayedElement::Create instantiated");
+        // Debug.Log("DisplayedElement Create instantiated");
 
         newElement.transform.parent = parentTransform;
         newElement.transform.localPosition = localPosition;
         newElement.transform.localScale = Vector3.one;
-        // Debug.Log("DisplayedElement::Create GetComponent<DisplayedElement>()");
+        // Debug.Log("DisplayedElement Create GetComponent<DisplayedElement>()");
         DisplayedElement script = newElement.GetComponent<DisplayedElement>();
 
         if (null == script)
         {
             //TODO remove hack
-            Debug.LogWarning("DisplayedElement::Create (null == script) with name=" + newElement.name);
+            Debug.LogWarning("DisplayedElement Create (null == script) with name=" + newElement.name);
             InventoryDevice inventoryDevice = newElement.GetComponent<InventoryDevice>();
             if (inventoryDevice != null)
             {
-                // Debug.Log("DisplayedElement::Create found inventory device");
+                // Debug.Log("DisplayedElement Create found inventory device");
                 script = inventoryDevice.inventoriedDisplayedDevice;
                 if (script != null)
                 {
-                    // Debug.Log("DisplayedElement::Create found inventory device script");
+                    // Debug.Log("DisplayedElement Create found inventory device script");
                 }
                 else
                 {
-                    Debug.LogWarning("DisplayedElement::Create failed to find inventory device script");
+                    Debug.LogWarning("DisplayedElement Create failed to find inventory device script");
                 }
             }
         }
 
         script._id = ++_idCounter;
-        // Debug.Log("DisplayedElement::Create script._id = " + script._id);
+        // Debug.Log("DisplayedElement Create script._id = " + script._id);
         script.setSprite(spriteName);
-        // Debug.Log("DisplayedDevice::Create ends");
+        // Debug.Log("DisplayedElement Create ends");
 
         return script;
     }
@@ -80,12 +80,12 @@ public class DisplayedElement : ExternalOnPressButton
 
     protected void setSprite(string spriteName)
     {
-        // Debug.Log("DisplayedElement::setSprite(" + spriteName + ")");
+        // Debug.Log(this.GetType() + " setSprite(" + spriteName + ")");
         _sprite.spriteName = spriteName;
     }
 
     public override void OnPress(bool isPressed)
     {
-        // Debug.Log("DisplayedElement::OnPress " + _id);
+        // Debug.Log(this.GetType() + " OnPress " + _id);
     }
 }

@@ -163,14 +163,14 @@ public class RedMetricsManager : MonoBehaviour
 
     public static IEnumerator GET(string url, System.Action<WWW> callback)
     {
-        // Debug.Log ("GET");
+        // Debug.Log("RedMetricsManager GET");
         WWW www = new WWW(url);
         return waitForWWW(www, callback);
     }
 
     public static IEnumerator POST(string url, Dictionary<string, string> post, System.Action<WWW> callback)
     {
-        // Debug.Log ("POST");
+        // Debug.Log("RedMetricsManager POST");
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<string, string> post_arg in post)
         {
@@ -183,14 +183,14 @@ public class RedMetricsManager : MonoBehaviour
 
     public static IEnumerator POST(string url, byte[] post, Dictionary<string, string> headers, System.Action<WWW> callback)
     {
-        // Debug.Log("POST url: {0}", url);
+        // Debug.Log("RedMetricsManager POST url: {0}", url);
         WWW www = new WWW(url, post, headers);
         return waitForWWW(www, callback);
     }
 
     private static IEnumerator waitForWWW(WWW www, System.Action<WWW> callback)
     {
-        // Debug.Log ("waitForWWW");
+        // Debug.Log("RedMetricsManager waitForWWW");
         float elapsedTime = 0.0f;
 
         if (null == www)
@@ -218,7 +218,7 @@ public class RedMetricsManager : MonoBehaviour
             yield break;
         }
 
-        // Debug.Log("waitForWWW: message successfully transmitted");
+        // Debug.Log("RedMetricsManager waitForWWW: message successfully transmitted");
         callback(www); // Pass retrieved result.
     }
 
@@ -338,7 +338,7 @@ public class RedMetricsManager : MonoBehaviour
         //TODO manage GLOBALPLAYERGUID
         CustomData guidCD = new CustomData(CustomDataTag.LOCALPLAYERGUID, localPlayerGUID);
         guidCD.Add(CustomDataTag.PLATFORM, Application.platform.ToString().ToLowerInvariant());
-        // Debug.Log("generated guidCD={0}", guidCD);
+        // Debug.Log(this.GetType() + " generated guidCD={0}", guidCD);
         return guidCD;
     }
 

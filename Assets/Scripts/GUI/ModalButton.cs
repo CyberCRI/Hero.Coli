@@ -5,7 +5,7 @@ public abstract class ModalButton : MonoBehaviour
 {
     protected virtual void OnPress (bool isPressed)
     {
-        Debug.Log(this.GetType() + " ModalButton::OnPress()");
+        Debug.Log(this.GetType() + " OnPress()");
         if (isPressed) {
             press ();
         }

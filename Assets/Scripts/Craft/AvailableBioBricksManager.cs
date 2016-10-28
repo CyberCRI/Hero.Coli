@@ -127,7 +127,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     
     void initializeDummies()
     {
-        // Debug.Log("initializeDummies");
+        // Debug.Log(this.GetType() + " initializeDummies");
         // dummies.Clear();
         // dummies.AddRange(new List<GameObject>{
             
@@ -137,7 +137,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         // {
         //     if(null != dummy)
         //     {
-        //         //Debug.Log("initializeDummies dummy="+dummy.name);
+        //         //Debug.Log(this.GetType() + " initializeDummies dummy="+dummy.name);
         //         dummy.SetActive(false);
         //     }
         // }
@@ -154,7 +154,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         {
             if(null != grid)
             {
-                // Debug.Log("initializeDummies grid="+grid.name);
+                // Debug.Log(this.GetType() + " initializeDummies grid="+grid.name);
                 for(int index = 0; index < grid.childCount; index++)
                 {
                     Destroy(grid.GetChild(index).gameObject);
@@ -185,7 +185,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     
     public void addBrickAmount(BioBrick brick, double amount)
     {
-        // Debug.Log("addBrickAmount("+brick+","+amount+")");
+        // Debug.Log(this.GetType() + " addBrickAmount("+brick+","+amount+")");
         BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
                 _availableBioBricks
                 , b => b.getName() == brick.getName()

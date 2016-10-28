@@ -365,7 +365,7 @@ public class Hero : MonoBehaviour
         PickableItem item = col.GetComponent<PickableItem>();
         if (null != item)
         {
-            // Debug.Log("Hero::managePickUp collided with DNA! bit=" + item.getDNABit());
+            // Debug.Log(this.GetType() + " managePickUp collided with DNA! bit=" + item.getDNABit());
             item.pickUp();
         }
     }
@@ -376,7 +376,7 @@ public class Hero : MonoBehaviour
         Sector sector = col.GetComponent<Sector>();
         if (null != sector)
         {
-            // Debug.Log("Hero::manageSector collided with sector=" + sector.ToString());
+            // Debug.Log(this.GetType() + " manageSector collided with sector=" + sector.ToString());
             sector.activate();
         }
     }
@@ -577,7 +577,7 @@ public class Hero : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Hero::popEffectCoroutine unexpected null savedCell");
+            Debug.LogWarning(this.GetType() + " popEffectCoroutine unexpected null savedCell");
         }
     }
 }

@@ -39,7 +39,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick {
 
   public override void OnPress(bool isPressed) {
     // Debug.Log(this.GetType() + " OnPress of " + _biobrick.getInternalName());
-    //Debug.LogError("CraftZoneDisplayedBioBrick::OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
+    //Debug.LogError(this.GetType() + " OnPress with CraftZoneManager.isDeviceEditionOn()="+CraftZoneManager.isDeviceEditionOn());
     if(CraftZoneManager.isDeviceEditionOn())
     {
         CraftZoneManager czm = CraftZoneManager.get ();

@@ -16,7 +16,7 @@ public class EndGameCollider : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        //Debug.Log(this.GetType() + " EndGameCollider::OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
+        //Debug.Log(this.GetType() + " OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
         if (!_alreadyDisplayed) {
             if (other == hero.GetComponent<Collider> ()) {
                 triggerEnd();

@@ -45,7 +45,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 		if (null == prefab) prefab = Resources.Load(prefabURI);
 		Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
 		
-		// Debug.Log("DisplayedBioBrick::Create(parentTransform="+parentTransform
+		// Debug.Log("DisplayedBioBrick Create(parentTransform="+parentTransform
 		//            + ", localPosition="+localPosition
 		//            + ", spriteName="+spriteName+nullSpriteName
 		//            + ", biobrick="+biobrick
@@ -66,15 +66,15 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     protected void Initialize(BioBrick biobrick)
     {
 
-        // Debug.Log("DisplayedBioBrick::Initialize(" + biobrick + ") starts");
+        // Debug.Log(this.GetType() + " Initialize(" + biobrick + ") starts");
         GenericDisplayedBioBrick.Initialize(this, biobrick);
 
         setJigsawSprite();
         setBioBrickOverlay();
         setBioBrickIcon();
 
-        //Debug.Log("this.transform.localPosition="+this.transform.localPosition);
-        //Debug.Log("this.transform.localScale="+this.transform.localScale);
+        // Debug.Log(this.GetType() + " this.transform.localPosition="+this.transform.localPosition);
+        // Debug.Log(this.GetType() + " this.transform.localScale="+this.transform.localScale);
 
         this.transform.localScale = Vector3.one;
         this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0);
@@ -166,6 +166,6 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
   }
 
 	public override void OnPress(bool isPressed) {
-		// Debug.Log("DisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed);
+		// Debug.Log(this.GetType() + " OnPress _id="+_id+", isPressed="+isPressed);
   }
 }

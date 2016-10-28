@@ -8,13 +8,13 @@ using System.IO;
 public class DeviceSaver {
 
   public DeviceSaver() {
-    Debug.Log(this.GetType() + " DeviceSaver::DeviceSaver()");
+    Debug.Log(this.GetType() + " DeviceSaver()");
   }
 
   //optionally saves details about biobricks
   public void saveDevicesToFile(List<Device> devices, string filePath, bool exhaustive = true)
   {
-    Debug.Log(this.GetType() + " DeviceSaver::saveDevicesToFile("+Logger.ToString<Device>(devices)+", "+filePath+")");
+    Debug.Log(this.GetType() + " saveDevicesToFile("+Logger.ToString<Device>(devices)+", "+filePath+")");
 
     XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
 

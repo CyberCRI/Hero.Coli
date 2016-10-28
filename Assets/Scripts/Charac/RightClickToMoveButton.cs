@@ -6,7 +6,7 @@ public class RightClickToMoveButton : MonoBehaviour {
   private void OnPress(bool isPressed)
   {
     if(isPressed) {
-      Debug.Log(this.GetType() + " RightClickToMoveButton::OnPress()");
+      Debug.Log(this.GetType() + " OnPress()");
       ControlsMainMenuItemArray.get ().switchControlTypeToRightClickToMove();
     }
   }

@@ -171,30 +171,30 @@ public class InfoWindowManager : MonoBehaviour
             loadedFiles += file;
         }
 
-        // Debug.Log("InfoWindowManager::loadDataIntoDico loaded "+loadedFiles);
+        // Debug.Log(this.GetType() + " loadDataIntoDico loaded "+loadedFiles);
     }
 
     public static void next()
     {
-        // Debug.Log("InfoWindowManager::next()");
+        // Debug.Log("InfoWindowManager next()");
         ModalManager.unsetModal();
         _instance.gameStateController.tryUnlockPause();
 
         switch (_instance.nextAction)
         {
             case NextAction.GOTOWORLD:
-                // Debug.Log ("InfoWindowManager::next GOTOWORLD");
+                // Debug.Log("InfoWindowManager next GOTOWORLD");
                 break;
             case NextAction.GOTOEQUIP:
-                // Debug.Log ("InfoWindowManager::next GOTOEQUIP");
+                // Debug.Log("InfoWindowManager next GOTOEQUIP");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
                 break;
             case NextAction.GOTOCRAFT:
-                // Debug.Log ("InfoWindowManager::next GOTOCRAFT");
+                // Debug.Log("InfoWindowManager next GOTOCRAFT");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
                 break;
             case NextAction.GOTOCRAFTTUTO:
-                // Debug.Log ("InfoWindowManager::next GOTOCRAFTTUTO");
+                // Debug.Log("InfoWindowManager next GOTOCRAFTTUTO");
                 CraftHint hint = Hero.get().gameObject.GetComponent<CraftHint>();
                 if (null == hint)
                 {
@@ -203,11 +203,11 @@ public class InfoWindowManager : MonoBehaviour
                 hint.bricks++;
                 break;
             case NextAction.GOTOCRAFTTUTO2:
-                // Debug.Log ("InfoWindowManager::next GOTOCRAFTTUTO2");
+                // Debug.Log("InfoWindowManager next GOTOCRAFTTUTO2");
                 Hero.get().gameObject.AddComponent<RBS2CraftHint>();
                 break;
             default:
-                // Debug.Log ("InfoWindowManager::next GOTOWORLD");
+                // Debug.Log("InfoWindowManager next GOTOWORLD");
                 break;
         }
     }
@@ -227,7 +227,7 @@ public class InfoWindowManager : MonoBehaviour
            || Input.GetKeyUp(KeyCode.KeypadEnter)
           )
         {
-            // Debug.Log("InfoWindowManager::manageKeyPresses() - key pressed");
+            // Debug.Log("InfoWindowManager manageKeyPresses() - key pressed");
             next();
             return GameStateTarget.NoTarget;
         }

@@ -191,7 +191,7 @@ public class MainMenuManager : MonoBehaviour
                 deselect();
                 _items[normalizedIndex].select();
                 _currentIndex = normalizedIndex;
-                // Debug.Log("MainMenuManager selected item " + normalizedIndex);
+                // Debug.Log(this.GetType() + " selected item " + normalizedIndex);
                 return true;
             }
 
@@ -348,7 +348,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void activateArray(MainMenuItemArray toActivate)
     {
-        // Debug.Log("activateArray " + toActivate);
+        // Debug.Log(this.GetType() + " activateArray " + toActivate);
         initializeArrays();
 
         deselect();
@@ -368,7 +368,7 @@ public class MainMenuManager : MonoBehaviour
         switch (screen)
         {
             case MainMenuScreen.SETTINGS:
-                // Debug.Log("toActivate = " + settingsItems);
+                // Debug.Log(this.GetType() + " toActivate = " + settingsItems);
                 toActivate = settingsItems;
                 break;
             case MainMenuScreen.LEARNMOREOPTIONS:

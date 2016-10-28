@@ -70,7 +70,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startCollapseBricks()
     {
-        // Debug.Log("startCollapseBricks");
+        // Debug.Log(this.GetType() + " startCollapseBricks");
         
         StopAllCoroutines();
         
@@ -84,7 +84,7 @@ public class BioBricksCollapse : MonoBehaviour {
         }        
         else
         {
-            // Debug.Log("startCollapseBricks !gameObject.activeInHierarchy");
+            // Debug.Log(this.GetType() + " startCollapseBricks !gameObject.activeInHierarchy");
             setPosition(false);
         }
         onBricksStoppedMoving();
@@ -108,7 +108,7 @@ public class BioBricksCollapse : MonoBehaviour {
             multiplicator += 1f;
             for (int i = 0; i < _bricksCount; i++)
             {
-                //Debug.Log("executing");
+                //Debug.Log(this.GetType() + " executing");
                 _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _goTo[i], speed * Time.unscaledDeltaTime * multiplicator);
             }
             moveBricks();
@@ -127,7 +127,7 @@ public class BioBricksCollapse : MonoBehaviour {
             {
                 if (_bricksTransform[i] != null)
                 {
-                    //Debug.Log("executing");
+                    //Debug.Log(this.GetType() + " executing");
                     _bricksTransform[i].localPosition = Vector3.MoveTowards(_bricksTransform[i].localPosition, _origin[i], speed * Time.unscaledDeltaTime * multiplicator);
                 }
             }
@@ -139,7 +139,7 @@ public class BioBricksCollapse : MonoBehaviour {
     
     private void moveBricks()
     {
-        // Debug.Log("moveBricks");
+        // Debug.Log(this.GetType() + " moveBricks");
         CraftZoneDisplayedBioBrick[] slotList = _craftDeviceSlot.getCraftZoneDisplayedBioBricks();
         for (int i = 0; i < slotList.Length; i++)
         {
@@ -152,7 +152,7 @@ public class BioBricksCollapse : MonoBehaviour {
 
     public void startExpandBricks()
     {
-        //Debug.Log("startExpandBricks");
+        //Debug.Log(this.GetType() + " startExpandBricks");
         StopAllCoroutines();
         
         lazyInitialize();

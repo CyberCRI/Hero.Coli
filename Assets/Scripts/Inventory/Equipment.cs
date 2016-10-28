@@ -48,7 +48,7 @@ public class Equipment : DeviceContainer
     new void Start()
     {
         base.Start();
-        // Debug.Log("Equipment::Start()");
+        // Debug.Log(this.GetType() + " Start()");
         _reactionEngine = ReactionEngine.get();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,14 +64,14 @@ public class Equipment : DeviceContainer
 
     private void addToReactionEngine(Device device)
     {
-        // Debug.Log("Equipment::addToReactionEngine reactions from device "+device.getInternalName()+" ("+device.ToString ()+")");
+        // Debug.Log(this.GetType() + " addToReactionEngine reactions from device "+device.getInternalName()+" ("+device.ToString ()+")");
 
         LinkedList<IReaction> reactions = device.getReactions();
-        // Debug.Log("Equipment::addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions)+" from "+device);
+        // Debug.Log(this.GetType() + " addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions)+" from "+device);
 
         foreach (IReaction reaction in reactions)
         {
-            // Debug.Log("Equipment::addToReactionEngine adding reaction="+reaction);
+            // Debug.Log(this.GetType() + " addToReactionEngine adding reaction="+reaction);
             _reactionEngine.addReactionToMedium(_celliaMediumID, reaction);
         }
     }
@@ -80,13 +80,13 @@ public class Equipment : DeviceContainer
     {
         if (device == null)
         {
-            // Debug.LogWarning("Equipment::askAddDevice device == null");
+            // Debug.Log(this.GetType() + " askAddDevice device == null");
             return AddingResult.FAILURE_DEFAULT;
         }
         Device copy = Device.buildDevice(device);
         if (copy == null)
         {
-            // Debug.LogWarning("Equipment::askAddDevice copy == null");
+            // Debug.Log(this.GetType() + " askAddDevice copy == null");
             return AddingResult.FAILURE_DEFAULT;
         }
 
@@ -94,7 +94,7 @@ public class Equipment : DeviceContainer
         if (_devices.Exists(d => d.Equals(copy)))
         //if(_devices.Exists(d => d.getInternalName() == copy.getInternalName()))
         {
-            // Debug.Log("Equipment::askAddDevice device already present");
+            // Debug.Log(this.GetType() + " askAddDevice device already present");
             return AddingResult.FAILURE_SAME_DEVICE;
         }
         _devices.Add(copy);
@@ -110,32 +110,32 @@ public class Equipment : DeviceContainer
     //TODO
     private void removeFromReactionEngine(Device device)
     {
-        // Debug.Log("Equipment::removeFromReactionEngine reactions from device "+device);
+        // Debug.Log(this.GetType() + " removeFromReactionEngine reactions from device "+device);
 
         LinkedList<IReaction> reactions = device.getReactions();
-        // Debug.Log("Equipment::removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions));
+        // Debug.Log(this.GetType() + " removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions));
 
         //LinkedList<Medium> mediums = _reactionEngine.getMediumList();
         //Medium celliaMedium = ReactionEngine.getMediumFromId(_celliaMediumID, mediums);
 
         //LinkedList<IReaction> celliaReactions = celliaMedium.getReactions();
-        // Debug.Log("Equipment::removeFromReactionEngine initialCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+        // Debug.Log(this.GetType() + " removeFromReactionEngine initialCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
         //  );
 
         foreach (IReaction reaction in reactions)
         {
-            // Debug.Log("Equipment::removeFromReactionEngine removing reaction="+reaction);
+            // Debug.Log(this.GetType() + " removeFromReactionEngine removing reaction="+reaction);
             _reactionEngine.removeReaction(_celliaMediumID, reaction, false);
         }
 
         //celliaReactions = celliaMedium.getReactions();
-        // Debug.Log("Equipment::removeFromReactionEngine finalCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+        // Debug.Log(this.GetType() + " removeFromReactionEngine finalCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
         //  );
     }
 
     public override void removeDevice(Device device)
     {
-        // Debug.Log("Equipment removeDevice("+device+") start");
+        // Debug.Log(this.GetType() + " removeDevice("+device+") start");
         if (_devices.Contains(device))
         {
             _devices.RemoveAll(d => d.Equals(device));
@@ -154,7 +154,7 @@ public class Equipment : DeviceContainer
     // not optimized
     public override void removeDevices(List<Device> toRemove)
     {
-        // Debug.Log("Equipment::removeDevices");
+        // Debug.Log(this.GetType() + " removeDevices");
 
         foreach (Device device in toRemove)
         {
@@ -165,7 +165,7 @@ public class Equipment : DeviceContainer
     public override void editDevice(Device device)
     {
         //TODO
-        Debug.LogError("Equipment::editeDevice NOT IMPLEMENTED");
+        Debug.LogError(this.GetType() + " editeDevice NOT IMPLEMENTED");
     }
 
     public override string ToString()

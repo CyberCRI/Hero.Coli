@@ -130,17 +130,17 @@ public class Medium : LoadableFromXmlImpl
      */
     public void addReaction(IReaction reaction)
     {
-        //// Debug.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction);
+        //// Debug.Log(this.GetType() + " addReaction to medium#"+_numberId+" with "+reaction);
         if (reaction != null)
         {
             reaction.setMedium(this);
             reaction.enableEnergy = _enableEnergy;
             _reactions.AddLast(reaction);
-            //// Debug.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
+            //// Debug.Log(this.GetType() + " addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
         }
         else
         {
-            Debug.LogWarning("Medium::addReaction Cannot add this reaction because null was given");
+            Debug.LogWarning(this.GetType() + " addReaction Cannot add this reaction because null was given");
         }
 
     }
@@ -186,11 +186,11 @@ public class Medium : LoadableFromXmlImpl
         }
         if (b)
         {
-            Debug.LogWarning("ReactionEngine::removeReaction failed to find matching reaction");
+            Debug.LogWarning(this.GetType() + " removeReaction failed to find matching reaction");
         }
         else
         {
-            // Debug.Log("ReactionEngine::removeReaction successfully removed matching reaction");
+            // Debug.Log(this.GetType() + " removeReaction successfully removed matching reaction");
         }
     }
 
@@ -250,7 +250,7 @@ public class Medium : LoadableFromXmlImpl
      */
     public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
     {
-        // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId);
+        // Debug.Log(this.GetType() + " initMoleculesFromMoleculeSets medium#" + _numberId);
         Molecule newMol;
         Molecule startingMolStatus;
 
@@ -267,7 +267,7 @@ public class Medium : LoadableFromXmlImpl
             {
                 newMol.setConcentration(startingMolStatus.getConcentration());
             }
-            // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId
+            // Debug.Log(this.GetType() + " initMoleculesFromMoleculeSets medium#" + _numberId
             // + " add mol " + newMol.getName()
             // + " with cc=" + newMol.getConcentration()
             // 
@@ -310,9 +310,9 @@ public class Medium : LoadableFromXmlImpl
         ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
 
         if (reactSet == null)
-            Debug.LogWarning("Medium::Init Cannot find group of reactions named " + _reactionsSet);
+            Debug.LogWarning(this.GetType() + " Init Cannot find group of reactions named " + _reactionsSet);
         if (molSet == null)
-            Debug.LogWarning("Medium::Init Cannot find group of molecules named" + _moleculesSet);
+            Debug.LogWarning(this.GetType() + " Init Cannot find group of molecules named" + _moleculesSet);
 
         initATPProduction();
         initReactionsFromReactionSet(reactSet);
@@ -349,7 +349,7 @@ public class Medium : LoadableFromXmlImpl
             content += m.ToString();
         }
 
-        // Debug.Log("Medium::debug() #" + _numberId + "[" + content + "]");
+        // Debug.Log(this.GetType() + " debug() #" + _numberId + "[" + content + "]");
     }
 
     /*!
@@ -365,7 +365,7 @@ public class Medium : LoadableFromXmlImpl
         {
             // PromoterReaction promoter = reaction as PromoterReaction;
             // if (promoter != null) {
-            //   // Debug.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction);
+            //   // Debug.Log(this.GetType() + " Update reaction.react("+_molecules+") with reaction="+reaction);
             // }
             reaction.react(_molecules);
         }
@@ -504,7 +504,7 @@ public class Medium : LoadableFromXmlImpl
     {
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty Energy field. default value = 0");
+            Debug.Log(this.GetType() + " Error: Empty Energy field. default value = 0");
             setEnergy(0f);
         }
         else
@@ -525,7 +525,7 @@ public class Medium : LoadableFromXmlImpl
 
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
             productionRate = 0f;
         }
         else
@@ -547,7 +547,7 @@ public class Medium : LoadableFromXmlImpl
 
         if (String.IsNullOrEmpty(value))
         {
-            Debug.Log("Error: Empty EnergyProductionRate field. default value = 0");
+            Debug.Log(this.GetType() + " Error: Empty EnergyProductionRate field. default value = 0");
             prodMax = 0f;
         }
         else
@@ -563,7 +563,7 @@ public class Medium : LoadableFromXmlImpl
   */
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-        // Debug.Log("Medium.tryInstantiateFromXml(" + Logger.ToString(node) + ")");
+        // Debug.Log(this.GetType() + " tryInstantiateFromXml(" + Logger.ToString(node) + ")");
 
         foreach (XmlNode attr in node)
         {
@@ -627,7 +627,7 @@ public class Medium : LoadableFromXmlImpl
         }
         else
         {
-            // Debug.Log("Medium.tryInstantiateFromXml(node) loaded this=" + this);
+            // Debug.Log(this.GetType() + " tryInstantiateFromXml(node) loaded this=" + this);
             return true;
         }
     }

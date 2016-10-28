@@ -34,25 +34,25 @@ public class PhenoFickContact : Phenotype
 
     void OnTriggerEnter(Collider collider)
     {
-        // Debug.Log("PhenoFickContact::OnTriggerEnter collider=" + collider);
+        // Debug.Log(this.GetType() + " OnTriggerEnter collider=" + collider);
         PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
         if (PMext == null)
         {
-            // Debug.Log("PhenoFickContact::OnTriggerEnter collider.PMext == null");
+            // Debug.Log(this.GetType() + " OnTriggerEnter collider.PMext == null");
             return;
         }
         int colliderMediumIdExt = PMext.MediumId;
         Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
         if (colliderMediumExt == null)
         {
-            Debug.LogWarning("PhenoFickContact::OnTriggerEnter The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
+            Debug.LogWarning(this.GetType() + " OnTriggerEnter The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
             return;
         }
 
         PhysicalMedium PM = GetComponent<PhysicalMedium>();
         if (PM == null)
         {
-            Debug.LogWarning("PhenoFickContact::OnTriggerEnter PM == null");
+            Debug.LogWarning(this.GetType() + " OnTriggerEnter PM == null");
             return;
         }
 
@@ -61,18 +61,18 @@ public class PhenoFickContact : Phenotype
         FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, Hero.mediumId, fick.getFickReactions());
         if (reaction == null)
         {
-            Debug.LogWarning("PhenoFickContact::OnTriggerEnter This FickReaction does not exist.");
+            Debug.LogWarning(this.GetType() + " OnTriggerEnter This FickReaction does not exist.");
             return;
         }
         reaction.setSurface(surface);
 
         // set medium as medium of collider
-        // Debug.Log("colliderMediumIdExt : " + colliderMediumIdExt);
+        // Debug.Log(this.GetType() + " colliderMediumIdExt : " + colliderMediumIdExt);
         configureExternalDisplays(colliderMediumIdExt);
         _collidedMediumIds.AddLast(colliderMediumIdExt);
 
         /*
-        // Debug.Log("PhenoFickContact::OnTriggerEnter"
+        // Debug.Log(this.GetType() + " OnTriggerEnter"
           +" reaction.setSurface("+surface+")"
           +" _collidedMediumIds.Count="+_collidedMediumIds.Count
           +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
@@ -87,7 +87,7 @@ public class PhenoFickContact : Phenotype
 
     public void OnTriggerExit(Collider collider)
     {
-        // Debug.Log("PhenoFickContact::OnTriggerExit collider=" + collider);
+        // Debug.Log(this.GetType() + " OnTriggerExit collider=" + collider);
         PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
         if (PMext != null)
         {

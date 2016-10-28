@@ -55,7 +55,7 @@ public class GraphMoleculeList : MonoBehaviour {
     {
         if (null != _eddwmGridTransform)
         {
-            // Debug.Log("destroying all of eddwm's children");
+            // Debug.Log(this.GetType() + " destroying all of eddwm's children");
             for (int index = 0; index < _eddwmGridTransform.childCount; index++)
             {
                 Destroy(_eddwmGridTransform.GetChild(index).gameObject);

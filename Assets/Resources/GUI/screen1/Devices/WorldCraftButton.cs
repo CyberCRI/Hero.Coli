@@ -8,7 +8,7 @@ public class EquipCraftButton : MonoBehaviour {
 
   private void OnPress(bool isPressed) {
     if(isPressed) {
-      Debug.Log(this.GetType() + " EquipCraftButton::OnPress()");
+      Debug.Log(this.GetType() + " OnPress()");
       GUITransitioner.get().SwitchScreen(GUITransitioner.GameScreen.screen1, GUITransitioner.GameScreen.screen3);
     }    
   }  

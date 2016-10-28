@@ -11,7 +11,7 @@ public class MemoryManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            // Debug.Log("MemoryManager::get badly initialized called by " + origin);
+            // Debug.Log("MemoryManager get badly initialized called by " + origin);
             _instance = GameObject.Find(gameObjectName).GetComponent<MemoryManager>();
             if (null == _instance)
             {
@@ -112,7 +112,7 @@ public class MemoryManager : MonoBehaviour
 
     public bool addOrUpdateData(string key, string value)
     {
-        // Debug.Log("MemoryManager::addOrUpdateData");
+        // Debug.Log(this.GetType() + " addOrUpdateData");
         if (_savedData.ContainsKey(key))
         {
             _savedData.Remove(key);
@@ -122,13 +122,13 @@ public class MemoryManager : MonoBehaviour
 
     public bool tryGetData(string key, out string value)
     {
-        // Debug.Log("MemoryManager::tryGetData");
+        // Debug.Log(this.GetType() + " tryGetData");
         return _savedData.TryGetValue(key, out value);
     }
 
     private void loadLevelData(string[] inputFiles, Dictionary<string, LevelInfo> dico)
     {
-        // Debug.Log("MemoryManager::loadLevelData");
+        // Debug.Log(this.GetType() + " loadLevelData");
         FileLoader loader = new FileLoader();
 
         foreach (string file in inputFiles)
@@ -147,12 +147,12 @@ public class MemoryManager : MonoBehaviour
 
     private LevelInfo retrieveFromDico(string code)
     {
-        // Debug.Log("MemoryManager::retrieveFromDico");
+        // Debug.Log(this.GetType() + " retrieveFromDico");
         LevelInfo info;
         //TODO set case-insensitive
         if (!_loadedLevelInfo.TryGetValue(code, out info))
         {
-            Debug.LogWarning("MemoryManager::retrieveFromDico(" + code + ") failed");
+            Debug.LogWarning(this.GetType() + " retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;
@@ -160,7 +160,7 @@ public class MemoryManager : MonoBehaviour
 
     public bool tryGetCurrentLevelInfo(out LevelInfo levelInfo)
     {
-        // Debug.Log("MemoryManager::tryGetCurrentLevelInfo");
+        // Debug.Log(this.GetType() + " tryGetCurrentLevelInfo");
         levelInfo = null;
         return _loadedLevelInfo.TryGetValue(MemoryManager.get().configuration.getSceneName(), out levelInfo);
     }

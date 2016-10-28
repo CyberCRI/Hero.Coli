@@ -40,7 +40,7 @@ public class GenericDisplayedBioBrick : DisplayedElement
         if (_genericPrefab == null) _genericPrefab = Resources.Load(_prefabURI);
         Object prefabToUse = (externalPrefab == null) ? _genericPrefab : externalPrefab;
 
-        // Debug.Log("GenericDisplayedBioBrick::Create(parentTransform="+parentTransform
+        // Debug.Log("GenericDisplayedBioBrick Create(parentTransform="+parentTransform
         //   + ", localPosition="+localPosition
         //   + ", spriteName="+spriteName+nullSpriteName
         //   + ", biobrick="+biobrick
@@ -63,7 +63,7 @@ public class GenericDisplayedBioBrick : DisplayedElement
       , BioBrick biobrick
     )
     {
-        // Debug.Log("GenericDisplayedBioBrick::Initialize("+biobrickScript+", "+biobrick+") starts");
+        // Debug.Log("GenericDisplayedBioBrick Initialize("+biobrickScript+", "+biobrick+") starts");
         biobrickScript._biobrick = biobrick;
     }
 
@@ -79,7 +79,7 @@ public class GenericDisplayedBioBrick : DisplayedElement
 
     public override void OnPress(bool isPressed)
     {
-        // Debug.Log("GenericDisplayedBioBrick::OnPress _id="+_id+", isPressed="+isPressed);
+        // Debug.Log(this.GetType() + " OnPress _id="+_id+", isPressed="+isPressed);
     }
 
     void OnHover(bool isOver)

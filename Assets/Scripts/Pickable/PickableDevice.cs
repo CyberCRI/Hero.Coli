@@ -11,7 +11,7 @@ public abstract class PickableDevice : PickableItem
         if (null == device) {
             Debug.LogWarning(this.GetType() + " addTo() - failed to produce non-null dna bit");
         } else {
-            Debug.Log(this.GetType() + " PickableDevice::addTo " + _dnaBit);
+            Debug.Log(this.GetType() + " addTo " + _dnaBit);
             foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks()) {
                 AvailableBioBricksManager.get ().addAvailableBioBrick (brick, false);
             }
