@@ -91,7 +91,7 @@ public class Fick : XmlLoaderImpl
         Logger.Log ("Fick::loadFicksReactionsFromFiles("
             + Logger.EnumerableToString<string> (files)
             + ") starts"
-                    , Logger.Level.INFO);
+                    );
         LinkedList<FickProperties> propsList = new LinkedList<FickProperties> ();
         LinkedList<FickProperties> newPropList;
 
@@ -106,7 +106,7 @@ public class Fick : XmlLoaderImpl
         Logger.Log ("Fick::loadFicksReactionsFromFiles("
             + Logger.EnumerableToString<string> (files)
             + ") starts"
-                    , Logger.Level.INFO);
+                    );
     }
 
     //! This function is called at each frame and does all the reactions of type FickReaction.

@@ -17,7 +17,7 @@ public class CraftResultDevice : DisplayedDevice {
     // {
     //     Debug.Log("CraftResultDevice OnPress("+isPressed+") slot == null");
     // }
-    // Logger.Log("CraftResultDevice::OnPress("+isPressed+")", Logger.Level.INFO);
+    // Logger.Log("CraftResultDevice::OnPress("+isPressed+")");
   }
 
   protected override void OnHover(bool isOver)

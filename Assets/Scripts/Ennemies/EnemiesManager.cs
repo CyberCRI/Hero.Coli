@@ -9,14 +9,14 @@ public class EnemiesManager
 
     public static void register(BigBadGuy bbg)
     {
-        Logger.Log("EnemiesManager::register("+bbg+")", Logger.Level.INFO);
+        Logger.Log("EnemiesManager::register("+bbg+")");
         _enemies.AddLast(bbg);
     }
 
     public static void unregister(BigBadGuy bbg)
     {
         bool result = _enemies.Remove(bbg);
-        Logger.Log("EnemiesManager::unregister("+bbg+") returned "+result, Logger.Level.INFO);
+        Logger.Log("EnemiesManager::unregister("+bbg+") returned "+result);
     }
 
     public static bool Paused {
@@ -24,7 +24,7 @@ public class EnemiesManager
             return paused;
         }
         set {
-            Logger.Log("EnemiesManager::Paused set to "+value, Logger.Level.INFO);
+            Logger.Log("EnemiesManager::Paused set to "+value);
             if (paused != value) {
                 PauseAll (value);
             }
@@ -33,7 +33,7 @@ public class EnemiesManager
 
     private static void PauseAll (bool isPause)
     {
-        Logger.Log("EnemiesManager::Pausell("+isPause+")", Logger.Level.DEBUG);
+        Logger.Log("EnemiesManager::Pausell("+isPause+")");
         foreach (BigBadGuy bbg in _enemies) {
             if(null != bbg) {
                 bbg.Pause (isPause);

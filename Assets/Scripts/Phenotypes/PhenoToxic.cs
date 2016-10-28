@@ -39,7 +39,7 @@ public class PhenoToxic : Phenotype
             initMoleculePhenotype();
             if (_mol == null)
             {
-                Logger.Log("_mol == null", Logger.Level.INFO);
+                Logger.Log("_mol == null");
                 return;
             }
         }

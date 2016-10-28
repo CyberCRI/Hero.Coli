@@ -66,7 +66,7 @@ public static class LinkedListExtensions
    */
   public static LinkedList<T> Filter<T>(LinkedList<T> list, Predicate<T> predicate) {
     string predicateString = predicate==null?"(null)":"predicate";
-    Logger.Log("LinkedListExtensions::Filter("+Logger.ToString<T>(list)+", "+predicateString+")", Logger.Level.TRACE);
+    Logger.Log("LinkedListExtensions::Filter("+Logger.ToString<T>(list)+", "+predicateString+")");
     LinkedList<T> result = new LinkedList<T>();
     foreach (T t in list) {
       if (predicate(t)) {

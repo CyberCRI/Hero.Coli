@@ -17,14 +17,14 @@ public class I18nLoader {
   }
 
   public I18nLoader(Dictionary<I18n.Language, IDictionary<string, string>> dicos) {
-    Logger.Log("I18nLoader::I18nLoader("+dicos+")", Logger.Level.DEBUG);
+    Logger.Log("I18nLoader::I18nLoader("+dicos+")");
     _dicos = dicos;
   }
 
 
   public void loadFromFile(string filePath, I18n.Language lang)
   {
-    Logger.Log("I18nLoader::loadFromFile("+filePath+")", Logger.Level.INFO);
+    Logger.Log("I18nLoader::loadFromFile("+filePath+")");
 
     XmlDocument xmlDoc = Tools.getXmlDocument(filePath);
     
@@ -47,7 +47,7 @@ public class I18nLoader {
       }
 
       Logger.Log ("I18nLoader::loadFromFile got "+I18nXMLTags.CODE+"="+_code
-        , Logger.Level.TRACE);
+        );
 
       if (checkString(_code))
       {
@@ -67,7 +67,7 @@ public class I18nLoader {
         {
           Logger.Log("I18nLoader::loadFromFile adding "+I18nXMLTags.TRANSLATION
           +"="+_translation+" for \""+I18nXMLTags.CODE+"\"="+_code+"\n"
-          , Logger.Level.TRACE);
+          );
           _dicos[lang].Add(_code, _translation);
         }
         else

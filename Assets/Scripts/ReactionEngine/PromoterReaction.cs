@@ -156,7 +156,7 @@ public class PromoterReaction : IReaction
   {
     string f1 = Logger.ToString<PromoterNodeData>(formula1);
     string f2 = Logger.ToString<PromoterNodeData>(formula2);
-    Logger.Log("PromoterReaction::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2, Logger.Level.DEBUG);
+    Logger.Log("PromoterReaction::formulaEquals (f1==f2)="+(f1==f2)+"f1="+f1+", f2="+f2);
     return f1 == f2;
   }
 
@@ -178,7 +178,7 @@ public class PromoterReaction : IReaction
       +", btermFac="+btermFac
       +", bformula="+bformula
       +", bbeta="+bbeta
-      , Logger.Level.DEBUG);
+      );
 
     return (promoter != null)
     && base.PartialEquals(reaction)
@@ -346,7 +346,7 @@ public class PromoterReaction : IReaction
   public override void react(ArrayList molecules)
   {
     if (!_isActive) {
-	  if(_debug) Logger.Log("PromoterReaction::react !_isActive", Logger.Level.TRACE);
+	  if(_debug) Logger.Log("PromoterReaction::react !_isActive");
       return;
 	}
     float delta = execNode(_formula, molecules);
@@ -368,7 +368,7 @@ public class PromoterReaction : IReaction
 	
     foreach (Product pro in _products)
       {
-	    if(_debug) Logger.Log("PromoterReaction::react product="+pro, Logger.Level.TRACE);
+	    if(_debug) Logger.Log("PromoterReaction::react product="+pro);
         Molecule mol = ReactionEngine.getMoleculeFromName(pro.getName(), molecules);
 			
         if( mol == null) Debug.Log("mol is null, pro.getName()="+pro.getName()+", molecules="+molecules.ToString());
@@ -377,17 +377,14 @@ public class PromoterReaction : IReaction
 		float increase = delta * pro.v * _terminatorFactor * _beta
                            * ReactionEngine.reactionsSpeed * _reactionSpeed;
 		
-		if(Logger.isLevel(Logger.Level.TRACE)) {
-		  if(_debug) Logger.Log("PromoterReaction::react increase="+increase
+		  if(_debug) Debug.Log("PromoterReaction::react increase="+increase
 					+", delta:"+delta
 					+", qFactor:"+pro.v
 					+", tFactor:"+_terminatorFactor
 					+", beta:"+_beta
                     +", reactionsSpeed:"+ReactionEngine.reactionsSpeed
-					+", reactionSpeed:"+_reactionSpeed
-					, Logger.Level.TRACE
+					+", reactionSpeed:"+_reactionSpeed					
 					);
-		}
 			
         if (enableSequential) {
 		  float oldCC = mol.getConcentration();
@@ -395,12 +392,12 @@ public class PromoterReaction : IReaction
 		  float newCC = mol.getConcentration();
 		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]old="+oldCC
 					+" ["+mol.getName()+"]new="+newCC
-					, Logger.Level.TRACE
+					
 					);
         } else {
 		  mol.addNewConcentration(increase);
 		  if(_debug) Logger.Log("PromoterReaction::react ["+mol.getName()+"]="+mol.getConcentration()+" addNewConcentration("+increase+")"
-					, Logger.Level.TRACE
+					
 					);
 	    }
 				

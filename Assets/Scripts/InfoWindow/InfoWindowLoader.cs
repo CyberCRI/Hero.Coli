@@ -26,7 +26,7 @@ public class InfoWindowLoader {
 
   public LinkedList<StandardInfoWindowInfo> loadInfoFromFile(string filePath)
   {
-    Logger.Log("InfoWindowLoader::loadInfoFromFile("+filePath+")", Logger.Level.INFO);
+    Logger.Log("InfoWindowLoader::loadInfoFromFile("+filePath+")");
 
     LinkedList<StandardInfoWindowInfo> resultInfo = new LinkedList<StandardInfoWindowInfo>();
 

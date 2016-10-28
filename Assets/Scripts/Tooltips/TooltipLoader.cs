@@ -70,7 +70,7 @@ public class TooltipLoader {
 
     public LinkedList<TooltipInfo> loadInfoFromFile(string filePath)
     {
-        Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+")", Logger.Level.DEBUG);
+        Logger.Log("TooltipLoader::loadInfoFromFile("+filePath+")");
 
         LinkedList<TooltipInfo> resultInfo = new LinkedList<TooltipInfo>();
 

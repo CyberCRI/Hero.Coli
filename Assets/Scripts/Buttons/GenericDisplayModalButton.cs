@@ -8,7 +8,7 @@ public class GenericDisplayModalButton : ModalButton
 
     public override void press ()
     {
-        Logger.Log ("GenericDisplayModalButton::press() with modalCode=" + modalCode, Logger.Level.INFO);
+        Logger.Log ("GenericDisplayModalButton::press() with modalCode=" + modalCode);
             
         //TODO manage stack of modal elements in ModalManager
         if (unsetModal) {

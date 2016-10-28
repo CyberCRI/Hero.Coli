@@ -138,7 +138,7 @@ public class GraphMoleculeList : MonoBehaviour {
             }
             else
             {
-                Logger.Log("addDevice failed: newEquiped=" + newEquiped, Logger.Level.TRACE);
+                Logger.Log("addDevice failed: newEquiped=" + newEquiped);
             }
         }
     }

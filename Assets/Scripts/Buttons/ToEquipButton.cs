@@ -6,7 +6,7 @@ public class ToEquipButton : MonoBehaviour {
 
 	 private void OnPress(bool isPressed) {
 	    if(isPressed) {
-	      Logger.Log("ToEquipButton::OnPress()", Logger.Level.INFO);
+	      Logger.Log("ToEquipButton::OnPress()");
 	      GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen2);
 	    }
 	  }

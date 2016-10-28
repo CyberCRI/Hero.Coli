@@ -6,7 +6,7 @@
         {
             if (CraftZoneManager.isOpenable())
             {
-                Logger.Log("ToCraftButton::OnPress()", Logger.Level.INFO);
+                Logger.Log("ToCraftButton::OnPress()");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
             }
             else

@@ -4,7 +4,7 @@ using System.Collections;
 public class InfoWindowPickUpTrigger : InfoWindowTrigger, IPickable {
 
   public void OnPickedUp() {
-    Logger.Log("InfoWindowPickUpTrigger::OnPickedUp() _alreadyDisplayed="+_alreadyDisplayed.ToString(), Logger.Level.DEBUG);
+    Logger.Log("InfoWindowPickUpTrigger::OnPickedUp() _alreadyDisplayed="+_alreadyDisplayed.ToString());
     displayInfoWindow();
   }
 

@@ -116,7 +116,7 @@ public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
     {
         Logger.Log ("CompoundLoadableFromXmlImpl::innerInstantiateFromXml(" + Logger.ToString (node) + ")"
             + " with elementCollection=" + Logger.ToString<T> ("T", elementCollection)
-                , Logger.Level.DEBUG);
+                );
     
         otherInitialize (node);
             
@@ -131,7 +131,7 @@ public abstract class CompoundLoadableFromXmlImpl<T> : LoadableFromXmlImpl
                     Debug.LogWarning(this.GetType() + " innerInstantiateFromXml could not load elt from " + Logger.ToString (eltNode));
                 }
             } else {
-                Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml found comment", Logger.Level.DEBUG);
+                Logger.Log ("CompoundLoadableFromXmlImpl.innerInstantiateFromXml found comment");
             }
         }
     }

@@ -59,7 +59,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   */
   public override bool tryInstantiateFromXml(XmlNode node)
   {
-    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load", Logger.Level.INFO);
+    Logger.Log("ActiveTransportProperties.tryInstantiateFromXml("+node+"), this="+this+") will load");
     
     foreach (XmlNode attr in node)
     {
@@ -125,12 +125,12 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       //TODO conditions on Kcat, alpha, beta, Km, Ki, energyCost
       )
     {
-      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml failed to load", Logger.Level.INFO);
+      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml failed to load");
       return false;
     }
     else
     {
-      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this, Logger.Level.INFO);
+      Logger.Log("ActiveTransportProperties.tryInstantiateFromXml(node) loaded this="+this);
       return true;
     }
   }

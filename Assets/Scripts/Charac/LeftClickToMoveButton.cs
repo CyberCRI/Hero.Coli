@@ -6,7 +6,7 @@ public class LeftClickToMoveButton : MonoBehaviour {
   private void OnPress(bool isPressed)
   {
     if(isPressed) {
-      Logger.Log("LeftClickToMoveButton::OnPress()", Logger.Level.INFO);
+      Logger.Log("LeftClickToMoveButton::OnPress()");
       ControlsMainMenuItemArray.get ().switchControlTypeToLeftClickToMove();
     }
   }

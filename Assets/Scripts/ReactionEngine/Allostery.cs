@@ -260,7 +260,7 @@ public class Allostery : IReaction
         if(b)
         {
             Logger.Log ("Allostery::tryInstantiateFromXml success"
-                        , Logger.Level.DEBUG);
+                        );
             return true;
         }
         else

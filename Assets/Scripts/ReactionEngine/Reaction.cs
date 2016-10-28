@@ -308,7 +308,7 @@ public abstract class IReaction : LoadableFromXmlImpl
         else
         {
             Logger.Log("Reaction::loadReactionReactants loaded successfully " + this
-              , Logger.Level.DEBUG);
+              );
             return true;
         }
 

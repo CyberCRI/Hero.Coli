@@ -130,13 +130,13 @@ public class Medium : LoadableFromXmlImpl
      */
     public void addReaction(IReaction reaction)
     {
-        //// Debug.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction, Logger.Level.DEBUG);
+        //// Debug.Log("Medium::addReaction to medium#"+_numberId+" with "+reaction);
         if (reaction != null)
         {
             reaction.setMedium(this);
             reaction.enableEnergy = _enableEnergy;
             _reactions.AddLast(reaction);
-            //// Debug.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions), Logger.Level.DEBUG);
+            //// Debug.Log("Medium::addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
         }
         else
         {
@@ -250,7 +250,7 @@ public class Medium : LoadableFromXmlImpl
      */
     public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
     {
-        // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId, Logger.Level.TRACE);
+        // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId);
         Molecule newMol;
         Molecule startingMolStatus;
 
@@ -270,7 +270,7 @@ public class Medium : LoadableFromXmlImpl
             // Debug.Log("Medium::initMoleculesFromMoleculeSets medium#" + _numberId
             // + " add mol " + newMol.getName()
             // + " with cc=" + newMol.getConcentration()
-            // , Logger.Level.TRACE
+            // 
             // );
             _molecules.Add(newMol);
         }
@@ -337,7 +337,7 @@ public class Medium : LoadableFromXmlImpl
     /*!
       \brief Debug the concentration of each molecules of the medium
      */
-    public void Log(Logger.Level level = Logger.Level.TRACE)
+    public void Log()
     {
         string content = "";
         foreach (Molecule m in _molecules)
@@ -349,7 +349,7 @@ public class Medium : LoadableFromXmlImpl
             content += m.ToString();
         }
 
-        // Debug.Log("Medium::debug() #" + _numberId + "[" + content + "]", level);
+        // Debug.Log("Medium::debug() #" + _numberId + "[" + content + "]");
     }
 
     /*!
@@ -363,14 +363,10 @@ public class Medium : LoadableFromXmlImpl
 
         foreach (IReaction reaction in _reactions)
         {
-            /*
-          if(Logger.isLevel(Logger.Level.TRACE)) {
-            PromoterReaction promoter = reaction as PromoterReaction;
-            if (promoter != null) {
-              // Debug.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction, Logger.Level.TRACE);
-            }
-          }
-          */
+            // PromoterReaction promoter = reaction as PromoterReaction;
+            // if (promoter != null) {
+            //   // Debug.Log("Medium::Update reaction.react("+_molecules+") with reaction="+reaction);
+            // }
             reaction.react(_molecules);
         }
 
@@ -567,7 +563,7 @@ public class Medium : LoadableFromXmlImpl
   */
     public override bool tryInstantiateFromXml(XmlNode node)
     {
-        // Debug.Log("Medium.tryInstantiateFromXml(" + Logger.ToString(node) + ")", Logger.Level.DEBUG);
+        // Debug.Log("Medium.tryInstantiateFromXml(" + Logger.ToString(node) + ")");
 
         foreach (XmlNode attr in node)
         {
@@ -631,7 +627,7 @@ public class Medium : LoadableFromXmlImpl
         }
         else
         {
-            // Debug.Log("Medium.tryInstantiateFromXml(node) loaded this=" + this, Logger.Level.DEBUG);
+            // Debug.Log("Medium.tryInstantiateFromXml(node) loaded this=" + this);
             return true;
         }
     }
