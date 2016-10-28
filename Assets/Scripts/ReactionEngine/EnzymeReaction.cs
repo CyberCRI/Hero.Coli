@@ -387,13 +387,12 @@ public class EnzymeReaction : IReaction
       }
       else
       {
-        Logger.Log(
-                "EnzymeReaction::hasValidData base.hasValidData()="+base.hasValidData()
-                +" & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
-                +" & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
-                +" & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
-                +" => valid="+valid
-                , Logger.Level.ERROR
+        Debug.LogError(this.GetType() 
+                + " base.hasValidData()="+base.hasValidData()
+                + " & !string.IsNullOrEmpty(_substrate)="+!string.IsNullOrEmpty(_substrate)
+                + " & !string.IsNullOrEmpty(_enzyme)="+!string.IsNullOrEmpty(_enzyme)
+                + " & !string.IsNullOrEmpty(_effector)="+!string.IsNullOrEmpty(_effector)
+                + " => valid="+valid
                 );
       }
       return valid;
@@ -425,8 +424,7 @@ public class EnzymeReaction : IReaction
     {
       if (String.IsNullOrEmpty(value))
       {
-        Logger.Log("EnzymeReaction::loadEnzymeFloat : Empty productionMax field"
-                       , Logger.Level.ERROR);
+        Debug.LogError(this.GetType() + " loadEnzymeFloat : Empty productionMax field");
         return false;
       }
       setter(float.Parse(value.Replace(",", ".")));
@@ -446,8 +444,7 @@ public class EnzymeReaction : IReaction
         {
           if (String.IsNullOrEmpty(attr.InnerText))
           {
-            Logger.Log("EnzymeReaction::loadEnzymeReactionProducts : Empty name field in Enzyme Reaction definition"
-                               , Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " loadEnzymeReactionProducts : Empty name field in Enzyme Reaction definition");
             return false;
           }
           Product prod = new Product();

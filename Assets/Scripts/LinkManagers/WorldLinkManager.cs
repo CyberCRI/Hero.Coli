@@ -86,7 +86,7 @@ public class WorldLinkManager : LinkManager
         GameObject perso = Hero.get().gameObject;
         if (null == perso)
         {
-            Logger.Log("WorldLinkManager: error: Hero not found!", Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " Hero not found!");
         }
 
         if (null != startPosition)

@@ -54,13 +54,13 @@ public class VectrosityPanel : MonoBehaviour
             }
             if (null == _mediums)
             {
-                Logger.Log("VectrosityPanel::safeLazyInit failed to get mediums", Logger.Level.WARN);
+                Debug.LogWarning(this.GetType() + " safeLazyInit failed to get mediums");
                 return false;
             }
         }
         else
         {
-            Logger.Log("VectrosityPanel::safeLazyInit failed to get ReactionEngine", Logger.Level.WARN);
+            Debug.LogWarning(this.GetType() + " safeLazyInit failed to get ReactionEngine");
             return false;
         }
 
@@ -77,14 +77,14 @@ public class VectrosityPanel : MonoBehaviour
         Medium medium = ReactionEngine.getMediumFromId(_mediumId, _mediums);
         if (medium == null)
         {
-            Logger.Log("VectrosityPanel Can't find the given medium (" + _mediumId + ")", Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " Can't find the given medium (" + _mediumId + ")");
             return;
         }
 
         _molecules = medium.getMolecules();
         if (_molecules == null)
         {
-            Logger.Log("VectrosityPanel Can't find molecules in medium (" + _mediumId + ")", Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " Can't find molecules in medium (" + _mediumId + ")");
             return;
         }
 
@@ -152,21 +152,21 @@ public class VectrosityPanel : MonoBehaviour
             {
                 if (areLinesNull)
                 {
-                    Logger.Log("VectrosityPanel toggling lines with areLinesNull=" + areLinesNull + ": creating lines", Logger.Level.ERROR);
+                    // Debug.Log(this.GetType() + " toggling lines with areLinesNull=" + areLinesNull + ": creating lines");
                     foreach (Line line in _lines)
                     {
                         line.initializeVectorLine();
-                        Logger.Log("VectrosityPanel initialized line " + line.name, Logger.Level.ERROR);
+                        // Debug.Log(this.GetType() + " initialized line " + line.name);
                     }
                     areLinesNull = false;
                 }
                 else
                 {
-                    Logger.Log("VectrosityPanel toggling lines with areLinesNull=" + areLinesNull + ": destroying lines", Logger.Level.ERROR);
+                    // Debug.Log(this.GetType() + " toggling lines with areLinesNull=" + areLinesNull + ": destroying lines");
                     foreach (Line line in _lines)
                     {
                         line.destroyLine();
-                        Logger.Log("VectrosityPanel destroyed line " + line.name, Logger.Level.ERROR);
+                        // Debug.Log(this.GetType() + " destroyed line " + line.name);
                     }
                     areLinesNull = true;
                 }
@@ -188,13 +188,13 @@ public class VectrosityPanel : MonoBehaviour
 
     void OnDisable()
     {
-        // Logger.Log("VectrosityPanel::OnDisable " + identifier, Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " OnDisable " + identifier);
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.VECTROSITYPANEL);
     }
 
     void OnEnable()
     {
-        // Logger.Log("VectrosityPanel::OnEnable " + identifier, Logger.Level.TRACE);
+        // Debug.Log(this.GetType() + " OnEnable " + identifier);
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.VECTROSITYPANEL);
     }
 

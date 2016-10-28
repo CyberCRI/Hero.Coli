@@ -40,8 +40,7 @@ public class FickProperties : LoadableFromXmlImpl
         case "MediumId1":
           if(String.IsNullOrEmpty(attr.InnerText))
           {
-              Logger.Log("FickProperties::tryInstantiateFromXml empty MediumId1"
-                                 , Logger.Level.ERROR);
+              Debug.LogError(this.GetType() + " tryInstantiateFromXml empty MediumId1");
               return false;
           }
           else
@@ -52,8 +51,7 @@ public class FickProperties : LoadableFromXmlImpl
         case "MediumId2":
           if(String.IsNullOrEmpty(attr.InnerText))
           {
-              Logger.Log("FickProperties::tryInstantiateFromXml empty MediumId2"
-                         , Logger.Level.ERROR);
+              Debug.LogError(this.GetType() + " tryInstantiateFromXml empty MediumId2");
               return false;
           }
           else
@@ -68,7 +66,7 @@ public class FickProperties : LoadableFromXmlImpl
           surface = float.Parse(attr.InnerText.Replace(",", "."));
           break;
         default:
-          Logger.Log ("FickProperties::tryInstantiateFromXml(node) unexpected attribute "+attr.Name, Logger.Level.ERROR);
+          Debug.LogError(this.GetType() + " tryInstantiateFromXml(node) unexpected attribute "+attr.Name);
           return false;
       }
     }

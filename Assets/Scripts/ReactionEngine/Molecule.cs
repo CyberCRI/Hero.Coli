@@ -218,11 +218,10 @@ public class Molecule : LoadableFromXmlImpl
                     //private float _fickFactor;                          //!< The FickFactor is a coefficient for FickReaction
                     )
                 {
-                  Logger.Log ("Molecule.tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
+                  Debug.LogError(this.GetType() + " tryInstantiateFromXml("+Logger.ToString(moleculeNode)+", loader) failed eventually because "
                                 +"_name="+_name
                                 +"& _realName="+_realName
-                                +"& _type="+_type
-                                , Logger.Level.ERROR);
+                                +"& _type="+_type);
                   return false;
                 }
                 else

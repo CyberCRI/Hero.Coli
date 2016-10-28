@@ -50,7 +50,7 @@ public class Curve
       //Vectrosity.VectorLine.SetCamera(_vectroCam);
       Vectrosity.VectorLine.SetCamera3D(_vectroCam);
     else
-      Logger.Log("No Camera set for the Graph Window.", Logger.Level.ERROR);
+      Debug.LogError(this.GetType() + " No Camera set for the Graph Window.");
   }
 
   public float getLastY() { if (_points != null && _points.Last != null) return _points.Last.Value.y; return 0;}
@@ -113,7 +113,7 @@ public class Curve
   {
     if (_mol == null)
       {
-        Logger.Log("No molecule defined for this Curve", Logger.Level.ERROR);
+        Debug.LogError(this.GetType() + " No molecule defined for this Curve");
         return ;
       }
     Vector2 p = new Vector2((float)Time.timeSinceLevelLoad * 200f, _mol.getConcentration());

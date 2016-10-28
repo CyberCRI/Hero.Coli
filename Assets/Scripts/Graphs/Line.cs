@@ -208,7 +208,7 @@ public class Line
             allValues += ";" + vec.ToString();
         }
         allValues += "]";
-        Logger.Log("Line _pointsList=" + allValues, Logger.Level.ERROR);
+        Debug.Log(this.GetType() + " Line _pointsList=" + allValues);
 
         allValues = "[";
         foreach (float flt in _floatList)
@@ -216,7 +216,7 @@ public class Line
             allValues += ";" + flt.ToString();
         }
         allValues += "]";
-        Logger.Log("Line _floatList=" + allValues, Logger.Level.ERROR);
+        Debug.Log(this.GetType() + " Line _floatList=" + allValues);
     }
 
     public void setActive(bool isActive)

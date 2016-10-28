@@ -485,13 +485,11 @@ A PromoterReaction should respect this syntax:
       }
       else
       {
-            Logger.Log(
-                 "PromoterReaction::hasValidData base.hasValidData()="+(base.hasValidData())
+            Debug.LogError(this.GetType() + " hasValidData base.hasValidData()="+(base.hasValidData())
                 +" & 0 <= _terminatorFactor="+(0 <= _terminatorFactor)
                 +" & 1 >= _terminatorFactor="+(1 >= _terminatorFactor)
                 +" & null != _formula="+(null != _formula)
                 +" => valid="+valid
-                , Logger.Level.ERROR
                 );
       }
       return valid;

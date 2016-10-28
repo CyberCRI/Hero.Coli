@@ -203,8 +203,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
     }
     if(0 == products.Count)
     {
-      Logger.Log("ActiveTransport.loadActiveTransportReactionProducts no product loaded"
-                 , Logger.Level.ERROR);
+      Debug.LogError(this.GetType() + " loadActiveTransportReactionProducts no product loaded");
       return false;
     }
     else

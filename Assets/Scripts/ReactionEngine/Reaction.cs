@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Xml;
+using UnityEngine;
 
 /*!
   \brief This class is an interface that each reaction has to inherit.
@@ -196,14 +197,11 @@ public abstract class IReaction : LoadableFromXmlImpl
     protected virtual bool PartialEquals(IReaction reaction)
     {
         //TODO check this
-        /*
-    if(!hasValidData() || !reaction.hasValidData())
-    {
-        Logger.Log("IReaction::PartialEquals invalid reaction"
-                   , Logger.Level.ERROR);
-        return false;
-    }
-    */
+    // if(!hasValidData() || !reaction.hasValidData())
+    // {
+    //     Debug.LogError(this.GetType() + " PartialEquals invalid reaction");
+    //     return false;
+    // }
 
         bool res =
              LinkedListExtensions.Equals(_products, reaction._products)
@@ -233,13 +231,12 @@ public abstract class IReaction : LoadableFromXmlImpl
 
         if (!isValid)
         {
-            Logger.Log("IReaction::hasValidData !string.IsNullOrEmpty(_name)=" + (!string.IsNullOrEmpty(_name))
+            Debug.LogError(this.GetType() + " hasValidData !string.IsNullOrEmpty(_name)=" + (!string.IsNullOrEmpty(_name))
               + " & 0 != _products.Count=" + (0 != _products.Count)
               + " & null != _medium=" + (null != _medium)
               + " & 0 != _reactionSpeed=" + (0 != _reactionSpeed)
               + " & 0 != _energyCost=" + (0 != _energyCost)
               + " => valid=" + isValid
-              , Logger.Level.ERROR
               );
         }
         return isValid;
@@ -288,8 +285,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             {
                 if (!loadReactionReactant(attr))
                 {
-                    Logger.Log("Reaction::loadReactionReactants loadReactionReactant failed"
-                                , Logger.Level.ERROR);
+                    Debug.LogError(this.GetType() + " loadReactionReactants loadReactionReactant failed");
                     return false;
                 }
                 else
@@ -299,16 +295,14 @@ public abstract class IReaction : LoadableFromXmlImpl
             }
             else
             {
-                Logger.Log("Reaction::loadReactionReactants bad attr name:" + attr.Name
-                                  , Logger.Level.ERROR);
+                Debug.LogError(this.GetType() + " loadReactionReactants bad attr name:" + attr.Name);
                 return false;
             }
         }
 
         if (!b)
         {
-            Logger.Log("Reaction::loadReactionReactants loaded nothing"
-              , Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " loadReactionReactants loaded nothing");
             return false;
         }
         else
@@ -334,8 +328,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             {
                 if (string.IsNullOrEmpty(attr.InnerText))
                 {
-                    Logger.Log("Reaction::loadReactionReactant Empty name field in instant reaction reactant definition"
-                                     , Logger.Level.ERROR);
+                    Debug.LogError(this.GetType() + " loadReactionReactant Empty name field in instant reaction reactant definition");
                     return false;
                 }
                 reactant.setName(attr.InnerText);
@@ -344,8 +337,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             {
                 if (string.IsNullOrEmpty(attr.InnerText))
                 {
-                    Logger.Log("Reaction::loadReactionReactant Empty quantity field in instant reaction reactant definition"
-                               , Logger.Level.ERROR);
+                    Debug.LogError(this.GetType() + " loadReactionReactant Empty quantity field in instant reaction reactant definition");
                     return false;
                 }
                 reactant.v = float.Parse(attr.InnerText.Replace(",", "."));
@@ -388,8 +380,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             {
                 if (string.IsNullOrEmpty(attr.InnerText))
                 {
-                    Logger.Log("Reaction::loadReactionProduct Empty name field in instant reaction product definition"
-                                       , Logger.Level.ERROR);
+                    Debug.LogError(this.GetType() + " loadReactionProduct Empty name field in instant reaction product definition");
                     return false;
                 }
                 product.setName(attr.InnerText);
@@ -398,8 +389,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             {
                 if (string.IsNullOrEmpty(attr.InnerText))
                 {
-                    Logger.Log("Reaction::loadReactionProduct Empty quantity field in instant reaction product definition"
-                                 , Logger.Level.ERROR);
+                    Debug.LogError(this.GetType() + " loadReactionProduct Empty quantity field in instant reaction product definition");
                     return false;
                 }
                 product.v = float.Parse(attr.InnerText.Replace(",", "."));

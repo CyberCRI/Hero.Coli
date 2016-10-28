@@ -265,8 +265,7 @@ public class Allostery : IReaction
         }
         else
         {
-            Logger.Log ("Allostery::tryInstantiateFromXml failed"
-                        , Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " tryInstantiateFromXml failed");
             return false;
         }
     }
@@ -294,8 +293,7 @@ public class Allostery : IReaction
     {
       if (String.IsNullOrEmpty(value))
       {
-        Logger.Log ("Allostery::loadAllosteryString empty name field"
-          , Logger.Level.ERROR);
+        Debug.LogError(this.GetType() + " loadAllosteryString empty name field");
         return false;
       }
       setter(value);
@@ -312,8 +310,7 @@ public class Allostery : IReaction
     {
       if (String.IsNullOrEmpty(value))
         {
-            Logger.Log ("Allostery::loadAllosteryString empty productionMax field"
-                        , Logger.Level.ERROR);
+            Debug.LogError(this.GetType() + " loadAllosteryString empty productionMax field");
         return false;
       }
       setter(float.Parse(value.Replace(",", ".")));
