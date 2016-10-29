@@ -333,13 +333,13 @@ public class GameConfiguration
     }
 
     //switches the logging mode from test to normal and conversely
-    //returns true if switched to normal
+    //returns true if switched to test
     public bool switchMetricsGameVersion()
     {
         RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
         setMetricsDestination(isTestGUID());
         RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHTOGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
-        return !isTestGUID();
+        return isTestGUID();
     }
 
     public bool isTestGUID()

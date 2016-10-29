@@ -4,17 +4,25 @@ using System.Collections;
 
 public class BackendManager : MonoBehaviour
 {
-
-    bool isTestGUID = false;
+    [SerializeField]
+    private bool isTestGUID = false;
+    [SerializeField]
+    private bool forceAdmin = false;
     private float duration = 2.0f;
+
+    void Start()
+    {
+        isTestGUID = GameConfiguration.isAdmin;
+    }
 
     // Update is called once per frame
     void Update()
     {
         //logging mode: to test or to production RedMetrics version
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl))
+        if (forceAdmin || (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl)))
         {
-            MemoryManager.get().configuration.switchMetricsGameVersion();
+            forceAdmin = false;
+            isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
 
             //display feedback for logging mode
             string msg;

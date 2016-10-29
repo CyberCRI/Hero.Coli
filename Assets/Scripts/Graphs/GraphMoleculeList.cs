@@ -35,6 +35,16 @@ public class GraphMoleculeList : MonoBehaviour {
   private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
   private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
   private Vector3 _initialScale;
+  private int _previousListedCount, _previousTotalCount;
+  private string _realName, _codeName, _namesToDisplay, _valuesToDisplay; 
+  private float _concentration;
+  private Molecule _molecule;
+  private DisplayedMolecule _displayedMolecule, _createdDisplayedMolecule;
+  private ArrayList _moleculesArrayList;
+  private Dictionary<Molecule, DisplayedMolecule> _molecules = null; 
+  private List<KeyValuePair<Molecule, DisplayedMolecule>> _toAdd = new List<KeyValuePair<Molecule, DisplayedMolecule>>();
+  private List<EquipedDisplayedDeviceWithMolecules> _containers;
+  private List<Molecule> _toReset = new List<Molecule>();
 
   // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
   [SerializeField]
@@ -89,6 +99,21 @@ public class GraphMoleculeList : MonoBehaviour {
     }
     foreach(DisplayedMolecule molecule in _toRemove)
     {
+      // useless?
+      _toReset.Clear();
+      foreach(KeyValuePair<Molecule, DisplayedMolecule> kvp in _molecules)
+      {
+        if(kvp.Value == molecule)
+        {
+          _toReset.Add(kvp.Key);
+        }
+      }
+      foreach(Molecule toReset in _toReset)
+      {
+          _molecules.Remove(toReset);
+          _molecules.Add(toReset, null);
+      }
+
       _displayedMolecules.Remove(molecule);
       if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
       {
@@ -220,42 +245,53 @@ public class GraphMoleculeList : MonoBehaviour {
 	void Update()
   {
         
-    int previousListedCount = _displayedListMoleculesCount;
-    int previousTotalCount = _displayedMolecules.Count;
+    _previousListedCount = _displayedListMoleculesCount;
+    _previousTotalCount = _displayedMolecules.Count;
 
     resetMoleculeList();
 
-		ArrayList molecules = _reactionEngine.getMoleculesFromMedium(mediumId);
-		foreach(System.Object molecule in molecules) {
-      Molecule castMolecule = (Molecule)molecule;
-      string realName = castMolecule.getRealName();
-      string codeName = castMolecule.getName();
-			float concentration = castMolecule.getConcentration();
-      if(displayAll || (0 != concentration))
+    if (null == _molecules)
+    {
+      _molecules = new Dictionary<Molecule, DisplayedMolecule>();
+		  _moleculesArrayList = _reactionEngine.getMoleculesFromMedium(mediumId);
+
+      foreach(System.Object molecule in _moleculesArrayList)
       {
-        DisplayedMolecule found = LinkedListExtensions.Find(
-                    _displayedMolecules
-                    , m => m.getCodeName() == codeName
-                    , false
-                    , " GraphMoleculeList::Update()"
-                    );
-        if(null != found)
+        _molecules.Add((Molecule)molecule, null);
+      }
+    }
+
+    if(0 != _toAdd.Count)
+    {
+      _toAdd.Clear();
+    }
+
+		foreach(KeyValuePair<Molecule, DisplayedMolecule> kvp in _molecules) {
+      _molecule = kvp.Key;
+      _displayedMolecule = kvp.Value;
+			_concentration = _molecule.getConcentration();
+      if(displayAll || (0 != _concentration))
+      {
+        if(null != _displayedMolecule)
         {
-          found.update(concentration);
+          _displayedMolecule.update(_concentration);
         }
         else
         //molecule is not displayed yet
         {
-          DisplayedMolecule created = new DisplayedMolecule(codeName, realName, concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
+          _realName = _molecule.getRealName();
+          _codeName = _molecule.getName();
+
+          _createdDisplayedMolecule = new DisplayedMolecule(_codeName, _realName, _concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
 
           //search if molecule should be displayed in a Device/molecule component
-          List<EquipedDisplayedDeviceWithMolecules> containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == codeName);
-          if(containers.Count != 0)
+          _containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == _codeName);
+          if(_containers.Count != 0)
           {                        
-            created.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
-            foreach(EquipedDisplayedDeviceWithMolecules container in containers)
+            _createdDisplayedMolecule.setDisplayType(DisplayedMolecule.DisplayType.DEVICEMOLECULELIST);
+            foreach(EquipedDisplayedDeviceWithMolecules container in _containers)
             {
-              container.addDisplayedMolecule(created);
+              container.addDisplayedMolecule(_createdDisplayedMolecule);
             }
           }
           else
@@ -263,35 +299,42 @@ public class GraphMoleculeList : MonoBehaviour {
             _displayedListMoleculesCount++;
           }
           //anyway add it to molecule list
-          _displayedMolecules.AddLast(created);
+          _displayedMolecules.AddLast(_createdDisplayedMolecule);
+          _toAdd.Add(new KeyValuePair<Molecule, DisplayedMolecule>(_molecule, _createdDisplayedMolecule));
         }
       }
 		}
 
+    foreach(KeyValuePair<Molecule, DisplayedMolecule> kvp in _toAdd)
+    {
+      _molecules.Remove(kvp.Key);
+      _molecules.Add(kvp.Key, kvp.Value);
+    }
+
     removeUnusedMolecules();
 
-    if(_displayedMolecules.Count != previousTotalCount
-       || previousListedCount != _displayedListMoleculesCount)
+    if(_displayedMolecules.Count != _previousTotalCount
+       || _previousListedCount != _displayedListMoleculesCount)
     {
       //rearrange devices
       positionDeviceAndMoleculeComponents();
     }
 		
-		string namesToDisplay = "";
-    string valuesToDisplay = "";
+		_namesToDisplay = "";
+    _valuesToDisplay = "";
 
 		foreach(DisplayedMolecule molecule in _displayedMolecules) {
       if(molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
       {
-          namesToDisplay+=molecule.getRealName()+":\n";
-          valuesToDisplay+=molecule.getVal()+"\n";
+          _namesToDisplay+=molecule.getRealName()+":\n";
+          _valuesToDisplay+=molecule.getVal()+"\n";
       }
 		}
-		if(!string.IsNullOrEmpty(namesToDisplay)) {
-			namesToDisplay.Remove(namesToDisplay.Length-1, 1);
-      valuesToDisplay.Remove(valuesToDisplay.Length-1, 1);
+		if(!string.IsNullOrEmpty(_namesToDisplay)) {
+			_namesToDisplay.Remove(_namesToDisplay.Length-1, 1);
+      _valuesToDisplay.Remove(_valuesToDisplay.Length-1, 1);
 		}
-    namesLabel.text = namesToDisplay;
-    valuesLabel.text = valuesToDisplay;
+    namesLabel.text = _namesToDisplay;
+    valuesLabel.text = _valuesToDisplay;
 	}
 }
