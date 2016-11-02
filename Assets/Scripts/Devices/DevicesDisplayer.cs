@@ -12,7 +12,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("DevicesDisplayer getwas badly initialized");
+            Debug.LogWarning("DevicesDisplayer get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<DevicesDisplayer>();
         }
         return _instance;

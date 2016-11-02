@@ -14,7 +14,7 @@ public class MineManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("MineManager getwas badly initialized");
+            Debug.LogWarning("MineManager get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<MineManager>();
         }
         return _instance;

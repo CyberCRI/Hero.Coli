@@ -15,7 +15,7 @@ public class InterfaceLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Debug.LogWarning("InterfaceLinkManager getwas badly initialized");
+            Debug.LogWarning("InterfaceLinkManager get was badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {

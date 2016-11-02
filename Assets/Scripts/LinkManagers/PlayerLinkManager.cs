@@ -14,7 +14,7 @@ public class PlayerLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Debug.LogWarning("PlayerLinkManager getwas badly initialized");
+            Debug.LogWarning("PlayerLinkManager get was badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {

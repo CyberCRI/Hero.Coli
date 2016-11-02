@@ -13,7 +13,7 @@ public class InfoWindowManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("InfoWindowManager getwas badly initialized");
+            Debug.LogWarning("InfoWindowManager get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<InfoWindowManager>();
         }
         return _instance;

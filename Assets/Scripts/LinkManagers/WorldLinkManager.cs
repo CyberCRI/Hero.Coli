@@ -15,7 +15,7 @@ public class WorldLinkManager : LinkManager
     {
         if (_instance == null)
         {
-            Debug.LogWarning("WorldLinkManager getwas badly initialized");
+            Debug.LogWarning("WorldLinkManager get was badly initialized");
             GameObject go = GameObject.Find(gameObjectName);
             if (go)
             {

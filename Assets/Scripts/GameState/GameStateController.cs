@@ -38,7 +38,7 @@ public class GameStateController : MonoBehaviour
     {
         if (_instance == null)
         {
-            Debug.LogWarning("GameStateController getwas badly initialized");
+            Debug.LogWarning("GameStateController get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
         }
 

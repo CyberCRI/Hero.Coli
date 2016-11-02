@@ -45,7 +45,7 @@ public class FocusMaskManager : MonoBehaviour
         // Debug.Log("FocusMaskManager get");
         if (_instance == null)
         {
-            Debug.LogWarning("FocusMaskManager getwas badly initialized");
+            Debug.LogWarning("FocusMaskManager get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<FocusMaskManager>();
         }
         return _instance;

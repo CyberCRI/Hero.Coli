@@ -27,7 +27,7 @@ public class ReactionEngine : MonoBehaviour {
     {
         if (_instance == null)
         {
-            Debug.LogWarning("ReactionEngine getwas badly initialized");
+            Debug.LogWarning("ReactionEngine get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<ReactionEngine>();
         }
         return _instance;

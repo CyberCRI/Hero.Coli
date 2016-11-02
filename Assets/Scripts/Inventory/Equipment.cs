@@ -10,7 +10,7 @@ public class Equipment : DeviceContainer
     {
         if (_instance == null)
         {
-            // Debug.LogWarning("Equipment getwas badly initialized");
+            // Debug.LogWarning("Equipment get was badly initialized");
             _instance = GameObject.Find(gameObjectName).GetComponent<Equipment>();
         }
         return _instance;
