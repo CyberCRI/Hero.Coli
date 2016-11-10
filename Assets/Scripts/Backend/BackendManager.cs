@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define DEV
+using UnityEngine;
 using System.Collections;
 
 public class BackendManager : MonoBehaviour
@@ -36,6 +37,15 @@ public class BackendManager : MonoBehaviour
 
             StartCoroutine(waitAndDestroy(createMessage(msg)));
         }
+
+#if DEV
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English ;
+            I18n.changeLanguageTo(newLanguage);
+        }
+#endif
+
 /*
 #if UNITY_EDITOR
         // for optimization process

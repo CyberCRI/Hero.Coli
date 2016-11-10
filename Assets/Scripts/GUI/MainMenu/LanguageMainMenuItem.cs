@@ -3,15 +3,24 @@ using System.Collections;
 
 public class LanguageMainMenuItem : MainMenuItem {
         
-    public Vector3 offset;
-    public GameObject languageIcon;
-    public LanguagesMainMenuItemArray languagesArray;
-    public I18n.Language language;
-    public Vector3 selectedScale;
-    public Vector3 deselectedScale;
-    public float selectedAlpha;
-    public float deselectedAlpha;
-    public UISprite languageSprite;
+    [SerializeField]
+    private Vector3 offset;
+    [SerializeField]
+    private GameObject languageIcon;
+    [SerializeField]
+    private LanguagesMainMenuItemArray languagesArray;
+    [SerializeField]
+    private I18n.Language language;
+    [SerializeField]
+    private Vector3 selectedScale;
+    [SerializeField]
+    private Vector3 deselectedScale;
+    [SerializeField]
+    private float selectedAlpha;
+    [SerializeField]
+    private float deselectedAlpha;
+    [SerializeField]
+    private UISprite languageSprite;
     
     public override void click () {
         // Debug.Log(this.GetType() + " clicked "+itemName);

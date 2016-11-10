@@ -164,6 +164,8 @@ public class FocusMaskManager : MonoBehaviour
         return result;
     }
 
+    // TODO add bool argument to force updated positioning of focus mask and arrow to prevent misplacement bugs
+    // cf issue #345
     public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showButton = false)
     {
         // Debug.Log("focusOn("+position+")");

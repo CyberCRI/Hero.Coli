@@ -13,7 +13,7 @@ public class PlasmidHint : StepByStepTutorial
             return _textKeyPrefix;
         }
     }
-    private const int _stepCount = 6;
+    private const int _stepCount = 9;
     protected override int stepCount
     {
         get
@@ -25,8 +25,14 @@ public class PlasmidHint : StepByStepTutorial
         _craftButton,
         _craftSlot1,
         _craftSlot2,
-        _RBS2brick,  // rbs
+        _PBAD3Brick,
+
+        // the player can't use both in their movement device
+        _RBS2brick,  // rbs2
+        _RBS1brick,  // rbs1
+
         _GFPbrick,  // gfp
+        _terminatorBrick,
         _exitCross
         };
     protected override string[] focusObjects
