@@ -1,53 +1,63 @@
 using UnityEngine;
 
-public class TriggeredDoor : TriggeredBehaviour {
-
-
-    public Transform moveTo;
-	public float speed = 10f;
-	public float closeDelay = 0f;
+public class TriggeredDoor : TriggeredBehaviour
+{
+    [SerializeField]
+    private Transform moveTo;
+    [SerializeField]
+    private float speed = 10f;
+    [SerializeField]
+    private float closeDelay = 0f;
+    [SerializeField]
+    private float minDistance = 0.1f;
     private bool _isTriggered = false;
-	
-	private Vector3 origin;
-	
-	void Start(){
-		origin = transform.position;
-	}
-	
+    private Vector3 _origin;
+
+    void Start()
+    {
+        _origin = transform.position;
+    }
+
     void Update()
     {
-        if (transform.position == origin && _isTriggered == true)
+        if (_isTriggered && transform.position == _origin)
         {
             _isTriggered = false;
         }
     }
 
-	public override void triggerStart(){
-		iTween.MoveTo(gameObject, iTween.Hash(
-			"position", moveTo,
-			"speed", speed,
-			"easetype", iTween.EaseType.easeInOutQuad
-		));
-        _isTriggered = true;
-	}
-	
-	public override void triggerExit(){
+    private void trigger(string _name)
+    {
+        if (!_isTriggered && Vector3.Distance(transform.position, moveTo.position) > minDistance)
+        {
             iTween.MoveTo(gameObject, iTween.Hash(
-            "position", origin,
-            "speed", speed,
-            "easetype", iTween.EaseType.easeInOutQuad,
-            "delay", closeDelay));
-        _isTriggered = false;
-
-
+                "position", moveTo,
+                "speed", speed,
+                "easetype", iTween.EaseType.easeInOutQuad,
+                "name", _name
+            ));
+            _isTriggered = true;
+        }
     }
-	
-	public override void triggerStay(){
+
+    public override void triggerStart()
+    {
+        trigger("triggerStart");
+    }
+
+    public override void triggerStay()
+    {
+        // trigger("triggerStay");
+    }
+
+    public override void triggerExit()
+    {
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position", moveTo,
-            "speed", speed,
-            "easetype", iTween.EaseType.easeInOutQuad
-        ));
-        _isTriggered = true;
+        "position", _origin,
+        "speed", speed,
+        "easetype", iTween.EaseType.easeInOutQuad,
+        "delay", closeDelay,
+        "name", "triggerExit"));
+        _isTriggered = false;
     }
 }

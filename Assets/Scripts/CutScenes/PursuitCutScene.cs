@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
+
+using UnityEngine;
 using System.Collections;
 
-public class PursuitCutScene : CutScene {
+public class PursuitCutScene : CutScene
+{
 
     [SerializeField]
     private GameObject _badGuy;
@@ -14,10 +17,23 @@ public class PursuitCutScene : CutScene {
     private int _iteration = 0;
     private Vector3 _mainCamOrigin;
 
+    public override void initialize()
+    {
+    }
+
+#if QUICKTEST
+    public override void startCutScene()
+    {
+    }
+    public override void endCutScene()
+    {
+    }
+#else
     // Update is called once per frame
-    void Update () {
-	
-	}
+    void Update()
+    {
+
+    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -33,7 +49,7 @@ public class PursuitCutScene : CutScene {
 
     public override void startCutScene()
     {
-        
+
         SetMainCamCopy(1);
         _iteration++;
     }
@@ -43,11 +59,6 @@ public class PursuitCutScene : CutScene {
         _cellControl.freezePlayer(false);
         _badGuy.GetComponent<PlatformMvt>().speed = 32f;
         this.enabled = false;
-    }
-
-    public override void initialize()
-    {
-        
     }
 
     private void SetMainCamCopy(int value)
@@ -127,4 +138,5 @@ public class PursuitCutScene : CutScene {
         SetMainCamCopy(3);
         yield return null;
     }
+#endif
 }

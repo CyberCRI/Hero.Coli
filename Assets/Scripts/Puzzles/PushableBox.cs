@@ -1,72 +1,81 @@
 using UnityEngine;
-using System.Collections;
 
 [System.Serializable]
-public class PushableBox : MonoBehaviour {
-	
-	public float minSpeed;
-	private Vector3 _initPos;
-  private CellControl _control = null;
-  private RigidbodyConstraints noPush = RigidbodyConstraints.FreezeAll;
-  private RigidbodyConstraints canPush = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-	
-	void Start(){
-		_initPos = transform.position;
-	}
+public class PushableBox : MonoBehaviour
+{
+    [SerializeField]
+    private float minSpeed;
+    private Vector3 _initPos;
+    private CellControl _control = null;
+    private RigidbodyConstraints _noPush = RigidbodyConstraints.FreezeAll;
+    private RigidbodyConstraints _canPush = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
 
-  private CellControl lazySafeGetCellControl(Collision col)
-  {
-    if(null == _control)
+    void Start()
     {
-      _control = col.gameObject.GetComponent<CellControl>();
+        _initPos = transform.position;
     }
-    return _control;
-  }
 
-  void OnCollisionEnter(Collision col) {
-    if (col.collider){
-      lazySafeGetCellControl(col);
-      if(_control && _control.currentMoveSpeed >= minSpeed){
-        GetComponent<Rigidbody>().constraints = canPush;
-      }
-      else if (_control && _control.currentMoveSpeed < minSpeed)
-            {
-                GetComponent<Rigidbody>().constraints = noPush;
-            }
-    }
-  }
-  
-  void OnCollisionExit(Collision col) {
-    if (col.collider){
-      lazySafeGetCellControl(col);
-      if(_control)
-        GetComponent<Rigidbody>().constraints = noPush;
-    }
-  }
-
-  void OnCollisionStay(Collision col)
-  {
-    if(GetComponent<Rigidbody>().constraints != canPush)
+    private CellControl lazySafeGetCellControl(Collision col)
     {
-      if (col.collider){
-        lazySafeGetCellControl(col);
-        if(_control && _control.currentMoveSpeed >= minSpeed){
-          GetComponent<Rigidbody>().constraints = canPush;
-        }
-        else if (_control && _control.currentMoveSpeed < minSpeed)
-                {
-                    GetComponent<Rigidbody>().constraints = noPush;
-                }
-      }
-    }
-    if (col.collider.tag == "Door")
+        if (null == _control)
         {
-            GetComponent<Rigidbody>().constraints = canPush;
+            _control = col.gameObject.GetComponent<CellControl>();
         }
-  }
-	
-	public void resetPos(){
-		transform.position = _initPos;
-	}
-	
+        return _control;
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (null != col.collider)
+        {
+            lazySafeGetCellControl(col);
+            if (_control && _control.currentMoveSpeed >= minSpeed)
+            {
+                GetComponent<Rigidbody>().constraints = _canPush;
+            }
+            else if (_control && _control.currentMoveSpeed < minSpeed)
+            {
+                GetComponent<Rigidbody>().constraints = _noPush;
+            }
+        }
+    }
+
+    void OnCollisionExit(Collision col)
+    {
+        if (null != col.collider)
+        {
+            lazySafeGetCellControl(col);
+            if (_control)
+                GetComponent<Rigidbody>().constraints = _noPush;
+        }
+    }
+
+    void OnCollisionStay(Collision col)
+    {
+        if (GetComponent<Rigidbody>().constraints != _canPush)
+        {
+            if (null != col.collider)
+            {
+                lazySafeGetCellControl(col);
+                if (_control && _control.currentMoveSpeed >= minSpeed)
+                {
+                    GetComponent<Rigidbody>().constraints = _canPush;
+                }
+                else if (_control && _control.currentMoveSpeed < minSpeed)
+                {
+                    GetComponent<Rigidbody>().constraints = _noPush;
+                }
+            }
+        }
+        if (col.collider.tag == "Door")
+        {
+            GetComponent<Rigidbody>().constraints = _canPush;
+        }
+    }
+
+    public void resetPos()
+    {
+        transform.position = _initPos;
+    }
+
 }

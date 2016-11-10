@@ -38,7 +38,7 @@ public abstract class BioBrick: DNABit
   public int getSize() { return _size; }
   public Type getType() { return _type; }
   
-  private double _amount = 0;
+  protected double _amount = 0;
   public double amount {get{return _amount;}} 
   
   public void addAmount(double increase)
@@ -46,14 +46,14 @@ public abstract class BioBrick: DNABit
       _amount += increase;
   }
 
-  public BioBrick(Type type)
+  public BioBrick(Type type, double _count = -1)
   {
     _type = type;
     isUnlimited = _amount==0?MemoryManager.get().configuration.getMode()==GameConfiguration.GameMode.SANDBOX:isUnlimited;
-    _amount = isUnlimited?double.PositiveInfinity:1;
+    _amount = (0 > _count) ? (isUnlimited?double.PositiveInfinity:1) : _count;
   }
 
-  public abstract BioBrick copy();
+  public abstract BioBrick copy(double _count = -1);
     
     public override bool Equals(System.Object obj)
     {
@@ -70,7 +70,7 @@ public abstract class BioBrick: DNABit
 
         bool result;
 
-        //check type, name, length
+        // check type, name, length
         return (this._type == b._type) && (this._name == b._name) && (this._size == b._size);
     }
 }
@@ -185,26 +185,30 @@ public class PromoterBrick : BioBrick
   {
   }
 	
-  public PromoterBrick(string name, float beta, string __formula, int size) : base(BioBrick.Type.PROMOTER)
-  {
+    public PromoterBrick(string name, float beta, string __formula, int size, double _count = -1) : base(BioBrick.Type.PROMOTER, _count)
+    {
         _name = name;
-		_beta = beta;
-		formula = __formula;
+        _beta = beta;
+        formula = __formula;
         _size = size;
 
-        if(0 == size)
+        if (0 == size)
         {
             Debug.LogWarning(this.GetType() + " size = 0 in " + name);
         }
-  }
+    }
 
-  public PromoterBrick(PromoterBrick p) : this(p._name, p._beta, p.formula, p._size)
-  {
-  }
-	
-    public override BioBrick copy()
+    public PromoterBrick(PromoterBrick p, double _count) : this(p._name, p._beta, p.formula, p._size, _count)
     {
-        return new PromoterBrick(this);
+    }
+
+    public PromoterBrick(PromoterBrick p) : this(p, p.amount)
+    {
+    }
+	
+    public override BioBrick copy(double _count = -1)
+    {
+        return new PromoterBrick(this, _count);
     }
 
     public override bool Equals(System.Object obj)
@@ -231,9 +235,9 @@ public class RBSBrick : BioBrick
   {
   }
 
-  public RBSBrick(string name, float RBSFactor, int size) : base(BioBrick.Type.RBS)
+  public RBSBrick(string name, float RBSFactor, int size, double _count = -1) : base(BioBrick.Type.RBS, _count)
   {
-    _name = name;
+        _name = name;
 		_RBSFactor = RBSFactor;
         _size = size;
 
@@ -243,13 +247,17 @@ public class RBSBrick : BioBrick
         }
   }
 	
-  public RBSBrick(RBSBrick r) : this(r._name, r._RBSFactor, r._size)
+  public RBSBrick(RBSBrick r, double _count) : this(r._name, r._RBSFactor, r._size, _count)
+  {
+  }
+	
+  public RBSBrick(RBSBrick r) : this(r, r.amount)
   {
   }
 
-    public override BioBrick copy()
+    public override BioBrick copy(double _count = -1)
     {
-        return new RBSBrick(this);
+        return new RBSBrick(this, _count);
     }
     
     public override bool Equals(System.Object obj)
@@ -275,7 +283,7 @@ public class GeneBrick : BioBrick
   {
   }
 
-  public GeneBrick(string name, string proteinName, int size) : base(BioBrick.Type.GENE)
+  public GeneBrick(string name, string proteinName, int size, double _count = -1) : base(BioBrick.Type.GENE, _count)
   {
     _name = name;
 		_proteinName = proteinName;
@@ -287,13 +295,17 @@ public class GeneBrick : BioBrick
         }
   }
 
-  public GeneBrick(GeneBrick g) : this(g._name, g._proteinName, g._size)
+  public GeneBrick(GeneBrick g, double _count) : this(g._name, g._proteinName, g._size, _count)
   {
   }
 
-    public override BioBrick copy()
+  public GeneBrick(GeneBrick g) : this(g, g.amount)
+  {
+  }
+
+    public override BioBrick copy(double _count = -1)
     {
-        return new GeneBrick(this);
+        return new GeneBrick(this, _count);
     }
     
     public override bool Equals(System.Object obj)
@@ -319,9 +331,9 @@ public class TerminatorBrick : BioBrick
   {
   }
 
-  public TerminatorBrick(string name, float terminatorFactor, int size) : base(BioBrick.Type.TERMINATOR)
+  public TerminatorBrick(string name, float terminatorFactor, int size, double _count = -1) : base(BioBrick.Type.TERMINATOR, _count)
   {
-    _name = name;
+        _name = name;
 		_terminatorFactor = terminatorFactor;
         _size = size;
 
@@ -331,13 +343,17 @@ public class TerminatorBrick : BioBrick
         }
   }
 
-  public TerminatorBrick(TerminatorBrick t) : this(t._name, t._terminatorFactor, t._size)
+  public TerminatorBrick(TerminatorBrick t, double _count) : this(t._name, t._terminatorFactor, t._size, _count)
   {
   }
 
-    public override BioBrick copy()
+  public TerminatorBrick(TerminatorBrick t) : this(t, t.amount)
+  {
+  }
+
+    public override BioBrick copy(double _count = -1)
     {
-        return new TerminatorBrick(this);
+        return new TerminatorBrick(this, _count);
     }
     
     public override bool Equals(System.Object obj)

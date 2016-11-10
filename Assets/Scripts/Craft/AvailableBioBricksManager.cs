@@ -263,13 +263,15 @@ public class AvailableBioBricksManager : MonoBehaviour
     public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
     {
         // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ")");
-        string bbName = brick.getName();
-        if ((null != brick))
+        
+        if (null != brick)
         // TODO deeper safety check
         // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
         {
-            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") will _availableBioBricks.AddLast(" + brick + ")");
+            string bbName = brick.getName();
 
+            Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") _availableBioBricks with bbName=" + bbName);
+            
             BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
                 _availableBioBricks
                 , b => b.getName() == bbName
@@ -279,6 +281,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
             if (null == currentBrick)
             {
+                Debug.Log(this.GetType() + " addAvailableBioBrick null == currentBrick");
                 _availableBioBricks.AddLast(brick);
                 if (updateView)
                 {
@@ -286,17 +289,19 @@ public class AvailableBioBricksManager : MonoBehaviour
                 }
                 return true;                
             } else {
-                //TODO fix this, maybe use addBrickAmount?
-                brick.addAmount(currentBrick.amount);
-                //currentBrick.addAmount(brick.amount);
-                _availableBioBricks.Remove(currentBrick);
-                _availableBioBricks.AddLast(brick);
+                // brick.addAmount(currentBrick.amount);
+                // _availableBioBricks.Remove(currentBrick);
+                // _availableBioBricks.AddLast(brick);
+
+                Debug.Log("before: amount= "+currentBrick.amount);
+                _availableBioBricks.Find(currentBrick).Value.addAmount(brick.amount);
+                // Debug.Log("after: amount= "+
                 return true;
             }
         }
         else
         {
-            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") fail");
+            Debug.Log(this.GetType() + " addAvailableBioBrick() failed: brick == null");
             return false;
         }
     }

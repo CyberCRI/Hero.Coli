@@ -1,12 +1,15 @@
 using UnityEngine;
-using System.Collections;
 
 public class PickableBioBrickRef : PickableBioBrick {
-  public string bioBrickName;
+  [SerializeField]
+  private string bioBrickName;
+  [SerializeField]
+  private int amount = 1;
 
   protected override DNABit produceDNABit()
   {
-    return AvailableBioBricksManager.get().getBioBrickFromAll(bioBrickName);
+    BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(bioBrickName);
+    return brick.copy(amount);
   }
 }
 

@@ -27,8 +27,11 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _slotSelectionSpriteSuffix = "SelectionSprite";
     protected const string _craftSlot1 = _slotBaseName + "0" + _slotSelectionSpriteSuffix;
     protected const string _craftSlot2 = _slotBaseName + "1" + _slotSelectionSpriteSuffix;
+    protected const string _PBAD3Brick = _availableDisplayedPrefix + "PRBAD3";
     protected const string _RBS2brick = _availableDisplayedPrefix + "RBS2";
+    protected const string _RBS1brick = _availableDisplayedPrefix + "RBS1";
     protected const string _GFPbrick = _availableDisplayedPrefix + "FLUO1";
+    protected const string _terminatorBrick = _availableDisplayedPrefix + "DTER";
     protected const string _PCONSBrickBackground = _availableDisplayedPrefix + "PRCONS" + _bioBrickIconBackgroundSuffix;
     protected const string _PBAD3BrickBackground = _availableDisplayedPrefix + "PRBAD3" + _bioBrickIconBackgroundSuffix;
 
