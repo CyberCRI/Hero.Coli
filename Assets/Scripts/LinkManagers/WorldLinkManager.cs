@@ -85,6 +85,8 @@ public class WorldLinkManager : LinkManager
     {
         base.initialize ();
 
+        activateAllInArray(false);
+
         if(null != _assetsLibrary)
         {
             _assetsLibrary.SetActive(false);

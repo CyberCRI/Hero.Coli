@@ -41,35 +41,35 @@ public class PhenoFickContact : Phenotype
         graphMoleculeList.setMediumId(mediumId);
     }
 
-    void OnTriggerEnter(Collider collider)
+    private void processCollider(Collider collider)
     {
-        // Debug.Log(this.GetType() + " OnTriggerEnter collider=" + collider.gameObject.name);
+        // Debug.Log(this.GetType() + " processCollider collider=" + collider.gameObject.name);
 
         int hashCode = collider.gameObject.GetHashCode();
         if (_collidedHashCodes.Contains(hashCode))
         {
-            // Debug.Log(this.GetType() + " OnTriggerEnter already in collision with " + collider.gameObject.name);
+            // Debug.Log(this.GetType() + " processCollider already in collision with " + collider.gameObject.name);
             return;
         }
 
         PhysicalMedium extPM = collider.gameObject.GetComponent<PhysicalMedium>();
         if (extPM == null)
         {
-            // Debug.Log(this.GetType() + " OnTriggerEnter collider.extPM == null");
+            // Debug.Log(this.GetType() + " processCollider collider.extPM == null");
             return;
         }
         int extColliderMediumId = extPM.MediumId;
         Medium extColliderMedium = ReactionEngine.getMediumFromId(extColliderMediumId, _reactionEngine.getMediumList());
         if (null == extColliderMedium)
         {
-            Debug.LogWarning(this.GetType() + " OnTriggerEnter The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
+            Debug.LogWarning(this.GetType() + " processCollider The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
             return;
         }
 
         PhysicalMedium pm = GetComponent<PhysicalMedium>();
         if (null == pm)
         {
-            Debug.LogWarning(this.GetType() + " OnTriggerEnter PM == null");
+            Debug.LogWarning(this.GetType() + " processCollider PM == null");
             return;
         }
 
@@ -81,7 +81,7 @@ public class PhenoFickContact : Phenotype
         FickReaction reaction = Fick.getFickReactionFromIds(extColliderMediumId, Hero.mediumId, _fick.getFickReactions());
         if (null == reaction)
         {
-            Debug.LogWarning(this.GetType() + " OnTriggerEnter This FickReaction does not exist.");
+            Debug.LogWarning(this.GetType() + " processCollider This FickReaction does not exist.");
             return;
         }
         reaction.setSurface(surface);
@@ -95,11 +95,21 @@ public class PhenoFickContact : Phenotype
         updateTabs(" entered " + collider.gameObject.name);
 #endif
 
-        // Debug.Log(this.GetType() + " OnTriggerEnter"
+        // Debug.Log(this.GetType() + " processCollider"
         //   +" reaction.setSurface("+surface+")"
         //   +" _collidedMediumIds.Count="+_collidedMediumIds.Count
         //   +" _collidedMediumIds.Last.Value="+_collidedMediumIds.Last.Value
         //   );
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        processCollider(collider);
+    }
+    
+    void OnTriggerStay(Collider collider)
+    {
+        processCollider(collider);
     }
 
     public void onDied()
@@ -114,7 +124,7 @@ public class PhenoFickContact : Phenotype
         int hashCode = collider.gameObject.GetHashCode();
         if (!_collidedHashCodes.Contains(hashCode))
         {
-            // Debug.Log(this.GetType() + " OnTriggerEnter was not in collision with " + collider.gameObject.name);
+            // Debug.Log(this.GetType() + " processCollider was not in collision with " + collider.gameObject.name);
             return;
         }
 

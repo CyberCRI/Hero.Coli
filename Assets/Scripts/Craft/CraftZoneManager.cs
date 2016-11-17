@@ -137,7 +137,7 @@ public class CraftZoneManager : MonoBehaviour
                 selectSlot(_slots[0]);
 
                 displayDevice();
-                
+
                 _initialized = true;
             }
         }
@@ -497,6 +497,10 @@ public class CraftZoneManager : MonoBehaviour
     public static bool isOpenable()
     {
         //FIXME doesn't work with test null != _instance._currentDevice
-        return !(0 == AvailableBioBricksManager.get().getAvailableBioBricks().Count || Hero.isBeingInjured);
+        return (
+            0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count
+            &&
+            (!Hero.isBeingInjured || PhenoAmpicillinProducer.get().isSpawningAmpicillin)
+        );
     }
 }

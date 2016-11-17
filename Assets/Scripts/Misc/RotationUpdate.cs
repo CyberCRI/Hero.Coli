@@ -41,7 +41,7 @@ public class RotationUpdate : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            ObjectDirectedRotationUpdate(player);
+            objectDirectedRotationUpdate(player);
         }
 #endif
 
@@ -58,13 +58,13 @@ public class RotationUpdate : MonoBehaviour
         }
     }
 
-    public void ObjectDirectedRotationUpdate(GameObject obj)
+    public void objectDirectedRotationUpdate(GameObject obj)
     {
         _inputMovement = obj.transform.localPosition - this.transform.localPosition;
         rotationUpdate();
     }
 
-    IEnumerator SmoothRotate(float time)
+    IEnumerator smoothRotate(float time)
     {
         float originTime = time;
         while (time >= 0)
@@ -75,7 +75,7 @@ public class RotationUpdate : MonoBehaviour
         yield return null;
     }
 
-    public void SetIsControlledExternally(bool value)
+    public void setIsControlledExternally(bool value)
     {
         _isControlledExternally = value;
     }

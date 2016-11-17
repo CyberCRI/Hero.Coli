@@ -34,6 +34,7 @@ public class Medium : LoadableFromXmlImpl
     private bool _enableEnergy;
     private float _energy;                        //!< Represents the quantity of ATP
     private float _energyVariation;                     //!< The variation of energy during one frame
+    private const float _energyVariationFactor = 0.3f;
     private float _maxEnergy;                     //!< The maximum quantity of ATP
     private float _energyProductionRate;          //!< The energy production speed
     public bool enableShufflingReactionOrder;   //!< Enables shuffling of reactions
@@ -83,7 +84,7 @@ public class Medium : LoadableFromXmlImpl
 
     public void applyVariation()
     {
-        _energy += _energyVariation;
+        _energy += _energyVariation * _energyVariationFactor;
         if (_energy <= 0f) _energy = 0f;
         else if (_energy >= _maxEnergy) _energy = _maxEnergy;
 

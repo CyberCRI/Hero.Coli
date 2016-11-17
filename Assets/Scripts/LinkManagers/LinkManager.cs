@@ -6,7 +6,10 @@ using UnityEngine;
 
 public abstract class LinkManager : MonoBehaviour
 {
-    public GameObject root;
+    [SerializeField]
+    private GameObject _activationRoot;
+    [SerializeField]
+    private GameObject[] _activationArray;
     protected abstract int getLMIndex();
 
     protected void Start ()
@@ -24,18 +27,26 @@ public abstract class LinkManager : MonoBehaviour
         // Debug.Log(this.GetType() + " finishInitialize");
     }
 
-    public virtual void activateAllChildren(bool active)
+    protected void activateAllChildren(bool active)
     {
-        if (null != root)
+        if (null != _activationRoot)
         {
-            for (int index = 0; index < root.transform.childCount; index++)
+            for (int index = 0; index < _activationRoot.transform.childCount; index++)
             {
-                root.transform.GetChild(index).gameObject.SetActive(active);
+                _activationRoot.transform.GetChild(index).gameObject.SetActive(active);
             }
         }
         else
         {
             // Debug.Log(this.GetType() + " has null root");
+        }
+    }
+
+    protected void activateAllInArray(bool active)
+    {
+        foreach (GameObject obj in _activationArray)
+        {
+            obj.SetActive(active);
         }
     }
 

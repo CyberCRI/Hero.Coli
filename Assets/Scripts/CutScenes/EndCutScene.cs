@@ -58,7 +58,7 @@ public class EndCutScene : CutScene
     {
         for (int i = 0; i < NPCs.Length; i++)
         {
-            NPCs[i].GetComponent<RotationUpdate>().ObjectDirectedRotationUpdate(_cellControl.gameObject);
+            NPCs[i].GetComponent<RotationUpdate>().objectDirectedRotationUpdate(_cellControl.gameObject);
         }
         checkForNext();
         //StartCoroutine(InstantiateNanobot());
@@ -71,7 +71,7 @@ public class EndCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "CutSceneElement" && _started == false)
+        if (col.tag == "CutSceneElement" && !_started)
         {
             _started = true;
             start();
@@ -138,7 +138,7 @@ public class EndCutScene : CutScene
         {
             yield return new WaitForSeconds(1.5f);
             NPCs[iteration].GetComponent<PlatformMvt>().enabled = true;
-            NPCs[iteration].GetComponent<RotationUpdate>().SetIsControlledExternally(false);
+            NPCs[iteration].GetComponent<RotationUpdate>().setIsControlledExternally(false);
             iteration++;
             yield return null;
         }
