@@ -1,13 +1,17 @@
 ﻿// #define QUICKTEST
 
 #if QUICKTEST
+
 public class CraftHint : FakeStepByStepTutorial
 {
     public int bricks = 0;
 }
+
 #else
+
 // TODO inherit StepByStepTutorial
 using UnityEngine;
+
 public class CraftHint : MonoBehaviour
 {
 

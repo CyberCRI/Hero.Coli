@@ -1,9 +1,13 @@
 ﻿// #define QUICKTEST
 
 #if QUICKTEST
+
 public class CraftDiscoveryHint : FakeStepByStepTutorial { }
+
 #else
+
 using UnityEngine;
+
 public class CraftDiscoveryHint : StepByStepTutorial
 {
     // different possibilities for bugfix

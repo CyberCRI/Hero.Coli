@@ -1,8 +1,11 @@
 // #define QUICKTEST
 
 #if QUICKTEST
+
 public class PlasmidHint : FakeStepByStepTutorial { }
+
 #else
+
 public class PlasmidHint : StepByStepTutorial
 {
     private const string _textKeyPrefix = _genericTextKeyPrefix + "PLASMID.";

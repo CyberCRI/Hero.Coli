@@ -1,8 +1,11 @@
 ﻿// #define QUICKTEST
 
 #if QUICKTEST
+
 public class RBS2CraftHint : FakeStepByStepTutorial { }
+
 #else
+
 public class RBS2CraftHint : StepByStepTutorial
 {
     private const string _textKeyPrefix = _genericTextKeyPrefix + "RBS2CRAFT.";

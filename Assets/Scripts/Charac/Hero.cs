@@ -531,6 +531,9 @@ public class Hero : MonoBehaviour
         iTween.ScaleTo(gameObject, _optionsIn);
         safeFadeTo(_optionsInAlpha);
 
+        ////////////////////////////////////////////////////////////////////
+        // TODO for each external object, use OnPlayerDied event
+
         // reset all pushable rocks
         cc.enabled = true;
         foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox)))
@@ -542,6 +545,7 @@ public class Hero : MonoBehaviour
         PhenoAmpicillinProducer.get().reset();
         GetComponent<PhenoFickContact>().onDied();
         medium.resetMolecules();
+        ////////////////////////////////////////////////////////////////////
 
         SavedCell savedCell = null;
         if (null != _lastNewCell)

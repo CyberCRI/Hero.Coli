@@ -1,8 +1,11 @@
 // #define QUICKTEST
 
 #if QUICKTEST
+
 public class InducedPromoterHint : FakeStepByStepTutorial { }
+
 #else
+
 public class InducedPromoterHint : StepByStepTutorial
 {
     private const string _textKeyPrefix = _genericTextKeyPrefix + "INDUCEDPROMOTER.";
