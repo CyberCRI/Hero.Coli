@@ -78,10 +78,17 @@ public class WorldLinkManager : LinkManager
     private EndGameCollider endGameCollider;
     [SerializeField]
     private InfoWindowCollisionTrigger rfpTutorialTrigger;
+    [SerializeField]
+    private GameObject _assetsLibrary;
 
     public override void initialize()
     {
         base.initialize ();
+
+        if(null != _assetsLibrary)
+        {
+            _assetsLibrary.SetActive(false);
+        }
 
         GameObject perso = Hero.get().gameObject;
         if (null == perso)

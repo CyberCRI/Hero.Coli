@@ -16,6 +16,8 @@ public class PhenoFickContact : Phenotype
     public GraphMoleculeList graphMoleculeList;
     private int _vectroPanelInitMediumId = 2;
     private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
+    [SerializeField]
+    private int[] _collidedMediumIdsTab;
 
     //! Called at the beginning
     public override void StartPhenotype()
@@ -70,6 +72,7 @@ public class PhenoFickContact : Phenotype
         // Debug.Log(this.GetType() + " colliderMediumIdExt : " + colliderMediumIdExt);
         configureExternalDisplays(colliderMediumIdExt);
         _collidedMediumIds.AddLast(colliderMediumIdExt);
+        updateTab();
 
         // Debug.Log(this.GetType() + " OnTriggerEnter"
         //   +" reaction.setSurface("+surface+")"
@@ -105,6 +108,7 @@ public class PhenoFickContact : Phenotype
             }
         }
         _collidedMediumIds.Clear();
+        updateTab();
     }
 
     private void pop(int mediumId, bool setDisplay = true)
@@ -118,6 +122,7 @@ public class PhenoFickContact : Phenotype
         {
             setExternalDisplay();
         }
+        updateTab();
     }
 
     private void setExternalDisplay()
@@ -145,6 +150,17 @@ public class PhenoFickContact : Phenotype
         else
         {
             reaction.setSurface(0);
+        }
+    }
+
+    private void updateTab()
+    {
+        _collidedMediumIdsTab = new int[_collidedMediumIds.Count];
+        int idx = 0;
+        foreach (int medId in _collidedMediumIds)
+        {
+            _collidedMediumIdsTab[idx] = medId;
+            idx++;
         }
     }
 }

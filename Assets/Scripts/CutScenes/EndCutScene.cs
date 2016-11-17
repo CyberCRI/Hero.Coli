@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
+
+using UnityEngine;
+#if !QUICKTEST
 using System.Collections;
+#endif
 
-public class EndCutScene : CutScene {
-
+public class EndCutScene : CutScene
+{
     [SerializeField]
     private GameObject[] NPCs;
     [SerializeField]
@@ -22,15 +26,33 @@ public class EndCutScene : CutScene {
     [SerializeField]
     private GameObject _waypoint3NPC1;
 
+
+    public override void initialize()
+    {
+
+    }
+
+
+#if QUICKTEST
+    public override void startCutScene()
+    {
+    }
+    public override void endCutScene()
+    {
+    }
+#else
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         _nanoCounter = GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public override void startCutScene()
     {
@@ -38,18 +60,13 @@ public class EndCutScene : CutScene {
         {
             NPCs[i].GetComponent<RotationUpdate>().ObjectDirectedRotationUpdate(_cellControl.gameObject);
         }
-        CheckForNext();
+        checkForNext();
         //StartCoroutine(InstantiateNanobot());
     }
 
     public override void endCutScene()
     {
         _cellControl.freezePlayer(false);
-    }
-
-    public override void initialize()
-    {
-        
     }
 
     void OnTriggerEnter(Collider col)
@@ -61,25 +78,25 @@ public class EndCutScene : CutScene {
         }
     }
 
-    void CheckForNext()
+    void checkForNext()
     {
         if (iteration < _nanoCounter.GetNanoCount())
         {
             // Debug.Log(_nanoCounter.GetNanoCount());
             iteration++;
             StopAllCoroutines();
-            StartCoroutine(InstantiateNanobot());
+            StartCoroutine(instantiateNanobot());
         }
         else
         {
-            StartCoroutine(WaitForSecondPart());
+            StartCoroutine(waitForSecondPart());
             iteration = 0;
         }
     }
 
-    void SecondPart()
+    void secondPart()
     {
-        CopyComponent(NPCs[0].GetComponent<PlatformMvt>(), _cellControl.gameObject);
+        copyComponent(NPCs[0].GetComponent<PlatformMvt>(), _cellControl.gameObject);
         _cellControl.gameObject.AddComponent<RotationUpdate>();
         _platformMvt = _cellControl.GetComponent<PlatformMvt>();
         _waypoint1.transform.position = _cellControl.transform.position;
@@ -93,10 +110,10 @@ public class EndCutScene : CutScene {
         _platformMvt.AddWayPoint(_waypoint1NPC1);
         _platformMvt.AddWayPoint(_waypoint2NPC1);
         _platformMvt.AddWayPoint(_waypoint3NPC1);
-        StartCoroutine(GoOneByOne());
+        StartCoroutine(goOneByOne());
     }
 
-    IEnumerator InstantiateNanobot()
+    IEnumerator instantiateNanobot()
     {
         GameObject instance = Instantiate(_nanoBot, _cellControl.transform.position, _cellControl.transform.rotation) as GameObject;
         PlatformMvt platformMvt = instance.transform.GetChild(0).GetComponent<PlatformMvt>();
@@ -104,18 +121,18 @@ public class EndCutScene : CutScene {
         platformMvt.ChangeWayPointPosition(NPCs[iteration].transform.position, NPCs[iteration].transform.rotation, 1);
         platformMvt.enabled = true;
         yield return new WaitForSeconds(1.5f);
-        CheckForNext();
+        checkForNext();
         yield return null;
     }
 
-    IEnumerator WaitForSecondPart()
+    IEnumerator waitForSecondPart()
     {
         yield return new WaitForSeconds(5f);
-        SecondPart();
+        secondPart();
         yield return null;
     }
 
-    IEnumerator GoOneByOne()
+    IEnumerator goOneByOne()
     {
         while (iteration < _nanoCounter.GetNanoCount())
         {
@@ -128,10 +145,7 @@ public class EndCutScene : CutScene {
         yield return null;
     }
 
-
-
-
-    Component CopyComponent(Component original, GameObject destination)
+    Component copyComponent(Component original, GameObject destination)
     {
         System.Type type = original.GetType();
         Component copy = destination.AddComponent(type);
@@ -143,4 +157,6 @@ public class EndCutScene : CutScene {
         }
         return copy;
     }
+    
+#endif
 }

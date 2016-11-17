@@ -270,7 +270,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         {
             string bbName = brick.getName();
 
-            Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") _availableBioBricks with bbName=" + bbName);
+            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") _availableBioBricks with bbName=" + bbName);
             
             BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
                 _availableBioBricks
@@ -281,7 +281,7 @@ public class AvailableBioBricksManager : MonoBehaviour
 
             if (null == currentBrick)
             {
-                Debug.Log(this.GetType() + " addAvailableBioBrick null == currentBrick");
+                // Debug.Log(this.GetType() + " addAvailableBioBrick null == currentBrick");
                 _availableBioBricks.AddLast(brick);
                 if (updateView)
                 {
@@ -293,7 +293,7 @@ public class AvailableBioBricksManager : MonoBehaviour
                 // _availableBioBricks.Remove(currentBrick);
                 // _availableBioBricks.AddLast(brick);
 
-                Debug.Log("before: amount= "+currentBrick.amount);
+                // Debug.Log("before: amount= "+currentBrick.amount);
                 _availableBioBricks.Find(currentBrick).Value.addAmount(brick.amount);
                 // Debug.Log("after: amount= "+
                 return true;
@@ -301,7 +301,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(this.GetType() + " addAvailableBioBrick() failed: brick == null");
+            Debug.LogWarning(this.GetType() + " addAvailableBioBrick() failed: brick == null");
             return false;
         }
     }

@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
+
+using UnityEngine;
+#if !QUICKTEST
 using System.Collections;
+#endif
 
 public class MassPursuitCutScene : CutScene
 {
@@ -22,6 +26,15 @@ public class MassPursuitCutScene : CutScene
     {
 
     }
+
+#if QUICKTEST
+    public override void startCutScene()
+    {
+    }
+    public override void endCutScene()
+    {
+    }
+#else
 
     public override void startCutScene()
     {
@@ -112,4 +125,5 @@ public class MassPursuitCutScene : CutScene
         }
         yield return null;
     }
+#endif
 }
