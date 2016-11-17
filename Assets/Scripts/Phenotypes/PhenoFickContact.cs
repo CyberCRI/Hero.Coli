@@ -1,13 +1,12 @@
+// #define DEV
+
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
 /*!
  \brief A phenotype class that represents a fick activation
- \details This Phenotype enable the contact surface between two medium when they collide together
- 
- 
+ \details This Phenotype enables the contact surface between two mediums when they collide together
  */
 public class PhenoFickContact : Phenotype
 {
@@ -16,8 +15,16 @@ public class PhenoFickContact : Phenotype
     public GraphMoleculeList graphMoleculeList;
     private int _vectroPanelInitMediumId = 2;
     private LinkedList<int> _collidedMediumIds = new LinkedList<int>();
+    private LinkedList<int> _collidedHashCodes = new LinkedList<int>();
+
+#if DEV
     [SerializeField]
     private int[] _collidedMediumIdsTab;
+    [SerializeField]
+    private int[] _collidedHashCodesTab;
+#endif
+
+    private Fick _fick;
 
     //! Called at the beginning
     public override void StartPhenotype()
@@ -36,32 +43,43 @@ public class PhenoFickContact : Phenotype
 
     void OnTriggerEnter(Collider collider)
     {
-        // Debug.Log(this.GetType() + " OnTriggerEnter collider=" + collider);
-        PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-        if (PMext == null)
+        // Debug.Log(this.GetType() + " OnTriggerEnter collider=" + collider.gameObject.name);
+
+        int hashCode = collider.gameObject.GetHashCode();
+        if (_collidedHashCodes.Contains(hashCode))
         {
-            // Debug.Log(this.GetType() + " OnTriggerEnter collider.PMext == null");
+            // Debug.Log(this.GetType() + " OnTriggerEnter already in collision with " + collider.gameObject.name);
             return;
         }
-        int colliderMediumIdExt = PMext.MediumId;
-        Medium colliderMediumExt = ReactionEngine.getMediumFromId(colliderMediumIdExt, _reactionEngine.getMediumList());
-        if (colliderMediumExt == null)
+
+        PhysicalMedium extPM = collider.gameObject.GetComponent<PhysicalMedium>();
+        if (extPM == null)
+        {
+            // Debug.Log(this.GetType() + " OnTriggerEnter collider.extPM == null");
+            return;
+        }
+        int extColliderMediumId = extPM.MediumId;
+        Medium extColliderMedium = ReactionEngine.getMediumFromId(extColliderMediumId, _reactionEngine.getMediumList());
+        if (null == extColliderMedium)
         {
             Debug.LogWarning(this.GetType() + " OnTriggerEnter The collided medium does not exist in the reaction Engine. Load it or change the MediumId number in the PhysicalMedium script.");
             return;
         }
 
-        PhysicalMedium PM = GetComponent<PhysicalMedium>();
-        if (PM == null)
+        PhysicalMedium pm = GetComponent<PhysicalMedium>();
+        if (null == pm)
         {
             Debug.LogWarning(this.GetType() + " OnTriggerEnter PM == null");
             return;
         }
 
-        float surface = Math.Min(PM.Size, PMext.Size);
-        Fick fick = _reactionEngine.getFick();
-        FickReaction reaction = Fick.getFickReactionFromIds(colliderMediumIdExt, Hero.mediumId, fick.getFickReactions());
-        if (reaction == null)
+        float surface = Math.Min(pm.Size, extPM.Size);
+        if (null == _fick)
+        {
+            _fick = _reactionEngine.getFick();
+        }
+        FickReaction reaction = Fick.getFickReactionFromIds(extColliderMediumId, Hero.mediumId, _fick.getFickReactions());
+        if (null == reaction)
         {
             Debug.LogWarning(this.GetType() + " OnTriggerEnter This FickReaction does not exist.");
             return;
@@ -69,10 +87,13 @@ public class PhenoFickContact : Phenotype
         reaction.setSurface(surface);
 
         // set medium as medium of collider
-        // Debug.Log(this.GetType() + " colliderMediumIdExt : " + colliderMediumIdExt);
-        configureExternalDisplays(colliderMediumIdExt);
-        _collidedMediumIds.AddLast(colliderMediumIdExt);
-        updateTab();
+        // Debug.Log(this.GetType() + " colliderMediumIdExt : " + extColliderMediumId);
+        configureExternalDisplays(extColliderMediumId);
+        _collidedMediumIds.AddLast(extColliderMediumId);
+        _collidedHashCodes.AddLast(hashCode);
+#if DEV
+        updateTabs(" entered " + collider.gameObject.name);
+#endif
 
         // Debug.Log(this.GetType() + " OnTriggerEnter"
         //   +" reaction.setSurface("+surface+")"
@@ -88,11 +109,23 @@ public class PhenoFickContact : Phenotype
 
     public void OnTriggerExit(Collider collider)
     {
-        // Debug.Log(this.GetType() + " OnTriggerExit collider=" + collider);
-        PhysicalMedium PMext = collider.gameObject.GetComponent<PhysicalMedium>();
-        if (PMext != null)
+        // Debug.Log(this.GetType() + " OnTriggerExit collider=" + collider.gameObject.name);
+
+        int hashCode = collider.gameObject.GetHashCode();
+        if (!_collidedHashCodes.Contains(hashCode))
         {
-            pop(PMext.MediumId);
+            // Debug.Log(this.GetType() + " OnTriggerEnter was not in collision with " + collider.gameObject.name);
+            return;
+        }
+
+        PhysicalMedium extPM = collider.gameObject.GetComponent<PhysicalMedium>();
+        if (extPM != null)
+        {
+#if DEV
+            pop(extPM.MediumId, hashCode, collider);
+#else
+            pop(extPM.MediumId, hashCode);
+#endif
         }
     }
 
@@ -108,12 +141,20 @@ public class PhenoFickContact : Phenotype
             }
         }
         _collidedMediumIds.Clear();
-        updateTab();
+        _collidedHashCodes.Clear();
+#if DEV
+        updateTabs(" reset");
+#endif
     }
 
-    private void pop(int mediumId, bool setDisplay = true)
+#if DEV
+    private void pop(int mediumId, int hashCode, Collider collider, bool setDisplay = true)
+#else    
+    private void pop(int mediumId, int hashCode, bool setDisplay = true)
+#endif
     {
         _collidedMediumIds.Remove(mediumId);
+        _collidedHashCodes.Remove(hashCode);
         if (!_collidedMediumIds.Contains(mediumId))
         {
             removeFick(mediumId);
@@ -122,7 +163,9 @@ public class PhenoFickContact : Phenotype
         {
             setExternalDisplay();
         }
-        updateTab();
+#if DEV
+        updateTabs(" left " + collider.gameObject.name);
+#endif
     }
 
     private void setExternalDisplay()
@@ -153,8 +196,10 @@ public class PhenoFickContact : Phenotype
         }
     }
 
-    private void updateTab()
+#if DEV
+    private void updateTabs(string debugString)
     {
+        // Debug.Log(this.GetType() + debugString);
         _collidedMediumIdsTab = new int[_collidedMediumIds.Count];
         int idx = 0;
         foreach (int medId in _collidedMediumIds)
@@ -162,5 +207,14 @@ public class PhenoFickContact : Phenotype
             _collidedMediumIdsTab[idx] = medId;
             idx++;
         }
+
+        _collidedHashCodesTab = new int[_collidedHashCodes.Count];
+        idx = 0;
+        foreach (int hashCode in _collidedHashCodes)
+        {
+            _collidedMediumIdsTab[idx] = hashCode;
+            idx++;
+        }
     }
+#endif
 }
