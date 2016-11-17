@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConclusionCutScene : CutScene
+public class MassPursuitCutScene : CutScene
 {
     [SerializeField]
     private PlatformMvt[] _BigBadGuyPLatformMvt;

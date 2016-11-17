@@ -3,14 +3,15 @@
 public class CutSceneInstantiator : CutSceneElements
 {
     [SerializeField]
-    private GameObject _cutScene;
+    private GameObject _cutScenePrefab;
+    [SerializeField]
+    private GameObject _cutSceneInstance;
     [SerializeField]
     private Transform _originTransform;
     [SerializeField]
     private string _triggerTag;
     private bool _first = true;
     private Transform _resetCamera;
-    private GameObject _newInstance;
 
 
     // Use this for initialization
@@ -29,15 +30,11 @@ public class CutSceneInstantiator : CutSceneElements
     {
         if (col.tag == _triggerTag)
         {
-            if (_newInstance == null)
+            if (null != _cutSceneInstance)
             {
-                _newInstance = (GameObject)Instantiate(_cutScene, _originTransform.position, _originTransform.rotation);
+                Destroy(_cutSceneInstance);
             }
-            else if (_newInstance != null)
-            {
-                Destroy(_newInstance);
-                _newInstance = (GameObject)Instantiate(_cutScene, _originTransform.position, _originTransform.rotation);
-            }
+            _cutSceneInstance = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
         }
 
         if (_first)

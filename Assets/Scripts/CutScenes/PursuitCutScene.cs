@@ -1,7 +1,9 @@
 ﻿// #define QUICKTEST
 
 using UnityEngine;
+#if !QUICKTEST
 using System.Collections;
+#endif
 
 public class PursuitCutScene : CutScene
 {
