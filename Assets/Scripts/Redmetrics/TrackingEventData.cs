@@ -127,9 +127,11 @@ public enum CustomDataTag
 
 public enum CustomDataValue
 {
+    // sound states
     ON,
     OFF,
 
+    // main menu entries
     START,
     RESUME,
     RESTART,
@@ -141,9 +143,12 @@ public enum CustomDataValue
     SOUND,
     LEARNMORE,
 
+    // death causes
     MINE,
     ENEMY,
-    SUICIDEBUTTON
+    SUICIDEBUTTON,
+    CRUSHED,
+    OUTOFBOUNDS
 }
 
 public class CustomData: Dictionary<string, string>
