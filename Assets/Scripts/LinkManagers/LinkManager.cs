@@ -44,9 +44,12 @@ public abstract class LinkManager : MonoBehaviour
 
     protected void activateAllInArray(bool active)
     {
-        foreach (GameObject obj in _activationArray)
+        if (null != _activationArray)
         {
-            obj.SetActive(active);
+            foreach (GameObject obj in _activationArray)
+            {
+                obj.SetActive(active);
+            }
         }
     }
 

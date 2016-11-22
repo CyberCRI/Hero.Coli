@@ -7,6 +7,8 @@ public class BackendManager : MonoBehaviour
     private bool isTestGUID = false;
     [SerializeField]
     private bool forceAdmin = false;
+    [SerializeField]
+    private int _layer;
     private float duration = 2.0f;
 
     void Start()
@@ -42,8 +44,19 @@ public class BackendManager : MonoBehaviour
             // to instantly change the language
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
-                I18n.changeLanguageTo(newLanguage);
+                // language swap
+                // I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
+                // I18n.changeLanguageTo(newLanguage);
+
+                // layer detection
+                GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                foreach (GameObject go in gos)
+                {
+                    if (go.layer == _layer)
+                    {
+                        Debug.Log(go.name);
+                    }
+                }
             }
             // to be able to go over or under obstacles
             if (Input.GetKeyDown(KeyCode.KeypadMultiply))
