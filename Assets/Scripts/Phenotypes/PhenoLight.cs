@@ -146,7 +146,7 @@ public class PhenoLight : Phenotype
             _spotLight.color = _triggered.colorTo;
 
             _blackLightSpotLight.gameObject.SetActive(true);
-            _spotLight.color = _triggered.colorTo;
+            _blackLightSpotLight.color = _triggered.colorTo;
         }
     }
 }
