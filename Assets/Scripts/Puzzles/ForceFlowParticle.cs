@@ -4,16 +4,6 @@ public class ForceFlowParticle : MonoBehaviour
 {
     [SerializeField]
     private float force;
-    [SerializeField]
-    private float period;
-    [SerializeField]
-    private float startPhase;
-    [SerializeField]
-    private ParticleSystem system;
-
-    private ParticleSystem.EmissionModule _em;
-    private float _deltaTime = 0f;
-    private bool _isOn = true;
 
     void OnParticleCollision(GameObject obj)
     {
@@ -28,34 +18,4 @@ public class ForceFlowParticle : MonoBehaviour
             }
         }
     }
-
-    void toggle()
-    {
-        _isOn = !_isOn;
-        if (_isOn)
-        {
-            _em.enabled = true;
-        }
-        else
-        {
-            _em.enabled = false;
-        }
-    }
-
-    void Update()
-    {
-        _deltaTime += Time.deltaTime;
-        if (_deltaTime > period)
-        {
-            toggle();
-            _deltaTime = 0;
-        }
-    }
-
-    void Start()
-    {
-        _deltaTime = -startPhase * period;
-        _em = system.emission;
-    }
-
 }
