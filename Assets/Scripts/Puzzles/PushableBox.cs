@@ -9,68 +9,53 @@ public class PushableBox : MonoBehaviour
     private CellControl _control = null;
     private RigidbodyConstraints _noPush = RigidbodyConstraints.FreezeAll;
     private RigidbodyConstraints _canPush = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+    [SerializeField]
+    private Rigidbody _rigidBody;
 
     void Start()
     {
         _initPos = transform.position;
-    }
-
-    private CellControl lazySafeGetCellControl(Collision col)
-    {
-        if (null == _control)
-        {
-            _control = col.gameObject.GetComponent<CellControl>();
-        }
-        return _control;
+        _control = CellControl.get("PushableBox");
     }
 
     void OnCollisionEnter(Collision col)
     {
-        if (null != col.collider)
+        processCollision(col);
+    }
+
+    void processCollision(Collision col)
+    {
+        if (_rigidBody.constraints != _canPush)
         {
-            lazySafeGetCellControl(col);
-            if (_control && _control.currentMoveSpeed >= minSpeed)
+            if (null != col.collider)
             {
-                GetComponent<Rigidbody>().constraints = _canPush;
-            }
-            else if (_control && _control.currentMoveSpeed < minSpeed)
-            {
-                GetComponent<Rigidbody>().constraints = _noPush;
+                if (col.collider.tag == Hero.playerTag)
+                {
+                    if (_control.currentMoveSpeed >= minSpeed)
+                    {
+                        _rigidBody.constraints = _canPush;
+                    }
+                    else if (_control.currentMoveSpeed < minSpeed)
+                    {
+                        _rigidBody.constraints = _noPush;
+                    }
+                }
+                else if (col.collider.tag == "Door")
+                {
+                    _rigidBody.constraints = _canPush;
+                }
             }
         }
     }
 
     void OnCollisionExit(Collision col)
     {
-        if (null != col.collider)
-        {
-            lazySafeGetCellControl(col);
-            if (_control)
-                GetComponent<Rigidbody>().constraints = _noPush;
-        }
+        _rigidBody.constraints = _noPush;
     }
 
     void OnCollisionStay(Collision col)
     {
-        if (GetComponent<Rigidbody>().constraints != _canPush)
-        {
-            if (null != col.collider)
-            {
-                lazySafeGetCellControl(col);
-                if (_control && _control.currentMoveSpeed >= minSpeed)
-                {
-                    GetComponent<Rigidbody>().constraints = _canPush;
-                }
-                else if (_control && _control.currentMoveSpeed < minSpeed)
-                {
-                    GetComponent<Rigidbody>().constraints = _noPush;
-                }
-            }
-        }
-        if (col.collider.tag == "Door")
-        {
-            GetComponent<Rigidbody>().constraints = _canPush;
-        }
+        processCollision(col);
     }
 
     public void resetPos()
