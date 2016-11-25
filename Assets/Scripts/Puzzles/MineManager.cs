@@ -18,13 +18,13 @@ public class MineManager : MonoBehaviour
             _instance = GameObject.Find(gameObjectName).GetComponent<MineManager>();
         }
         return _instance;
-    }    
-    
+    }
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -37,13 +37,13 @@ public class MineManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -73,14 +73,15 @@ public class MineManager : MonoBehaviour
 
     public void resetSelectedMine(ResettableMine mine)
     {
-        GameObject target = mine.gameObject;    
+        GameObject target = mine.gameObject;
 
         iTween.Stop(target, true);
-        
+
         GameObject go = (GameObject)Instantiate(_mine, mine.transform.position, mine.transform.rotation, mine.transform.parent);
         ResettableMine newMine = go.GetComponent<ResettableMine>();
-        newMine.mineName = mine.mineName;
-        
+
+        mine.replaceInRevealers(newMine);
+
         Destroy(target);
     }
 

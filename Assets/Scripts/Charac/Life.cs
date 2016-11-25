@@ -46,9 +46,9 @@ public class Life
 
     public void setLife(float life)
     {
-        if (life >= 1f)
+        if (life >= _lifeMax)
         {
-            life = 1f;
+            life = _lifeMax;
         }
         else if (life <= 0f)
         {

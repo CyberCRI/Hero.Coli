@@ -31,7 +31,7 @@ public class Mine : ResettableMine
 
     public void detonate()
     {
-        Debug.LogError(mineName + " detonates");
+        Debug.LogError(name + " detonates");
         MineManager.get().detonate(this);
         _detonated = true;
     }

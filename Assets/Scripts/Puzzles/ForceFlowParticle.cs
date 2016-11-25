@@ -13,7 +13,7 @@ public class ForceFlowParticle : MonoBehaviour
             Rigidbody body = hero.GetComponent<Rigidbody>();
             if (body)
             {
-                Vector3 push = this.transform.rotation * new Vector3(0, 0, 1);
+                Vector3 push = this.transform.rotation * Vector3.forward;
                 body.AddForce(push * force);
             }
         }

@@ -98,10 +98,10 @@ public class Hero : MonoBehaviour
     public const int mediumId = 1; 
 
     //Life
-    private const float _life = 1f;
+    private const float _maxLife = 1f;
     private const float _lifeRegen = 0.1f;
     [SerializeField]
-    private Life _lifeManager = new Life(_life, _lifeRegen);
+    private Life _lifeManager = new Life(_maxLife, _lifeRegen);
 
     //Energy.
     private float _energy = 1f;
@@ -325,6 +325,7 @@ public class Hero : MonoBehaviour
                 if (_isInjured)
                 {
                     _isInjured = false;
+                    _ambientLighting.setInjured(_maxLife);
                     if (!_ambientLighting.isBlackLight())
                     {
                         _ambientLighting.startReset();
@@ -336,7 +337,7 @@ public class Hero : MonoBehaviour
                 }
             }
         }
-        _ambientLighting.setInjured(_lifeManager.getLife());
+        // _ambientLighting.setInjured(_lifeManager.getLife());
         _previousLife = _lifeManager.getLife();
 
     }
