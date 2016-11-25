@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ResettableMine : MonoBehaviour
 {
@@ -6,9 +7,30 @@ public class ResettableMine : MonoBehaviour
     private bool[] _revelations;
     [SerializeField]
     private Renderer _renderer;
+    private const float _fadeTimeS = 0.5f;
+
+    private Hashtable _optionsInAlpha = iTween.Hash(
+        "alpha", 0.2f,
+        "time", _fadeTimeS,
+        "easetype", iTween.EaseType.easeOutElastic
+        );
+
+    private Hashtable _optionsOutAlpha = iTween.Hash(
+        "alpha", 0.0f,
+        "time", _fadeTimeS,
+        "easetype", iTween.EaseType.easeInQuint,
+        "oncomplete", "onOutComplete"
+        );
 
     void Start()
     {
+        // _renderer.enabled = false;
+        iTween.FadeTo(gameObject, _optionsOutAlpha);
+    }
+
+    void onOutComplete()
+    {
+        Debug.Log(this.GetType() + " onOutComplete");
         _renderer.enabled = false;
     }
 
@@ -61,7 +83,7 @@ public class ResettableMine : MonoBehaviour
                 }
             }
 
-            if(!found)
+            if (!found)
             {
                 Debug.LogWarning(this.GetType() + " could not find revealer " + tRevealer.gameObject.name);
             }
@@ -73,7 +95,7 @@ public class ResettableMine : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " updateVisibility of " + name);
 
-        if(null != _revelations)
+        if (null != _revelations)
         {
             bool visible = false;
             foreach (bool revelation in _revelations)
@@ -85,7 +107,13 @@ public class ResettableMine : MonoBehaviour
                     break;
                 }
             }
-            _renderer.enabled = visible;
+
+            if (visible)
+            {
+                _renderer.enabled = true;
+            }
+            Hashtable fadeOptions = visible ? _optionsInAlpha : _optionsOutAlpha;
+            iTween.FadeTo(gameObject, fadeOptions); 
         }
     }
 }
