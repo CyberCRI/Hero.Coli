@@ -45,18 +45,18 @@ public class BackendManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // language swap
-                // I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
-                // I18n.changeLanguageTo(newLanguage);
+                I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
+                I18n.changeLanguageTo(newLanguage);
 
                 // layer detection
-                GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
-                foreach (GameObject go in gos)
-                {
-                    if (go.layer == _layer)
-                    {
-                        Debug.Log(go.name);
-                    }
-                }
+                // GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                // foreach (GameObject go in gos)
+                // {
+                //     if (go.layer == _layer)
+                //     {
+                //         Debug.Log(go.name);
+                //     }
+                // }
             }
             // to be able to go over or under obstacles
             if (Input.GetKeyDown(KeyCode.KeypadMultiply))

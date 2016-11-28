@@ -16,7 +16,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _bioBrickIconBackgroundSuffix = "BioBrickIconBackground";
     protected const string _exitCross = "CraftCloseButton";
 
-    protected const string _availableDisplayedPrefix = "AvailableDisplayed";
+    protected const string _availableDisplayedPrefix = AvailableDisplayedBioBrick._availableDisplayedPrefix;
     protected const string _listedPrefix = "l_";
     protected const string _equippedPrefix = "e_";
     protected const string _craftResultPrefix = "c_";

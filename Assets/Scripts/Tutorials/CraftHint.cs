@@ -21,11 +21,10 @@ public class CraftHint : MonoBehaviour
 
     private const string _craftButton = "CraftButton";
     private const string _craftWindow = "CraftPanelSprite";
-    private const string _prefix = "AvailableDisplayed";
-    private const string _brick1 = _prefix + "PRCONS",
-    _brick2 = _prefix + "RBS2",
-    _brick3 = _prefix + "MOV",
-    _brick4 = _prefix + "DTER";
+    private const string _brick1 = AvailableDisplayedBioBrick._availableDisplayedPrefix + "PRCONS",
+    _brick2 = AvailableDisplayedBioBrick._availableDisplayedPrefix + "RBS2",
+    _brick3 = AvailableDisplayedBioBrick._availableDisplayedPrefix + "MOV",
+    _brick4 = AvailableDisplayedBioBrick._availableDisplayedPrefix + "DTER";
     private const string _exitCross = "CraftCloseButton";
     private const string _textKeyPrefix = "HINT.CRAFT.";
 

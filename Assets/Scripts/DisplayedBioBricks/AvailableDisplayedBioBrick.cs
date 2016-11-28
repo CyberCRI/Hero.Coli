@@ -23,6 +23,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
    */
 
   protected const string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+  public const string _availableDisplayedPrefix = "AvailableDisplayed";
 
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
@@ -51,7 +52,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
       ,prefab
       );
       
-      result.name = "AvailableDisplayed"+biobrick.getName();
+      result.name = _availableDisplayedPrefix+biobrick.getName();
 
       result.Initialize();
 
