@@ -1,32 +1,44 @@
-﻿using UnityEngine;
+﻿// #define QUICKTEST
+
+using UnityEngine;
 using System.Collections;
 
-public class MineTutorialCutScene : CutScene {
+public class MineTutorialCutScene : CutScene
+{
+    #if QUICKTEST
+        private const float _endWaitingTime = 0.1f;
+    #else
+        private const float _endWaitingTime = 5f;
+    #endif
 
     [SerializeField]
     private GameObject[] _dummies;
-    private int iteration = 0;
-    private bool _once = true;
+    private int _dummyIndex = 0;
+    private bool _triggered = false;
 
     override public void initialize()
     {
-
     }
 
     public override void startCutScene()
     {
-        StartDummy(_dummies[iteration]);
+        startDummy();
     }
 
-    private void StartDummy(GameObject dummy)
+    private void startDummy()
     {
-        if (iteration < 3)
+        if (_dummyIndex < _dummies.Length)
         {
+            GameObject dummy = _dummies[_dummyIndex];
             Destroy(dummy.GetComponent<PlatformMvt>());
             dummy.GetComponent<iTweenEvent>().enabled = true;
             dummy.GetComponent<RotationUpdate>().enabled = false;
-            StartCoroutine(WaitForDeathDummy(dummy));
-            iteration++;
+            StartCoroutine(waitForDummyDeath(dummy));
+            _dummyIndex++;
+        }
+        else
+        {
+            Debug.Log(this.GetType() + " called startDummy on _dummyIndex >= _dummies.Length");
         }
     }
 
@@ -37,27 +49,27 @@ public class MineTutorialCutScene : CutScene {
     }
 
     // Use this for initialization
-    void Start () {
-	    
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+    }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Door" && _once == true)
+        if (col.tag == "Door" && !_triggered)
         {
-            _once = false;
+            _triggered = true;
             start();
         }
     }
 
-    IEnumerator WaitForDeathDummy(GameObject dummy)
+    IEnumerator waitForDummyDeath(GameObject dummy)
     {
-        if (iteration <2)
+        if (_dummyIndex < _dummies.Length-1)
         {
             while (dummy != null)
             {
@@ -66,10 +78,10 @@ public class MineTutorialCutScene : CutScene {
         }
         else
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(_endWaitingTime);
             end();
         }
-        StartDummy(_dummies[iteration]);
+        startDummy();
         yield return null;
     }
 }
