@@ -10,15 +10,15 @@ public class ResettableMine : MonoBehaviour
     private const float _fadeTimeS = 0.5f;
 
     private Hashtable _optionsInAlpha = iTween.Hash(
-        "alpha", 0.2f,
+        "alpha", 1.0f,
         "time", _fadeTimeS,
-        "easetype", iTween.EaseType.easeOutElastic
+        "easetype", iTween.EaseType.easeOutExpo
         );
 
     private Hashtable _optionsOutAlpha = iTween.Hash(
         "alpha", 0.0f,
         "time", _fadeTimeS,
-        "easetype", iTween.EaseType.easeInQuint,
+        "easetype", iTween.EaseType.easeInExpo,
         "oncomplete", "onOutComplete"
         );
 
@@ -113,7 +113,7 @@ public class ResettableMine : MonoBehaviour
                 _renderer.enabled = true;
             }
             Hashtable fadeOptions = visible ? _optionsInAlpha : _optionsOutAlpha;
-            iTween.FadeTo(gameObject, fadeOptions); 
+            iTween.FadeTo(gameObject, fadeOptions);
         }
     }
 }
