@@ -4,6 +4,7 @@ public class BasicMine : ResettableMine
 {
     public void detonate()
     {
+        // Debug.Log(this.GetType() + " " + name + " detonates ");
         MineManager.get().detonate(this);
     }
 

@@ -3,7 +3,9 @@ using System.Collections;
 
 public class ResettableMine : MonoBehaviour
 {
+    // [SerializeField]
     private TriggeredMineRevealer[] _revealers;
+    // [SerializeField]
     private bool[] _revelations;
     [SerializeField]
     private Renderer _renderer;
@@ -24,13 +26,13 @@ public class ResettableMine : MonoBehaviour
 
     void Start()
     {
-        // _renderer.enabled = false;
-        iTween.FadeTo(gameObject, _optionsOutAlpha);
+        // Debug.Log(this.GetType() + " Start " + name);
+        updateVisibility();
     }
 
     void onOutComplete()
     {
-        Debug.Log(this.GetType() + " onOutComplete");
+        // Debug.Log(this.GetType() + " onOutComplete " + name);
         _renderer.enabled = false;
     }
 
@@ -44,25 +46,36 @@ public class ResettableMine : MonoBehaviour
         }
         else
         {
-            _revelations = new bool[_revealers.Length + 1];
+            bool[] newRevelations = new bool[_revealers.Length + 1];
             TriggeredMineRevealer[] newRevealers = new TriggeredMineRevealer[_revealers.Length + 1];
             for (int index = 0; index < _revealers.Length; index++)
             {
                 newRevealers[index] = _revealers[index];
+                newRevelations[index] = _revelations[index];
             }
             newRevealers[_revealers.Length] = revealer;
             _revealers = newRevealers;
+            _revelations = newRevelations;
         }
     }
 
-    public void replaceInRevealers(ResettableMine mine)
+    // called from the old mine to set the new mine
+    public void transferParameters(ResettableMine mine)
     {
-        // Debug.Log(this.GetType() + " replaceInRevealers of " + name);
+        // Debug.Log(this.GetType() + " transferParameters of " + name);
         if (null != _revealers && null != mine)
         {
-            foreach (TriggeredMineRevealer revealer in _revealers)
+            TriggeredMineRevealer revealer;
+            for(int index = 0; index < _revealers.Length; index++)
             {
+                revealer = _revealers[index];
                 revealer.replace(this, mine);
+                mine.addRevealer(revealer);
+                if (_revelations[index])
+                {
+                    // Debug.Log(this.GetType() + " transferParameters revelation true of " + revealer.name + " on " + name);
+                    mine.reveal(revealer, true);
+                }
             }
         }
     }

@@ -65,7 +65,7 @@ public class MineManager : MonoBehaviour
 
     public void detonate(ResettableMine mine)
     {
-        // Debug.Log(mine.gameObject.name + " detonates");
+        // Debug.Log(this.GetType() + ": " + mine.gameObject.name + " detonates");
         _minesToReset.Add(mine);
         GameObject instance = Instantiate(_particleSystem, mine.transform.position + positionShift, mine.transform.rotation, mine.transform.parent) as GameObject;
         _particleSystems.Add(instance);
@@ -73,6 +73,8 @@ public class MineManager : MonoBehaviour
 
     public void resetSelectedMine(ResettableMine mine)
     {
+        // Debug.Log(this.GetType() + " " + name + " resets " + mine.gameObject.name);
+
         GameObject target = mine.gameObject;
 
         iTween.Stop(target, true);
@@ -80,7 +82,7 @@ public class MineManager : MonoBehaviour
         GameObject go = (GameObject)Instantiate(_mine, mine.transform.position, mine.transform.rotation, mine.transform.parent);
         ResettableMine newMine = go.GetComponent<ResettableMine>();
 
-        mine.replaceInRevealers(newMine);
+        mine.transferParameters(newMine);
 
         Destroy(target);
     }

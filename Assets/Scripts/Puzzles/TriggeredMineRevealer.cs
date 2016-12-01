@@ -49,7 +49,7 @@ public class TriggeredMineRevealer : TriggeredBehaviour
 
     public void replace(ResettableMine oldMine, ResettableMine newMine)
     {
-        // Debug.Log(this.GetType() + " replace(" + oldMine.name + ", " + oldMine.name + ")");
+        // Debug.Log(this.GetType() + " replace(" + oldMine.name + ", " + newMine.name + ")");
 
         bool replaced = false;
         if (null != _mines)
