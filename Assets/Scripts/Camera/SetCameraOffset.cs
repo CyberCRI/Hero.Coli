@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public class SetCameraOffset : MonoBehaviour {
-
+public class SetCameraOffset : MonoBehaviour
+{
     [SerializeField]
     private float _offSetValue;
     [SerializeField]
@@ -10,27 +10,25 @@ public class SetCameraOffset : MonoBehaviour {
     private bool _resetCam = false;
     private float _originOffsetY;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         _originOffsetY = GUITransitioner.get().mainBoundCamera.offset.y;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    }
 
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == Hero.playerTag)
         {
-            if (_resetCam == false)
+            if (_resetCam)
             {
-                GUITransitioner.get().mainBoundCamera.ZoomInOut(_offSetValue, _timeToSetCam);
-            }
-            else if (_resetCam == true)
-            {
+                // Debug.Log(this.GetType() + " " + name + " resetting camera offset");
                 GUITransitioner.get().mainBoundCamera.ZoomInOut(_originOffsetY, _timeToSetCam);
+            }
+            else
+            {
+                // Debug.Log(this.GetType() + " " + name + " setting camera with offset="+_offSetValue);
+                GUITransitioner.get().mainBoundCamera.ZoomInOut(_offSetValue, _timeToSetCam);
             }
         }
     }
