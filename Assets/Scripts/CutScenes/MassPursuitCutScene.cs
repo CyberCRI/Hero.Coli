@@ -24,7 +24,6 @@ public class MassPursuitCutScene : CutScene
 
     public override void initialize()
     {
-
     }
 
 #if QUICKTEST
@@ -53,7 +52,6 @@ public class MassPursuitCutScene : CutScene
         StartCoroutine(waitBetweenActivation(2f));
         _CutSceneCam.gameObject.SetActive(false);
         _boundCamera.gameObject.SetActive(true);
-        _cellControl.freezePlayer(false);
     }
 
     void OnTriggerEnter(Collider col)

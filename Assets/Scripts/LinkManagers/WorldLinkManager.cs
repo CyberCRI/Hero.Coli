@@ -109,13 +109,6 @@ public class WorldLinkManager : LinkManager
         {
             rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
         }
-        if (null != endGameCollider)
-        {
-            endGameCollider.hero = perso;
-            endGameCollider.endInfoPanel = GameStateController.get().endWindow;
-            endGameCollider.endMainMenuButton = GameStateController.get().endMainMenuButton;
-            // Debug.Log(this.GetType() + " EndGameCollider.infoPanel" + endGameCollider.endInfoPanel);
-        }
 
         GameStateController.get().teleporter = teleporter;
     }

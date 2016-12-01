@@ -3,8 +3,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class StartCutScene : CutScene {
-
+public class StartCutScene : CutScene
+{
     [SerializeField]
     private iTweenEvent _npcStartITweenEvent;
     [SerializeField]
@@ -37,7 +37,7 @@ public class StartCutScene : CutScene {
     private bool _scaling = false;
 
 #if QUICKTEST
-    private float[] waitTimes = new float[9]{0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f};
+    private float[] waitTimes = new float[9] { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f };
     private const float _tweenScaleDuration = 0.1f;
     private const float _pulseSpeed = 50f;
 #else
@@ -65,16 +65,14 @@ public class StartCutScene : CutScene {
     // Use this for initialization
     public override void initialize()
     {
-
         _originFromTweenScale = _tweenScale.from;
         _originToTweenScale = _tweenScale.to;
 
         StartCoroutine(waitForBeginning());
-        //start();
     }
 
     IEnumerator waitForBeginning()
-    {   
+    {
         _cellControl.freezePlayer(true);
         yield return new WaitForSeconds(waitTimes[0]);
         start();
@@ -89,19 +87,8 @@ public class StartCutScene : CutScene {
         _tweenScale.enabled = true;
     }
 
-    // void OnTriggerEnter(Collider col)
-    // {
-    //     if (col.gameObject.name == "dummyPlayer")
-    //     {
-    //         end ();
-    //         Destroy(col.gameObject);
-    //     }
-    // }
-    
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
-        //Destroy(this.gameObject.transform.parent.gameObject);
         FocusMaskManager.get().blockClicks(false);
         Destroy(this.transform.parent.gameObject);
     }
@@ -148,49 +135,45 @@ public class StartCutScene : CutScene {
 
     IEnumerator scalePulse(Transform objTransform, float speed)
     {
-        bool test = false;
-        while (_scaling == true)
+        while (_scaling)
         {
-            if (test == true)
-            {
-            }
-            if (_scaleUp == true && objTransform.localScale.x < 2f)
+            
+            if (_scaleUp && objTransform.localScale.x < 2f)
             {
                 objTransform.localScale = new Vector3(objTransform.localScale.x + (Time.deltaTime * speed), objTransform.localScale.y + (Time.deltaTime * speed), objTransform.localScale.z + (Time.deltaTime * speed));
-                if (objTransform.localScale.x > 2f)
-                {
-                    _scaleUp = false;
-                }
-            }
-            if (_scaleUp == false)
-            {
-                objTransform.eulerAngles = new Vector3(objTransform.eulerAngles.x, objTransform.eulerAngles.y - Time.deltaTime * 200, objTransform.eulerAngles.z);
-            }
-            if (_scaleUp == false && objTransform.localScale.x > 0.1f)
-            {
-                objTransform.localScale = new Vector3(objTransform.localScale.x - (Time.deltaTime * speed), objTransform.localScale.y - (Time.deltaTime * speed), objTransform.localScale.z - (Time.deltaTime * speed));
-            }
-            else if (_scaleUp == false && _iTweenEventDNA.transform != null && _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled == false)
-            {
-                _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
-                _scaling = false;
                 
-                PickableDeviceRef4Bricks[] addedDevices = _devMode ? _developmentDevices : _devices;
-                CraftZoneManager czm = CraftZoneManager.get();
+                _scaleUp = (objTransform.localScale.x <= 2f);
                 
-                int currentCount = czm.getSlotCount();
-                int targetCount = addedDevices.Length;
-                for (int index = 0; index < targetCount - currentCount; index++)
-                {
-                    czm.addSlot();
-                }
-                
-                foreach(PickableDeviceRef4Bricks device in addedDevices)
-                {
-                    czm.addAndEquipDevice(device.getDNABit() as Device, false);
-                }
             }
 
+            if (!_scaleUp)
+            {
+                objTransform.eulerAngles = new Vector3(objTransform.eulerAngles.x, objTransform.eulerAngles.y - Time.deltaTime * 200, objTransform.eulerAngles.z);
+                if (objTransform.localScale.x > 0.1f)
+                {
+                    objTransform.localScale = new Vector3(objTransform.localScale.x - (Time.deltaTime * speed), objTransform.localScale.y - (Time.deltaTime * speed), objTransform.localScale.z - (Time.deltaTime * speed));
+                }
+                else if (_iTweenEventDNA.transform != null && !_iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled)
+                {
+                    _iTweenEventDNA.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+                    _scaling = false;
+                    
+                    PickableDeviceRef4Bricks[] addedDevices = _devMode ? _developmentDevices : _devices;
+                    CraftZoneManager czm = CraftZoneManager.get();
+                    
+                    int currentCount = czm.getSlotCount();
+                    int targetCount = addedDevices.Length;
+                    for (int index = 0; index < targetCount - currentCount; index++)
+                    {
+                        czm.addSlot();
+                    }
+                    
+                    foreach(PickableDeviceRef4Bricks device in addedDevices)
+                    {
+                        czm.addAndEquipDevice(device.getDNABit() as Device, false);
+                    }
+                }
+            }
             yield return null;
         }
         //end();

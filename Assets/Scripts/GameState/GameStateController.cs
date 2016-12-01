@@ -391,7 +391,7 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    private CheckpointShortcut[] _shortcuts = new CheckpointShortcut[14]
+    private CheckpointShortcut[] _shortcuts = new CheckpointShortcut[15]
     {
         new CheckpointShortcut(0, KeyCode.Alpha0),
         new CheckpointShortcut(1, KeyCode.Alpha1),
@@ -406,7 +406,8 @@ public class GameStateController : MonoBehaviour
         new CheckpointShortcut(10, KeyCode.Keypad0),
         new CheckpointShortcut(11, KeyCode.Keypad1),
         new CheckpointShortcut(12, KeyCode.Keypad2),
-        new CheckpointShortcut(13, KeyCode.Keypad3)
+        new CheckpointShortcut(13, KeyCode.Keypad3),
+        new CheckpointShortcut(14, KeyCode.Keypad4)
     };
 
     public void goToCheckpoint(int index)
@@ -612,28 +613,21 @@ public class GameStateController : MonoBehaviour
         internalRestart();
     }
 
-    public void triggerEnd(EndGameCollider egc)
+    public void triggerEnd()
     {
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
         MemoryManager.get().sendCompletionEvent();
-        egc.displayEndMessage();
 
-        /*
-                gUITransitioner.showGraphs(false);
+        fadeSprite.gameObject.SetActive(true);
+        fadeSprite.FadeIn(0.5f);
 
-                //TODO merge fadeSprite with Modal background
-                fadeSprite.gameObject.SetActive(true);
-                fadeSprite.FadeIn(0.5f);
-
-                StartCoroutine (waitFade (2f, egc));
-                */
+        StartCoroutine(waitFade(1.0f));
     }
 
-    private IEnumerator waitFade(float waitTime, EndGameCollider egc)
+    private IEnumerator waitFade(float waitTime)
     {
-        // do stuff before waitTime
         yield return new WaitForSeconds(waitTime);
-        egc.displayEndMessage();
+        ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
     }
 
     public void changeState(GameState newState)

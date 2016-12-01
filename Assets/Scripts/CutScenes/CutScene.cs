@@ -105,7 +105,7 @@ public abstract class CutScene : CutSceneElements {
 
     IEnumerator waitForBlackBar(bool start)
     {
-        if (start == true)
+        if (start)
         {
             SetCutSceneCamera(start);
             _cellControl.freezePlayer(true);
@@ -114,14 +114,15 @@ public abstract class CutScene : CutSceneElements {
         
         
         yield return new WaitForSeconds(_blackBarWait2);
-        if (start == true)
+        if (start)
         {
             startCutScene();
         }
         else
         {
-            endCutScene();
             SetCutSceneCamera(start);
+            endCutScene();
+            _cellControl.freezePlayer(false);
             _isPlaying = false;
         }
         yield return null;

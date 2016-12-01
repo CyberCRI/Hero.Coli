@@ -31,11 +31,6 @@ public class PursuitCutScene : CutScene
     {
     }
 #else
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -58,7 +53,6 @@ public class PursuitCutScene : CutScene
 
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
         _badGuy.GetComponent<PlatformMvt>().speed = 32f;
         this.enabled = false;
     }

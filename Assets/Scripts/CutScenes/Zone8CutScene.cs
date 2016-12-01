@@ -1,35 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Zone8CutScene : CutScene {
-
+public class Zone8CutScene : CutScene
+{
     [SerializeField]
     private GameObject _dummy;
     private int _collisionIteration = 0;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public override void initialize()
     {
-        
     }
 
     public override void startCutScene()
     {
-        
     }
 
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
         this.transform.parent.gameObject.SetActive(false);
     }
 
@@ -41,7 +28,7 @@ public class Zone8CutScene : CutScene {
             {
                 start();
                 _collisionIteration++;
-                StartCoroutine(WaitForOpeningDoor());
+                StartCoroutine(waitForOpeningDoor());
             }
             else
             {
@@ -53,18 +40,17 @@ public class Zone8CutScene : CutScene {
         }
     }
 
-
-    IEnumerator WaitForOpeningDoor()
+    IEnumerator waitForOpeningDoor()
     {
         yield return new WaitForSeconds(3f);
         Destroy(_dummy.GetComponent<RotationUpdate>());
         Destroy(_dummy.GetComponent<PlatformMvt>());
         _dummy.GetComponent<iTweenEvent>().enabled = true;
-        StartCoroutine(WaitForEnd());
+        StartCoroutine(waitForEnd());
         yield return null;
     }
 
-    IEnumerator WaitForEnd()
+    IEnumerator waitForEnd()
     {
         yield return new WaitForSeconds(3f);
         end();

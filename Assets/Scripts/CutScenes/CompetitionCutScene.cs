@@ -30,7 +30,6 @@ public class CompetitionCutScene : CutScene
     // Use this for initialization
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -64,8 +63,6 @@ public class CompetitionCutScene : CutScene
 
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
-        //this.enabled = false;
     }
 
     public override void initialize()

@@ -3,7 +3,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class AmpicillinTutorialCutScene : CutScene {
+public class AmpicillinTutorialCutScene : CutScene
+{
 
 #if QUICKTEST
     private const float endWaitDuration = 0.1f;
@@ -28,11 +29,12 @@ public class AmpicillinTutorialCutScene : CutScene {
     private GameObject _dummyFlagellum;
 
     // Use this for initialization
-    public override void initialize () {
+    public override void initialize()
+    {
         _initialTarget = _boundCamera.target;
         _iTweenEventBigGuy.Values.Remove("speed");
         _iTweenEventBigGuy.Values.Add("speed", iTweenEventSpeed);
-	}
+    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -67,7 +69,7 @@ public class AmpicillinTutorialCutScene : CutScene {
 
     IEnumerator waitForSecondPart()
     {
-        while(_cutSceneCam.transform.position != new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z))
+        while (_cutSceneCam.transform.position != new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z))
         {
             yield return true;
         }
@@ -91,7 +93,7 @@ public class AmpicillinTutorialCutScene : CutScene {
 
     IEnumerator waitForDummyDeath()
     {
-        while(_dummyFlagellum.activeSelf == true)
+        while (_dummyFlagellum.activeSelf)
         {
             yield return null;
         }
@@ -102,15 +104,15 @@ public class AmpicillinTutorialCutScene : CutScene {
     IEnumerator prepareEnd()
     {
         yield return new WaitForSeconds(endWaitDuration);
-        
-        _wayPoint1.transform.position = new Vector3 (_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y,_iTweenEventBigGuy.transform.position.z);
-        _wayPoint2.transform.position = new Vector3 (_initialTarget.position.x,_cutSceneCam.transform.position.y,_initialTarget.position.z);
+
+        _wayPoint1.transform.position = new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z);
+        _wayPoint2.transform.position = new Vector3(_initialTarget.position.x, _cutSceneCam.transform.position.y, _initialTarget.position.z);
         _cutSceneCam.transform.position = _wayPoint1.transform.position;
         _cutSceneCam.gameObject.SetActive(true);
         _boundCamera.gameObject.SetActive(false);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
         StartCoroutine(waitForEnd());
-        
+
         yield return null;
     }
 
@@ -120,17 +122,16 @@ public class AmpicillinTutorialCutScene : CutScene {
         {
             yield return true;
         }
-        end ();
+        end();
         yield return null;
     }
-    
-    public override void endCutScene ()
+
+    public override void endCutScene()
     {
         _boundCamera.target = _initialTarget;
         _cutSceneCam.gameObject.SetActive(false);
         _boundCamera.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
         ModalManager.setModal("T1_AMPICILLIN");
-        _cellControl.freezePlayer(false);
     }
 }

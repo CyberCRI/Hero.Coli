@@ -2,38 +2,18 @@ using UnityEngine;
 
 public class EndGameCollider : MonoBehaviour
 {
-  
-    [HideInInspector]
-    public GameObject endInfoPanel, hero;
-    [HideInInspector]
-    public EndMainMenuButton endMainMenuButton;
-    private bool _alreadyDisplayed;
-    // Use this for initialization
-    void Start ()
-    {
-        _alreadyDisplayed = false;
-    }
+    private bool _alreadyDisplayed = false;
 
-    void OnTriggerEnter (Collider other)
+    void OnTriggerEnter(Collider other)
     {
         // Debug.Log(this.GetType() + " OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
-        if (!_alreadyDisplayed) {
-            if (other == hero.GetComponent<Collider> ()) {
-                triggerEnd();
+        if (!_alreadyDisplayed)
+        {
+            if (other.tag == Hero.playerTag)
+            {
+                _alreadyDisplayed = true;
+                GameStateController.get().triggerEnd();
             }
         }
-    }
-
-    public void displayEndMessage()
-    {
-        // Debug.Log(this.GetType() + " EndGameCollider:displayEndMessage");
-        ModalManager.setModal (endInfoPanel, true, endMainMenuButton.gameObject, endMainMenuButton.GetType ().AssemblyQualifiedName);
-    }
-
-    // can be called externally to trigger the end of the level
-    public void triggerEnd()
-    {
-        _alreadyDisplayed = true;
-        GameStateController.get ().triggerEnd (this);
     }
 }

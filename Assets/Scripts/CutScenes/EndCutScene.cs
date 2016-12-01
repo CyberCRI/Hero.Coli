@@ -26,10 +26,8 @@ public class EndCutScene : CutScene
     [SerializeField]
     private GameObject _waypoint3NPC1;
 
-
     public override void initialize()
     {
-
     }
 
 
@@ -48,12 +46,6 @@ public class EndCutScene : CutScene
         _nanoCounter = GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void startCutScene()
     {
         for (int i = 0; i < NPCs.Length; i++)
@@ -66,7 +58,7 @@ public class EndCutScene : CutScene
 
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
+        GameStateController.get().triggerEnd();
     }
 
     void OnTriggerEnter(Collider col)
@@ -75,6 +67,10 @@ public class EndCutScene : CutScene
         {
             _started = true;
             start();
+        }
+        else if (col.tag == Hero.playerTag)
+        {
+            end();
         }
     }
 
@@ -103,7 +99,7 @@ public class EndCutScene : CutScene
         _platformMvt.ClearWaypoints();
         _platformMvt.AddWayPoint(_waypoint1);
         _platformMvt.AddWayPoint(_waypoint2);
-        _platformMvt.speed = 4;
+        _platformMvt.speed = 8;
 
         _platformMvt = NPCs[0].GetComponent<PlatformMvt>();
         _platformMvt.ClearWaypoints();
@@ -157,6 +153,6 @@ public class EndCutScene : CutScene
         }
         return copy;
     }
-    
+
 #endif
 }

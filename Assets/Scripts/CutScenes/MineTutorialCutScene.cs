@@ -5,11 +5,11 @@ using System.Collections;
 
 public class MineTutorialCutScene : CutScene
 {
-    #if QUICKTEST
+#if QUICKTEST
         private const float _endWaitingTime = 0.1f;
-    #else
-        private const float _endWaitingTime = 5f;
-    #endif
+#else
+    private const float _endWaitingTime = 5f;
+#endif
 
     [SerializeField]
     private GameObject[] _dummies;
@@ -44,18 +44,7 @@ public class MineTutorialCutScene : CutScene
 
     public override void endCutScene()
     {
-        _cellControl.freezePlayer(false);
         this.enabled = false;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     void OnTriggerEnter(Collider col)
@@ -69,7 +58,7 @@ public class MineTutorialCutScene : CutScene
 
     IEnumerator waitForDummyDeath(GameObject dummy)
     {
-        if (_dummyIndex < _dummies.Length-1)
+        if (_dummyIndex < _dummies.Length - 1)
         {
             while (dummy != null)
             {

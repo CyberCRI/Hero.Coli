@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Zone2WallCutScene : CutScene {
-
+public class Zone2WallCutScene : CutScene
+{
     [SerializeField]
     private PlatformMvt _pltMvt2Flagellum;
     [SerializeField]
@@ -17,19 +17,19 @@ public class Zone2WallCutScene : CutScene {
     private bool _moveCam2 = false;
     [SerializeField]
     private List<GameObject> _points = new List<GameObject>();
-    
+
     bool _played = false;
-    
+
 #if QUICKTEST
         private const float _bacterium1Speed = 100f;
         private const float _bacterium2Speed = 250f;
         private const float _waitDuration1 = 0.1f;
         private const float _waitDuration2 = 0.1f;
 #else
-        private const float _bacterium1Speed = 10f;
-        private const float _bacterium2Speed = 25f;
-        private const float _waitDuration1 = 4.5f;
-        private const float _waitDuration2 = 3f;
+    private const float _bacterium1Speed = 10f;
+    private const float _bacterium2Speed = 25f;
+    private const float _waitDuration1 = 4.5f;
+    private const float _waitDuration2 = 3f;
 #endif
 
     public override void initialize() { }
@@ -44,7 +44,7 @@ public class Zone2WallCutScene : CutScene {
     {
         if (col.tag == "Door")
         {
-            if(!_played)
+            if (!_played)
             {
                 start();
                 _played = true;
@@ -71,15 +71,15 @@ public class Zone2WallCutScene : CutScene {
     public override void startCutScene()
     {
         startEscape(_pltMvt2Flagellum, _bacterium1Speed);
-        StartCoroutine(waitForSecondBacteria());
+        StartCoroutine(waitForSecondBacterium());
     }
 
-    public override void endCutScene() {
+    public override void endCutScene()
+    {
         Destroy(this.transform.parent.gameObject);
-        _cellControl.freezePlayer(false);
     }
 
-    IEnumerator waitForSecondBacteria()
+    IEnumerator waitForSecondBacterium()
     {
         yield return new WaitForSeconds(_waitDuration1);
         startEscape(_pltMvt3Flagellum, _bacterium2Speed);
