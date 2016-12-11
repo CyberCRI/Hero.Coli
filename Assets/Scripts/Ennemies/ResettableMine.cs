@@ -3,9 +3,9 @@ using System.Collections;
 
 public class ResettableMine : MonoBehaviour
 {
-    // [SerializeField]
+    [SerializeField]
     private TriggeredMineRevealer[] _revealers;
-    // [SerializeField]
+    [SerializeField]
     private bool[] _revelations;
     [SerializeField]
     private Renderer _renderer;
@@ -26,19 +26,19 @@ public class ResettableMine : MonoBehaviour
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start " + name);
+        Debug.Log(this.GetType() + " Start " + name);
         updateVisibility();
     }
 
     void onOutComplete()
     {
-        // Debug.Log(this.GetType() + " onOutComplete " + name);
+        Debug.Log(this.GetType() + " onOutComplete " + name);
         _renderer.enabled = false;
     }
 
     public void addRevealer(TriggeredMineRevealer revealer)
     {
-        // Debug.Log(this.GetType() + " addRevealer " + revealer.name + " to " + name);
+        Debug.Log(this.GetType() + " addRevealer " + revealer.name + " to " + name);
         if (null == _revealers)
         {
             _revelations = new bool[1];
@@ -62,7 +62,7 @@ public class ResettableMine : MonoBehaviour
     // called from the old mine to set the new mine
     public void transferParameters(ResettableMine mine)
     {
-        // Debug.Log(this.GetType() + " transferParameters of " + name);
+        Debug.Log(this.GetType() + " transferParameters of " + name);
         if (null != _revealers && null != mine)
         {
             TriggeredMineRevealer revealer;
@@ -73,7 +73,7 @@ public class ResettableMine : MonoBehaviour
                 mine.addRevealer(revealer);
                 if (_revelations[index])
                 {
-                    // Debug.Log(this.GetType() + " transferParameters revelation true of " + revealer.name + " on " + name);
+                    Debug.Log(this.GetType() + " transferParameters revelation true of " + revealer.name + " on " + name);
                     mine.reveal(revealer, true);
                 }
             }
@@ -82,7 +82,7 @@ public class ResettableMine : MonoBehaviour
 
     public void reveal(TriggeredMineRevealer tRevealer, bool enable)
     {
-        // Debug.Log(this.GetType() + " reveal " + name + " " + enable);
+        Debug.Log(this.GetType() + " reveal " + name + " " + enable);
         bool found = false;
         if (null != _revealers && null != _revelations)
         {
@@ -106,7 +106,7 @@ public class ResettableMine : MonoBehaviour
 
     public void updateVisibility()
     {
-        // Debug.Log(this.GetType() + " updateVisibility of " + name);
+        Debug.Log(this.GetType() + " updateVisibility of " + name);
 
         if (null != _revelations)
         {
@@ -115,7 +115,7 @@ public class ResettableMine : MonoBehaviour
             {
                 if (revelation)
                 {
-                    // Debug.Log(this.GetType() + " updateVisibility found true");
+                    Debug.Log(this.GetType() + " updateVisibility found true");
                     visible = true;
                     break;
                 }

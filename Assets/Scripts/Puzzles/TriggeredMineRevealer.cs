@@ -7,12 +7,12 @@ public class TriggeredMineRevealer : TriggeredBehaviour
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start");
+        Debug.Log(this.GetType() + " Start");
         if (null != _mines)
         {
             foreach(ResettableMine mine in _mines)
             {
-                // Debug.Log(this.GetType() + " Start calls addRevealer on " + mine.name);
+                Debug.Log(this.GetType() + " Start calls addRevealer on " + mine.name);
                 mine.addRevealer(this);
             }
         }
@@ -20,12 +20,12 @@ public class TriggeredMineRevealer : TriggeredBehaviour
 
     void enableAll(bool enable)
     {
-        // Debug.Log(this.GetType() + " enableAll(" + enable + ")");
+        Debug.Log(this.GetType() + " enableAll(" + enable + ")");
         if (null != _mines)
         {
             foreach (ResettableMine mine in _mines)
             {
-                // Debug.Log(this.GetType() + " enableAll reveals " + mine.name);
+                Debug.Log(this.GetType() + " enableAll reveals " + mine.name);
                 mine.reveal(this, enable);
             }
         }
@@ -33,7 +33,7 @@ public class TriggeredMineRevealer : TriggeredBehaviour
 
     public override void triggerStart()
     {
-        // Debug.Log(this.GetType() + " triggerStart");
+        Debug.Log(this.GetType() + " triggerStart");
         enableAll(true);
     }
 
@@ -43,13 +43,13 @@ public class TriggeredMineRevealer : TriggeredBehaviour
 
     public override void triggerExit()
     {
-        // Debug.Log(this.GetType() + " triggerExit");
+        Debug.Log(this.GetType() + " triggerExit");
         enableAll(false);
     }
 
     public void replace(ResettableMine oldMine, ResettableMine newMine)
     {
-        // Debug.Log(this.GetType() + " replace(" + oldMine.name + ", " + newMine.name + ")");
+        Debug.Log(this.GetType() + " replace(" + oldMine.name + ", " + newMine.name + ")");
 
         bool replaced = false;
         if (null != _mines)
@@ -58,7 +58,7 @@ public class TriggeredMineRevealer : TriggeredBehaviour
             {
                 if (oldMine == _mines[index])
                 {
-                    // Debug.Log(this.GetType() + " replace replaces " + oldMine.name + " by " + newMine.name);
+                    Debug.Log(this.GetType() + " replace replaces " + oldMine.name + " by " + newMine.name);
                     _mines[index] = newMine;
                     replaced = true;
                     break;

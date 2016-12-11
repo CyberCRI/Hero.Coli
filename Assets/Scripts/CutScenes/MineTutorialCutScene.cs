@@ -36,10 +36,10 @@ public class MineTutorialCutScene : CutScene
             StartCoroutine(waitForDummyDeath(dummy));
             _dummyIndex++;
         }
-        else
-        {
-            Debug.Log(this.GetType() + " called startDummy on _dummyIndex >= _dummies.Length");
-        }
+        // else
+        // {
+        //     Debug.Log(this.GetType() + " called startDummy on _dummyIndex >= _dummies.Length");
+        // }
     }
 
     public override void endCutScene()
