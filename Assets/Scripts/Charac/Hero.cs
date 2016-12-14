@@ -539,7 +539,11 @@ public class Hero : MonoBehaviour
         cc.enabled = true;
         foreach (PushableBox box in FindObjectsOfType(typeof(PushableBox)))
         {
-            box.resetPos();
+            box.resetPosition();
+        }
+        foreach (TriggeredDoor door in FindObjectsOfType(typeof(TriggeredDoor)))
+        {
+            door.resetPosition();
         }
 
         MineManager.get().resetAllMines();

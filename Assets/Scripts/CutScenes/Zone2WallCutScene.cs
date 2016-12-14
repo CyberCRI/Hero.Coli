@@ -19,6 +19,7 @@ public class Zone2WallCutScene : CutScene
     private List<GameObject> _points = new List<GameObject>();
 
     bool _played = false;
+    bool _initialized = false;
 
 #if QUICKTEST
         private const float _bacterium1Speed = 100f;
@@ -32,7 +33,10 @@ public class Zone2WallCutScene : CutScene
     private const float _waitDuration2 = 3f;
 #endif
 
-    public override void initialize() { }
+    public override void initialize()
+    {
+        _initialized = true;
+    }
 
     public void resetCameraTarget()
     {
@@ -42,7 +46,7 @@ public class Zone2WallCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Door")
+        if (_initialized && col.tag == "Door")
         {
             if (!_played)
             {

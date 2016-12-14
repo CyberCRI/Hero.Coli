@@ -10,24 +10,23 @@ public class CutSceneInstantiator : CutSceneElements
     private Transform _originTransform;
     [SerializeField]
     private string _triggerTag;
-    private bool _first = true;
+    private bool _isResetCameraSaved = false;
     private Transform _resetCamera;
 
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == _triggerTag)
         {
-            if (null != _cutSceneInstance)
+            if (null == _cutSceneInstance)
             {
-                Destroy(_cutSceneInstance);
+                _cutSceneInstance = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
             }
-            _cutSceneInstance = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
         }
 
-        if (_first)
+        if (!_isResetCameraSaved)
         {
             _resetCamera = _boundCamera.transform;
-            _first = false;
+            _isResetCameraSaved = true;
         }
         else
         {

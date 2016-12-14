@@ -26,9 +26,16 @@ public class TriggeredDoor : TriggeredBehaviour
     private const string closeDoorITweenName = "closeDoor";
     private IEnumerator waitCoroutine;
 
-    void Start()
+    void Awake()
     {
         _origin = transform.position;
+    }
+
+    public void resetPosition()
+    {
+        // Debug.Log(this.GetType() + " resetPosition");
+        stopMovement();
+        transform.position = _origin;
     }
 
     Hashtable generateOpenHash()
@@ -104,35 +111,41 @@ public class TriggeredDoor : TriggeredBehaviour
         _isDoorClosing = false;
     }
 
+    void stopMovement(bool closing = true, bool opening = true)
+    {
+        // halt the potential coroutine
+        if (null != waitCoroutine)
+        {
+            // Debug.Log(this.GetType() + " triggerStart stops waitCoroutine");
+            StopCoroutine(waitCoroutine);
+        }
+        // halt the closing
+        // Debug.Log(this.GetType() + " triggerStart searches iTween " + closeDoorITweenName);
+        iTween[] itweens = gameObject.GetComponents(typeof(iTween)) as iTween[];
+        if (null != itweens)
+        {
+            foreach (iTween it in itweens)
+            {
+                if ((closing && closeDoorITweenName == it.name)
+                || (opening && openDoorITweenName == it.name))
+                {
+                    Destroy(it);
+                    // Debug.Log(this.GetType() + " triggerStart stops iTween " + closeDoorITweenName);
+                    break;
+                }
+            }
+        }
+    }
+
     public override void triggerStart()
     {
         // Debug.Log(this.GetType() + " triggerStart");
 
         _isBeingTriggered = true;
-        if(_isDoorClosing)
+        if (_isDoorClosing)
         {
             // halt the closing
-            // coroutine
-            if (null != waitCoroutine)
-            {
-                // Debug.Log(this.GetType() + " triggerStart stops waitCoroutine");
-                StopCoroutine(waitCoroutine);
-            }
-            // actual closing
-            // Debug.Log(this.GetType() + " triggerStart searches iTween " + closeDoorITweenName);
-            iTween[] itweens = gameObject.GetComponents(typeof(iTween)) as iTween[];
-            if(null != itweens)
-            {
-                foreach(iTween it in itweens)
-                {
-                    if (closeDoorITweenName == it.name)
-                    {
-                        Destroy(it);
-                        // Debug.Log(this.GetType() + " triggerStart stops iTween " + closeDoorITweenName);
-                        break;
-                    }
-                }
-            }
+            stopMovement(true, false);
             openDoor();
         }
         else if (!_isDoorOpening)

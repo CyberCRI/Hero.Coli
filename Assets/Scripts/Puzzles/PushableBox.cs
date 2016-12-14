@@ -58,7 +58,7 @@ public class PushableBox : MonoBehaviour
         processCollision(col);
     }
 
-    public void resetPos()
+    public void resetPosition()
     {
         transform.position = _initPos;
     }
