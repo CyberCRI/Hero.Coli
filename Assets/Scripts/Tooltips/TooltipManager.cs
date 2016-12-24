@@ -195,7 +195,7 @@ public class TooltipManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("TooltipManager displayTooltip(" + code + ") failed");
+                // Debug.LogWarning("TooltipManager displayTooltip(" + code + ") failed");
                 return false;
             }
         }
@@ -248,7 +248,7 @@ public class TooltipManager : MonoBehaviour
         TooltipInfo info;
         if (!_instance._loadedInfoWindows.TryGetValue(code, out info))
         {
-            Debug.LogWarning("TooltipManager retrieveFromDico(" + code + ") failed");
+            // Debug.LogWarning("TooltipManager retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;

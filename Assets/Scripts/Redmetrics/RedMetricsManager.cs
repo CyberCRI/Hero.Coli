@@ -213,7 +213,7 @@ public class RedMetricsManager : MonoBehaviour
         if (!www.isDone || !string.IsNullOrEmpty(www.error))
         {
             string errmsg = string.IsNullOrEmpty(www.error) ? "timeout" : www.error;
-            Debug.LogError(string.Format("RedMetricsManager waitForWWW Error: Load Failed: {0}", errmsg));
+            // Debug.LogError(string.Format("RedMetricsManager waitForWWW Error: Load Failed: {0}", errmsg));
             callback(null);    // Pass null result.
             yield break;
         }
@@ -256,7 +256,7 @@ public class RedMetricsManager : MonoBehaviour
     {
         if (null == www)
         {
-            Debug.LogError(this.GetType() + " wwwLogger null == www from " + origin);
+            // Debug.LogError(this.GetType() + " wwwLogger null == www from " + origin);
         }
         else
         {
