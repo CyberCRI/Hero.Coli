@@ -4,16 +4,19 @@ using System.Collections.Generic;
 
 public class DisplayedDevice : DisplayedElement
 {
-
-    public UISprite levelSprite;
-    public UISprite deviceBackgroundSprite;
-    public UILocalize moleculeOverlay;
-    public ParticleSystem feedbackParticleSystem;
+    [SerializeField]
+    private UISprite levelSprite;
+    [SerializeField]
+    private UISprite deviceBackgroundSprite;
+    [SerializeField]
+    private UILocalize moleculeOverlay;
+    [SerializeField]
+    private ParticleSystem feedbackParticleSystem;
     protected bool _isFeedbackParticleSystemActive = false;
 
     // prefab URIs
     private const string equipedPrefabURI = "GUI/screen1/Devices/DisplayedDevicePrefab";
-    public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
+    //public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
     public const string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesPrefab";
     //private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
     private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
@@ -56,30 +59,30 @@ public class DisplayedDevice : DisplayedElement
     private const string _level3PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level3Suffix + _pictureSuffix;
 
     // default texture
-    private const string _defaultTexture            = "default";
-    private const string _defaultTextureWithText    = _defaultTexture + _textSuffix;
+    private const string _defaultTexture = "default";
+    private const string _defaultTextureWithText = _defaultTexture + _textSuffix;
 
     // molecule name overlay
     private const string _moleculeOverlayPrefix = "BRICK.ICONLABEL.";
 
     // background
-    private const string backgroundSuffix               = "background_";
-    private const string squareBackgroundSuffix         = "square";
-    private const string roundedSquareBackgroundSuffix  = "rounded_square";
-    private const string circleBackgroundSuffix         = "circle";
-    private const string squareBackgroundSpriteName         = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + squareBackgroundSuffix;
-    private const string roundedSquareBackgroundSpriteName  = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
-    private const string circleBackgroundSpriteName         = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
+    private const string backgroundSuffix = "background_";
+    private const string squareBackgroundSuffix = "square";
+    private const string roundedSquareBackgroundSuffix = "rounded_square";
+    private const string circleBackgroundSuffix = "circle";
+    private const string squareBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + squareBackgroundSuffix;
+    private const string roundedSquareBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
+    private const string circleBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
 
     private const string _equipedPrefix = "e_";
     private const string _inventoriedPrefix = "i_";
     private const string _listedPrefix = "l_";
-    private const string _craftSlotPrefix = "c_"; 
-    private string[] _deviceNamePrefixes = new string[4]{_equipedPrefix,_inventoriedPrefix,_listedPrefix,_craftSlotPrefix};
+    private const string _craftSlotPrefix = "c_";
+    private string[] _deviceNamePrefixes = new string[4] { _equipedPrefix, _inventoriedPrefix, _listedPrefix, _craftSlotPrefix };
 
     public Device _device;
     protected static DevicesDisplayer _devicesDisplayer;
-    public DevicesDisplayer.DeviceType _deviceType;
+    private DevicesDisplayer.DeviceType _deviceType;
 
     private static Dictionary<string, string> geneSpecialTextureDico = new Dictionary<string, string>()
   {
@@ -93,33 +96,33 @@ public class DisplayedDevice : DisplayedElement
         {"REPR4", _defaultTextureWithText}
   };
 
-  public static void clear()
-  {
-      _devicesDisplayer = null;
-  }
-  
+    public static void clear()
+    {
+        _devicesDisplayer = null;
+    }
+
     public void playFeedback()
     {
         _isFeedbackParticleSystemActive = true;
-        
+
         feedbackParticleSystem.gameObject.SetActive(true);
         feedbackParticleSystem.Emit(50);
 
-        if(gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy)
         {
             StartCoroutine(terminateParticleSystem());
         }
     }
-    
+
     IEnumerator terminateParticleSystem()
     {
         yield return new WaitForSeconds(1.5f);
-        
+
         _isFeedbackParticleSystemActive = false;
-        
+
         feedbackParticleSystem.Stop();
         feedbackParticleSystem.gameObject.SetActive(false);
-        
+
         yield return null;
     }
 
@@ -139,9 +142,10 @@ public class DisplayedDevice : DisplayedElement
         {
             deviceBackgroundSprite.spriteName = backgroundSpriteName;
             deviceBackgroundSprite.gameObject.SetActive(true);
+            // Debug.Log(this.GetType() + " setBackgroundSprite");
         }
     }
-    
+
     private void setMoleculeOverlay(string proteinName)
     {
         setMoleculeOverlay(proteinName, moleculeOverlay);
@@ -161,6 +165,7 @@ public class DisplayedDevice : DisplayedElement
             {
                 moleculeOverlayLocalize.gameObject.SetActive(false);
             }
+            // Debug.Log("DisplayedDevice setMoleculeOverlay");
         }
     }
 
@@ -182,6 +187,7 @@ public class DisplayedDevice : DisplayedElement
             {
                 levelSprite.gameObject.SetActive(false);
             }
+            // Debug.Log(this.GetType() + " setLevelSprite");
         }
     }
 
@@ -352,7 +358,7 @@ public class DisplayedDevice : DisplayedElement
           , ""
           , prefab
           );
-          
+
         result.Initialize(device, devicesDisplayer);
 
         return result;
@@ -406,6 +412,8 @@ public class DisplayedDevice : DisplayedElement
       )
     {
 
+        // Debug.Log(this.GetType() + " Initialize");
+
         if (device == null)
         {
             Debug.LogWarning(this.GetType() + " Initialize device==null");
@@ -421,7 +429,7 @@ public class DisplayedDevice : DisplayedElement
         {
             _devicesDisplayer = DevicesDisplayer.get();
         }
-        
+
         // Debug.Log(this.GetType() + " Initialize ends");
 
         setName();
@@ -430,6 +438,8 @@ public class DisplayedDevice : DisplayedElement
         int levelIndex = getLevelIndex();
         setLevelSprite(levelIndex);
         setDeviceIcon(levelIndex);
+
+        // Debug.Log(this.GetType() + " Initialize done for " + gameObject.name);
     }
 
     private void setName()
@@ -465,12 +475,12 @@ public class DisplayedDevice : DisplayedElement
             RedMetricsManager.get().sendEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
         }
     }
-    
-    void Update ()
+
+    void Update()
     {
-        if((_isFeedbackParticleSystemActive) && (GameStateController.isPause()) && (null != feedbackParticleSystem))
+        if ((_isFeedbackParticleSystemActive) && (GameStateController.isPause()) && (null != feedbackParticleSystem))
         {
-             feedbackParticleSystem.Simulate(Time.unscaledDeltaTime, true, false);
+            feedbackParticleSystem.Simulate(Time.unscaledDeltaTime, true, false);
         }
     }
 

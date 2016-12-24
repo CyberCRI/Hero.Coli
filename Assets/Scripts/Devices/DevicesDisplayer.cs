@@ -321,7 +321,7 @@ public class DevicesDisplayer : MonoBehaviour
         if (toRemove != null)
         {
             devices.Remove(toRemove);
-            toRemove.Remove();
+            toRemove.remove();
         }
     }
 
