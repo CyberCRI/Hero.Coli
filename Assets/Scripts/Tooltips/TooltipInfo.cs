@@ -61,7 +61,7 @@ public class TooltipInfo
 
     public override string ToString()
     {
-        return string.Format("[TooltipInfo " +
+        return "[TooltipInfo " +
           "_code:" + _code +
           ", _background:" + _background +
           ", _title:" + _title +
@@ -74,7 +74,7 @@ public class TooltipInfo
           ", _reference:" + _reference +
           ", _energyConsumption:" + _energyConsumption +
           ", _explanation:" + _explanation +
-          "]");
+          "]";
     }
 }
 

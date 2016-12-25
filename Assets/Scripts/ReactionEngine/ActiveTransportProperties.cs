@@ -215,7 +215,7 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
   
   public override string ToString ()
   {
-    return string.Format (
+    return  
       "[ActiveTransportProperties"
       +" name:"+name
       +", mediumId:"+mediumId
@@ -231,6 +231,6 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       +", Ki:"+Ki
       +", products:"+Logger.ToString<Product>(products)
       +", energyCost:"+energyCost
-      +"]");
+      +"]";
   }
 }

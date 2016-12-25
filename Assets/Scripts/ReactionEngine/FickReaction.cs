@@ -187,7 +187,7 @@ Where:
   
   public override string ToString ()
   {
-    return string.Format ("[FickReaction m1="+_medium1.getName()+" m2="+_medium2.getName()+"]");
+    return "[FickReaction m1="+_medium1.getName()+" m2="+_medium2.getName()+"]";
   }
   
 }

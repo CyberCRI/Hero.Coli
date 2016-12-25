@@ -112,7 +112,7 @@ public class RedMetricsManager : MonoBehaviour
         {
             return _isStartEventSent;
         }
-    }    
+    }
 
     // list of events to be stacked while the player guid is not created yet, ie rmConnect's callback has not been called yet and isGameSessionGUIDCreated is still false
     private LinkedList<TrackingEventDataWithoutIDs> waitingList = new LinkedList<TrackingEventDataWithoutIDs>();

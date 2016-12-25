@@ -2,7 +2,8 @@
 
 using UnityEngine;
 
-public class CutSceneElements : MonoBehaviour {
+public class CutSceneElements : MonoBehaviour
+{
 
     private const float blackBarWait1 = 0.1f;
 #if QUICKTEST
@@ -22,7 +23,7 @@ public class CutSceneElements : MonoBehaviour {
     }
 
     protected static CutSceneBlackBarHandler _blackBar;
-    protected  static CullingMaskHandler _cullingMaskHandler;
+    protected static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
     protected static Camera _cutSceneCameraUI;
     protected static BoundCamera _boundCamera;

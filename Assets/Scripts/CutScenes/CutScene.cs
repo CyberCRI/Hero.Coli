@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class CutScene : CutSceneElements {
+public abstract class CutScene : CutSceneElements
+{
 
     private const float _blackBarWait1 = 0.1f;
 #if QUICKTEST
@@ -30,11 +31,11 @@ public abstract class CutScene : CutSceneElements {
     }
 
     // must be implemented in each cut scene
-    public abstract void initialize ();  
+    public abstract void initialize();
 
-	// must be implemented in each cut scene
-    public abstract void startCutScene ();    
-    
+    // must be implemented in each cut scene
+    public abstract void startCutScene();
+
     private const string _iTweenSpeedKey = "speed";
     private const float _speedIncreaseFactor = 10;
     private Dictionary<iTweenEvent, float> _iTweenSpeeds = new Dictionary<iTweenEvent, float>();
@@ -43,9 +44,9 @@ public abstract class CutScene : CutSceneElements {
     {
         object speedObject;
         float speed;
-        foreach(iTweenEvent itEvent in GameObject.FindObjectsOfType<iTweenEvent>())
+        foreach (iTweenEvent itEvent in GameObject.FindObjectsOfType<iTweenEvent>())
         {
-            if((null != itEvent) && itEvent.Values.TryGetValue(_iTweenSpeedKey, out speedObject))
+            if ((null != itEvent) && itEvent.Values.TryGetValue(_iTweenSpeedKey, out speedObject))
             {
                 speed = (float)speedObject;
                 _iTweenSpeeds.Add(itEvent, speed);
@@ -57,7 +58,7 @@ public abstract class CutScene : CutSceneElements {
 
     private void reinitializeiTweenEvents()
     {
-        foreach(KeyValuePair<iTweenEvent, float> entry in _iTweenSpeeds)
+        foreach (KeyValuePair<iTweenEvent, float> entry in _iTweenSpeeds)
         {
             entry.Key.Values.Remove(_iTweenSpeedKey);
             entry.Key.Values.Add(_iTweenSpeedKey, entry.Value);
@@ -71,30 +72,32 @@ public abstract class CutScene : CutSceneElements {
     }
 
     // must be called when starting a cut scene
-	public void start () {
+    public void start()
+    {
         _isPlaying = true;
 #if QUICKTEST
         Time.timeScale = _highTimeScale;
         saveAndEditAlliTweenEvents();
 #endif        
         _cellControl.freezePlayer(true);
-		FocusMaskManager.get().blockClicks(true);
+        FocusMaskManager.get().blockClicks(true);
         _blackBar.closeBar(true);
         StartCoroutine(waitForBlackBar(true));
         //startCutScene ();
         _cullingMaskHandler.hideInterface(true);
-	}
-	
+    }
+
     // must be implemented in each cut scene
-    public abstract void endCutScene ();
-    
+    public abstract void endCutScene();
+
     // must be called when ending a cut scene
-    public void end () {
+    public void end()
+    {
 #if QUICKTEST
         Time.timeScale = _normalTimeScale;
         reinitializeiTweenEvents();
 #endif
-		FocusMaskManager.get().blockClicks(false);
+        FocusMaskManager.get().blockClicks(false);
         _blackBar.closeBar(false);
         StartCoroutine(waitForBlackBar(false));
         //_cullingMaskHandler.hideInterface(false);
@@ -111,8 +114,8 @@ public abstract class CutScene : CutSceneElements {
             _cellControl.freezePlayer(true);
         }
         yield return new WaitForSeconds(_blackBarWait1);
-        
-        
+
+
         yield return new WaitForSeconds(_blackBarWait2);
         if (start)
         {
