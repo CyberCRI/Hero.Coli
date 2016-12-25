@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class GraphMoleculeList : MonoBehaviour
 {
-
     private ReactionEngine _reactionEngine;
     public int mediumId;
     [SerializeField]
@@ -39,8 +38,8 @@ public class GraphMoleculeList : MonoBehaviour
 
     // when molecule or eddwm added, removed
     // ie _molecules or _displayedMolecules or _equipedDevices edited
-    private bool _isMoleculesEdited = false; 
-    
+    private bool _isMoleculesEdited = false;
+
     // when eddwm added, removed
     // ie _equipedDevices edited
     private bool _isEDDWMsEdited = false;
@@ -62,6 +61,19 @@ public class GraphMoleculeList : MonoBehaviour
     public bool positionDeviceAndMoleculeComponentsOnNextFrame = false;
     public bool positionDeviceAndMoleculeComponentsOnEnable = false;
     public bool useTableFirst = false;
+
+    public void setLanguageChanged(bool changed)
+    {
+        Debug.Log(this.GetType() + " setLanguageChanged");
+        _isMoleculesEdited |= changed;
+        Debug.Log(this.GetType() + " setLanguageChanged => _isMoleculesEdited = " + _isMoleculesEdited);
+    }
+    public void setDisplayTypeChanged(bool changed)
+    {
+        Debug.Log(this.GetType() + " setDisplayTypeChanged");
+        _isMoleculesEdited |= changed;
+        Debug.Log(this.GetType() + " setDisplayTypeChanged => _isMoleculesEdited = " + _isMoleculesEdited);
+    }
 
     // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
     [SerializeField]
@@ -142,12 +154,13 @@ public class GraphMoleculeList : MonoBehaviour
 
             _displayedMolecules.Remove(molecule);
             _isMoleculesEdited = true;
+            Debug.Log(this.GetType() + " removeUnusedMolecules => _isMoleculesEdited = " + _isMoleculesEdited);
         }
     }
 
     public void addDeviceAndMoleculesComponent(DisplayedDevice displayedDeviceScript)
     {
-        Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent");
+        Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent with device=" + displayedDeviceScript._device);
 
         if (displayedDeviceScript == null)
         {
@@ -160,6 +173,7 @@ public class GraphMoleculeList : MonoBehaviour
             bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == displayedDeviceScript._device));
             if (newEquiped)
             {
+                Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped");
                 GameObject prefab = Resources.Load(DisplayedDevice.equipedWithMoleculesPrefabURI) as GameObject;
                 GameObject equipedDisplayedDeviceWithMoleculesGameObject = Instantiate(prefab, Vector3.zero, Quaternion.identity, _eddwmGridTransform) as GameObject;
                 equipedDisplayedDeviceWithMoleculesGameObject.transform.localScale = Vector3.one;
@@ -167,23 +181,35 @@ public class GraphMoleculeList : MonoBehaviour
                 new Vector3(equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.x,
                       equipedDisplayedDeviceWithMoleculesGameObject.transform.localPosition.y,
                       0f);
-
+                Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped will extract script");
                 EquipedDisplayedDeviceWithMolecules eddwm = equipedDisplayedDeviceWithMoleculesGameObject.GetComponent<EquipedDisplayedDeviceWithMolecules>();
                 eddwm.initialize(displayedDeviceScript);
 
                 _equipedDevices.Add(eddwm);
                 _isMoleculesEdited = true;
+                Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent => _isMoleculesEdited = " + _isMoleculesEdited);
                 _isEDDWMsEdited = true;
+                bool found = false;
+                string protein = eddwm.device.getFirstGeneProteinName();
 
+                Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped will match " + protein);
                 //search if there's already in the cell a molecule that this device produces
                 foreach (DisplayedMolecule molecule in _displayedMolecules)
                 {
-                    if (molecule.getCodeName() == eddwm.device.getFirstGeneProteinName())
+                    Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped tries " + molecule.getCodeName() + "...");
+                    if (molecule.getCodeName() == protein)
                     {
                         displayMoleculeInDevice(molecule, eddwm);
+                        found = true;
                         break;
                     }
                 }
+
+                if (!found)
+                {
+                    Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped couldn't find in _displayedMolecules a match for " + protein);
+                }
+
                 // Debug.Log("call to positionDeviceAndMoleculeComponents() by addDeviceAndMoleculesComponent");
                 // positionDeviceAndMoleculeComponents();
             }
@@ -206,6 +232,7 @@ public class GraphMoleculeList : MonoBehaviour
 
             _equipedDevices.Remove(eddwm);
             _isMoleculesEdited = true;
+            Debug.Log(this.GetType() + " removeDeviceAndMoleculesComponent => _isMoleculesEdited = " + _isMoleculesEdited);
             _isEDDWMsEdited = true;
 
             Destroy(eddwm.gameObject);
@@ -230,24 +257,29 @@ public class GraphMoleculeList : MonoBehaviour
         string moleculeCodeName = eddwm.device.getFirstGeneProteinName();
         if (isAlreadyDisplayedInADevice(moleculeCodeName))
         {
+            Debug.Log(this.GetType() + " displayMoleculeInList isAlreadyDisplayedInADevice");
             // to check: several devices may control same molecule
-            _displayedMolecules.Remove(eddwm.getDisplayedMolecule());
+            // _displayedMolecules.Remove(eddwm.getDisplayedMolecule());
         }
         else
         {
-            eddwm.releaseMoleculeDisplay();
+            Debug.Log(this.GetType() + " displayMoleculeInList !isAlreadyDisplayedInADevice");
+            // eddwm.releaseMoleculeDisplay();
         }
+        eddwm.releaseMoleculeDisplay();
         _isMoleculesEdited = true;
+        Debug.Log(this.GetType() + " displayMoleculeInList => _isMoleculesEdited = " + _isMoleculesEdited);
     }
 
     //change a display type of a molecule from molecule list to deviceWithMolecules list
     void displayMoleculeInDevice(DisplayedMolecule molecule, EquipedDisplayedDeviceWithMolecules eddwm)
     {
         Debug.Log(this.GetType() + " displayMoleculeInDevice");
-        
-        _isMoleculesEdited |=   ((molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
-                                || !isAlreadyDisplayedInADevice( molecule.getCodeName() ) 
+
+        _isMoleculesEdited |= ((molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
+                                || !isAlreadyDisplayedInADevice(molecule.getCodeName())
                                 );
+        Debug.Log(this.GetType() + " displayMoleculeInDevice => _isMoleculesEdited = " + _isMoleculesEdited);
 
         eddwm.addDisplayedMolecule(molecule);
     }
@@ -257,7 +289,8 @@ public class GraphMoleculeList : MonoBehaviour
         Debug.Log(this.GetType() + " positionDeviceAndMoleculeComponents");
 
         positionDeviceAndMoleculeComponentsNow = false;
-        _isMoleculesEdited = false;
+
+        Debug.Log(this.GetType() + " positionDeviceAndMoleculeComponents => _isMoleculesEdited = " + _isMoleculesEdited);
         _isEDDWMsEdited = false;
 
         if (null != _eddwmGridComponent && null != _moleculesAndDevicesTableComponent)
@@ -315,7 +348,7 @@ public class GraphMoleculeList : MonoBehaviour
                     _realName = _molecule.getRealName();
                     _codeName = _molecule.getName();
 
-                    _createdDisplayedMolecule = new DisplayedMolecule(_codeName, _realName, _concentration, DisplayedMolecule.DisplayType.MOLECULELIST);
+                    _createdDisplayedMolecule = new DisplayedMolecule(_codeName, _realName, _concentration, this, DisplayedMolecule.DisplayType.MOLECULELIST);
 
                     //search if molecule should be displayed in a Device/molecule component
                     _containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == _codeName);
@@ -330,6 +363,7 @@ public class GraphMoleculeList : MonoBehaviour
                     //anyway add it to molecule list
                     _displayedMolecules.AddLast(_createdDisplayedMolecule);
                     _isMoleculesEdited = true;
+                    Debug.Log(this.GetType() + " Update => _isMoleculesEdited = " + _isMoleculesEdited);
                     _toAdd.Add(new KeyValuePair<Molecule, DisplayedMolecule>(_molecule, _createdDisplayedMolecule));
                 }
             }
@@ -343,19 +377,21 @@ public class GraphMoleculeList : MonoBehaviour
 
         removeUnusedMolecules();
 
-        manageMoleculeLabels(_isMoleculesEdited);
+        manageMoleculeLabels();
 
         if (_isMoleculesEdited || _isEDDWMsEdited)
         {
-            Debug.Log("call to positionDeviceAndMoleculeComponents() by Update because _isMoleculesEdited || _isEDDWMsEdited");
+            Debug.Log("call to positionDeviceAndMoleculeComponents() by Update at t=" + Time.realtimeSinceStartup.ToString("F4") + " because _isMoleculesEdited || _isEDDWMsEdited");
             positionDeviceAndMoleculeComponents();
             positionDeviceAndMoleculeComponentsOnNextFrame = true;
             positionDeviceAndMoleculeComponentsOnEnable = true;
         }
 
+        _isMoleculesEdited = false;
+
         if (positionDeviceAndMoleculeComponentsNow)
         {
-            Debug.Log("call to positionDeviceAndMoleculeComponents() by Update because positionDeviceAndMoleculeComponentsNow");
+            Debug.Log("call to positionDeviceAndMoleculeComponents() by Update at t=" + Time.realtimeSinceStartup.ToString("F4") + " because positionDeviceAndMoleculeComponentsNow");
             positionDeviceAndMoleculeComponents();
         }
 
@@ -366,25 +402,37 @@ public class GraphMoleculeList : MonoBehaviour
         }
     }
 
-    private void manageMoleculeLabels(bool hasCountChanged)
+    private void manageMoleculeLabels()
     {
-        if (hasCountChanged) _namesToDisplay = "";
+        if (_isMoleculesEdited)
+        {
+            Debug.Log(this.GetType() + " manageMoleculeLabels(true) with #_displayedMolecules=" + _displayedMolecules.Count);
+        }
+
+        if (_isMoleculesEdited) _namesToDisplay = "";
         _valuesToDisplay = "";
 
         foreach (DisplayedMolecule molecule in _displayedMolecules)
         {
+            Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules");
             if (molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
             {
-                if (hasCountChanged) _namesToDisplay += molecule.getRealName() + ":\n";
+                Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules with DisplayedMolecule.DisplayType.MOLECULELIST with " + molecule.getCodeName());
+                if (_isMoleculesEdited)
+                {
+                    _namesToDisplay += molecule.getRealName() + ":\n";
+                    Debug.Log(this.GetType() + " manageMoleculeLabels(true) adding " + molecule.getCodeName());
+                }
                 _valuesToDisplay += molecule.getVal() + "\n";
             }
         }
-        if (!string.IsNullOrEmpty(_namesToDisplay))
+        // remove trailing new line characters '\n'
+        if (!string.IsNullOrEmpty(_valuesToDisplay))
         {
-            if (hasCountChanged) _namesToDisplay.Remove(_namesToDisplay.Length - 1, 1);
+            if (_isMoleculesEdited) _namesToDisplay.Remove(_namesToDisplay.Length - 1, 1);
             _valuesToDisplay.Remove(_valuesToDisplay.Length - 1, 1);
         }
-        if (hasCountChanged) namesLabel.text = _namesToDisplay;
+        if (_isMoleculesEdited) namesLabel.text = _namesToDisplay;
         valuesLabel.text = _valuesToDisplay;
     }
 
@@ -392,7 +440,7 @@ public class GraphMoleculeList : MonoBehaviour
     {
         if (positionDeviceAndMoleculeComponentsOnEnable)
         {
-            Debug.Log("call to positionDeviceAndMoleculeComponents() by OnEnable because positionDeviceAndMoleculeComponentsOnEnable");
+            Debug.Log("call to positionDeviceAndMoleculeComponents() by OnEnable at t=" + Time.realtimeSinceStartup.ToString("F4") + " because positionDeviceAndMoleculeComponentsOnEnable");
             positionDeviceAndMoleculeComponents();
             positionDeviceAndMoleculeComponentsOnEnable = false;
             positionDeviceAndMoleculeComponentsOnNextFrame = true;

@@ -48,8 +48,10 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
 
         if (null != _displayedMolecule)
         {
+            string previousName = namesLabel.text;
             namesLabel.text = _displayedMolecule.getRealName();
             valuesLabel.text = _displayedMolecule.getVal();
+            Debug.Log(this.GetType() + " addDisplayedMolecule changed name from old=" + previousName + " to new " + namesLabel.text);
         }
     }
 
@@ -94,10 +96,12 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start removes text");
+        Debug.Log(this.GetType() + " Start as " + namesLabel.text);
 
-        namesLabel.text = "";
-        valuesLabel.text = "";
+        //string previousName = namesLabel.text;
+        // namesLabel.text = "";
+        // valuesLabel.text = "";
+        // Debug.Log(this.GetType() + " Start changed name from old=" + previousName + " to new " + namesLabel.text);
     }
 
     void Update()
