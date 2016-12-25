@@ -57,9 +57,9 @@ public class CutSceneElements : MonoBehaviour {
         _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
     }
 
-    public static void clear()
+    public static void reset()
     {
-        // Debug.Log("CutSceneElements clear");
+        // Debug.Log("CutSceneElements reset");
         _blackBar = null;
         _cullingMaskHandler = null;
         _cutSceneCameraUI = null;

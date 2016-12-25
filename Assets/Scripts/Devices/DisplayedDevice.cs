@@ -96,7 +96,7 @@ public class DisplayedDevice : DisplayedElement
         {"REPR4", _defaultTextureWithText}
   };
 
-    public static void clear()
+    public static void reset()
     {
         _devicesDisplayer = null;
     }

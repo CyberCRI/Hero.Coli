@@ -122,7 +122,7 @@ public void Initialize()
         }
     }
 
-    public static void clear()
+    public static void reset()
     {
         _craftZoneManager = null;
     }

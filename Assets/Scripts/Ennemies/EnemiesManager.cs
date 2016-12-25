@@ -6,7 +6,7 @@ public static class EnemiesManager
     private static LinkedList<BigBadGuy> _enemies = new LinkedList<BigBadGuy> ();
     private static bool paused;
 
-    public static void clear()
+    public static void reset()
     {
         _enemies.Clear();
         paused = false;

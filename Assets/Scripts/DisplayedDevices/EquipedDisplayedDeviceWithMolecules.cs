@@ -124,4 +124,9 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     {
         return "EquipedDisplayedDeviceWithMolecules inner device=" + device + ", inner displayedDeviceScript type=" + _displayedDevice.GetComponent<DisplayedDevice>() + ", time=" + Time.realtimeSinceStartup;
     }
+
+    public void onLanguageChanged()
+    {
+        namesLabel.text = _displayedMolecule.getRealName();
+    }
 }

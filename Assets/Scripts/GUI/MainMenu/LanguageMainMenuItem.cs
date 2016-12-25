@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LanguageMainMenuItem : MainMenuItem {
-        
+public class LanguageMainMenuItem : MainMenuItem
+{
+
     [SerializeField]
     private Vector3 offset;
     [SerializeField]
@@ -21,40 +22,46 @@ public class LanguageMainMenuItem : MainMenuItem {
     private float deselectedAlpha;
     [SerializeField]
     private UISprite languageSprite;
-    
-    public override void click () {
+
+    public override void click()
+    {
         // Debug.Log(this.GetType() + " clicked "+itemName);
         languagesArray.selectLanguage(language);
     }
 
     public void updateSelection()
     {
-        select (I18n.getCurrentLanguage()==language);
+        select(I18n.getCurrentLanguage() == language);
     }
 
     private void select(bool select)
     {
-        if(select) {
+        if (select)
+        {
             languageSprite.alpha = selectedAlpha;
             languageIcon.transform.localScale = selectedScale;
-        } else {
+        }
+        else
+        {
             languageSprite.alpha = deselectedAlpha;
             languageIcon.transform.localScale = deselectedScale;
         }
     }
-    
-    void OnEnable ()
+
+    void OnEnable()
     {
-        if (null != languageIcon) {
+        if (null != languageIcon)
+        {
             languageIcon.transform.position = this.gameObject.transform.position + offset;
             languageIcon.gameObject.SetActive(true);
-            updateSelection ();
+            updateSelection();
         }
     }
-    
-    void OnDisable ()
+
+    void OnDisable()
     {
-        if (null != languageIcon) {
+        if (null != languageIcon)
+        {
             languageIcon.SetActive(false);
         }
     }

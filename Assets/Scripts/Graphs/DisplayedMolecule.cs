@@ -102,7 +102,7 @@ public class DisplayedMolecule
         _updated = false;
     }
 
-    public void OnLanguageChanged()
+    public void onLanguageChanged()
     {
         Debug.Log(this.GetType() + " OnLanguageChanged");
         _realName = GameplayNames.getMoleculeRealName(_codeName);

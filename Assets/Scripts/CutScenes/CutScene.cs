@@ -16,10 +16,10 @@ public abstract class CutScene : CutSceneElements {
     private const float _normalTimeScale = 1f;
     private const float _highTimeScale = 50f;
 
-    public static new void clear()
+    public static new void reset()
     {
-        // Debug.Log("CutScene clear");
-        CutSceneElements.clear();
+        // Debug.Log("CutScene reset");
+        CutSceneElements.reset();
         _isPlaying = false;
     }
 

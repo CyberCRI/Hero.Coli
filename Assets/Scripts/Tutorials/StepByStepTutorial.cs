@@ -50,7 +50,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     {
         return _isPlaying;
     }
-    public static void clear()
+    public static void reset()
     {
         _isPlaying = false;
     }

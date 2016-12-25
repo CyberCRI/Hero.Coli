@@ -18,7 +18,7 @@ public class PickablePlasmid : MonoBehaviour {
         }
     }
 
-    public static void clear()
+    public static void reset()
     {
         _alreadyPicked = false;
     }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GraphMoleculeList : MonoBehaviour
+public class GraphMoleculeList : MonoBehaviour, ILocalizable
 {
     private ReactionEngine _reactionEngine;
     public int mediumId;
@@ -111,6 +111,7 @@ public class GraphMoleculeList : MonoBehaviour
         valuesLabel.text = "";
 
         _reactionEngine = ReactionEngine.get();
+        I18n.register(this);
 
         safeInitialization();
     }
@@ -445,5 +446,19 @@ public class GraphMoleculeList : MonoBehaviour
             positionDeviceAndMoleculeComponentsOnEnable = false;
             positionDeviceAndMoleculeComponentsOnNextFrame = true;
         }
+    }
+
+    public void onLanguageChanged()
+    {
+        Debug.Log(this.GetType() + " OnLanguageChanged");
+        foreach (DisplayedMolecule molecule in _displayedMolecules)
+        {
+            molecule.onLanguageChanged();
+        }
+        foreach (EquipedDisplayedDeviceWithMolecules eddwm in _equipedDevices)
+        {
+            eddwm.onLanguageChanged();
+        }
+        _isMoleculesEdited = true;
     }
 }
