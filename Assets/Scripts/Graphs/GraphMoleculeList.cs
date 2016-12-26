@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 public class GraphMoleculeList : MonoBehaviour, ILocalizable
 {
+    // compulsory fields
     private ReactionEngine _reactionEngine;
-    public int mediumId;
+    // this medium id is 1 for the Cell graph and changes for the external medium graph
+    [SerializeField]
+    private int mediumId;
     [SerializeField]
     private UILabel namesLabel;
     [SerializeField]
@@ -13,22 +16,13 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     [SerializeField]
     private bool displayAll;
 
+    // optional fields
+    // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
+    private Transform _eddwmGridTransform;
     [SerializeField]
-    private GameObject unfoldingMoleculeList;
-
-    private const int pixelsPerMoleculeLine = 15;
-    private const int pixelsPerDeviceLine = 80;
-
+    private UIGrid _eddwmGridComponent;
     [SerializeField]
-    private UILabel topLabels;
-    [SerializeField]
-    private UILabel topValues;
-
-    [SerializeField]
-    private Vector3 topLabelsShift;
-    [SerializeField]
-    private Vector3 topValuesShift;
-    public Vector3 currentHeight;
+    private UITable _moleculesAndDevicesTableComponent;
 
     // list of all displayed molecules, either in molecule list or in eddwms
     private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
@@ -45,7 +39,6 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     private bool _isEDDWMsEdited = false;
 
     private LinkedList<DisplayedMolecule> _toRemove = new LinkedList<DisplayedMolecule>();
-    private Vector3 _initialScale;
 
     private string _realName, _codeName, _namesToDisplay, _valuesToDisplay;
     private float _concentration;
@@ -75,27 +68,23 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         Debug.Log(this.GetType() + " setDisplayTypeChanged => _isMoleculesEdited = " + _isMoleculesEdited);
     }
 
-    // grid of EquipedDisplayedDeviceWithMolecules of the scroll view
-    [SerializeField]
-    private Transform _eddwmGridTransform;
-    [SerializeField]
-    private Transform _moleculesAndDevicesTableTransform;
-    [SerializeField]
-    private UIGrid _eddwmGridComponent;
-    [SerializeField]
-    private UITable _moleculesAndDevicesTableComponent;
-
     public void setMediumId(int newMediumId)
     {
         mediumId = newMediumId;
+        initializeMolecules();
     }
 
-    void safeInitialization()
+    void Awake()
     {
-        Debug.Log(this.GetType() + " safeInitialization");
-        if (null != _eddwmGridTransform)
+        Debug.Log(this.GetType() + " Awake");
+
+        namesLabel.text = "";
+        valuesLabel.text = "";
+
+        if (null != _eddwmGridComponent)
         {
             Debug.Log(this.GetType() + " destroying all of eddwm's children");
+            _eddwmGridTransform = _eddwmGridComponent.transform;
             for (int index = 0; index < _eddwmGridTransform.childCount; index++)
             {
                 Destroy(_eddwmGridTransform.GetChild(index).gameObject);
@@ -107,13 +96,8 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     {
         Debug.Log(this.GetType() + " Start");
 
-        namesLabel.text = "";
-        valuesLabel.text = "";
-
         _reactionEngine = ReactionEngine.get();
         I18n.register(this);
-
-        safeInitialization();
     }
 
     private void resetMoleculeList()
@@ -163,9 +147,9 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     {
         Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent with device=" + displayedDeviceScript._device);
 
-        if (displayedDeviceScript == null)
+        if (displayedDeviceScript == null || _eddwmGridTransform == null)
         {
-            Debug.LogWarning(this.GetType() + " addDeviceAndMoleculesComponent device == null");
+            Debug.LogWarning(this.GetType() + " addDeviceAndMoleculesComponent device == null || _eddwmGridTransform == null");
         }
         else
         {
@@ -311,6 +295,22 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         }
     }
 
+    private void initializeMolecules()
+    {
+        Debug.Log(this.GetType() + " initializeMolecules");
+
+        _molecules = new Dictionary<Molecule, DisplayedMolecule>();
+        _moleculesArrayList = _reactionEngine.getMoleculesFromMedium(mediumId);
+
+        foreach (System.Object molecule in _moleculesArrayList)
+        {
+            Debug.Log(this.GetType() + " initializeMolecules treating " + ((Molecule)molecule).getName());
+            _molecule = (Molecule)molecule;
+            _molecule.refreshTranslation();
+            _molecules.Add(_molecule, null);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -318,13 +318,8 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
 
         if (null == _molecules)
         {
-            _molecules = new Dictionary<Molecule, DisplayedMolecule>();
-            _moleculesArrayList = _reactionEngine.getMoleculesFromMedium(mediumId);
-
-            foreach (System.Object molecule in _moleculesArrayList)
-            {
-                _molecules.Add((Molecule)molecule, null);
-            }
+            Debug.Log(this.GetType() + " Update => null == _molecules");
+            initializeMolecules();
         }
 
         if (0 != _toAdd.Count)
@@ -332,11 +327,31 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
             _toAdd.Clear();
         }
 
+        if ((mediumId != 1) && Input.GetKeyDown(KeyCode.Return))
+        {
+            string debug = "";
+            foreach (KeyValuePair<Molecule, DisplayedMolecule> kvp in _molecules)
+            {
+                _concentration = kvp.Key.getConcentration();
+                if (0 != _concentration)
+                {
+                    debug += "[" + kvp.Key.getName() + ":" + _concentration + "];";
+                }
+            }
+            if (!string.IsNullOrEmpty(debug))
+            {
+                debug.Remove(debug.Length - 1, 1);
+            }
+            debug = "medium " + mediumId + " [" + debug + "]";
+            Debug.Log(debug);
+        }
+
         foreach (KeyValuePair<Molecule, DisplayedMolecule> kvp in _molecules)
         {
             _molecule = kvp.Key;
             _displayedMolecule = kvp.Value;
             _concentration = _molecule.getConcentration();
+
             if (displayAll || (0 != _concentration))
             {
                 if (null != _displayedMolecule)
@@ -344,14 +359,16 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
                     _displayedMolecule.update(_concentration);
                 }
                 else
-                //molecule is not displayed yet
+                // molecule is not displayed yet
                 {
+                    Debug.Log(this.GetType() + " Update => molecule is not displayed yet");
+
                     _realName = _molecule.getRealName();
                     _codeName = _molecule.getName();
 
                     _createdDisplayedMolecule = new DisplayedMolecule(_codeName, _realName, _concentration, this, DisplayedMolecule.DisplayType.MOLECULELIST);
 
-                    //search if molecule should be displayed in a Device/molecule component
+                    // search if molecule should be displayed in a Device/molecule component
                     _containers = _equipedDevices.FindAll(eddwm => eddwm.device.getFirstGeneProteinName() == _codeName);
                     if (_containers.Count != 0)
                     {
@@ -361,7 +378,7 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
                             container.addDisplayedMolecule(_createdDisplayedMolecule);
                         }
                     }
-                    //anyway add it to molecule list
+                    // anyway add it to molecule list
                     _displayedMolecules.AddLast(_createdDisplayedMolecule);
                     _isMoleculesEdited = true;
                     Debug.Log(this.GetType() + " Update => _isMoleculesEdited = " + _isMoleculesEdited);
@@ -415,10 +432,10 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
 
         foreach (DisplayedMolecule molecule in _displayedMolecules)
         {
-            Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules");
+            // Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules");
             if (molecule.getDisplayType() == DisplayedMolecule.DisplayType.MOLECULELIST)
             {
-                Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules with DisplayedMolecule.DisplayType.MOLECULELIST with " + molecule.getCodeName());
+                // Debug.LogWarning(this.GetType() + " manageMoleculeLabels(true) browses _displayedMolecules with DisplayedMolecule.DisplayType.MOLECULELIST with " + molecule.getCodeName());
                 if (_isMoleculesEdited)
                 {
                     _namesToDisplay += molecule.getRealName() + ":\n";
@@ -450,10 +467,14 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
 
     public void onLanguageChanged()
     {
-        Debug.Log(this.GetType() + " OnLanguageChanged");
-        foreach (DisplayedMolecule molecule in _displayedMolecules)
+        Debug.Log(this.GetType() + " onLanguageChanged");
+        foreach (KeyValuePair<Molecule, DisplayedMolecule> kvp in _molecules)
         {
-            molecule.onLanguageChanged();
+            kvp.Key.refreshTranslation();
+            if (null != kvp.Value)
+            {
+                kvp.Value.onLanguageChanged();
+            }
         }
         foreach (EquipedDisplayedDeviceWithMolecules eddwm in _equipedDevices)
         {

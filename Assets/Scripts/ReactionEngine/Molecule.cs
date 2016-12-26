@@ -43,6 +43,8 @@ public class Molecule : LoadableFromXmlImpl
     private float _fickFactor;                      //!< The FickFactor is a coefficient for FickReaction
     private float _negligibilityThreshold = 1E-10f; //!< The threshold below which the concentration is rounded down to 0.
 
+    // _realName should not be stored here
+
     public override string getTag() { return "molecule"; }
 
     private bool _debug = false;
@@ -84,11 +86,10 @@ public class Molecule : LoadableFromXmlImpl
     public void setName(string name)
     {
         _name = name;
-        _realName = GameplayNames.getMoleculeRealName(_name);
+        refreshTranslation();
     }
-    public void OnLanguageChanged()
+    public void refreshTranslation()
     {
-        Debug.Log(this.GetType() + " OnLanguageChanged");
         _realName = GameplayNames.getMoleculeRealName(_name);
     }
     public void setType(eType type) { _type = type; }
