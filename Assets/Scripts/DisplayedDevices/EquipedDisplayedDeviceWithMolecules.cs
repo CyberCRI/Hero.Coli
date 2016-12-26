@@ -51,7 +51,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
             string previousName = namesLabel.text;
             namesLabel.text = _displayedMolecule.getRealName();
             valuesLabel.text = _displayedMolecule.getVal();
-            Debug.Log(this.GetType() + " addDisplayedMolecule changed name from old=" + previousName + " to new " + namesLabel.text);
+            // Debug.Log(this.GetType() + " addDisplayedMolecule changed name from old=" + previousName + " to new " + namesLabel.text);
         }
     }
 
@@ -96,7 +96,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log(this.GetType() + " Start as " + namesLabel.text);
+        // Debug.Log(this.GetType() + " Start as " + namesLabel.text);
 
         //string previousName = namesLabel.text;
         // namesLabel.text = "";

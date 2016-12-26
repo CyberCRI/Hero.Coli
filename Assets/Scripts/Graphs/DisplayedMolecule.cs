@@ -28,7 +28,7 @@ public class DisplayedMolecule
 
     public void setRealName(string realName)
     {
-        Debug.Log(this.GetType() + " setRealName(" + realName + ")");
+        // Debug.Log(this.GetType() + " setRealName(" + realName + ")");
         _realName = realName;
     }
 
@@ -65,7 +65,7 @@ public class DisplayedMolecule
 
     public DisplayedMolecule(string codeName, string realName, string val, GraphMoleculeList gml, DisplayType displayType = DisplayType.MOLECULELIST)
     {
-        Debug.Log(this.GetType() + " constructor called with codeName=" + codeName + " and realName=" + realName);
+        // Debug.Log(this.GetType() + " constructor called with codeName=" + codeName + " and realName=" + realName);
         _updated = true;
         _codeName = codeName;
         _realName = realName;
@@ -99,12 +99,13 @@ public class DisplayedMolecule
 
     public void reset()
     {
+        // Debug.Log(this.GetType() + " reset");
         _updated = false;
     }
 
     public void onLanguageChanged()
     {
-        Debug.Log(this.GetType() + " OnLanguageChanged");
+        // Debug.Log(this.GetType() + " onLanguageChanged");
         _realName = GameplayNames.getMoleculeRealName(_codeName);
         _gml.setLanguageChanged(true);
     }

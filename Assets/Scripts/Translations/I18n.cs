@@ -13,7 +13,7 @@ public static class I18n
 
     public static void changeLanguageTo(Language lang)
     {
-        Debug.Log("I18n changeLanguageTo " + lang);
+        // Debug.Log("I18n changeLanguageTo " + lang);
         RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
 
         Localization.instance.currentLanguage = lang.ToString();
@@ -30,14 +30,14 @@ public static class I18n
 
         foreach (ILocalizable localizable in _localizables)
         {
-            Debug.Log("I18n changeLanguageTo " + lang + " treats localizable " + localizable.GetType());
+            // Debug.Log("I18n changeLanguageTo " + lang + " treats localizable " + localizable.GetType());
             localizable.onLanguageChanged();
         }
     }
 
     public static Language getCurrentLanguage()
     {
-        Debug.Log("I18n getCurrentLanguage");
+        // Debug.Log("I18n getCurrentLanguage");
         string language = Localization.instance.currentLanguage.ToLower();
         switch (language)
         {
@@ -51,12 +51,12 @@ public static class I18n
     private static List<ILocalizable> _localizables = new List<ILocalizable>();
     public static void reset()
     {
-        Debug.Log("I18n reset");
+        // Debug.Log("I18n reset");
         _localizables.Clear();
     }
     public static void register(ILocalizable localizable)
     {
-        Debug.Log("I18n register " + localizable.GetType());
+        // Debug.Log("I18n register " + localizable.GetType());
         _localizables.Add(localizable);
     }
 }
