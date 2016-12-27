@@ -492,7 +492,7 @@ A PromoterReaction should respect this syntax:
 
     public override string ToString()
     {
-        return string.Format("Promoter[name:" + _name
+        return "Promoter[name:" + _name
                 + ", beta:" + _beta
                 + ", formula:" + Logger.ToString<PromoterNodeData>(_formula)
                 + ", products:" + Logger.ToString<Product>(_products)
@@ -502,7 +502,7 @@ A PromoterReaction should respect this syntax:
                 + ", energyCost:" + _energyCost
                 + ", enableSequential:" + enableSequential
                 + ", enableEnergy:" + enableEnergy
-                + "]");
+                + "]";
     }
 
 

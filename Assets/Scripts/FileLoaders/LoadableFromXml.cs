@@ -89,10 +89,10 @@ public class LoadableFromXmlImpl : LoadableFromXml {
 
   public override string ToString ()
   {
-    return string.Format ("[LoadableFromXmlImpl "
-                              +"id:"+_stringId+";"
-                              +"tag:"+_tag
-                              +"]");
+    return "[LoadableFromXmlImpl "
+              +"id:"+_stringId+";"
+              +"tag:"+_tag
+              +"]";
   }
 }
 

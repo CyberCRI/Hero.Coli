@@ -68,12 +68,12 @@ public class DisplayedElement : ExternalOnPressButton
         return script;
     }
 
-    public void Remove()
+    public void remove()
     {
         Destroy(gameObject);
     }
 
-    public void Redraw(Vector3 newLocalPosition)
+    public void redraw(Vector3 newLocalPosition)
     {
         gameObject.transform.localPosition = newLocalPosition;
     }

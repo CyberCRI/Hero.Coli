@@ -642,12 +642,12 @@ public class Medium : LoadableFromXmlImpl
         string moleculeString = null == _molecules ? "" : _molecules.Count.ToString();
         string reactionString = null == _reactions ? "" : _reactions.Count.ToString();
 
-        return string.Format("[Medium "
-                              + "name:" + _name
-                              + "; id:" + _numberId
-                              + "; molecules:" + moleculeString
-                              + "; reactions:" + reactionString
-                              + "]");
+        return "[Medium "
+                + "name:" + _name
+                + "; id:" + _numberId
+                + "; molecules:" + moleculeString
+                + "; reactions:" + reactionString
+                + "]";
     }
 
     public string ToStringDetailed()
@@ -656,11 +656,11 @@ public class Medium : LoadableFromXmlImpl
         string moleculeString = null == _molecules ? "" : Logger.ToString<Molecule>("Molecule", _molecules);
         string reactionString = null == _reactions ? "" : Logger.ToString<IReaction>(_reactions);
 
-        return string.Format("[Medium "
-                              + "name:" + _name
-                              + "; id:" + _numberId
-                              + "; molecules:" + moleculeString
-                              + "; reactions:" + reactionString
-                              + "]");
+        return "[Medium "
+                + "name:" + _name
+                + "; id:" + _numberId
+                + "; molecules:" + moleculeString
+                + "; reactions:" + reactionString
+                + "]";
     }
 }

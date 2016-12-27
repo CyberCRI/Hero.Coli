@@ -16,7 +16,7 @@ public class TooltipPanel : MonoBehaviour
 
   public override string ToString ()
   {
-    return string.Format ("[TooltipPanel "
+    return "[TooltipPanel "
       +"backgroundSprite="+backgroundSprite
       +", titleLabel="+titleLabel
       +", typeLabel="+typeLabel
@@ -28,7 +28,7 @@ public class TooltipPanel : MonoBehaviour
       +", energyConsumptionValueLabel="+energyConsumptionValueLabel
       +", referenceValueLabel="+referenceValueLabel
       +", explanationLabel="+explanationLabel
-      +"]");
+      +"]";
   }
 }
 

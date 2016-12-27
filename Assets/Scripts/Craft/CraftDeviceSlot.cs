@@ -259,7 +259,7 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             // Debug.Log("checkDevice");
             _isCraftSuccess = (Inventory.get().canAddDevice(getCurrentDevice()) == Inventory.AddingResult.SUCCESS);
-            onBricksCollapsedCallback = animateCollapseCompleted;
+            onBricksCollapsedCallback = OnCollapseAnimationCompleted;
             askCollapseBricks();
             // Debug.Log("checkDevice done");
         }
@@ -269,7 +269,7 @@ public class CraftDeviceSlot : MonoBehaviour
         }
     }
     private bool _isCraftSuccess = false;
-    public void animateCollapseCompleted()
+    public void OnCollapseAnimationCompleted()
     {
         // Debug.Log("animateCollapseCompleted");
 

@@ -719,13 +719,14 @@ public class GameStateController : MonoBehaviour
         // manual reset
         iTween.Stop();
         iTweenPath.paths.Clear();
-        CutScene.clear();
-        DisplayedDevice.clear();
-        PickablePlasmid.clear();
-        AvailableDisplayedBioBrick.clear();
-        NanobotsPickUpHandler.clear();
-        StepByStepTutorial.clear();
-        EnemiesManager.clear();
+        CutScene.reset();
+        DisplayedDevice.reset();
+        PickablePlasmid.reset();
+        AvailableDisplayedBioBrick.reset();
+        NanobotsPickUpHandler.reset();
+        StepByStepTutorial.reset();
+        EnemiesManager.reset();
+        I18n.reset();
 
         SceneManager.LoadScene(_masterScene);
     }
