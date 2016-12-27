@@ -476,6 +476,24 @@ public class DisplayedDevice : DisplayedElement
         }
     }
 
+    // workaround to have proper scrolling of EDDWMs with displayed device icons in a UIPanel with clipping 
+    public void makeChildrenSiblings()
+    {
+        // Debug.Log(this.GetType() + " makeChildrenSiblings");
+        int childCount = transform.childCount;
+        Transform[] transforms = new Transform[childCount];
+        for (int index = 0; index < childCount; index++)
+        {
+            // Debug.Log(this.GetType() + " makeChildrenSiblings saves " + transform.GetChild(index).name);
+            transforms[index] = transform.GetChild(index);
+        }
+        foreach (Transform t in transforms)
+        {
+            // Debug.Log(this.GetType() + " makeChildrenSiblings edits " + t.name);
+            t.parent = transform.parent;
+        }
+    }
+
     void Update()
     {
         if ((_isFeedbackParticleSystemActive) && (GameStateController.isPause()) && (null != feedbackParticleSystem))

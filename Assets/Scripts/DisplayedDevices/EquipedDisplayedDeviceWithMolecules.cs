@@ -19,19 +19,20 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
         {
             // Debug.Log(this.GetType() + " initialize null != _displayedDevice");
 
-            GameObject importedDisplayeDevice = displayedDeviceScript.gameObject;
-            importedDisplayeDevice.transform.parent = _displayedDevice.transform.parent;
-            importedDisplayeDevice.transform.localPosition = _displayedDevice.transform.localPosition;
-            importedDisplayeDevice.transform.localScale = _displayedDevice.transform.localScale;
-            importedDisplayeDevice.SetActive(true);
+            Transform importedDisplayeDevice = displayedDeviceScript.transform;
+            importedDisplayeDevice.parent = _displayedDevice.transform.parent;
+            importedDisplayeDevice.localPosition = _displayedDevice.transform.localPosition;
+            importedDisplayeDevice.localScale = _displayedDevice.transform.localScale;
             // Debug.Log(this.GetType() + " initialize set imported");
 
             Destroy(_displayedDevice);
-            // Debug.Log(this.GetType() + " initialize destroyed");
+            _displayedDevice = displayedDeviceScript.gameObject;
+            _displayedDevice.SetActive(true);
+            // Debug.Log(this.GetType() + " initialize destroyed and set active");
 
-            _displayedDevice = importedDisplayeDevice;
             device = displayedDeviceScript._device;
-            // displayedDeviceScript.Initialize(device);
+            // Debug.Log(this.GetType() + " initialize calls makeChildrenSiblings");
+            displayedDeviceScript.makeChildrenSiblings();
             // Debug.Log(this.GetType() + " initialize done");     
         }
         else

@@ -24,10 +24,10 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     [SerializeField]
     private UITable _moleculesAndDevicesTableComponent;
 
-    // list of all displayed molecules, either in molecule list or in eddwms
+    // list of all displayed molecules, either in molecule list or in EDDWMs
     private LinkedList<DisplayedMolecule> _displayedMolecules = new LinkedList<DisplayedMolecule>();
 
-    // list of eddwms
+    // list of EDDWMs
     private List<EquipedDisplayedDeviceWithMolecules> _equipedDevices = new List<EquipedDisplayedDeviceWithMolecules>();
 
     // when molecule or eddwm added, removed
@@ -153,7 +153,7 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         }
         else
         {
-            //displayedDevice is "EquipedDevicePrefabPos" object
+            // displayedDevice is "EquipedDevicePrefabPos" object
 
             bool newEquiped = (!_equipedDevices.Exists(equiped => equiped.device == displayedDeviceScript._device));
             if (newEquiped)
@@ -174,26 +174,26 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
                 _isMoleculesEdited = true;
                 // Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent => _isMoleculesEdited = " + _isMoleculesEdited);
                 _isEDDWMsEdited = true;
-                bool found = false;
+                // bool found = false;
                 string protein = eddwm.device.getFirstGeneProteinName();
 
                 // Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped will match " + protein);
-                //search if there's already in the cell a molecule that this device produces
+                // search if there's already in the cell a molecule that this device produces
                 foreach (DisplayedMolecule molecule in _displayedMolecules)
                 {
                     // Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped tries " + molecule.getCodeName() + "...");
                     if (molecule.getCodeName() == protein)
                     {
                         displayMoleculeInDevice(molecule, eddwm);
-                        found = true;
+                        // found = true;
                         break;
                     }
                 }
 
-                if (!found)
-                {
+                // if (!found)
+                // {
                     // Debug.Log(this.GetType() + " addDeviceAndMoleculesComponent newEquiped couldn't find in _displayedMolecules a match for " + protein);
-                }
+                // }
 
                 // Debug.Log("call to positionDeviceAndMoleculeComponents() by addDeviceAndMoleculesComponent");
                 // positionDeviceAndMoleculeComponents();
