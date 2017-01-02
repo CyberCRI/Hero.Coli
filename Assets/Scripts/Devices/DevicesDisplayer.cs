@@ -83,7 +83,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public enum DeviceType
     {
-        Equiped = 0,
+        Equipped = 0,
         Inventoried = 1, // deprecated
         Listed = 2,
         CraftSlot = 3
@@ -149,12 +149,12 @@ public class DevicesDisplayer : MonoBehaviour
         // Debug.Log(this.GetType() + " addInventoriedDevice(" + device + ") ends with _listedInventoriedDevices=" + Logger.ToString<DisplayedDevice>(_listedInventoriedDevices));
     }
 
-    public void addEquipedDevice(Device device)
+    public void addEquippedDevice(Device device)
     {
-        // Debug.Log(this.GetType() + " addEquipedDevice(" + device.ToString() + ")");
+        // Debug.Log(this.GetType() + " addEquippedDevice(" + device.ToString() + ")");
         if (device == null)
         {
-            Debug.LogWarning(this.GetType() + " addEquipedDevice device == null");
+            Debug.LogWarning(this.GetType() + " addEquippedDevice device == null");
         }
         bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device));
         if (newEquiped)
@@ -166,7 +166,7 @@ public class DevicesDisplayer : MonoBehaviour
                                             null,
                                             device,
                                             this,
-                                            DevicesDisplayer.DeviceType.Equiped
+                                            DevicesDisplayer.DeviceType.Equipped
                                         );
 
             _equipedDevices.Add(newDevice);
@@ -253,7 +253,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
         List<DisplayedDevice> devices = _equipedDevices;
-        DeviceType deviceType = DeviceType.Equiped;
+        DeviceType deviceType = DeviceType.Equipped;
         if (toRemove == null)
         {
             toRemove = _inventoriedDevices.Find(device => device.getID() == deviceID);
@@ -269,7 +269,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void removeEquippedDevice(Device toRemove)
     {
-        removeDevice(DevicesDisplayer.DeviceType.Equiped, toRemove);
+        removeDevice(DevicesDisplayer.DeviceType.Equipped, toRemove);
         graphMoleculeList.removeDeviceAndMoleculesComponent(toRemove);
     }
 
@@ -287,7 +287,7 @@ public class DevicesDisplayer : MonoBehaviour
     {
         List<DisplayedDevice> devices;
         DisplayedDevice found;
-        if (type == DevicesDisplayer.DeviceType.Equiped)
+        if (type == DevicesDisplayer.DeviceType.Equipped)
         {
             devices = _equipedDevices;
         }

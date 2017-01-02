@@ -71,7 +71,7 @@ public class CraftDeviceSlot : MonoBehaviour
                     //set result device
                     if (null != _resultDevice)
                     {
-                        _resultDevice.Initialize(currentDevice);
+                        _resultDevice.Initialize(currentDevice, DevicesDisplayer.DeviceType.CraftSlot);
                         _resultDevice.gameObject.SetActive(true);
                     }
                 }

@@ -15,12 +15,12 @@ public class Equipment : DeviceContainer
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -33,13 +33,13 @@ public class Equipment : DeviceContainer
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -97,10 +97,11 @@ public class Equipment : DeviceContainer
             // Debug.Log(this.GetType() + " askAddDevice device already present");
             return AddingResult.FAILURE_SAME_DEVICE;
         }
+
         _devices.Add(copy);
-        safeGetDisplayer().addEquipedDevice(copy);
+        safeGetDisplayer().addEquippedDevice(copy);
         // TODO replace by event broadcasting
-        if (!PhenoAmpicillinProducer.get().onEquippedDevice(device))
+        if (!PhenoAmpicillinProducer.get().isAmpicillinDeviceEquipped(device))
         {
             addToReactionEngine(copy);
         }

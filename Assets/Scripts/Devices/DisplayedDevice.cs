@@ -323,12 +323,12 @@ public class DisplayedDevice : DisplayedElement
 
         string nullSpriteName = (spriteName != null) ? "" : "(null)";
         Object prefab;
-        if (deviceType == DevicesDisplayer.DeviceType.Equiped)
+        if (deviceType == DevicesDisplayer.DeviceType.Equipped || deviceType == DevicesDisplayer.DeviceType.CraftSlot)
         {
             // Debug.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI);
             prefab = Resources.Load(equipedPrefabURI);
         }
-        else if (deviceType == DevicesDisplayer.DeviceType.Inventoried)
+        else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) // deprecated
         {
             // Debug.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI);
             prefab = Resources.Load(inventoriedPrefabURI);
@@ -359,7 +359,7 @@ public class DisplayedDevice : DisplayedElement
           , prefab
           );
 
-        result.Initialize(device, devicesDisplayer);
+        result.Initialize(device, deviceType, devicesDisplayer);
 
         return result;
     }
@@ -408,7 +408,8 @@ public class DisplayedDevice : DisplayedElement
 
     public void Initialize(
         Device device
-      , DevicesDisplayer devicesDisplayer = null
+        , DevicesDisplayer.DeviceType deviceType
+        , DevicesDisplayer devicesDisplayer = null
       )
     {
 
@@ -431,7 +432,7 @@ public class DisplayedDevice : DisplayedElement
         }
 
         // Debug.Log(this.GetType() + " Initialize ends");
-
+        _deviceType = deviceType;
         setName();
         setBackgroundSprite();
         setMoleculeOverlay(device.getFirstGeneProteinName());
@@ -445,6 +446,7 @@ public class DisplayedDevice : DisplayedElement
     private void setName()
     {
         gameObject.name = _deviceNamePrefixes[(int)_deviceType] + _device.getInternalName();
+        // Debug.Log(this.GetType() + " setName to " + gameObject.name);
     }
 
     protected string getDebugInfos()

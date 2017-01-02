@@ -88,8 +88,7 @@ public class PhenoAmpicillinProducer : MonoBehaviour
         }
     }
 
-    // TODO replace using event system
-    public bool onEquippedDevice(Device device)
+    public bool isAmpicillinDeviceEquipped(Device device)
     {
         bool contains = containsAmpicillinBrick(device);
         isSpawningAmpicillin = isSpawningAmpicillin || contains;
