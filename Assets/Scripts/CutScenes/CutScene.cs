@@ -16,6 +16,22 @@ public abstract class CutScene : CutSceneElements
 
     private const float _normalTimeScale = 1f;
     private const float _highTimeScale = 50f;
+    private const string _iTweenSpeedKey = "speed";
+    private const float _speedIncreaseFactor = 10;
+    private Dictionary<iTweenEvent, float> _iTweenSpeeds = new Dictionary<iTweenEvent, float>();
+    // determines whether this cut scene is to be reinitialized when the player enters the cut scene instantiator's collider
+    // necessary for cut scenes that allow the player to move and to die
+    protected bool _reinstantiateOnTrigger = false;
+    public bool reinstantiateOnTrigger()
+    {
+        return _reinstantiateOnTrigger;
+    } 
+
+    // must be implemented in each cut scene
+    public abstract void initialize();
+
+    // must be implemented in each cut scene
+    public abstract void startCutScene();
 
     public static new void reset()
     {
@@ -29,16 +45,6 @@ public abstract class CutScene : CutSceneElements
         // cut scene initialization
         initialize();
     }
-
-    // must be implemented in each cut scene
-    public abstract void initialize();
-
-    // must be implemented in each cut scene
-    public abstract void startCutScene();
-
-    private const string _iTweenSpeedKey = "speed";
-    private const float _speedIncreaseFactor = 10;
-    private Dictionary<iTweenEvent, float> _iTweenSpeeds = new Dictionary<iTweenEvent, float>();
 
     private void saveAndEditAlliTweenEvents()
     {
@@ -110,7 +116,7 @@ public abstract class CutScene : CutSceneElements
     {
         if (start)
         {
-            SetCutSceneCamera(start);
+            setCutSceneCamera(start);
             _cellControl.freezePlayer(true);
         }
         yield return new WaitForSeconds(_blackBarWait1);
@@ -123,7 +129,7 @@ public abstract class CutScene : CutSceneElements
         }
         else
         {
-            SetCutSceneCamera(start);
+            setCutSceneCamera(start);
             endCutScene();
             _cellControl.freezePlayer(false);
             _isPlaying = false;
@@ -131,7 +137,7 @@ public abstract class CutScene : CutSceneElements
         yield return null;
     }
 
-    public void SetCutSceneCamera(bool value)
+    public void setCutSceneCamera(bool value)
     {
         _cullingMaskHandler.hideInterface(value);
     }

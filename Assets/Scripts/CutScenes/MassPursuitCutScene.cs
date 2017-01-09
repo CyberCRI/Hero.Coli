@@ -52,6 +52,7 @@ public class MassPursuitCutScene : CutScene
         StartCoroutine(waitBetweenActivation(2f));
         _CutSceneCam.gameObject.SetActive(false);
         _boundCamera.gameObject.SetActive(true);
+        _reinstantiateOnTrigger = true;
     }
 
     void OnTriggerEnter(Collider col)

@@ -4,8 +4,8 @@ public class CutSceneInstantiator : CutSceneElements
 {
     [SerializeField]
     private GameObject _cutScenePrefab;
-    [SerializeField]
-    private GameObject _cutSceneInstance;
+    private GameObject _instantiatedCutSceneGameObject;
+    private CutScene _instantiatedCutSceneScript;
     [SerializeField]
     private Transform _originTransform;
     [SerializeField]
@@ -17,9 +17,14 @@ public class CutSceneInstantiator : CutSceneElements
     {
         if (col.tag == _triggerTag)
         {
-            if (null == _cutSceneInstance)
+            if ((null == _instantiatedCutSceneScript) || (null == _instantiatedCutSceneScript.gameObject || _instantiatedCutSceneScript.reinstantiateOnTrigger()))
             {
-                _cutSceneInstance = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
+                if (null != _instantiatedCutSceneGameObject)
+                {
+                    Destroy(_instantiatedCutSceneGameObject);
+                }
+                _instantiatedCutSceneGameObject = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
+                _instantiatedCutSceneScript = _instantiatedCutSceneGameObject.GetComponentInChildren<CutScene>();
             }
         }
 

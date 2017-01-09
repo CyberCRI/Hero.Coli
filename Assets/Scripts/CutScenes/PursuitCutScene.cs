@@ -7,7 +7,6 @@ using System.Collections;
 
 public class PursuitCutScene : CutScene
 {
-
     [SerializeField]
     private GameObject _badGuy;
     [SerializeField]
@@ -16,7 +15,7 @@ public class PursuitCutScene : CutScene
     private Transform _wayPoint1;
     [SerializeField]
     private Transform _wayPoint2;
-    private int _iteration = 0;
+    private int _step = 0;
     private Vector3 _mainCamOrigin;
 
     public override void initialize()
@@ -36,7 +35,7 @@ public class PursuitCutScene : CutScene
     {
         if (col.tag == Hero.playerTag)
         {
-            if (_iteration == 0)
+            if (_step == 0)
             {
                 start();
                 _mainCamOrigin = _boundCamera.transform.position;
@@ -46,18 +45,18 @@ public class PursuitCutScene : CutScene
 
     public override void startCutScene()
     {
-
-        SetMainCamCopy(1);
-        _iteration++;
+        setMainCamCopy(1);
+        _step++;
     }
 
     public override void endCutScene()
     {
         _badGuy.GetComponent<PlatformMvt>().speed = 32f;
+        _reinstantiateOnTrigger = true;
         this.enabled = false;
     }
 
-    private void SetMainCamCopy(int value)
+    private void setMainCamCopy(int value)
     {
         if (value == 1)
         {
@@ -67,7 +66,7 @@ public class PursuitCutScene : CutScene
             _boundCamera.gameObject.SetActive(false);
             _wayPoint1.transform.position = _boundCamera.transform.position;
             _wayPoint2.transform.position = new Vector3(_badGuy.transform.position.x, _mainCamCopy.transform.position.y, _badGuy.transform.position.z);
-            StartScrollingCam();
+            startScrollingCam();
         }
         else if (value == 2)
         {
@@ -87,17 +86,17 @@ public class PursuitCutScene : CutScene
         }
     }
 
-    private void StartScrollingCam()
+    private void startScrollingCam()
     {
         _mainCamCopy.GetComponent<PlatformMvt>().enabled = true;
         StartCoroutine(waitForSecondPart());
     }
 
-    private void CutSceneSecondPart()
+    private void cutSceneSecondPart()
     {
         //_badGuy.GetComponent<iTweenEvent>().enabled = true;
         _badGuy.GetComponent<PlatformMvt>().enabled = true;
-        StartCoroutine(CutSceneFourthPart(0.5f));
+        StartCoroutine(cutSceneFourthPart(0.5f));
     }
 
     IEnumerator waitForSecondPart()
@@ -109,18 +108,18 @@ public class PursuitCutScene : CutScene
         _boundCamera.target = _badGuy.transform;
         _mainCamCopy.gameObject.SetActive(false);
         _boundCamera.gameObject.SetActive(true);
-        CutSceneSecondPart();
+        cutSceneSecondPart();
         yield return null;
     }
 
-    IEnumerator CutSceneFourthPart(float duration)
+    IEnumerator cutSceneFourthPart(float duration)
     {
         while (duration >= 0)
         {
             duration -= Time.deltaTime;
             yield return null;
         }
-        SetMainCamCopy(3);
+        setMainCamCopy(3);
         //SetMainCamCopy(2);
         yield return null;
     }
@@ -131,7 +130,7 @@ public class PursuitCutScene : CutScene
         {
             yield return null;
         }
-        SetMainCamCopy(3);
+        setMainCamCopy(3);
         yield return null;
     }
 #endif
