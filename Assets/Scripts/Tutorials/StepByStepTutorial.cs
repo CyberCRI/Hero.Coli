@@ -65,6 +65,8 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     void Awake()
     {
+        // Debug.Log(this.GetType() + "Awake");
+
         // Debug.Log(this.GetType() + " Awake " + this.GetType()
         // + " step=" + stepCount
         // + " prepared=" + prepared
@@ -84,6 +86,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
 
     void Start()
     {
+        // Debug.Log(this.GetType() + "Start");
         if (null == focusMaskManager)
         {
             focusMaskManager = FocusMaskManager.get();

@@ -247,6 +247,7 @@ public class FocusMaskManager : MonoBehaviour
         _advisor.gameObject.SetActive(show);
         if (null != cellControl)
         {
+            // Debug.Log(this.GetType() + "show("+show+") freezePlayer("+show+")");
             cellControl.freezePlayer(show);
         }
     }

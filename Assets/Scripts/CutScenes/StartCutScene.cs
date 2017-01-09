@@ -73,6 +73,7 @@ public class StartCutScene : CutScene
 
     IEnumerator waitForBeginning()
     {
+        // Debug.Log(this.GetType() + "freezePlayer(true)");
         _cellControl.freezePlayer(true);
         yield return new WaitForSeconds(waitTimes[0]);
         start();
@@ -89,12 +90,15 @@ public class StartCutScene : CutScene
 
     public override void endCutScene()
     {
-        FocusMaskManager.get().blockClicks(false);
+        // FocusMaskManager.get().blockClicks(false);
         Destroy(this.transform.parent.gameObject);
+        // Debug.Log(this.GetType() + "AddComponent CraftDiscoveryHint to Hero");
+        Hero.get().gameObject.AddComponent<CraftDiscoveryHint>();
     }
 
     public override void startCutScene()
     {
+        // Debug.Log(this.GetType() + "freezePlayer(true)");
         _cellControl.freezePlayer(true);
         _npcStartITweenEvent.enabled = true;
         StartCoroutine(waitForFirstPart());
@@ -232,8 +236,7 @@ public class StartCutScene : CutScene
 
     IEnumerator waitForEnd()
     {
-        yield return new WaitForSeconds(waitTimes[8]);
-        Hero.get().gameObject.AddComponent<CraftDiscoveryHint>();
+        yield return new WaitForSeconds(waitTimes[8]);        
         end();
         yield return null;
     }
