@@ -11,6 +11,8 @@ public class TriggeredDoor : TriggeredBehaviour
     private float closeDelay = 0f;
     [SerializeField]
     private float minDistance = 0.1f;
+    [SerializeField]
+    private bool _preventReset = false;
 
     // TODO switch/channeling mode
     // // If true, switch mode: the door opens completely however short the entering collision was.
@@ -34,8 +36,11 @@ public class TriggeredDoor : TriggeredBehaviour
     public void resetPosition()
     {
         // Debug.Log(this.GetType() + " resetPosition");
-        stopMovement();
-        transform.position = _origin;
+        if (!_preventReset)
+        {
+            stopMovement();
+            transform.position = _origin;
+        }
     }
 
     Hashtable generateOpenHash()
@@ -135,6 +140,8 @@ public class TriggeredDoor : TriggeredBehaviour
                 }
             }
         }
+        _isDoorOpening = false;
+        _isDoorClosing = false;
     }
 
     public override void triggerStart()
