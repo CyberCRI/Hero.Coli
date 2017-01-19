@@ -60,7 +60,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
     public void Initialize(BioBrick biobrick)
     {
-        if(BioBrick.Type.TERMINATOR == biobrick.getType()) Debug.Log(this.GetType() + " Initialize(" + biobrick + ")");
+        // Debug.Log(this.GetType() + " Initialize(" + biobrick + ")");
         // Debug.Log(this.GetType() + " Initialize(" + biobrick + ") starts");
         GenericDisplayedBioBrick.Initialize(this, biobrick);
         setJigsawSprite();
@@ -102,7 +102,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
     private void setBioBrickOverlay()
     {
-        Debug.Log(this.GetType() + " setBioBrickOverlay " + this._biobrick);
+        // Debug.Log(this.GetType() + " setBioBrickOverlay " + this._biobrick);
         if (BioBrick.Type.TERMINATOR == _biobrick.getType())
         {
             if (null != _biobrickLabel)

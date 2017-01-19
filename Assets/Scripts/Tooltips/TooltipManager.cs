@@ -152,7 +152,7 @@ public class TooltipManager : MonoBehaviour
         _instance._energyConsumptionValueLabel = panel.energyConsumptionValueLabel;
         _instance._explanationLabel = panel.explanationLabel;
         _instance._backgroundSprite = panel.backgroundSprite;
-        Debug.Log("setVarsFromTooltipPanel _instance._promoter = " + panel.promoter);
+        // Debug.Log("setVarsFromTooltipPanel _instance._promoter = " + panel.promoter);
         _instance._promoter = panel.promoter;
         _instance._rbs = panel.rbs;
         _instance._gene = panel.gene;
@@ -187,7 +187,6 @@ public class TooltipManager : MonoBehaviour
             _bricks.RemoveFirst();
             _instance._gene.Initialize(_bricks.First.Value);
             _bricks.RemoveFirst();
-            Debug.Log("TooltipManager displayTooltip terminator " + _bricks.First.Value.getInternalName());
             _instance._terminator.Initialize(_bricks.First.Value);
             _bricks.RemoveFirst();
         }
@@ -207,18 +206,18 @@ public class TooltipManager : MonoBehaviour
 
     private static bool displayTooltip(bool isOver, string code, Vector3 pos, Device device = null)
     {
-        Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ")");
+        // Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ")");
 
         if (!isOver || (null == code))
         {
-            Debug.Log("TooltipManager hides tooltip");
+            // Debug.Log("TooltipManager hides tooltip");
             return displayTooltip();
         }
         else
         {
             if (fillInFields(code, device))
             {
-                Debug.Log("TooltipManager fillInFieldsFromCode succeeded");
+                // Debug.Log("TooltipManager fillInFieldsFromCode succeeded");
 
                 _instance._tooltipPanel.gameObject.SetActive(true);
 
@@ -235,7 +234,7 @@ public class TooltipManager : MonoBehaviour
 
     private static bool fillInFields(string code, Device device)
     {
-        Debug.Log("TooltipManager fillInFields(" + code + ", " + device + ")");
+        // Debug.Log("TooltipManager fillInFields(" + code + ", " + device + ")");
         TooltipInfo info;
         if (null != device)
         {
@@ -258,12 +257,12 @@ public class TooltipManager : MonoBehaviour
             Debug.LogWarning("TooltipManager null == info");
             return false;
         }
-        return fillInFieldsFromInfo(info);
+        return fillInFieldsFromInfo(info, device);
     }
 
     private static TooltipInfo getInfoFromDevice(string code, Device device)
     {
-        Debug.Log("TooltipManager getInfoFromDevice(" + code + ", " + device + ")");
+        // Debug.Log("TooltipManager getInfoFromDevice(" + code + ", " + device + ")");
 
         // build keys
         // unloaded fields - localization keys constructed from device name are used
@@ -286,15 +285,27 @@ public class TooltipManager : MonoBehaviour
         return info;
     }
 
-    private static bool fillInFieldsFromInfo(TooltipInfo info)
+    private static bool fillInFieldsFromInfo(TooltipInfo info, Device device)
     {
-        Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ")");
+        // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ")");
         if (null != info)
         {
             setVarsFromTooltipPanel(info._tooltipType);
 
             _instance._backgroundSprite.spriteName = info._background;
-            _instance._titleLabel.key = info._title;
+            
+            // runtime creation of tooltip title when necessary
+            if (device != null && TooltipLoader._emptyField == info._title)
+            {
+                // Debug.Log("TooltipManager fillInFieldsFromInfo device != null && TooltipLoader._emptyField == info._title");
+                _instance._titleLabel.key = GameplayNames.generateRealNameFromBricks(device); 
+            }
+            // otherwise rely on translation system
+            else
+            {
+                // Debug.Log("TooltipManager fillInFieldsFromInfo device == null || TooltipLoader._emptyField != info._title");
+                _instance._titleLabel.key = info._title;
+            }
             _instance._typeLabel.key = info._type;
 
             if (null != _instance._subtitleLabel)
@@ -313,17 +324,29 @@ public class TooltipManager : MonoBehaviour
                 _instance._customValueLabel.key = string.IsNullOrEmpty(info._customValue) ? TooltipLoader._emptyField : info._customValue;
             }
 
-            _instance._lengthValueLabel.key = info._length;
+            // runtime computation of length when necessary
+            if (device != null && TooltipLoader._emptyField == info._length)
+            {
+                _instance._lengthValueLabel.key = device.getSize().ToString() + "bp";
+            }
+            // otherwise rely on translation system
+            else
+            {
+                _instance._lengthValueLabel.key = info._length;
+            }
 
+            // TODO runtime computation of energy consumption
             if (null != _instance._energyConsumptionValueLabel)
             {
                 _instance._energyConsumptionValueLabel.key = info._energyConsumption;
             }
 
             _instance._referenceValueLabel.key = info._reference;
+
+            // TODO runtime creation of explanations
             _instance._explanationLabel.key = info._explanation;
 
-            Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") finished successfully");
+            // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") finished successfully");
             return true;
         }
         else
@@ -334,7 +357,7 @@ public class TooltipManager : MonoBehaviour
 
     private static TooltipInfo retrieveFromDico(string code)
     {
-        Debug.Log("TooltipManager retrieveFromDico(" + code + ")");
+        // Debug.Log("TooltipManager retrieveFromDico(" + code + ")");
         TooltipInfo info;
         if (!_instance._loadedInfoWindows.TryGetValue(code, out info))
         {

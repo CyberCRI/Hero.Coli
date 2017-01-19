@@ -153,7 +153,7 @@ public class DisplayedDevice : DisplayedElement
 
     public static void setMoleculeOverlay(string proteinName, UILocalize moleculeOverlayLocalize, bool dontFilter = false)
     {
-        Debug.Log("DisplayedDevice setMoleculeOverlay(" + proteinName + ", " + moleculeOverlayLocalize + ", " + dontFilter + ")");
+        // Debug.Log("DisplayedDevice setMoleculeOverlay(" + proteinName + ", " + moleculeOverlayLocalize + ", " + dontFilter + ")");
         if (null != moleculeOverlayLocalize)
         {
             string texture = _defaultTextureWithText;
@@ -163,7 +163,7 @@ public class DisplayedDevice : DisplayedElement
                 string before = moleculeOverlayLocalize.key;
                 moleculeOverlayLocalize.key = _moleculeOverlayPrefix + proteinName.ToUpperInvariant();
                 moleculeOverlayLocalize.Localize();
-                Debug.Log("DisplayedDevice setMoleculeOverlay() before=" + before + ", after=" + moleculeOverlayLocalize.key);
+                // Debug.Log("DisplayedDevice setMoleculeOverlay() before=" + before + ", after=" + moleculeOverlayLocalize.key);
             }
             else
             {
