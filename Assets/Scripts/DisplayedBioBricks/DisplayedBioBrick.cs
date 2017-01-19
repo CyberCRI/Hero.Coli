@@ -63,7 +63,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 		return result;
 	}
 
-    protected void Initialize(BioBrick biobrick)
+    public void Initialize(BioBrick biobrick)
     {
 
         // Debug.Log(this.GetType() + " Initialize(" + biobrick + ") starts");

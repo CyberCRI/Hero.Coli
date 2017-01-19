@@ -10,12 +10,13 @@ public class TooltipLoader {
     private const string _titleSuffix       = ".TITLE";
     public  const string _tooltipTypePrefix = "MAIN.TYPE.";
     private const string _subtitleSuffix    = ".SUBTITLE";
-    private const string _customFieldSuffix = ".CUSTOMFIELD";
+    public const string _customFieldSuffix = ".CUSTOMFIELD";
     private const string _customValueSuffix = ".CUSTOMVALUE";
     private const string _lengthSuffix      = ".LENGTH";
     private const string _referenceSuffix   = ".REFERENCE";
     private const string _energySuffix      = ".ENERGYCONSUMPTION";
     private const string _explanationSuffix = ".EXPLANATION";
+    public const string _emptyField        = _tooltipPrefix + "EMPTYFIELD";
     
     private string biobrickUpperString = TooltipManager.TooltipType.BIOBRICK.ToString().ToLowerInvariant();
     private string deviceUpperString = TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant();
@@ -100,36 +101,39 @@ public class TooltipLoader {
                 {
                     switch (attr.Name)
                     {
-                        case TooltipXMLTags.TITLE:
-                            _title = attr.InnerText;
-                            break;
+                        // fields that are treated another way - via translation files - are commented out
+                        // see next 'if'
+
+                        // case TooltipXMLTags.TITLE:
+                        //     _title = attr.InnerText;
+                        //     break;
                         case TooltipXMLTags.TYPE:
                             _type = attr.InnerText;
                             break;
-                        case TooltipXMLTags.SUBTITLE:
-                            _subtitle = attr.InnerText;
-                            break;
+                        // case TooltipXMLTags.SUBTITLE:
+                        //     _subtitle = attr.InnerText;
+                        //     break;
                         case TooltipXMLTags.ILLUSTRATION:
                             _illustration = attr.InnerText;
                             break;
-                        case TooltipXMLTags.CUSTOMFIELD:
-                            _customField = attr.InnerText;
-                            break;
-                        case TooltipXMLTags.CUSTOMVALUE:
-                            _customValue = attr.InnerText;
-                            break;
-                        case TooltipXMLTags.LENGTH:
-                            _length = attr.InnerText;
-                            break;
-                        case TooltipXMLTags.REFERENCE:
-                            _reference = attr.InnerText;
-                            break;
-                        case TooltipXMLTags.ENERGYCONSUMPTION:
-                            _energyConsumption = attr.InnerText;
-                            break;
-                        case TooltipXMLTags.EXPLANATION:
-                            _explanation = attr.InnerText;
-                            break;
+                        // case TooltipXMLTags.CUSTOMFIELD:
+                        //     _customField = attr.InnerText;
+                        //     break;
+                        // case TooltipXMLTags.CUSTOMVALUE:
+                        //     _customValue = attr.InnerText;
+                        //     break;
+                        // case TooltipXMLTags.LENGTH:
+                        //     _length = attr.InnerText;
+                        //     break;
+                        // case TooltipXMLTags.REFERENCE:
+                        //     _reference = attr.InnerText;
+                        //     break;
+                        // case TooltipXMLTags.ENERGYCONSUMPTION:
+                        //     _energyConsumption = attr.InnerText;
+                        //     break;
+                        // case TooltipXMLTags.EXPLANATION:
+                        //     _explanation = attr.InnerText;
+                        //     break;
                         default:
                             Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr "+attr.Name+" for info node");
                             break;
@@ -138,15 +142,15 @@ public class TooltipLoader {
                 if(!String.IsNullOrEmpty(_type))
                 {
             
-                    string root = _tooltipPrefix+_code.ToUpper().Replace(' ','_');
-                    _title = string.IsNullOrEmpty(_title)?root+_titleSuffix:_title;
-                    _subtitle = string.IsNullOrEmpty(_subtitle)?root+_subtitleSuffix:_subtitle;
-                    _customField = string.IsNullOrEmpty(_customField)?getKeyIfExists(root+_customFieldSuffix):_customField;
-                    _customValue = string.IsNullOrEmpty(_customValue)?getKeyIfExists(root+_customValueSuffix):_customValue;
-                    _length = string.IsNullOrEmpty(_length)?root+_lengthSuffix:_length;
-                    _reference = string.IsNullOrEmpty(_reference)?root+_referenceSuffix:_reference;
-                    _energyConsumption = string.IsNullOrEmpty(_energyConsumption)?getKeyIfExists(root+_energySuffix):_energyConsumption;
-                    _explanation = string.IsNullOrEmpty(_explanation)?root+_explanationSuffix:_explanation;
+                    string root = getKeyRoot(_code);
+                    _title = getField(root, _title, _titleSuffix);
+                    _subtitle = getField(root, _subtitle, _subtitleSuffix);
+                    _customField = getFieldIfExists(root, _customField, _customFieldSuffix);
+                    _customValue = getFieldIfExists(root, _customValue, _customValueSuffix);
+                    _length = getField(root, _length, _lengthSuffix);
+                    _reference = getField(root, _reference, _referenceSuffix);
+                    _energyConsumption = getFieldIfExists(root, _energyConsumption, _energySuffix);
+                    _explanation = getField(root, _explanation, _explanationSuffix);
                     
                     string lower = _type.ToLowerInvariant();
                     if(lower == TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant())
@@ -186,10 +190,49 @@ public class TooltipLoader {
         }
         return resultInfo;
     }
+
+    public static string getKeyRoot(string tooltipCode)
+    {
+        return _tooltipPrefix+tooltipCode.ToUpper().Replace(' ','_');
+    }
+    public static string getField(string root, string defaultValue, string suffix)
+    {
+        return string.IsNullOrEmpty(defaultValue)?root+suffix:defaultValue;
+    }
+    public static string getFieldIfExists(string root, string defaultValue, string suffix)
+    {
+        return string.IsNullOrEmpty(defaultValue)?getLocalizationKeyIfExists(root+suffix):defaultValue;
+    }
+    public static string getCustomField(string root)
+    {
+        return getLocalizationKeyIfExists(root+_customFieldSuffix);
+    }
+    public static string getCustomValue(string root)
+    {
+        return getLocalizationKeyIfExists(root+_customValueSuffix);
+    }
+    public static string getEnergyConsumption(string root)
+    {
+        return getLocalizationKeyIfExists(root+_energySuffix);
+    }
+    public static string getLength(string root)
+    {
+        return root + _lengthSuffix;
+    }
+    public static string getReference(string root)
+    {
+        return root + _energySuffix;
+    }
+    public static string getExplanation(string root)
+    {
+        return root + _explanationSuffix;
+    }
   
-    private static string getKeyIfExists(string code) {
-        string res = Localization.Localize(code) == code ? "" : code;
+    private static string getLocalizationKeyIfExists(string code) {
+        string res = Localization.Localize(code) == code ? _emptyField : code;
         return res;
     }
+
+
 
 }
