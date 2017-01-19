@@ -203,6 +203,10 @@ public class TooltipLoader {
     {
         return string.IsNullOrEmpty(defaultValue)?getLocalizationKeyIfExists(root+suffix):defaultValue;
     }
+    public static string getTitle(string root)
+    {
+        return getLocalizationKeyIfExists(root+_titleSuffix);
+    }
     public static string getCustomField(string root)
     {
         return getLocalizationKeyIfExists(root+_customFieldSuffix);
@@ -217,15 +221,15 @@ public class TooltipLoader {
     }
     public static string getLength(string root)
     {
-        return root + _lengthSuffix;
+        return getLocalizationKeyIfExists(root+_lengthSuffix);
     }
     public static string getReference(string root)
     {
-        return root + _energySuffix;
+        return getLocalizationKeyIfExists(root+_energySuffix);
     }
     public static string getExplanation(string root)
     {
-        return root + _explanationSuffix;
+        return getLocalizationKeyIfExists(root+_explanationSuffix);
     }
   
     private static string getLocalizationKeyIfExists(string code) {

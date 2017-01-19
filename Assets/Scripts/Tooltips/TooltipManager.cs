@@ -270,7 +270,7 @@ public class TooltipManager : MonoBehaviour
         
         TooltipInfo info = new TooltipInfo(
             code,
-            device.displayedName,
+            TooltipLoader.getTitle(root),
             TooltipType.DEVICE,
             TooltipLoader._emptyField,
             TooltipLoader._emptyField,
