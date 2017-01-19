@@ -201,7 +201,6 @@ public class CraftDeviceSlot : MonoBehaviour
             CraftZoneDisplayedBioBrick czdb = CraftZoneDisplayedBioBrick.Create(
                 this.transform,
                 Vector3.zero,
-                null,
                 brick
             );
             czdb.transform.localPosition = new Vector3(dummyPosition.x, dummyPosition.y, _brickZ);

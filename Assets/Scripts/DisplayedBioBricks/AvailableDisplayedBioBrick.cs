@@ -28,11 +28,9 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
   public static AvailableDisplayedBioBrick Create(
    Transform parentTransform,
    Vector3 localPosition,
-   string spriteName,
    BioBrick biobrick
    )
   {
-    string nullSpriteName = (spriteName!=null)?"":"(null)";
     Object prefab = Resources.Load(_prefabURIAvailable);
     if(_craftZoneManager == null) {
       _craftZoneManager = CraftZoneManager.get();
@@ -40,14 +38,12 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
 
     // Debug.Log("AvailableDisplayedBioBrick Create(parentTransform="+parentTransform
     //   + ", localPosition="+localPosition
-    //   + ", spriteName="+spriteName+nullSpriteName
     //   + ", biobrick="+biobrick
     //   );
 
     AvailableDisplayedBioBrick result = (AvailableDisplayedBioBrick)DisplayedBioBrick.Create(
       parentTransform
       ,localPosition
-      ,spriteName
       ,biobrick
       ,prefab
       );

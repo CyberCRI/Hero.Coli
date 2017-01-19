@@ -187,6 +187,7 @@ public class TooltipManager : MonoBehaviour
             _bricks.RemoveFirst();
             _instance._gene.Initialize(_bricks.First.Value);
             _bricks.RemoveFirst();
+            Debug.Log("TooltipManager displayTooltip terminator " + _bricks.First.Value.getInternalName());
             _instance._terminator.Initialize(_bricks.First.Value);
             _bricks.RemoveFirst();
         }

@@ -126,7 +126,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
                 {
                     foreach (BioBrick brick in module.getBioBricks())
                     {
-                        GenericDisplayedBioBrick dbbrick = TinyBioBrickIcon.Create(transform, getNewPosition(index), null, brick);
+                        GenericDisplayedBioBrick dbbrick = TinyBioBrickIcon.Create(transform, getNewPosition(index), brick);
                         _currentDisplayedBricks.AddLast(dbbrick);
                         index++;
                     }

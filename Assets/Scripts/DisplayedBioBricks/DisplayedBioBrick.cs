@@ -33,28 +33,23 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 	public static new DisplayedBioBrick Create(
 		Transform parentTransform
 		,Vector3 localPosition
-		,string spriteName
 		,BioBrick biobrick
 		,Object externalPrefab = null
 		)
 	{
-		
-		string usedSpriteName = ((spriteName!=null)&&(spriteName!=""))?spriteName:getSpriteName(biobrick);
-		string nullSpriteName = ((spriteName!=null)&&(spriteName!=""))?"":"(null)=>"+usedSpriteName;
 		
 		if (null == prefab) prefab = Resources.Load(prefabURI);
 		Object prefabToUse = (externalPrefab==null)?prefab:externalPrefab;
 		
 		// Debug.Log("DisplayedBioBrick Create(parentTransform="+parentTransform
 		//            + ", localPosition="+localPosition
-		//            + ", spriteName="+spriteName+nullSpriteName
 		//            + ", biobrick="+biobrick
 		//            );
 		
 		DisplayedBioBrick result = (DisplayedBioBrick)DisplayedElement.Create(
 			parentTransform
 			,localPosition
-			,usedSpriteName
+			,getSpriteName(biobrick)
 			,prefabToUse
 			);
 		
@@ -65,14 +60,12 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
 
     public void Initialize(BioBrick biobrick)
     {
-
+        if(BioBrick.Type.TERMINATOR == biobrick.getType()) Debug.Log(this.GetType() + " Initialize(" + biobrick + ")");
         // Debug.Log(this.GetType() + " Initialize(" + biobrick + ") starts");
         GenericDisplayedBioBrick.Initialize(this, biobrick);
-
         setJigsawSprite();
         setBioBrickOverlay();
         setBioBrickIcon();
-
         // Debug.Log(this.GetType() + " this.transform.localPosition="+this.transform.localPosition);
         // Debug.Log(this.GetType() + " this.transform.localScale="+this.transform.localScale);
 
@@ -106,9 +99,21 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
             _jigsawSprite.spriteName = jigsawSpriteName;
         }
     }
+
     private void setBioBrickOverlay()
     {
-        DisplayedDevice.setMoleculeOverlay(this._biobrick.getInternalName(), _biobrickLabel, true);
+        Debug.Log(this.GetType() + " setBioBrickOverlay " + this._biobrick);
+        if (BioBrick.Type.TERMINATOR == _biobrick.getType())
+        {
+            if (null != _biobrickLabel)
+            {
+                GameObject.Destroy(_biobrickLabel.gameObject);
+            }
+        }
+        else
+        {
+            DisplayedDevice.setMoleculeOverlay(this._biobrick.getInternalName(), _biobrickLabel, true);
+        }
     }
     
     private void setBioBrickIcon()
@@ -139,13 +144,13 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
                 }
                 break;
             case BioBrick.Type.RBS:
-                backgroundSpriteName = null;
+                backgroundSpriteName = getSpriteName(_biobrick);
                 break;
             case BioBrick.Type.GENE:
                 backgroundSpriteName = _geneTextBackgroundSprite;
                 break;
             case BioBrick.Type.TERMINATOR:
-                backgroundSpriteName = null;
+                backgroundSpriteName = getSpriteName(_biobrick);
                 break;
             default:
                 backgroundSpriteName = _geneTextBackgroundSprite;

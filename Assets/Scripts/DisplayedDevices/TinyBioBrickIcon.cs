@@ -17,14 +17,12 @@ public class TinyBioBrickIcon : GenericDisplayedBioBrick {
   public static TinyBioBrickIcon Create(
     Transform parentTransform
     ,Vector3 localPosition
-    ,string spriteName
     ,BioBrick biobrick
   )
   {
     TinyBioBrickIcon result = (TinyBioBrickIcon)GenericDisplayedBioBrick.Create(
       parentTransform
       , localPosition
-      , spriteName
       , biobrick
       , _genericPrefab
       );

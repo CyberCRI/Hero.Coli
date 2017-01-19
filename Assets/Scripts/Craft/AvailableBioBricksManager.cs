@@ -335,22 +335,17 @@ public class AvailableBioBricksManager : MonoBehaviour
 
         Transform parentTransformParam = (null==parentTransform)?bioBricksPanel.transform:parentTransform;
         Vector3 localPositionParam = Vector3.zero;
-                
-        string spriteNameParam = AvailableDisplayedBioBrick.getSpriteName(brick);
-        BioBrick biobrickParam = brick;
 
         // Debug.Log(this.GetType() + " getDisplayableAvailableBioBrick(brick=" + brick + ", index=" + index + "),"
         //   + ", parentTransformParam=" + parentTransformParam
         //   + ", localPositionParam=" + localPositionParam
-        //   + ", spriteNameParam=" + spriteNameParam
-        //   + ", biobrickParam=" + biobrickParam
+        //   + ", brick=" + brick
         //   );
 
         AvailableDisplayedBioBrick resultBrick = AvailableDisplayedBioBrick.Create(
           parentTransformParam
           , localPositionParam
-          , spriteNameParam
-          , biobrickParam
+          , brick
         );
         
         return resultBrick;

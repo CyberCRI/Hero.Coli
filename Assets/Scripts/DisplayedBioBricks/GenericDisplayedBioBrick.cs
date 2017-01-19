@@ -28,28 +28,23 @@ public class GenericDisplayedBioBrick : DisplayedElement
     public static GenericDisplayedBioBrick Create(
       Transform parentTransform
       , Vector3 localPosition
-      , string spriteName
       , BioBrick biobrick
       , Object externalPrefab = null
       )
     {
-
-        string usedSpriteName = ((spriteName != null) && (spriteName != "")) ? spriteName : getSpriteName(biobrick);
-        string nullSpriteName = ((spriteName != null) && (spriteName != "")) ? "" : "(null)=>" + usedSpriteName;
 
         if (_genericPrefab == null) _genericPrefab = Resources.Load(_prefabURI);
         Object prefabToUse = (externalPrefab == null) ? _genericPrefab : externalPrefab;
 
         // Debug.Log("GenericDisplayedBioBrick Create(parentTransform="+parentTransform
         //   + ", localPosition="+localPosition
-        //   + ", spriteName="+spriteName+nullSpriteName
         //   + ", biobrick="+biobrick
         //   );
 
         GenericDisplayedBioBrick result = (GenericDisplayedBioBrick)DisplayedElement.Create(
           parentTransform
           , localPosition
-          , usedSpriteName
+          , getSpriteName(biobrick)
           , prefabToUse
           );
 
