@@ -33,7 +33,7 @@ public class DeviceSaver {
           writer.WriteAttributeString(BioBricksXMLTags.ID, brick.getName());
 
           if (exhaustive) { //saves details about biobricks
-            writer.WriteAttributeString(BioBricksXMLTags.SIZE, brick.getSize().ToString());
+            writer.WriteAttributeString(BioBricksXMLTags.SIZE, brick.getLength().ToString());
             BioBrick.Type bioBrickType = brick.getType();
             writer.WriteAttributeString(BioBricksXMLTags.TYPE, bioBrickType.ToString().ToLower());
             switch(bioBrickType) {

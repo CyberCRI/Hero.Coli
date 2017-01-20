@@ -24,9 +24,14 @@ public class ExpressionModule
     public int getSize()
     {
         int sum = 0;
+        // string s = "";
 
         foreach (BioBrick b in _bioBricks)
-            sum += b.getSize();
+        {
+            // s += ("Size " + b.getLength() + " for " + b + "\n");
+            sum += b.getLength();
+        }
+        // Debug.Log(s);
         return sum;
     }
 

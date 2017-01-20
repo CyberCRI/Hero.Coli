@@ -19,24 +19,32 @@ public abstract class BioBrick: DNABit
   }
 
   protected string _name;
-  protected int _size;
+  protected int _length;
   protected Type _type;
 
   public static bool isUnlimited = false;
   public void setName(string name) { _name = name; }
   public string getName() { return _name; }
-  public override string getInternalName () { return _name; }
-  public void setSize(int size)
-  {
-      _size = size;
+  public override string getInternalName() { return _name; }
+    public void setLength(int size)
+    {
+        _length = size;
 
-        if(0 == size)
+        if (0 == size)
         {
             Debug.LogWarning(this.GetType() + " size set to 0 in " + _name);
         }
-  }
-  public int getSize() { return _size; }
-  public Type getType() { return _type; }
+    }
+    public override int getLength() { return _length; }
+    public override string getTooltipTitleKey()
+    {
+        return TooltipManager.buildExplanationKeyFromStem(getInternalName());
+    }
+    public override string getTooltipCoreExplanationKey()
+    {
+        return getInternalName();
+    }
+    public Type getType() { return _type; }
   
   protected double _amount = 0;
   public double amount {get{return _amount;}} 
@@ -71,7 +79,7 @@ public abstract class BioBrick: DNABit
         bool result;
 
         // check type, name, length
-        return (this._type == b._type) && (this._name == b._name) && (this._size == b._size);
+        return (this._type == b._type) && (this._name == b._name) && (this._length == b._length);
     }
 }
 
@@ -190,7 +198,7 @@ public class PromoterBrick : BioBrick
         _name = name;
         _beta = beta;
         formula = __formula;
-        _size = size;
+        _length = size;
 
         if (0 == size)
         {
@@ -198,7 +206,7 @@ public class PromoterBrick : BioBrick
         }
     }
 
-    public PromoterBrick(PromoterBrick p, double _count) : this(p._name, p._beta, p.formula, p._size, _count)
+    public PromoterBrick(PromoterBrick p, double _count) : this(p._name, p._beta, p.formula, p._length, _count)
     {
     }
 
@@ -220,7 +228,7 @@ public class PromoterBrick : BioBrick
 
   public override string ToString ()
   {
-	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}, size: {3}, amount: {4}]", _name, _beta, formula, _size, amount);
+	return string.Format ("[PromoterBrick: name: {0}, beta: {1}, formula: {2}, size: {3}, amount: {4}]", _name, _beta, formula, _length, amount);
   }
 }
 
@@ -239,7 +247,7 @@ public class RBSBrick : BioBrick
   {
         _name = name;
 		_RBSFactor = RBSFactor;
-        _size = size;
+        _length = size;
 
         if(0 == size)
         {
@@ -247,7 +255,7 @@ public class RBSBrick : BioBrick
         }
   }
 	
-  public RBSBrick(RBSBrick r, double _count) : this(r._name, r._RBSFactor, r._size, _count)
+  public RBSBrick(RBSBrick r, double _count) : this(r._name, r._RBSFactor, r._length, _count)
   {
   }
 	
@@ -287,7 +295,7 @@ public class GeneBrick : BioBrick
   {
     _name = name;
 		_proteinName = proteinName;
-        _size = size;
+        _length = size;
 
         if(0 == size)
         {
@@ -295,7 +303,7 @@ public class GeneBrick : BioBrick
         }
   }
 
-  public GeneBrick(GeneBrick g, double _count) : this(g._name, g._proteinName, g._size, _count)
+  public GeneBrick(GeneBrick g, double _count) : this(g._name, g._proteinName, g._length, _count)
   {
   }
 
@@ -335,7 +343,7 @@ public class TerminatorBrick : BioBrick
   {
         _name = name;
 		_terminatorFactor = terminatorFactor;
-        _size = size;
+        _length = size;
 
         if(0 == size)
         {
@@ -343,7 +351,7 @@ public class TerminatorBrick : BioBrick
         }
   }
 
-  public TerminatorBrick(TerminatorBrick t, double _count) : this(t._name, t._terminatorFactor, t._size, _count)
+  public TerminatorBrick(TerminatorBrick t, double _count) : this(t._name, t._terminatorFactor, t._length, _count)
   {
   }
 

@@ -103,8 +103,9 @@ public class TooltipManager : MonoBehaviour
     public GameStateController gameStateController;
 
     private Dictionary<string, TooltipInfo> _loadedInfoWindows = new Dictionary<string, TooltipInfo>();
-    private const string _bioBrickPrefix = "b_";
+    public const string _bioBrickPrefix = "b_";
     private const string _devicePrefix = "d_";
+    private const string _basePairsUnitString = "bp";
 
     public enum Quadrant
     {
@@ -178,8 +179,8 @@ public class TooltipManager : MonoBehaviour
         bool result = displayTooltip(isOver, code, pos, device);
         // set bricks
         _bricks = device.getBioBricks();
-        int bricksCount = _bricks == null ? 0 : _bricks.Count;  
-        if(bricksCount == 4)
+        int bricksCount = _bricks == null ? 0 : _bricks.Count;
+        if (bricksCount == 4)
         {
             _instance._promoter.Initialize(_bricks.First.Value);
             _bricks.RemoveFirst();
@@ -201,10 +202,10 @@ public class TooltipManager : MonoBehaviour
     {
         // Debug.Log("TooltipManager displayTooltip(" + isOver + ", brick=" + brick.getInternalName() + ", " + pos + ")");
         string code = (null == brick) ? null : _bioBrickPrefix + brick.getName();
-        return displayTooltip(isOver, code, pos);
+        return displayTooltip(isOver, code, pos, brick);
     }
 
-    private static bool displayTooltip(bool isOver, string code, Vector3 pos, Device device = null)
+    private static bool displayTooltip(bool isOver, string code, Vector3 pos, DNABit dnabit)
     {
         // Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ")");
 
@@ -215,7 +216,7 @@ public class TooltipManager : MonoBehaviour
         }
         else
         {
-            if (fillInFields(code, device))
+            if (fillInFields(code, dnabit))
             {
                 // Debug.Log("TooltipManager fillInFieldsFromCode succeeded");
 
@@ -232,42 +233,49 @@ public class TooltipManager : MonoBehaviour
         }
     }
 
-    private static bool fillInFields(string code, Device device)
+    private static bool fillInFields(string code, DNABit dnabit)
     {
-        // Debug.Log("TooltipManager fillInFields(" + code + ", " + device + ")");
-        TooltipInfo info;
-        if (null != device)
-        {
-            info = getInfoFromDevice(code, device);
-            if(null == info)
-            {
-                Debug.LogWarning("TooltipManager null == device info");
-            }
-        }
-        else
-        {
-            info = retrieveFromDico(code);
-            if(null == info)
-            {
-                Debug.LogWarning("TooltipManager null == biobrick info");
-            }
-        }
+        // Debug.Log("TooltipManager fillInFields(" + code + ", " + dnabit + ")");
+        TooltipInfo info = retrieveFromDico(code);
         if (null == info)
         {
-            Debug.LogWarning("TooltipManager null == info");
-            return false;
+            if (null != dnabit)
+            {
+                info = getInfoFromDevice(code, dnabit);
+                if (null == info)
+                {
+                    Debug.LogWarning("TooltipManager null != dnabit && null == info");
+                    return false;
+                }
+            }
+            else
+            {
+                if (null == info)
+                {
+                    Debug.LogWarning("TooltipManager null == dnabit && null == info");
+                    return false;
+                }
+            }
         }
-        return fillInFieldsFromInfo(info, device);
+        return fillInFieldsFromInfo(info, dnabit);
     }
 
-    private static TooltipInfo getInfoFromDevice(string code, Device device)
+    private static TooltipInfo getInfoFromDevice(string code, DNABit dnabit)
     {
-        // Debug.Log("TooltipManager getInfoFromDevice(" + code + ", " + device + ")");
+        // Debug.Log("TooltipManager getInfoFromDevice(" + code + ", " + dnabit + ")");
 
         // build keys
-        // unloaded fields - localization keys constructed from device name are used
+        // unloaded fields - localization keys constructed from dnabit name are used
+        Device device = dnabit as Device;
+
+        if (null == device)
+        {
+            Debug.LogWarning("TooltipManager getInfoFromDevice: not a Device: " + dnabit);
+            return null;
+        }
+
         string root = TooltipLoader.getKeyRoot(code);
-        
+
         TooltipInfo info = new TooltipInfo(
             code,
             TooltipLoader.getTitle(root),
@@ -276,16 +284,25 @@ public class TooltipManager : MonoBehaviour
             TooltipLoader._emptyField,
             TooltipLoader.getCustomField(root),
             TooltipLoader.getCustomValue(root),
-            TooltipLoader.getLength(root),
-            TooltipLoader.getReference(root),
-            TooltipLoader.getEnergyConsumption(root),
-            TooltipLoader.getExplanation(root)
+            getLength(dnabit),
+            TooltipLoader.getReferenceKey(root),
+            TooltipLoader.getEnergyConsumptionKey(root),
+            TooltipLoader.getExplanationKey(root)
         );
 
         return info;
     }
 
-    private static bool fillInFieldsFromInfo(TooltipInfo info, Device device)
+    private static string getLength(DNABit bit)
+    {
+        if (null == bit)
+        {
+            return TooltipLoader._emptyField;
+        }
+        return bit.getLength().ToString() + _basePairsUnitString;
+    }
+
+    private static bool fillInFieldsFromInfo(TooltipInfo info, DNABit dnabit)
     {
         // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ")");
         if (null != info)
@@ -293,17 +310,17 @@ public class TooltipManager : MonoBehaviour
             setVarsFromTooltipPanel(info._tooltipType);
 
             _instance._backgroundSprite.spriteName = info._background;
-            
+
             // runtime creation of tooltip title when necessary
-            if (device != null && TooltipLoader._emptyField == info._title)
+            if (dnabit != null && TooltipLoader._emptyField == info._title)
             {
-                // Debug.Log("TooltipManager fillInFieldsFromInfo device != null && TooltipLoader._emptyField == info._title");
-                _instance._titleLabel.key = GameplayNames.generateRealNameFromBricks(device); 
+                // Debug.Log("TooltipManager fillInFieldsFromInfo dnabit != null && TooltipLoader._emptyField == info._title");
+                _instance._titleLabel.key = dnabit.getTooltipTitleKey();
             }
             // otherwise rely on translation system
             else
             {
-                // Debug.Log("TooltipManager fillInFieldsFromInfo device == null || TooltipLoader._emptyField != info._title");
+                // Debug.Log("TooltipManager fillInFieldsFromInfo dnabit == null || TooltipLoader._emptyField != info._title");
                 _instance._titleLabel.key = info._title;
             }
             _instance._typeLabel.key = info._type;
@@ -325,9 +342,9 @@ public class TooltipManager : MonoBehaviour
             }
 
             // runtime computation of length when necessary
-            if (device != null && TooltipLoader._emptyField == info._length)
+            if (TooltipLoader._emptyField == info._length)
             {
-                _instance._lengthValueLabel.key = device.getSize().ToString() + "bp";
+                _instance._lengthValueLabel.key = getLength(dnabit);
             }
             // otherwise rely on translation system
             else
@@ -343,8 +360,17 @@ public class TooltipManager : MonoBehaviour
 
             _instance._referenceValueLabel.key = info._reference;
 
-            // TODO runtime creation of explanations
-            _instance._explanationLabel.key = info._explanation;
+            // TODO real runtime creation of explanations
+            if (dnabit != null && TooltipLoader._emptyField == info._explanation)
+            {
+                // temporary solution: directly re-use biobrick explanation
+                _instance._explanationLabel.key = buildExplanationKeyFromStem(dnabit.getTooltipCoreExplanationKey());
+            }
+            // otherwise rely on translation system
+            else
+            {
+                _instance._explanationLabel.key = info._explanation;
+            }
 
             // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") finished successfully");
             return true;
@@ -353,6 +379,11 @@ public class TooltipManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public static string buildExplanationKeyFromStem(string stem)
+    {
+        return TooltipLoader.getExplanationKey((TooltipLoader._tooltipPrefix + TooltipManager._bioBrickPrefix + stem).ToUpperInvariant());
     }
 
     private static TooltipInfo retrieveFromDico(string code)

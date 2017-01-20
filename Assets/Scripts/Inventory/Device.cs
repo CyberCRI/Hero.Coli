@@ -25,13 +25,32 @@ public class Device: DNABit
     private LinkedList<ExpressionModule>	_modules;
     public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
 
-    public int getSize()
+    protected int _length;
+    public void updateLength()
     {
         int sum = 0;
 
         foreach (ExpressionModule em in _modules)
             sum += em.getSize();
-        return sum;
+
+        // Debug.Log("Size " + sum + " for " + this);
+        _length = sum;
+    }
+    public override int getLength()
+    {
+        if (0 == _length)
+        {
+            updateLength();
+        }
+        return _length;
+    }
+    public override string getTooltipTitleKey()
+    {
+      return GameplayNames.generateRealNameFromBricks(this);
+    }
+    public override string getTooltipCoreExplanationKey()
+    {
+      return getFirstGeneProteinName();
     }
 
     private void idInit()

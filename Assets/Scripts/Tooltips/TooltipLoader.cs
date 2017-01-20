@@ -4,24 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //TODO refactor with FileLoader
-public class TooltipLoader {
+public class TooltipLoader
+{
 
-    public  const string _tooltipPrefix     = "TOOLTIP.";
-    private const string _titleSuffix       = ".TITLE";
-    public  const string _tooltipTypePrefix = "MAIN.TYPE.";
-    private const string _subtitleSuffix    = ".SUBTITLE";
+    public const string _tooltipPrefix = "TOOLTIP.";
+    private const string _titleSuffix = ".TITLE";
+    public const string _tooltipTypePrefix = "MAIN.TYPE.";
+    private const string _subtitleSuffix = ".SUBTITLE";
     public const string _customFieldSuffix = ".CUSTOMFIELD";
     private const string _customValueSuffix = ".CUSTOMVALUE";
-    private const string _lengthSuffix      = ".LENGTH";
-    private const string _referenceSuffix   = ".REFERENCE";
-    private const string _energySuffix      = ".ENERGYCONSUMPTION";
+    private const string _referenceSuffix = ".REFERENCE";
+    private const string _energySuffix = ".ENERGYCONSUMPTION";
     private const string _explanationSuffix = ".EXPLANATION";
-    public const string _emptyField        = _tooltipPrefix + "EMPTYFIELD";
-    
+    public const string _emptyField = _tooltipPrefix + "EMPTYFIELD";
+
     private string biobrickUpperString = TooltipManager.TooltipType.BIOBRICK.ToString().ToLowerInvariant();
     private string deviceUpperString = TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant();
-    
-    private static string _biobrickKey = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.BIOBRICK.ToString().ToUpperInvariant();
+
+    private static string _biobrickKey = _tooltipPrefix + _tooltipTypePrefix + TooltipManager.TooltipType.BIOBRICK.ToString().ToUpperInvariant();
     public static string biobrickKey
     {
         get
@@ -29,14 +29,14 @@ public class TooltipLoader {
             return _biobrickKey;
         }
     }
-    private static string _deviceKey = _tooltipPrefix+_tooltipTypePrefix+TooltipManager.TooltipType.DEVICE.ToString().ToUpperInvariant();
+    private static string _deviceKey = _tooltipPrefix + _tooltipTypePrefix + TooltipManager.TooltipType.DEVICE.ToString().ToUpperInvariant();
     public static string deviceKey
     {
         get
         {
             return _deviceKey;
         }
-    }   
+    }
 
     private string _code;
     private string _title;
@@ -53,7 +53,8 @@ public class TooltipLoader {
 
     private TooltipInfo _info;
 
-    private void reinitVars() {
+    private void reinitVars()
+    {
         _code = null;
         _title = null;
         _type = null;
@@ -83,15 +84,18 @@ public class TooltipLoader {
         {
             reinitVars();
             //common info attributes
-            try {
+            try
+            {
                 _code = infoNode.Attributes[TooltipXMLTags.CODE].Value;
             }
-            catch (NullReferenceException exc) {
-                Debug.LogWarning(this.GetType() + " loadInfoFromFile bad xml, missing field\n"+exc);
+            catch (NullReferenceException exc)
+            {
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile bad xml, missing field\n" + exc);
                 continue;
             }
-            catch (Exception exc) {
-                Debug.LogWarning(this.GetType() + " loadInfoFromFile failed, got exc="+exc);
+            catch (Exception exc)
+            {
+                Debug.LogWarning(this.GetType() + " loadInfoFromFile failed, got exc=" + exc);
                 continue;
             }
 
@@ -135,29 +139,28 @@ public class TooltipLoader {
                         //     _explanation = attr.InnerText;
                         //     break;
                         default:
-                            Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr "+attr.Name+" for info node");
+                            Debug.LogWarning(this.GetType() + " loadInfoFromFile unknown attr " + attr.Name + " for info node");
                             break;
                     }
                 }
-                if(!String.IsNullOrEmpty(_type))
+                if (!String.IsNullOrEmpty(_type))
                 {
-            
                     string root = getKeyRoot(_code);
                     _title = getField(root, _title, _titleSuffix);
                     _subtitle = getField(root, _subtitle, _subtitleSuffix);
                     _customField = getFieldIfExists(root, _customField, _customFieldSuffix);
                     _customValue = getFieldIfExists(root, _customValue, _customValueSuffix);
-                    _length = getField(root, _length, _lengthSuffix);
+                    _length = _emptyField; // filled in the first time the tooltip is displayed
                     _reference = getField(root, _reference, _referenceSuffix);
                     _energyConsumption = getFieldIfExists(root, _energyConsumption, _energySuffix);
                     _explanation = getField(root, _explanation, _explanationSuffix);
-                    
+
                     string lower = _type.ToLowerInvariant();
-                    if(lower == TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant())
+                    if (lower == TooltipManager.TooltipType.DEVICE.ToString().ToLowerInvariant())
                     {
                         _tooltipType = TooltipManager.TooltipType.DEVICE;
                     }
-                    else if(lower == TooltipManager.TooltipType.BIOBRICK.ToString().ToLowerInvariant())
+                    else if (lower == TooltipManager.TooltipType.BIOBRICK.ToString().ToLowerInvariant())
                     {
                         _tooltipType = TooltipManager.TooltipType.BIOBRICK;
                     }
@@ -165,7 +168,7 @@ public class TooltipLoader {
                     {
                         _tooltipType = TooltipManager.TooltipType.BIOBRICK;
                     }
-                    
+
                     _info = new TooltipInfo(
                         _code,
                         _title,
@@ -180,11 +183,13 @@ public class TooltipLoader {
                         _explanation
                     );
                 }
-                if(null != _info)
+                if (null != _info)
                 {
-                        resultInfo.AddLast(_info);
+                    resultInfo.AddLast(_info);
                 }
-            } else {
+            }
+            else
+            {
                 Debug.LogWarning(this.GetType() + " loadInfoFromFile Error : missing attribute code in info node");
             }
         }
@@ -193,46 +198,43 @@ public class TooltipLoader {
 
     public static string getKeyRoot(string tooltipCode)
     {
-        return _tooltipPrefix+tooltipCode.ToUpper().Replace(' ','_');
+        return _tooltipPrefix + tooltipCode.ToUpper().Replace(' ', '_');
     }
     public static string getField(string root, string defaultValue, string suffix)
     {
-        return string.IsNullOrEmpty(defaultValue)?root+suffix:defaultValue;
+        return string.IsNullOrEmpty(defaultValue) ? root + suffix : defaultValue;
     }
     public static string getFieldIfExists(string root, string defaultValue, string suffix)
     {
-        return string.IsNullOrEmpty(defaultValue)?getLocalizationKeyIfExists(root+suffix):defaultValue;
+        return string.IsNullOrEmpty(defaultValue) ? getLocalizationKeyIfExists(root + suffix) : defaultValue;
     }
     public static string getTitle(string root)
     {
-        return getLocalizationKeyIfExists(root+_titleSuffix);
+        return getLocalizationKeyIfExists(root + _titleSuffix);
     }
     public static string getCustomField(string root)
     {
-        return getLocalizationKeyIfExists(root+_customFieldSuffix);
+        return getLocalizationKeyIfExists(root + _customFieldSuffix);
     }
     public static string getCustomValue(string root)
     {
-        return getLocalizationKeyIfExists(root+_customValueSuffix);
+        return getLocalizationKeyIfExists(root + _customValueSuffix);
     }
-    public static string getEnergyConsumption(string root)
+    public static string getEnergyConsumptionKey(string root)
     {
-        return getLocalizationKeyIfExists(root+_energySuffix);
+        return getLocalizationKeyIfExists(root + _energySuffix);
     }
-    public static string getLength(string root)
+    public static string getReferenceKey(string root)
     {
-        return getLocalizationKeyIfExists(root+_lengthSuffix);
+        return getLocalizationKeyIfExists(root + _energySuffix);
     }
-    public static string getReference(string root)
+    public static string getExplanationKey(string root)
     {
-        return getLocalizationKeyIfExists(root+_energySuffix);
+        return getLocalizationKeyIfExists(root + _explanationSuffix);
     }
-    public static string getExplanation(string root)
+
+    private static string getLocalizationKeyIfExists(string code)
     {
-        return getLocalizationKeyIfExists(root+_explanationSuffix);
-    }
-  
-    private static string getLocalizationKeyIfExists(string code) {
         string res = Localization.Localize(code) == code ? _emptyField : code;
         return res;
     }
