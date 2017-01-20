@@ -128,6 +128,9 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
 
     public void onLanguageChanged()
     {
-        namesLabel.text = _displayedMolecule.getRealName();
+        if(null != _displayedMolecule)
+        {
+            namesLabel.text = _displayedMolecule.getRealName();
+        }
     }
 }

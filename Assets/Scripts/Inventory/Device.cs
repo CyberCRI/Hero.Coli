@@ -46,6 +46,7 @@ public class Device: DNABit
     }
     public override string getTooltipTitleKey()
     {
+      // Debug.Log(this.GetType() + " getTooltipTitleKey " + this);
       return GameplayNames.generateRealNameFromBricks(this);
     }
     public override string getTooltipCoreExplanationKey()

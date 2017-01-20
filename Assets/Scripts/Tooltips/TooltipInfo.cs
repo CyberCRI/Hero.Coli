@@ -67,16 +67,25 @@ public class TooltipInfo
         // Debug.Log(this.GetType() + " onLanguageChanged " + this);
         if (_localized)
         {
-            resetLocalizedString(_title);
-            resetLocalizedString(_explanation);
-        }
-    }
+            // Debug.Log(this.GetType() + " onLanguageChanged before"
+            // + "\n" + _title
+            // + "\n" + _explanation);
+            
+            if (TooltipManager.isLocalizedString(_title))
+            {
+                _title = TooltipLoader._emptyField;
+            }
+            
+            if (TooltipManager.isLocalizedString(_explanation))
+            {
+                _explanation = TooltipLoader._emptyField;
+            }
 
-    private void resetLocalizedString(string field)
-    {
-        if (Localization.Localize(field) == field)
-        {
-            field = TooltipLoader._emptyField;
+            _localized = false;
+
+            // Debug.Log(this.GetType() + " onLanguageChanged after"
+            // + "\n" + _title
+            // + "\n" + _explanation);
         }
     }
 
@@ -95,6 +104,7 @@ public class TooltipInfo
           ", _reference:" + _reference +
           ", _energyConsumption:" + _energyConsumption +
           ", _explanation:" + _explanation +
+          ", _localized:" + _localized +
           "]";
     }
 }

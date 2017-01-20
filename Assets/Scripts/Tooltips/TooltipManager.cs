@@ -27,6 +27,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         {
             _instance = this;
             loadDataIntoDico(inputFiles, _loadedInfoWindows);
+            I18n.register(this);
         }
     }
 
@@ -280,23 +281,36 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             return null;
         }
 
-        string root = TooltipLoader.getKeyRoot(code);
+        string stem = TooltipLoader.getKeyRoot(code);
+
+        bool localized;
 
         TooltipInfo info = new TooltipInfo(
             code,
-            TooltipLoader.getTitle(root),
+            getTitle(dnabit, stem, out localized),
             TooltipType.DEVICE,
             TooltipLoader._emptyField,
             TooltipLoader._emptyField,
-            TooltipLoader.getCustomField(root),
-            TooltipLoader.getCustomValue(root),
+            TooltipLoader.getCustomField(stem),
+            TooltipLoader.getCustomValue(stem),
             getLength(dnabit),
-            TooltipLoader.getReferenceKey(root),
-            TooltipLoader.getEnergyConsumptionKey(root),
-            TooltipLoader.getExplanationKey(root)
+            TooltipLoader.getReferenceKey(stem),
+            TooltipLoader.getEnergyConsumptionKey(stem),
+            TooltipLoader.getExplanationKey(stem)
         );
 
+        info._localized = localized;
+
+        // Debug.Log("TooltipManager getInfoFromDevice returns " + info);
+
         return info;
+    }
+
+    private static string getTitle(DNABit dnabit, string stem, out bool localized)
+    {
+        string title = TooltipLoader.getTitle(stem);
+        localized = title == TooltipLoader._emptyField; 
+        return localized ? dnabit.getTooltipTitleKey() : title;
     }
 
     private static string getLength(DNABit bit)
@@ -306,6 +320,11 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             return TooltipLoader._emptyField;
         }
         return bit.getLength().ToString() + _basePairsUnitString;
+    }
+
+    public static bool isLocalizedString(string field)
+    {
+        return (Localization.Localize(field) == field);
     }
 
     private static bool fillInFieldsFromInfo(TooltipInfo info, DNABit dnabit)
@@ -321,14 +340,13 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             if (dnabit != null && TooltipLoader._emptyField == info._title)
             {
                 // Debug.Log("TooltipManager fillInFieldsFromInfo dnabit != null && TooltipLoader._emptyField == info._title");
-                _instance._titleLabel.key = dnabit.getTooltipTitleKey();
+                info._title = dnabit.getTooltipTitleKey();
+                info._localized = info._localized || (isLocalizedString(info._title));
+                // Debug.Log("TooltipManager " + info._localized + " " + info._title);
             }
             // otherwise rely on translation system
-            else
-            {
-                // Debug.Log("TooltipManager fillInFieldsFromInfo dnabit == null || TooltipLoader._emptyField != info._title");
-                _instance._titleLabel.key = info._title;
-            }
+            _instance._titleLabel.key = info._title;
+
             _instance._typeLabel.key = info._type;
 
             if (null != _instance._subtitleLabel)
@@ -479,6 +497,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
 
     public void onLanguageChanged()
     {
+        // Debug.Log(this.GetType() + " onLanguageChanged");
         foreach (KeyValuePair<string, TooltipInfo> element in _loadedInfoWindows)
         {
             element.Value.onLanguageChanged();
