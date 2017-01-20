@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TooltipManager : MonoBehaviour
+public class TooltipManager : MonoBehaviour, ILocalizable
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "TooltipManager";
@@ -247,6 +247,8 @@ public class TooltipManager : MonoBehaviour
                     Debug.LogWarning("TooltipManager null != dnabit && null == info");
                     return false;
                 }
+                // Debug.Log("added " + info);
+                _instance._loadedInfoWindows.Add(code, info);
             }
             else
             {
@@ -257,6 +259,10 @@ public class TooltipManager : MonoBehaviour
                 }
             }
         }
+        // else
+        // {
+        //     Debug.Log("found " + info);
+        // }
         return fillInFieldsFromInfo(info, dnabit);
     }
 
@@ -337,20 +343,17 @@ public class TooltipManager : MonoBehaviour
 
             if ((null != _instance._customFieldLabel) && (null != _instance._customValueLabel))
             {
-                _instance._customFieldLabel.key = string.IsNullOrEmpty(info._customField) ? TooltipLoader._emptyField : info._customField;
-                _instance._customValueLabel.key = string.IsNullOrEmpty(info._customValue) ? TooltipLoader._emptyField : info._customValue;
+                _instance._customFieldLabel.key = info._customField;
+                _instance._customValueLabel.key = info._customValue;
             }
 
             // runtime computation of length when necessary
             if (TooltipLoader._emptyField == info._length)
             {
-                _instance._lengthValueLabel.key = getLength(dnabit);
+                info._length = getLength(dnabit);
             }
             // otherwise rely on translation system
-            else
-            {
-                _instance._lengthValueLabel.key = info._length;
-            }
+            _instance._lengthValueLabel.key = info._length;
 
             // TODO runtime computation of energy consumption
             if (null != _instance._energyConsumptionValueLabel)
@@ -371,7 +374,6 @@ public class TooltipManager : MonoBehaviour
             {
                 _instance._explanationLabel.key = info._explanation;
             }
-
             // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") finished successfully");
             return true;
         }
@@ -402,7 +404,7 @@ public class TooltipManager : MonoBehaviour
     {
         TooltipLoader tLoader = new TooltipLoader();
 
-        string loadedFiles = "";
+        // string loadedFiles = "";
 
         foreach (string file in inputFiles)
         {
@@ -410,11 +412,11 @@ public class TooltipManager : MonoBehaviour
             {
                 dico.Add(info._code, info);
             }
-            if (!string.IsNullOrEmpty(loadedFiles))
-            {
-                loadedFiles += ", ";
-            }
-            loadedFiles += file;
+            // if (!string.IsNullOrEmpty(loadedFiles))
+            // {
+                // loadedFiles += ", ";
+            // }
+            // loadedFiles += file;
         }
 
         // Debug.Log(this.GetType() + " loadDataIntoDico loaded " + loadedFiles);
@@ -472,6 +474,14 @@ public class TooltipManager : MonoBehaviour
                 return Quadrant.BOTTOM_LEFT;
             else
                 return Quadrant.BOTTOM_RIGHT;
+        }
+    }
+
+    public void onLanguageChanged()
+    {
+        foreach (KeyValuePair<string, TooltipInfo> element in _loadedInfoWindows)
+        {
+            element.Value.onLanguageChanged();
         }
     }
 }

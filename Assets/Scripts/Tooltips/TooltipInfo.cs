@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public class TooltipInfo
 {
@@ -14,6 +15,8 @@ public class TooltipInfo
     public string _reference;
     public string _energyConsumption;
     public string _explanation;
+
+    public bool _localized; // true if this TooltipInfo contains localized fields and therefore needs to be purged when language changes
 
     //TODO replace "type" of type string by type enum
     public TooltipInfo(
@@ -56,6 +59,24 @@ public class TooltipInfo
                 _type = TooltipLoader.biobrickKey;
                 _background = TooltipManager.getBioBrickBackground();
                 break;
+        }
+    }
+
+    public void onLanguageChanged()
+    {
+        // Debug.Log(this.GetType() + " onLanguageChanged " + this);
+        if (_localized)
+        {
+            resetLocalizedString(_title);
+            resetLocalizedString(_explanation);
+        }
+    }
+
+    private void resetLocalizedString(string field)
+    {
+        if (Localization.Localize(field) == field)
+        {
+            field = TooltipLoader._emptyField;
         }
     }
 
