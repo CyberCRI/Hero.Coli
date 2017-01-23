@@ -3,7 +3,7 @@ public abstract class DNABit
     public abstract int getLength();
 
     public abstract string getTooltipTitleKey();
-    public abstract string getTooltipCoreExplanationKey();
+    public abstract string getTooltipExplanation();
 
     public override string ToString()
     {

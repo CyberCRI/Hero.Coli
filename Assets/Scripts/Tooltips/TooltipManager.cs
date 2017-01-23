@@ -49,6 +49,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
                 deviceTooltipPanel.gameObject.SetActive(false);
                 _initialized = true;
             }
+            setExplanationSuffixes();
         }
         return _initialized;
     }
@@ -208,7 +209,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
 
     private static bool displayTooltip(bool isOver, string code, Vector3 pos, DNABit dnabit)
     {
-        // Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ")");
+        // Debug.Log("TooltipManager displayTooltip(" + isOver + ", code=" + code + ", " + pos + ", " + dnabit + ")");
 
         if (!isOver || (null == code))
         {
@@ -240,6 +241,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         TooltipInfo info = retrieveFromDico(code);
         if (null == info)
         {
+            // Debug.Log("null == info");
             if (null != dnabit)
             {
                 info = getInfoFromDevice(code, dnabit);
@@ -262,7 +264,7 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         }
         // else
         // {
-        //     Debug.Log("found " + info);
+        //     // Debug.Log("found " + info);
         // }
         return fillInFieldsFromInfo(info, dnabit);
     }
@@ -283,11 +285,11 @@ public class TooltipManager : MonoBehaviour, ILocalizable
 
         string stem = TooltipLoader.getKeyRoot(code);
 
-        bool localized;
+        bool localized1, localized2;
 
         TooltipInfo info = new TooltipInfo(
             code,
-            getTitle(dnabit, stem, out localized),
+            getTitle(dnabit, stem, out localized1),
             TooltipType.DEVICE,
             TooltipLoader._emptyField,
             TooltipLoader._emptyField,
@@ -296,10 +298,10 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             getLength(dnabit),
             TooltipLoader.getReferenceKey(stem),
             TooltipLoader.getEnergyConsumptionKey(stem),
-            TooltipLoader.getExplanationKey(stem)
+            getExplanation(dnabit, stem, out localized2)
         );
 
-        info._localized = localized;
+        info._localized = localized1 || localized2;
 
         // Debug.Log("TooltipManager getInfoFromDevice returns " + info);
 
@@ -311,6 +313,13 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         string title = TooltipLoader.getTitle(stem);
         localized = title == TooltipLoader._emptyField; 
         return localized ? dnabit.getTooltipTitleKey() : title;
+    }
+
+    private static string getExplanation(DNABit dnabit, string stem, out bool localized)
+    {
+        string explanation = TooltipLoader.getExplanationKey(stem);
+        localized = explanation == TooltipLoader._emptyField;
+        return localized ? dnabit.getTooltipExplanation() : explanation;
     }
 
     private static string getLength(DNABit bit)
@@ -385,13 +394,11 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             if (dnabit != null && TooltipLoader._emptyField == info._explanation)
             {
                 // temporary solution: directly re-use biobrick explanation
-                _instance._explanationLabel.key = buildExplanationKeyFromStem(dnabit.getTooltipCoreExplanationKey());
+                // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") dnabit != null && TooltipLoader._emptyField == info._explanation");
+                info._explanation = dnabit.getTooltipExplanation();
             }
             // otherwise rely on translation system
-            else
-            {
-                _instance._explanationLabel.key = info._explanation;
-            }
+            _instance._explanationLabel.key = info._explanation;
             // Debug.Log("TooltipManager fillInFieldsFromInfo(" + info + ") finished successfully");
             return true;
         }
@@ -399,6 +406,134 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         {
             return false;
         }
+    }
+
+    private const string _genericExplanationSuffix = "TOOLTIP.D_GENERICEXPLANATION."; 
+    private const string _beginningSuffixKey = _genericExplanationSuffix + "BEGINNING";
+    private const string _quantityBASESuffixKey = _genericExplanationSuffix + "QUANTITYBASE";
+    private const string _quantityLOWSuffixKey = _genericExplanationSuffix + "QUANTITYLOW"; 
+    private const string _quantityMEDSuffixKey = _genericExplanationSuffix + "QUANTITYMED";
+    private const string _quantitySuffixKey = _genericExplanationSuffix + "QUANTITY";
+    private const string _repressedSuffixKey = _genericExplanationSuffix + "REPRESSED";
+    private const string _activatedSuffixKey = _genericExplanationSuffix + "ACTIVATED";
+    private const string _andSuffixKey = _genericExplanationSuffix + "AND";
+    
+    private static string _beginningSuffix = _genericExplanationSuffix + "BEGINNING";
+    private static string _quantityBaseSuffix = _genericExplanationSuffix + "QUANTITYBASE";
+    private static string _quantityLowSuffix = _genericExplanationSuffix + "QUANTITYLOW"; 
+    private static string _quantityMedSuffix = _genericExplanationSuffix + "QUANTITYMED"; 
+    private static string _quantityHighSuffix = _genericExplanationSuffix + "QUANTITYHIGH";
+    private static string _quantitySuffix = _genericExplanationSuffix + "QUANTITY";
+    private static string _repressedSuffix = _genericExplanationSuffix + "REPRESSED";
+    private static string _activatedSuffix = _genericExplanationSuffix + "ACTIVATED";
+    private static string _andSuffix = _genericExplanationSuffix + "AND";
+    private static string _endSuffix = ".";
+    
+    private void setExplanationSuffixes()
+    {
+        _beginningSuffix = Localization.Localize(_beginningSuffixKey);
+        _quantityBaseSuffix = Localization.Localize(_quantityBASESuffixKey);
+        _quantityLowSuffix = Localization.Localize(_quantityLOWSuffixKey);
+        _quantityMedSuffix = Localization.Localize(_quantityMEDSuffixKey);
+        _quantitySuffix = Localization.Localize(_quantitySuffixKey);
+        _repressedSuffix = Localization.Localize(_repressedSuffixKey);
+        _activatedSuffix = Localization.Localize(_activatedSuffixKey);
+        _andSuffix = Localization.Localize(_andSuffixKey);
+    }
+
+    public static string produceExplanation(Device device)
+    {
+        // Debug.Log("TooltipManager produceExplanation " + device);
+        // "Produces"
+        string result = _beginningSuffix + " ";
+        
+        // " a little"
+        string quantitySuffix;
+        switch (device.levelIndex)
+        {
+            case 0:
+                quantitySuffix = _quantityBaseSuffix;
+                break;
+            case 1:
+                quantitySuffix = _quantityLowSuffix;
+                break;
+            case 2:
+                quantitySuffix = _quantityMedSuffix;
+                break;
+            case 3:
+                quantitySuffix = _quantityHighSuffix;
+                break;
+            default:
+                quantitySuffix = _quantityBaseSuffix;
+                break;
+        }
+        result += quantitySuffix + " ";
+
+        // " amount of"
+        result += _quantitySuffix + " ";
+
+        // " 'X'"
+        result += Localization.Localize(GameplayNames.getShortName(device.getFirstGeneProteinName())) + " ";
+
+        // " in presence of 'Y' and absence of 'Z'"
+        result += getPromoterRegulationSuffix(device);
+
+        // "."
+        result += _endSuffix;
+
+        // Debug.Log("TooltipManager produceExplanation("+device+")=" + result);
+        return result;
+    }
+
+    private static string getPromoterRegulationSuffix(Device device)
+    {
+        string result = "";
+        LinkedList<BioBrick> bricks = device.getBioBricks();
+        if (null != bricks)
+        {
+            PromoterBrick promoter = bricks.First.Value as PromoterBrick;
+            if (promoter != null)
+            {
+                PromoterBrick.Regulation regulation = promoter.getRegulation();
+                switch (regulation)
+                {
+                    case PromoterBrick.Regulation.CONSTANT:
+                        break;
+                    case PromoterBrick.Regulation.ACTIVATED:
+                        result = getActivatorsString(promoter);
+                        break;
+                    case PromoterBrick.Regulation.REPRESSED:
+                        result = getRepressorsString(promoter);
+                        break;
+                    case PromoterBrick.Regulation.BOTH:
+                        result = getActivatorsString(promoter) + " " + _andSuffix + " " + getRepressorsString(promoter);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return result;                
+    }
+
+    private static string getActivatorsString(PromoterBrick promoter)
+    {
+        return _activatedSuffix + " " + getLocalizedListOfMolecules(promoter.activators);
+    }
+
+    private static string getRepressorsString(PromoterBrick promoter)
+    {
+        return _repressedSuffix + " " + getLocalizedListOfMolecules(promoter.repressors);
+    }
+
+    private static string getLocalizedListOfMolecules(List<string> molecules)
+    {
+        List<string> localized = new List<string>();
+        foreach(string molecule in molecules)
+        {
+            localized.Add(Localization.Localize(GameplayNames.getBrickNameKey(molecule)));
+        }
+        return Logger.ToString<string>(localized);
     }
 
     public static string buildExplanationKeyFromStem(string stem)
@@ -502,5 +637,6 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         {
             element.Value.onLanguageChanged();
         }
+        setExplanationSuffixes();
     }
 }

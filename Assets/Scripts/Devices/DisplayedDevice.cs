@@ -32,17 +32,9 @@ public class DisplayedDevice : DisplayedElement
     private const string _quality64 = "64x64_";
     private const string _qualityDefault = _quality64;
 
-    // _level
-    private const float _level0 = .06f;
-    private const float _level1 = .126f;
-    private const float _level2 = .23f;
-    private const float _level3 = .4f;
-    private const float _level01Threshold = (_level0 + _level1) / 2;
-    private const float _level12Threshold = (_level1 + _level2) / 2;
-    private const float _level23Threshold = (_level2 + _level3) / 2;
-    private const string _levelBaseSuffix = "_base";
-    private const string _levelLowSuffix = "_low";
-    private const string _levelMedSuffix = "_med";
+    // private const string _levelBaseSuffix = "_base";
+    // private const string _levelLowSuffix = "_low";
+    // private const string _levelMedSuffix = "_med";
     private const string _level0Suffix = "level0";
     private const string _level1Suffix = "level1";
     private const string _level2Suffix = "level2";
@@ -177,7 +169,7 @@ public class DisplayedDevice : DisplayedElement
     {
         if (levelIndex == -1)
         {
-            levelIndex = getLevelIndex();
+            levelIndex = _device.levelIndex;
         }
         if (null != levelSprite)
         {
@@ -199,7 +191,7 @@ public class DisplayedDevice : DisplayedElement
     {
         if (levelIndex == -1)
         {
-            levelIndex = getLevelIndex();
+            levelIndex = (null == _device)?0:_device.levelIndex;
         }
 
         string withLevelSuffix = getTextureName() + _separator + getLevelSuffix(levelIndex);
@@ -214,43 +206,12 @@ public class DisplayedDevice : DisplayedElement
         }
     }
 
-    private int getLevelIndex()
-    {
-        int index = 0;
-        if (_device == null)
-        {
-            index = 0;
-        }
-        else
-        {
-            float expressionLevel = _device.getExpressionLevel();
-
-            if (expressionLevel < _level01Threshold)
-            {
-                index = 0;
-            }
-            else if (expressionLevel < _level12Threshold)
-            {
-                index = 1;
-            }
-            else if (expressionLevel < _level23Threshold)
-            {
-                index = 2;
-            }
-            else
-            {
-                index = 3;
-            }
-        }
-        return index;
-    }
-
     private string getLevelSuffix(int levelIndex = -1)
     {
         string levelSuffix;
         if (levelIndex == -1)
         {
-            levelIndex = getLevelIndex();
+            levelIndex = _device.levelIndex;
         }
         switch (levelIndex)
         {
@@ -279,7 +240,7 @@ public class DisplayedDevice : DisplayedElement
 
         if (levelIndex == -1)
         {
-            levelIndex = getLevelIndex();
+            levelIndex = _device.levelIndex;
         }
 
         if (_device == null)
@@ -440,7 +401,7 @@ public class DisplayedDevice : DisplayedElement
         setName();
         setBackgroundSprite();
         setMoleculeOverlay(device.getFirstGeneProteinName());
-        int levelIndex = getLevelIndex();
+        int levelIndex = _device.levelIndex;
         setLevelSprite(levelIndex);
         setDeviceIcon(levelIndex);
 

@@ -216,8 +216,10 @@ public class Logger : MonoBehaviour
         {
             string left = ToString<T>(tree.getLeftNode()), right = ToString<T>(tree.getRightNode());
             string resultString = tree.getData().ToString();
-            resultString = !string.IsNullOrEmpty(left) ? resultString + ", " + left : resultString;
-            resultString = !string.IsNullOrEmpty(right) ? resultString + ", " + right : resultString;
+            // resultString = !string.IsNullOrEmpty(left) ? resultString + ", " + left : resultString;
+            // resultString = !string.IsNullOrEmpty(right) ? resultString + ", " + right : resultString;
+            resultString = !string.IsNullOrEmpty(left) ? "[" + left + "]" + ", " + resultString : resultString;
+            resultString = !string.IsNullOrEmpty(right) ? resultString + ", " + "[" + right + "]" : resultString;
             return resultString;
         }
     }

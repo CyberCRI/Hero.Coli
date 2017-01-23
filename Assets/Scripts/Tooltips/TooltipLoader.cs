@@ -235,6 +235,7 @@ public class TooltipLoader
 
     private static string getLocalizationKeyIfExists(string code)
     {
+        // Debug.Log("getLocalizationKeyIfExists " + code);
         string res = Localization.Localize(code) == code ? _emptyField : code;
         return res;
     }

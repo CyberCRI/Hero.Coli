@@ -9,6 +9,10 @@ public class GameplayNames
     public const string devicePrefix = "DEVICE.";
     private const string shortMoleculePrefix = "BRICK.ICONLABEL.";
 
+    public static string getBrickNameKey(string code)
+    {
+        return biobrickPrefix + code;
+    }
     public static string getMoleculeRealName(string code)
     {
         return Localization.Localize(moleculePrefix + code);

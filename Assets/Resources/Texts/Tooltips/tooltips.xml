@@ -139,20 +139,4 @@
     <type>Device</type>
     <illustration>pic_d_cons-speed-med</illustration>
   </tooltip>
-  <tooltip code="d_PRLACI:RBS2:FLUO1:DTER">
-    <type>Device</type>
-    <illustration>pic_d_plac-gfp-low</illustration>
-  </tooltip>
-  <tooltip code="d_PRLACI:RBS1:FLUO1:DTER">
-    <type>Device</type>
-    <illustration>pic_d_plac-gfp-med</illustration>
-  </tooltip>
-  <tooltip code="d_PRLACI:RBS2:MOV:DTER">
-    <type>Device</type>
-    <illustration>pic_d_plac-speed-low</illustration>
-  </tooltip>
-  <tooltip code="d_PRLACI:RBS1:MOV:DTER">
-    <type>Device</type>
-    <illustration>pic_d_plac-speed-med</illustration>
-  </tooltip>
 </tooltipList>
