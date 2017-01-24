@@ -280,7 +280,7 @@ public class GameConfiguration
         if (!RedMetricsManager.get().isGameVersionInitialized())
         {
             string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
-            if (string.IsNullOrEmpty(storedGUID))
+            if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID))
             {
                 // if the game is launched in the editor,
                 // sets the localPlayerGUID to a test GUID 
@@ -295,6 +295,12 @@ public class GameConfiguration
                 setGameVersion(storedGUID);
             }
         }
+    }
+
+    // use: check that stored guid is not from previous version
+    private bool isGUIDCorrect(string guid)
+    {
+        return (guid == labelledGameVersionGUID.ToString() || guid == testVersionGUID.ToString());
     }
 
     //sets the destination to which logs will be sent
