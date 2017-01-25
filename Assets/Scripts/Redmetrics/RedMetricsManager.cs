@@ -28,7 +28,8 @@ public class RedMetricsManager : MonoBehaviour
             if (null != _instance)
             {
                 //RedMetricsManager object is not destroyed when game restarts
-                DontDestroyOnLoad(_instance.gameObject);
+                // Debug.Log("RedMetricsManager get DontDestroyOnLoad");
+                _instance.initializeIfNecessary();
             }
             else
             {
@@ -40,10 +41,10 @@ public class RedMetricsManager : MonoBehaviour
 
     void Awake()
     {
-        // Debug.Log(this.GetType() + " Awake");
+        // Debug.Log(this.GetType() + " Awake with gameVersionGuid=" + gameVersionGuid);
         if ((_instance != null) && (_instance != this))
         {
-            Debug.LogError(this.GetType() + " has two running instances: anti duplicate initialization");
+            // Debug.LogWarning(this.GetType() + " has two running instances: anti duplicate initialization");
             Destroy(this.gameObject);
         }
         else
@@ -73,15 +74,17 @@ public class RedMetricsManager : MonoBehaviour
     private bool _initialized = false;
     private void initializeIfNecessary()
     {
+        // Debug.Log(this.GetType() + " initializeIfNecessary _initialized=" + _initialized);
         if (!_initialized)
         {
+            DontDestroyOnLoad(_instance.gameObject);
             _initialized = true;
         }
     }
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start with gameVersionGuid=" + gameVersionGuid);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -137,13 +140,13 @@ public class RedMetricsManager : MonoBehaviour
 
     public void setGameVersion(string gVersion)
     {
-        // Debug.Log(this.GetType() + " setGameVersion str " + gVersion);
+        // Debug.Log(this.GetType() + " setGameVersion str " + gameVersionGuid + " to " + gVersion);
         gameVersionGuid = new System.Guid(gVersion);
     }
 
     public void setGameVersion(System.Guid gVersion)
     {
-        // Debug.Log(this.GetType() + " setGameVersion Guid " + gVersion);
+        // Debug.Log(this.GetType() + " setGameVersion Guid " + gameVersionGuid + " to " + gVersion);
         gameVersionGuid = gVersion;
     }
 
@@ -463,6 +466,13 @@ public class RedMetricsManager : MonoBehaviour
     public void sendEvent(TrackingEventDataWithoutIDs data)
     {
         sendEvent(data.getTrackingEvent(), data.customData, data.section, data.coordinates, data.userTime);
+    }
+
+    public void sendRichEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
+    {
+        CustomData context = Hero.get().getEventContext();
+        context.merge(customData);
+        sendEvent(trackingEvent, context, section, coordinates, userTime);
     }
 
     public void sendEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)

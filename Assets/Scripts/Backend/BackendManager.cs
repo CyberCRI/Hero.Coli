@@ -16,6 +16,8 @@ public class BackendManager : MonoBehaviour
         isTestGUID = GameConfiguration.isAdmin;
     }
 
+    private int _depth = 0;
+
     // Update is called once per frame
     void Update()
     {
@@ -23,7 +25,18 @@ public class BackendManager : MonoBehaviour
         if (forceAdmin || (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl)))
         {
             forceAdmin = false;
+
+            Debug.Log(this.GetType() + " Update space pressed BEFORE"
+            + " guid=" + RedMetricsManager.get().getGameVersion()
+            + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
+            );            
+
             isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
+
+            Debug.Log(this.GetType() + " Update space pressed AFTER"
+            + " guid=" + RedMetricsManager.get().getGameVersion()
+            + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
+            );    
 
             //display feedback for logging mode
             string msg;
@@ -63,11 +76,19 @@ public class BackendManager : MonoBehaviour
             {
                 Vector3 position = Hero.get().transform.position;
                 Hero.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
+                _depth++;
             }
             if (Input.GetKeyDown(KeyCode.KeypadDivide))
             {
                 Vector3 position = Hero.get().transform.position;
                 Hero.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
+                _depth--;
+            }            
+            if (Input.GetKeyDown(KeyCode.KeypadMinus))
+            {
+                Vector3 position = Hero.get().transform.position;
+                Hero.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
+                _depth = 0;
             }
         }
 

@@ -62,11 +62,11 @@ public class MemoryManager : MonoBehaviour
 
     void Start()
     {
-        // Debug.Log(this.GetType() + " Start");
+        Debug.Log(this.GetType() + " Start");
 
         //TODO manage RedMetricsManager's globalPlayerGUID
 
-        // Debug.Log(this.GetType() + " configuration.load()");
+        Debug.Log(this.GetType() + " configuration.load()");
 
         configuration.load();
 
