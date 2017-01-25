@@ -434,12 +434,12 @@ public class DisplayedDevice : DisplayedElement
         {
             if (_devicesDisplayer.askRemoveEquipedDevice(_device))
             {
-                RedMetricsManager.get().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
             }
         }
         else
         {
-            RedMetricsManager.get().sendEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+            RedMetricsManager.get().sendRichEvent(TrackingEvent.EQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
         }
     }
 

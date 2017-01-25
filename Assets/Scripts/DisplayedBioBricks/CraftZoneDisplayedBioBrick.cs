@@ -51,7 +51,7 @@ public class CraftZoneDisplayedBioBrick : DisplayedBioBrick
                 {
                     czm.removeBioBrick(this);
                 }
-                RedMetricsManager.get().sendEvent(TrackingEvent.REMOVE, new CustomData(CustomDataTag.BIOBRICK, _biobrick.getInternalName()));
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.REMOVE, new CustomData(CustomDataTag.BIOBRICK, _biobrick.getInternalName()));
             }
             TooltipManager.displayTooltip();
         }

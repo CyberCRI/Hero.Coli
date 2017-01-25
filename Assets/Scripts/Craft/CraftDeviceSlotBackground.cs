@@ -1,11 +1,13 @@
-﻿public class CraftDeviceSlotBackground : ExternalOnPressButton {
+﻿public class CraftDeviceSlotBackground : ExternalOnPressButton
+{
     public CraftDeviceSlot slot;
-    public override void OnPress(bool isPressed) {
+    public override void OnPress(bool isPressed)
+    {
         //Debug.LogError("CraftDeviceSlotBackground OnPress");
-        if(isPressed)
+        if (isPressed)
         {
-            RedMetricsManager.get ().sendEvent(TrackingEvent.SELECT, new CustomData(CustomDataTag.SLOT, slot.name.ToString()));
             slot.setSelected(true);
+            RedMetricsManager.get().sendRichEvent(TrackingEvent.SELECT, new CustomData(CustomDataTag.SLOT, slot.name.ToString()));
         }
     }
 }

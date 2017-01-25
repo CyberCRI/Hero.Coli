@@ -27,6 +27,7 @@ public class LanguageMainMenuItem : MainMenuItem
     {
         // Debug.Log(this.GetType() + " clicked "+itemName);
         languagesArray.selectLanguage(language);
+		RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
     }
 
     public void updateSelection()

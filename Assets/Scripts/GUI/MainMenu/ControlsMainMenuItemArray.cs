@@ -101,25 +101,25 @@ public class ControlsMainMenuItemArray : MainMenuItemArray
 
     public void switchControlTypeToAbsoluteWASD()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.AbsoluteWASD.ToString()));
         cellControl.switchControlTypeToAbsoluteWASD();
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.AbsoluteWASD.ToString()));
     }
 
     public void switchControlTypeToRelativeWASD()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RelativeWASD.ToString()));
         cellControl.switchControlTypeToRelativeWASD();
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RelativeWASD.ToString()));
     }
 
     public void switchControlTypeToLeftClickToMove()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.LeftClickToMove.ToString()));
         cellControl.switchControlTypeToLeftClickToMove();
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.LeftClickToMove.ToString()));
     }
 
     public void switchControlTypeToRightClickToMove()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RightClickToMove.ToString()));
         cellControl.switchControlTypeToRightClickToMove();
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.CONTROLS, CellControl.ControlType.RightClickToMove.ToString()));
     }
 }

@@ -219,7 +219,7 @@ public class Inventory : DeviceContainer
 
             if (reportToRedMetrics)
             {
-                RedMetricsManager.get().sendEvent(TrackingEvent.CRAFT, new CustomData(CustomDataTag.DEVICE, device.getInternalName()));
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.CRAFT, new CustomData(CustomDataTag.DEVICE, device.getInternalName()));
             }
             addDevice(device);
 
@@ -348,5 +348,10 @@ public class Inventory : DeviceContainer
             _displayer.removeInventoriedDevice(device);
         }
         UpdateData(new List<Device>(), _devices, new List<Device>());
+    }
+
+    public static string getInternalDevicesString()
+    {
+        return Logger.ToString<Device>(_instance._devices, d => d.getInternalName());
     }
 }

@@ -556,7 +556,7 @@ public class CraftDeviceSlot : MonoBehaviour
             }
         }
     }
-    
+
     private bool canAfford(Device device)
     {
         lazyInitialize();
@@ -564,10 +564,10 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             AvailableBioBricksManager abbm = AvailableBioBricksManager.get();
             LinkedList<BioBrick> currentBricks = getCurrentBricks();
-            
+
             foreach (BioBrick brick in device.getBioBricks())
             {
-                if((abbm.getBrickAmount(brick) == 0) && !currentBricks.Contains(brick))
+                if ((abbm.getBrickAmount(brick) == 0) && !currentBricks.Contains(brick))
                 {
                     // Debug.Log("can't afford " + brick.getInternalName());
                     // Debug.Log("brick = " + brick.getInternalName() + "\nbricks = " + Logger.ToString<BioBrick>(currentBricks, b => b.getInternalName()));
@@ -588,7 +588,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         if (device != null)
         {
-            if(canAfford(device))
+            if (canAfford(device))
             {
                 // Debug.Log("CDS setDevice removeAllBricks");
                 removeAllBricks();
@@ -674,11 +674,11 @@ public class CraftDeviceSlot : MonoBehaviour
 
     void Update()
     {
-    //     if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
-    //     {
-    //         Debug.LogError(getDebugBoolsString());
-    //         _interruptOnDisable = !_interruptOnDisable;
-    //     }        
+        //     if (_isSelectedSlot && Input.GetKeyUp(KeyCode.KeypadMinus))
+        //     {
+        //         Debug.LogError(getDebugBoolsString());
+        //         _interruptOnDisable = !_interruptOnDisable;
+        //     }        
     }
 
     void OnDisable()
@@ -730,5 +730,27 @@ public class CraftDeviceSlot : MonoBehaviour
                 "\n_isCollapsed = " + _isCollapsed + ";" +
                 "\n_isExpanded = " + _isExpanded
                 ;
+    }
+
+    private const string _noBrickString = "null", _separator = ":";
+    public string getInternalBricksString()
+    {
+        if (!((null == currentBricks[0])
+            && (null == currentBricks[1])
+            && (null == currentBricks[2])
+            && (null == currentBricks[3]))
+        )
+        {
+            string brick0 = (null == currentBricks[0]) ? _noBrickString : currentBricks[0]._biobrick.getInternalName();
+            string brick1 = (null == currentBricks[1]) ? _noBrickString : currentBricks[1]._biobrick.getInternalName();
+            string brick2 = (null == currentBricks[2]) ? _noBrickString : currentBricks[2]._biobrick.getInternalName();
+            string brick3 = (null == currentBricks[3]) ? _noBrickString : currentBricks[3]._biobrick.getInternalName();
+
+            return this.gameObject.name + "[" + brick0 + _separator + brick1 + _separator + brick2 + _separator + brick3 + "]";
+        }
+        else
+        {
+            return "";
+        }
     }
 }

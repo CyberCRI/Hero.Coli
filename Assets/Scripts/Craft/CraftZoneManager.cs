@@ -13,8 +13,6 @@ using System.Collections.Generic;
 //TODO refactor CraftZoneManager and AvailableBioBricksManager?
 public class CraftZoneManager : MonoBehaviour
 {
-
-
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "CraftZoneManager";
     private static CraftZoneManager _instance;
@@ -502,5 +500,23 @@ public class CraftZoneManager : MonoBehaviour
             &&
             (!Hero.isBeingInjured || PhenoAmpicillinProducer.get().isSpawningAmpicillin)
         );
+    }
+
+    public static string getInternalDevicesString()
+    {
+        string result = "";
+        foreach(CraftDeviceSlot slot in _instance._slots)
+        {
+            string slotString = slot.getInternalBricksString();
+            if(!string.IsNullOrEmpty(slotString))
+            {
+                if(!string.IsNullOrEmpty(result))
+                {
+                    result += ", ";
+                }
+                result += slotString;
+            }
+        }
+        return result;
     }
 }

@@ -8,7 +8,7 @@ public abstract class PickableItem : MonoBehaviour
     // true => parent; false => self
     [SerializeField]
     private bool _destroyParent;
-    
+
     protected abstract DNABit produceDNABit();
     protected abstract void addTo();
 
@@ -30,15 +30,14 @@ public abstract class PickableItem : MonoBehaviour
     public void pickUp()
     {
         // Debug.Log(this.GetType() + " pickUp ()");
-        RedMetricsManager.get().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, getDNABit().getInternalName()));
         List<IPickable> pickables;
         Tools.GetInterfaces<IPickable>(out pickables, gameObject);
         foreach (IPickable pickable in pickables)
         {
             pickable.OnPickedUp();
         }
-
         addTo();
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.DNABIT, getDNABit().getInternalName()));
         if (_destroyParent)
         {
             Destroy(transform.parent.gameObject);

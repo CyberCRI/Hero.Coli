@@ -100,7 +100,7 @@ public enum CustomDataTag
     LOCALPLAYERGUID,    //for GUID stored in local PlayerPrefs
     GLOBALPLAYERGUID,   //for GUID associated to an acount
     
-    PLATFORM, //the runtime platform on which the game is run
+    PLATFORM,           //the runtime platform on which the game is run
     
     DNABIT,
     BIOBRICK,
@@ -109,7 +109,10 @@ public enum CustomDataTag
     NANOBOT,
     PLASMID,
 
-    SOURCE,
+    SOURCE,             // death cause
+    DEVICES,            // event context: devices
+    LIFE,               // event context: life
+    ENERGY,             // event context: energy
 
     SLOT,
 
@@ -122,7 +125,9 @@ public enum CustomDataTag
     SOUND,
 
     NEWTAB,
-    SAMETAB
+    SAMETAB,
+
+    COUNT
 }
 
 public enum CustomDataValue
@@ -144,11 +149,15 @@ public enum CustomDataValue
     LEARNMORE,
 
     // death causes
-    MINE,
-    ENEMY,
-    SUICIDEBUTTON,
-    CRUSHED,
-    OUTOFBOUNDS
+    MINE,               // instant death - stepped on a mine
+    ENEMY,              // instant death - collided with an enemy
+    SUICIDEBUTTON,      // instant death - used the suicide button
+    CRUSHED,            // instant death - crushed by a door
+    OUTOFBOUNDS,        // instant death - got out of playing zone through a bug or bad LB
+    NOENERGY,           // no energy left
+    AMPICILLIN,         // ampicillin toxins - walls or self-production
+    MULTIPLE,           // multiple non instant-death causes: NOENERGY & AMPICILLIN
+    UNKNOWN             // ?
 }
 
 public class CustomData: Dictionary<string, string>
@@ -170,6 +179,17 @@ public class CustomData: Dictionary<string, string>
     
     public void Add (CustomDataTag tag, string value) {
         Add(tag.ToString().ToLowerInvariant(), value);
+    }
+
+    public void merge (CustomData data)
+    {
+        if (null != data)
+        {
+            foreach(KeyValuePair<string, string> pair in data)
+            {
+                this.Add(pair.Key, pair.Value);
+            }
+        }
     }
 
     public override string ToString ()

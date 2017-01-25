@@ -14,7 +14,7 @@ public static class I18n
     public static void changeLanguageTo(Language lang)
     {
         // Debug.Log("I18n changeLanguageTo " + lang);
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
+        // RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
 
         Localization.instance.currentLanguage = lang.ToString();
 

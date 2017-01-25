@@ -20,7 +20,7 @@ public class Hero : MonoBehaviour
             if (null != go)
             {
                 _instance = go.GetComponent<Hero>();
-                if(null == _instance)
+                if (null == _instance)
                 {
                     Debug.LogError("component Hero of " + gameObjectName + " not found");
                 }
@@ -35,8 +35,8 @@ public class Hero : MonoBehaviour
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -49,7 +49,7 @@ public class Hero : MonoBehaviour
     private bool _isInitialized = false;
     private void initializeIfNecessary()
     {
-        if(!_isInitialized)
+        if (!_isInitialized)
         {
             _instance = this;
             //???
@@ -64,7 +64,7 @@ public class Hero : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
     void Start()
@@ -84,6 +84,7 @@ public class Hero : MonoBehaviour
     private AmbientLighting _ambientLighting;
     [SerializeField]
     private GameObject _savedCellPrefab;
+    private CustomData _deathData;
 
     public LifeLogoAnimation lifeAnimation;
     public EnergyLogoAnimation energyAnimation;
@@ -95,7 +96,7 @@ public class Hero : MonoBehaviour
             return _medium;
         }
     }
-    public const int mediumId = 1; 
+    public const int mediumId = 1;
 
     //Life
     private const float _maxLife = 1f;
@@ -158,7 +159,7 @@ public class Hero : MonoBehaviour
         "time", _disappearingTimeS,
         "easetype", iTween.EaseType.easeInQuint
         );
-     
+
     public static bool isInjured
     {
         get
@@ -177,7 +178,7 @@ public class Hero : MonoBehaviour
     public void kill(CustomData data)
     {
         // report the cause of death to RedMetrics
-        RedMetricsManager.get ().sendEvent(TrackingEvent.DEATH, data);
+        _deathData = data;
         _lifeManager.setSuddenDeath(true);
     }
 
@@ -252,6 +253,8 @@ public class Hero : MonoBehaviour
         _lifeManager.addVariation(-life);
     }
 
+    private static float _lowEnergyThreshold = 0.05f;
+
     void Update()
     {
         if (!_pause)
@@ -269,14 +272,13 @@ public class Hero : MonoBehaviour
             }
 
             // damage in case of low energy
-            if (_energy <= 0.05f)
+            if (_energy <= _lowEnergyThreshold)
             {
                 _lifeManager.addVariation(-Time.deltaTime * _lowEnergyDpt);
             }
 
-
             // Life animation when life is reducing
-            _isBeingInjured = _lifeManager.getVariation() < 0; 
+            _isBeingInjured = _lifeManager.getVariation() < 0;
             if (_isBeingInjured)
             {
                 if (!lifeAnimation.isPlaying)
@@ -299,7 +301,38 @@ public class Hero : MonoBehaviour
                 _isAlive = false;
                 _ambientLighting.setDead();
 
-                RedMetricsManager.get().sendEvent(TrackingEvent.DEATH, null, getLastCheckpointName());
+                // set cause of death if none
+                if (null == _deathData)
+                {
+                    CustomDataValue deathCause = CustomDataValue.UNKNOWN;
+                    bool isEnergyDepleted = (_energy <= _lowEnergyThreshold);
+                    bool isAmpicillinHurting = false;
+                    Molecule ampicillin = ReactionEngine.getMoleculeFromName(PhenoToxic.ampicillinMoleculeName, _medium.getMolecules());
+                    if (null != ampicillin)
+                    {
+                        isAmpicillinHurting = ampicillin.getConcentration() > 0;
+                    }
+                    if (isEnergyDepleted && isAmpicillinHurting)
+                    {
+                        deathCause = CustomDataValue.MULTIPLE;
+                    }
+                    else if (isEnergyDepleted)
+                    {
+                        deathCause = CustomDataValue.NOENERGY;
+                    }
+                    else if (isAmpicillinHurting)
+                    {
+                        deathCause = CustomDataValue.AMPICILLIN;
+                    }
+                    else
+                    {
+                        Debug.LogError("unknown death cause");
+                    }
+                    _deathData = new CustomData(CustomDataTag.SOURCE, deathCause.ToString());
+                }
+
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.DEATH, _deathData, getLastCheckpointName());
+                _deathData = null;
                 StartCoroutine(RespawnCoroutine());
             }
             float life = _lifeManager.getLife();
@@ -339,7 +372,31 @@ public class Hero : MonoBehaviour
         }
         // _ambientLighting.setInjured(_lifeManager.getLife());
         _previousLife = _lifeManager.getLife();
+    }
 
+    private const float maxLife = 100f;
+    public string getDisplayedLife()
+    {
+        return Mathf.CeilToInt(getLife() * maxLife).ToString();
+    }
+    private const float maxEnergy = 100f;
+    public string getDisplayedEnergy()
+    {
+        return Mathf.CeilToInt(getEnergy() * maxEnergy).ToString();
+    }
+
+    // add energy and devices to context
+    public CustomData getEventContext()
+    {
+        CustomData context = new CustomData(CustomDataTag.LIFE, getDisplayedLife());
+        context.Add(CustomDataTag.ENERGY, getDisplayedEnergy());
+        // alternate, to get all crafted devices
+        // context.Add(CustomDataTag.DEVICES, Inventory.getInternalDevicesString());
+        // alternate, to get all equipped complete devices
+        // context.Add(CustomDataTag.DEVICES, Equipment.getInternalDevicesString());
+        // alternate, to get all devices in the slots, including incomplete ones
+        context.Add(CustomDataTag.DEVICES, CraftZoneManager.getInternalDevicesString());
+        return context;
     }
 
     public string getLastCheckpointName()
@@ -396,7 +453,7 @@ public class Hero : MonoBehaviour
 
             //RedMetrics reporting
             //TODO put equiped devices in customData of sendEvent
-            RedMetricsManager.get().sendEvent(TrackingEvent.REACH);
+            RedMetricsManager.get().sendRichEvent(TrackingEvent.REACH);
         }
     }
 

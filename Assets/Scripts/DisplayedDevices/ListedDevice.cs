@@ -19,8 +19,8 @@ class ListedDevice : DisplayedDevice
             if (isPressed)
             {
                 // Debug.Log(this.GetType() + " OnPress()");
-                RedMetricsManager.get().sendEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
                 CraftZoneManager.get().setDevice(_device);
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
             }
         }
     }

@@ -13,7 +13,7 @@ public class GoToOtherGameModeMainMenuItem : MainMenuItem {
 		// Debug.Log(this.GetType());
 
 		CustomDataValue modeValue = GameConfiguration.GameMode.ADVENTURE == MemoryManager.get ().configuration.getMode() ? CustomDataValue.SANDBOX : CustomDataValue.ADVENTURE;
-		RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, modeValue.ToString()));
+		RedMetricsManager.get().sendRichEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, modeValue.ToString()));
 
         GameStateController.get ().goToOtherGameMode();
     }

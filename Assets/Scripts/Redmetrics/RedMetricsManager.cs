@@ -471,7 +471,11 @@ public class RedMetricsManager : MonoBehaviour
     public void sendRichEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
         CustomData context = Hero.get().getEventContext();
-        context.merge(customData);
+        if (customData != null)
+        {
+            customData.merge(context);
+            context = customData;
+        }
         sendEvent(trackingEvent, context, section, coordinates, userTime);
     }
 

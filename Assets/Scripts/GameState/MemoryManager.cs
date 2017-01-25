@@ -62,11 +62,11 @@ public class MemoryManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
 
         //TODO manage RedMetricsManager's globalPlayerGUID
 
-        Debug.Log(this.GetType() + " configuration.load()");
+        // Debug.Log(this.GetType() + " configuration.load()");
 
         configuration.load();
 
@@ -91,7 +91,6 @@ public class MemoryManager : MonoBehaviour
         }
     }
 
-    public Hero hero;
     public string[] inputFiles;
     private Dictionary<string, string> _savedData = new Dictionary<string, string>();
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
@@ -167,6 +166,6 @@ public class MemoryManager : MonoBehaviour
 
     public void sendCompletionEvent()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.COMPLETE);
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.COMPLETE);
     }
 }

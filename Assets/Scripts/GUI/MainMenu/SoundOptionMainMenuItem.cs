@@ -17,8 +17,8 @@ public class SoundOptionMainMenuItem : MainMenuItem
         bool wasOn = MemoryManager.get().configuration.isSoundOn;
         MemoryManager.get().configuration.isSoundOn = !MemoryManager.get().configuration.isSoundOn;
         string soundValue = wasOn ? CustomDataValue.OFF.ToString() : CustomDataValue.ON.ToString();
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
         updateSelection();
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
     }
 
     public void updateSelection()

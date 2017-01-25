@@ -169,6 +169,11 @@ public class Equipment : DeviceContainer
         Debug.LogError(this.GetType() + " editeDevice NOT IMPLEMENTED");
     }
 
+    public static string getInternalDevicesString()
+    {
+        return Logger.ToString<Device>(_instance._devices, d => d.getInternalName());
+    }
+
     public override string ToString()
     {
         string res = "";

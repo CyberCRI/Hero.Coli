@@ -68,7 +68,7 @@ public class EquipedDisplayedDevice : DisplayedDevice
             {
                 if (askRemoveDevice())
                 {
-                    RedMetricsManager.get().sendEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
+                    RedMetricsManager.get().sendRichEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
                 }
             }
         }

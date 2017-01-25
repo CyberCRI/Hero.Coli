@@ -26,17 +26,17 @@ public class BackendManager : MonoBehaviour
         {
             forceAdmin = false;
 
-            Debug.Log(this.GetType() + " Update space pressed BEFORE"
-            + " guid=" + RedMetricsManager.get().getGameVersion()
-            + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
-            );            
+            // Debug.Log(this.GetType() + " Update space pressed BEFORE"
+            // + " guid=" + RedMetricsManager.get().getGameVersion()
+            // + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
+            // );            
 
             isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
 
-            Debug.Log(this.GetType() + " Update space pressed AFTER"
-            + " guid=" + RedMetricsManager.get().getGameVersion()
-            + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
-            );    
+            // Debug.Log(this.GetType() + " Update space pressed AFTER"
+            // + " guid=" + RedMetricsManager.get().getGameVersion()
+            // + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
+            // );    
 
             //display feedback for logging mode
             string msg;
@@ -60,6 +60,7 @@ public class BackendManager : MonoBehaviour
                 // language swap
                 I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
                 I18n.changeLanguageTo(newLanguage);
+		        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
 
                 // layer detection
                 // GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];

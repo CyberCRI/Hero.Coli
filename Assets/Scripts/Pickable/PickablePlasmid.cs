@@ -12,7 +12,7 @@ public class PickablePlasmid : MonoBehaviour {
                 ModalManager.setModal("T1_PLASMID");
             }
             _alreadyPicked = true;
-            RedMetricsManager.get ().sendEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.PLASMID, gameObject.name));
+            RedMetricsManager.get ().sendRichEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.PLASMID, gameObject.name));
             CraftZoneManager.get().addSlot();
             Destroy(this.gameObject);
         }

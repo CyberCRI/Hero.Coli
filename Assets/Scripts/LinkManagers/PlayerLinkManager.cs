@@ -27,12 +27,12 @@ public class PlayerLinkManager : LinkManager
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -45,13 +45,13 @@ public class PlayerLinkManager : LinkManager
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -80,7 +80,7 @@ public class PlayerLinkManager : LinkManager
 
     public override void initialize()
     {
-        base.initialize ();
+        base.initialize();
 
         GUITransitioner guiTransitioner = GUITransitioner.get();
 
@@ -103,28 +103,19 @@ public class PlayerLinkManager : LinkManager
         hero.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
         hero.energyAnimation = GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
 
-        GameObject.Find("LifeIndicator").GetComponent<LifeIndicator>().hero = hero;
-        GameObject.Find("EnergyIndicator").GetComponent<EnergyIndicator>().hero = hero;
-        guiTransitioner.hero = hero;
-
-
         //PhenoFickcontact connections
         //TODO use InterfaceLinkManager
         pheno.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
         pheno.graphMoleculeList = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
 
-
         //Main Camera
         guiTransitioner.mainBoundCamera = GameObject.Find("Main Camera").GetComponent<BoundCamera>();
-
-        //MemoryManager reporting
-        MemoryManager.get().hero = hero;
     }
 
     public override void finishInitialize()
     {
-        cellControl.initialize ();
+        cellControl.initialize();
 
-        base.finishInitialize ();
+        base.finishInitialize();
     }
 }

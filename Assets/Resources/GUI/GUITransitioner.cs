@@ -88,7 +88,6 @@ public class GUITransitioner : MonoBehaviour
     public VectrosityPanel celliaGraph;
     public VectrosityPanel roomGraph;
 
-    public Hero hero;
     public CellControl control;
 
     private bool _screen1, _screen2, _screen3;
@@ -213,7 +212,7 @@ public class GUITransitioner : MonoBehaviour
             roomGraph.setPause(pause);
             celliaGraph.setPause(pause);
         }
-        hero.Pause(pause);
+        Hero.get().Pause(pause);
         control.Pause(pause);
         EnemiesManager.Paused = pause;
     }

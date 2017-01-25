@@ -609,7 +609,7 @@ public class GameStateController : MonoBehaviour
                 GameConfiguration.GameMap.TUTORIAL1;
 
         setAndSaveLevelName(destination, "goToOtherGameMode");
-        RedMetricsManager.get().sendEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
+        // RedMetricsManager.get().sendRichEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
         internalRestart();
     }
 
@@ -698,7 +698,7 @@ public class GameStateController : MonoBehaviour
 
     public static void restart()
     {
-        RedMetricsManager.get().sendEvent(TrackingEvent.RESTART);
+        RedMetricsManager.get().sendRichEvent(TrackingEvent.RESTART);
         internalRestart();
     }
 

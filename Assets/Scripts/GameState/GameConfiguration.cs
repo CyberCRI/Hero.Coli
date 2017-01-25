@@ -205,7 +205,7 @@ public class GameConfiguration
         //  already taken care of
         // language = I18n.Language.English;
 
-        Debug.Log(this.GetType() + " load");
+        // Debug.Log(this.GetType() + " load");
 
         RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
 
@@ -276,11 +276,11 @@ public class GameConfiguration
     // must be called before the connection through RedMetrics.js initiated by the "rmConnect" call
     public void initializeGameVersionGUID()
     {
-        Debug.Log(this.GetType() + " initializeGameVersionGUID");
+        // Debug.Log(this.GetType() + " initializeGameVersionGUID");
         if (!RedMetricsManager.get().isGameVersionInitialized())
         {
             string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
-            Debug.Log("storedGUID="+storedGUID);
+            // Debug.Log("storedGUID="+storedGUID);
             if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID))
             {
                 // if the game is launched in the editor,
@@ -296,24 +296,24 @@ public class GameConfiguration
                 setGameVersion(storedGUID);
             }
         }
-        Debug.Log(this.GetType() + " initializeGameVersionGUID done with"
-        + " guid=" + RedMetricsManager.get().getGameVersion()
-        + ", isAdmin=" + isAdmin
-        + ", isTestGUID=" + isTestGUID()
-        );
+        // Debug.Log(this.GetType() + " initializeGameVersionGUID done with"
+        // + " guid=" + RedMetricsManager.get().getGameVersion()
+        // + ", isAdmin=" + isAdmin
+        // + ", isTestGUID=" + isTestGUID()
+        // );
     }
 
     // use: check that stored guid is not from previous version
     private bool isGUIDCorrect(string guid)
     {
-        Debug.Log(this.GetType() + " initializeGameVersionGUID("+guid+")");
+        // Debug.Log(this.GetType() + " initializeGameVersionGUID("+guid+")");
         return (guid == labelledGameVersionGUID.ToString() || guid == testVersionGUID.ToString());
     }
 
     //sets the destination to which logs will be sent
     public void setMetricsDestination(bool wantToBecomeLabelledGameVersion)
     {
-        Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
+        // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ")");
         System.Guid guid = wantToBecomeLabelledGameVersion ? labelledGameVersionGUID : testVersionGUID;
 
         if (guid != RedMetricsManager.get().getGameVersion())
@@ -331,7 +331,7 @@ public class GameConfiguration
                 RedMetricsManager.get().connect();
             }
         }
-        Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ") done");
+        // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ") done");
     }
 
     private void setGameVersion(string guid)
@@ -341,7 +341,7 @@ public class GameConfiguration
 
     private void setGameVersion(System.Guid guid)
     {
-        Debug.Log(this.GetType() + " setGameVersion " + guid);
+        // Debug.Log(this.GetType() + " setGameVersion " + guid);
         RedMetricsManager.get().setGameVersion(guid);
         isAdmin = isTestGUID();
     }
