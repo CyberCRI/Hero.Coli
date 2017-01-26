@@ -4,7 +4,6 @@ using System.Collections;
 
 public class RotationUpdate : MonoBehaviour
 {
-
     private Vector3 _inputMovement;
     private PlatformMvt _platformMvt;
     private float rotationSpeed = 6f;
@@ -12,7 +11,7 @@ public class RotationUpdate : MonoBehaviour
     [SerializeField]
     private bool _isControlledExternally = false;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         _previousPosition = this.transform.position;
         _platformMvt = this.GetComponent<PlatformMvt>();
@@ -31,7 +30,7 @@ public class RotationUpdate : MonoBehaviour
         //     _inputMovement = this.transform.position - _previousPosition;
         // }
 
-        if (_isControlledExternally == false)
+        if (!_isControlledExternally)
         {
             _inputMovement = this.transform.position - _previousPosition;
             _previousPosition = this.transform.position;

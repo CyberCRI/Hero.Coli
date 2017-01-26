@@ -3,18 +3,15 @@ using System.Collections;
 
 public class BigBadGuy : MonoBehaviour
 {
-    public int life = 50;
-    public float shrinkSpeed = 3;
-    public Hero hero;
-    private float step;
-    //TODO extract to config file
-    private float _dpt = 2f;
+    private int _life = 50;
+    private Hero _hero;
+    private float _step;
     public iTweenPath _iTP;
     [SerializeField]
     private float _deathSpeed = 1f;
     [SerializeField]
     private GameObject _deadBigBadGuy;
-    private bool _injured = false;
+    private bool _isInjured = false;
     [SerializeField]
     private bool _isSleeping = false;
     [SerializeField]
@@ -34,15 +31,15 @@ public class BigBadGuy : MonoBehaviour
 
     void Start()
     {
-        step = transform.localScale.x / life;
+        _step = transform.localScale.x / _life;
         _slowDown = this.GetComponent<slowDown>();
     }
 
     void Update()
     {
-        if (_isDying == false)
+        if (!_isDying)
         {
-            if (_isSleeping == true)
+            if (_isSleeping)
             {
                 _maxPointLightIntensity = 0.5f;
                 _minPointLightIntensity = 0f;
@@ -57,7 +54,7 @@ public class BigBadGuy : MonoBehaviour
                 _slowDown.percentage = 100f;
             }
 
-            if (_lightIntensityIsIncreasing == true)
+            if (_lightIntensityIsIncreasing)
             {
                 if (_pointLight.intensity < _maxPointLightIntensity)
                 {
@@ -84,7 +81,7 @@ public class BigBadGuy : MonoBehaviour
 
     }
 
-    public void Pause(bool isPause)
+    public void pause(bool isPause)
     {
         if (isPause && null != _iTP && _iTP.IsInvoking())
         {
@@ -96,22 +93,22 @@ public class BigBadGuy : MonoBehaviour
         }
     }
 
-    void OnParticleCollision(GameObject obj)
-    {
-        AmpicillinCollider collider = obj.GetComponent<AmpicillinCollider>();
-        if (null != collider)
-        {
-            Vector3 newScale = Vector3.Max(transform.localScale - new Vector3(step, step, step), Vector3.zero);
-            transform.localScale = newScale;
-            life--;
+    // void OnParticleCollision(GameObject obj)
+    // {
+    //     AmpicillinCollider collider = obj.GetComponent<AmpicillinCollider>();
+    //     if (null != collider)
+    //     {
+    //         Vector3 newScale = Vector3.Max(transform.localScale - new Vector3(_step, _step, _step), Vector3.zero);
+    //         transform.localScale = newScale;
+    //         _life--;
 
-            if (life == 0)
-            {
-                EnemiesManager.unregister(this);
-                Destroy(gameObject);
-            }
-        }
-    }
+    //         if (_life == 0)
+    //         {
+    //             EnemiesManager.unregister(this);
+    //             Destroy(gameObject);
+    //         }
+    //     }
+    // }
 
     void OnCollisionEnter(Collision col)
     {
@@ -121,7 +118,7 @@ public class BigBadGuy : MonoBehaviour
             if (null != hero)
             {
                 // Debug.Log(this.GetType() + " OnCollisionEnter hit hero");
-                hero.subLife(_dpt);
+                hero.kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.ENEMY.ToString()));
             }
         }
     }
@@ -130,21 +127,21 @@ public class BigBadGuy : MonoBehaviour
     {
         if (col.tag == "Ampicillin")
         {
-            if (_injured == false)
+            if (!_isInjured)
             {
                 float deathSpeed = _deathSpeed * Random.Range(0.5f, 2f);
                 StartCoroutine(die(this.GetComponent<slowDown>(), deathSpeed));
-                _injured = true;
+                _isInjured = true;
             }
         }
     }
 
-    IEnumerator die(slowDown slowDown, float deathSPeed)
+    IEnumerator die(slowDown slowDown, float deathSpeed)
     {
         _isDying = true;
         while (slowDown.percentage > 0)
         {
-            slowDown.percentage -= Time.deltaTime * deathSPeed;
+            slowDown.percentage -= Time.deltaTime * deathSpeed;
             yield return null;
         }
         GameObject instance = (GameObject)Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);

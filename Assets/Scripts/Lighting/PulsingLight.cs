@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PulsingLight : MonoBehaviour {
+public class PulsingLight : MonoBehaviour
+{
 
     [SerializeField]
     private bool _tweekIntensity = true;
@@ -22,57 +23,63 @@ public class PulsingLight : MonoBehaviour {
     [SerializeField]
     private float _maxRange;
 
+    private float _speedIntensityPercent;
+    private float _speedRangePercent;
 
-    // Use this for initialization
-    void Start () {
+    void Awake()
+    {
+        _speedIntensityPercent = _speedIntensity / 100;
+        _speedRangePercent = _speedRange / 100;
         _ownLight = this.GetComponent<Light>();
-        if (_tweekIntensity == true)
+
+        if (_tweekIntensity)
             _ownLight.intensity = _minIntensity;
-        if (_tweekRange == true)
+        if (_tweekRange)
             _ownLight.range = _minRange;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (_way == false)
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!_way)
         {
-            if (_tweekIntensity == true)
+            if (_tweekIntensity)
             {
-                _ownLight.intensity += _speedIntensity / 100;
+                _ownLight.intensity += _speedIntensityPercent;
+                if (_ownLight.intensity >= _maxIntensity)
+                {
+                    _way = !_way;
+                }
             }
-            if (_tweekRange == true)
+            if (_tweekRange)
             {
-                _ownLight.range += _speedRange / 100;
-            }
-            if (_ownLight.intensity >= _maxIntensity && _tweekIntensity == true)
-            {
-                _way = !_way;
-            }
-            if (_ownLight.range >= _maxRange && _tweekRange == true)
-            {
-                _way = !_way;
+                _ownLight.range += _speedRangePercent;
+                if (_ownLight.range >= _maxRange)
+                {
+                    _way = !_way;
+                }
             }
         }
         else
         {
-            if (_tweekIntensity == true)
+            if (_tweekIntensity)
             {
-                _ownLight.intensity -= _speedIntensity / 100;
+                _ownLight.intensity -= _speedIntensityPercent;
+                if (_ownLight.intensity <= _minIntensity)
+                {
+                    _way = !_way;
+                }
             }
-            if (_tweekRange == true)
+            if (_tweekRange)
             {
-                _ownLight.range -= _speedRange / 100;
-            }
-            if (_ownLight.intensity <= _minIntensity && _tweekIntensity == true)
-            {
-                _way = !_way;
-            }
-            if (_ownLight.range <= _minRange && _tweekRange == true)
-            {
-                _way = !_way;
+                _ownLight.range -= _speedRangePercent;
+                if (_ownLight.range <= _minRange)
+                {
+                    _way = !_way;
+                }
             }
         }
-	}
+    }
 
     public void TweekRangeIntensity(float min, float max)
     {

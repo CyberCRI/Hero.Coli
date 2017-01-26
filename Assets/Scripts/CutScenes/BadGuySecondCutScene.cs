@@ -14,7 +14,7 @@ public class BadGuySecondCutScene : CutScene
     [SerializeField]
     private Transform[] _wayPointPlayer;
     private GameObject _player;
-    private bool _secondPart = false;
+    private bool _hasSecondPartPlayed = false;
     private Vector3 _originWayPoint1;
     private Vector3 _originWayPoint2;
 
@@ -31,9 +31,9 @@ public class BadGuySecondCutScene : CutScene
     // Update is called once per frame
     void Update()
     {
-        if (_secondPart == false && Vector3.Distance(_cutSceneCam.transform.position, _wayPointCam[1].transform.position) <= 0.002)
+        if (!_hasSecondPartPlayed && Vector3.Distance(_cutSceneCam.transform.position, _wayPointCam[1].transform.position) <= 0.002)
         {
-            _secondPart = true;
+            _hasSecondPartPlayed = true;
             _cutSceneCam.gameObject.SetActive(false);
             _boundCamera.gameObject.SetActive(true);
             //_iTweenEventBigBadGuy.enabled = true;

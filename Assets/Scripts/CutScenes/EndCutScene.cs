@@ -96,16 +96,16 @@ public class EndCutScene : CutScene
         _cellControl.gameObject.AddComponent<RotationUpdate>();
         _platformMvt = _cellControl.GetComponent<PlatformMvt>();
         _waypoint1.transform.position = _cellControl.transform.position;
-        _platformMvt.ClearWaypoints();
-        _platformMvt.AddWayPoint(_waypoint1);
-        _platformMvt.AddWayPoint(_waypoint2);
+        _platformMvt.clearWaypoints();
+        _platformMvt.addWayPoint(_waypoint1);
+        _platformMvt.addWayPoint(_waypoint2);
         _platformMvt.speed = 8;
 
         _platformMvt = NPCs[0].GetComponent<PlatformMvt>();
-        _platformMvt.ClearWaypoints();
-        _platformMvt.AddWayPoint(_waypoint1NPC1);
-        _platformMvt.AddWayPoint(_waypoint2NPC1);
-        _platformMvt.AddWayPoint(_waypoint3NPC1);
+        _platformMvt.clearWaypoints();
+        _platformMvt.addWayPoint(_waypoint1NPC1);
+        _platformMvt.addWayPoint(_waypoint2NPC1);
+        _platformMvt.addWayPoint(_waypoint3NPC1);
         StartCoroutine(goOneByOne());
     }
 
@@ -113,8 +113,8 @@ public class EndCutScene : CutScene
     {
         GameObject instance = Instantiate(_nanoBot, _cellControl.transform.position, _cellControl.transform.rotation) as GameObject;
         PlatformMvt platformMvt = instance.transform.GetChild(0).GetComponent<PlatformMvt>();
-        platformMvt.ChangeWayPointPosition(instance.transform.position, instance.transform.rotation, 0);
-        platformMvt.ChangeWayPointPosition(NPCs[iteration].transform.position, NPCs[iteration].transform.rotation, 1);
+        platformMvt.changeWayPointPosition(instance.transform.position, instance.transform.rotation, 0);
+        platformMvt.changeWayPointPosition(NPCs[iteration].transform.position, NPCs[iteration].transform.rotation, 1);
         platformMvt.enabled = true;
         yield return new WaitForSeconds(1.5f);
         checkForNext();

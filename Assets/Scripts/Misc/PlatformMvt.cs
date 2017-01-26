@@ -4,32 +4,34 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlatformMvt : MonoBehaviour {
-	
-	public List<GameObject> points = new List<GameObject>();
-	public int currentDestination = 0;
+public class PlatformMvt : MonoBehaviour
+{
+    public List<GameObject> points = new List<GameObject>();
+    public int currentDestination = 0;
 #if QUICKTEST
 	public float speed = 1f;
 #else
-	public float speed = 0.1f;
+    public float speed = 0.1f;
 #endif
-	public float pause;
+    public float pause;
     public bool loop = true;
-	
-	[HideInInspector]
-	public Vector3 difMove;
-	Vector3 savePos;
-	Vector3 newPos;
-	
-	// Use this for initialization
-	void Start () {
-		if(points.Count > 0)
+
+    [HideInInspector]
+    public Vector3 difMove;
+    private Vector3 savePos;
+    private Vector3 newPos;
+    private const float _distanceThreshold = 0.002f;
+
+    // Use this for initialization
+    void Start()
+    {
+        if (points.Count > 0)
         {
-			StartCoroutine(move(pause,loop));
+            StartCoroutine(move(pause, loop));
         }
-		
-		savePos = this.transform.position;
-	}
+
+        savePos = this.transform.position;
+    }
 
     void OnEnable()
     {
@@ -37,46 +39,46 @@ public class PlatformMvt : MonoBehaviour {
         restart();
     }
 
-    void OnDisable()
+    // void OnDisable()
+    // {
+    //     //StopAllCoroutines();
+    // }
+
+    void Update()
     {
-        //StopAllCoroutines();
+        newPos = this.transform.position;
+        difMove = newPos - savePos;
+        savePos = this.transform.position;
     }
-	
-	void Update()
-	{
-		newPos = this.transform.position;
-		difMove = newPos - savePos;
-		savePos = this.transform.position;
-    }
-	
-	IEnumerator move (float pause, bool loop)
-	{
-		while (Vector3.Distance(transform.position, points[currentDestination].transform.position) >= 0.002f)
-		{
-			transform.position = Vector3.MoveTowards(transform.position, points[currentDestination].transform.position, speed*Time.deltaTime);
+
+    IEnumerator move(float pause, bool loop)
+    {
+        while (Vector3.Distance(transform.position, points[currentDestination].transform.position) >= _distanceThreshold)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, points[currentDestination].transform.position, speed * Time.deltaTime);
 
             yield return true;
-		}
+        }
 
-		currentDestination++;
-		if (currentDestination >= points.Count)
-		{
-            if (loop == true)
+        currentDestination++;
+        if (currentDestination >= points.Count)
+        {
+            if (loop)
             {
                 currentDestination = 0;
             }
             else currentDestination--;
-		}
-		
-		yield return new WaitForSeconds (pause);
-		StartCoroutine(move(pause,loop));
-		
-		yield return true;
-	}
+        }
+
+        yield return new WaitForSeconds(pause);
+        StartCoroutine(move(pause, loop));
+
+        yield return true;
+    }
 
     public void restart()
     {
-        currentDestination -= 0;
+        currentDestination = 0;
         //StartCoroutine(Movement(pause, loop));
     }
 
@@ -90,20 +92,20 @@ public class PlatformMvt : MonoBehaviour {
         currentDestination = index;
     }
 
-    public void ChangeWayPointPosition(Vector3 position, Quaternion rotation, int id)
+    public void changeWayPointPosition(Vector3 position, Quaternion rotation, int id)
     {
         points[id].transform.position = position;
         points[id].transform.rotation = rotation;
     }
 
-    public void AddWayPoint(GameObject waypoint)
+    public void addWayPoint(GameObject waypoint)
     {
         points.Add(waypoint);
     }
 
-    public void ClearWaypoints()
+    public void clearWaypoints()
     {
         points.Clear();
     }
-	
+
 }

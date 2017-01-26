@@ -21,11 +21,11 @@ public class Advisor : MonoBehaviour {
 
     public void setUpNanoBot(bool top, string text, bool showButton = false)
     {
-        if (top == true)
+        if (top)
         {
             _nanoBot.transform.position = _positionTop.position;
         }
-        if (top == false)
+        else
         {
             _nanoBot.transform.position = _positionBottom.position;
         }

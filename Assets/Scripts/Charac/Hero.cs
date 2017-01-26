@@ -225,7 +225,7 @@ public class Hero : MonoBehaviour
 
     public void DisplayEnergyAnimation()
     {
-        if (energyAnimation.isPlaying == false)
+        if (!energyAnimation.isPlaying)
         {
             energyAnimation.Play();
         }

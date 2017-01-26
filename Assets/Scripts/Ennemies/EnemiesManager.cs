@@ -41,7 +41,7 @@ public static class EnemiesManager
         // Debug.Log("EnemiesManager Pausell("+isPause+")");
         foreach (BigBadGuy bbg in _enemies) {
             if(null != bbg) {
-                bbg.Pause (isPause);
+                bbg.pause (isPause);
             }
         }
         paused = isPause;
