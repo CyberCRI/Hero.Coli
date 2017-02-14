@@ -55,7 +55,7 @@ public class BackendManager : MonoBehaviour
         if (GameConfiguration.isAdmin)
         {
             // to instantly change the language
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
                 // language swap
                 I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
