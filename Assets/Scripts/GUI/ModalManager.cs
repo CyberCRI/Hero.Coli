@@ -87,7 +87,8 @@ public class ModalManager : MonoBehaviour
     private const string _genericPrefix = "MODAL.";
     private const string _genericTitle = ".TITLE";
     private const string _genericExplanation = ".EXPLANATION";
-    private const string _quitModalClassName = "QuitModalWindow" + completeNameSuffix;
+    // private const string _quitModalClassName = "QuitModalWindow" + completeNameSuffix;
+    // private const string _restartModalClassName = "ModalRestart" + completeNameSuffix;
     //the class of the component attached to the cancel button of the ModalWindow
     private const string _cancelModalClassName = "CancelModal" + completeNameSuffix;
 
@@ -118,6 +119,7 @@ public class ModalManager : MonoBehaviour
             {
                 info._next = string.IsNullOrEmpty(info._next) ? info._next : info._next + completeNameSuffix;
                 info._cancel = string.IsNullOrEmpty(info._cancel) ? info._cancel : info._cancel + completeNameSuffix;
+                // Debug.Log(this.GetType() + " loadDataIntoDico _cancel=" + info._cancel);
                 dico.Add(info._code, info);
             }
             if (!string.IsNullOrEmpty(loadedFiles))
@@ -133,11 +135,14 @@ public class ModalManager : MonoBehaviour
     public static bool isDisplayed()
     {
         return (null != _instance) && (null != _instance._currentModalElement);
-    } 
+    }
 
-    private static bool needsCancelButton(string validateButtonClassName)
+    // no use for a 'Cancel' button currently
+    private static bool needsCancelButton(string validateButtonClassName, string cancelButtonClassName)
     {
-        return (validateButtonClassName == _quitModalClassName);
+        // Debug.Log("ModalManager needsCancelButton(" + validateButtonClassName + "," + cancelButtonClassName + ")");
+        // return ((validateButtonClassName == _restartModalClassName) || !string.IsNullOrEmpty(cancelButtonClassName));
+        return false;
     }
 
     private static void removeAllModalButtonClasses(GameObject button)
@@ -191,34 +196,29 @@ public class ModalManager : MonoBehaviour
 
             if (!string.IsNullOrEmpty(info._next))
             {
-                if (needsCancelButton(info._next))
-                {
-                    //affect class of action after validation
-                    _instance._validateButtonClass = info._next;
+                //affect class of action after validation
+                _instance._validateButtonClass = info._next;
 
+                bool doesNeedsCancelButton = needsCancelButton(info._next, info._cancel);
+
+                //set active buttons according to 'validate/cancel' pattern
+                _instance.genericValidateButton.gameObject.SetActive(doesNeedsCancelButton);
+                _instance.genericCenteredValidateButton.gameObject.SetActive(!doesNeedsCancelButton);
+                _instance.genericCancelButton.gameObject.SetActive(doesNeedsCancelButton);
+
+                if (doesNeedsCancelButton)
+                {
                     //choose validation button
                     _instance._validateButton = _instance.genericValidateButton;
 
-                    //set active buttons according to 'validate/cancel' pattern
-                    _instance.genericValidateButton.gameObject.SetActive(true);
-                    _instance.genericCenteredValidateButton.gameObject.SetActive(false);
-                    _instance.genericCancelButton.gameObject.SetActive(true);
 
                     //update cancel button component if necessary
                     prepareGenericCancelButton(info._cancel);
                 }
                 else
                 {
-                    //affect class of action after validation
-                    _instance._validateButtonClass = info._next;
-
                     //choose validation button button
                     _instance._validateButton = _instance.genericCenteredValidateButton;
-
-                    //set active buttons according to 'validate' pattern
-                    _instance.genericValidateButton.gameObject.SetActive(false);
-                    _instance.genericCenteredValidateButton.gameObject.SetActive(true);
-                    _instance.genericCancelButton.gameObject.SetActive(false);
 
                     //reset cancel button - isActive is used to test whether the button should respond to keys or not
                     resetGenericCancelButton();
