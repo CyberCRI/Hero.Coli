@@ -59,8 +59,10 @@ public class BackendManager : MonoBehaviour
             {
                 // language swap
                 I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
-                I18n.changeLanguageTo(newLanguage);
-		        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
+                if (I18n.changeLanguageTo(newLanguage))
+                {
+                    RedMetricsManager.get().sendEvent(TrackingEvent.ADMINCONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
+                }
 
                 // layer detection
                 // GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
@@ -84,7 +86,7 @@ public class BackendManager : MonoBehaviour
                 Vector3 position = Hero.get().transform.position;
                 Hero.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
                 _depth--;
-            }            
+            }
             if (Input.GetKeyDown(KeyCode.KeypadMinus))
             {
                 Vector3 position = Hero.get().transform.position;
@@ -93,24 +95,24 @@ public class BackendManager : MonoBehaviour
             }
         }
 
-/*
-#if UNITY_EDITOR
-        // for optimization process
-        float _minFPSThreshold = 30; // frames per second
-        float _maxDeltaTime = 1/_minFPSThreshold; // seconds
+        /*
+        #if UNITY_EDITOR
+                // for optimization process
+                float _minFPSThreshold = 30; // frames per second
+                float _maxDeltaTime = 1/_minFPSThreshold; // seconds
 
-        // TODO check difference
-        // Time.fixedDeltaTime
-        // Time.unscaledDeltaTime
+                // TODO check difference
+                // Time.fixedDeltaTime
+                // Time.unscaledDeltaTime
 
-        if (Time.deltaTime > _maxDeltaTime)
-        {
-            // pause the game in editor
-            // EditorApplication.
-            
-        }
-#endif
-*/
+                if (Time.deltaTime > _maxDeltaTime)
+                {
+                    // pause the game in editor
+                    // EditorApplication.
+
+                }
+        #endif
+        */
     }
 
     public GameObject createMessage(string msg)

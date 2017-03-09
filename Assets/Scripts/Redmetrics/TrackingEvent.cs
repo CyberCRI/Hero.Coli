@@ -35,6 +35,10 @@ public enum TrackingEvent
     GOTOMOOC,
     GOTOURL,
 
+    // alternative configuration routes
+    WEBCONFIGURE,
+    ADMINCONFIGURE,
+
     // backend events
     SWITCHFROMGAMEVERSION,
     SWITCHTOGAMEVERSION

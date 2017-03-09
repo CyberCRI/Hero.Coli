@@ -11,27 +11,41 @@ public static class I18n
         Russian
     }
 
-    public static void changeLanguageTo(Language lang)
+    public static bool changeLanguageTo(Language lang, bool callJSCallback = true)
     {
         // Debug.Log("I18n changeLanguageTo " + lang);
         // RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, lang.ToString()));
 
-        Localization.instance.currentLanguage = lang.ToString();
-
-        foreach (UILocalize localize in GameObject.FindObjectsOfType<UILocalize>())
+        if (lang.ToString() != Localization.instance.currentLanguage)
         {
-            localize.Localize();
+            Localization.instance.currentLanguage = lang.ToString();
+
+            foreach (UILocalize localize in GameObject.FindObjectsOfType<UILocalize>())
+            {
+                localize.Localize();
+            }
+
+            foreach (TextMeshLocalizer localizer in GameObject.FindObjectsOfType<TextMeshLocalizer>())
+            {
+                localizer.localize();
+            }
+
+            foreach (ILocalizable localizable in _localizables)
+            {
+                // Debug.Log("I18n changeLanguageTo " + lang + " treats localizable " + localizable.GetType());
+                localizable.onLanguageChanged();
+            }
+
+            if (callJSCallback)
+            {
+                TranslationManager.onLanguageChanged();
+            }
+            return true;
         }
-
-        foreach (TextMeshLocalizer localizer in GameObject.FindObjectsOfType<TextMeshLocalizer>())
+        else
         {
-            localizer.localize();
-        }
-
-        foreach (ILocalizable localizable in _localizables)
-        {
-            // Debug.Log("I18n changeLanguageTo " + lang + " treats localizable " + localizable.GetType());
-            localizable.onLanguageChanged();
+            Debug.LogWarning("tried to set language to current language");
+            return false;
         }
     }
 
