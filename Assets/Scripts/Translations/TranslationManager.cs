@@ -18,27 +18,27 @@ public class TranslationManager : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("failed to set language to '" + language + "'");
+        // Debug.Log("failed to set language to '" + language + "'");
     }
 
     // called from js
     // calls the js callback 'getLanguageCallback'
     public static void GetLanguage()
     {
-		Debug.Log("TranslationManager GetLanguage");
+		// Debug.Log("TranslationManager GetLanguage");
         callJSFunctionWithLanguageJson("getLanguageCallback");
     }
 
     // called from Unity
     public static void onLanguageChanged()
     {
-		Debug.Log("TranslationManager onLanguageChanged");
+		// Debug.Log("TranslationManager onLanguageChanged");
         callJSFunctionWithLanguageJson("onLanguageChanged");
     }
 
     private static void callJSFunctionWithLanguageJson(string functionName)
     {
-		Debug.Log("TranslationManager callJSFunctionWithLanguageJson(" + functionName + ")");
+		// Debug.Log("TranslationManager callJSFunctionWithLanguageJson(" + functionName + ")");
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             string currentLanguage = I18n.getCurrentLanguage().ToString().ToLowerInvariant();
