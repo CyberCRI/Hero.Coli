@@ -6,4 +6,9 @@ public class BackMainMenuItem : MainMenuItem {
         // Debug.Log(this.GetType());
         MainMenuManager.get ().switchTo (MainMenuManager.MainMenuScreen.DEFAULT);
     }
+
+	public override void initialize ()
+	{
+		base.initialize ();
+	}
 }
