@@ -3,8 +3,6 @@ using System.Collections;
 
 public class LanguagesMainMenuItemArray : MainMenuItemArray
 {
-    public GameObject languagesPanel;
-
     public void selectLanguage(I18n.Language language)
     {
         I18n.changeLanguageTo(language);
@@ -17,15 +15,5 @@ public class LanguagesMainMenuItemArray : MainMenuItemArray
                 lmmi.updateSelection();
             }
         }
-    }
-
-    void OnEnable()
-    {
-        languagesPanel.SetActive(true);
-    }
-
-    void OnDisable()
-    {
-        languagesPanel.SetActive(false);
     }
 }

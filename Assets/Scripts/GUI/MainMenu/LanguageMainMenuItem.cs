@@ -9,7 +9,7 @@ public class LanguageMainMenuItem : MainMenuItem
     [SerializeField]
     private GameObject languageIcon;
     [SerializeField]
-    private LanguagesMainMenuItemArray languagesArray;
+    private LanguageItemManager languagesArray;
     [SerializeField]
     private I18n.Language language;
     [SerializeField]
@@ -51,7 +51,7 @@ public class LanguageMainMenuItem : MainMenuItem
 
     void OnEnable()
     {
-        if (null != languageIcon)
+        if (languageIcon != null)
         {
             languageIcon.transform.position = this.gameObject.transform.position + offset;
             languageIcon.gameObject.SetActive(true);
@@ -61,7 +61,7 @@ public class LanguageMainMenuItem : MainMenuItem
 
     void OnDisable()
     {
-        if (null != languageIcon)
+        if (languageIcon != null)
         {
             languageIcon.SetActive(false);
         }

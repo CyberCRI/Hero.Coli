@@ -5,7 +5,12 @@ public class ResolutionScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		Screen.SetResolution(800, 450, true);
+		this.GetComponent<Camera>().aspect = 16f / 9f;
+		#else
 		Screen.SetResolution(1280, 720, false);
+		#endif
 	}
 
 	// Update is called once per frame

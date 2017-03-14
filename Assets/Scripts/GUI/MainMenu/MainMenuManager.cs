@@ -354,6 +354,7 @@ public class MainMenuManager : MonoBehaviour
         deselect();
         foreach (MainMenuItemArray array in arrays)
         {
+
             array.gameObject.SetActive(array == toActivate);
             // Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
         }
