@@ -9,7 +9,7 @@ public class LanguageMainMenuItem : MainMenuItem
     [SerializeField]
     private GameObject languageIcon;
     [SerializeField]
-    private LanguageItemManager languagesArray;
+	private LanguagesMainMenuItemArray languagesArray;
     [SerializeField]
     private I18n.Language language;
     [SerializeField]
@@ -61,9 +61,11 @@ public class LanguageMainMenuItem : MainMenuItem
 
     void OnDisable()
     {
+		/*
         if (languageIcon != null)
         {
             languageIcon.SetActive(false);
         }
+        */
     }
 }
