@@ -43,6 +43,7 @@ MENU.SANDBOX=bac à sable
 MENU.ADVENTURE=aventure
 MENU.BACK=retour
 MENU.SETTINGS=configuration
+MENU.CHAPTERSELECT=selection de chapitre
 MENU.CONTROLS=contrôles
 MENU.CONTROLS.ABSOLUTEWASD=clavier mode 1
 MENU.CONTROLS.RELATIVEWASD=clavier mode 2

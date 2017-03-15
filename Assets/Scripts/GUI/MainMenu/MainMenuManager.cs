@@ -77,6 +77,7 @@ public class MainMenuManager : MonoBehaviour
     public MainMenuItemArray controlItems;
     public MainMenuItemArray languageItems;
     public MainMenuItemArray soundItems;
+	public MainMenuItemArray chapterSelectionItems;
     public LearnMoreOptionsMainMenuItemArray learnMoreItems;
 
     [SerializeField]
@@ -99,6 +100,7 @@ public class MainMenuManager : MonoBehaviour
         CONTROLS,
         LANGUAGES,
         SOUNDOPTIONS,
+		CHAPTERSELECTION,
         DEFAULT
     }
 
@@ -341,7 +343,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initializedArrays)
         {
-            arrays = new MainMenuItemArray[6] { mainMenuItems, controlItems, languageItems, soundItems, settingsItems, learnMoreItems };
+            arrays = new MainMenuItemArray[7] { mainMenuItems, controlItems, languageItems, chapterSelectionItems, soundItems, settingsItems, learnMoreItems };
             _initializedArrays = true;
         }
     }
@@ -354,9 +356,9 @@ public class MainMenuManager : MonoBehaviour
         deselect();
         foreach (MainMenuItemArray array in arrays)
         {
-			Debug.Log (array.gameObject);
             array.gameObject.SetActive(array == toActivate);
-            // Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
+			Debug.Log (array.gameObject.name + " " + (array == toActivate));
+//            Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
         }
         copyItemsFrom(toActivate);
         selectItem(0);
@@ -384,6 +386,9 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuScreen.SOUNDOPTIONS:
                 toActivate = soundItems;
                 break;
+			case MainMenuScreen.CHAPTERSELECTION:
+				toActivate = chapterSelectionItems;
+				break;
             case MainMenuScreen.DEFAULT:
             default:
                 toActivate = mainMenuItems;
