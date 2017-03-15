@@ -1,21 +1,48 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Teleporter : MonoBehaviour
 {
-    [SerializeField]
-    private Transform[] _teleportPoints;
+    private GameObject[] _checkpoints;
     [SerializeField]
     private GameObject[] _zones;
 
-    public void teleport(int index)
+	void Start()
+	{
+		init ();
+	}
+
+	private GameObject getCheckPoint(int checkpointIndex)
+	{
+		foreach (var checkpoint in _checkpoints) {
+			if (checkpoint.GetComponent<Checkpoint> ().index == checkpointIndex)
+				return checkpoint;
+		}
+		// if no checkpoint with this index was found we check the origin checkpoint as a fallback
+		foreach (var checkpoint in _checkpoints) {
+			if (checkpoint.GetComponent<Checkpoint> ().isOriginSpawnPoint)
+				return checkpoint;
+		}
+		return null;
+	}
+
+	public void init()
+	{
+		_checkpoints = GameObject.FindGameObjectsWithTag ("Checkpoint");
+	}
+
+	/// <summary>
+	/// Teleport the player to the specified teleportIndex.
+	/// </summary>
+	/// <param name="teleportIndex">Teleport index.</param>
+    public void teleport(int teleportIndex)
     {
-        if(index <= _teleportPoints.Length)
+		var checkpoint = getCheckPoint (teleportIndex);
+        if(checkpoint != null)
         {
-            foreach(GameObject zone in _zones)
-            {
-                zone.SetActive(true);
-            }
-            CellControl.get(this.GetType().ToString()).teleport(_teleportPoints[index].position);
+			if (checkpoint.GetComponent<SwitchZoneOnOff> ())
+				checkpoint.GetComponent<SwitchZoneOnOff> ().triggerSwitchZone ();
+			CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
         }
     }
 }

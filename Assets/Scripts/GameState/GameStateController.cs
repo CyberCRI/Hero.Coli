@@ -39,7 +39,7 @@ public class GameStateController : MonoBehaviour
         if (_instance == null)
         {
             Debug.LogWarning("GameStateController get was badly initialized");
-            _instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
+			_instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
         }
 
         return _instance;
@@ -600,6 +600,18 @@ public class GameStateController : MonoBehaviour
         return result;
     }
 
+	/// <summary>
+	/// Starts the game directly at a checkpoint
+	/// </summary>
+	public void loadWithCheckpoint(int checkpointIndex, GameConfiguration.GameMap gameMap)
+	{
+		if (GameConfiguration.gameMap != gameMap)
+			setAndSaveLevelName (gameMap, "loadWithCheckPoint");
+		MemoryManager.get ().checkpointIndex = checkpointIndex;
+		// The checkpoint index is checked by the WorldLinkManager at the start
+		internalRestart ();
+	}
+
     public void goToOtherGameMode()
     {
         // Debug.Log(this.GetType() + " goToOtherGameMode");
@@ -684,7 +696,6 @@ public class GameStateController : MonoBehaviour
                 //whereas MemoryManager won't
                 GameConfiguration.gameMap = newMap;
                 break;
-
             default:
                 Debug.LogWarning(this.GetType() + " setAndSaveLevelName unmanaged level=" + newMap);
                 break;

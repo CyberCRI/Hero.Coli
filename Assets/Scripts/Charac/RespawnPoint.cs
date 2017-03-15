@@ -1,18 +1,7 @@
 ﻿using UnityEngine;
 
-public class RespawnPoint : MonoBehaviour {
-
+public class RespawnPoint : Checkpoint {
     private int _colNumber = 0;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     void OnTriggerEnter(Collider col)
     {

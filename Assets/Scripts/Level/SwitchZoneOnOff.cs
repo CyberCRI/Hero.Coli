@@ -4,8 +4,17 @@ public class SwitchZoneOnOff : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] _activeZone;
+
+	public GameObject[] activeZone {
+		get { return _activeZone; }
+	}
+
     [SerializeField]
     private GameObject[] _inactiveZone;
+
+	public GameObject[] inactiveZone {
+		get { return _inactiveZone; }
+	}
     //private static SwitchZoneOnOff _instance;
 
     [SerializeField]
@@ -36,17 +45,7 @@ public class SwitchZoneOnOff : MonoBehaviour
     {
         if (col.tag == Hero.playerTag)
         {
-            GameObject[] activeZone = _devMode?_devActiveZone:_activeZone;
-            GameObject[] inactiveZone = _devMode?_devInactiveZone:_inactiveZone;
-
-            for (int i = 0; i < activeZone.Length; i++)
-            {
-                activeZone[i].SetActive(true);
-            }
-            for (int i = 0; i < inactiveZone.Length; i++)
-            {
-                inactiveZone[i].SetActive(false);
-            }
+			triggerSwitchZone ();
         }
     }
 

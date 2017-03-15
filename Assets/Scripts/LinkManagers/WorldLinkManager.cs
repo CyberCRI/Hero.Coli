@@ -71,7 +71,6 @@ public class WorldLinkManager : LinkManager
     }
 
     public MineManager mineManager;
-    public Transform startPosition;
     [SerializeField]
     private Teleporter teleporter;
     [SerializeField]
@@ -91,30 +90,39 @@ public class WorldLinkManager : LinkManager
         {
             _assetsLibrary.SetActive(false);
         }
-
-        GameObject perso = Hero.get().gameObject;
-        if (null == perso)
-        {
-            Debug.LogError(this.GetType() + " Hero not found!");
-        }
-
-        if (null != startPosition)
-        {
-            CellControl.get(gameObjectName).teleport(startPosition.transform.position, startPosition.transform.rotation);
-            startPosition.gameObject.SetActive(false);
-        }
-
-        //specific code for adventure1
-        if (null != rfpTutorialTrigger && null != perso)
-        {
-            rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
-        }
-
-        GameStateController.get().teleporter = teleporter;
     }
 
     public override void finishInitialize()
     {
         base.finishInitialize ();
+
+		GameObject perso = Hero.get().gameObject;
+		if (null == perso)
+		{
+			Debug.LogError(this.GetType() + " Hero not found!");
+		}
+		teleporter.init ();
+		GameObject go = GameObject.Find("StartZoneSetter");
+		if(null != go)
+		{
+			go.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
+		}
+		teleporter.teleport (MemoryManager.get().checkpointIndex);
+
+		/*
+		if (null != startPosition)
+		{
+			CellControl.get(gameObjectName).teleport(startPosition.transform.position, startPosition.transform.rotation);
+			startPosition.gameObject.SetActive(false);
+		}
+		*/
+
+		//specific code for adventure1
+		if (null != rfpTutorialTrigger && null != perso)
+		{
+			rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
+		}
+
+		GameStateController.get().teleporter = teleporter;
     }
 }

@@ -92,6 +92,7 @@ public class MemoryManager : MonoBehaviour
     }
 
     public string[] inputFiles;
+	public int checkpointIndex = 0;
     private Dictionary<string, string> _savedData = new Dictionary<string, string>();
     private Dictionary<string, LevelInfo> _loadedLevelInfo = new Dictionary<string, LevelInfo>();
     private const string playerDataKey = "player";

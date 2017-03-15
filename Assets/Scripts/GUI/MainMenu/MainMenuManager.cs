@@ -357,7 +357,6 @@ public class MainMenuManager : MonoBehaviour
         foreach (MainMenuItemArray array in arrays)
         {
             array.gameObject.SetActive(array == toActivate);
-			Debug.Log (array.gameObject.name + " " + (array == toActivate));
 //            Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
         }
         copyItemsFrom(toActivate);
