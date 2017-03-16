@@ -1,16 +1,23 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
 
-public class PickableBioBrickRef : PickableBioBrick {
-  [SerializeField]
-  private string bioBrickName;
-  [SerializeField]
-  private int amount = 1;
+public class PickableBioBrickRef : PickableBioBrick
+{
+	[System.Obsolete("use bioBrickDataCount")]
+	[SerializeField]
+	private string bioBrickName;
+	[System.Obsolete("use bioBrickDataCount")]
+	[SerializeField]
+	private int amount = 1;
 
-  protected override DNABit produceDNABit()
-  {
-    BioBrick brick = AvailableBioBricksManager.get().getBioBrickFromAll(bioBrickName);
-    return brick.copy(amount);
-  }
+	[SerializeField]
+	private BiobrickDataCount bioBrickDataCount;
+
+	protected override DNABit produceDNABit ()
+	{
+		return BiobrickBuilder.createBioBrickFromData (bioBrickDataCount);
+	}
 }
 
 
