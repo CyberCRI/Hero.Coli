@@ -555,7 +555,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         else
         {
 			loadCheckPointBrickList (_availableBioBricksData, _availableBioBricks);
-			Debug.Log (Logger.ToString<BioBrick> (_availableBioBricks));
+			//Debug.Log (Logger.ToString<BioBrick> (_availableBioBricks));
 			//loadBioBricks (checkPointBiobrickData, _availableBioBricks);
 			/*
             //default behavior

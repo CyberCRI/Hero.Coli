@@ -55,14 +55,14 @@ public abstract class BioBrick : DNABit
         _amount += increase;
     }
 
-    public BioBrick(Type type, double _count = -1)
+    public BioBrick(Type type, double _count = 1)
     {
         _type = type;
-        isUnlimited = _amount == 0 ? MemoryManager.get().configuration.getMode() == GameConfiguration.GameMode.SANDBOX : isUnlimited;
-        _amount = (0 > _count) ? (isUnlimited ? double.PositiveInfinity : 1) : _count;
+		isUnlimited |= MemoryManager.get ().configuration.getMode () == GameConfiguration.GameMode.SANDBOX;
+        _amount = isUnlimited ? double.PositiveInfinity : _count;
     }
 
-    public abstract BioBrick copy(double _count = -1);
+    public abstract BioBrick copy(double _count = 1);
 
     public override bool Equals(System.Object obj)
     {
@@ -247,7 +247,7 @@ public class PromoterBrick : BioBrick
     {
     }
 
-    public override BioBrick copy(double _count = -1)
+    public override BioBrick copy(double _count = 1)
     {
         return new PromoterBrick(this, _count);
     }
@@ -296,7 +296,7 @@ public class RBSBrick : BioBrick
     {
     }
 
-    public override BioBrick copy(double _count = -1)
+    public override BioBrick copy(double _count = 1)
     {
         return new RBSBrick(this, _count);
     }
@@ -344,7 +344,7 @@ public class GeneBrick : BioBrick
     {
     }
 
-    public override BioBrick copy(double _count = -1)
+    public override BioBrick copy(double _count = 1)
     {
         return new GeneBrick(this, _count);
     }
@@ -392,7 +392,7 @@ public class TerminatorBrick : BioBrick
     {
     }
 
-    public override BioBrick copy(double _count = -1)
+    public override BioBrick copy(double _count = 1)
     {
         return new TerminatorBrick(this, _count);
     }

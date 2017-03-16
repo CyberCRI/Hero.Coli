@@ -15,12 +15,14 @@ public class Teleporter : MonoBehaviour
 	private GameObject getCheckPoint(int checkpointIndex)
 	{
 		foreach (var checkpoint in _checkpoints) {
-			if (checkpoint.GetComponent<Checkpoint> ().index == checkpointIndex)
+			if (checkpoint.GetComponent<Checkpoint>() != null
+				&& checkpoint.GetComponent<Checkpoint> ().index == checkpointIndex)
 				return checkpoint;
 		}
 		// if no checkpoint with this index was found we check the origin checkpoint as a fallback
 		foreach (var checkpoint in _checkpoints) {
-			if (checkpoint.GetComponent<Checkpoint> ().isOriginSpawnPoint)
+			if (checkpoint.GetComponent<Checkpoint>() != null &&
+				checkpoint.GetComponent<Checkpoint> ().isOriginSpawnPoint)
 				return checkpoint;
 		}
 		return null;
@@ -44,6 +46,12 @@ public class Teleporter : MonoBehaviour
 				checkpoint.GetComponent<SwitchZoneOnOff> ().triggerSwitchZone ();
 			CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
 			AvailableBioBricksManager.get ().availableBioBrickData = checkpoint.GetComponent<Checkpoint> ().availableBioBricks;
+			foreach (Transform child in checkpoint.transform) {
+				if (child.gameObject.tag == "Dummy")
+					child.gameObject.SetActive (false);
+			}
+			while (CraftZoneManager.get ().getSlotCount() < checkpoint.GetComponent<Checkpoint> ().requiredSlots)
+				CraftZoneManager.get ().addSlot ();
         }
     }
 }

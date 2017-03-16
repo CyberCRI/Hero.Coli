@@ -15,4 +15,8 @@ public class Checkpoint : MonoBehaviour {
 	/// The available bio bricks.
 	/// </summary>
 	public BiobrickCheckPointListData availableBioBricks;
+	/// <summary>
+	/// The required slots.
+	/// </summary>
+	public int requiredSlots = 1;
 }

@@ -108,6 +108,8 @@ public class WorldLinkManager : LinkManager
 			go.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
 		}
 		teleporter.teleport (MemoryManager.get().checkpointIndex);
+		// We reset the checkpointindex at its default value since we no longer need it after a teleportation
+		MemoryManager.get ().checkpointIndex = 0;
 
 		/*
 		if (null != startPosition)

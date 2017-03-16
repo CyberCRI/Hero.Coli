@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RespawnPoint : Checkpoint {
+public class RespawnPoint: MonoBehaviour {
     private int _colNumber = 0;
 
     void OnTriggerEnter(Collider col)
