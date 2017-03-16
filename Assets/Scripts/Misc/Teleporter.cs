@@ -43,6 +43,7 @@ public class Teleporter : MonoBehaviour
 			if (checkpoint.GetComponent<SwitchZoneOnOff> ())
 				checkpoint.GetComponent<SwitchZoneOnOff> ().triggerSwitchZone ();
 			CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
+			AvailableBioBricksManager.get ().availableBioBrickData = checkpoint.GetComponent<Checkpoint> ().availableBioBricks;
         }
     }
 }

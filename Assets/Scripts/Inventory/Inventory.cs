@@ -301,7 +301,7 @@ public class Inventory : DeviceContainer
         // DeviceLoader dLoader = new DeviceLoader(availableBioBricks, allBioBricks);
 
         //string[] filesToLoad;
-        //string currentMapDevicesFilePath = MemoryManager.get().configuration.getGameMapName();
+        //string currentMapDevicesFilePath = MemoryManager.get().configuration.geÎ();
 
         if (null != levelInfo && levelInfo.areAllDevicesAvailable)
         {

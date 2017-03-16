@@ -11,4 +11,8 @@ public class Checkpoint : MonoBehaviour {
 	/// </summary>
 	[Tooltip("Is this instance the origin spawn point ? (Only one spawn point should be the origin spawn point).")]
 	public bool isOriginSpawnPoint = false;
+	/// <summary>
+	/// The available bio bricks.
+	/// </summary>
+	public BiobrickCheckPointListData availableBioBricks;
 }
