@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 //TODO refactor with FileLoader
 public class DeviceLoader
 {
@@ -13,7 +14,7 @@ public class DeviceLoader
     private Device device;
     private BioBrick brick;
     private LinkedList<BioBrick> deviceBricks = new LinkedList<BioBrick>();
-    private BioBrickLoader bLoader = new BioBrickLoader();
+    //private BioBrickLoader bLoader = new BioBrickLoader();
 
     private void reinitVars()
     {
@@ -213,4 +214,4 @@ public class DeviceLoader
         return !String.IsNullOrEmpty(toCheck);
     }
 
-}
+}*/

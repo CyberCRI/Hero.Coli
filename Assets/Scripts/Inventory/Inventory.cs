@@ -63,10 +63,13 @@ public class Inventory : DeviceContainer
      * provided that the required BioBricks are available - cf. AvailableBioBricksManager
      */
     //private string[] _deviceFiles = new string[]{};
-    public string[] deviceFiles;
-    public string deviceFilesPathPrefix;
+    //public string[] deviceFiles;
+    //public string deviceFilesPathPrefix;
     //private string[] _deviceFiles = new string[]{ "Parameters/Devices/available", Inventory._saveFilePathRead };
+	[SerializeField]
+	private DeviceListData _allDevices;
 
+	public DeviceListData availableDevices;
     //old device files
     //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
     //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePathRead };
@@ -287,37 +290,31 @@ public class Inventory : DeviceContainer
     void loadDevices()
     {
         // Debug.Log(this.GetType() + " loadDevices");
-        LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
-        LinkedList<BioBrick> allBioBricks = AvailableBioBricksManager.get().getAllBioBricks();
+        //LinkedList<BioBrick> availableBioBricks = AvailableBioBricksManager.get().getAvailableBioBricks();
+        //LinkedList<BioBrick> allBioBricks = AvailableBioBricksManager.get().getAllBioBricks();
 
         LevelInfo levelInfo = null;
         MemoryManager.get().tryGetCurrentLevelInfo(out levelInfo);
 
         List<Device> devices = new List<Device>();
 
-        DeviceLoader dLoader = new DeviceLoader(availableBioBricks, allBioBricks);
+        // DeviceLoader dLoader = new DeviceLoader(availableBioBricks, allBioBricks);
 
-        string[] filesToLoad;
-        string currentMapDevicesFilePath = MemoryManager.get().configuration.getGameMapName();
+        //string[] filesToLoad;
+        //string currentMapDevicesFilePath = MemoryManager.get().configuration.getGameMapName();
 
-        if (null == levelInfo || !levelInfo.areAllDevicesAvailable)
+        if (null != levelInfo && levelInfo.areAllDevicesAvailable)
         {
-            filesToLoad = new string[] { currentMapDevicesFilePath };
+			foreach (var deviceData in _allDevices.deviceDataList) {
+				devices.Add(DeviceBuilder.createDeviceFromData (deviceData));
+			}
         }
+		/*
         else
-        {
-            List<string> fileList = new List<string>(deviceFiles);
-            fileList.Add(currentMapDevicesFilePath);
-            filesToLoad = fileList.ToArray();
+		{
+			filesToLoad = new string[] { currentMapDevicesFilePath };
         }
-        foreach (string file in filesToLoad)
-        {
-            string fullPathFile = deviceFilesPathPrefix + file;
-            // Debug.Log(this.GetType() + " loads " + fullPathFile);
-            LinkedList<Device> loadedDevices = dLoader.loadDevicesFromFile(fullPathFile);
-            // Debug.Log(this.GetType() + " loaded devices " + Logger.ToString<Device>(loadedDevices, d => d.getInternalName()));
-            devices.AddRange(loadedDevices);
-        }
+        */
         UpdateData(devices, new List<Device>(), new List<Device>());
     }
 

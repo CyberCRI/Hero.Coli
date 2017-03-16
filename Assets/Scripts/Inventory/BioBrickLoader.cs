@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
 //TODO refactor with FileLoader
 public class BioBrickLoader
 {
@@ -220,3 +222,4 @@ public class BioBrickLoader
     }
 
 }
+*/

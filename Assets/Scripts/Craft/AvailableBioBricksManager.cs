@@ -55,14 +55,19 @@ public class AvailableBioBricksManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    [SerializeField]
-    private string[] _allBioBrickFiles;
+   // [SerializeField]
+   // private string[] _allBioBrickFiles;
 
     //Parameters/BioBricks/availablebiobricks
-    [SerializeField]
-    private string[] _availableBioBrickFiles;
-    [SerializeField]
-    private string biobrickFilesPathPrefix;
+   // [SerializeField]
+   // private string[] _availableBioBrickFiles;
+   // [SerializeField]
+    //private string biobrickFilesPathPrefix;
+
+	[SerializeField]
+	private BiobrickListData _allBioBricksData;
+
+	public BiobrickListData availableBiobricksData;
 
     // the panel on which the BioBricks will be drawn
     public GameObject bioBricksPanel;
@@ -456,13 +461,18 @@ public class AvailableBioBricksManager : MonoBehaviour
     private void loadAllBioBricks()
     {
         // Debug.Log(this.GetType() + " loadAllBioBricks");
-        loadBioBricks(_allBioBrickFiles, _allBioBricks);
+		loadBioBricks(_allBioBricksData , _allBioBricks);
         // Debug.Log(this.GetType() + " loadAllBioBricks _allBioBricks=" + _allBioBricks.Count);
     }
 
     // Warning: inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
-    private void loadBioBricks(string[] inputFiles, LinkedList<BioBrick> destination)
+    private void loadBioBricks(BiobrickListData biobrickListData, LinkedList<BioBrick> destination)
     {
+		foreach (var biobrickDataCount in biobrickListData.biobrickDataList) {
+				destination.AddLast (BiobrickBuilder.createBioBrickFromData (biobrickDataCount));
+		}
+
+		/*
         // Debug.Log(this.GetType() + " loadBioBricks");
         //load biobricks from xml
         BioBrickLoader bLoader = new BioBrickLoader();
@@ -483,7 +493,7 @@ public class AvailableBioBricksManager : MonoBehaviour
             }
             files += fullPath;
         }
-        // Debug.Log(this.GetType() + " loadBioBricks loaded " + files + " so that destination=" + destination.Count);
+        // Debug.Log(this.GetType() + " loadBioBricks loaded " + files + " so that destination=" + destination.Count);*/
     }
 
 
@@ -517,10 +527,12 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         else
         {
+			loadBioBricks (availableBiobricksData, _availableBioBricks);
+			/*
             //default behavior
             List<string> filesToLoad = new List<string>(_availableBioBrickFiles);
             filesToLoad.Add(MemoryManager.get().configuration.getGameMapName());
-            loadBioBricks(filesToLoad.ToArray(), _availableBioBricks);
+            loadBioBricks(filesToLoad.ToArray(), _availableBioBricks);*/
         }
         // Debug.Log(this.GetType() + " loadAvailableBioBricks _availableBioBricks=" + _availableBioBricks.Count);
     }
