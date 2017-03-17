@@ -33,7 +33,6 @@ public class CheckpointMainMenuItem : MainMenuItem {
 	public override void click ()
 	{
 		base.click ();
-		GameStateController.get ().leaveMainMenu ();
 		GameStateController.get ().loadWithCheckpoint (_checkpointIndex, _gameMap);
 	}
 }
