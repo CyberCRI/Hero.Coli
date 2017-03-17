@@ -2,11 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-[CreateAssetMenu (fileName = "CheckPointList", menuName = "Data/BiobrickList/CheckPoint", order = 22)]
-public class BiobrickCheckPointListData : BiobrickListData
+[System.Serializable]
+public class DeviceEquippedData
 {
-	public BiobrickCheckPointListData previous = null;
+	public DeviceData deviceData;
+	public bool equipped = false;
+}
+
+[CreateAssetMenu (fileName = "CheckPoint", menuName = "Data/CheckPointData", order = 22)]
+public class CheckPointData: BiobrickListData
+{
+	public CheckPointData previous = null;
+	public DeviceEquippedData[] deviceDataList;
+	public int requiredSlots;
 
 	bool isListCircular()
 	{

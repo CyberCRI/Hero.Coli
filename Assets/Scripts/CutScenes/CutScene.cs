@@ -40,7 +40,7 @@ public abstract class CutScene : CutSceneElements
         _isPlaying = false;
     }
 
-    void OnEnable()
+    void  Start()
     {
         // cut scene initialization
         initialize();

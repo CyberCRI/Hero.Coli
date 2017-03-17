@@ -12,11 +12,19 @@ public class Checkpoint : MonoBehaviour {
 	[Tooltip("Is this instance the origin spawn point ? (Only one spawn point should be the origin spawn point).")]
 	public bool isOriginSpawnPoint = false;
 	/// <summary>
+	/// All the information about this checkpoint
+	/// </summary>
+	public CheckPointData checkPointData;
+	/// <summary>
 	/// The available bio bricks.
 	/// </summary>
-	public BiobrickCheckPointListData availableBioBricks;
+	public BiobrickDataCount[] requiredBioBricks { get { return checkPointData.biobrickDataList; } }
 	/// <summary>
 	/// The required slots.
 	/// </summary>
-	public int requiredSlots = 1;
+	public DeviceEquippedData[] requiredDevices { get { return checkPointData.deviceDataList; } }
+	/// <summary>
+	/// The required slots.
+	/// </summary>
+	public int requiredSlots { get { return checkPointData.requiredSlots; }}
 }

@@ -67,9 +67,9 @@ public class AvailableBioBricksManager : MonoBehaviour
 	[SerializeField]
 	private BiobrickListData _allBioBricksData;
 
-	private BiobrickCheckPointListData _availableBioBricksData;
+	private CheckPointData _availableBioBricksData;
 
-	public BiobrickCheckPointListData availableBioBrickData {
+	public CheckPointData availableBioBrickData {
 		set {
 			_availableBioBricksData = value;
 			_availableBioBricks.Clear ();
@@ -525,7 +525,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         return _availableBioBricks;
     }
 
-	private void loadCheckPointBrickList(BiobrickCheckPointListData checkPoint, LinkedList<BioBrick> destination)
+	private void loadCheckPointBrickList(CheckPointData checkPoint, LinkedList<BioBrick> destination)
 	{
 		if (checkPoint == null)
 			return;

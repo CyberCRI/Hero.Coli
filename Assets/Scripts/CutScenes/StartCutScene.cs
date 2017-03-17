@@ -35,6 +35,7 @@ public class StartCutScene : CutScene
     private Vector3 _originToTweenScale;
     private bool _scaleUp = true;
     private bool _scaling = false;
+	private bool _first = true;
 
 #if QUICKTEST
     private float[] waitTimes = new float[9] { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f };
@@ -62,14 +63,11 @@ public class StartCutScene : CutScene
         say(s, _npcDialogBubble, _npcTextField);
     }
 
-    // Use this for initialization
-    public override void initialize()
-    {
-        _originFromTweenScale = _tweenScale.from;
-        _originToTweenScale = _tweenScale.to;
-
-        StartCoroutine(waitForBeginning());
-    }
+	public override void initialize ()
+	{
+		_originFromTweenScale = _tweenScale.from;
+		_originToTweenScale = _tweenScale.to;
+	}
 
     IEnumerator waitForBeginning()
     {
@@ -136,6 +134,18 @@ public class StartCutScene : CutScene
 
         StartCoroutine(waitForEnd());
     }
+
+	void OnTriggerEnter(Collider col)
+	{
+		if (col.tag == Hero.playerTag)
+		{
+			if (_first)
+			{
+				_first = false;
+				StartCoroutine (waitForBeginning());
+			}
+		}
+	}
 
     IEnumerator scalePulse(Transform objTransform, float speed)
     {

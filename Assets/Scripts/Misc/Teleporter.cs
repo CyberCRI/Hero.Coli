@@ -39,6 +39,21 @@ public class Teleporter : MonoBehaviour
 		}
 	}
 
+	void addDevices(CheckPointData checkPoint)
+	{
+		if (checkPoint.deviceDataList != null) {
+			foreach (var deviceEquipped in checkPoint.deviceDataList) {
+				var device = DeviceBuilder.createDeviceFromData (deviceEquipped.deviceData);
+				if (deviceEquipped.equipped)
+					CraftZoneManager.get ().addAndEquipDevice (device);
+				else
+					Inventory.get ().askAddDevice (device);
+			}
+		}
+		if (checkPoint.previous)
+			addDevices (checkPoint.previous);
+	}
+
 	/// <summary>
 	/// Teleport the player to the specified teleportIndex.
 	/// </summary>
@@ -51,13 +66,16 @@ public class Teleporter : MonoBehaviour
 			if (checkpoint.GetComponent<SwitchZoneOnOff> ())
 				checkpoint.GetComponent<SwitchZoneOnOff> ().triggerSwitchZone ();
 			CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
-			AvailableBioBricksManager.get ().availableBioBrickData = checkpoint.GetComponent<Checkpoint> ().availableBioBricks;
+			AvailableBioBricksManager.get ().availableBioBrickData = checkpoint.GetComponent<Checkpoint> ().checkPointData;
 			foreach (Transform child in checkpoint.transform) {
 				if (child.gameObject.tag == "Dummy")
 					child.gameObject.SetActive (false);
 			}
-			while (CraftZoneManager.get ().getSlotCount() < checkpoint.GetComponent<Checkpoint> ().requiredSlots)
-				CraftZoneManager.get ().addSlot ();
+			if (checkpoint.GetComponent<Checkpoint>().checkPointData != null) {
+				addDevices (checkpoint.GetComponent<Checkpoint> ().checkPointData);
+				while (CraftZoneManager.get ().getSlotCount () < checkpoint.GetComponent<Checkpoint> ().requiredSlots)
+					CraftZoneManager.get ().addSlot ();
+			}
         }
     }
 }

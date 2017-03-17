@@ -11,4 +11,11 @@ public class ChapterSelectionMainMenuItem : MainMenuItem {
 	public override void click() { 
 		MainMenuManager.get ().switchTo (MainMenuManager.MainMenuScreen.CHAPTERSELECTION);
 	}
+
+	void OnEnable()
+	{
+		#if HIDDEN_CHAPTERS
+		gameObject.SetActive(false);
+		#endif 
+	}
 }
