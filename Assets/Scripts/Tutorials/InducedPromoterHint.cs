@@ -16,7 +16,7 @@ public class InducedPromoterHint : StepByStepTutorial
             return _textKeyPrefix;
         }
     }
-    private const int _stepCount = 4;
+    private const int _stepCount = 5;
     protected override int stepCount
     {
         get
@@ -28,7 +28,8 @@ public class InducedPromoterHint : StepByStepTutorial
         _craftButton, 
         _PCONSBrickBackground,
         _PBAD3BrickBackground,
-        _PBAD3BrickBackground
+        _PBAD3BrickBackground,
+        _exitCross
         };
     protected override string[] focusObjects
     {
