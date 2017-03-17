@@ -7,7 +7,7 @@ public class Teleporter : MonoBehaviour
     [SerializeField]
     private GameObject[] _zones;
 
-	void Start()
+	void Awake()
 	{
 		init ();
 	}
@@ -30,7 +30,13 @@ public class Teleporter : MonoBehaviour
 
 	public void init()
 	{
+		foreach (var zone in _zones) {
+			zone.SetActive (true);
+		}
 		_checkpoints = GameObject.FindGameObjectsWithTag ("Checkpoint");
+		foreach (var zone in _zones) {
+			zone.SetActive (false);
+		}
 	}
 
 	/// <summary>
