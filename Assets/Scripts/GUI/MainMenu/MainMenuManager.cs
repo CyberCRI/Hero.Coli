@@ -70,7 +70,7 @@ public class MainMenuManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public MainMenuItem[] _items;
+    public MainMenuItemArray _current;
 
     public MainMenuItemArray mainMenuItems;
     public MainMenuItemArray settingsItems;
@@ -110,7 +110,7 @@ public class MainMenuManager : MonoBehaviour
     private bool isAnItemSelected()
     {
         // Debug.Log(this.GetType() + " isAnItemSelected");
-        return _currentIndex >= 0 && _currentIndex < _items.Length;
+		return _currentIndex >= 0 && _currentIndex < _current._items.Length;
     }
 
     public MainMenuItem getCurrentItem()
@@ -118,7 +118,7 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(this.GetType() + " getCurrentItem");
         if (isAnItemSelected())
         {
-            return _items[_currentIndex];
+			return _current._items[_currentIndex];
         }
         else
         {
@@ -131,7 +131,7 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(this.GetType() + " deselect");
         if (isAnItemSelected())
         {
-            _items[_currentIndex].deselect();
+			_current._items[_currentIndex].deselect();
             // Debug.Log(this.GetType() + " deselected item " + _currentIndex);
         }
         else
@@ -149,19 +149,19 @@ public class MainMenuManager : MonoBehaviour
     private bool selectItem(string name)
     {
         // Debug.Log(string.Format("selectItem({0})", name));
-        if (isAnItemSelected() && name == _items[_currentIndex].itemName)
+		if (isAnItemSelected() && name == _current._items[_currentIndex].itemName)
         {
             // Debug.Log(this.GetType() + " item " + name + " was already selected");
             return true;
         }
         else
         {
-            for (int index = 0; index < _items.Length; index++)
+			for (int index = 0; index < _current._items.Length; index++)
             {
-                if (name == _items[index].itemName)
+                if (name == _current._items[index].itemName)
                 {
                     deselect();
-                    _items[index].select();
+					_current._items[index].select();
                     _currentIndex = index;
                     // Debug.Log(this.GetType() + " selected item " + index + " via its name '" + name + "'");
                     return true;
@@ -183,15 +183,17 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(string.Format("selectItem({0}, {1})", index, mode.ToString()));
         int previousIndex = index;
         int normalizedIndex;
-        int remainingTries = _items.Length;
+        int remainingTries = _current ? _current._items.Length: 0;
 
         while (remainingTries > 0)
         {
-            normalizedIndex = previousIndex >= 0 ? previousIndex % _items.Length : (previousIndex % _items.Length) + _items.Length;
-            if (null != _items[normalizedIndex] && _items[normalizedIndex].displayed)
+			normalizedIndex = previousIndex >= 0 ?
+				previousIndex % _current._items.Length
+				: (previousIndex % _current._items.Length) + _current._items.Length;
+            if (null != _current._items[normalizedIndex] && _current._items[normalizedIndex].displayed)
             {
                 deselect();
-                _items[normalizedIndex].select();
+                _current._items[normalizedIndex].select();
                 _currentIndex = normalizedIndex;
                 // Debug.Log(this.GetType() + " selected item " + normalizedIndex);
                 return true;
@@ -233,15 +235,15 @@ public class MainMenuManager : MonoBehaviour
         selectItem(item.itemName);
     }
 
-    public static void replaceTextBy(string target, string replacement, MainMenuItem[] items, string debug = "")
+    public static void replaceTextBy(string target, string replacement, MainMenuItemArray current, string debug = "")
     {
         // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2}, {3})", target, replacement, MainMenuItemArray.ToString(items), debug));
-        for (int index = 0; index < items.Length; index++)
+        for (int index = 0; index < current._items.Length; index++)
         {
-            if (items[index].itemName == target)
+			if (current._items[index].itemName == target)
             {
-                items[index].itemName = replacement;
-                MainMenuManager.redraw(items);
+				current._items[index].itemName = replacement;
+                MainMenuManager.redraw(current);
                 return;
             }
         }
@@ -251,7 +253,7 @@ public class MainMenuManager : MonoBehaviour
     private void replaceTextBy(string target, string replacement, string debug = "")
     {
         // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2})", target, replacement, debug));
-        MainMenuManager.replaceTextBy(target, replacement, _items, debug);
+        MainMenuManager.replaceTextBy(target, replacement, _current, debug);
     }
 
     public void setNewGame()
@@ -271,22 +273,22 @@ public class MainMenuManager : MonoBehaviour
     private void setVisibility(string itemKey, bool isVisible)
     {
         // Debug.Log(string.Format("setVisibility({0},{1})", itemKey, isVisible.ToString()));
-        setVisibility(_items, itemKey, isVisible, "MainMenuManager");
+		setVisibility(_current, itemKey, isVisible, "MainMenuManager");
     }
 
-    public static void setVisibility(MainMenuItem[] items, string itemKey, bool isVisible, string debug = null, float spacing = _defaultVerticalSpacing)
+    public static void setVisibility(MainMenuItemArray current, string itemKey, bool isVisible, string debug = null, float spacing = _defaultVerticalSpacing)
     {
         // Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
             // Debug.Log(this.GetType() + " setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
         }
-        for (int index = 0; index < items.Length; index++)
+		for (int index = 0; index < current._items.Length; index++)
         {
-            items[index].initializeIfNecessary();
-            if (items[index].itemName == itemKey)
+			current._items[index].initializeIfNecessary();
+            if (current._items[index].itemName == itemKey)
             {
-                items[index].displayed = isVisible;
+				current._items[index].displayed = isVisible;
                 if (!string.IsNullOrEmpty(debug))
                 {
                     // Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
@@ -298,20 +300,22 @@ public class MainMenuManager : MonoBehaviour
                 // Debug.Log(this.GetType() + " setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
             }
         }
-        MainMenuManager.redraw(items, debug, spacing);
+        MainMenuManager.redraw(current, debug, spacing);
     }
 
-    public static void redraw(MainMenuItem[] items, string debug = null, float spacing = _defaultVerticalSpacing)
+	public static void redraw(MainMenuItemArray current, string debug = null, float spacing = _defaultVerticalSpacing)
     {
+		if (current == MainMenuManager.get().chapterSelectionItems)
+			return;
         // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
         if (!string.IsNullOrEmpty(debug))
         {
             // Debug.Log(this.GetType() + " redraw "+debug);
         }
-        if (items.Length != 0)
+		if (current._items.Length != 0)
         {
-            Vector2 nextRelativeOffset = items[0].anchor.relativeOffset;
-            foreach (MainMenuItem item in items)
+			Vector2 nextRelativeOffset = current._items[0].anchor.relativeOffset;
+			foreach (MainMenuItem item in current._items)
             {
                 item.gameObject.SetActive(item.displayed);
                 if (!string.IsNullOrEmpty(debug))
@@ -334,7 +338,7 @@ public class MainMenuManager : MonoBehaviour
     private void redraw()
     {
         // Debug.Log(this.GetType() + " redraw");
-        MainMenuManager.redraw(_items, null, _verticalSpacing);
+        MainMenuManager.redraw(_current, null, _verticalSpacing);
     }
 
     private MainMenuItemArray[] arrays;
@@ -359,7 +363,7 @@ public class MainMenuManager : MonoBehaviour
             array.gameObject.SetActive(array == toActivate);
 //            Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
         }
-        copyItemsFrom(toActivate);
+		_current = toActivate;
         selectItem(0);
     }
 
@@ -395,7 +399,7 @@ public class MainMenuManager : MonoBehaviour
         }
         activateArray(toActivate);
     }
-
+	/*
     private void copyItemsFrom(MainMenuItemArray array)
     {
         // Debug.Log(string.Format("copyItemsFrom({0})", array.ToString()));
@@ -405,13 +409,13 @@ public class MainMenuManager : MonoBehaviour
             // Debug.Log(string.Format("_items[{0}]={1}", index.ToString(), array._items[index].ToString()));
             _items[index] = array._items[index];
         }
-    }
+    }*/
 
     public bool escape()
     {
         // Debug.Log(this.GetType() + " escape");
         BackMainMenuItem bmmi;
-        foreach (MainMenuItem item in _items)
+        foreach (MainMenuItem item in _current._items)
         {
             bmmi = item as BackMainMenuItem;
             if (null != bmmi)
@@ -444,7 +448,11 @@ public class MainMenuManager : MonoBehaviour
         // Debug.Log(this.GetType() + " open");
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
         gameObject.SetActive(true);
+		#if CHAPTER_SELECT_BUILD
+		switchTo(MainMenuScreen.CHAPTERSELECTION);
+		#else
         switchTo(MainMenuScreen.DEFAULT);
+		#endif
         cullingMaskHandler.showMainMenu(true);
     }
 

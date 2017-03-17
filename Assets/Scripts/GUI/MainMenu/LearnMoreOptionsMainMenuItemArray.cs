@@ -44,15 +44,15 @@ public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray
                 case RuntimePlatform.OSXEditor:
                     // Debug.Log(this.GetType() + " setPlatform Editor/Standalone prepares choices");
                     //hide "same tab" option
-                    MainMenuManager.setVisibility(_items, sameTabKey, false, "setPlatform");
+                    MainMenuManager.setVisibility(this, sameTabKey, false, "setPlatform");
                     //rename "new tab" into "open in browser"
-                    MainMenuManager.replaceTextBy(newTabKey, browserKey, _items, "setPlatform");
+                    MainMenuManager.replaceTextBy(newTabKey, browserKey, this, "setPlatform");
                     break;
                 default:
                     // Debug.Log(this.GetType() + " setPlatform default nothing to do");
-                    MainMenuManager.setVisibility(_items, sameTabKey, true, "setPlatform");
+                    MainMenuManager.setVisibility(this, sameTabKey, true, "setPlatform");
                     //rename "open in browser tab" into "new tab"
-                    MainMenuManager.replaceTextBy(browserKey, newTabKey, _items, "setPlatform");
+                    MainMenuManager.replaceTextBy(browserKey, newTabKey, this, "setPlatform");
                     break;
             }
             isPlatformSet = true;

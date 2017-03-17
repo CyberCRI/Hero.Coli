@@ -739,7 +739,7 @@ public class GameStateController : MonoBehaviour
         EnemiesManager.reset();
         I18n.reset();
 
-        SceneManager.LoadScene(_masterScene);
+		SceneManager.LoadScene (_masterScene);
     }
 
     public void FadeScreen(bool fade, float speed)
