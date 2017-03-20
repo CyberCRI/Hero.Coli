@@ -70,15 +70,22 @@ public class MainMenuManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public MainMenuItemArray _current;
+    private MainMenuItemArray _current;
 
-    public MainMenuItemArray mainMenuItems;
-    public MainMenuItemArray settingsItems;
-    public MainMenuItemArray controlItems;
-    public MainMenuItemArray languageItems;
-    public MainMenuItemArray soundItems;
-	public MainMenuItemArray chapterSelectionItems;
-    public LearnMoreOptionsMainMenuItemArray learnMoreItems;
+    [SerializeField]
+    private MainMenuItemArray mainMenuItems;
+    [SerializeField]
+    private MainMenuItemArray settingsItems;
+    [SerializeField]
+    private MainMenuItemArray controlItems;
+    [SerializeField]
+    private MainMenuItemArray languageItems;
+    [SerializeField]
+    private MainMenuItemArray soundItems;
+    [SerializeField]
+	private MainMenuItemArray chapterSelectionItems;
+    [SerializeField]
+    private LearnMoreOptionsMainMenuItemArray learnMoreItems;
 
     [SerializeField]
     private ParticleSystemFeedback _feedback;
@@ -91,7 +98,7 @@ public class MainMenuManager : MonoBehaviour
 
     private const string _menuKeyPrefix = "MENU.";
     public const string newGameKey = _menuKeyPrefix + "NEWGAME";
-    public const string resumeKey = _menuKeyPrefix + "RESUME";
+    private const string resumeKey = _menuKeyPrefix + "RESUME";
     private const string _restartKey = _menuKeyPrefix + "RESTART";
     public enum MainMenuScreen
     {
