@@ -21,6 +21,7 @@ public class PlatformMvt : MonoBehaviour
     private Vector3 savePos;
     private Vector3 newPos;
     private const float _distanceThreshold = 0.002f;
+    private Coroutine _currentMoveCoroutine;
 
     // Use this for initialization
     void Start()
@@ -71,7 +72,7 @@ public class PlatformMvt : MonoBehaviour
         }
 
         yield return new WaitForSeconds(pause);
-        StartCoroutine(move(pause, loop));
+        _currentMoveCoroutine = StartCoroutine(move(pause, loop));
 
         yield return true;
     }
@@ -106,6 +107,25 @@ public class PlatformMvt : MonoBehaviour
     public void clearWaypoints()
     {
         points.Clear();
+    }
+
+    public void setToEnd()
+    {
+        // Debug.Log(this.GetType() + " setToEnd()");
+        Vector3 destination = points[points.Count-1].transform.position;
+        // Debug.Log(this.GetType() + " setToEnd() destination=" + destination);
+        if (null != _currentMoveCoroutine)
+        {
+            // Debug.Log(this.GetType() + " setToEnd() null != _currentMoveCoroutine");
+            StopCoroutine(_currentMoveCoroutine);
+        }
+        else
+        {
+            // Debug.Log(this.GetType() + " setToEnd() null == _currentMoveCoroutine");
+        }
+        // Debug.Log(this.GetType() + " setToEnd() transform.position = destination;");
+        transform.position = destination;
+        // Debug.Log(this.GetType() + " setToEnd() done");
     }
 
 }

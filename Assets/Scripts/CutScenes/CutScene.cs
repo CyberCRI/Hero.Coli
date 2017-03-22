@@ -25,7 +25,7 @@ public abstract class CutScene : CutSceneElements
     public bool reinstantiateOnTrigger()
     {
         return _reinstantiateOnTrigger;
-    } 
+    }
 
     // must be implemented in each cut scene
     public abstract void initialize();
@@ -40,7 +40,7 @@ public abstract class CutScene : CutSceneElements
         _isPlaying = false;
     }
 
-    void  Start()
+    void Start()
     {
         // cut scene initialization
         initialize();
@@ -141,4 +141,6 @@ public abstract class CutScene : CutSceneElements
     {
         _cullingMaskHandler.hideInterface(value);
     }
+
+    public virtual void setToEnd() { }
 }

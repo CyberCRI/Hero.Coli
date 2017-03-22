@@ -17,15 +17,7 @@ public class CutSceneInstantiator : CutSceneElements
     {
         if (col.tag == _triggerTag)
         {
-            if ((null == _instantiatedCutSceneScript) || (null == _instantiatedCutSceneScript.gameObject || _instantiatedCutSceneScript.reinstantiateOnTrigger()))
-            {
-                if (null != _instantiatedCutSceneGameObject)
-                {
-                    Destroy(_instantiatedCutSceneGameObject);
-                }
-                _instantiatedCutSceneGameObject = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
-                _instantiatedCutSceneScript = _instantiatedCutSceneGameObject.GetComponentInChildren<CutScene>();
-            }
+            instantiateIfNeeded();
         }
 
         if (!_isResetCameraSaved)
@@ -42,6 +34,29 @@ public class CutSceneInstantiator : CutSceneElements
             _cutSceneCameraUI.enabled = false;
             _blackBar.closeBar(false);
             _cellControl.freezePlayer(false);
+        }
+    }
+
+    private void instantiateIfNeeded()
+    {
+        if ((null == _instantiatedCutSceneScript) || (null == _instantiatedCutSceneScript.gameObject || _instantiatedCutSceneScript.reinstantiateOnTrigger()))
+        {
+            if (null != _instantiatedCutSceneGameObject)
+            {
+                Destroy(_instantiatedCutSceneGameObject);
+            }
+            _instantiatedCutSceneGameObject = (GameObject)Instantiate(_cutScenePrefab, _originTransform.position, _originTransform.rotation);
+            _instantiatedCutSceneScript = _instantiatedCutSceneGameObject.GetComponentInChildren<CutScene>();
+        }
+    }
+
+    public void instantiateAndSetToEnd()
+    {
+        instantiateIfNeeded();
+
+        if (null != _instantiatedCutSceneScript)
+        {
+            _instantiatedCutSceneScript.setToEnd();
         }
     }
 }

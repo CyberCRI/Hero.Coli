@@ -133,5 +133,23 @@ public class PursuitCutScene : CutScene
         setMainCamCopy(3);
         yield return null;
     }
+
+    public override void setToEnd()
+    {
+        // Debug.Log(this.GetType() + " setToEnd()");
+        PlatformMvt movement = _badGuy.GetComponent<PlatformMvt>();
+        if (null != movement)
+        {
+            // Debug.Log(this.GetType() + " setToEnd() null != movement");
+            movement.setToEnd();
+        }
+        BigBadGuy bbg = _badGuy.GetComponent<BigBadGuy>();
+        if (null != bbg)
+        {
+            // Debug.Log(this.GetType() + " setToEnd() null != bbg");
+            bbg.setDead();
+        }
+        // Debug.Log(this.GetType() + " setToEnd() done");
+    }
 #endif
 }

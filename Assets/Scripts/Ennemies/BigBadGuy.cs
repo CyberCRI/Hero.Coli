@@ -22,6 +22,7 @@ public class BigBadGuy : MonoBehaviour
     private float _blinkSpeed;
     private slowDown _slowDown;
     private bool _isDying = false;
+    private GameObject _corpse;
 
     void Awake()
     {
@@ -144,14 +145,29 @@ public class BigBadGuy : MonoBehaviour
             slowDown.percentage -= Time.deltaTime * deathSpeed;
             yield return null;
         }
-        GameObject instance = (GameObject)Instantiate(_deadBigBadGuy, this.transform.position, this.transform.rotation);
-        instance.transform.SetParent(this.transform.parent);
-        this.gameObject.SetActive(false);
+        setDead();
         yield return null;
     }
 
     public void wakeUp(bool value)
     {
         _isSleeping = !value;
+    }
+
+    public void setDead()
+    {
+        // Debug.Log(this.GetType() + " setDead");
+        if (null == _corpse)
+        {
+            // Debug.Log(this.GetType() + " null == _corpse");
+            _corpse = (GameObject)Instantiate(_deadBigBadGuy, Vector3.zero, this.transform.rotation);
+            _corpse.transform.SetParent(this.transform.parent);
+        }
+        // else
+        // {
+        //     Debug.Log(this.GetType() + " null != _corpse");
+        // }
+        _corpse.transform.position = this.transform.position;
+        this.gameObject.SetActive(false);
     }
 }
