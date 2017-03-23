@@ -6,6 +6,8 @@ public class ToCraftButton : ExternalOnPressButton
     {
         if (isPressed)
         {
+            // TODO isOpenable should return why it's not openable
+            // and the reason should be switch-case'd 
             if (CraftZoneManager.isOpenable())
             {
                 // Debug.Log(this.GetType() + " OnPress()");
@@ -13,7 +15,14 @@ public class ToCraftButton : ExternalOnPressButton
             }
             else
             {
-                ModalManager.setModal("NoCraftWhileDamage");
+                if(Hero.isInjured)
+                {
+                    ModalManager.setModal("NoCraftWhileDamage");
+                }
+                else
+                {
+                    ModalManager.setModal("NoBricksYet");
+                }
             }
         }
     }
