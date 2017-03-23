@@ -35,6 +35,7 @@ public class Zone2WallCutScene : CutScene
 
     public override void initialize()
     {
+        // Debug.Log(this.GetType() + " initialize");
         _initialized = true;
     }
 
@@ -46,6 +47,7 @@ public class Zone2WallCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
+        // Debug.Log(this.GetType() + " OnTriggerEnter");
         if (_initialized && col.tag == "Door")
         {
             if (!_played)
@@ -54,7 +56,7 @@ public class Zone2WallCutScene : CutScene
                 _played = true;
             }
         }
-        if (col.tag == "CutSceneElement")
+        else if (col.tag == "CutSceneElement")
         {
             Destroy(col.gameObject);
         }
@@ -62,6 +64,7 @@ public class Zone2WallCutScene : CutScene
 
     void startEscape(PlatformMvt _pltMvt, float speed)
     {
+        // Debug.Log(this.GetType() + " startEscape");
         _pltMvt.points.Remove(_pltMvt.points[3]);
         for (int i = 0; i < 3; i++)
         {
@@ -74,6 +77,7 @@ public class Zone2WallCutScene : CutScene
 
     public override void startCutScene()
     {
+        // Debug.Log(this.GetType() + " startCutScene");
         startEscape(_pltMvt2Flagellum, _bacterium1Speed);
         StartCoroutine(waitForSecondBacterium());
     }
