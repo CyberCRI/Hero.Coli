@@ -2,6 +2,7 @@
 
 public class NanobotsPickUpHandler : MonoBehaviour
 {
+    public static string nanobotTag = "NanoBot";
     private static NanobotsCounter _nanoCounter;
     private static int _pickedUpNumber = 0;
 
@@ -26,6 +27,7 @@ public class NanobotsPickUpHandler : MonoBehaviour
     public static void reset()
     {
         _nanoCounter = null;
+        NanobotsCounter.reset();
         _pickedUpNumber = 0;
     }
 

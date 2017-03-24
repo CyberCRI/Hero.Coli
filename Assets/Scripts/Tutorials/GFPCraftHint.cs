@@ -35,15 +35,16 @@ public class GFPCraftHint : MonoBehaviour
 
     public void next()
     {
+        // Debug.Log(this.GetType() + " next to step " + (step + 1));
         prepared = false;
         step++;
     }
-    
+
     void Awake()
     {
-        for(int index = 0; index < textHints.Length; index++)
+        for (int index = 0; index < textHints.Length; index++)
         {
-            textHints[index] = _textKeyPrefix+index;
+            textHints[index] = _textKeyPrefix + index;
         }
     }
 
@@ -63,13 +64,13 @@ public class GFPCraftHint : MonoBehaviour
                     GameObject go = GameObject.Find(focusObjects[step]);
                     if (null == go)
                     {
-                        Debug.LogError("GFPCraftHint: GameObject not found: "+focusObjects[step]);
+                        Debug.LogError(this.GetType() + " GameObject not found at step " + step + " : " + focusObjects[step]);
                         next();
                     }
                     else
                     {
                         ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                        if(null != target)
+                        if (null != target)
                         {
                             FocusMaskManager.get().focusOn(target, next, textHints[step]);
                         }
@@ -78,7 +79,7 @@ public class GFPCraftHint : MonoBehaviour
                             FocusMaskManager.get().focusOn(go, next, textHints[step], true);
                         }
                         prepared = true;
-                        }
+                    }
                 }
             }
         }

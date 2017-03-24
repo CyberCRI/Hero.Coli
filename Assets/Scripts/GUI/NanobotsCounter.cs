@@ -1,26 +1,37 @@
 ﻿using UnityEngine;
 
-public class NanobotsCounter : MonoBehaviour {
-
+public class NanobotsCounter : MonoBehaviour
+{
     [SerializeField]
     private UILabel _label;
-    private int _totalNanobots;
-    private int actualNumNanoBot;
+    private static int _totalNanobotCount;
+    private int _currentNanobotCount;
 
-	// Use this for initialization
-	void Start () {
-        _totalNanobots = GameObject.FindGameObjectsWithTag("NanoBot").Length;
+    public static void reset()
+    {
+        _totalNanobotCount = 0;
+    }
+
+    public static void initialize()
+    {
+        _totalNanobotCount = GameObject.FindGameObjectsWithTag(NanobotsPickUpHandler.nanobotTag).Length;
+        // Debug.Log("NanobotsCounter initializeCounter _totalNanobots=" + _totalNanobotCount);
+    }
+
+    // Use this for initialization
+    void Start()
+    {
         updateLabel(0);
     }
 
-    public void updateLabel(int numNanoBots)
+    public void updateLabel(int nanobotCount)
     {
-        _label.text = numNanoBots.ToString() + "/" + _totalNanobots.ToString();
-        actualNumNanoBot = numNanoBots;
+        _label.text = nanobotCount.ToString() + "/" + _totalNanobotCount.ToString();
+        _currentNanobotCount = nanobotCount;
     }
 
-    public int GetNanoCount()
+    public int getNanobotCount()
     {
-        return actualNumNanoBot;
+        return _currentNanobotCount;
     }
 }

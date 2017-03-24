@@ -473,6 +473,7 @@ public class GameStateController : MonoBehaviour
                     }
                     else if (Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                     {
+                        // Debug.Log(this.GetType() + " MainMenu Return/KeypadEnter");
                         mainMenu.getCurrentItem().click();
                     }
                     else if (Input.GetKeyDown(KeyCode.Escape))
@@ -566,7 +567,10 @@ public class GameStateController : MonoBehaviour
                                     //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
                                     // }
                                     // else 
-                                    if ((isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter)) && canPressCraftShortcut())
+                                    if (
+                                        (isShortcutKeyDown(_craftingKey) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter)) && canPressCraftShortcut()
+                                        && canPressCraftShortcut()
+                                        )
                                     {
                                         // Debug.Log(this.GetType() + " Update out of craft key pressed");
                                         gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);

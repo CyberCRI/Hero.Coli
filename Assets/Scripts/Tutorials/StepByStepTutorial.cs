@@ -87,10 +87,10 @@ public abstract class StepByStepTutorial : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + "Start");
-        if (null == focusMaskManager)
-        {
+        // if (null == focusMaskManager)
+        // {
             focusMaskManager = FocusMaskManager.get();
-        }
+        // }
     }
 
     // Update is called once per frame
@@ -106,7 +106,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
                     GameObject go = GameObject.Find(focusObjects[step]);
                     if (go == null)
                     {
-                        Debug.LogError(this.GetType() + " couldn't find " + focusObjects[step]);
+                        Debug.LogError(this.GetType() + " GameObject not found at step " + step + " : " + focusObjects[step]);
                         next();
                     }
                     else

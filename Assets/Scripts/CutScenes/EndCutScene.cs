@@ -76,7 +76,7 @@ public class EndCutScene : CutScene
 
     void checkForNext()
     {
-        if (iteration < _nanoCounter.GetNanoCount())
+        if (iteration < _nanoCounter.getNanobotCount())
         {
             // Debug.Log(_nanoCounter.GetNanoCount());
             iteration++;
@@ -130,7 +130,7 @@ public class EndCutScene : CutScene
 
     IEnumerator goOneByOne()
     {
-        while (iteration < _nanoCounter.GetNanoCount())
+        while (iteration < _nanoCounter.getNanobotCount())
         {
             yield return new WaitForSeconds(1.5f);
             NPCs[iteration].GetComponent<PlatformMvt>().enabled = true;

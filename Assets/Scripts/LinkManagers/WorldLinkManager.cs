@@ -28,12 +28,12 @@ public class WorldLinkManager : LinkManager
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -46,13 +46,13 @@ public class WorldLinkManager : LinkManager
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
         }
@@ -82,11 +82,11 @@ public class WorldLinkManager : LinkManager
 
     public override void initialize()
     {
-        base.initialize ();
+        base.initialize();
 
         activateAllInArray(false);
 
-        if(null != _assetsLibrary)
+        if (null != _assetsLibrary)
         {
             _assetsLibrary.SetActive(false);
         }
@@ -94,24 +94,34 @@ public class WorldLinkManager : LinkManager
 
     public override void finishInitialize()
     {
-        base.finishInitialize ();
 
-		GameObject perso = Hero.get().gameObject;
-		if (null == perso)
-		{
-			Debug.LogError(this.GetType() + " Hero not found!");
-		}
-		teleporter.init ();
-		GameObject go = GameObject.Find("StartZoneSetter");
-		if(null != go)
-		{
-			go.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
-		}
-		teleporter.teleport (MemoryManager.get().checkpointIndex);
-		// We reset the checkpointindex at its default value since we no longer need it after a teleportation
-		MemoryManager.get ().checkpointIndex = 0;
+        base.finishInitialize();
 
-		/*
+        GameObject perso = Hero.get().gameObject;
+        if (null == perso)
+        {
+            Debug.LogError(this.GetType() + " Hero not found!");
+        }
+
+        // activate all map
+        teleporter.activateAll(true);
+        NanobotsCounter.initialize();
+        teleporter.initialize();
+        // deactivate all map
+        teleporter.activateAll(false);
+
+        // TODO remove StartZoneSetter
+        // GameObject go = GameObject.Find("StartZoneSetter");
+        // if (null != go)
+        // {
+        //     go.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
+        // }
+
+        teleporter.teleport(MemoryManager.get().checkpointIndex);
+        // We reset the checkpointindex at its default value since we no longer need it after a teleportation
+        MemoryManager.get().checkpointIndex = 0;
+
+        /*
 		if (null != startPosition)
 		{
 			CellControl.get(gameObjectName).teleport(startPosition.transform.position, startPosition.transform.rotation);
@@ -119,12 +129,12 @@ public class WorldLinkManager : LinkManager
 		}
 		*/
 
-		//specific code for adventure1
-		if (null != rfpTutorialTrigger && null != perso)
-		{
-			rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
-		}
+        //specific code for adventure1
+        if (null != rfpTutorialTrigger && null != perso)
+        {
+            rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
+        }
 
-		GameStateController.get().teleporter = teleporter;
+        GameStateController.get().teleporter = teleporter;
     }
 }
