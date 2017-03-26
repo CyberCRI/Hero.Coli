@@ -6,87 +6,56 @@ public class GFPCraftHint : FakeStepByStepTutorial { }
 
 #else
 
-using UnityEngine;
-
-// TODO inherit StepByStepTutorial
-public class GFPCraftHint : MonoBehaviour
+public class GFPCraftHint : StepByStepTutorial
 {
-
-    private int step = 0;
-    private bool prepared = false;
-
-    private const string _craftButton = "CraftButton";
-    private const string _listedPrefix = "Listed";
-    private const string _device1 = "PRCONS:RBS3:MOV:DTER";
-    private const string _device2 = "PRCONS:RBS2:MOV:DTER";
-    private const string _GFPdevice = "PRCONS:RBS2:FLUO1:DTER";
-    private const string _MOVbrick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "MOV";
-    private const string _GFPbrick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "FLUO1";
-    private const string _craftWindow = "CraftPanelSprite";
-    private const string _exitCross = "CraftCloseButton";
-    private const string _textKeyPrefix = "HINT.GFPCRAFT.";
-    private const string _craftResultPrefix = "c_";
-    private const string _backgroundSuffix = "Background";
-
+    private const string _textKeyPrefix = _genericTextKeyPrefix + "GFPCRAFT.";
+    protected override string textKeyPrefix
+    {
+        get
+        {
+            return _textKeyPrefix;
+        }
+    }
     private const int _stepCount = 6;
-    private string[] focusObjects = new string[_stepCount] { _craftButton, _listedPrefix + _device1, _MOVbrick, _GFPbrick, _craftResultPrefix + _GFPdevice + _backgroundSuffix, _exitCross };
-
-    private string[] textHints = new string[_stepCount];
-
-    public void next()
+    protected override int stepCount
     {
-        // Debug.Log(this.GetType() + " next to step " + (step + 1));
-        prepared = false;
-        step++;
-    }
-
-    void Awake()
-    {
-        for (int index = 0; index < textHints.Length; index++)
+        get
         {
-            textHints[index] = _textKeyPrefix + index;
+            return _stepCount;
+        }
+    }
+    private string[] _focusObjects = new string[_stepCount] {
+        _craftButton,
+        _listedPrefix + _moveDevice1,
+        _MOVbrick,
+        _GFPbrick,
+        _craftResultPrefix + _GFPdevice1 + _backgroundSuffix,
+        _exitCross
+        };
+    protected override string[] focusObjects
+    {
+        get
+        {
+            return _focusObjects;
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private bool _isMoveDevice1, _isMoveDevice2;
+    protected override bool skipStep(int step)
     {
-        if (step < focusObjects.Length)
+        return (1 == step) && (_isMoveDevice1 || _isMoveDevice2);
+    }
+    protected override void prepareStep(int step)
+    {
+        if (0 == step)
         {
-            if (!prepared)
-            {
-                if ((1 == step) && (CraftFinalizer.get().isEquiped(_device1) || CraftFinalizer.get().isEquiped(_device2)))
-                {
-                    next();
-                }
-                else
-                {
-                    GameObject go = GameObject.Find(focusObjects[step]);
-                    if (null == go)
-                    {
-                        Debug.LogError(this.GetType() + " GameObject not found at step " + step + " : " + focusObjects[step]);
-                        next();
-                    }
-                    else
-                    {
-                        ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                        if (null != target)
-                        {
-                            FocusMaskManager.get().focusOn(target, next, textHints[step]);
-                        }
-                        else
-                        {
-                            FocusMaskManager.get().focusOn(go, next, textHints[step], true);
-                        }
-                        prepared = true;
-                    }
-                }
-            }
+            _isMoveDevice1 = CraftFinalizer.get().isEquiped(_moveDevice1);
+            _isMoveDevice2 = CraftFinalizer.get().isEquiped(_moveDevice2);
         }
-        else
+        else if (2 == step && _isMoveDevice2)
         {
-            FocusMaskManager.get().stopFocusOn();
-            Destroy(this);
+            _focusObjects[4] = _craftResultPrefix + _GFPdevice2 + _backgroundSuffix;
         }
     }
 }

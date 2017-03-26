@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class AvailableDisplayedBioBrick : DisplayedBioBrick {
-    
+public class AvailableDisplayedBioBrick : DisplayedBioBrick
+{
     [SerializeField]
     protected UISprite _noneLeftSprite;
     [SerializeField]
@@ -11,81 +11,83 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick {
     [SerializeField]
     private GameObject _amountBackground;
 
-    private static CraftZoneManager       _craftZoneManager;
+    private static CraftZoneManager _craftZoneManager;
 
-  /*TODO
-   *automatically choose name:
-   *    1 if Device already exists: name it like real one
-   *    2 else name it with methodology
-   *    3 else name it with fun name or device0/1/2/3/4...
-   *if player creates already existing device
-   *    select this already existing device
-   */
+    /*TODO
+     *automatically choose name:
+     *    1 if Device already exists: name it like real one
+     *    2 else name it with methodology
+     *    3 else name it with fun name or device0/1/2/3/4...
+     *if player creates already existing device
+     *    select this already existing device
+     */
 
-  protected const string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
-  public const string _availableDisplayedPrefix = "AvailableDisplayed";
+    protected const string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+    public const string _availableDisplayedPrefix = "AvailableDisplayed";
 
-  public static AvailableDisplayedBioBrick Create(
-   Transform parentTransform,
-   Vector3 localPosition,
-   BioBrick biobrick
-   )
-  {
-    Object prefab = Resources.Load(_prefabURIAvailable);
-    if(_craftZoneManager == null) {
-      _craftZoneManager = CraftZoneManager.get();
+    public static AvailableDisplayedBioBrick Create(
+     Transform parentTransform,
+     Vector3 localPosition,
+     BioBrick biobrick
+     )
+    {
+        Object prefab = Resources.Load(_prefabURIAvailable);
+        if (_craftZoneManager == null)
+        {
+            _craftZoneManager = CraftZoneManager.get();
+        }
+
+        // Debug.Log("AvailableDisplayedBioBrick Create(parentTransform="+parentTransform
+        //   + ", localPosition="+localPosition
+        //   + ", biobrick="+biobrick
+        //   );
+
+        AvailableDisplayedBioBrick result = (AvailableDisplayedBioBrick)DisplayedBioBrick.Create(
+          parentTransform
+          , localPosition
+          , biobrick
+          , prefab
+          );
+
+        result.name = _availableDisplayedPrefix + biobrick.getName();
+
+        result.Initialize();
+
+        return result;
     }
 
-    // Debug.Log("AvailableDisplayedBioBrick Create(parentTransform="+parentTransform
-    //   + ", localPosition="+localPosition
-    //   + ", biobrick="+biobrick
-    //   );
+    public void Initialize()
+    {
+        if (BioBrick.isUnlimited)
+        {
+            Destroy(_amountLabel.gameObject);
+            Destroy(_amountBackground);
+        }
+    }
 
-    AvailableDisplayedBioBrick result = (AvailableDisplayedBioBrick)DisplayedBioBrick.Create(
-      parentTransform
-      ,localPosition
-      ,biobrick
-      ,prefab
-      );
-      
-      result.name = _availableDisplayedPrefix+biobrick.getName();
+    public void Update()
+    {
+        if (_amountLabel != null)
+            _amountLabel.text = _biobrick.amount.ToString();
+        setNoneLeftIndicators(0 >= _biobrick.amount);
+    }
 
-      result.Initialize();
+    private void setNoneLeftIndicators(bool isActive)
+    {
+        _noneLeftSprite.gameObject.SetActive(isActive);
+        _noneLeftLabel.gameObject.SetActive(isActive);
+    }
 
-    return result;
- }
-    
-public void Initialize()
-{
-      if(BioBrick.isUnlimited)
-      {
-          Destroy(_amountLabel.gameObject);
-          Destroy(_amountBackground);
-      }
-}
- 
- public void Update()
- {
-    if(_amountLabel != null)
-        _amountLabel.text = _biobrick.amount.ToString();
-     setNoneLeftIndicators(0 >= _biobrick.amount);
- }
- 
- private void setNoneLeftIndicators(bool isActive)
- {
-     _noneLeftSprite.gameObject.SetActive(isActive);
-     _noneLeftLabel.gameObject.SetActive(isActive);
- }
+    public void display(bool enabled)
+    {
+        gameObject.SetActive(enabled);
+    }
 
-  public void display(bool enabled) {
-    gameObject.SetActive(enabled);
-  }
-
-  protected override void setJigsawSprite()
-  {
-      base.setJigsawSprite();
-      _noneLeftSprite.spriteName = _jigsawSprite.spriteName;
-  }
+    protected override void setJigsawSprite()
+    {
+        base.setJigsawSprite();
+        _noneLeftSprite.spriteName = _jigsawSprite.spriteName;
+    }
 
     public override void OnPress(bool isPressed)
     {
@@ -104,7 +106,7 @@ public void Initialize()
                 {
                     //Debug.LogError("_biobrick.amount > 0");
                     _craftZoneManager.replaceWithBioBrick(_biobrick);
-                    RedMetricsManager.get ().sendRichEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.BIOBRICK, _biobrick.getInternalName()));
+                    RedMetricsManager.get().sendRichEvent(TrackingEvent.ADD, new CustomData(CustomDataTag.BIOBRICK, _biobrick.getInternalName()));
                 }
                 else
                 {

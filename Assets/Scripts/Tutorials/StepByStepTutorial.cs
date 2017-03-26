@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class StepByStepTutorial : MonoBehaviour
 {
 
-    private int step = 0;
+    private int _step = 0;
     private bool prepared = false;
     private float waited = 0;
     private const float waitedThreshold = 0f;
@@ -16,24 +16,26 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _bioBrickIconBackgroundSuffix = "BioBrickIconBackground";
     protected const string _exitCross = "CraftCloseButton";
 
-    protected const string _availableDisplayedPrefix = AvailableDisplayedBioBrick._availableDisplayedPrefix;
     protected const string _listedPrefix = "l_";
     protected const string _equippedPrefix = "e_";
     protected const string _craftResultPrefix = "c_";
     protected const string _moveDevice1 = "PRCONS:RBS3:MOV:DTER";
     protected const string _moveDevice2 = "PRCONS:RBS2:MOV:DTER";
     protected const string _moveDevice3 = "PRCONS:RBS1:MOV:DTER";
+    protected const string _GFPdevice1 = "PRCONS:RBS3:FLUO1:DTER";
+    protected const string _GFPdevice2 = "PRCONS:RBS2:FLUO1:DTER";
     protected const string _slotBaseName = "slot";
     protected const string _slotSelectionSpriteSuffix = "SelectionSprite";
     protected const string _craftSlot1 = _slotBaseName + "0" + _slotSelectionSpriteSuffix;
     protected const string _craftSlot2 = _slotBaseName + "1" + _slotSelectionSpriteSuffix;
-    protected const string _PBAD3Brick = _availableDisplayedPrefix + "PRBAD3";
-    protected const string _RBS2brick = _availableDisplayedPrefix + "RBS2";
-    protected const string _RBS1brick = _availableDisplayedPrefix + "RBS1";
-    protected const string _GFPbrick = _availableDisplayedPrefix + "FLUO1";
-    protected const string _terminatorBrick = _availableDisplayedPrefix + "DTER";
-    protected const string _PCONSBrickBackground = _availableDisplayedPrefix + "PRCONS" + _bioBrickIconBackgroundSuffix;
-    protected const string _PBAD3BrickBackground = _availableDisplayedPrefix + "PRBAD3" + _bioBrickIconBackgroundSuffix;
+    protected const string _PBAD3Brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "PRBAD3";
+    protected const string _RBS2brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "RBS2";
+    protected const string _RBS1brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "RBS1";
+    protected const string _MOVbrick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "MOV";
+    protected const string _GFPbrick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "FLUO1";
+    protected const string _terminatorBrick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "DTER";
+    protected const string _PCONSBrickBackground = AvailableDisplayedBioBrick._availableDisplayedPrefix + "PRCONS" + _bioBrickIconBackgroundSuffix;
+    protected const string _PBAD3BrickBackground = AvailableDisplayedBioBrick._availableDisplayedPrefix + "PRBAD3" + _bioBrickIconBackgroundSuffix;
 
     protected const string _genericTextKeyPrefix = "HINT.";
     private string[] textHints;
@@ -60,7 +62,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
         // Debug.Log(this.GetType() + " next");
         prepared = false;
         waited = 0f;
-        step++;
+        _step++;
     }
 
     void Awake()
@@ -89,42 +91,58 @@ public abstract class StepByStepTutorial : MonoBehaviour
         // Debug.Log(this.GetType() + "Start");
         // if (null == focusMaskManager)
         // {
-            focusMaskManager = FocusMaskManager.get();
+        focusMaskManager = FocusMaskManager.get();
         // }
     }
+
+    protected virtual bool skipStep(int step)
+    {
+        return false;
+    }
+
+    protected virtual void prepareStep(int step) {}
 
     // Update is called once per frame
     void Update()
     {
-        if (step < focusObjects.Length)
+        if (_step < focusObjects.Length)
         {
             if (waited >= waitedThreshold)
             {
                 if (!prepared)
                 {
-                    // Debug.Log(this.GetType() + " preparing step " + step + " searching for " + focusObjects[step]);
-                    GameObject go = GameObject.Find(focusObjects[step]);
-                    if (go == null)
+                    prepareStep(_step);
+
+                    if (skipStep(_step))
                     {
-                        Debug.LogError(this.GetType() + " GameObject not found at step " + step + " : " + focusObjects[step]);
                         next();
                     }
                     else
                     {
-                        // Debug.Log(this.GetType() + " go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
-                        ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
-                        if (null != target)
+                        // Debug.Log(this.GetType() + " preparing step " + step + " searching for " + focusObjects[step]);
+                        GameObject go = GameObject.Find(focusObjects[_step]);
+                        if (go == null)
                         {
-                            // Debug.Log(this.GetType() + " target != null at step=" + step);
-                            focusMaskManager.focusOn(target, next, textHints[step]);
+                            Debug.LogError(this.GetType() + " GameObject not found at step " + _step + ": " + focusObjects[_step]);
+                            next();
                         }
                         else
                         {
-                            // Debug.Log(this.GetType() + " target == null at step=" + step);
-                            focusMaskManager.focusOn(go, next, textHints[step], true);
+                            // Debug.Log(this.GetType() + " go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
+                            ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
+                            if (null != target)
+                            {
+                                // Debug.Log(this.GetType() + " target != null at step=" + step);
+                                focusMaskManager.focusOn(target, next, textHints[_step]);
+                            }
+                            else
+                            {
+                                // Debug.Log(this.GetType() + " target == null at step=" + step);
+                                focusMaskManager.focusOn(go, next, textHints[_step], true);
+                            }
+                            // Debug.Log(this.GetType() + " prepared step=" + step);
+                            prepared = true;
                         }
-                        // Debug.Log(this.GetType() + " prepared step=" + step);
-                        prepared = true;
                     }
                 }
 #if DEV
