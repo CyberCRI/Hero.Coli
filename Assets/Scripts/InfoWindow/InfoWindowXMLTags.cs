@@ -10,7 +10,6 @@ public static class InfoWindowXMLTags {
     WORLD = "world",
     EQUIP = "equip",
     CRAFT = "craft",
-    CRAFTTUTO = "crafttuto",
-    CRAFTTUTO2 = "crafttuto2"
+    RBS2CRAFTTUTORIAL = "rbs2crafttutorial"
     ;
 }

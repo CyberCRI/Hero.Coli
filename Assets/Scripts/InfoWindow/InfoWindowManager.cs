@@ -81,16 +81,14 @@ public class InfoWindowManager : MonoBehaviour
         GOTOWORLD,
         GOTOEQUIP,
         GOTOCRAFT,
-        GOTOCRAFTTUTO,
-        GOTOCRAFTTUTO2
+        RBS2CRAFTTUTORIAL
     }
 
     private Dictionary<string, NextAction> _actions = new Dictionary<string, NextAction>(){
     {InfoWindowXMLTags.WORLD, NextAction.GOTOWORLD},
     {InfoWindowXMLTags.EQUIP, NextAction.GOTOEQUIP},
     {InfoWindowXMLTags.CRAFT, NextAction.GOTOCRAFT},
-    {InfoWindowXMLTags.CRAFTTUTO, NextAction.GOTOCRAFTTUTO},
-    {InfoWindowXMLTags.CRAFTTUTO2, NextAction.GOTOCRAFTTUTO2}
+    {InfoWindowXMLTags.RBS2CRAFTTUTORIAL, NextAction.RBS2CRAFTTUTORIAL}
   };
 
     public static bool hasActivePanel()
@@ -194,17 +192,8 @@ public class InfoWindowManager : MonoBehaviour
                 // Debug.Log("InfoWindowManager next GOTOCRAFT");
                 GUITransitioner.get().GoToScreen(GUITransitioner.GameScreen.screen3);
                 break;
-            case NextAction.GOTOCRAFTTUTO:
-                // Debug.Log("InfoWindowManager next GOTOCRAFTTUTO");
-                CraftHint hint = Hero.get().gameObject.GetComponent<CraftHint>();
-                if (null == hint)
-                {
-                    hint = Hero.get().gameObject.AddComponent<CraftHint>();
-                }
-                hint.bricks++;
-                break;
-            case NextAction.GOTOCRAFTTUTO2:
-                // Debug.Log("InfoWindowManager next GOTOCRAFTTUTO2");
+            case NextAction.RBS2CRAFTTUTORIAL:
+                // Debug.Log("InfoWindowManager next RBS2CRAFTTUTORIAL");
                 Hero.get().gameObject.AddComponent<RBS2CraftHint>();
                 break;
             default:
