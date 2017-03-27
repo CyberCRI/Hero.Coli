@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class AvailableBioBricksManager : MonoBehaviour
 {
 
-
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "BioBrickInventory";
     private static AvailableBioBricksManager _instance;
@@ -18,12 +17,12 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         return _instance;
     }
-    
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
-        if((_instance != null) && (_instance != this))
-        {            
+        if ((_instance != null) && (_instance != this))
+        {
             Debug.LogError(this.GetType() + " has two running instances");
         }
         else
@@ -36,13 +35,13 @@ public class AvailableBioBricksManager : MonoBehaviour
     void OnDestroy()
     {
         // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
-       _instance = (_instance == this) ? null : _instance;
+        _instance = (_instance == this) ? null : _instance;
     }
 
-    private bool _initialized = false;  
+    private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        if(!_initialized)
+        if (!_initialized)
         {
             _initialized = true;
             initialize();
@@ -55,27 +54,29 @@ public class AvailableBioBricksManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-   // [SerializeField]
-   // private string[] _allBioBrickFiles;
+    [SerializeField]
+    private BiobrickListData _allBioBricksData;
 
-    //Parameters/BioBricks/availablebiobricks
-   // [SerializeField]
-   // private string[] _availableBioBrickFiles;
-   // [SerializeField]
-    //private string biobrickFilesPathPrefix;
+    private CheckPointData _availableBioBricksData;
 
-	[SerializeField]
-	private BiobrickListData _allBioBricksData;
+    public CheckPointData availableBioBrickData
+    {
+        set
+        {
+            // Debug.Log(this.GetType() + " availableBioBrickData set value=" + value);
+            _availableBioBricksData = value;
+            _availableBioBricks.Clear();
+            loadAvailableBioBricks();
+        }
+    }
 
-	private CheckPointData _availableBioBricksData;
-
-	public CheckPointData availableBioBrickData {
-		set {
-			_availableBioBricksData = value;
-			_availableBioBricks.Clear ();
-			loadAvailableBioBricks ();
-		}
-	}
+    public void logAvailableBioBrickData()
+    {
+        string debugString = this.GetType() + " logAvailableBioBrickData bricks=[";
+        debugString += Logger.ToString<BioBrick>(_availableBioBricks);
+        debugString += "]";
+        Logger.Log(debugString);
+    }
 
     // the panel on which the BioBricks will be drawn
     public GameObject bioBricksPanel;
@@ -91,13 +92,6 @@ public class AvailableBioBricksManager : MonoBehaviour
     LinkedList<AvailableDisplayedBioBrick> _displayedBioBricks = new LinkedList<AvailableDisplayedBioBrick>();
 
     //biobrick data catalog
-    /*
-     * TODO use for optimization
-    private static LinkedList<PromoterBrick>        _availablePromoters   = new LinkedList<PromoterBrick>();
-    private static LinkedList<RBSBrick>             _availableRBS         = new LinkedList<RBSBrick>();
-    private static LinkedList<GeneBrick>            _availableGenes       = new LinkedList<GeneBrick>();
-    private static LinkedList<TerminatorBrick>      _availableTerminators = new LinkedList<TerminatorBrick>();
-    */
     private LinkedList<BioBrick> _allBioBricks = new LinkedList<BioBrick>();
     private LinkedList<BioBrick> _availableBioBricks = new LinkedList<BioBrick>();
 
@@ -115,20 +109,20 @@ public class AvailableBioBricksManager : MonoBehaviour
         _availableBioBricks.Clear();
 
         destroyAllAvailableDisplayedBioBricks();
-        
+
         initializeDummies();
     }
-    
+
     void destroyAllAvailableDisplayedBioBricks(LinkedList<AvailableDisplayedBioBrick> bricks)
     {
-        foreach(AvailableDisplayedBioBrick brick in bricks)
+        foreach (AvailableDisplayedBioBrick brick in bricks)
         {
             //Debug.LogError("destroying "+brick.gameObject.name);
             Destroy(brick.gameObject);
         }
         bricks.Clear();
     }
-    
+
     void destroyAllAvailableDisplayedBioBricks()
     {
         //Debug.LogError("destroyAllAvailableDisplayedBioBricks");
@@ -137,23 +131,10 @@ public class AvailableBioBricksManager : MonoBehaviour
         destroyAllAvailableDisplayedBioBricks(_displayableAvailableGenes);
         destroyAllAvailableDisplayedBioBricks(_displayableAvailableTerminators);
     }
-    
+
     void initializeDummies()
     {
         // Debug.Log(this.GetType() + " initializeDummies");
-        // dummies.Clear();
-        // dummies.AddRange(new List<GameObject>{
-            
-        //     });
-        
-        // foreach(GameObject dummy in dummies)
-        // {
-        //     if(null != dummy)
-        //     {
-        //         Debug.Log(this.GetType() + " initializeDummies dummy="+dummy.name);
-        //         dummy.SetActive(false);
-        //     }
-        // }
 
         dummyGrids.Clear();
         dummyGrids.AddRange(new List<Transform>{
@@ -162,13 +143,13 @@ public class AvailableBioBricksManager : MonoBehaviour
             geneBrickCategoryGrid,
             terminatorBrickCategoryGrid
             });
-        
-        foreach(Transform grid in dummyGrids)
+
+        foreach (Transform grid in dummyGrids)
         {
-            if(null != grid)
+            if (null != grid)
             {
                 // Debug.Log(this.GetType() + " initializeDummies grid="+grid.name);
-                for(int index = 0; index < grid.childCount; index++)
+                for (int index = 0; index < grid.childCount; index++)
                 {
                     Destroy(grid.GetChild(index).gameObject);
                 }
@@ -184,18 +165,18 @@ public class AvailableBioBricksManager : MonoBehaviour
                 , false
                 , this.GetType() + " getBrickAmount(" + brick + ")"
                 );
-                
-                if(null != currentBrick)
-                {
-                    return currentBrick.amount;
-                }
-                else
-                {
-                    Debug.LogWarning(this.GetType() + " brick " + brick.getInternalName() + "not found");
-                    return 0;
-                }
+
+        if (null != currentBrick)
+        {
+            return currentBrick.amount;
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " brick " + brick.getInternalName() + "not found");
+            return 0;
+        }
     }
-    
+
     public void addBrickAmount(BioBrick brick, double amount)
     {
         // Debug.Log(this.GetType() + " addBrickAmount("+brick+","+amount+")");
@@ -205,20 +186,17 @@ public class AvailableBioBricksManager : MonoBehaviour
                 , false
                 , this.GetType() + " addBrickAmount(" + brick + ", " + amount + ")"
                 );
-                
-                if(null != currentBrick)
-                {
-                    currentBrick.addAmount(amount);
-                }
+
+        if (null != currentBrick)
+        {
+            currentBrick.addAmount(amount);
+        }
     }
 
     private void updateDisplayedBioBricks()
     {
         // Debug.Log(this.GetType() + " updateDisplayedBioBricks");
-
-
-        //Debug.LogError("updateDisplayedBioBricks");
-        destroyAllAvailableDisplayedBioBricks();    
+        destroyAllAvailableDisplayedBioBricks();
 
         LinkedList<BioBrick> availablePromoters = new LinkedList<BioBrick>();
         LinkedListExtensions.AppendRange<BioBrick>(availablePromoters, getAvailableBioBricksOfType(BioBrick.Type.PROMOTER));
@@ -273,55 +251,53 @@ public class AvailableBioBricksManager : MonoBehaviour
         return LinkedListExtensions.Filter<BioBrick>(_availableBioBricks, b => ((b.getType() == type)));// && (b.amount > 0)));
     }
 
-	public bool addBioBrickToList(BioBrick brick, LinkedList<BioBrick> destination, bool updateView = true)
-	{
-		// Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ")");
+    public bool addBioBrickToList(BioBrick brick, LinkedList<BioBrick> destination, bool updateView = true)
+    {
+        // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ")");
 
-		if (null != brick)
-			// TODO deeper safety check
-			// && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
-		{
-			string bbName = brick.getName();
+        if (null != brick)
+        // TODO deeper safety check
+        // && !LinkedListExtensions.Find<BioBrick>(_availableBioBricks, b => b..Equals(brick), true, this.GetType() + " addAvailableBioBrick("+brick+", "+updateView+")")
+        {
+            string bbName = brick.getName();
 
-			// Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") _availableBioBricks with bbName=" + bbName);
+            // Debug.Log(this.GetType() + " addAvailableBioBrick(" + brick + ") _availableBioBricks with bbName=" + bbName);
 
-			BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
-				destination
-				, b => b.getName() == bbName
-				, false
-				, this.GetType() + " addAvailableBioBrick(" + brick + ", " + updateView + ")"
-			);
+            BioBrick currentBrick = LinkedListExtensions.Find<BioBrick>(
+                destination
+                , b => b.getName() == bbName
+                , false
+                , this.GetType() + " addAvailableBioBrick(" + brick + ", " + updateView + ")"
+            );
 
-			if (null == currentBrick)
-			{
-				// Debug.Log(this.GetType() + " addAvailableBioBrick null == currentBrick");
-				destination.AddLast(brick);
-				if (updateView)
-				{
-					updateDisplayedBioBricks();
-				}
-				return true;                
-			} else {
-				// brick.addAmount(currentBrick.amount);
-				// _availableBioBricks.Remove(currentBrick);
-				// _availableBioBricks.AddLast(brick);
-
-				// Debug.Log("before: amount= "+currentBrick.amount);
-				destination.Find(currentBrick).Value.addAmount(brick.amount);
-				// Debug.Log("after: amount= "+
-				return true;
-			}
-		}
-		else
-		{
-			Debug.LogWarning(this.GetType() + " addAvailableBioBrick() failed: brick == null");
-			return false;
-		}
-	}
+            if (null == currentBrick)
+            {
+                // Debug.Log(this.GetType() + " addAvailableBioBrick null == currentBrick");
+                destination.AddLast(brick);
+                if (updateView)
+                {
+                    updateDisplayedBioBricks();
+                }
+                return true;
+            }
+            else
+            {
+                // Debug.Log("before: amount= "+currentBrick.amount);
+                destination.Find(currentBrick).Value.addAmount(brick.amount);
+                // Debug.Log("after: amount= "+
+                return true;
+            }
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " addAvailableBioBrick() failed: brick == null");
+            return false;
+        }
+    }
 
     public bool addAvailableBioBrick(BioBrick brick, bool updateView = true)
     {
-		return addBioBrickToList (brick, _availableBioBricks, updateView);
+        return addBioBrickToList(brick, _availableBioBricks, updateView);
     }
 
     public void OnPanelEnabled()
@@ -351,7 +327,7 @@ public class AvailableBioBricksManager : MonoBehaviour
     private AvailableDisplayedBioBrick getDisplayableAvailableBioBrick(BioBrick brick, int index, Transform parentTransform)
     {
 
-        Transform parentTransformParam = (null==parentTransform)?bioBricksPanel.transform:parentTransform;
+        Transform parentTransformParam = (null == parentTransform) ? bioBricksPanel.transform : parentTransform;
         Vector3 localPositionParam = Vector3.zero;
 
         // Debug.Log(this.GetType() + " getDisplayableAvailableBioBrick(brick=" + brick + ", index=" + index + "),"
@@ -365,7 +341,7 @@ public class AvailableBioBricksManager : MonoBehaviour
           , localPositionParam
           , brick
         );
-        
+
         return resultBrick;
     }
 
@@ -376,7 +352,7 @@ public class AvailableBioBricksManager : MonoBehaviour
         display(_displayableAvailableGenes, true);
         display(_displayableAvailableTerminators, true);
 
-        if(
+        if (
             (null != promoterBrickCategoryGrid)
             && (null != rbsBrickCategoryGrid)
             && (null != geneBrickCategoryGrid)
@@ -474,42 +450,20 @@ public class AvailableBioBricksManager : MonoBehaviour
     private void loadAllBioBricks()
     {
         // Debug.Log(this.GetType() + " loadAllBioBricks");
-		loadBioBricks(_allBioBricksData.biobrickDataList , _allBioBricks);
+        loadBioBricks(_allBioBricksData.biobrickDataList, _allBioBricks);
         // Debug.Log(this.GetType() + " loadAllBioBricks _allBioBricks=" + _allBioBricks.Count);
     }
 
     // Warning: inputFiles is an array of names of files inside 'biobrickFilesPathPrefix'
-	private void loadBioBricks(BiobrickDataCount[] biobricksData, LinkedList<BioBrick> destination)
+    private void loadBioBricks(BiobrickDataCount[] biobricksData, LinkedList<BioBrick> destination)
     {
-		foreach (var biobrickDataCount in biobricksData) {
-			addBioBrickToList (
-				BiobrickBuilder.createBioBrickFromData (biobrickDataCount),
-				destination
-			);
-		}
-
-		/*
-        // Debug.Log(this.GetType() + " loadBioBricks");
-        //load biobricks from xml
-        BioBrickLoader bLoader = new BioBrickLoader();
-
-        //_availableBioBricks   = new LinkedList<BioBrick>();
-        string files = "";
-
-        foreach (string file in inputFiles)
+        foreach (var biobrickDataCount in biobricksData)
         {
-            string fullPath = biobrickFilesPathPrefix + file;
-            // Debug.Log(this.GetType() + " loadBioBricks loads biobrick file " + fullPath);
-            LinkedList<BioBrick> bb = bLoader.loadBioBricksFromFile(fullPath);
-            // Debug.Log(this.GetType() + " loadBioBricks appended bb=" + bb.Count.ToString() + " from file " + fullPath);
-            LinkedListExtensions.AppendRange<BioBrick>(destination, bb);
-            if (!string.IsNullOrEmpty(files))
-            {
-                files += ", ";
-            }
-            files += fullPath;
+            addBioBrickToList(
+                BiobrickBuilder.createBioBrickFromData(biobrickDataCount),
+                destination
+            );
         }
-        // Debug.Log(this.GetType() + " loadBioBricks loaded " + files + " so that destination=" + destination.Count);*/
     }
 
 
@@ -525,16 +479,17 @@ public class AvailableBioBricksManager : MonoBehaviour
         return _availableBioBricks;
     }
 
-	private void loadCheckPointBrickList(CheckPointData checkPoint, LinkedList<BioBrick> destination)
-	{
-		if (checkPoint == null)
-			return;
-		loadBioBricks (checkPoint.biobrickDataList, destination);
-		// just a small check to prevent an infinite loop
-		if (checkPoint.previous != null && checkPoint.previous != checkPoint) {
-			loadCheckPointBrickList (checkPoint.previous, destination);
-		}
-	}
+    private void loadCheckPointBrickList(CheckPointData checkPoint, LinkedList<BioBrick> destination)
+    {
+        if (checkPoint == null)
+            return;
+        loadBioBricks(checkPoint.biobrickDataList, destination);
+        // just a small check to prevent an infinite loop
+        if (checkPoint.previous != null && checkPoint.previous != checkPoint)
+        {
+            loadCheckPointBrickList(checkPoint.previous, destination);
+        }
+    }
 
 
     private void loadAvailableBioBricks()
@@ -544,9 +499,9 @@ public class AvailableBioBricksManager : MonoBehaviour
         MemoryManager.get().tryGetCurrentLevelInfo(out levelInfo);
         if (null != levelInfo && levelInfo.areAllBioBricksAvailable)
         {
-            //load all biobricks
-            //loadBioBricks(_allBioBrickFiles, _availableBioBricks);
-            //or just copy them
+            // load all biobricks
+            // loadBioBricks(_allBioBrickFiles, _availableBioBricks);
+            // or just copy them
             foreach (BioBrick bb in getAllBioBricks())
             {
                 _availableBioBricks.AddLast(bb);
@@ -554,24 +509,8 @@ public class AvailableBioBricksManager : MonoBehaviour
         }
         else
         {
-			loadCheckPointBrickList (_availableBioBricksData, _availableBioBricks);
-			//Debug.Log (Logger.ToString<BioBrick> (_availableBioBricks));
-			//loadBioBricks (checkPointBiobrickData, _availableBioBricks);
-			/*
-            //default behavior
-            List<string> filesToLoad = new List<string>(_availableBioBrickFiles);
-            filesToLoad.Add(MemoryManager.get().configuration.getGameMapName());
-            loadBioBricks(filesToLoad.ToArray(), _availableBioBricks);*/
+            loadCheckPointBrickList(_availableBioBricksData, _availableBioBricks);
         }
         // Debug.Log(this.GetType() + " loadAvailableBioBricks _availableBioBricks=" + _availableBioBricks.Count);
     }
-
-/*
-    // Use this for initialization
-    void Start()
-    {
-        // Debug.Log(this.GetType() + " Start()");
-        displayPromoters();
-    }
-    */
 }

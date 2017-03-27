@@ -5,4 +5,9 @@ using System.Collections;
 public class DeviceData : ScriptableObject {
 	public string id;
 	public BiobrickData[] bricks;
+
+	public override string ToString()
+	{
+		return this.GetType() + "[bricks=" + Logger.ToString<BiobrickData>(bricks)+ "]";
+	}
 }

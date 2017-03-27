@@ -42,17 +42,23 @@ public class Teleporter : MonoBehaviour
     {
         if (checkPoint.deviceDataList != null)
         {
-            foreach (var deviceEquipped in checkPoint.deviceDataList)
+            foreach (DeviceEquippedData knownDevice in checkPoint.deviceDataList)
             {
-                var device = DeviceBuilder.createDeviceFromData(deviceEquipped.deviceData);
-                if (deviceEquipped.equipped)
-                    CraftZoneManager.get().addAndEquipDevice(device);
+                Device device = DeviceBuilder.createDeviceFromData(knownDevice.deviceData);
+                if (knownDevice.equipped)
+                {
+                    CraftZoneManager.get().setDevice(device);
+                }
                 else
+                {
                     Inventory.get().askAddDevice(device);
+                }
             }
         }
         if (checkPoint.previous)
+        {
             addDevices(checkPoint.previous);
+        }
     }
 
     /// <summary>
@@ -61,15 +67,19 @@ public class Teleporter : MonoBehaviour
     /// <param name="teleportIndex">Teleport index.</param>
     public void teleport(int teleportIndex)
     {
+        // Debug.Log(this.GetType() + " teleport(" + teleportIndex + ")");
         var checkpoint = getCheckPoint(teleportIndex);
         if (checkpoint != null)
         {
             if (checkpoint.GetComponent<SwitchZoneOnOff>())
             {
+                // Debug.Log(this.GetType() + " teleport(" + teleportIndex + ") triggerSwitchZone");
                 checkpoint.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
             }
             CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
             AvailableBioBricksManager.get().availableBioBrickData = checkpoint.GetComponent<Checkpoint>().checkPointData;
+            // Debug.Log(this.GetType() + " teleport(" + teleportIndex + ") availableBioBrickData set");
+            // AvailableBioBricksManager.get().logAvailableBioBrickData();
             foreach (Transform child in checkpoint.transform)
             {
                 if (child.gameObject.tag == "Dummy")

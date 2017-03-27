@@ -9,4 +9,9 @@ public abstract class BiobrickData : ScriptableObject {
 	}
 
 	protected abstract BioBrick.Type BiobrickType();
+
+	public override string ToString()
+	{
+		return this.GetType() + "[" + id + "]";
+	}
 }

@@ -382,17 +382,6 @@ public class CraftZoneManager : MonoBehaviour
     {
         if (Device.isValid(device))
         {
-            if (!replace)
-            {
-                foreach (CraftDeviceSlot slot in _slots)
-                {
-                    if (!slot.isEquiped)
-                    {
-                        slot.setSelected(true);
-                        break;
-                    }
-                }
-            }
             //add every brick to the stock
             foreach (BioBrick brick in device.getExpressionModules().First.Value.getBioBricks())
             {
@@ -417,9 +406,20 @@ public class CraftZoneManager : MonoBehaviour
         return canAfford;
     }
 
-    public void setDevice(Device device)
+    public void setDevice(Device device, bool replace = true)
     {
         // Debug.Log(this.GetType() + " setDevice("+device+")");
+        if (!replace)
+        {
+            foreach (CraftDeviceSlot slot in _slots)
+            {
+                if (!slot.isEquiped)
+                {
+                    slot.setSelected(true);
+                    break;
+                }
+            }
+        }
         if (null != _selectedSlot)
         {
             _selectedSlot.setDevice(device);
