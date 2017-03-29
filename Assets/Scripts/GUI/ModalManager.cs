@@ -101,7 +101,7 @@ public class ModalManager : MonoBehaviour
         //TODO set case-insensitive
         if (!_instance._loadedModalWindows.TryGetValue(code, out info))
         {
-            Debug.LogWarning("InfoWindowManager retrieveFromDico(" + code + ") failed");
+            Debug.LogWarning("ModalManager retrieveFromDico(" + code + ") failed");
             info = null;
         }
         return info;
@@ -393,7 +393,7 @@ public class ModalManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("InfoWindowManager displayInfoWindow(" + code + ") failed");
+            Debug.LogWarning("ModalManager displayInfoWindow(" + code + ") failed");
             return false;
         }
     }

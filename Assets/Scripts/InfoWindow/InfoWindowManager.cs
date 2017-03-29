@@ -104,6 +104,7 @@ public class InfoWindowManager : MonoBehaviour
         if (fillInFieldsFromCode(code))
         {
             ModalManager.setModal(_instance.infoPanel);
+            _instance.infoSprite.transform.localPosition = new Vector3(_instance.infoSprite.transform.localPosition.x, _instance.infoSprite.transform.localPosition.y, -1);
             return true;
         }
         else
