@@ -9,8 +9,6 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     
 	public static UnityEngine.Object prefab    = null;
     
-	protected new const string prefabURI      = "GUI/screen3/BioBricks/DisplayedBioBrickPrefab";
-    
     private const string _jigsawSpriteNamePrefix     = "jigsaw_";
     private const string _promoterJigsawSpriteName   = _jigsawSpriteNamePrefix + "promoter";
     private const string _rbsJigsawSpriteName        = _jigsawSpriteNamePrefix + "rbs";

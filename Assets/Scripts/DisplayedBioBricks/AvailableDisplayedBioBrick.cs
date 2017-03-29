@@ -22,7 +22,7 @@ public class AvailableDisplayedBioBrick : DisplayedBioBrick
      *    select this already existing device
      */
 
-    protected const string _prefabURIAvailable = "GUI/screen3/BioBricks/AvailableDisplayedBioBrickPrefab";
+    protected const string _prefabURIAvailable = uriPrefix + "AvailableDisplayedBioBrickPrefab";
     public const string _availableDisplayedPrefix = "AvailableDisplayed";
 
     public static AvailableDisplayedBioBrick Create(

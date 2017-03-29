@@ -11,9 +11,10 @@ using System.Collections.Generic;
 
 public class GenericDisplayedBioBrick : DisplayedElement
 {
-    private const string _prefabURI = "GUI/screen1/Devices/TinyBioBrickIconPrefab";
+    
+    public const string uriPrefix = "Prefabs/BioBricks/";
+	protected const string prefabURI = uriPrefix + "DisplayedBioBrickPrefab";
     protected static UnityEngine.Object _genericPrefab = null;
-
 
     public static Dictionary<BioBrick.Type, string> spriteNamesDico = new Dictionary<BioBrick.Type, string>() {
     {BioBrick.Type.GENE,        "gene"},
@@ -33,7 +34,7 @@ public class GenericDisplayedBioBrick : DisplayedElement
       )
     {
 
-        if (_genericPrefab == null) _genericPrefab = Resources.Load(_prefabURI);
+        if (_genericPrefab == null) _genericPrefab = Resources.Load(prefabURI);
         Object prefabToUse = (externalPrefab == null) ? _genericPrefab : externalPrefab;
 
         // Debug.Log("GenericDisplayedBioBrick Create(parentTransform="+parentTransform

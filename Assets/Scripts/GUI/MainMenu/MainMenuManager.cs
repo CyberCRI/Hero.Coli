@@ -79,8 +79,6 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private MainMenuItemArray controlItems;
     [SerializeField]
-    private MainMenuItemArray languageItems;
-    [SerializeField]
     private MainMenuItemArray soundItems;
     [SerializeField]
 	private MainMenuItemArray chapterSelectionItems;
@@ -105,7 +103,6 @@ public class MainMenuManager : MonoBehaviour
         SETTINGS,
         LEARNMOREOPTIONS,
         CONTROLS,
-        LANGUAGES,
         SOUNDOPTIONS,
 		CHAPTERSELECTION,
         DEFAULT
@@ -354,7 +351,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initializedArrays)
         {
-            arrays = new MainMenuItemArray[7] { mainMenuItems, controlItems, languageItems, chapterSelectionItems, soundItems, settingsItems, learnMoreItems };
+            arrays = new MainMenuItemArray[6] { mainMenuItems, controlItems, chapterSelectionItems, soundItems, settingsItems, learnMoreItems };
             _initializedArrays = true;
         }
     }
@@ -389,9 +386,6 @@ public class MainMenuManager : MonoBehaviour
                 break;
             case MainMenuScreen.CONTROLS:
                 toActivate = controlItems;
-                break;
-            case MainMenuScreen.LANGUAGES:
-                toActivate = languageItems;
                 break;
             case MainMenuScreen.SOUNDOPTIONS:
                 toActivate = soundItems;

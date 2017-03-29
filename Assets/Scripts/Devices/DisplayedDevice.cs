@@ -15,12 +15,10 @@ public class DisplayedDevice : DisplayedElement
     protected bool _isFeedbackParticleSystemActive = false;
 
     // prefab URIs
-    private const string equipedPrefabURI = "GUI/screen1/Devices/DisplayedDevicePrefab";
-    //public const string equipmentPrefabURI = "GUI/screen1/Devices/EquipmentDevicePrefab";
-    public const string equipedWithMoleculesPrefabURI = "GUI/screen1/Devices/EquipedDisplayedDeviceWithMoleculesPrefab";
-    //private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoriedDeviceButtonPrefab";
-    private const string inventoriedPrefabURI = "GUI/screen1/Devices/InventoryDevicePrefab";
-    private const string listedPrefabURI = "GUI/screen3/Devices/ListedDevicePrefab";
+    private const string _uriPrefix = "Prefabs/Devices/";
+    private const string equipedPrefabURI = _uriPrefix + "DisplayedDevicePrefab";
+    public const string equipedWithMoleculesPrefabURI = _uriPrefix + "EquipedDisplayedDeviceWithMoleculesPrefab";
+    private const string listedPrefabURI = _uriPrefix + "ListedDevicePrefab";
 
     // device icon //
 
@@ -32,9 +30,6 @@ public class DisplayedDevice : DisplayedElement
     private const string _quality64 = "64x64_";
     private const string _qualityDefault = _quality64;
 
-    // private const string _levelBaseSuffix = "_base";
-    // private const string _levelLowSuffix = "_low";
-    // private const string _levelMedSuffix = "_med";
     private const string _level0Suffix = "level0";
     private const string _level1Suffix = "level1";
     private const string _level2Suffix = "level2";
@@ -293,11 +288,11 @@ public class DisplayedDevice : DisplayedElement
             // Debug.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI);
             prefab = Resources.Load(equipedPrefabURI);
         }
-        else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) // deprecated
-        {
-            // Debug.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI);
-            prefab = Resources.Load(inventoriedPrefabURI);
-        }
+        // else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) // deprecated
+        // {
+        //     // Debug.Log("DisplayedDevice: will create Inventoried " + inventoriedPrefabURI);
+        //     prefab = Resources.Load(inventoriedPrefabURI);
+        // }
         else if (deviceType == DevicesDisplayer.DeviceType.Listed)
         {
             // Debug.Log("DisplayedDevice: will create Listed " + listedPrefabURI);

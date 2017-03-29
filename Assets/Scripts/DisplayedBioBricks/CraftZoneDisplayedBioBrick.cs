@@ -4,7 +4,7 @@ using UnityEngine;
 public class CraftZoneDisplayedBioBrick : DisplayedBioBrick
 {
 
-    protected const string _prefabURICraftZone = "GUI/screen3/BioBricks/CraftZoneDisplayedBioBrickPrefab";
+    protected const string _prefabURICraftZone = uriPrefix + "CraftZoneDisplayedBioBrickPrefab";
     private CraftDeviceSlot _slot;
     public CraftDeviceSlot slot
     {
