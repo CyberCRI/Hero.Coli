@@ -16,7 +16,7 @@ public class DisplayedDevice : DisplayedElement
 
     // prefab URIs
     private const string _uriPrefix = "Prefabs/Devices/";
-    private const string equipedPrefabURI = _uriPrefix + "DisplayedDevicePrefab";
+    private const string equippedPrefabURI = _uriPrefix + "DisplayedDevicePrefab";
     public const string equipedWithMoleculesPrefabURI = _uriPrefix + "EquipedDisplayedDeviceWithMoleculesPrefab";
     private const string listedPrefabURI = _uriPrefix + "ListedDevicePrefab";
 
@@ -286,7 +286,7 @@ public class DisplayedDevice : DisplayedElement
         if (deviceType == DevicesDisplayer.DeviceType.Equipped || deviceType == DevicesDisplayer.DeviceType.CraftSlot)
         {
             // Debug.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI);
-            prefab = Resources.Load(equipedPrefabURI);
+            prefab = Resources.Load(equippedPrefabURI);
         }
         // else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) // deprecated
         // {
