@@ -3,26 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class Hero : MonoBehaviour
+public class Character : CellAnimator
 {
-
     public const string playerTag = "Player";
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    public const string gameObjectName = "Perso";
-    protected static Hero _instance;
-    public static Hero get()
+    public const string gameObjectName = "Character";
+    protected static Character _instance;
+    public static Character get()
     {
         if (_instance == null)
         {
-            Debug.LogWarning("Hero getcalled too early");
+            Debug.LogWarning("Character get called too early");
             GameObject go = GameObject.Find(gameObjectName);
             if (null != go)
             {
-                _instance = go.GetComponent<Hero>();
+                _instance = go.GetComponent<Character>();
                 if (null == _instance)
                 {
-                    Debug.LogError("component Hero of " + gameObjectName + " not found");
+                    Debug.LogError("component Character of " + gameObjectName + " not found");
                 }
             }
             else
@@ -70,9 +69,7 @@ public class Hero : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-
-        _ambientLighting = this.GetComponent<AmbientLighting>();
-        _medium = ReactionEngine.getMediumFromId(Hero.mediumId, ReactionEngine.get().getMediumList());
+        _medium = ReactionEngine.getMediumFromId(Character.mediumId, ReactionEngine.get().getMediumList());
         _maxMediumEnergy = _medium.getMaxEnergy();
         _medium.setEnergy(_maxMediumEnergy);
         _energy = _medium.getEnergy() / _maxMediumEnergy;
@@ -497,28 +494,6 @@ public class Hero : MonoBehaviour
         GUITransitioner.get().mainBoundCamera.offset.y = _originOffsetY;
 
         yield return StartCoroutine(deathEffectCoroutine(cc));
-    }
-
-    public static void safeFadeTo(GameObject toFade, Hashtable fadeOptions)
-    {
-        //TODO find most robust method
-        //GameObject body = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(). .transform.FindChild("body_perso");
-        //GameObject body = gameObject.transform.FindChild("body_perso").gameObject;
-        GameObject body = toFade.transform.FindChild("body_perso").transform.FindChild("body_perso").gameObject;
-        if (null != body)
-        {
-            iTween.FadeTo(body, fadeOptions);
-        }
-        GameObject dna = toFade.transform.FindChild("dna_perso").transform.FindChild("body_perso").gameObject;
-        if (null != dna)
-        {
-            iTween.FadeTo(dna, fadeOptions);
-        }
-    }
-
-    private void safeFadeTo(Hashtable hash)
-    {
-        safeFadeTo(gameObject, hash);
     }
 
     IEnumerator deathEffectCoroutine(CellControl cc)

@@ -90,8 +90,8 @@ public class StartCutScene : CutScene
     {
         // FocusMaskManager.get().blockClicks(false);
         Destroy(this.transform.parent.gameObject);
-        // Debug.Log(this.GetType() + "AddComponent CraftDiscoveryHint to Hero");
-        Hero.get().gameObject.AddComponent<CraftDiscoveryHint>();
+        // Debug.Log(this.GetType() + "AddComponent CraftDiscoveryHint to Character");
+        Character.get().gameObject.AddComponent<CraftDiscoveryHint>();
     }
 
     public override void startCutScene()
@@ -137,7 +137,7 @@ public class StartCutScene : CutScene
 
 	void OnTriggerEnter(Collider col)
 	{
-		if (col.tag == Hero.playerTag)
+		if (col.tag == Character.playerTag)
 		{
 			if (_first)
 			{

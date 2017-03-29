@@ -470,7 +470,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendRichEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
-        CustomData context = Hero.get().getEventContext();
+        CustomData context = Character.get().getEventContext();
         if (customData != null)
         {
             customData.merge(context);
@@ -485,10 +485,10 @@ public class RedMetricsManager : MonoBehaviour
         // Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
         string checkedSection = section;
 
-        //TODO remove dependency to Hero class
-        if (string.IsNullOrEmpty(section) && (null != Hero.get()))
+        //TODO remove dependency to Character class
+        if (string.IsNullOrEmpty(section) && (null != Character.get()))
         {
-            checkedSection = Hero.get().getLastCheckpointName();
+            checkedSection = Character.get().getLastCheckpointName();
         }
 
         int[] checkedCoordinates = null;
@@ -502,9 +502,9 @@ public class RedMetricsManager : MonoBehaviour
         }
         else
         {
-            if (null != Hero.get())
+            if (null != Character.get())
             {
-                Vector3 position = Hero.get().gameObject.transform.position;
+                Vector3 position = Character.get().gameObject.transform.position;
                 checkedCoordinates = new int[2] {
                     Mathf.FloorToInt (position.x),
                     Mathf.FloorToInt (position.z)

@@ -7,9 +7,9 @@ public class InstantDeathZone : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (Hero.playerTag == collision.gameObject.tag)
+        if (Character.playerTag == collision.gameObject.tag)
         {
-            Hero.get().kill(new CustomData(CustomDataTag.SOURCE, _deathCause.ToString()));
+            Character.get().kill(new CustomData(CustomDataTag.SOURCE, _deathCause.ToString()));
         }
     }
 }

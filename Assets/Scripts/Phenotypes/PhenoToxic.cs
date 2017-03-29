@@ -5,8 +5,8 @@ using UnityEngine;
  */
 public class PhenoToxic : Phenotype
 {
-
-    public Hero hero;
+    [SerializeField]
+    private Character character;
     public const string ampicillinMoleculeName = "AMPI";
 
     private Molecule _mol;
@@ -44,19 +44,14 @@ public class PhenoToxic : Phenotype
             }
         }
         float intensity = _K0 * (Mathf.Exp(_mol.getConcentration() / _cc0) - 1);
-        hero.subLife(intensity);
+        character.subLife(intensity);
     }
-
-
 
     public void CancelPhenotype()
     {
         // Debug.Log(this.GetType() + " CancelPhenotype");
         _mol.setConcentration(0f);
     }
-
-
-
 
     //DEBUG
     /*

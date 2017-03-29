@@ -15,7 +15,8 @@ public class PushableBox : MonoBehaviour
     void Start()
     {
         _initPos = transform.position;
-        _control = CellControl.get("PushableBox");
+        _control = CellControl.get(this.GetType().ToString());
+        _rigidBody = _rigidBody == null ? this.GetComponent<Rigidbody>() : _rigidBody;
     }
 
     void OnCollisionEnter(Collision col)
@@ -25,11 +26,11 @@ public class PushableBox : MonoBehaviour
 
     void processCollision(Collision col)
     {
-        if (_rigidBody.constraints != _canPush)
+        if (null != _rigidBody && _rigidBody.constraints != _canPush)
         {
             if (null != col.collider)
             {
-                if (col.collider.tag == Hero.playerTag)
+                if (col.collider.tag == Character.playerTag)
                 {
                     if (_control.currentMoveSpeed >= minSpeed)
                     {
@@ -40,7 +41,7 @@ public class PushableBox : MonoBehaviour
                         _rigidBody.constraints = _noPush;
                     }
                 }
-                else if (col.collider.tag == "Door")
+                else if (col.collider.tag == CutSceneElements.doorTag)
                 {
                     _rigidBody.constraints = _canPush;
                 }
@@ -50,7 +51,10 @@ public class PushableBox : MonoBehaviour
 
     void OnCollisionExit(Collision col)
     {
-        _rigidBody.constraints = _noPush;
+        if (null != _rigidBody)
+        {
+            _rigidBody.constraints = _noPush;
+        }
     }
 
     void OnCollisionStay(Collision col)

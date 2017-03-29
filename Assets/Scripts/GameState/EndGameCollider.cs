@@ -9,7 +9,7 @@ public class EndGameCollider : MonoBehaviour
         // Debug.Log(this.GetType() + " OnTriggerEnter(" + other.ToString () + ")" + _alreadyDisplayed.ToString ());
         if (!_alreadyDisplayed)
         {
-            if (other.tag == Hero.playerTag)
+            if (other.tag == Character.playerTag)
             {
                 _alreadyDisplayed = true;
                 GameStateController.get().triggerEnd();

@@ -57,7 +57,7 @@ public class MassPursuitCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag && _collisionIteration == 0)
+        if (col.tag == Character.playerTag && _collisionIteration == 0)
         {
             start();
             _collisionIteration += 1;

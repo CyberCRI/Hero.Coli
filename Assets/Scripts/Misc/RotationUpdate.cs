@@ -39,7 +39,7 @@ public class RotationUpdate : MonoBehaviour
 #if DEV
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameObject.FindGameObjectWithTag(Character.playerTag);
             objectDirectedRotationUpdate(player);
         }
 #endif

@@ -7,10 +7,10 @@ public class ForceFlowParticle : MonoBehaviour
 
     void OnParticleCollision(GameObject obj)
     {
-        Hero hero = obj.GetComponent<Hero>();
-        if (hero)
+        Character character = obj.GetComponent<Character>();
+        if (character)
         {
-            Rigidbody body = hero.GetComponent<Rigidbody>();
+            Rigidbody body = character.GetComponent<Rigidbody>();
             if (body)
             {
                 Vector3 push = this.transform.rotation * Vector3.forward;

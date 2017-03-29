@@ -6,7 +6,7 @@ public class CellControl : MonoBehaviour
 
 
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    private const string gameObjectName = Hero.gameObjectName;
+    private const string gameObjectName = Character.gameObjectName;
     private static CellControl _instance;
     public static CellControl get(string origin)
     {
@@ -89,7 +89,7 @@ public class CellControl : MonoBehaviour
     [SerializeField]
     private float relativeRotationSpeed;
     [SerializeField]
-    private Hero hero;
+    private Character character;
     [SerializeField]
     private float moveEnergyCost;
     public float currentMoveSpeed;
@@ -103,8 +103,6 @@ public class CellControl : MonoBehaviour
     public UISprite selectedMouseControlTypeSprite;
     public UISprite selectedKeyboardControlTypeSprite;
     public ParticleSystemFeedback clickFeedback;
-    [SerializeField]
-    private FlagellaSetter _flagellaSetter;
 
     private bool _pause;
     private Vector3 _inputMovement;
@@ -334,7 +332,7 @@ public class CellControl : MonoBehaviour
         //TODO use Time.deltaTime inside "react" methods
         float cost = 0;
 
-        hero.subEnergy(cost);
+        character.subEnergy(cost);
     }
 
     IEnumerator blockClicksAfterPause()
@@ -504,6 +502,6 @@ public class CellControl : MonoBehaviour
 
     public bool hasAtLeastFlagellaCount(int count)
     {
-        return count <= _flagellaSetter.flagellaCount;
+        return count <= character.flagellaCount;
     }
 }

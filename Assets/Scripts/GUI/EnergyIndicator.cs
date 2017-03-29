@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnergyIndicator : MonoBehaviour
 {
-    private Hero _hero;
+    private Character _character;
     [SerializeField]
     private UILabel _energyValueLabel;
 
@@ -10,15 +10,15 @@ public class EnergyIndicator : MonoBehaviour
     void Start()
     {
         //TODO trigger this after resize
-        _hero = Hero.get();
+        _character = Character.get();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_hero != null)
+        if (_character != null)
         {
-            _energyValueLabel.text = _hero.getDisplayedEnergy();
+            _energyValueLabel.text = _character.getDisplayedEnergy();
         }
     }
 }

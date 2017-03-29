@@ -58,7 +58,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
 
     protected override void end()
     {
-        Hero.get().gameObject.AddComponent<MovementHint>();
+        Character.get().gameObject.AddComponent<MovementHint>();
         base.end();
     }
 }

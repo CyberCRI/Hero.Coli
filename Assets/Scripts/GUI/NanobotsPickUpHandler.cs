@@ -8,7 +8,7 @@ public class NanobotsPickUpHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             _pickedUpNumber++;
             CustomData data = new CustomData(CustomDataTag.NANOBOT, transform.parent.transform.gameObject.name);

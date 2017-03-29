@@ -131,7 +131,7 @@ public class FocusMaskManager : MonoBehaviour
         // Debug.Log("isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
         if (!isInterfaceObject)
         {
-            Camera camera = GameObject.Find(Hero.playerTag).GetComponentInChildren<Camera>();
+            Camera camera = GameObject.Find(Character.playerTag).GetComponentInChildren<Camera>();
             position = camera.WorldToScreenPoint(go.transform.position);
             position -= focusMask.transform.localScale / 4;
         }
@@ -334,7 +334,7 @@ public class FocusMaskManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            focusOn(Hero.get().gameObject, null, null, false);
+            focusOn(Character.get().gameObject, null, null, false);
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {

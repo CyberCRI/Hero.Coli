@@ -55,7 +55,7 @@ public class BoundCamera : MonoBehaviour {
         }
         else
         {
-            target = GameObject.FindGameObjectWithTag(Hero.playerTag).transform;
+            target = GameObject.FindGameObjectWithTag(Character.playerTag).transform;
         }
 		
 		if(_transition){

@@ -26,7 +26,7 @@ public class DelayedFlagellaBacteriumSelector : BacteriumSelector
     private IEnumerator kill()
     {
         yield return new WaitForSeconds(_delay);
-        Hero.get().kill(new CustomData(CustomDataTag.SOURCE, _redmetricsName));
+        Character.get().kill(new CustomData(CustomDataTag.SOURCE, _redmetricsName));
         yield return null;
     }
 }

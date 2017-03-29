@@ -1,7 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
-public class FlagellaSetter : MonoBehaviour
-{
+public abstract class CellAnimator : MonoBehaviour {
+    [SerializeField]
+    protected GameObject _body;
+    [SerializeField]
+    protected GameObject _dna;    
     [SerializeField]
     private GameObject centralFlagellum;
     [SerializeField]
@@ -27,5 +31,17 @@ public class FlagellaSetter : MonoBehaviour
         centralFlagellum.SetActive(count == 1 || count >= 3);
         rightFlagellum.SetActive(count >= 2);
         sideFlagellum.SetActive(count == 4);
+    }
+
+    public void safeFadeTo(Hashtable fadeOptions)
+    {
+        if (null != _body)
+        {
+            iTween.FadeTo(_body, fadeOptions);
+        }
+        if (null != _dna)
+        {
+            iTween.FadeTo(_dna, fadeOptions);
+        }
     }
 }

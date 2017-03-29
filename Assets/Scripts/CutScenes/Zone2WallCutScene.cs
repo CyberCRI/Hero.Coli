@@ -48,7 +48,7 @@ public class Zone2WallCutScene : CutScene
     void OnTriggerEnter(Collider col)
     {
         // Debug.Log(this.GetType() + " OnTriggerEnter");
-        if (_initialized && col.tag == "Door")
+        if (_initialized && col.tag == CutSceneElements.doorTag)
         {
             if (!_played)
             {

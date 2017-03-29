@@ -77,20 +77,20 @@ public class BackendManager : MonoBehaviour
             // to be able to go over or under obstacles
             if (Input.GetKeyDown(KeyCode.KeypadMultiply))
             {
-                Vector3 position = Hero.get().transform.position;
-                Hero.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
+                Vector3 position = Character.get().transform.position;
+                Character.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
                 _depth++;
             }
             if (Input.GetKeyDown(KeyCode.KeypadDivide))
             {
-                Vector3 position = Hero.get().transform.position;
-                Hero.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
+                Vector3 position = Character.get().transform.position;
+                Character.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
                 _depth--;
             }
             if (Input.GetKeyDown(KeyCode.KeypadMinus))
             {
-                Vector3 position = Hero.get().transform.position;
-                Hero.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
+                Vector3 position = Character.get().transform.position;
+                Character.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
                 _depth = 0;
             }
         }

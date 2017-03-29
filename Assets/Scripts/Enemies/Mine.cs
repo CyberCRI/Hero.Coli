@@ -79,10 +79,10 @@ public class Mine : ResettableMine
         Collider[] hitsColliders = Physics.OverlapSphere(transform.position, _radius);
 
         // If Player is in a small area
-        Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == Hero.gameObjectName);
+        Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == Character.gameObjectName);
         if (match)
         {
-            ArrayList molecules = Hero.get().medium.getMolecules();
+            ArrayList molecules = Character.get().medium.getMolecules();
 
             foreach (Molecule m in molecules)
             {

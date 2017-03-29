@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PhenoAmpicillinProducer : MonoBehaviour
 {
     //////////////////////////////// singleton fields & methods ////////////////////////////////
-    private const string gameObjectName = Hero.gameObjectName;
+    private const string gameObjectName = Character.gameObjectName;
     private static PhenoAmpicillinProducer _instance;
     public static PhenoAmpicillinProducer get()
     {
@@ -68,7 +68,7 @@ public class PhenoAmpicillinProducer : MonoBehaviour
     [SerializeField]
     private GameObject _smallAmpicillinCloud;
     private float _timeUntilNextSpawn = 2.0f;
-    private Hero _hero;
+    private Character _character;
     private Vector3 _scale = new Vector3(.5f, 1f, 1f);
     private float _radius = 2f;
     private bool _isInCollision = false;
@@ -149,11 +149,11 @@ public class PhenoAmpicillinProducer : MonoBehaviour
     {
         if(!_isInCollision)
         {
-            if (null == _hero)
+            if (null == _character)
             {
-                _hero = Hero.get();
+                _character = Character.get();
             }
-            GameObject cloud = Instantiate(_smallAmpicillinCloud, _hero.transform.position, _hero.transform.rotation * Quaternion.AngleAxis(90, Vector3.up)) as GameObject;
+            GameObject cloud = Instantiate(_smallAmpicillinCloud, _character.transform.position, _character.transform.rotation * Quaternion.AngleAxis(90, Vector3.up)) as GameObject;
             cloud.transform.localScale = _scale;
             _clouds.Add(cloud);
         }

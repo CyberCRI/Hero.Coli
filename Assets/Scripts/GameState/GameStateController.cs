@@ -439,7 +439,7 @@ public class GameStateController : MonoBehaviour
                 {
                     if (Input.GetKeyDown(sc.keyCode))
                     {
-                        // Debug.Log(this.GetType() + " pressed shortcut to teleport Cellia to checkpoint " + sc.index);
+                        // Debug.Log(this.GetType() + " pressed shortcut to teleport the character to checkpoint " + sc.index);
                         goToCheckpoint(sc.index);
                     }
                 }

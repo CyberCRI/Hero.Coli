@@ -115,7 +115,7 @@ public class InterfaceLinkManager : LinkManager
     private LoggerLabel loggerGUIComponent;
 
     [SerializeField]
-    private VectrosityPanel celliaGraph, roomGraph;
+    private VectrosityPanel characterGraph, roomGraph;
     [SerializeField]
     private GraphMoleculeList graphMoleculeList;
     [SerializeField] // WorldScreensPanel
@@ -149,7 +149,7 @@ public class InterfaceLinkManager : LinkManager
 
         //GUITransitioner
 
-        guiTransitioner.celliaGraph = celliaGraph;
+        guiTransitioner.characterGraph = characterGraph;
         guiTransitioner.roomGraph = roomGraph;
         guiTransitioner.worldScreen = worldScreensPanel;
         guiTransitioner.craftScreen = craftScreenPanel;

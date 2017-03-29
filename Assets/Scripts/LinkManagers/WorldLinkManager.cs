@@ -97,10 +97,10 @@ public class WorldLinkManager : LinkManager
 
         base.finishInitialize();
 
-        GameObject perso = Hero.get().gameObject;
-        if (null == perso)
+        GameObject character = Character.get().gameObject;
+        if (null == character)
         {
-            Debug.LogError(this.GetType() + " Hero not found!");
+            Debug.LogError(this.GetType() + " Character not found!");
         }
 
         // activate all map
@@ -130,9 +130,9 @@ public class WorldLinkManager : LinkManager
 		*/
 
         //specific code for adventure1
-        if (null != rfpTutorialTrigger && null != perso)
+        if (null != rfpTutorialTrigger && null != character)
         {
-            rfpTutorialTrigger.heroCollider = perso.GetComponent<CapsuleCollider>();
+            rfpTutorialTrigger.characterCollider = character.GetComponent<CapsuleCollider>();
         }
 
         GameStateController.get().teleporter = teleporter;

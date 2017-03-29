@@ -78,7 +78,7 @@ public class PhenoFickContact : Phenotype
         {
             _fick = _reactionEngine.getFick();
         }
-        FickReaction reaction = Fick.getFickReactionFromIds(extColliderMediumId, Hero.mediumId, _fick.getFickReactions());
+        FickReaction reaction = Fick.getFickReactionFromIds(extColliderMediumId, Character.mediumId, _fick.getFickReactions());
         if (null == reaction)
         {
             Debug.LogWarning(this.GetType() + " processCollider This FickReaction does not exist.");
@@ -195,10 +195,10 @@ public class PhenoFickContact : Phenotype
     private void removeFick(int mediumId)
     {
         Fick fick = _reactionEngine.getFick();
-        FickReaction reaction = Fick.getFickReactionFromIds(mediumId, Hero.mediumId, fick.getFickReactions());
+        FickReaction reaction = Fick.getFickReactionFromIds(mediumId, Character.mediumId, fick.getFickReactions());
         if (reaction == null)
         {
-            Debug.LogWarning("FickReaction(" + mediumId + ", " + Hero.mediumId + ") not found");
+            Debug.LogWarning("FickReaction(" + mediumId + ", " + Character.mediumId + ") not found");
         }
         else
         {

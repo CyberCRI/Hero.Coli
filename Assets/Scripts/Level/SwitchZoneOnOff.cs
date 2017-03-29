@@ -43,7 +43,7 @@ public class SwitchZoneOnOff : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
 			triggerSwitchZone ();
         }

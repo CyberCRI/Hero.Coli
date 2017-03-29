@@ -11,9 +11,9 @@ public class BasicMine : ResettableMine
     void OnCollisionEnter(Collision collision)
     {
         detonate();
-        if (collision.gameObject.name == Hero.gameObjectName)
+        if (collision.gameObject.name == Character.gameObjectName)
         {
-            Hero.get().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
+            Character.get().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
         }
         else if (collision.gameObject.tag == "NPC")
         {

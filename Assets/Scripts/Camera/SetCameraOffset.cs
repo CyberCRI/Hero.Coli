@@ -18,7 +18,7 @@ public class SetCameraOffset : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             if (_resetCam)
             {

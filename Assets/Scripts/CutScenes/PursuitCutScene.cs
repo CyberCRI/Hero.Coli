@@ -33,7 +33,7 @@ public class PursuitCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             if (_step == 0)
             {

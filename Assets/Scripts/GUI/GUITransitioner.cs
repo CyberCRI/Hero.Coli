@@ -85,7 +85,7 @@ public class GUITransitioner : MonoBehaviour
     private DevicesDisplayer _devicesDisplayer;
 
 
-    public VectrosityPanel celliaGraph;
+    public VectrosityPanel characterGraph;
     public VectrosityPanel roomGraph;
 
     public CellControl control;
@@ -186,9 +186,9 @@ public class GUITransitioner : MonoBehaviour
             {
                 _instance.roomGraph.show(!inactive);
             }
-            if (null != _instance.celliaGraph)
+            if (null != _instance.characterGraph)
             {
-                _instance.celliaGraph.show(!inactive);
+                _instance.characterGraph.show(!inactive);
             }
         }
     }
@@ -207,12 +207,12 @@ public class GUITransitioner : MonoBehaviour
             Time.timeScale = 0;
         }
 
-        if ((null != roomGraph) && (null != celliaGraph))
+        if ((null != roomGraph) && (null != characterGraph))
         {
             roomGraph.setPause(pause);
-            celliaGraph.setPause(pause);
+            characterGraph.setPause(pause);
         }
-        Hero.get().Pause(pause);
+        Character.get().Pause(pause);
         control.Pause(pause);
         EnemiesManager.Paused = pause;
     }

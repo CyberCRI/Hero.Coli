@@ -4,7 +4,7 @@ using System.Collections;
 public class BigBadGuy : MonoBehaviour
 {
     private int _life = 50;
-    private Hero _hero;
+    private Character _character;
     private float _step;
     public iTweenPath _iTP;
     [SerializeField]
@@ -115,11 +115,11 @@ public class BigBadGuy : MonoBehaviour
     {
         if (col.collider)
         {
-            Hero hero = col.gameObject.GetComponent<Hero>();
-            if (null != hero)
+            Character character = col.gameObject.GetComponent<Character>();
+            if (null != character)
             {
-                // Debug.Log(this.GetType() + " OnCollisionEnter hit hero");
-                hero.kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.ENEMY.ToString()));
+                // Debug.Log(this.GetType() + " OnCollisionEnter hit character");
+                character.kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.ENEMY.ToString()));
             }
         }
     }

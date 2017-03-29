@@ -39,11 +39,11 @@ public class Medium : LoadableFromXmlImpl
     private float _energyProductionRate;          //!< The energy production speed
     public bool enableShufflingReactionOrder;   //!< Enables shuffling of reactions
 
-
     //TODO refactor interactions out of medium
-    private string _shortkeyPlusSuffix = ".PLUS";
-    private string _shortkeyMinusSuffix = ".MINUS";
-
+    private const string _shortkeyPlusSuffix = ".PLUS";
+    private const string _shortkeyMinusSuffix = ".MINUS";
+    private const string _characterMediumName = "Cellia";
+    private const string _mediumTag = "Medium";
 
     public void setId(int id) { _numberId = id; }
     public int getId() { return _numberId; }
@@ -387,9 +387,9 @@ public class Medium : LoadableFromXmlImpl
             }
         }
 
-        //TODO improve check that it's the medium of the hero bacterium Cellia
+        //TODO improve check that it's the medium of the character
         //TODO refactor interactions out of medium
-        if (_name == "Cellia")
+        if (_name == _characterMediumName)
         {
             if (GameConfiguration.isAdmin)
             {
@@ -493,7 +493,7 @@ public class Medium : LoadableFromXmlImpl
      *  \sa Medium
      */
 
-    public override string getTag() { return "Medium"; }
+    public override string getTag() { return _mediumTag; }
 
     /*!
     \brief This function load the initial energy of the medium and parse the validity of the given string

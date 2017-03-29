@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SavedCell : MonoBehaviour {
-
-  [SerializeField]
-  private FlagellaSetter _flagellaSetter;
-
+public class SavedCell : CellAnimator {
   private Rigidbody _rigidbody;
   private CapsuleCollider _cellCollider;
   private float _waitAnimationSpeed = 0.1f;
@@ -16,22 +12,14 @@ public class SavedCell : MonoBehaviour {
       "easetype", iTween.EaseType.easeInQuint
       );
 
-    public void initialize (Hero playableCell)
+    public void initialize (Character playableCell)
     {
-        resetCollisionState();
-        
+        resetCollisionState();        
         SwimAnimator newCellSwimAnimator = (SwimAnimator)GetComponent<SwimAnimator>();
-        newCellSwimAnimator.setSpeed(_waitAnimationSpeed);
-        
-        // transform.position = playableCell.transform.position;
+        newCellSwimAnimator.setSpeed(_waitAnimationSpeed);        
         transform.localScale = playableCell.transform.localScale;
-
-        _flagellaSetter.setFlagellaCount(playableCell.gameObject.GetComponent<PhenoSpeed>().getFlagellaCount());
-
-        //TODO set slow animation
-        //TODO change appearance to make it different from playable bacterium: maybe remove eyes?
-        //TODO put animation when bacterium becomes playable, then divide cell
-        Hero.safeFadeTo(gameObject, _optionsDuplicatedAlpha);
+        setFlagellaCount(playableCell.gameObject.GetComponent<PhenoSpeed>().getFlagellaCount());
+        safeFadeTo(_optionsDuplicatedAlpha);
   }
 
     private void safeInitCollider()
@@ -55,7 +43,7 @@ public class SavedCell : MonoBehaviour {
   }
 
   void OnTriggerExit(Collider col) {
-    if(_cellCollider.isTrigger && (null != col.GetComponent<Hero>()))
+    if(_cellCollider.isTrigger && (null != col.GetComponent<Character>()))
     {
       _cellCollider.isTrigger = false;
     }

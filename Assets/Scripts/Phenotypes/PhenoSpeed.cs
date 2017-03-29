@@ -3,7 +3,7 @@ using UnityEngine;
 public class PhenoSpeed : Phenotype
 {
     [SerializeField]
-    private FlagellaSetter _flagellaSetter;
+    private CellAnimator _cellAnimator;
 
     public bool devMode = false;
 
@@ -52,7 +52,7 @@ public class PhenoSpeed : Phenotype
 	public override void StartPhenotype ()
 	{
         gameObject.GetComponent<SwimAnimator>().safeInitAnims();
-    _flagellaSetter.setFlagellaCount(1);
+    _cellAnimator.setFlagellaCount(1);
 		initMoleculePhenotype();
 	}
 
@@ -84,36 +84,36 @@ public class PhenoSpeed : Phenotype
 
     private void updateFlagellaCount(float speed)
     {
-        switch (_flagellaSetter.flagellaCount)
+        switch (_cellAnimator.flagellaCount)
         {
             case 0:
                 if (speed > add1stFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(1);
+                    _cellAnimator.setFlagellaCount(1);
                 break;
             case 1:
                 if (speed > add2ndFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(2);
+                    _cellAnimator.setFlagellaCount(2);
                 else if (speed < rem1stFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(0);
+                    _cellAnimator.setFlagellaCount(0);
                 break;
             case 2:
                 if (speed > add3rdFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(3);
+                    _cellAnimator.setFlagellaCount(3);
                 else if (speed < rem2ndFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(1);
+                    _cellAnimator.setFlagellaCount(1);
                 break;
             case 3:
                 if (speed > add4thFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(4);
+                    _cellAnimator.setFlagellaCount(4);
                 else if (speed < rem3rdFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(2);
+                    _cellAnimator.setFlagellaCount(2);
                 break;
             case 4:
                 if (speed < rem4thFlagellumThreshold)
-                    _flagellaSetter.setFlagellaCount(3);
+                    _cellAnimator.setFlagellaCount(3);
                 break;
             default:
-                Debug.LogWarning(this.GetType() + " updateFlagellaCount bad flagellaCount=" + _flagellaSetter.flagellaCount);
+                Debug.LogWarning(this.GetType() + " updateFlagellaCount bad flagellaCount=" + _cellAnimator.flagellaCount);
                 break;
         }
           
@@ -121,7 +121,7 @@ public class PhenoSpeed : Phenotype
 
   public int getFlagellaCount()
   {
-    return _flagellaSetter.flagellaCount;
+    return _cellAnimator.flagellaCount;
   }
 
 	/*!
@@ -166,7 +166,7 @@ public class PhenoSpeed : Phenotype
     {
         base.initialize();
         
-        _flagellaSetter.setFlagellaCount(0);
+        _cellAnimator.setFlagellaCount(0);
         if(null == cellControl)
         {
             cellControl = gameObject.GetComponent<CellControl>(); 

@@ -7,7 +7,7 @@ public abstract class BacteriumSelector : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == Character.playerTag)
         {
             // Debug.Log(this.GetType() + " OnCollisionEnter hit player");
             if (!isBacteriumSelected())

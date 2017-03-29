@@ -62,7 +62,7 @@ public class MineExplosion : MonoBehaviour {
     //-------------------------------------------------------------------
     void  OnCollisionEnter ( Collision collision  ){
 
-        if(collision.gameObject.name == Hero.gameObjectName)
+        if(collision.gameObject.tag == Character.playerTag)
         {
             //Debug.DrawLine(transform.position, collision.gameObject.transform.position, Color.red, 1.0ff);
             if(transform.parent && transform.parent.GetComponent<Mine>() != null)
@@ -75,7 +75,7 @@ public class MineExplosion : MonoBehaviour {
 
                 transform.parent.GetComponent<Mine>().detonate();
 
-                collision.gameObject.GetComponent<Hero>().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
+                collision.gameObject.GetComponent<Character>().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
             }
         }
         else if (collision.gameObject.tag == "NPC")

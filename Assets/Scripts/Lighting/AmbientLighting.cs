@@ -24,7 +24,7 @@ public class AmbientLighting : MonoBehaviour
     private float _originMinPulse;
     private Vector3 _originGradient;
     private Vector3 _limitGradient;
-    private Hero _hero;
+    private Character _character;
     private bool _blackLight = false;
     private const string _blackLightTag = "BlackLight", _blackLightInverseTag = "BlackLightInverse";
     private bool _injured = false;
@@ -83,7 +83,7 @@ public class AmbientLighting : MonoBehaviour
         _ampicillinPulsingLight = GameObject.Find("AmpicillinPulsingLight").GetComponent<PulsingLight>();
         _originMaxPulse = _ampicillinPulsingLight.GetMaxIntensityValue();
         _originMinPulse = _ampicillinPulsingLight.GetMinIntensityValue();
-        _hero = Hero.get();
+        _character = Character.get();
         Color color = _backgroundBloodRenderer.material.color;
         color.a = 0;
         _backgroundBloodRenderer.material.color = color;

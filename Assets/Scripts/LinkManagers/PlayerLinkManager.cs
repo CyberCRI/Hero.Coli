@@ -65,9 +65,9 @@ public class PlayerLinkManager : LinkManager
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     [SerializeField]
-    private GameObject perso;
+    private GameObject characterGO;
     [SerializeField]
-    private Hero hero;
+    private Character character;
     [SerializeField]
     private PhenoFickContact pheno;
     [SerializeField]
@@ -99,9 +99,9 @@ public class PlayerLinkManager : LinkManager
         interfaceLinkManager.controlsArray.cellControl = cellControl;
         interfaceLinkManager.focusMaskManager.cellControl = cellControl;
 
-        //Hero connections
-        hero.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
-        hero.energyAnimation = GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+        //Character connections
+        character.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
+        character.energyAnimation = GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
 
         //PhenoFickcontact connections
         //TODO use InterfaceLinkManager

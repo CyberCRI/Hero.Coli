@@ -72,7 +72,7 @@ public class CompetitionCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag || col.tag == "Player")
+        if (col.tag == Character.playerTag || col.tag == Character.playerTag)
         {
             if (_iterationPlayer == 0)
             {
@@ -81,7 +81,7 @@ public class CompetitionCutScene : CutScene
             }
         }
 
-        if (col.tag == "Door")
+        if (col.tag == CutSceneElements.doorTag)
         {
             _boundCamera.target = _cellControl.gameObject.transform;
             _boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);

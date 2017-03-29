@@ -25,7 +25,7 @@ public class BadGuySecondCutScene : CutScene
     // Use this for initialization
     public override void initialize()
     {
-        _player = GameObject.FindGameObjectWithTag(Hero.playerTag);
+        _player = GameObject.FindGameObjectWithTag(Character.playerTag);
     }
 
     // Update is called once per frame
@@ -45,7 +45,7 @@ public class BadGuySecondCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             start();
         }

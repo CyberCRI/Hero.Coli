@@ -498,7 +498,7 @@ public class CraftZoneManager : MonoBehaviour
         return (
             0 != AvailableBioBricksManager.get().getAvailableBioBricks().Count
             &&
-            (!Hero.isBeingInjured || PhenoAmpicillinProducer.get().isSpawningAmpicillin)
+            (!Character.isBeingInjured || PhenoAmpicillinProducer.get().isSpawningAmpicillin)
         );
     }
 

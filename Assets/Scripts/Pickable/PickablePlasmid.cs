@@ -5,7 +5,7 @@ public class PickablePlasmid : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             if (!_alreadyPicked)
             {

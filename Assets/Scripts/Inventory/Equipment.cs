@@ -54,7 +54,7 @@ public class Equipment : DeviceContainer
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     private ReactionEngine _reactionEngine;
-    public int _celliaMediumID = 1;
+    public int _characterMediumID = 1;
 
     public Equipment()
     {
@@ -72,7 +72,7 @@ public class Equipment : DeviceContainer
         foreach (IReaction reaction in reactions)
         {
             // Debug.Log(this.GetType() + " addToReactionEngine adding reaction="+reaction);
-            _reactionEngine.addReactionToMedium(_celliaMediumID, reaction);
+            _reactionEngine.addReactionToMedium(_characterMediumID, reaction);
         }
     }
 
@@ -117,20 +117,20 @@ public class Equipment : DeviceContainer
         // Debug.Log(this.GetType() + " removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions));
 
         //LinkedList<Medium> mediums = _reactionEngine.getMediumList();
-        //Medium celliaMedium = ReactionEngine.getMediumFromId(_celliaMediumID, mediums);
+        //Medium characterMedium = ReactionEngine.getMediumFromId(_characterMediumID, mediums);
 
-        //LinkedList<IReaction> celliaReactions = celliaMedium.getReactions();
-        // Debug.Log(this.GetType() + " removeFromReactionEngine initialCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+        //LinkedList<IReaction> characterReactions = characterMedium.getReactions();
+        // Debug.Log(this.GetType() + " removeFromReactionEngine initialcharacterReactions="+Logger.ToString<IReaction>(characterReactions)
         //  );
 
         foreach (IReaction reaction in reactions)
         {
             // Debug.Log(this.GetType() + " removeFromReactionEngine removing reaction="+reaction);
-            _reactionEngine.removeReaction(_celliaMediumID, reaction, false);
+            _reactionEngine.removeReaction(_characterMediumID, reaction, false);
         }
 
-        //celliaReactions = celliaMedium.getReactions();
-        // Debug.Log(this.GetType() + " removeFromReactionEngine finalCelliaReactions="+Logger.ToString<IReaction>(celliaReactions)
+        //characterReactions = characterMedium.getReactions();
+        // Debug.Log(this.GetType() + " removeFromReactionEngine finalcharacterReactions="+Logger.ToString<IReaction>(characterReactions)
         //  );
     }
 

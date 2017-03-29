@@ -68,7 +68,7 @@ public class EndCutScene : CutScene
             _started = true;
             start();
         }
-        else if (col.tag == Hero.playerTag)
+        else if (col.tag == Character.playerTag)
         {
             end();
         }

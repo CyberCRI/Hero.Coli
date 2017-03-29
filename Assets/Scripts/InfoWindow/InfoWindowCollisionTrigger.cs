@@ -3,11 +3,11 @@ using System.Collections;
 
 public class InfoWindowCollisionTrigger : InfoWindowTrigger {
 
-  public Collider heroCollider;
+  public Collider characterCollider;
 
   void OnTriggerEnter(Collider other) {
     // Debug.Log(this.GetType() + " OnTriggerEnter("+other.ToString()+") _alreadyDisplayed="+_alreadyDisplayed.ToString());
-    if(other == heroCollider) {
+    if(other == characterCollider) {
       displayInfoWindow();
     }
   }

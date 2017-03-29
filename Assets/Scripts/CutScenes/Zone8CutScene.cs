@@ -22,7 +22,7 @@ public class Zone8CutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Door")
+        if (col.tag == CutSceneElements.doorTag)
         {
             if (_collisionIteration == 0)
             {

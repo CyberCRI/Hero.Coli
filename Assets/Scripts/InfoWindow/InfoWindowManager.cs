@@ -195,7 +195,7 @@ public class InfoWindowManager : MonoBehaviour
                 break;
             case NextAction.RBS2CRAFTTUTORIAL:
                 // Debug.Log("InfoWindowManager next RBS2CRAFTTUTORIAL");
-                Hero.get().gameObject.AddComponent<RBS2CraftHint>();
+                Character.get().gameObject.AddComponent<RBS2CraftHint>();
                 break;
             default:
                 // Debug.Log("InfoWindowManager next GOTOWORLD");

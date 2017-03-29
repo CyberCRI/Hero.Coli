@@ -17,7 +17,7 @@ public class CutSceneElements : MonoBehaviour
     {
         get
         {
-            __cellControl = (null == __cellControl) ? GameObject.FindGameObjectWithTag(Hero.playerTag).GetComponent<CellControl>() : __cellControl;
+            __cellControl = (null == __cellControl) ? GameObject.FindGameObjectWithTag(Character.playerTag).GetComponent<CellControl>() : __cellControl;
             return __cellControl;
         }
     }
@@ -27,6 +27,7 @@ public class CutSceneElements : MonoBehaviour
     private int _originCullingMask;
     protected static Camera _cutSceneCameraUI;
     protected static BoundCamera _boundCamera;
+    public const string doorTag = "Door";
 
     private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
     {

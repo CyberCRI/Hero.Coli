@@ -44,7 +44,7 @@ public class AmpicillinTutorialCutScene : CutScene
             StartCoroutine(killDummy(_iTweenEventBigGuy.gameObject));
         }
 
-        if (col.tag == Hero.playerTag)
+        if (col.tag == Character.playerTag)
         {
             if (_first)
             {

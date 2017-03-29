@@ -49,7 +49,7 @@ public class MineTutorialCutScene : CutScene
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Door" && !_triggered)
+        if (col.tag == CutSceneElements.doorTag && !_triggered)
         {
             _triggered = true;
             start();

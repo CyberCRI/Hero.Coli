@@ -23,8 +23,8 @@ using System.Collections.Generic;
 public abstract class Phenotype : MonoBehaviour
 {
   protected ReactionEngine _reactionEngine;           //!< The ReactionEngine (ReactionEngine)
-  private static int       _heroMediumID = 1;         //!< The medium id of the hero
-  private int              _mediumId = _heroMediumID; //!< The medium id
+  private static int       _characterMediumID = 1;         //!< The medium id of the character
+  private int              _mediumId = _characterMediumID; //!< The medium id
 
   protected static ArrayList _molecules;
   protected Medium           _mediumRef;

@@ -9,6 +9,6 @@ public class PlasmidHintModal : ModalButton
         // Debug.Log(this.GetType() + " press()");
         GameStateController.get ().tryUnlockPause ();
         ModalManager.unsetModal ();
-        Hero.get().gameObject.AddComponent<PlasmidHint>();
+        Character.get().gameObject.AddComponent<PlasmidHint>();
     }
 }

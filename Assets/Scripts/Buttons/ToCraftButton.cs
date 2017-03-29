@@ -15,7 +15,7 @@ public class ToCraftButton : ExternalOnPressButton
             }
             else
             {
-                if(Hero.isInjured)
+                if(Character.isInjured)
                 {
                     ModalManager.setModal("NoCraftWhileDamage");
                 }
