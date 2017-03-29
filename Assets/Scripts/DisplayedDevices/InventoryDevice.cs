@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InventoryDevice : MonoBehaviour {
     public InventoriedDisplayedDevice inventoriedDisplayedDevice;
-    public GameObject equipedMask;
+    public GameObject equippedMask;
     private Device _device;
 
     void Update()
@@ -16,6 +16,6 @@ public class InventoryDevice : MonoBehaviour {
         bool exists = Equipment.get().exists (d => d.Equals(_device));
         //bool exists = Equipment.get().exists (d => d.getInternalName() == _device.getInternalName());
 
-        equipedMask.SetActive(exists);
+        equippedMask.SetActive(exists);
     }
 }

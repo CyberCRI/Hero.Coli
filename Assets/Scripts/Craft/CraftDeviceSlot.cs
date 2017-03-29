@@ -48,21 +48,21 @@ public class CraftDeviceSlot : MonoBehaviour
     protected CraftZoneDisplayedBioBrick[] currentBricks = new CraftZoneDisplayedBioBrick[4];
 
 
-    protected bool _isEquiped;
-    public bool isEquiped
+    protected bool _isEquipped;
+    public bool isEquipped
     {
         get
         {
-            return _isEquiped;
+            return _isEquipped;
         }
         set
         {
-            if (!_isEquiped && value)
+            if (!_isEquipped && value)
             {
-                // Debug.Log(this.GetType() + "set: !_isEquiped && value");
+                // Debug.Log(this.GetType() + "set: !_isEquipped && value");
                 Device currentDevice = getCurrentDevice();
-                _isEquiped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
-                if (_isEquiped)
+                _isEquipped = (Equipment.AddingResult.SUCCESS == Equipment.get().askAddDevice(currentDevice));
+                if (_isEquipped)
                 {
                     if (null != _resultSprite)
                     {
@@ -77,10 +77,10 @@ public class CraftDeviceSlot : MonoBehaviour
                 }
                 forcePositionIfNecessary(false);
             }
-            else if (_isEquiped && !value)
+            else if (_isEquipped && !value)
             {
-                // Debug.Log(this.GetType() + "set: _isEquiped && !value");
-                _isEquiped = false;
+                // Debug.Log(this.GetType() + "set: _isEquipped && !value");
+                _isEquipped = false;
                 // Debug.Log(this.GetType() + " calls Equipment.get().removeDevice");
                 _isCallingRecursively = true;
                 Equipment.get().removeDevice(getCurrentDevice());
@@ -123,7 +123,7 @@ public class CraftDeviceSlot : MonoBehaviour
     protected void equip()
     {
         // Debug.Log(this.GetType() + "equip");
-        isEquiped = true;
+        isEquipped = true;
         onBricksCollapsedCallback = noneCallback;
     }
 
@@ -131,7 +131,7 @@ public class CraftDeviceSlot : MonoBehaviour
     {
         _isCraftSuccess = false;
         // Debug.Log(this.GetType() + "unequip");
-        isEquiped = false;
+        isEquipped = false;
     }
 
     public int getIndexFromType(BioBrick.Type bbType)
@@ -550,7 +550,7 @@ public class CraftDeviceSlot : MonoBehaviour
             removeBrick(currentBricks[1]);
             removeBrick(currentBricks[2]);
             removeBrick(currentBricks[3]);
-            if (isEquiped)
+            if (isEquipped)
             {
                 unequip();
             }
@@ -646,8 +646,8 @@ public class CraftDeviceSlot : MonoBehaviour
 
             _selectionSprite.name = gameObject.name + _selectionSprite.name;
 
-            _isEquiped = true;
-            isEquiped = false;
+            _isEquipped = true;
+            isEquipped = false;
 
             for (int index = 0; index < 4; index++)
             {

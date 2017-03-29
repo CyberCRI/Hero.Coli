@@ -413,7 +413,7 @@ public class CraftZoneManager : MonoBehaviour
         {
             foreach (CraftDeviceSlot slot in _slots)
             {
-                if (!slot.isEquiped)
+                if (!slot.isEquipped)
                 {
                     slot.setSelected(true);
                     break;

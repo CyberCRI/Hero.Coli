@@ -9,7 +9,7 @@ public class InventoriedDisplayedDevice : DisplayedDevice {
 	public override void OnPress(bool isPressed) {
 		if(isPressed) {
 			// Debug.Log(this.GetType() + " OnPress() "+getDebugInfos());
-            toggleEquiped();
+            toggleEquipped();
 		}
 	}
 

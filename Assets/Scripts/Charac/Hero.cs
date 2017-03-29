@@ -452,7 +452,6 @@ public class Hero : MonoBehaviour
             duplicateCell();
 
             //RedMetrics reporting
-            //TODO put equiped devices in customData of sendEvent
             RedMetricsManager.get().sendRichEvent(TrackingEvent.REACH);
         }
     }

@@ -152,12 +152,12 @@ public class CraftFinalizer : MonoBehaviour {
     return true;
   }
   
-  public bool isEquiped(Device device)
+  public bool isEquipped(Device device)
   {
       return (null != device) && Equipment.get().exists (d => d.Equals(device));
   }
   
-  public bool isEquiped(string deviceName)
+  public bool isEquipped(string deviceName)
   {
       return (!string.IsNullOrEmpty(deviceName) && Equipment.get().exists (d => d.getInternalName() == deviceName));
   }
@@ -165,12 +165,12 @@ public class CraftFinalizer : MonoBehaviour {
   public void setDisplayedDevice(Device device){
     // Debug.Log(this.GetType() + " setDisplayedDevice("+device+")");
     
-    bool equiped = isEquiped(device);
+    bool equipped = isEquipped(device);
     bool equipable = isEquipable(device);
     bool newRecipe = (Inventory.get().canAddDevice(device) == Inventory.AddingResult.SUCCESS);
     
     //CraftFinalizationButton.CraftMode mode = enabled?CraftFinalizationButton.CraftMode.CRAFT:CraftFinalizationButton.CraftMode.UNCRAFT;
-    CraftFinalizationButton.CraftMode mode = equiped?CraftFinalizationButton.CraftMode.INACTIVATE:
+    CraftFinalizationButton.CraftMode mode = equipped?CraftFinalizationButton.CraftMode.INACTIVATE:
                         (equipable?CraftFinalizationButton.CraftMode.ACTIVATE:CraftFinalizationButton.CraftMode.NOTHING);
     
     if(null == device)

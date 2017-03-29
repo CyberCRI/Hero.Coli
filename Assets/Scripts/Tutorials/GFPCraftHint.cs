@@ -50,8 +50,8 @@ public class GFPCraftHint : StepByStepTutorial
     {
         if (0 == step)
         {
-            _isMoveDevice1 = CraftFinalizer.get().isEquiped(_moveDevice1);
-            _isMoveDevice2 = CraftFinalizer.get().isEquiped(_moveDevice2);
+            _isMoveDevice1 = CraftFinalizer.get().isEquipped(_moveDevice1);
+            _isMoveDevice2 = CraftFinalizer.get().isEquipped(_moveDevice2);
         }
         else if (2 == step && _isMoveDevice2)
         {

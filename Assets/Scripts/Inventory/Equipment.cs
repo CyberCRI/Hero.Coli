@@ -58,7 +58,7 @@ public class Equipment : DeviceContainer
 
     public Equipment()
     {
-        //by default, nothing's equiped
+        //by default, nothing's equipped
         _devices = new List<Device>();
     }
 

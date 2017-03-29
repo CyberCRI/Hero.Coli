@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
+public class EquippedDisplayedDeviceWithMolecules : MonoBehaviour
 {
     // used only to position the externally created displayed device
     [SerializeField]
@@ -123,7 +123,7 @@ public class EquipedDisplayedDeviceWithMolecules : MonoBehaviour
 
     protected string getDebugInfos()
     {
-        return "EquipedDisplayedDeviceWithMolecules inner device=" + device + ", inner displayedDeviceScript type=" + _displayedDevice.GetComponent<DisplayedDevice>() + ", time=" + Time.realtimeSinceStartup;
+        return "EquippedDisplayedDeviceWithMolecules inner device=" + device + ", inner displayedDeviceScript type=" + _displayedDevice.GetComponent<DisplayedDevice>() + ", time=" + Time.realtimeSinceStartup;
     }
 
     public void onLanguageChanged()

@@ -12,7 +12,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
 {
     // different possibilities for bugfix
     private const string _cellPanelEquippedDeviceBackground1 = _equippedPrefix + _moveDevice1 + _backgroundSuffix;
-    private const string _cellPanelEquippedDeviceBackground2 = "EquipedDisplayedDeviceWithMoleculesPrefab(Clone)" + _backgroundSuffix;
+    private const string _cellPanelEquippedDeviceBackground2 = "EquippedDisplayedDeviceWithMoleculesPrefab(Clone)" + _backgroundSuffix;
     private const string _cellPanelEquippedDeviceBackground3 =  "EquippedDisplayedDeviceWithMoleculeList";
     private const string _cellPanelEquippedDeviceBackground4 = "EquippedDisplayedDeviceWithMoleculeGrid";
 

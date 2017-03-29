@@ -17,7 +17,7 @@ public class DisplayedDevice : DisplayedElement
     // prefab URIs
     private const string _uriPrefix = "Prefabs/Devices/";
     private const string equippedPrefabURI = _uriPrefix + "DisplayedDevicePrefab";
-    public const string equipedWithMoleculesPrefabURI = _uriPrefix + "EquipedDisplayedDeviceWithMoleculesPrefab";
+    public const string equippedWithMoleculesPrefabURI = _uriPrefix + "EquippedDisplayedDeviceWithMoleculesPrefab";
     private const string listedPrefabURI = _uriPrefix + "ListedDevicePrefab";
 
     // device icon //
@@ -61,11 +61,11 @@ public class DisplayedDevice : DisplayedElement
     private const string roundedSquareBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + roundedSquareBackgroundSuffix;
     private const string circleBackgroundSpriteName = _baseDeviceTextureString + _qualityDefault + backgroundSuffix + circleBackgroundSuffix;
 
-    private const string _equipedPrefix = "e_";
+    private const string _equippedPrefix = "e_";
     private const string _inventoriedPrefix = "i_";
     private const string _listedPrefix = "l_";
     private const string _craftSlotPrefix = "c_";
-    private string[] _deviceNamePrefixes = new string[4] { _equipedPrefix, _inventoriedPrefix, _listedPrefix, _craftSlotPrefix };
+    private string[] _deviceNamePrefixes = new string[4] { _equippedPrefix, _inventoriedPrefix, _listedPrefix, _craftSlotPrefix };
 
     public Device _device;
     protected static DevicesDisplayer _devicesDisplayer;
@@ -285,7 +285,7 @@ public class DisplayedDevice : DisplayedElement
         Object prefab;
         if (deviceType == DevicesDisplayer.DeviceType.Equipped || deviceType == DevicesDisplayer.DeviceType.CraftSlot)
         {
-            // Debug.Log("DisplayedDevice: will create Equiped " + equipedPrefabURI);
+            // Debug.Log("DisplayedDevice: will create Equipped " + equippedPrefabURI);
             prefab = Resources.Load(equippedPrefabURI);
         }
         // else if (deviceType == DevicesDisplayer.DeviceType.Inventoried) // deprecated
@@ -414,20 +414,20 @@ public class DisplayedDevice : DisplayedElement
         return "device id=" + _id + ", inner device=" + _device + ", device type=" + _deviceType + ", time=" + Time.realtimeSinceStartup;
     }
 
-    public void toggleEquiped()
+    public void toggleEquipped()
     {
         if (_device == null)
         {
-            Debug.LogWarning(this.GetType() + " toggleEquiped _device==null");
+            Debug.LogWarning(this.GetType() + " toggleEquipped _device==null");
             return;
         }
 
-        DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquipedDevice(_device);
-        // Debug.Log(this.GetType() + " toggleEquiped added device result=" + addingResult + ", " + getDebugInfos());
+        DeviceContainer.AddingResult addingResult = _devicesDisplayer.askAddEquippedDevice(_device);
+        // Debug.Log(this.GetType() + " toggleEquipped added device result=" + addingResult + ", " + getDebugInfos());
         if (DeviceContainer.AddingResult.FAILURE_SAME_NAME == addingResult
            || DeviceContainer.AddingResult.FAILURE_SAME_DEVICE == addingResult)
         {
-            if (_devicesDisplayer.askRemoveEquipedDevice(_device))
+            if (_devicesDisplayer.askRemoveEquippedDevice(_device))
             {
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.UNEQUIP, new CustomData(CustomDataTag.DEVICE, _device.getInternalName()));
             }

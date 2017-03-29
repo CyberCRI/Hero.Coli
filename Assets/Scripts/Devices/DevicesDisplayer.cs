@@ -89,7 +89,7 @@ public class DevicesDisplayer : MonoBehaviour
         CraftSlot = 3
     }
 
-    private List<DisplayedDevice> _equipedDevices = new List<DisplayedDevice>();
+    private List<DisplayedDevice> _equippedDevices = new List<DisplayedDevice>();
     private List<DisplayedDevice> _inventoriedDevices = new List<DisplayedDevice>();
     private List<DisplayedDevice> _listedInventoriedDevices = new List<DisplayedDevice>();
 
@@ -156,8 +156,8 @@ public class DevicesDisplayer : MonoBehaviour
         {
             Debug.LogWarning(this.GetType() + " addEquippedDevice device == null");
         }
-        bool newEquiped = (!_equipedDevices.Exists(equiped => equiped._device == device));
-        if (newEquiped)
+        bool newEquipped = (!_equippedDevices.Exists(equipped => equipped._device == device));
+        if (newEquipped)
         {
 
             DisplayedDevice newDevice = DisplayedDevice.Create(
@@ -169,21 +169,21 @@ public class DevicesDisplayer : MonoBehaviour
                                             DevicesDisplayer.DeviceType.Equipped
                                         );
 
-            _equipedDevices.Add(newDevice);
+            _equippedDevices.Add(newDevice);
 
             graphMoleculeList.addDeviceAndMoleculesComponent(newDevice);
         }
         else
         {
-            // Debug.Log(this.GetType() + " addDevice failed: alreadyEquiped=" + newEquiped);
+            // Debug.Log(this.GetType() + " addDevice failed: alreadyEquipped=" + newEquipped);
         }
     }
 
-    public DeviceContainer.AddingResult askAddEquipedDevice(Device device)
+    public DeviceContainer.AddingResult askAddEquippedDevice(Device device)
     {
         if (device == null)
         {
-            Debug.LogWarning(this.GetType() + " askAddEquipedDevice device==null");
+            Debug.LogWarning(this.GetType() + " askAddEquippedDevice device==null");
             return DeviceContainer.AddingResult.FAILURE_DEFAULT;
         }
         return Equipment.get().askAddDevice(device);
@@ -243,7 +243,7 @@ public class DevicesDisplayer : MonoBehaviour
 
 
 
-    public bool askRemoveEquipedDevice(Device device)
+    public bool askRemoveEquippedDevice(Device device)
     {
         Equipment.get().removeDevice(device);
         return true;
@@ -251,8 +251,8 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void removeDevice(int deviceID)
     {
-        DisplayedDevice toRemove = _equipedDevices.Find(device => device.getID() == deviceID);
-        List<DisplayedDevice> devices = _equipedDevices;
+        DisplayedDevice toRemove = _equippedDevices.Find(device => device.getID() == deviceID);
+        List<DisplayedDevice> devices = _equippedDevices;
         DeviceType deviceType = DeviceType.Equipped;
         if (toRemove == null)
         {
@@ -289,7 +289,7 @@ public class DevicesDisplayer : MonoBehaviour
         DisplayedDevice found;
         if (type == DevicesDisplayer.DeviceType.Equipped)
         {
-            devices = _equipedDevices;
+            devices = _equippedDevices;
         }
         else if (type == DevicesDisplayer.DeviceType.Inventoried)
         {

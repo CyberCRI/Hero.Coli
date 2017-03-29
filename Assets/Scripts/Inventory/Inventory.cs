@@ -338,7 +338,7 @@ public class Inventory : DeviceContainer
         foreach (Device device in _devices)
         {
             //ask Equipment instead
-            _displayer.askRemoveEquipedDevice(device);
+            _displayer.askRemoveEquippedDevice(device);
             //ask Crafting instead
             _displayer.removeListedDevice(device);
             //ok
