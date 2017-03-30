@@ -404,42 +404,7 @@ public class Character : CellAnimator
         return result;
     }
 
-    void manageCheckpoint(Collider col)
-    {
-        // Respawn
-        setCurrentRespawnPoint(col);
-
-        // Particle emitters:
-        //  inactivate previous (-2)
-        //  activate future (+2)
-        updateMapElements(0);
-    }
-
-    void managePickUp(Collider col)
-    {
-        PickableItem item = col.GetComponent<PickableItem>();
-        if (null != item)
-        {
-            // Debug.Log(this.GetType() + " managePickUp collided with DNA! bit=" + item.getDNABit());
-            item.pickUp();
-        }
-    }
-
-    // Manages sector when entering into the sector.
-    void manageSector(Collider col)
-    {
-        Sector sector = col.GetComponent<Sector>();
-        if (null != sector)
-        {
-            // Debug.Log(this.GetType() + " manageSector collided with sector=" + sector.ToString());
-            sector.activate();
-        }
-    }
-
-    void updateMapElements(int checkpointIndex)
-    { }
-
-    void setCurrentRespawnPoint(Collider col)
+    bool manageCheckpoint(Collider col)
     {
         if (null != col.gameObject.GetComponent<RespawnPoint>()
              && (null == _lastCheckpoint
@@ -450,6 +415,32 @@ public class Character : CellAnimator
 
             //RedMetrics reporting
             RedMetricsManager.get().sendRichEvent(TrackingEvent.REACH);
+            return true;
+        }
+        return false;
+    }
+
+    bool managePickUp(Collider col)
+    {
+        PickableItem item = col.GetComponent<PickableItem>();
+        if (null != item)
+        {
+            // Debug.Log(this.GetType() + " managePickUp collided with DNA! bit=" + item.getDNABit());
+            item.pickUp();
+            return true;
+        }
+        return false;
+    }
+
+    // deprecated
+    // Manages sector when entering into the sector.
+    void manageSector(Collider col)
+    {
+        Sector sector = col.GetComponent<Sector>();
+        if (null != sector)
+        {
+            // Debug.Log(this.GetType() + " manageSector collided with sector=" + sector.ToString());
+            sector.activate();
         }
     }
 
@@ -476,9 +467,25 @@ public class Character : CellAnimator
 
     void OnTriggerEnter(Collider collision)
     {
-        managePickUp(collision);
-        manageCheckpoint(collision);
-        manageSector(collision);
+        if(!managePickUp(collision))
+        {
+            manageCheckpoint(collision);
+        }
+        if (collision.tag == Checkpoint.checkpointTag)
+        {
+            Debug.Log(this.GetType() + " OnTriggerEnter collided " + collision.name + " tagged " + Checkpoint.checkpointTag);
+
+            Checkpoint checkpoint = collision.gameObject.GetComponent<Checkpoint>();
+            if(null != checkpoint)
+            {
+                Debug.Log(this.GetType() + " OnTriggerEnter collideChapter(" + checkpoint.index + ", " + Time.unscaledTime +")");
+                GameStateController.collideChapter(checkpoint.index, Time.unscaledTime);
+            }
+            else
+            {
+                Debug.LogWarning(this.GetType() + " OnTriggerEnter object tagged " + Checkpoint.checkpointTag + " has no " + typeof(Checkpoint) + " component");
+            }
+        }
     }
 
     void OnTriggerExit(Collider col)

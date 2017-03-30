@@ -35,7 +35,7 @@ public class Teleporter : MonoBehaviour
 
     public void initialize()
     {
-        _checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+        _checkpoints = GameObject.FindGameObjectsWithTag(Checkpoint.checkpointTag);
     }
 
     void addDevices(CheckPointData checkPoint)
@@ -77,7 +77,8 @@ public class Teleporter : MonoBehaviour
                 checkpoint.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
             }
             CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
-            AvailableBioBricksManager.get().availableBioBrickData = checkpoint.GetComponent<Checkpoint>().checkPointData;
+            Checkpoint checkpointComponent = checkpoint.GetComponent<Checkpoint>();
+            AvailableBioBricksManager.get().availableBioBrickData = checkpointComponent.checkPointData;
             // Debug.Log(this.GetType() + " teleport(" + teleportIndex + ") availableBioBrickData set");
             // AvailableBioBricksManager.get().logAvailableBioBrickData();
             foreach (Transform child in checkpoint.transform)
@@ -87,12 +88,14 @@ public class Teleporter : MonoBehaviour
                     child.gameObject.SetActive(false);
                 }
             }
-            if (checkpoint.GetComponent<Checkpoint>().checkPointData != null)
+            if (checkpointComponent.checkPointData != null)
             {
-                addDevices(checkpoint.GetComponent<Checkpoint>().checkPointData);
-                while (CraftZoneManager.get().getSlotCount() < checkpoint.GetComponent<Checkpoint>().requiredSlots)
+                addDevices(checkpointComponent.checkPointData);
+                while (CraftZoneManager.get().getSlotCount() < checkpointComponent.requiredSlots)
                     CraftZoneManager.get().addSlot();
             }
+            Debug.Log(this.GetType() + " calls setChapter");
+            GameStateController.setChapter(checkpointComponent.index, Time.unscaledTime);
         }
     }
 }

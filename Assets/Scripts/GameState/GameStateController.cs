@@ -765,4 +765,16 @@ public class GameStateController : MonoBehaviour
             fadeSprite.FadeOut(speed);
         }
     }
+
+    public static void collideChapter(int index, float time)
+    {
+        Debug.Log("GameStateController collideChapter(" + index + ", " + time + ")");
+        _instance._scorekeeper.collideChapter(index, time);
+    }
+
+    public static void setChapter(int index, float time)
+    {
+        Debug.Log("GameStateController startChapter(" + index + ", " + time + ")");
+        _instance._scorekeeper.startChapter(index, time);
+    }
 }
