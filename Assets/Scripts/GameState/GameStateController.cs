@@ -80,6 +80,7 @@ public class GameStateController : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
+        _scorekeeper = new Scorekeeper();
         loadLevels();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +89,7 @@ public class GameStateController : MonoBehaviour
     public const string _interfaceScene = "Interface1.0";
     public const string _bacteriumScene = "Bacterium1.0";
 
+    private Scorekeeper _scorekeeper = new Scorekeeper();
 
     public const string keyPrefix = "KEY.";
     // public const string _inventoryKey = keyPrefix + "INVENTORY";
@@ -99,9 +101,10 @@ public class GameStateController : MonoBehaviour
     private GameState _gameState;
     public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
-    public GameObject intro, endWindow, pauseIndicator;
+    public GameObject intro, endWindow, finalScoreboard, pauseIndicator;
+    public UILabel finalScoreboardLabel;
     public ContinueButton introContinueButton;
-    public EndMainMenuButton endMainMenuButton;
+    public EndMainMenuButton endMainMenuButton, finalScoreboardQuitButton;
     public MainMenuManager mainMenu;
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
@@ -451,6 +454,8 @@ public class GameStateController : MonoBehaviour
                 case GameState.Start:
 
                     endWindow.SetActive(false);
+                    finalScoreboard.SetActive(false);
+
                     mainMenu.setNewGame();
                     if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get("Update").configuration.restartBehavior)
                     {
@@ -637,13 +642,15 @@ public class GameStateController : MonoBehaviour
         fadeSprite.gameObject.SetActive(true);
         fadeSprite.FadeIn(0.5f);
 
-        StartCoroutine(waitFade(1.0f));
+        StartCoroutine(waitFadeAndDisplayEndWindow(1.0f));
     }
 
-    private IEnumerator waitFade(float waitTime)
+    private IEnumerator waitFadeAndDisplayEndWindow(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
+        finalScoreboardLabel.text = _scorekeeper.getCompletionAbstract();
+        // ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
+        ModalManager.setModal(finalScoreboard, true, finalScoreboardQuitButton.gameObject, finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
     }
 
     public void changeState(GameState newState)

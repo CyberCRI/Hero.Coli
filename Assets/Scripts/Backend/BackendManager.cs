@@ -93,6 +93,10 @@ public class BackendManager : MonoBehaviour
                 Character.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
                 _depth = 0;
             }
+            if (Input.GetKeyDown(KeyCode.KeypadPeriod))
+            {
+                GameStateController.get().triggerEnd();
+            }
         }
 
         /*

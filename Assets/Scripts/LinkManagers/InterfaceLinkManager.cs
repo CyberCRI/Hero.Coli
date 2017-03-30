@@ -94,7 +94,11 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private GameObject introduction1, introduction2, okButton1, okButton2, end, pauseIndicator;
     [SerializeField]
-    private EndMainMenuButton endMainMenuButton;
+    private GameObject finalScoreboard;
+    [SerializeField]
+    private UILabel finalScoreboardLabel;
+    [SerializeField]
+    private EndMainMenuButton endMainMenuButton, finalScoreboardQuitButton;
 
     // main menu
     public ControlsMainMenuItemArray controlsArray;
@@ -162,8 +166,10 @@ public class InterfaceLinkManager : LinkManager
         gameStateController.introContinueButton = cb;
         gameStateController.fadeSprite = fade;
         gameStateController.endWindow = end;
-        EndMainMenuButton emmb = endMainMenuButton.GetComponent<EndMainMenuButton>();
-        gameStateController.endMainMenuButton = emmb;
+        gameStateController.finalScoreboard = finalScoreboard;
+        gameStateController.finalScoreboardLabel = finalScoreboardLabel;
+        gameStateController.endMainMenuButton = endMainMenuButton;
+        gameStateController.finalScoreboardQuitButton = finalScoreboardQuitButton;
         gameStateController.mainMenu = mainMenu;
         gameStateController.pauseIndicator = pauseIndicator;
 
@@ -232,6 +238,7 @@ public class InterfaceLinkManager : LinkManager
         introduction1.SetActive(false);
         introduction2.SetActive(false);
         end.SetActive(false);
+        finalScoreboard.SetActive(false);
         bars.SetActive(true);
         fade.gameObject.SetActive(true);
 
