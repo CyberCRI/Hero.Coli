@@ -1,6 +1,6 @@
 <infoList>
   <info code="RestartGame">
-    <texture>i_cellia_art_dark_big</texture>
+    <texture>i_generic</texture>
     <next>ModalRestart</next>
   </info>  
   <info code="FirstCheckpoint">
@@ -8,7 +8,7 @@
     <next>QuitModalWindow</next>
   </info>
   <info code="EndRestartGame">
-    <texture>i_cellia_art_dark_big</texture>
+    <texture>i_generic</texture>
     <next>ModalRestart</next>
     <cancel>BackToEndPanelButton</cancel>
   </info>
@@ -50,7 +50,7 @@
     <next>InducedPromoterHintModal</next>
   </info>
   <info code="T1_END">
-    <texture>i_cellia_art_dark_big</texture>
+    <texture>i_end</texture>
     <next>QuitModalWindow</next>
   </info>
 </infoList>
