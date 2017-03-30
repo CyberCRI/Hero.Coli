@@ -1,28 +1,28 @@
 <infoList>
   <info code="RestartGame">
-    <texture>i_end</texture>
+    <texture>i_cellia_art_dark_big</texture>
     <next>ModalRestart</next>
   </info>  
   <info code="FirstCheckpoint">
-    <texture>i_modal_division</texture>
+    <texture>i_checkpoint_division</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="EndRestartGame">
-    <texture>i_end</texture>
+    <texture>i_cellia_art_dark_big</texture>
     <next>ModalRestart</next>
     <cancel>BackToEndPanelButton</cancel>
   </info>
   <info code="NoCraftWhileDamage">
-    <texture>i_modal_ampi2</texture>
+    <texture>i_ampicillin</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="NoBricksYet">
-    <texture>i_modal_biobrick</texture>
+    <texture>i_biobrick</texture>
     <next>QuitModalWindow</next>
   </info>
   
   <info code="T1_AMPICILLIN">
-    <texture>i_modal_ampi2</texture>
+    <texture>i_ampicillin</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_FLUO1">
@@ -30,7 +30,7 @@
     <next>GFPCraftHintModal</next>
   </info>
   <info code="T1_RBS1">
-    <texture>i_modal_rbs23</texture>
+    <texture>i_rbs1</texture>
     <next>RBS1CraftHintModal</next>
   </info>
   <info code="T1_NANOBOT">
@@ -38,7 +38,7 @@
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_FLUO2">
-    <texture>t_rfp_needed</texture>
+    <texture>i_rfp</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_PLASMID">
@@ -46,11 +46,11 @@
     <next>PlasmidHintModal</next>
   </info>
   <info code="T1_PRBAD3">
-    <texture>i_lara</texture>
+    <texture>i_l-arabinose</texture>
     <next>InducedPromoterHintModal</next>
   </info>
   <info code="T1_END">
-    <texture>i_end</texture>
+    <texture>i_cellia_art_dark_big</texture>
     <next>QuitModalWindow</next>
   </info>
 </infoList>
