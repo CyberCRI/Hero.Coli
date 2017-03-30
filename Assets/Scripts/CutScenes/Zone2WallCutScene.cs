@@ -84,6 +84,7 @@ public class Zone2WallCutScene : CutScene
 
     public override void endCutScene()
     {
+        Character.get().gameObject.AddComponent<PutMovBackHint>();
         Destroy(this.transform.parent.gameObject);
     }
 

@@ -194,7 +194,7 @@ public class InterfaceLinkManager : LinkManager
         modalManager.genericModalWindow = genericModalWindow;
         modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
         modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
-        modalManager.infoSprite = genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
+        modalManager.setInfoSprite(genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>());
         modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
         modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
         modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;

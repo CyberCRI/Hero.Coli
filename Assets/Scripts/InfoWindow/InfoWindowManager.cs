@@ -104,7 +104,6 @@ public class InfoWindowManager : MonoBehaviour
         if (fillInFieldsFromCode(code))
         {
             ModalManager.setModal(_instance.infoPanel);
-            _instance.infoSprite.transform.localPosition = new Vector3(_instance.infoSprite.transform.localPosition.x, _instance.infoSprite.transform.localPosition.y, -1);
             return true;
         }
         else
@@ -126,6 +125,8 @@ public class InfoWindowManager : MonoBehaviour
             _instance.titleLabel.key = generic + _genericTitle;
             _instance.subtitleLabel.key = generic + _genericSubtitle;
             _instance.infoSprite.spriteName = info._texture;
+            _instance.infoSprite.MakePixelPerfect();
+            _instance.infoSprite.transform.localPosition = new Vector3(_instance.infoSprite.transform.localPosition.x, _instance.infoSprite.transform.localPosition.y, -1);
             _instance.explanationLabel.key = generic + _genericExplanation;
             _instance.bottomLabel.key = generic + _genericBottom;
             _instance.nextAction = getFromString(info._next);

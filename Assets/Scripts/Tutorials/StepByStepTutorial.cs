@@ -3,6 +3,9 @@ using UnityEngine;
 
 public abstract class StepByStepTutorial : MonoBehaviour
 {
+    public const string moveDevice1 = "PRCONS:RBS3:MOV:DTER";
+    public const string moveDevice2 = "PRCONS:RBS2:MOV:DTER";
+    public const string moveDevice3 = "PRCONS:RBS1:MOV:DTER";
 
     private int _step = 0;
     private bool prepared = false;
@@ -19,9 +22,6 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _listedPrefix = "l_";
     protected const string _equippedPrefix = "e_";
     protected const string _craftResultPrefix = "c_";
-    protected const string _moveDevice1 = "PRCONS:RBS3:MOV:DTER";
-    protected const string _moveDevice2 = "PRCONS:RBS2:MOV:DTER";
-    protected const string _moveDevice3 = "PRCONS:RBS1:MOV:DTER";
     protected const string _GFPdevice1 = "PRCONS:RBS3:FLUO1:DTER";
     protected const string _GFPdevice2 = "PRCONS:RBS2:FLUO1:DTER";
     protected const string _slotBaseName = "slot";

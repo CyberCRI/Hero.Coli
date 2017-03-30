@@ -26,7 +26,7 @@ public class GFPCraftHint : StepByStepTutorial
     }
     private string[] _focusObjects = new string[_stepCount] {
         _craftButton,
-        _listedPrefix + _moveDevice1,
+        _listedPrefix + moveDevice1,
         _MOVbrick,
         _GFPbrick,
         _craftResultPrefix + _GFPdevice1 + _backgroundSuffix,
@@ -50,8 +50,8 @@ public class GFPCraftHint : StepByStepTutorial
     {
         if (0 == step)
         {
-            _isMoveDevice1 = CraftFinalizer.get().isEquipped(_moveDevice1);
-            _isMoveDevice2 = CraftFinalizer.get().isEquipped(_moveDevice2);
+            _isMoveDevice1 = CraftFinalizer.get().isEquipped(moveDevice1);
+            _isMoveDevice2 = CraftFinalizer.get().isEquipped(moveDevice2);
         }
         else if (2 == step && _isMoveDevice2)
         {

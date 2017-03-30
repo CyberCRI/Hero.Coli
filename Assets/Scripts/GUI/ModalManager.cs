@@ -66,13 +66,15 @@ public class ModalManager : MonoBehaviour
     public UILocalize titleLabel;
     public UILocalize explanationLabel;
 
-    public UISprite infoSprite;
+    private UISprite _infoSprite;
 
     //pointers to buttons on the generic modal window
     public GameObject genericValidateButton;
     public GameObject genericCenteredValidateButton;
     public GameObject genericCancelButton;
 
+    private static float _maxYScale;
+    private static float _maxXScale;
     //pointers to whatever buttons are used to validate/cancel
     //(nb: no choice on cancel buttons yet)
     private GameObject _validateButton;
@@ -181,6 +183,47 @@ public class ModalManager : MonoBehaviour
         prepareGenericCancelButton(_cancelModalClassName);
     }
 
+    public void setInfoSprite(UISprite infoSprite)
+    {
+        if(null != infoSprite)
+        {
+            _infoSprite = infoSprite;
+            _maxXScale = infoSprite.transform.localScale.x;
+            _maxYScale = infoSprite.transform.localScale.y;
+        }
+    }
+
+    private static void resetRatio()
+    {
+        // Debug.Log("ModalManager resetRatio "
+        // + " scale=" + _instance._infoSprite.transform.localScale
+        // + " _maxXScale=" + _maxXScale
+        // + " _maxYScale=" + _maxYScale        
+        // );
+        if (
+            (_instance._infoSprite.transform.localScale.x > _maxXScale)
+            ||
+            (_instance._infoSprite.transform.localScale.y > _maxYScale)
+        )
+        {
+            float ratioX = _maxXScale / _instance._infoSprite.transform.localScale.x;
+            float ratioY = _maxYScale / _instance._infoSprite.transform.localScale.y;
+            float ratio = ratioX < ratioY ? ratioX : ratioY;
+
+            // Debug.Log("ModalManager resetRatio ratioX=" + ratioX + " ratioY=" + ratioY + " ratio=" + ratio);
+
+            Vector3 newScale = new Vector3(
+                ratio * _instance._infoSprite.transform.localScale.x,
+                ratio * _instance._infoSprite.transform.localScale.y,
+                _instance._infoSprite.transform.localScale.z
+            );
+
+            // Debug.Log("ModalManager resetRatio newScale=" + newScale);
+
+            _instance._infoSprite.transform.localScale = newScale;
+        }
+    }
+
     private static bool fillInFieldsFromCode(string code)
     {
         // Debug.Log("ModalManager fillInFieldsFromCode("+code+")");
@@ -191,7 +234,10 @@ public class ModalManager : MonoBehaviour
             string generic = _genericPrefix + code.ToUpper();
 
             _instance.titleLabel.key = generic + _genericTitle;
-            _instance.infoSprite.spriteName = info._texture;
+            _instance._infoSprite.spriteName = info._texture;
+            _instance._infoSprite.MakePixelPerfect();
+            resetRatio();
+            _instance._infoSprite.transform.localPosition = new Vector3(_instance._infoSprite.transform.localPosition.x, _instance._infoSprite.transform.localPosition.y, -1);
             _instance.explanationLabel.key = generic + _genericExplanation;
 
             if (!string.IsNullOrEmpty(info._next))

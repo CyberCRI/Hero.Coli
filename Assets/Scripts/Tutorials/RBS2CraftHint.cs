@@ -26,11 +26,11 @@ public class RBS2CraftHint : StepByStepTutorial
     }
     private string[] _focusObjects = new string[_stepCount] {
         _craftButton,
-        _craftResultPrefix + _moveDevice1 + _backgroundSuffix,
+        _craftResultPrefix + moveDevice1 + _backgroundSuffix,
         _craftSlot1,
         _RBS2brick,
         _craftSlot1,
-        _craftResultPrefix + _moveDevice2 + _backgroundSuffix,
+        _craftResultPrefix + moveDevice2 + _backgroundSuffix,
         _exitCross
         };
     protected override string[] focusObjects

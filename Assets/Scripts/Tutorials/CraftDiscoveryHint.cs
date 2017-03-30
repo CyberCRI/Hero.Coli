@@ -11,12 +11,12 @@ using UnityEngine;
 public class CraftDiscoveryHint : StepByStepTutorial
 {
     // different possibilities for bugfix
-    private const string _cellPanelEquippedDeviceBackground1 = _equippedPrefix + _moveDevice1 + _backgroundSuffix;
+    private const string _cellPanelEquippedDeviceBackground1 = _equippedPrefix + moveDevice1 + _backgroundSuffix;
     private const string _cellPanelEquippedDeviceBackground2 = "EquippedDisplayedDeviceWithMoleculesPrefab(Clone)" + _backgroundSuffix;
     private const string _cellPanelEquippedDeviceBackground3 =  "EquippedDisplayedDeviceWithMoleculeList";
     private const string _cellPanelEquippedDeviceBackground4 = "EquippedDisplayedDeviceWithMoleculeGrid";
 
-    private const string _craftResultDevice = _craftResultPrefix + _moveDevice1;
+    private const string _craftResultDevice = _craftResultPrefix + moveDevice1;
     private const string _craftResultDeviceBackground = _craftResultDevice + _backgroundSuffix;
 
     private const string _textKeyPrefix = _genericTextKeyPrefix + "CRAFTDISCOVERY.";
@@ -45,7 +45,7 @@ public class CraftDiscoveryHint : StepByStepTutorial
         _exitCross,
         _bacterium,
         _craftButton,
-        _listedPrefix + _moveDevice1,
+        _listedPrefix + moveDevice1,
         _exitCross
         };
     protected override string[] focusObjects 
