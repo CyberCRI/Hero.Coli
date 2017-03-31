@@ -3,7 +3,7 @@ using System;
 
 public class Scorekeeper
 {
-    private const int _chapterCount = 10;
+    private const int _chapterCount = 9;
     private const int _columnCount = 4;
     private const string _keyStem = "TUTORIAL.FINALSCOREBOARD.";
     private const string _chapterSuffix = "CHAPTER";
@@ -60,8 +60,9 @@ public class Scorekeeper
         }
         else
         {
-            Debug.Log(this.GetType() + " endChapter");
+            Debug.Log(this.GetType() + " endChapter logged ");
             _chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
+            Debug.Log(this.GetType() + " endChapter logged " + _chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
             if (_chapters[_currentChapter].ownLastCompletionTime < _chapters[_currentChapter].ownBestCompletionTime)
             {
                 Debug.Log(this.GetType() + " endChapter own record broken");
