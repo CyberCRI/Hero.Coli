@@ -96,7 +96,7 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField]
     private GameObject finalScoreboard;
     [SerializeField]
-    private UILabel finalScoreboardLabel;
+    private UILabel chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel;
     [SerializeField]
     private EndMainMenuButton endMainMenuButton, finalScoreboardQuitButton;
 
@@ -167,7 +167,10 @@ public class InterfaceLinkManager : LinkManager
         gameStateController.fadeSprite = fade;
         gameStateController.endWindow = end;
         gameStateController.finalScoreboard = finalScoreboard;
-        gameStateController.finalScoreboardLabel = finalScoreboardLabel;
+        gameStateController.chaptersLabel = chaptersLabel;
+        gameStateController.ownTimesLabel = ownTimesLabel;
+        gameStateController.ownRecordsLabel = ownRecordsLabel;
+        gameStateController.worldRecordsLabel = worldRecordsLabel;
         gameStateController.endMainMenuButton = endMainMenuButton;
         gameStateController.finalScoreboardQuitButton = finalScoreboardQuitButton;
         gameStateController.mainMenu = mainMenu;

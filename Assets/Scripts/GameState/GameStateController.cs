@@ -102,7 +102,7 @@ public class GameStateController : MonoBehaviour
     public GUITransitioner gUITransitioner;
     public Fade fadeSprite;
     public GameObject intro, endWindow, finalScoreboard, pauseIndicator;
-    public UILabel finalScoreboardLabel;
+    public UILabel chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel;
     public ContinueButton introContinueButton;
     public EndMainMenuButton endMainMenuButton, finalScoreboardQuitButton;
     public MainMenuManager mainMenu;
@@ -648,8 +648,12 @@ public class GameStateController : MonoBehaviour
     private IEnumerator waitFadeAndDisplayEndWindow(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        finalScoreboardLabel.text = _scorekeeper.getCompletionAbstract();
+        
+        // simple variant
         // ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
+
+        // scoreboard variant
+        _scorekeeper.fillInColumns(new UILabel[]{chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel});
         ModalManager.setModal(finalScoreboard, true, finalScoreboardQuitButton.gameObject, finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
     }
 
