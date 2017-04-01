@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class MemoryManager : MonoBehaviour
 {
-
     //////////////////////////////// singleton fields & methods ////////////////////////////////
     private const string gameObjectName = "MemoryManager";
     private static MemoryManager _instance;

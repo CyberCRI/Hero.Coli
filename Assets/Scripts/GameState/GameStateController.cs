@@ -636,16 +636,17 @@ public class GameStateController : MonoBehaviour
 
     public void triggerEnd()
     {
+        float endTime = Time.unscaledTime;
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
         MemoryManager.get().sendCompletionEvent();
 
         fadeSprite.gameObject.SetActive(true);
         fadeSprite.FadeIn(0.5f);
 
-        StartCoroutine(waitFadeAndDisplayEndWindow(1.0f));
+        StartCoroutine(waitFadeAndDisplayEndWindow(1.0f, endTime));
     }
 
-    private IEnumerator waitFadeAndDisplayEndWindow(float waitTime)
+    private IEnumerator waitFadeAndDisplayEndWindow(float waitTime, float endTime)
     {
         yield return new WaitForSeconds(waitTime);
         
@@ -653,7 +654,7 @@ public class GameStateController : MonoBehaviour
         // ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
 
         // scoreboard variant
-        _scorekeeper.fillInColumns(new UILabel[]{chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel});
+        _scorekeeper.finish(endTime, new UILabel[]{chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel});
         ModalManager.setModal(finalScoreboard, true, finalScoreboardQuitButton.gameObject, finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
     }
 

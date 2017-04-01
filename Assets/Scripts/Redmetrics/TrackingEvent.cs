@@ -23,6 +23,9 @@ public enum TrackingEvent
     EQUIP,              // equipped a device using a listed device
     PICKUP,             // picked up a device or a brick
     REACH,              // reached a checkpoint
+    NEWFURTHEST,        // reached a new furthest chapter
+    NEWOWNRECORD,       // beat own best completion time on a chapter
+    NEWWORLDRECORD,     // beat world best completion time on a chapter
     SWITCH,             // changed game level adventure / sandbox
     UNEQUIP,            // unequipped a device using a listed device
     SELECT,             // selected a slot

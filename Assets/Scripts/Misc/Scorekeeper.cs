@@ -3,7 +3,7 @@ using System;
 
 public class Scorekeeper
 {
-    private const int _chapterCount = 9;
+    private const int _chapterCount = 9 + 1;
     private const int _columnCount = 4;
     private const string _keyStem = "TUTORIAL.FINALSCOREBOARD.";
     private const string _chapterSuffix = "CHAPTER";
@@ -16,13 +16,29 @@ public class Scorekeeper
     private const string _chapterKey = _keyStem + _chapterSuffix;
     private ChapterCompletion[] _chapters = new ChapterCompletion[_chapterCount];
     private float _startTime;
-    private int _currentChapter = 0;
+    private int _currentChapter = 0, _furthestChapter = -1;
     private string _chapterString, _hours, _minutes, _seconds, _milliseconds;
 
     public Scorekeeper()
     {
-        Debug.Log(this.GetType() + " ctor");
+        // Debug.Log(this.GetType() + " ctor");
         initialize();
+    }
+
+    private int furthestChapter
+    {
+        get
+        {
+            if (_furthestChapter < 0)
+            {
+                _furthestChapter = MemoryManager.get().configuration.furthestChapter;
+            }
+            return _furthestChapter;
+        }
+        set
+        {
+            _furthestChapter = value;
+        }
     }
 
     public void collideChapter(int index, float time)
@@ -61,21 +77,114 @@ public class Scorekeeper
         else
         {
             Debug.Log(this.GetType() + " endChapter logged ");
+
+            // is new chapter unlocked?
+            if (index > furthestChapter)
+            {
+                furthestChapter = index;
+                MemoryManager.get().configuration.furthestChapter = index;
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST);
+            }
+
+            // computation of completion time
             _chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
             Debug.Log(this.GetType() + " endChapter logged " + _chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+
+            // are this chapter's records broken?
             if (_chapters[_currentChapter].ownLastCompletionTime < _chapters[_currentChapter].ownBestCompletionTime)
             {
-                Debug.Log(this.GetType() + " endChapter own record broken");
+                Debug.Log(this.GetType() + " endChapter own chapter completion record broken");
                 // TODO put in MemoryManager
                 _chapters[_currentChapter].ownBestCompletionTime = _chapters[_currentChapter].ownLastCompletionTime;
+                CustomData chapterData = new CustomData(CustomDataTag.CHAPTER, index.ToString());
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, chapterData);
+
                 if (_chapters[_currentChapter].ownLastCompletionTime < _chapters[_currentChapter].worldBestCompletionTime)
                 {
-                    Debug.Log(this.GetType() + " endChapter world record broken");
+                    Debug.Log(this.GetType() + " endChapter world chapter completion record broken");
                     // TODO upload
                     _chapters[_currentChapter].worldBestCompletionTime = _chapters[_currentChapter].ownBestCompletionTime;
+                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, chapterData);
+                }
+            }
+
+            // total completion time
+            if (index == _chapterCount - 2)
+            {
+                Debug.Log(this.GetType() + " final chapter finished");
+                
+                // computation of completion time
+                float totalTime = 0;
+                for (int chapterIndex = 0; chapterIndex < _chapterCount-1; chapterIndex++)
+                {
+                    totalTime += _chapters[chapterIndex].ownLastCompletionTime;
+                }
+
+                // are this game's records broken?
+                if (_chapters[_chapterCount-1].ownLastCompletionTime < _chapters[_chapterCount-1].ownBestCompletionTime)
+                {
+                    Debug.Log(this.GetType() + " endChapter own total completion record broken");
+                    // TODO put in MemoryManager
+                    _chapters[_chapterCount-1].ownBestCompletionTime = _chapters[_chapterCount-1].ownLastCompletionTime;
+                    CustomData chapterData = new CustomData(CustomDataTag.CHAPTER, index.ToString());
+                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, chapterData);
+
+                    if (_chapters[_chapterCount-1].ownLastCompletionTime < _chapters[_chapterCount-1].worldBestCompletionTime)
+                    {
+                        Debug.Log(this.GetType() + " endChapter world total completion record broken");
+                        // TODO upload
+                        _chapters[_chapterCount-1].worldBestCompletionTime = _chapters[_chapterCount-1].ownBestCompletionTime;
+                        RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, chapterData);
+                    }
                 }
             }
         }
+    }
+
+    private void updateCompletion(int index)
+    {
+        string completionType = index == _chapterCount - 1 ? "chapter" : "total";
+        if (_chapters[index].ownLastCompletionTime < _chapters[index].ownBestCompletionTime)
+        {
+            Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
+            // TODO put in MemoryManager
+
+            // update of own completion of chapter / game
+            _chapters[index].ownBestCompletionTime = _chapters[index].ownLastCompletionTime;
+
+            // RedMetrics
+            CustomData customData = getCustomData(index);            
+            RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
+
+            if (_chapters[index].ownLastCompletionTime < _chapters[index].worldBestCompletionTime)
+            {
+                Debug.Log(this.GetType() + " updateCompletion world " + completionType + " completion record broken");
+                // TODO upload
+                // update of world completion of chapter / game
+                _chapters[index].worldBestCompletionTime = _chapters[index].ownBestCompletionTime;
+                
+                // RedMetrics
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
+            }
+        }
+    }
+
+    private CustomData getCustomData(int index)
+    {
+        Debug.Log(this.GetType() + " getCustomData(" + index + ")");
+        CustomData data;
+        bool isChapterCompletion = index == _chapterCount - 1;
+
+        if (isChapterCompletion)
+        {
+            data = new CustomData(CustomDataTag.CHAPTER, index.ToString());
+        }
+        else
+        {
+            data = new CustomData(CustomDataTag.TOTAL, _chapters[index].ownLastCompletionTime.ToString());
+        } 
+        Debug.Log(this.GetType() + " getCustomData(" + index + ") returns " + data);
+        return data;
     }
 
     private void initialize()
@@ -113,7 +222,14 @@ public class Scorekeeper
             }
             else
             {
-                result[0] += "\n" + _chapterString + " " + index;
+                if (index != _chapterCount)
+                {
+                    result[0] += "\n" + _chapterString + " " + index;
+                }
+                else
+                {
+                    result[0] += "\nTOTAL";
+                }
                 result[1] += "\n" + formatTime(_chapters[index - 1].ownLastCompletionTime);
                 result[2] += "\n" + formatTime(_chapters[index - 1].ownBestCompletionTime);
                 result[3] += "\n" + formatTime(_chapters[index - 1].worldBestCompletionTime);
@@ -122,9 +238,13 @@ public class Scorekeeper
         return result;
     }
 
-    public void fillInColumns(UILabel[] columnLabels)
+    public void finish(float endTime, UILabel[] columnLabels)
     {
         Debug.Log(this.GetType() + " fillInColumns");
+
+        // end last chapter
+        endChapter(_currentChapter, endTime);
+
         if (_columnCount != columnLabels.Length)
         {
             Debug.LogWarning(this.GetType() + "incorrect column count");
@@ -173,7 +293,7 @@ public class ChapterCompletion
 
     public ChapterCompletion()
     {
-        Debug.Log(this.GetType() + " ctor");
+        // Debug.Log(this.GetType() + " ctor");
         ownLastCompletionTime = Mathf.Infinity;
         ownBestCompletionTime = Mathf.Infinity;
         worldBestCompletionTime = Mathf.Infinity;

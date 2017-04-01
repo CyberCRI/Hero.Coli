@@ -127,7 +127,10 @@ public enum CustomDataTag
     NEWTAB,
     SAMETAB,
 
-    COUNT
+    COUNT,
+
+    CHAPTER,
+    TOTAL
 }
 
 public enum CustomDataValue

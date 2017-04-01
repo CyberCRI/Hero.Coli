@@ -80,6 +80,8 @@ public class GameConfiguration
     private static float _baseVolume = -1;
     private static BoolConfigurationParameter _isSoundOn
         = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
+    private static IntConfigurationParameter _furthestChapterReached
+        = new IntConfigurationParameter(0, 0, _furthestChapterReachedKey);
 
 #if UNITY_EDITOR
     private static bool _adminStartValue = true, _adminDefaultValue = true;
@@ -181,6 +183,20 @@ public class GameConfiguration
         AudioListener.volume = newSoundValue ? _baseVolume : 0f;
     }
 
+    public int furthestChapter
+    {
+        get
+        {
+            // Debug.Log(this.GetType() + " getting sound = " + _isSoundOn.val);
+            return _furthestChapterReached.val;
+        }
+        set
+        {
+            // Debug.Log(this.GetType() + " setting sound to " + value);
+            _furthestChapterReached.val = value;
+        }
+    }
+
     public static bool isAdmin
     {
         get
@@ -198,6 +214,7 @@ public class GameConfiguration
     private const string _isAbsoluteWASDKey = "isAbsoluteWASD";
     private const string _isLeftClickToMoveKey = "isLeftClickToMove";
     private const string _isSoundOnKey = "isSoundOn";
+    private const string _furthestChapterReachedKey = "furthestChapterReached";
     private const string _isAdminKey = "isAdmin";
 
     public void load()
@@ -215,6 +232,7 @@ public class GameConfiguration
         _isAbsoluteWASD.initialize();
         _isLeftClickToMove.initialize();
         _isSoundOn.initialize();
+        _furthestChapterReached.initialize();
         _isAdmin.initialize();
 
         // Debug.Log(this.GetType() + " load done");
