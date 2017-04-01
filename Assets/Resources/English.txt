@@ -64,6 +64,7 @@ MENU.CHAPTERSELECT.LONG7=chapter 7 - the chase
 MENU.CHAPTERSELECT.LONG8=chapter 8 - current traps
 MENU.CHAPTERSELECT.LONG9=chapter 9 - mines
 MENU.CHAPTERSELECT.LONG10=chapter 10 - angry mob
+MENU.CHAPTERSELECT.SELECT=select a chapter to start playing
 MENU.CONTROLS=controls
 MENU.CONTROLS.ABSOLUTEWASD=keyboard mode 1
 MENU.CONTROLS.RELATIVEWASD=keyboard mode 2

@@ -64,6 +64,7 @@ MENU.CHAPTERSELECT.LONG7=chapitre 7 - course-poursuite
 MENU.CHAPTERSELECT.LONG8=chapitre 8 - courants traîtres
 MENU.CHAPTERSELECT.LONG9=chapitre 9 - mines
 MENU.CHAPTERSELECT.LONG10=chapitre 10 - foule en colère
+MENU.CHAPTERSELECT.SELECT=choisissez un chapitre pour commencer à jouer
 MENU.CONTROLS=contrôles
 MENU.CONTROLS.ABSOLUTEWASD=clavier mode 1
 MENU.CONTROLS.RELATIVEWASD=clavier mode 2
