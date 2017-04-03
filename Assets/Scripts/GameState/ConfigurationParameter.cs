@@ -50,6 +50,7 @@ public abstract class ConfigurationParameter<K>
     {
         if (isInitializationNeeded())
         {
+            Debug.Log(this.GetType() + " initialize isInitializationNeeded for key = " + _key);
             string storedValue = PlayerPrefs.GetString(_key);
             if (!string.IsNullOrEmpty(storedValue))
             {

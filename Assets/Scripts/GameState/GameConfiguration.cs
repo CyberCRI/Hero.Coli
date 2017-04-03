@@ -82,6 +82,21 @@ public class GameConfiguration
         = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
     private static IntConfigurationParameter _furthestChapterReached
         = new IntConfigurationParameter(0, 0, _furthestChapterReachedKey);
+    private static FloatConfigurationParameter[] _bestTimes;
+
+    private void initializeBestTimes()
+    {
+        Debug.Log(this.GetType() + " initializeBestTimes");
+
+        _bestTimes = new FloatConfigurationParameter[Scorekeeper.completionsCount];
+        for (int index = 0; index < Scorekeeper.completionsCount; index++)
+        {
+            Debug.Log(this.GetType() + " initializeBestTimes index = " + index);
+            _bestTimes[index] = new FloatConfigurationParameter(Mathf.Infinity, Mathf.Infinity, _bestCompletionTimeChapterStem + index);
+            _bestTimes[index].initialize();
+        }
+    }
+
 
 #if UNITY_EDITOR
     private static bool _adminStartValue = true, _adminDefaultValue = true;
@@ -187,12 +202,12 @@ public class GameConfiguration
     {
         get
         {
-            // Debug.Log(this.GetType() + " getting sound = " + _isSoundOn.val);
+            // Debug.Log(this.GetType() + " getting furthestChapter = " + _furthestChapterReached.val);
             return _furthestChapterReached.val;
         }
         set
         {
-            // Debug.Log(this.GetType() + " setting sound to " + value);
+            // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
             _furthestChapterReached.val = value;
         }
     }
@@ -209,12 +224,39 @@ public class GameConfiguration
         }
     }
 
+    public float[] bestTimes
+    {
+        get
+        {
+            // Debug.Log(this.GetType() + " getting _bestTimes");
+            float[] result = new float[Scorekeeper.completionsCount];
+            for (int index = 0; index < Scorekeeper.completionsCount; index++)
+            {
+                result[index] = _bestTimes[index].val;
+            }
+            return result;
+        }
+        set
+        {
+            Debug.Log(this.GetType() + " trying to set _bestTimes...");
+            for (int index = 0; index < Scorekeeper.completionsCount; index++)
+            {
+                if (_bestTimes[index].val != value[index])
+                {
+                    Debug.Log(this.GetType() + " setting _bestTimes[" + index + "] to " + value[index] + "(previously " + _bestTimes[index].val + ")");
+                    _bestTimes[index].val = value[index];
+                }
+            }
+        }
+    }
+
     private const string _restartBehaviorKey = "restartBehavior";
     private const string _gameMapKey = "gameMap";
     private const string _isAbsoluteWASDKey = "isAbsoluteWASD";
     private const string _isLeftClickToMoveKey = "isLeftClickToMove";
     private const string _isSoundOnKey = "isSoundOn";
     private const string _furthestChapterReachedKey = "furthestChapterReached";
+    private const string _bestCompletionTimeChapterStem = "bestCompletionTimeChapter";
     private const string _isAdminKey = "isAdmin";
 
     public void load()
@@ -234,6 +276,7 @@ public class GameConfiguration
         _isSoundOn.initialize();
         _furthestChapterReached.initialize();
         _isAdmin.initialize();
+        initializeBestTimes();
 
         // Debug.Log(this.GetType() + " load done");
     }
