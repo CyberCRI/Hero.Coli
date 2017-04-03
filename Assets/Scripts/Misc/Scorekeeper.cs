@@ -7,6 +7,7 @@ public class Scorekeeper
     private const int _columnCount = 4;
     private const string _keyStem = "TUTORIAL.FINALSCOREBOARD.";
     private const string _chapterSuffix = "CHAPTER";
+    private const string _totalSuffix = "TOTAL";
     private const string _columnSuffix = "COLUMN";
     private const string _titleSuffix = "TITLE";
     private const string _hoursSuffix = "H";
@@ -14,10 +15,11 @@ public class Scorekeeper
     private const string _secondsSuffix = "S";
     private const string _millisecondsSuffix = "MS";
     private const string _chapterKey = _keyStem + _chapterSuffix;
+    private const string _totalKey = _keyStem + _totalSuffix;
     private ChapterCompletion[] _chapters = new ChapterCompletion[_chapterCount];
     private float _startTime;
     private int _currentChapter = 0, _furthestChapter = -1;
-    private string _chapterString, _hours, _minutes, _seconds, _milliseconds;
+    private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString;
 
     public Scorekeeper()
     {
@@ -86,64 +88,36 @@ public class Scorekeeper
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST);
             }
 
-            // computation of completion time
-            _chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
-            Debug.Log(this.GetType() + " endChapter logged " + _chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
-
-            // are this chapter's records broken?
-            if (_chapters[_currentChapter].ownLastCompletionTime < _chapters[_currentChapter].ownBestCompletionTime)
-            {
-                Debug.Log(this.GetType() + " endChapter own chapter completion record broken");
-                // TODO put in MemoryManager
-                _chapters[_currentChapter].ownBestCompletionTime = _chapters[_currentChapter].ownLastCompletionTime;
-                CustomData chapterData = new CustomData(CustomDataTag.CHAPTER, index.ToString());
-                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, chapterData);
-
-                if (_chapters[_currentChapter].ownLastCompletionTime < _chapters[_currentChapter].worldBestCompletionTime)
-                {
-                    Debug.Log(this.GetType() + " endChapter world chapter completion record broken");
-                    // TODO upload
-                    _chapters[_currentChapter].worldBestCompletionTime = _chapters[_currentChapter].ownBestCompletionTime;
-                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, chapterData);
-                }
-            }
-
-            // total completion time
-            if (index == _chapterCount - 2)
-            {
-                Debug.Log(this.GetType() + " final chapter finished");
-                
-                // computation of completion time
-                float totalTime = 0;
-                for (int chapterIndex = 0; chapterIndex < _chapterCount-1; chapterIndex++)
-                {
-                    totalTime += _chapters[chapterIndex].ownLastCompletionTime;
-                }
-
-                // are this game's records broken?
-                if (_chapters[_chapterCount-1].ownLastCompletionTime < _chapters[_chapterCount-1].ownBestCompletionTime)
-                {
-                    Debug.Log(this.GetType() + " endChapter own total completion record broken");
-                    // TODO put in MemoryManager
-                    _chapters[_chapterCount-1].ownBestCompletionTime = _chapters[_chapterCount-1].ownLastCompletionTime;
-                    CustomData chapterData = new CustomData(CustomDataTag.CHAPTER, index.ToString());
-                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, chapterData);
-
-                    if (_chapters[_chapterCount-1].ownLastCompletionTime < _chapters[_chapterCount-1].worldBestCompletionTime)
-                    {
-                        Debug.Log(this.GetType() + " endChapter world total completion record broken");
-                        // TODO upload
-                        _chapters[_chapterCount-1].worldBestCompletionTime = _chapters[_chapterCount-1].ownBestCompletionTime;
-                        RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, chapterData);
-                    }
-                }
-            }
+            updateCompletion(index, endTime);
         }
     }
 
-    private void updateCompletion(int index)
+    private void updateCompletion(int index, float endTime)
     {
-        string completionType = index == _chapterCount - 1 ? "chapter" : "total";
+        Debug.Log(this.GetType() + " updateCompletion(" + index + ", " + endTime + ")");
+
+        // computation of completion time
+        _chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
+        Debug.Log(this.GetType() + " updateCompletion logged " + _chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+
+        // chapter or total completion time update?
+        bool isChapterCompletion = (index != _chapterCount - 2);
+        string completionType = isChapterCompletion ? "chapter" : "total";
+        Debug.Log(this.GetType() + " updateCompletion(" + index + ") completion = " + completionType);
+
+        if (!isChapterCompletion)
+        {
+            // computation of total completion time
+            float totalTime = 0;
+            for (int chapterIndex = 0; chapterIndex < _chapterCount - 2; chapterIndex++)
+            {
+                totalTime += _chapters[chapterIndex].ownLastCompletionTime;
+            }
+            _chapters[index].ownLastCompletionTime = totalTime;
+            Debug.Log(this.GetType() + " updateCompletion logged total completion time " + _chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+        }
+
+        // are records broken?
         if (_chapters[index].ownLastCompletionTime < _chapters[index].ownBestCompletionTime)
         {
             Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
@@ -153,7 +127,7 @@ public class Scorekeeper
             _chapters[index].ownBestCompletionTime = _chapters[index].ownLastCompletionTime;
 
             // RedMetrics
-            CustomData customData = getCustomData(index);            
+            CustomData customData = getCustomData(index, isChapterCompletion);
             RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
 
             if (_chapters[index].ownLastCompletionTime < _chapters[index].worldBestCompletionTime)
@@ -162,18 +136,17 @@ public class Scorekeeper
                 // TODO upload
                 // update of world completion of chapter / game
                 _chapters[index].worldBestCompletionTime = _chapters[index].ownBestCompletionTime;
-                
+
                 // RedMetrics
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
             }
         }
     }
 
-    private CustomData getCustomData(int index)
+    private CustomData getCustomData(int index, bool isChapterCompletion)
     {
-        Debug.Log(this.GetType() + " getCustomData(" + index + ")");
+        Debug.Log(this.GetType() + " getCustomData(" + index + ", " + isChapterCompletion + ")");
         CustomData data;
-        bool isChapterCompletion = index == _chapterCount - 1;
 
         if (isChapterCompletion)
         {
@@ -182,7 +155,7 @@ public class Scorekeeper
         else
         {
             data = new CustomData(CustomDataTag.TOTAL, _chapters[index].ownLastCompletionTime.ToString());
-        } 
+        }
         Debug.Log(this.GetType() + " getCustomData(" + index + ") returns " + data);
         return data;
     }
@@ -202,10 +175,11 @@ public class Scorekeeper
         string[] result = new string[_columnCount];
 
         _chapterString = Localization.Localize(_chapterKey);
-        _hours = Localization.Localize(_keyStem + _hoursSuffix);
-        _minutes = Localization.Localize(_keyStem + _minutesSuffix);
-        _seconds = Localization.Localize(_keyStem + _secondsSuffix);
-        _milliseconds = Localization.Localize(_keyStem + _millisecondsSuffix);
+        _totalString = Localization.Localize(_totalKey);
+        _hoursString = Localization.Localize(_keyStem + _hoursSuffix);
+        _minutesString = Localization.Localize(_keyStem + _minutesSuffix);
+        _secondsString = Localization.Localize(_keyStem + _secondsSuffix);
+        _millisecondsString = Localization.Localize(_keyStem + _millisecondsSuffix);
         // Debug.Log("h='" + _hours + "'");
         // Debug.Log("min='" + _minutes + "'");
         // Debug.Log("s='" + _seconds + "'");
@@ -228,7 +202,7 @@ public class Scorekeeper
                 }
                 else
                 {
-                    result[0] += "\nTOTAL";
+                    result[0] += "\n" + _totalString;
                 }
                 result[1] += "\n" + formatTime(_chapters[index - 1].ownLastCompletionTime);
                 result[2] += "\n" + formatTime(_chapters[index - 1].ownBestCompletionTime);
@@ -273,13 +247,13 @@ public class Scorekeeper
             result = "";
             if (0 != time.Hours)
             {
-                result += time.Hours + _hours;
+                result += time.Hours + _hoursString;
             }
             if (0 != time.Minutes || 0 != time.Hours)
             {
-                result += time.Minutes + _minutes;
+                result += time.Minutes + _minutesString;
             }
-            result += time.Seconds + _seconds + time.Milliseconds + _milliseconds;
+            result += time.Seconds + _secondsString + time.Milliseconds + _millisecondsString;
         }
         return result;
     }

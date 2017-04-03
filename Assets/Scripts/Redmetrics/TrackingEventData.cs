@@ -186,11 +186,22 @@ public class CustomData: Dictionary<string, string>
 
     public void merge (CustomData data)
     {
+        // Debug.Log(this.GetType() + " merge " + data + " into " + this);
         if (null != data)
         {
             foreach(KeyValuePair<string, string> pair in data)
             {
-                this.Add(pair.Key, pair.Value);
+                if (this.ContainsKey(pair.Key))
+                {
+                    // this key was already present
+                    // each key-value pair type needs a specific treatment
+                    Debug.LogWarning(this.GetType() + " key " + pair.Key + " present in both CustomData objects " + data + " and " + this);
+                }
+                else
+                {
+                    // new key
+                    this.Add(pair.Key, pair.Value);
+                }                
             }
         }
     }

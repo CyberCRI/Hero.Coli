@@ -470,11 +470,14 @@ public class RedMetricsManager : MonoBehaviour
 
     public void sendRichEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
+        // string customDataString = null == customData ? "" : ", " + customData;
+        // Debug.Log(this.GetType() + " sendRichEvent(" + trackingEvent + customDataString);
+
         CustomData context = Character.get().getEventContext();
         if (customData != null)
         {
-            customData.merge(context);
-            context = customData;
+            // Debug.Log(this.GetType() + " merging from trackingEvent " + trackingEvent);
+            context.merge(customData);
         }
         sendEvent(trackingEvent, context, section, coordinates, userTime);
     }
