@@ -241,12 +241,22 @@ public class GameConfiguration
             Debug.Log(this.GetType() + " trying to set _bestTimes...");
             for (int index = 0; index < Scorekeeper.completionsCount; index++)
             {
-                if (_bestTimes[index].val != value[index])
+                if (value[index] < _bestTimes[index].val)
                 {
                     Debug.Log(this.GetType() + " setting _bestTimes[" + index + "] to " + value[index] + "(previously " + _bestTimes[index].val + ")");
                     _bestTimes[index].val = value[index];
                 }
             }
+        }
+    }
+
+    public void setBestTime(int index, float time, bool force = false)
+    {
+        Debug.Log(this.GetType() + " setBestTime(" + index + ", " + time + ", " + force + ")");
+        if (force || time < _bestTimes[index].val)
+        {
+            Debug.Log(this.GetType() + " setBestTime updates " + index + " to " + time);
+            _bestTimes[index].val = time;
         }
     }
 

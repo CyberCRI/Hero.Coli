@@ -52,9 +52,11 @@ public class Scorekeeper
                 Debug.Log(this.GetType() + " get chapters initializes");
                 _chapters = new ChapterCompletion[completionsCount];
                 float[] bestTimes = MemoryManager.get().configuration.bestTimes;
+                Debug.Log(this.GetType() + " get chapters initializes got configuration.bestTimes=" + Logger.ToString<float>(bestTimes));
                 for (int index = 0; index < completionsCount; index++)
                 {
                     Debug.Log(this.GetType() + " get chapters initializes index = " + index);
+                    _chapters[index] = new ChapterCompletion();
                     _chapters[index].ownBestCompletionTime = bestTimes[index];
                 }
             }
@@ -140,10 +142,11 @@ public class Scorekeeper
         if (chapters[index].ownLastCompletionTime < chapters[index].ownBestCompletionTime)
         {
             Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
-            // TODO put in MemoryManager
 
             // update of own completion of chapter / game
             chapters[index].ownBestCompletionTime = chapters[index].ownLastCompletionTime;
+            // update of saved record
+            MemoryManager.get().configuration.setBestTime(index, chapters[index].ownBestCompletionTime);
 
             // RedMetrics
             CustomData customData = getCustomData(index, isChapterCompletion);
@@ -152,9 +155,10 @@ public class Scorekeeper
             if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)
             {
                 Debug.Log(this.GetType() + " updateCompletion world " + completionType + " completion record broken");
-                // TODO upload
+                
                 // update of world completion of chapter / game
                 chapters[index].worldBestCompletionTime = chapters[index].ownBestCompletionTime;
+                // TODO upload
 
                 // RedMetrics
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
