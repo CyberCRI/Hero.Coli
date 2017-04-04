@@ -194,7 +194,7 @@ public class MainMenuManager : MonoBehaviour
 			normalizedIndex = previousIndex >= 0 ?
 				previousIndex % _current._items.Length
 				: (previousIndex % _current._items.Length) + _current._items.Length;
-            if (null != _current._items[normalizedIndex] && _current._items[normalizedIndex].displayed)
+            if (null != _current._items[normalizedIndex] && _current._items[normalizedIndex].isDisplayed)
             {
                 deselect();
                 _current._items[normalizedIndex].select();
@@ -292,7 +292,7 @@ public class MainMenuManager : MonoBehaviour
 			current._items[index].initializeIfNecessary();
             if (current._items[index].itemName == itemKey)
             {
-				current._items[index].displayed = isVisible;
+				current._items[index].isDisplayed = isVisible;
                 if (!string.IsNullOrEmpty(debug))
                 {
                     // Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
@@ -321,12 +321,12 @@ public class MainMenuManager : MonoBehaviour
 			Vector2 nextRelativeOffset = current._items[0].anchor.relativeOffset;
 			foreach (MainMenuItem item in current._items)
             {
-                item.gameObject.SetActive(item.displayed);
+                item.gameObject.SetActive(item.isDisplayed);
                 if (!string.IsNullOrEmpty(debug))
                 {
                     // Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
                 }
-                if (item.displayed)
+                if (item.isDisplayed)
                 {
                     item.anchor.relativeOffset = nextRelativeOffset;
                     nextRelativeOffset = new Vector2(nextRelativeOffset.x, nextRelativeOffset.y + spacing);

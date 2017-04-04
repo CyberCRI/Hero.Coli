@@ -39,7 +39,7 @@ public class GameStateController : MonoBehaviour
         if (_instance == null)
         {
             Debug.LogWarning("GameStateController get was badly initialized");
-			_instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
+            _instance = GameObject.Find(gameObjectName).GetComponent<GameStateController>();
         }
 
         return _instance;
@@ -100,12 +100,14 @@ public class GameStateController : MonoBehaviour
 
     private GameState _gameState;
     public GUITransitioner gUITransitioner;
-    public Fade fadeSprite;
-    public GameObject intro, endWindow, finalScoreboard, pauseIndicator;
-    public UILabel chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel;
-    public ContinueButton introContinueButton;
-    public EndMainMenuButton endMainMenuButton, finalScoreboardQuitButton;
-    public MainMenuManager mainMenu;
+
+    private Fade _fadeSprite;
+    private GameObject _intro, _endWindow, _finalScoreboard, _pauseIndicator;
+    private UILabel _chaptersLabel, _ownTimesLabel, _ownRecordsLabel, _worldRecordsLabel;
+    private ContinueButton _introContinueButton;
+    private EndMainMenuButton _endMainMenuButton, _finalScoreboardQuitButton;
+    private MainMenuManager _mainMenu;
+
     private static int _pausesStacked = 0;
     private bool _isGameLevelPrepared = false;
     private GameState _stateBeforeMainMenu = GameState.Game;
@@ -317,7 +319,7 @@ public class GameStateController : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " endGame");
         reinitializeLoadingVariables();
-        mainMenu.setNewGame();
+        _mainMenu.setNewGame();
         goToMainMenuFrom(GameState.MainMenu);
     }
 
@@ -330,18 +332,18 @@ public class GameStateController : MonoBehaviour
             //so that those modals don't appear on every level
             //Also: put specific interface elements into level scene and then move them to interface hierarchy
 
-            mainMenu.setResume();
+            _mainMenu.setResume();
 
             //TODO remove this temporary hack
             switch (MemoryManager.get("prepareGameLevelIfNecessary").configuration.getMode())
             {
                 case GameConfiguration.GameMode.ADVENTURE:
-                    fadeSprite.gameObject.SetActive(true);
-                    ModalManager.setModal(intro, true, introContinueButton.gameObject, introContinueButton.GetType().Name);
+                    _fadeSprite.gameObject.SetActive(true);
+                    ModalManager.setModal(_intro, true, _introContinueButton.gameObject, _introContinueButton.GetType().Name);
                     changeState(GameState.Pause);
                     break;
                 case GameConfiguration.GameMode.SANDBOX:
-                    fadeSprite.gameObject.SetActive(false);
+                    _fadeSprite.gameObject.SetActive(false);
                     break;
                 default:
                     Debug.LogWarning(this.GetType() + " Update unknown game mode=" + MemoryManager.get("prepareGameLevelIfNecessary 2").configuration.getMode());
@@ -361,7 +363,7 @@ public class GameStateController : MonoBehaviour
     {
         _stateBeforeMainMenu = state;
         // Debug.Log(this.GetType() + " goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
-        mainMenu.open();
+        _mainMenu.open();
         changeState(GameState.MainMenu);
     }
 
@@ -377,7 +379,7 @@ public class GameStateController : MonoBehaviour
         }
         else
         {
-            mainMenu.close();
+            _mainMenu.close();
             changeState(_stateBeforeMainMenu);
         }
     }
@@ -453,10 +455,10 @@ public class GameStateController : MonoBehaviour
 
                 case GameState.Start:
 
-                    endWindow.SetActive(false);
-                    finalScoreboard.SetActive(false);
+                    _endWindow.SetActive(false);
+                    _finalScoreboard.SetActive(false);
 
-                    mainMenu.setNewGame();
+                    _mainMenu.setNewGame();
                     if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get("Update").configuration.restartBehavior)
                     {
                         leaveMainMenu();
@@ -470,20 +472,20 @@ public class GameStateController : MonoBehaviour
                 case GameState.MainMenu:
                     if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
-                        mainMenu.selectPrevious();
+                        _mainMenu.selectPrevious();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
-                        mainMenu.selectNext();
+                        _mainMenu.selectNext();
                     }
                     else if (Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                     {
                         // Debug.Log(this.GetType() + " MainMenu Return/KeypadEnter");
-                        mainMenu.getCurrentItem().click();
+                        _mainMenu.getCurrentItem().click();
                     }
                     else if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        mainMenu.escape();
+                        _mainMenu.escape();
                     }
                     break;
 
@@ -495,7 +497,7 @@ public class GameStateController : MonoBehaviour
                     if (isShortcutKeyDown(_pauseKey))
                     {
                         // Debug.Log(this.GetType() + " Update - Escape/Pause key pressed");
-                        ModalManager.setModal(pauseIndicator, false);
+                        ModalManager.setModal(_pauseIndicator, false);
                         changeState(GameState.Pause);
                     }
                     //main menu
@@ -609,17 +611,17 @@ public class GameStateController : MonoBehaviour
         return result;
     }
 
-	/// <summary>
-	/// Starts the game directly at a checkpoint
-	/// </summary>
-	public void loadWithCheckpoint(int checkpointIndex, GameConfiguration.GameMap gameMap)
-	{
-		if (GameConfiguration.gameMap != gameMap)
-			setAndSaveLevelName (gameMap, "loadWithCheckPoint");
-		MemoryManager.get ().checkpointIndex = checkpointIndex;
-		// The checkpoint index is checked by the WorldLinkManager at the start
-		internalRestart ();
-	}
+    /// <summary>
+    /// Starts the game directly at a checkpoint
+    /// </summary>
+    public void loadWithCheckpoint(int checkpointIndex, GameConfiguration.GameMap gameMap)
+    {
+        if (GameConfiguration.gameMap != gameMap)
+            setAndSaveLevelName(gameMap, "loadWithCheckPoint");
+        MemoryManager.get().checkpointIndex = checkpointIndex;
+        // The checkpoint index is checked by the WorldLinkManager at the start
+        internalRestart();
+    }
 
     public void goToOtherGameMode()
     {
@@ -640,8 +642,8 @@ public class GameStateController : MonoBehaviour
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.ENDGAME);
         MemoryManager.get().sendCompletionEvent();
 
-        fadeSprite.gameObject.SetActive(true);
-        fadeSprite.FadeIn(0.5f);
+        _fadeSprite.gameObject.SetActive(true);
+        _fadeSprite.FadeIn(0.5f);
 
         StartCoroutine(waitFadeAndDisplayEndWindow(1.0f, endTime));
     }
@@ -649,13 +651,13 @@ public class GameStateController : MonoBehaviour
     private IEnumerator waitFadeAndDisplayEndWindow(float waitTime, float endTime)
     {
         yield return new WaitForSeconds(waitTime);
-        
+
         // simple variant
         // ModalManager.setModal(endWindow, true, endMainMenuButton.gameObject, endMainMenuButton.GetType().AssemblyQualifiedName);
 
         // scoreboard variant
-        _scorekeeper.finish(endTime, new UILabel[]{chaptersLabel, ownTimesLabel, ownRecordsLabel, worldRecordsLabel});
-        ModalManager.setModal(finalScoreboard, true, finalScoreboardQuitButton.gameObject, finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
+        _scorekeeper.finish(endTime, new UILabel[] { _chaptersLabel, _ownTimesLabel, _ownRecordsLabel, _worldRecordsLabel });
+        ModalManager.setModal(_finalScoreboard, true, _finalScoreboardQuitButton.gameObject, _finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
     }
 
     public void changeState(GameState newState)
@@ -755,31 +757,58 @@ public class GameStateController : MonoBehaviour
         EnemiesManager.reset();
         I18n.reset();
 
-		SceneManager.LoadScene (_masterScene);
+        SceneManager.LoadScene(_masterScene);
     }
 
     public void FadeScreen(bool fade, float speed)
     {
-        fadeSprite.gameObject.SetActive(true);
+        _fadeSprite.gameObject.SetActive(true);
         if (fade)
         {
-            fadeSprite.FadeIn(speed);
+            _fadeSprite.FadeIn(speed);
         }
         else
         {
-            fadeSprite.FadeOut(speed);
+            _fadeSprite.FadeOut(speed);
         }
     }
 
     public static void collideChapter(int index, float time)
     {
-        Debug.Log("GameStateController collideChapter(" + index + ", " + time + ")");
+        // Debug.Log("GameStateController collideChapter(" + index + ", " + time + ")");
         _instance._scorekeeper.collideChapter(index, time);
     }
 
     public static void setChapter(int index, float time)
     {
-        Debug.Log("GameStateController startChapter(" + index + ", " + time + ")");
+        // Debug.Log("GameStateController startChapter(" + index + ", " + time + ")");
         _instance._scorekeeper.startChapter(index, time);
+    }
+
+    public void setInterfaceElements(
+        Fade fadeSprite,
+        GameObject intro, GameObject endWindow, GameObject finalScoreboard, GameObject pauseIndicator,
+        UILabel chaptersLabel, UILabel ownTimesLabel, UILabel ownRecordsLabel, UILabel worldRecordsLabel,
+        ContinueButton introContinueButton,
+        EndMainMenuButton endMainMenuButton, EndMainMenuButton finalScoreboardQuitButton,
+        MainMenuManager mainMenu,
+        MapChapterUnlocker unlocker)
+    {
+        // Debug.Log(this.GetType() + " setInterfaceElements");
+
+        _fadeSprite = fadeSprite;
+        _intro = intro;
+        _endWindow = endWindow;
+        _finalScoreboard = finalScoreboard;
+        _pauseIndicator = pauseIndicator;
+        _chaptersLabel = chaptersLabel;
+        _ownTimesLabel = ownTimesLabel;
+        _ownRecordsLabel = ownRecordsLabel;
+        _worldRecordsLabel = worldRecordsLabel;
+        _introContinueButton = introContinueButton;
+        _endMainMenuButton = endMainMenuButton;
+        _finalScoreboardQuitButton = finalScoreboardQuitButton;
+        _mainMenu = mainMenu;
+        _scorekeeper.setMapChapterUnlocker(unlocker);
     }
 }

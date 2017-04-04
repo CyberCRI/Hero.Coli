@@ -125,6 +125,8 @@ public class InterfaceLinkManager : LinkManager
     [SerializeField] // WorldScreensPanel
     private GameObject worldScreensPanel;
     public FocusMaskManager focusMaskManager;
+    [SerializeField]
+    private MapChapterUnlocker chapterUnlocker;
 
     protected override int getLMIndex()
     {
@@ -162,19 +164,21 @@ public class InterfaceLinkManager : LinkManager
         StartGameButton sgb = okButton2.GetComponent<StartGameButton>();
 
         //GameStateController
-        gameStateController.intro = introduction1;
-        gameStateController.introContinueButton = cb;
-        gameStateController.fadeSprite = fade;
-        gameStateController.endWindow = end;
-        gameStateController.finalScoreboard = finalScoreboard;
-        gameStateController.chaptersLabel = chaptersLabel;
-        gameStateController.ownTimesLabel = ownTimesLabel;
-        gameStateController.ownRecordsLabel = ownRecordsLabel;
-        gameStateController.worldRecordsLabel = worldRecordsLabel;
-        gameStateController.endMainMenuButton = endMainMenuButton;
-        gameStateController.finalScoreboardQuitButton = finalScoreboardQuitButton;
-        gameStateController.mainMenu = mainMenu;
-        gameStateController.pauseIndicator = pauseIndicator;
+        gameStateController.setInterfaceElements(
+            fade,
+            introduction1,
+            end,
+            finalScoreboard,
+            pauseIndicator,
+            chaptersLabel,
+            ownTimesLabel,
+            ownRecordsLabel,
+            worldRecordsLabel,
+            cb,
+            endMainMenuButton,
+            finalScoreboardQuitButton,
+            mainMenu,
+            chapterUnlocker);
 
         //initialization of intro panels
         cb.nextInfoPanel = introduction2;

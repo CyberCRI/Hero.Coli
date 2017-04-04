@@ -6,17 +6,17 @@ public class MainMenuItem : MonoBehaviour
     private bool _initialized = false;
     [SerializeField]
     private bool _isLocalized = true;
-
-    private bool _displayed = true;
-    public bool displayed
+    protected bool _isSelected = false;
+    private bool _isDisplayed = true;
+    public bool isDisplayed
     {
         get
         {
-            return _displayed;
+            return _isDisplayed;
         }
         set
         {
-            _displayed = value;
+            _isDisplayed = value;
 
         }
     }
@@ -60,7 +60,7 @@ public class MainMenuItem : MonoBehaviour
             }
         }
     }
-    private const float hoverExpandingFactor = 1.2f;
+    public const float hoverExpandingFactor = 1.2f;
     private UIAnchor _anchor;
     public UIAnchor anchor
     {
@@ -74,14 +74,16 @@ public class MainMenuItem : MonoBehaviour
         }
     }
 
-    public void select()
+    public virtual void select()
     {
+        _isSelected = true;
         MainMenuManager.get().playFeedback(transform.position);
         transform.localScale = new Vector3(transform.localScale.x * hoverExpandingFactor, transform.localScale.y * hoverExpandingFactor, transform.localScale.z);
     }
 
-    public void deselect()
+    public virtual void deselect()
     {
+        _isSelected = false;
         transform.localScale = new Vector3(transform.localScale.x / hoverExpandingFactor, transform.localScale.y / hoverExpandingFactor, transform.localScale.z);
     }
 
@@ -150,7 +152,7 @@ public class MainMenuItem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
 
     }
@@ -172,6 +174,6 @@ public class MainMenuItem : MonoBehaviour
 
     public override string ToString()
     {
-        return string.Format("MainMenuItem[{0}, {1}, {2}]", _initialized, displayed, itemName);
+        return string.Format("MainMenuItem[{0}, {1}, {2}]", _initialized, isDisplayed, itemName);
     }
 }

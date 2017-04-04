@@ -94,7 +94,7 @@ public class Teleporter : MonoBehaviour
                 while (CraftZoneManager.get().getSlotCount() < checkpointComponent.requiredSlots)
                     CraftZoneManager.get().addSlot();
             }
-            Debug.Log(this.GetType() + " calls setChapter");
+            // Debug.Log(this.GetType() + " calls setChapter");
             GameStateController.setChapter(checkpointComponent.index, Time.unscaledTime);
         }
     }

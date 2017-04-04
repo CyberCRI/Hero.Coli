@@ -77,21 +77,23 @@ public class GameConfiguration
         = new BoolConfigurationParameter(true, true, _isAbsoluteWASDKey);
     private BoolConfigurationParameter _isLeftClickToMove
         = new BoolConfigurationParameter(true, true, _isLeftClickToMoveKey);
-    private static float _baseVolume = -1;
+    private static float _baseVolume
+        = -1;
     private static BoolConfigurationParameter _isSoundOn
         = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
     private static IntConfigurationParameter _furthestChapterReached
         = new IntConfigurationParameter(0, 0, _furthestChapterReachedKey);
-    private static FloatConfigurationParameter[] _bestTimes;
+    private static FloatConfigurationParameter[] _bestTimes
+        = null;
 
     private void initializeBestTimes()
     {
-        Debug.Log(this.GetType() + " initializeBestTimes");
+        // Debug.Log(this.GetType() + " initializeBestTimes");
 
         _bestTimes = new FloatConfigurationParameter[Scorekeeper.completionsCount];
         for (int index = 0; index < Scorekeeper.completionsCount; index++)
         {
-            Debug.Log(this.GetType() + " initializeBestTimes index = " + index);
+            // Debug.Log(this.GetType() + " initializeBestTimes index = " + index);
             _bestTimes[index] = new FloatConfigurationParameter(Mathf.Infinity, Mathf.Infinity, _bestCompletionTimeChapterStem + index);
             _bestTimes[index].initialize();
         }
@@ -207,8 +209,16 @@ public class GameConfiguration
         }
         set
         {
-            // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
-            _furthestChapterReached.val = value;
+            // Debug.Log(this.GetType() + " trying to set furthestChapter to " + value);
+            if (value > _furthestChapterReached.val)
+            {
+                // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
+                _furthestChapterReached.val = value;
+            }
+            else
+            {
+                Debug.LogWarning(this.GetType() + " tried to update furthestChapter to " + value + " <= " + _furthestChapterReached.val);
+            }
         }
     }
 
@@ -238,12 +248,12 @@ public class GameConfiguration
         }
         set
         {
-            Debug.Log(this.GetType() + " trying to set _bestTimes...");
+            // Debug.Log(this.GetType() + " trying to set _bestTimes...");
             for (int index = 0; index < Scorekeeper.completionsCount; index++)
             {
                 if (value[index] < _bestTimes[index].val)
                 {
-                    Debug.Log(this.GetType() + " setting _bestTimes[" + index + "] to " + value[index] + "(previously " + _bestTimes[index].val + ")");
+                    // Debug.Log(this.GetType() + " setting _bestTimes[" + index + "] to " + value[index] + "(previously " + _bestTimes[index].val + ")");
                     _bestTimes[index].val = value[index];
                 }
             }
@@ -252,10 +262,10 @@ public class GameConfiguration
 
     public void setBestTime(int index, float time, bool force = false)
     {
-        Debug.Log(this.GetType() + " setBestTime(" + index + ", " + time + ", " + force + ")");
+        // Debug.Log(this.GetType() + " setBestTime(" + index + ", " + time + ", " + force + ")");
         if (force || time < _bestTimes[index].val)
         {
-            Debug.Log(this.GetType() + " setBestTime updates " + index + " to " + time);
+            // Debug.Log(this.GetType() + " setBestTime updates " + index + " to " + time);
             _bestTimes[index].val = time;
         }
     }

@@ -21,6 +21,7 @@ public class Scorekeeper
     private float _startTime;
     private int _currentChapter = 0, _furthestChapter = -1;
     private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString;
+    private MapChapterUnlocker _unlocker;
 
     public Scorekeeper()
     {
@@ -49,13 +50,13 @@ public class Scorekeeper
         {
             if (null == _chapters)
             {
-                Debug.Log(this.GetType() + " get chapters initializes");
+                // Debug.Log(this.GetType() + " get chapters initializes");
                 _chapters = new ChapterCompletion[completionsCount];
                 float[] bestTimes = MemoryManager.get().configuration.bestTimes;
-                Debug.Log(this.GetType() + " get chapters initializes got configuration.bestTimes=" + Logger.ToString<float>(bestTimes));
+                // Debug.Log(this.GetType() + " get chapters initializes got configuration.bestTimes=" + Logger.ToString<float>(bestTimes));
                 for (int index = 0; index < completionsCount; index++)
                 {
-                    Debug.Log(this.GetType() + " get chapters initializes index = " + index);
+                    // Debug.Log(this.GetType() + " get chapters initializes index = " + index);
                     _chapters[index] = new ChapterCompletion();
                     _chapters[index].ownBestCompletionTime = bestTimes[index];
                 }
@@ -66,16 +67,16 @@ public class Scorekeeper
 
     public void collideChapter(int index, float time)
     {
-        Debug.Log(this.GetType() + " collideChapter(" + index + ", " + time + ")");
+        // Debug.Log(this.GetType() + " collideChapter(" + index + ", " + time + ")");
         if (index - _currentChapter == 1)
         {
-            Debug.Log(this.GetType() + " collideChapter finished ch" + _currentChapter + ", started ch" + index);
+            // Debug.Log(this.GetType() + " collideChapter finished ch" + _currentChapter + ", started ch" + index);
             endChapter(_currentChapter, time);
             startChapter(index, time);
         }
         else if (index - _currentChapter == -1 || index - _currentChapter == 0)
         {
-            Debug.Log(this.GetType() + " collideChapter went back from ch" + _currentChapter + " to ch" + index);
+            // Debug.Log(this.GetType() + " collideChapter went back from ch" + _currentChapter + " to ch" + index);
         }
         else
         {
@@ -85,29 +86,35 @@ public class Scorekeeper
 
     public void startChapter(int index, float startTime)
     {
-        Debug.Log(this.GetType() + " startChapter(" + index + ", " + startTime + ")");
+        // Debug.Log(this.GetType() + " startChapter(" + index + ", " + startTime + ")");
         _currentChapter = index;
         _startTime = startTime;
     }
 
     private void endChapter(int index, float endTime)
     {
-        Debug.Log(this.GetType() + " endChapter(" + index + ", " + endTime + ")");
+        // Debug.Log(this.GetType() + " endChapter(" + index + ", " + endTime + ")");
         if (index != _currentChapter)
         {
             Debug.LogWarning(this.GetType() + " chapter indexes don't match: " + _currentChapter + " != " + index);
         }
         else
         {
-            Debug.Log(this.GetType() + " endChapter logged ");
+            // Debug.Log(this.GetType() + " endChapter logged ");
 
             // is new chapter unlocked?
-            if (index > furthestChapter)
+            if (index + 1 > furthestChapter)
             {
-                furthestChapter = index;
-                MemoryManager.get().configuration.furthestChapter = index;
+                // Debug.Log(this.GetType() + " endChapter unlocked chapter index = " + (index + 1));
+                furthestChapter = index + 1;
+                MemoryManager.get().configuration.furthestChapter = furthestChapter;
+                _unlocker.setFurthestChapter(furthestChapter);
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST);
             }
+            // else
+            // {
+            //     // Debug.Log(this.GetType() + " endChapter reached chapter index =" + index + 1 + " <= furthestChapter index = " + furthestChapter);
+            // }
 
             updateCompletion(index, endTime);
         }
@@ -115,16 +122,16 @@ public class Scorekeeper
 
     private void updateCompletion(int index, float endTime)
     {
-        Debug.Log(this.GetType() + " updateCompletion(" + index + ", " + endTime + ")");
+        // Debug.Log(this.GetType() + " updateCompletion(" + index + ", " + endTime + ")");
 
         // computation of completion time
         chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
-        Debug.Log(this.GetType() + " updateCompletion logged " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+        // Debug.Log(this.GetType() + " updateCompletion logged " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
 
         // chapter or total completion time update?
         bool isChapterCompletion = (index != completionsCount - 2);
         string completionType = isChapterCompletion ? "chapter" : "total";
-        Debug.Log(this.GetType() + " updateCompletion(" + index + ") completion = " + completionType);
+        // Debug.Log(this.GetType() + " updateCompletion(" + index + ") completion = " + completionType);
 
         if (!isChapterCompletion)
         {
@@ -135,13 +142,13 @@ public class Scorekeeper
                 totalTime += chapters[chapterIndex].ownLastCompletionTime;
             }
             chapters[index].ownLastCompletionTime = totalTime;
-            Debug.Log(this.GetType() + " updateCompletion logged total completion time " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+            // Debug.Log(this.GetType() + " updateCompletion logged total completion time " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
         }
 
         // are records broken?
         if (chapters[index].ownLastCompletionTime < chapters[index].ownBestCompletionTime)
         {
-            Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
+            // Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
 
             // update of own completion of chapter / game
             chapters[index].ownBestCompletionTime = chapters[index].ownLastCompletionTime;
@@ -154,7 +161,7 @@ public class Scorekeeper
 
             if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)
             {
-                Debug.Log(this.GetType() + " updateCompletion world " + completionType + " completion record broken");
+                // Debug.Log(this.GetType() + " updateCompletion world " + completionType + " completion record broken");
                 
                 // update of world completion of chapter / game
                 chapters[index].worldBestCompletionTime = chapters[index].ownBestCompletionTime;
@@ -168,7 +175,7 @@ public class Scorekeeper
 
     private CustomData getCustomData(int index, bool isChapterCompletion)
     {
-        Debug.Log(this.GetType() + " getCustomData(" + index + ", " + isChapterCompletion + ")");
+        // Debug.Log(this.GetType() + " getCustomData(" + index + ", " + isChapterCompletion + ")");
         CustomData data;
 
         if (isChapterCompletion)
@@ -179,13 +186,13 @@ public class Scorekeeper
         {
             data = new CustomData(CustomDataTag.TOTAL, chapters[index].ownLastCompletionTime.ToString());
         }
-        Debug.Log(this.GetType() + " getCustomData(" + index + ") returns " + data);
+        // Debug.Log(this.GetType() + " getCustomData(" + index + ") returns " + data);
         return data;
     }
 
     private string[] getCompletionAbstract()
     {
-        Debug.Log(this.GetType() + " getCompletionAbstract");
+        // Debug.Log(this.GetType() + " getCompletionAbstract");
         string[] result = new string[_columnCount];
 
         _chapterString = Localization.Localize(_chapterKey);
@@ -228,7 +235,7 @@ public class Scorekeeper
 
     public void finish(float endTime, UILabel[] columnLabels)
     {
-        Debug.Log(this.GetType() + " fillInColumns");
+        // Debug.Log(this.GetType() + " fillInColumns");
 
         // end last chapter
         endChapter(_currentChapter, endTime);
@@ -250,7 +257,7 @@ public class Scorekeeper
 
     private string formatTime(float completionTime)
     {
-        Debug.Log(this.GetType() + " formatTime(" + completionTime + ")");
+        // Debug.Log(this.GetType() + " formatTime(" + completionTime + ")");
 
         string result = "not completed";
         if (Mathf.Infinity != completionTime)
@@ -270,6 +277,13 @@ public class Scorekeeper
             result += time.Seconds + _secondsString + time.Milliseconds + _millisecondsString;
         }
         return result;
+    }
+
+    public void setMapChapterUnlocker(MapChapterUnlocker unlocker)
+    {
+        // Debug.Log(this.GetType() + " setMapChapterUnlocker");
+        _unlocker = unlocker;
+        _unlocker.setFurthestChapter(furthestChapter);
     }
 }
 

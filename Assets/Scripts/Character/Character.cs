@@ -473,12 +473,12 @@ public class Character : CellAnimator
         }
         if (collision.tag == Checkpoint.checkpointTag)
         {
-            Debug.Log(this.GetType() + " OnTriggerEnter collided " + collision.name + " tagged " + Checkpoint.checkpointTag);
+            // Debug.Log(this.GetType() + " OnTriggerEnter collided " + collision.name + " tagged " + Checkpoint.checkpointTag);
 
             Checkpoint checkpoint = collision.gameObject.GetComponent<Checkpoint>();
             if(null != checkpoint)
             {
-                Debug.Log(this.GetType() + " OnTriggerEnter collideChapter(" + checkpoint.index + ", " + Time.unscaledTime +")");
+                // Debug.Log(this.GetType() + " OnTriggerEnter collideChapter(" + checkpoint.index + ", " + Time.unscaledTime +")");
                 GameStateController.collideChapter(checkpoint.index, Time.unscaledTime);
             }
             else
