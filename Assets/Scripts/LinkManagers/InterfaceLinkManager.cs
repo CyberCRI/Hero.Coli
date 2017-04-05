@@ -127,6 +127,9 @@ public class InterfaceLinkManager : LinkManager
     public FocusMaskManager focusMaskManager;
     [SerializeField]
     private MapChapterUnlocker chapterUnlocker;
+    
+    public IconAnimation lifeIndicator;
+    public IconAnimation energyIndicator;
 
     protected override int getLMIndex()
     {

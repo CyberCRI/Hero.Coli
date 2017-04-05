@@ -73,18 +73,18 @@ public class Life
         if (_life <= 0f || _suddenDeath) _life = 0f;
         else if (_life >= _lifeMax) _life = _lifeMax;
 
-        ResetVariation();
+        resetVariation();
     }
 
     // Reset the variation value : called at the end of the update
-    public void ResetVariation()
+    public void resetVariation()
     {
         _variation = 0f;
         if (_suddenDeath)
             _suddenDeath = false;
     }
 
-    public void regen(float deltaTime)
+    public void regenerate(float deltaTime)
     {
         addVariation(deltaTime * _lifeRegen);
     }

@@ -100,8 +100,8 @@ public class PlayerLinkManager : LinkManager
         interfaceLinkManager.focusMaskManager.cellControl = cellControl;
 
         //Character connections
-        character.lifeAnimation = GameObject.Find("LifeLogo").GetComponent<LifeLogoAnimation>();
-        character.energyAnimation = GameObject.Find("EnergyLogo").GetComponent<EnergyLogoAnimation>();
+        character.lifeAnimation = interfaceLinkManager.lifeIndicator;
+        character.energyAnimation = interfaceLinkManager.energyIndicator;
 
         //PhenoFickcontact connections
         //TODO use InterfaceLinkManager

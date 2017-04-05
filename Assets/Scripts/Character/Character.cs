@@ -83,8 +83,8 @@ public class Character : CellAnimator
     private GameObject _savedCellPrefab;
     private CustomData _deathData;
 
-    public LifeLogoAnimation lifeAnimation;
-    public EnergyLogoAnimation energyAnimation;
+    public IconAnimation lifeAnimation;
+    public IconAnimation energyAnimation;
     private Medium _medium;
     public Medium medium
     {
@@ -96,12 +96,15 @@ public class Character : CellAnimator
     public const int mediumId = 1;
 
     //Life
+    private const float _maxDisplayedLife = 100f;
     private const float _maxLife = 1f;
     private const float _lifeRegen = 0.1f;
     [SerializeField]
     private Life _lifeManager = new Life(_maxLife, _lifeRegen);
 
-    //Energy.
+    //Energy
+    private const float _maxDisplayedEnergy = 100f;
+    private const float _lowEnergyThreshold = 0.05f;
     private float _energy = 1f;
     private float _maxMediumEnergy = 1f;
     private float _energyBefore = 1f;
@@ -112,13 +115,12 @@ public class Character : CellAnimator
     private bool _isAlive;
     private bool _isInjured;
     private bool _isBeingInjured;
-    private bool _isRegen;
+    private bool _isLosingEnergy;
     private float _previousLife;
 
     //respawn
     private GameObject _lastCheckpoint = null;
     private GameObject _lastNewCell = null;
-
 
     private const float _respawnTimeS = 1.5f;
     private const float _disappearingTimeSRatio = 0.9f;
@@ -131,6 +133,9 @@ public class Character : CellAnimator
     private const string checkpointSeparator = ".";
     private const string _keyLife = "KEY.LIFE";
     private const string _keyEnergy = "KEY.ENERGY";
+
+    // temporary variables
+    private bool takesDamage, losesEnergy;
 
     private Hashtable _optionsIn = iTween.Hash(
         "scale", _baseScaleVector,
@@ -213,21 +218,11 @@ public class Character : CellAnimator
         _energy = energy;
     }
 
-
     //energy in ReactionEngine scale (not in percent or ratio)
     public void subEnergy(float energy)
     {
         _medium.subEnergy(energy);
     }
-
-    public void DisplayEnergyAnimation()
-    {
-        if (!energyAnimation.isPlaying)
-        {
-            energyAnimation.Play();
-        }
-    }
-
 
     //Getter & setter for the life.
     public float getLife()
@@ -250,13 +245,14 @@ public class Character : CellAnimator
         _lifeManager.addVariation(-life);
     }
 
-    private static float _lowEnergyThreshold = 0.05f;
-
     void Update()
     {
         if (!_pause)
         {
-            _lifeManager.regen(Time.deltaTime);
+            if (_isAlive)
+            {
+                _lifeManager.regenerate(Time.deltaTime);
+            }
             _energy = _medium.getEnergy() / _maxMediumEnergy;
 
             if (GameStateController.isShortcutKey(_keyLife, true))
@@ -275,22 +271,33 @@ public class Character : CellAnimator
             }
 
             // Life animation when life is reducing
-            _isBeingInjured = _lifeManager.getVariation() < 0;
-            if (_isBeingInjured)
+            takesDamage = _lifeManager.getVariation() < 0;
+            if (!_isBeingInjured && takesDamage)
             {
-                if (!lifeAnimation.isPlaying)
-                {
-                    lifeAnimation.Play();
-                }
+                // starts being injured
+                lifeAnimation.play();
             }
+            else if (_isBeingInjured && !takesDamage)
+            {
+                // stops being injured
+                lifeAnimation.stop();
+            }
+            _isBeingInjured = takesDamage;
 
             // Energy animation when energy is reducing
-            if (_energy < _energyBefore)
+            losesEnergy = (_energy < _energyBefore);
+            if (!_isLosingEnergy && losesEnergy)
             {
-                DisplayEnergyAnimation();
+                // starts losing energy
+                energyAnimation.play();
             }
+            else if (_isLosingEnergy && !losesEnergy)
+            {
+                // stops losing energy
+                energyAnimation.stop();
+            }
+            _isLosingEnergy = _energy < _energyBefore;
             _energyBefore = _energy;
-
 
             _lifeManager.applyVariation();
             if (_lifeManager.getLife() == 0f && _isAlive)
@@ -340,14 +347,6 @@ public class Character : CellAnimator
                     //_ambientLighting.SaveCurrentLighting();
                     _isInjured = true;
                 }
-                if (life >= _previousLife)
-                {
-                    _isRegen = true;
-                }
-                else
-                {
-                    _isRegen = false;
-                }
                 _ambientLighting.setInjured(life);
             }
             else if (_lifeManager.getLife() > 0.95f)
@@ -371,15 +370,13 @@ public class Character : CellAnimator
         _previousLife = _lifeManager.getLife();
     }
 
-    private const float maxLife = 100f;
     public string getDisplayedLife()
     {
-        return Mathf.CeilToInt(getLife() * maxLife).ToString();
+        return Mathf.CeilToInt(getLife() * _maxDisplayedLife).ToString();
     }
-    private const float maxEnergy = 100f;
     public string getDisplayedEnergy()
     {
-        return Mathf.CeilToInt(getEnergy() * maxEnergy).ToString();
+        return Mathf.CeilToInt(getEnergy() * _maxDisplayedEnergy).ToString();
     }
 
     // add energy and devices to context
@@ -467,7 +464,7 @@ public class Character : CellAnimator
 
     void OnTriggerEnter(Collider collision)
     {
-        if(!managePickUp(collision))
+        if (!managePickUp(collision))
         {
             manageCheckpoint(collision);
         }
@@ -476,7 +473,7 @@ public class Character : CellAnimator
             // Debug.Log(this.GetType() + " OnTriggerEnter collided " + collision.name + " tagged " + Checkpoint.checkpointTag);
 
             Checkpoint checkpoint = collision.gameObject.GetComponent<Checkpoint>();
-            if(null != checkpoint)
+            if (null != checkpoint)
             {
                 // Debug.Log(this.GetType() + " OnTriggerEnter collideChapter(" + checkpoint.index + ", " + Time.unscaledTime +")");
                 GameStateController.collideChapter(checkpoint.index, Time.unscaledTime);
