@@ -130,7 +130,9 @@ public enum CustomDataTag
     COUNT,
 
     CHAPTER,
-    TOTAL
+    TOTAL,
+
+    DURATION
 }
 
 public enum CustomDataValue
@@ -184,6 +186,9 @@ public class CustomData: Dictionary<string, string>
         Add(tag.ToString().ToLowerInvariant(), value);
     }
 
+    /// <summary>
+    /// Merges data into this.
+    /// </summary>
     public void merge (CustomData data)
     {
         // Debug.Log(this.GetType() + " merge " + data + " into " + this);

@@ -24,8 +24,8 @@ public class CheckpointMainMenuItem : MainMenuItem
     private Material _inactiveMaterial;
 
     private const float _selectedAlpha = 1.0f;
-    private const float _activeAlpha = 1f;
-    private const float _inactiveAlpha = 1f;
+    private const float _activeAlpha = 1.0f;
+    private const float _inactiveAlpha = 1.0f;
     private Vector3 _unselectedScale = Vector3.one / hoverExpandingFactor;
     private Vector3 _selectedScale = Vector3.one;
     private Vector3 _amplitude = 0.1f * Vector3.one;
@@ -54,7 +54,7 @@ public class CheckpointMainMenuItem : MainMenuItem
     [SerializeField]
     private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL1;
     /// <summary>
-    /// The gamemao the checkpoint is linked to.
+    /// The gamemap the checkpoint is linked to.
     /// </summary>
     /// <value>The game map.</value>
     public GameConfiguration.GameMap gameMap

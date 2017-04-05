@@ -368,7 +368,7 @@ public class MainMenuManager : MonoBehaviour
 //            Debug.Log(array + " == " + toActivate + " = " + (array == toActivate));
         }
 		_current = toActivate;
-        selectItem(0);
+        selectItem(toActivate.itemToActivateFirst);
     }
 
     public void switchTo(MainMenuScreen screen)

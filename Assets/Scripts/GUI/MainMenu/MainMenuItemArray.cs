@@ -3,6 +3,7 @@
 public class MainMenuItemArray : MonoBehaviour
 {
     public MainMenuItem[] _items;
+    public int itemToActivateFirst;
 
     // Use this for initialization
     void Start()

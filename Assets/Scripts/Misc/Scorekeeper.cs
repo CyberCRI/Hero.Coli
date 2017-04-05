@@ -102,6 +102,8 @@ public class Scorekeeper
         {
             // Debug.Log(this.GetType() + " endChapter logged ");
 
+            CustomData customData = null;
+
             // is new chapter unlocked?
             if (index + 1 > furthestChapter)
             {
@@ -109,66 +111,64 @@ public class Scorekeeper
                 furthestChapter = index + 1;
                 MemoryManager.get().configuration.furthestChapter = furthestChapter;
                 _unlocker.setFurthestChapter(furthestChapter);
-                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST);
+
+                // RedMetrics
+                customData = getCustomData(index, true);
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST, customData);
             }
             // else
             // {
             //     // Debug.Log(this.GetType() + " endChapter reached chapter index =" + index + 1 + " <= furthestChapter index = " + furthestChapter);
             // }
 
-            updateCompletion(index, endTime);
-        }
-    }
+            // Debug.Log(this.GetType() + " endChapter(" + index + ", " + endTime + ")");
 
-    private void updateCompletion(int index, float endTime)
-    {
-        // Debug.Log(this.GetType() + " updateCompletion(" + index + ", " + endTime + ")");
+            // computation of completion time
+            chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
+            // Debug.Log(this.GetType() + " endChapter logged " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
 
-        // computation of completion time
-        chapters[_currentChapter].ownLastCompletionTime = endTime - _startTime;
-        // Debug.Log(this.GetType() + " updateCompletion logged " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
+            // chapter or total completion time update?
+            bool isChapterCompletion = (index != completionsCount - 2);
+            string completionType = isChapterCompletion ? "chapter" : "total";
+            // Debug.Log(this.GetType() + " endChapter(" + index + ") completion = " + completionType);
 
-        // chapter or total completion time update?
-        bool isChapterCompletion = (index != completionsCount - 2);
-        string completionType = isChapterCompletion ? "chapter" : "total";
-        // Debug.Log(this.GetType() + " updateCompletion(" + index + ") completion = " + completionType);
-
-        if (!isChapterCompletion)
-        {
-            // computation of total completion time
-            float totalTime = 0;
-            for (int chapterIndex = 0; chapterIndex < completionsCount - 2; chapterIndex++)
+            if (!isChapterCompletion)
             {
-                totalTime += chapters[chapterIndex].ownLastCompletionTime;
+                // computation of total completion time
+                float totalTime = 0;
+                for (int chapterIndex = 0; chapterIndex < completionsCount - 2; chapterIndex++)
+                {
+                    totalTime += chapters[chapterIndex].ownLastCompletionTime;
+                }
+                chapters[index].ownLastCompletionTime = totalTime;
+                // Debug.Log(this.GetType() + " endChapter logged total completion time " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
             }
-            chapters[index].ownLastCompletionTime = totalTime;
-            // Debug.Log(this.GetType() + " updateCompletion logged total completion time " + chapters[_currentChapter].ownLastCompletionTime + " for " + _currentChapter);
-        }
 
-        // are records broken?
-        if (chapters[index].ownLastCompletionTime < chapters[index].ownBestCompletionTime)
-        {
-            // Debug.Log(this.GetType() + " updateCompletion own " + completionType + " completion record broken");
-
-            // update of own completion of chapter / game
-            chapters[index].ownBestCompletionTime = chapters[index].ownLastCompletionTime;
-            // update of saved record
-            MemoryManager.get().configuration.setBestTime(index, chapters[index].ownBestCompletionTime);
-
-            // RedMetrics
-            CustomData customData = getCustomData(index, isChapterCompletion);
-            RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
-
-            if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)
+            // are records broken?
+            if (chapters[index].ownLastCompletionTime < chapters[index].ownBestCompletionTime)
             {
-                // Debug.Log(this.GetType() + " updateCompletion world " + completionType + " completion record broken");
-                
-                // update of world completion of chapter / game
-                chapters[index].worldBestCompletionTime = chapters[index].ownBestCompletionTime;
-                // TODO upload
+                // Debug.Log(this.GetType() + " endChapter own " + completionType + " completion record broken");
+
+                // update of own completion of chapter / game
+                chapters[index].ownBestCompletionTime = chapters[index].ownLastCompletionTime;
+                // update of saved record
+                MemoryManager.get().configuration.setBestTime(index, chapters[index].ownBestCompletionTime);
 
                 // RedMetrics
-                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
+                customData = (null == customData || !isChapterCompletion) ? getCustomData(index, isChapterCompletion) : customData;
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
+
+                if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)
+                {
+                    // Debug.Log(this.GetType() + " endChapter world " + completionType + " completion record broken");
+
+                    // update of world completion of chapter / game
+                    chapters[index].worldBestCompletionTime = chapters[index].ownBestCompletionTime;
+                    // TODO upload
+
+                    // RedMetrics
+                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
+                }
             }
         }
     }
@@ -186,6 +186,9 @@ public class Scorekeeper
         {
             data = new CustomData(CustomDataTag.TOTAL, chapters[index].ownLastCompletionTime.ToString());
         }
+
+        data.merge(new CustomData(CustomDataTag.DURATION, secondsToString(chapters[index].ownLastCompletionTime)));
+
         // Debug.Log(this.GetType() + " getCustomData(" + index + ") returns " + data);
         return data;
     }
@@ -225,9 +228,9 @@ public class Scorekeeper
                 {
                     result[0] += "\n" + _totalString;
                 }
-                result[1] += "\n" + formatTime(chapters[index - 1].ownLastCompletionTime);
-                result[2] += "\n" + formatTime(chapters[index - 1].ownBestCompletionTime);
-                result[3] += "\n" + formatTime(chapters[index - 1].worldBestCompletionTime);
+                result[1] += "\n" + secondsToString(chapters[index - 1].ownLastCompletionTime);
+                result[2] += "\n" + secondsToString(chapters[index - 1].ownBestCompletionTime);
+                result[3] += "\n" + secondsToString(chapters[index - 1].worldBestCompletionTime);
             }
         }
         return result;
@@ -255,14 +258,14 @@ public class Scorekeeper
 
     }
 
-    private string formatTime(float completionTime)
+    private string secondsToString(float completionTimeInSeconds, string infiniteTime = "not completed")
     {
         // Debug.Log(this.GetType() + " formatTime(" + completionTime + ")");
 
-        string result = "not completed";
-        if (Mathf.Infinity != completionTime)
+        string result = infiniteTime;
+        if (Mathf.Infinity != completionTimeInSeconds)
         {
-            TimeSpan time = TimeSpan.FromSeconds(completionTime);
+            TimeSpan time = TimeSpan.FromSeconds(completionTimeInSeconds);
             // result = time.ToString();
             // result = string.Format("{0:D2}:{1:D2}:{2:D2}:{3:D3}", time.Hours, time.Minutes, time.Seconds, time.Milliseconds);
             result = "";

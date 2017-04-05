@@ -76,6 +76,9 @@ public class MapChapterUnlocker : MonoBehaviour
                 // Debug.Log(this.GetType() + " setFurthestChapter deactivates item " + i + " = " + savedItems[i].name);
                 savedItems[i].activate(false);
             }
+
+            // Debug.Log(this.GetType() + " setFurthestChapter = " + index);
+            _chaptersArray.itemToActivateFirst = index;
         }
         else
         {
