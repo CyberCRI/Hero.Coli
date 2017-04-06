@@ -69,9 +69,11 @@ public class PlayerLinkManager : LinkManager
     [SerializeField]
     private Character character;
     [SerializeField]
-    private PhenoFickContact pheno;
+    private PhenoFickContact phenoFickContact;
     [SerializeField]
     private CellControl cellControl;
+    [SerializeField]
+    private BoundCamera mainBoundCamera;
 
     protected override int getLMIndex()
     {
@@ -105,11 +107,11 @@ public class PlayerLinkManager : LinkManager
 
         //PhenoFickcontact connections
         //TODO use InterfaceLinkManager
-        pheno.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
-        pheno.graphMoleculeList = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
+        phenoFickContact.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
+        phenoFickContact.graphMoleculeList = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
 
         //Main Camera
-        guiTransitioner.mainBoundCamera = GameObject.Find("Main Camera").GetComponent<BoundCamera>();
+        guiTransitioner.mainBoundCamera = mainBoundCamera;
     }
 
     public override void finishInitialize()
