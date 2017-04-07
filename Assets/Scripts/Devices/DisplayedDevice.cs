@@ -7,6 +7,8 @@ public class DisplayedDevice : DisplayedElement
     [SerializeField]
     private UISprite levelSprite;
     [SerializeField]
+    private UISprite controlSprite;
+    [SerializeField]
     private UISprite deviceBackgroundSprite;
     [SerializeField]
     private UILocalize moleculeOverlay;
@@ -30,20 +32,33 @@ public class DisplayedDevice : DisplayedElement
     private const string _quality64 = "64x64_";
     private const string _qualityDefault = _quality64;
 
-    private const string _level0Suffix = "level0";
-    private const string _level1Suffix = "level1";
-    private const string _level2Suffix = "level2";
-    private const string _level3Suffix = "level3";
+    // control on the promoter brick
+    private const string _controlSuffix = "control_";
+    private const string _constitutiveSuffix = "constitutive";
+    private const string _activationSuffix = "activation";
+    private const string _inhibitionSuffix = "inhibition";
+    private const string _activationInhibitionSuffix = _activationSuffix + "_" + _inhibitionSuffix;
+    private const string _controlConstitutiveSpriteName = _baseDeviceTextureString + _qualityDefault + _controlSuffix + _constitutiveSuffix;
+    private const string _controlActivationSpriteName = _baseDeviceTextureString + _qualityDefault + _controlSuffix + _activationSuffix;
+    private const string _controlInhibitionSpriteName = _baseDeviceTextureString + _qualityDefault + _controlSuffix + _inhibitionSuffix;
+    private const string _controlActivationInhibitionSpriteName = _baseDeviceTextureString + _qualityDefault + _controlSuffix + _activationInhibitionSuffix;
+
+    // level of expression on the RBS brick
+    private const string _levelSuffix = "level";
+    private const string _level0Suffix = "0";
+    private const string _level1Suffix = "1";
+    private const string _level2Suffix = "2";
+    private const string _level3Suffix = "3";
     private const string _textSuffix = "_text";
     private const string _pictureSuffix = "_picture";
-    private const string _level0TextSpriteName = _baseDeviceTextureString + _qualityDefault + _level0Suffix + _textSuffix;
-    private const string _level1TextSpriteName = _baseDeviceTextureString + _qualityDefault + _level1Suffix + _textSuffix;
-    private const string _level2TextSpriteName = _baseDeviceTextureString + _qualityDefault + _level2Suffix + _textSuffix;
-    private const string _level3TextSpriteName = _baseDeviceTextureString + _qualityDefault + _level3Suffix + _textSuffix;
-    private const string _level0PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level0Suffix + _pictureSuffix;
-    private const string _level1PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level1Suffix + _pictureSuffix;
-    private const string _level2PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level2Suffix + _pictureSuffix;
-    private const string _level3PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _level3Suffix + _pictureSuffix;
+    private const string _level0TextSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level0Suffix + _textSuffix;
+    private const string _level1TextSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level1Suffix + _textSuffix;
+    private const string _level2TextSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level2Suffix + _textSuffix;
+    private const string _level3TextSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level3Suffix + _textSuffix;
+    private const string _level0PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level0Suffix + _pictureSuffix;
+    private const string _level1PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level1Suffix + _pictureSuffix;
+    private const string _level2PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level2Suffix + _pictureSuffix;
+    private const string _level3PictureSpriteName = _baseDeviceTextureString + _qualityDefault + _levelSuffix + _level3Suffix + _pictureSuffix;
 
     // default texture
     private const string _defaultTexture = "default";
@@ -176,9 +191,29 @@ public class DisplayedDevice : DisplayedElement
             }
             else
             {
+                Debug.LogWarning(this.GetType() + " setLevelSprite empty sprite name");
                 levelSprite.gameObject.SetActive(false);
             }
             // Debug.Log(this.GetType() + " setLevelSprite");
+        }
+    }
+
+    private void setControlSprite(PromoterBrick.Regulation regulation)
+    {
+        if (null != controlSprite)
+        {
+            string spriteName = getControlSpriteName(regulation);
+            if (!string.IsNullOrEmpty(spriteName))
+            {
+                controlSprite.spriteName = spriteName;
+                controlSprite.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.LogWarning(this.GetType() + " setControlSprite empty sprite name");
+                controlSprite.gameObject.SetActive(false);
+            }
+            // Debug.Log(this.GetType() + " setControlSprite");
         }
     }
 
@@ -233,17 +268,17 @@ public class DisplayedDevice : DisplayedElement
     {
         string spriteName;
 
-        if (levelIndex == -1)
-        {
-            levelIndex = _device.levelIndex;
-        }
-
         if (_device == null)
         {
             spriteName = "";
         }
         else
         {
+            if (levelIndex == -1)
+            {
+                levelIndex = _device.levelIndex;
+            }
+
             switch (levelIndex)
             {
                 case 0:
@@ -262,6 +297,29 @@ public class DisplayedDevice : DisplayedElement
                     spriteName = isPictureMode ? _level0PictureSpriteName : _level0TextSpriteName;
                     break;
             }
+        }
+        return spriteName;
+    }
+
+    private string getControlSpriteName(PromoterBrick.Regulation regulation)
+    {
+        string spriteName = _controlConstitutiveSpriteName;
+        switch (regulation)
+        {
+            case PromoterBrick.Regulation.CONSTANT:
+                spriteName = _controlConstitutiveSpriteName;
+                break;
+            case PromoterBrick.Regulation.ACTIVATED:
+                spriteName = _controlActivationSpriteName;
+                break;
+            case PromoterBrick.Regulation.REPRESSED:
+                spriteName = _controlInhibitionSpriteName;
+                break;
+            case PromoterBrick.Regulation.BOTH:
+                spriteName = _controlActivationInhibitionSpriteName;
+                break;
+            default:
+                break;
         }
         return spriteName;
     }
@@ -396,8 +454,9 @@ public class DisplayedDevice : DisplayedElement
         setName();
         setBackgroundSprite();
         setMoleculeOverlay(device.getFirstGeneProteinName());
-        int levelIndex = _device.levelIndex;
+        int levelIndex = device.levelIndex;
         setLevelSprite(levelIndex);
+        setControlSprite(device.getRegulation());
         setDeviceIcon(levelIndex);
 
         // Debug.Log(this.GetType() + " Initialize done for " + gameObject.name);

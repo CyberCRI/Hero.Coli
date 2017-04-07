@@ -25,6 +25,19 @@ public class Device : DNABit
 
     private LinkedList<ExpressionModule> _modules;
     public LinkedList<ExpressionModule> getExpressionModules() { return _modules; }
+
+    public PromoterBrick.Regulation getRegulation()
+    {
+        try
+        {
+            return ((PromoterBrick)_modules.First.Value.getBioBricks().First.Value).getRegulation();
+        }
+        catch
+        {
+            Debug.LogWarning(this.GetType() + " getRegulation error on " + this);
+            return PromoterBrick.Regulation.CONSTANT;
+        }
+    }
     
     // _level
     private const float _level0 = .06f;

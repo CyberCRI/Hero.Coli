@@ -413,20 +413,21 @@ public class TooltipManager : MonoBehaviour, ILocalizable
     private const string _quantityBASESuffixKey = _genericExplanationSuffix + "QUANTITYBASE";
     private const string _quantityLOWSuffixKey = _genericExplanationSuffix + "QUANTITYLOW"; 
     private const string _quantityMEDSuffixKey = _genericExplanationSuffix + "QUANTITYMED";
+    private const string _quantityHighSuffixKey = _genericExplanationSuffix + "QUANTITYHIGH";
     private const string _quantitySuffixKey = _genericExplanationSuffix + "QUANTITY";
     private const string _repressedSuffixKey = _genericExplanationSuffix + "REPRESSED";
     private const string _activatedSuffixKey = _genericExplanationSuffix + "ACTIVATED";
     private const string _andSuffixKey = _genericExplanationSuffix + "AND";
     
-    private static string _beginningSuffix = _genericExplanationSuffix + "BEGINNING";
-    private static string _quantityBaseSuffix = _genericExplanationSuffix + "QUANTITYBASE";
-    private static string _quantityLowSuffix = _genericExplanationSuffix + "QUANTITYLOW"; 
-    private static string _quantityMedSuffix = _genericExplanationSuffix + "QUANTITYMED"; 
-    private static string _quantityHighSuffix = _genericExplanationSuffix + "QUANTITYHIGH";
-    private static string _quantitySuffix = _genericExplanationSuffix + "QUANTITY";
-    private static string _repressedSuffix = _genericExplanationSuffix + "REPRESSED";
-    private static string _activatedSuffix = _genericExplanationSuffix + "ACTIVATED";
-    private static string _andSuffix = _genericExplanationSuffix + "AND";
+    private static string _beginningSuffix = _beginningSuffixKey;
+    private static string _quantityBaseSuffix = _quantityBASESuffixKey;
+    private static string _quantityLowSuffix = _quantityLOWSuffixKey; 
+    private static string _quantityMedSuffix = _quantityMEDSuffixKey; 
+    private static string _quantityHighSuffix = _quantityHighSuffixKey;
+    private static string _quantitySuffix = _quantitySuffixKey;
+    private static string _repressedSuffix = _repressedSuffixKey;
+    private static string _activatedSuffix = _activatedSuffixKey;
+    private static string _andSuffix = _andSuffixKey;
     private static string _endSuffix = ".";
     
     private void setExplanationSuffixes()
