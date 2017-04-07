@@ -51,6 +51,8 @@ public class MapChapterUnlocker : MonoBehaviour
         // Debug.Log(this.GetType() + " setFurthestChapter(" + index + ")");
 
         _index = index;
+        _chaptersArray.itemToActivateFirst = index;
+
         if (!this.isActiveAndEnabled)
         {
             // Debug.Log(this.GetType() + " setFurthestChapter isActiveAndEnabled");
@@ -78,7 +80,6 @@ public class MapChapterUnlocker : MonoBehaviour
             }
 
             // Debug.Log(this.GetType() + " setFurthestChapter = " + index);
-            _chaptersArray.itemToActivateFirst = index;
         }
         else
         {
