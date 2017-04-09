@@ -97,6 +97,11 @@ public class BackendManager : MonoBehaviour
             {
                 GameStateController.get().triggerEnd();
             }
+            if (Input.GetKeyDown(KeyCode.End))
+            {
+                // Debug.Log(this.GetType() + " setAllListedStatuses");
+                DevicesDisplayer.get().setAllListedStatuses();
+            }
         }
 
         /*

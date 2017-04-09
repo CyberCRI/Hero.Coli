@@ -9,7 +9,7 @@ public class DisplayedDevice : DisplayedElement
     [SerializeField]
     private UISprite controlSprite;
     [SerializeField]
-    private UISprite deviceBackgroundSprite;
+    protected UISprite deviceBackgroundSprite;
     [SerializeField]
     private UILocalize moleculeOverlay;
     [SerializeField]
@@ -538,5 +538,10 @@ public class DisplayedDevice : DisplayedElement
     protected virtual void OnDestroy()
     {
         TooltipManager.displayTooltip();
+    }
+
+    public override string ToString()
+    {
+        return "DisplayedDevice[" + this._device.getInternalName() + "]";
     }
 }

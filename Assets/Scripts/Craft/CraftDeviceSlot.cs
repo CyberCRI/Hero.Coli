@@ -68,12 +68,14 @@ public class CraftDeviceSlot : MonoBehaviour
                     {
                         _resultSprite.spriteName = _resultActiveSprite;
                     }
-                    //set result device
+                    // set result device
                     if (null != _resultDevice)
                     {
                         _resultDevice.Initialize(currentDevice, DevicesDisplayer.DeviceType.CraftSlot);
                         _resultDevice.gameObject.SetActive(true);
                     }
+                    // set listed device
+                    DevicesDisplayer.get().setListedDeviceStatus(currentDevice, true);
                 }
                 forcePositionIfNecessary(false);
             }
@@ -83,6 +85,10 @@ public class CraftDeviceSlot : MonoBehaviour
                 _isEquipped = false;
                 // Debug.Log(this.GetType() + " calls Equipment.get().removeDevice");
                 _isCallingRecursively = true;
+                
+                // set listed device
+                DevicesDisplayer.get().setListedDeviceStatus(getCurrentDevice(), false);
+
                 Equipment.get().removeDevice(getCurrentDevice());
                 _isCallingRecursively = false;
                 if (null != _resultSprite)
@@ -94,6 +100,7 @@ public class CraftDeviceSlot : MonoBehaviour
                 {
                     _resultDevice.gameObject.SetActive(false);
                 }
+
                 forcePositionIfNecessary(true);
             }
             else
@@ -658,7 +665,7 @@ public class CraftDeviceSlot : MonoBehaviour
         }
         // else
         // {
-        //     Debug.Log(this.GetType() + "already initialized");
+        //     // Debug.Log(this.GetType() + "already initialized");
         // }
     }
 

@@ -99,6 +99,7 @@ public class Equipment : DeviceContainer
         }
 
         _devices.Add(copy);
+        // Debug.Log(this.GetType() + " added " + device.getInternalName());
         safeGetDisplayer().addEquippedDevice(copy);
         // TODO replace by event broadcasting
         if (!PhenoAmpicillinProducer.get().isAmpicillinDeviceEquipped(device))

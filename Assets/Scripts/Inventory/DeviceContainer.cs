@@ -17,6 +17,13 @@ public abstract class DeviceContainer : MonoBehaviour
 	public const string _displayerName = "DevicesDisplayersPanel";
 
 	protected List<Device> _devices = new List<Device> ();
+	public List<Device> devices
+	{
+		get
+		{
+			return _devices;
+		}
+	}
 	protected static DevicesDisplayer _displayer;
 
 	public bool contains (Device device)

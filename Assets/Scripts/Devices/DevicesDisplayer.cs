@@ -151,7 +151,7 @@ public class DevicesDisplayer : MonoBehaviour
 
     public void addEquippedDevice(Device device)
     {
-        // Debug.Log(this.GetType() + " addEquippedDevice(" + device.ToString() + ")");
+        // Debug.Log(this.GetType() + " addEquippedDevice(" + device.getInternalName() + ")");
         if (device == null)
         {
             Debug.LogWarning(this.GetType() + " addEquippedDevice device == null");
@@ -281,6 +281,40 @@ public class DevicesDisplayer : MonoBehaviour
     public void removeListedDevice(Device toRemove)
     {
         removeDevice(DevicesDisplayer.DeviceType.Listed, toRemove);
+    }
+
+    public void setListedDeviceStatus(Device device, bool isEquipped)
+    {
+        // Debug.Log(this.GetType() + " setListedDeviceStatus");
+        if (null != device)
+        {
+            // Debug.Log(this.GetType() + " setListedDeviceStatus isEquipped=" + isEquipped + " for device " + device.getInternalName());
+            ListedDevice found = (ListedDevice)_listedInventoriedDevices.Find(d => d._device.Equals(device));
+            if (found != null)
+            {
+                // Debug.Log(this.GetType() + " setListedDeviceStatus found != null isEquipped=" + isEquipped + " for device " + device.getInternalName());
+                found.isEquipped = isEquipped;
+            }
+        }
+    }
+
+    public void setAllListedStatuses()
+    {
+        // Debug.Log(this.GetType() + " setAllListedStatuses");
+        // string allProcess = this.GetType() + " setAllListedStatuses";
+        foreach(DisplayedDevice device in _listedInventoriedDevices)
+        {
+            // allProcess += "\n    treating " + device._device.getInternalName();
+            ListedDevice listed = (ListedDevice)device;
+            if (null != listed)
+            {
+                // allProcess += "\n        null != listed";
+                // allProcess += "\n        searching match in _equippedDevices=" + Logger.ToString<DisplayedDevice>(_equippedDevices);
+                listed.isEquipped = _equippedDevices.Exists(d => d._device.Equals(listed._device));
+                // allProcess += "\n        listed.isEquipped=" + listed.isEquipped;
+            }
+        }
+        // Debug.Log(allProcess);
     }
 
     public void removeDevice(DevicesDisplayer.DeviceType type, Device toRemove)
