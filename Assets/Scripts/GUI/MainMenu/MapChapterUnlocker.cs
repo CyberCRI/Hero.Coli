@@ -52,6 +52,7 @@ public class MapChapterUnlocker : MonoBehaviour
 
         _index = index;
         _chaptersArray.itemToActivateFirst = index;
+        // Debug.Log(this.GetType() + " setFurthestChapter _chaptersArray.itemToActivateFirst = " + index);
 
         if (!this.isActiveAndEnabled)
         {

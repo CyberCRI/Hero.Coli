@@ -66,7 +66,10 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-        selectItem(0);
+        if (null != _current)
+        {
+            selectItem(_current.itemToActivateFirst);
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -369,6 +372,7 @@ public class MainMenuManager : MonoBehaviour
         }
 		_current = toActivate;
         selectItem(toActivate.itemToActivateFirst);
+        // Debug.Log(this.GetType() + " activateArray selectItem " + toActivate.itemToActivateFirst);
     }
 
     public void switchTo(MainMenuScreen screen)
