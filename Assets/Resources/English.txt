@@ -82,13 +82,9 @@ MENU.LEARNMORE.GOTO=explore the website
 MENU.LEARNMORE.GOTONEWTAB=new tab - please allow the pop-up
 MENU.LEARNMORE.GOTOSAMETAB=same tab - will exit the game
 MENU.LEARNMORE.GOTOBROWSER=open in browser
-MENU.LEARNMORE.EXPLANATION=Go to the iGEM MOOC to learn more about synthetic biology!
-LEARNMORE.LINK.MOOCFULL=http://igemhs.wix.com/mooc#!fundamental-facts/c5m9
-LEARNMORE.LINK.MOOCECOLI=http://genius.com/Igem-paris-bettencourt-team-a-model-organism-e-coli-annotated
-LEARNMORE.LINK.MOOCBIOBRICKS=http://genius.com/Igem-paris-bettencourt-team-what-are-biobricks-annotated
-LEARNMORE.LINK.MOOCTECHNIQUES=http://genius.com/Igem-paris-bettencourt-team-basic-techniques-used-in-igem-annotated
-LEARNMORE.LINK.MOOCENGINEERING=http://genius.com/Igem-paris-bettencourt-team-engineering-parts-and-genetic-devices-annotated
-LEARNMORE.LINK.MOOCTHEORY=http://genius.com/Igem-paris-bettencourt-team-what-is-the-central-dogma-of-biology-annotated
+MENU.LEARNMORE.EXPLANATION=Visit these sites to learn more about synthetic biology!
+LEARNMORE.LINK.MIHS=http://igemhs.wix.com/mooc#!fundamental-facts/c5m9
+LEARNMORE.LINK.SB1=https://syntheticbiology1.com/
 STUDY.GAMEDEV.LINK=https://docs.google.com/forms/d/1KeQIG3UDwX8NzrrdeU598qzcD1B7-SrwCz_cRWxuTsU/viewform
 STUDY.LEARN.LINK=https://docs.google.com/forms/d/1Mz4hH2btTRki91JsM7BYnQUj4hlr3gp3FlTYAdZDAYM/viewform?usp=send_form
 BRICK.PRBAD1=pBAD strong

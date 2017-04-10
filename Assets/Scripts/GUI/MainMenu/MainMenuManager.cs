@@ -153,36 +153,46 @@ public class MainMenuManager : MonoBehaviour
         _feedback.burst(position + _shift);
     }
 
-    private bool selectItem(string name)
-    {
-        // Debug.Log(string.Format("selectItem({0})", name));
-		if (isAnItemSelected() && name == _current._items[_currentIndex].itemName)
-        {
-            // Debug.Log(this.GetType() + " item " + name + " was already selected");
-            return true;
-        }
-        else
-        {
-			for (int index = 0; index < _current._items.Length; index++)
-            {
-                if (name == _current._items[index].itemName)
-                {
-                    deselect();
-					_current._items[index].select();
-                    _currentIndex = index;
-                    // Debug.Log(this.GetType() + " selected item " + index + " via its name '" + name + "'");
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
     private enum SelectionMode
     {
         NEXT,
         PREVIOUS,
         NONE
+    }
+
+    private bool innerSelectItem(int normalizedIndex)
+    {
+        // Debug.Log(this.GetType() + " innerSelectItem " + normalizedIndex);
+        if (null != _current._items[normalizedIndex])
+        {
+            deselect();
+            _current._items[normalizedIndex].select();
+            _currentIndex = normalizedIndex;
+            return true;
+        }
+        else
+        {
+            return false;
+        }        
+    }
+
+    private bool selectItem(MainMenuItem item)
+    {        
+        if (null != item)
+        {
+            for (int index = 0; index < _current._items.Length ; index++)
+            {
+                if (item == _current._items[index])
+                {
+                    return innerSelectItem(index);
+                }
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private bool selectItem(int index, SelectionMode mode = SelectionMode.NEXT)
@@ -199,11 +209,8 @@ public class MainMenuManager : MonoBehaviour
 				: (previousIndex % _current._items.Length) + _current._items.Length;
             if (null != _current._items[normalizedIndex] && _current._items[normalizedIndex].isDisplayed)
             {
-                deselect();
-                _current._items[normalizedIndex].select();
-                _currentIndex = normalizedIndex;
                 // Debug.Log(this.GetType() + " selected item " + normalizedIndex);
-                return true;
+                return innerSelectItem(normalizedIndex);
             }
 
             switch (mode)
@@ -239,53 +246,62 @@ public class MainMenuManager : MonoBehaviour
     {
         // Debug.Log(string.Format("onHover({0})", item._itemName));
         // Debug.Log(this.GetType() + " " + item.itemName + " onHover");
-        selectItem(item.itemName);
+        selectItem(item);
     }
 
-    public static void replaceTextBy(string target, string replacement, MainMenuItemArray current, string debug = "")
+    public static void replaceTextBy(string target, string replacement, MainMenuItemArray current, bool all = false, string debug = "")
     {
         // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2}, {3})", target, replacement, MainMenuItemArray.ToString(items), debug));
+        bool found = false;
         for (int index = 0; index < current._items.Length; index++)
         {
 			if (current._items[index].itemName == target)
             {
+                found = true;
 				current._items[index].itemName = replacement;
                 MainMenuManager.redraw(current);
-                return;
+                if (!all)
+                {
+                    return;
+                }
             }
         }
-        Debug.LogWarning("MainMenuManager replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
+        if (!found)
+        {
+            Debug.LogWarning("MainMenuManager replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
+        }
     }
 
-    private void replaceTextBy(string target, string replacement, string debug = "")
+    private void replaceTextBy(string target, string replacement, bool all = false, string debug = "")
     {
         // Debug.Log(string.Format("replaceTextBy({0}, {1}, {2})", target, replacement, debug));
-        MainMenuManager.replaceTextBy(target, replacement, _current, debug);
+        MainMenuManager.replaceTextBy(target, replacement, _current, all, debug);
     }
 
     public void setNewGame()
     {
         // Debug.Log(this.GetType() + " setNewGame");
-        replaceTextBy(resumeKey, newGameKey, "setNewGame");
+        replaceTextBy(resumeKey, newGameKey, false, "setNewGame");
         setVisibility(_restartKey, false);
     }
 
     public void setResume()
     {
         // Debug.Log(this.GetType() + " setResume");
-        replaceTextBy(newGameKey, resumeKey, "setResume");
+        replaceTextBy(newGameKey, resumeKey, false, "setResume");
         setVisibility(_restartKey, true);
     }
 
-    private void setVisibility(string itemKey, bool isVisible)
+    private void setVisibility(string itemKey, bool isVisible, bool all = false)
     {
         // Debug.Log(string.Format("setVisibility({0},{1})", itemKey, isVisible.ToString()));
-		setVisibility(_current, itemKey, isVisible, "MainMenuManager");
+		setVisibility(_current, itemKey, isVisible, all, "MainMenuManager");
     }
 
-    public static void setVisibility(MainMenuItemArray current, string itemKey, bool isVisible, string debug = null, float spacing = _defaultVerticalSpacing)
+    public static void setVisibility(MainMenuItemArray current, string itemKey, bool isVisible, bool all = false, string debug = null, float spacing = _defaultVerticalSpacing)
     {
         // Debug.Log(string.Format("setVisibility({0},{1},{2},{3},{4})", MainMenuItemArray.ToString(items), itemKey, isVisible.ToString(), debug, spacing.ToString()));
+        bool found = false;
         if (!string.IsNullOrEmpty(debug))
         {
             // Debug.Log(this.GetType() + " setVisibility(items, "+itemKey+", "+isVisible+", "+debug+", "+spacing);
@@ -295,50 +311,62 @@ public class MainMenuManager : MonoBehaviour
 			current._items[index].initializeIfNecessary();
             if (current._items[index].itemName == itemKey)
             {
+                found = true;
 				current._items[index].isDisplayed = isVisible;
-                if (!string.IsNullOrEmpty(debug))
+                // if (!string.IsNullOrEmpty(debug))
+                // {
+                //     Debug.Log("MainMenuManager setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                // }
+                if (!all)
                 {
-                    // Debug.Log(this.GetType() + " setVisibility "+debug+" found "+itemKey+" and set its visibility to "+isVisible);
+                    break;
                 }
-                break;
             }
-            else if (!string.IsNullOrEmpty(debug))
-            {
-                // Debug.Log(this.GetType() + " setVisibility "+debug+": '"+itemKey+"'≠'"+items[index].itemName+"'");
-            }
+            // else if (!string.IsNullOrEmpty(debug))
+            // {
+            //     Debug.Log("MainMenuManager setVisibility "+debug+": '"+itemKey+"'≠'"+current._items[index].itemName+"'");
+            // }
+        }
+        if (!found)
+        {
+            Debug.LogWarning("MainMenuManager setVisibility static " + debug + " FAIL with target=" + itemKey + " and isVisible=" + isVisible);
         }
         MainMenuManager.redraw(current, debug, spacing);
     }
 
 	public static void redraw(MainMenuItemArray current, string debug = null, float spacing = _defaultVerticalSpacing)
     {
-		if (current == MainMenuManager.get().chapterSelectionItems)
-			return;
-        // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
-        if (!string.IsNullOrEmpty(debug))
+		if (current != MainMenuManager.get().chapterSelectionItems)
         {
-            // Debug.Log(this.GetType() + " redraw "+debug);
-        }
-		if (current._items.Length != 0)
-        {
-			Vector2 nextRelativeOffset = current._items[0].anchor.relativeOffset;
-			foreach (MainMenuItem item in current._items)
+            // Debug.Log(string.Format("redraw({0}, {1}, {2})", MainMenuItemArray.ToString(items), debug, spacing.ToString()));
+            // if (!string.IsNullOrEmpty(debug))
+            // {
+            //     // Debug.Log(this.GetType() + " redraw "+debug);
+            // }
+            if (current._items.Length != 0)
             {
-                item.gameObject.SetActive(item.isDisplayed);
-                if (!string.IsNullOrEmpty(debug))
-                {
-                    // Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
-                }
-                if (item.isDisplayed)
-                {
-                    item.anchor.relativeOffset = nextRelativeOffset;
-                    nextRelativeOffset = new Vector2(nextRelativeOffset.x, nextRelativeOffset.y + spacing);
+                if (current._items[0].anchor)
+                { 
+                    Vector2 nextRelativeOffset = current._items[0].anchor.relativeOffset;
+                    foreach (MainMenuItem item in current._items)
+                    {
+                        item.gameObject.SetActive(item.isDisplayed);
+                        // if (!string.IsNullOrEmpty(debug))
+                        // {
+                        //     // Debug.Log(this.GetType() + " redraw "+debug+" set "+item.itemName+" activity to "+item.displayed);
+                        // }
+                        if (item.isDisplayed)
+                        {
+                            item.anchor.relativeOffset = nextRelativeOffset;
+                            nextRelativeOffset = new Vector2(nextRelativeOffset.x, nextRelativeOffset.y + spacing);
+                        }
+                    }
                 }
             }
-        }
-        else
-        {
-            Debug.LogWarning("MainMenuManager redraw static no item");
+            else
+            {
+                Debug.LogWarning("MainMenuManager redraw static no item");
+            }
         }
     }
 

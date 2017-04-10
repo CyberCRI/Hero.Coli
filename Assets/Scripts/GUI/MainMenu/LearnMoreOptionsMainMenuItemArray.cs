@@ -1,71 +1,45 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray
 {
+    private const string _learnMoreKeyPrefix = "MENU.LEARNMORE.";
+    private const string _sameTabKey = _learnMoreKeyPrefix + "GOTOSAMETAB";
+    private const string _newTabKey = _learnMoreKeyPrefix + "GOTONEWTAB";
+    private const string _browserKey = _learnMoreKeyPrefix + "GOTOBROWSER";
 
-    private bool isPlatformSet = false;
-    public GameObject learnMoreOptionsPanel;
-    public MainMenuItem newTabButton;
-    public MainMenuItem sameTabButton;
-
-    public static bool isHelp = false;
-    private string urlKey = "LEARNMORE.LINK.MOOCFULL";
-
-    public void goToMOOCSameTab()
-    {
-        goToMOOC(false);
-    }
-    public void goToMOOCNewTab()
-    {
-        goToMOOC(true);
-    }
-
-    private void goToMOOC(bool newTab)
+    public void goToMOOC(string urlKey, bool newTab)
     {
         RedMetricsManager.get().sendEvent(TrackingEvent.GOTOMOOC);
         URLOpener.open(urlKey, newTab);
     }
 
-    private const string learnMoreKeyPrefix = "MENU.LEARNMORE.";
-    private const string sameTabKey = learnMoreKeyPrefix + "GOTOSAMETAB";
-    private const string newTabKey = learnMoreKeyPrefix + "GOTONEWTAB";
-    private const string browserKey = learnMoreKeyPrefix + "GOTOBROWSER";
-
-    public void setPlatform()
+    void Start()
     {
-        if (!isPlatformSet)
+        // Debug.Log(this.GetType() + " Start");
+#if UNITY_WEBPLAYER
+        setTabsMode(true);
+#else
+        setTabsMode(false);
+#endif  
+    }
+
+    // will prepare two alternatives if true: same tab or new tab to access MOOC pages
+    // otherwise, the default browser will open the MOOC page
+    private void setTabsMode(bool isTabsMode)
+    {
+        Debug.Log(this.GetType() + " setTabsMode " + isTabsMode);
+        if (isTabsMode)
         {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXEditor:
-                    // Debug.Log(this.GetType() + " setPlatform Editor/Standalone prepares choices");
-                    //hide "same tab" option
-                    MainMenuManager.setVisibility(this, sameTabKey, false, "setPlatform");
-                    //rename "new tab" into "open in browser"
-                    MainMenuManager.replaceTextBy(newTabKey, browserKey, this, "setPlatform");
-                    break;
-                default:
-                    // Debug.Log(this.GetType() + " setPlatform default nothing to do");
-                    MainMenuManager.setVisibility(this, sameTabKey, true, "setPlatform");
-                    //rename "open in browser tab" into "new tab"
-                    MainMenuManager.replaceTextBy(browserKey, newTabKey, this, "setPlatform");
-                    break;
-            }
-            isPlatformSet = true;
+            MainMenuManager.setVisibility(this, _sameTabKey, true, true, "setTabsMode");
+            //rename "open in browser tab" into "new tab"
+            MainMenuManager.replaceTextBy(_browserKey, _newTabKey, this, true, "setTabsMode");
         }
-    }
-
-    void OnEnable()
-    {
-        learnMoreOptionsPanel.SetActive(true);
-    }
-
-    void OnDisable()
-    {
-        learnMoreOptionsPanel.SetActive(false);
+        else
+        {
+            //hide "same tab" option
+            MainMenuManager.setVisibility(this, _sameTabKey, false, true, "setTabsMode");
+            //rename "new tab" into "open in browser"
+            MainMenuManager.replaceTextBy(_newTabKey, _browserKey, this, true, "setTabsMode");
+        }
     }
 }

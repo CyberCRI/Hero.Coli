@@ -17,7 +17,7 @@ public class MainMenuItem : MonoBehaviour
         set
         {
             _isDisplayed = value;
-
+            this.gameObject.SetActive(value);
         }
     }
     private UILocalize __localize;
@@ -103,6 +103,7 @@ public class MainMenuItem : MonoBehaviour
 
     void OnHover(bool isOver)
     {
+        // Debug.Log(this.name + " hovered " + isOver);
         if (isOver)
         {
             MainMenuManager.get().onHover(this);

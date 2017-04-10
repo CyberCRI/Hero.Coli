@@ -1,0 +1,17 @@
+using UnityEngine;
+using System.Collections;
+
+public class LearnMoreMainMenuItem : MainMenuItem {
+
+    [SerializeField]
+    private bool _sameTab;
+    [SerializeField]
+    private string _urlKey;
+    [SerializeField]
+    private LearnMoreOptionsMainMenuItemArray _learnMoreOptionsArray;
+    
+    public override void click () {
+        // Debug.Log(this.GetType() + " clicked "+itemName);
+		_learnMoreOptionsArray.goToMOOC(_urlKey, _sameTab);
+    }
+}
