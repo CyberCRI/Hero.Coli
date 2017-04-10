@@ -91,17 +91,17 @@ public class RedMetricsManager : MonoBehaviour
     //TODO interface to automatize data extraction for data gathering through sendEvent
     //eg: section, position
 
-    private string redMetricsURL = "https://api.redmetrics.io/v1/";
-    private string redMetricsPlayer = "player";
-    private string redMetricsEvent = "event";
+    private const string _redMetricsURL = "https://api.redmetrics.io/v1/";
+    private const string _redMetricsPlayer = "player";
+    private const string _redMetricsEvent = "event";
 
     //Redmetrics-Unity's test game version
-    private const string defaultGameVersion = "0bcc8bbb-b557-4b58-b133-761861df633b";
-    private static System.Guid defaultGameVersionGuid = new System.Guid(defaultGameVersion);
+    private const string _defaultGameVersion = "0bcc8bbb-b557-4b58-b133-761861df633b";
+    private static System.Guid defaultGameVersionGuid = new System.Guid(_defaultGameVersion);
     private System.Guid gameVersionGuid = new System.Guid(defaultGameVersionGuid.ToByteArray());
 
-    private const string defaultGameSession = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
-    private static System.Guid defaultGameSessionGUID = new System.Guid(defaultGameSession);
+    private const string _defaultGameSession = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
+    private static System.Guid defaultGameSessionGUID = new System.Guid(_defaultGameSession);
     private System.Guid gameSessionGUID = new System.Guid(defaultGameSessionGUID.ToByteArray());
 
     private string localPlayerGUID; //player guid stored on local computer, in PlayerPrefs 
@@ -232,7 +232,7 @@ public class RedMetricsManager : MonoBehaviour
     private void sendDataStandalone(string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
         // Debug.Log(this.GetType() + " sendDataStandalone");
-        string url = redMetricsURL + urlSuffix;
+        string url = _redMetricsURL + urlSuffix;
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers.Add("Content-Type", "application/json");
         byte[] pData = System.Text.Encoding.ASCII.GetBytes(pDataString.ToCharArray());
@@ -245,13 +245,13 @@ public class RedMetricsManager : MonoBehaviour
         // Debug.Log(this.GetType() + " createPlayer");
         CreatePlayerData data = new CreatePlayerData();
         string json = getJsonString(data);
-        sendDataStandalone(redMetricsPlayer, json, callback);
+        sendDataStandalone(_redMetricsPlayer, json, callback);
     }
 
     private void testGet(System.Action<WWW> callback)
     {
         // Debug.Log(this.GetType() + " testGet");
-        string url = redMetricsURL + redMetricsPlayer;
+        string url = _redMetricsURL + _redMetricsPlayer;
         StartCoroutine(RedMetricsManager.GET(url, callback));
     }
 
@@ -545,7 +545,7 @@ public class RedMetricsManager : MonoBehaviour
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString(data);
             // Debug.Log(string.Format (this.GetType() + " sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json));
-            sendDataStandalone(redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
+            sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
         }
     }
@@ -553,7 +553,7 @@ public class RedMetricsManager : MonoBehaviour
     public override string ToString()
     {
         return string.Format("[RedMetricsManager gameSessionGUID:{0}, gameVersionGuid:{1}, redMetricsURL:{2}]",
-                          gameSessionGUID, gameVersionGuid, redMetricsURL);
+                          gameSessionGUID, gameVersionGuid, _redMetricsURL);
     }
 
 }

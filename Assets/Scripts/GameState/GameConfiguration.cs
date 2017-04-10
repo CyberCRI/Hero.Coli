@@ -19,8 +19,8 @@ public class GameConfiguration
     private const string _sandboxLevel1 = "Sandbox-0.1";
     private const string _sandboxLevel2 = "Sandbox-0.2";
 
-    private string localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
-    private string gameVersionGUIDPlayerPrefsKey = "gameVersionGUID";
+    private const string _localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
+    private const string _gameVersionGUIDPlayerPrefsKey = "gameVersionGUID";
 
     public enum RestartBehavior
     {
@@ -337,12 +337,12 @@ public class GameConfiguration
                 // Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(_playerGUID)");
                 //TODO make it work through different versions of the game,
                 //     so that memory is not erased every time a new version of the game is published
-                string storedGUID = PlayerPrefs.GetString(localPlayerGUIDPlayerPrefsKey);
+                string storedGUID = PlayerPrefs.GetString(_localPlayerGUIDPlayerPrefsKey);
                 if (string.IsNullOrEmpty(storedGUID))
                 {
                     // Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(storedGUID)");
                     _playerGUID = Guid.NewGuid().ToString();
-                    PlayerPrefs.SetString(localPlayerGUIDPlayerPrefsKey, _playerGUID);
+                    PlayerPrefs.SetString(_localPlayerGUIDPlayerPrefsKey, _playerGUID);
                 }
                 else
                 {
@@ -362,7 +362,7 @@ public class GameConfiguration
         // Debug.Log(this.GetType() + " initializeGameVersionGUID");
         if (!RedMetricsManager.get().isGameVersionInitialized())
         {
-            string storedGUID = PlayerPrefs.GetString(gameVersionGUIDPlayerPrefsKey);
+            string storedGUID = PlayerPrefs.GetString(_gameVersionGUIDPlayerPrefsKey);
             // Debug.Log("storedGUID="+storedGUID);
             if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID))
             {
@@ -402,7 +402,7 @@ public class GameConfiguration
         if (guid != RedMetricsManager.get().getGameVersion())
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
-            PlayerPrefs.SetString(gameVersionGUIDPlayerPrefsKey, guid.ToString());
+            PlayerPrefs.SetString(_gameVersionGUIDPlayerPrefsKey, guid.ToString());
             if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
             {
                 RedMetricsManager.get().disconnect();

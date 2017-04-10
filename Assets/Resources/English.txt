@@ -363,6 +363,7 @@ TUTORIAL.FINALSCOREBOARD.H=:
 TUTORIAL.FINALSCOREBOARD.MIN=:
 TUTORIAL.FINALSCOREBOARD.S=.
 TUTORIAL.FINALSCOREBOARD.MS= 
+TUTORIAL.FINALSCOREBOARD.NOTCOMPLETED=not completed
 TUTORIAL.FINALSCOREBOARD.TITLE=YOU WON!
 TUTORIAL.FINALSCOREBOARD.SUBTITLE=You have completed the game, congratulations! But were you the fastest?
 TUTORIAL.FINALSCOREBOARD.EXPLANATION=Thanks for having played the game, we hope you enjoyed it. Fill in the form to contribute to our research on scientific games!

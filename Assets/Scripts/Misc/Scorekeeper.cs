@@ -15,12 +15,14 @@ public class Scorekeeper
     private const string _minutesSuffix = "MIN";
     private const string _secondsSuffix = "S";
     private const string _millisecondsSuffix = "MS";
+    private const string _notCompletedSuffix = "NOTCOMPLETED";
     private const string _chapterKey = _keyStem + _chapterSuffix;
     private const string _totalKey = _keyStem + _totalSuffix;
+    private const string _notCompletedKey = _keyStem + _notCompletedSuffix;
     private ChapterCompletion[] _chapters = null;
     private float _startTime;
     private int _currentChapter = 0, _furthestChapter = -1;
-    private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString;
+    private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString, _notCompletedString;
     private MapChapterUnlocker _unlocker;
 
     public Scorekeeper()
@@ -129,7 +131,7 @@ public class Scorekeeper
 
             // chapter or total completion time update?
             bool isChapterCompletion = (index != completionsCount - 2);
-            string completionType = isChapterCompletion ? "chapter" : "total";
+            // string completionType = isChapterCompletion ? "chapter" : "total";
             // Debug.Log(this.GetType() + " endChapter(" + index + ") completion = " + completionType);
 
             if (!isChapterCompletion)
@@ -204,6 +206,8 @@ public class Scorekeeper
         _minutesString = Localization.Localize(_keyStem + _minutesSuffix);
         _secondsString = Localization.Localize(_keyStem + _secondsSuffix);
         _millisecondsString = Localization.Localize(_keyStem + _millisecondsSuffix);
+        _notCompletedString = Localization.Localize(_notCompletedKey);
+
         // Debug.Log("h='" + _hours + "'");
         // Debug.Log("min='" + _minutes + "'");
         // Debug.Log("s='" + _seconds + "'");
@@ -255,14 +259,13 @@ public class Scorekeeper
                 columnLabels[column].text = results[column];
             }
         }
-
     }
 
-    private string secondsToString(float completionTimeInSeconds, string infiniteTime = "not completed")
+    private string secondsToString(float completionTimeInSeconds)
     {
         // Debug.Log(this.GetType() + " formatTime(" + completionTime + ")");
 
-        string result = infiniteTime;
+        string result = _notCompletedString;
         if (Mathf.Infinity != completionTimeInSeconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(completionTimeInSeconds);

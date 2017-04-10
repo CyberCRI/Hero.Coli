@@ -78,7 +78,7 @@ public class Inventory : DeviceContainer
     private const string _saveFilePathRead = "Parameters/Devices/exported.xml";
     private const string _saveFilePathWrite = "Assets/Resources/" + _saveFilePathRead;
 
-    private string _genericDeviceNamePrefix = "device";
+    private const string _genericDeviceNamePrefix = "device";
 
     private bool _deviceAdded;
 
