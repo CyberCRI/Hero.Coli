@@ -261,7 +261,7 @@ public class DisplayedDevice : DisplayedElement
                 levelSuffix = _level0Suffix;
                 break;
         }
-        return levelSuffix;
+        return _levelSuffix + levelSuffix;
     }
 
     private string getLevelSpriteName(int levelIndex = -1, bool isPictureMode = true)
