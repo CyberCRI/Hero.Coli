@@ -403,16 +403,20 @@ public class GameConfiguration
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
             PlayerPrefs.SetString(_gameVersionGUIDPlayerPrefsKey, guid.ToString());
-            if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
+#if UNITY_WEBPLAYER
+            if (RedMetricsManager.get().isStartEventSent)
             {
                 RedMetricsManager.get().disconnect();
             }
+#endif
             // Debug.Log(this.GetType() + " gameVersionGUID set calls setGameVersion");
             setGameVersion(guid);
-            if (RedMetricsManager.get().isStartEventSent && (Application.platform == RuntimePlatform.WebGLPlayer))
+#if UNITY_WEBPLAYER
+            if (RedMetricsManager.get().isStartEventSent)
             {
                 RedMetricsManager.get().connect();
             }
+#endif
         }
         // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ") done");
     }

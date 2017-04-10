@@ -353,23 +353,21 @@ public class RedMetricsManager : MonoBehaviour
         if (!_isStartEventSent)
         {
             // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
+
+#if UNITY_WEBPLAYER
             // all web players
             // management of game start for webglplayer
-            if (Application.platform == RuntimePlatform.WebGLPlayer)
-            {
-                // Debug.Log(this.GetType() + " sendStartEvent calls connect");
-                connect();
-                sendStartEventWithPlayerGUID();
+            // Debug.Log(this.GetType() + " sendStartEvent calls connect");
+            connect();
+            sendStartEventWithPlayerGUID();
 
-                // other players + editor
-            }
-            else
-            {
-                // Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
-                //gameSessionGUID hasn't been initialized
-                // Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
-                createPlayer(www => trackStart(www));
-            }
+#else
+            // other players + editor
+            // Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
+            //gameSessionGUID hasn't been initialized
+            // Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
+            createPlayer(www => trackStart(www));
+#endif
             _isStartEventSent = true;
         }
     }
@@ -402,29 +400,25 @@ public class RedMetricsManager : MonoBehaviour
     public void connect()
     {
         // Debug.Log(this.GetType() + " connect");
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
+#if UNITY_WEBPLAYER
             // Debug.Log(this.GetType() + " Unity connect");
             // force to wait for MemoryManager
             ConnectionData data = new ConnectionData(gameVersionGuid);
             string json = getJsonString(data);
             // Debug.Log(this.GetType() + " connect will rmConnect json={0}", json);
             Application.ExternalCall("rmConnect", json);
-        }
-        else
-        {
+#else
             Debug.LogWarning(this.GetType() + " called connect, but not from WebGLPlayer");
-        }
+#endif
     }
 
     public void disconnect()
     {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
+#if UNITY_WEBPLAYER
             // Debug.Log(this.GetType() + " Unity disconnect");
             Application.ExternalCall("rmDisconnect");
             resetConnectionVariables();
-        }
+#endif
     }
 
     private void resetConnectionVariables()
@@ -516,8 +510,7 @@ public class RedMetricsManager : MonoBehaviour
         }
 
         // Debug.Log(this.GetType() + " sendEvent({0})", trackingEvent.ToString());
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
+#if UNITY_WEBPLAYER
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates, userTime);
             if (isGameSessionGUIDCreated)
             {
@@ -530,9 +523,7 @@ public class RedMetricsManager : MonoBehaviour
                 addEventToSendLater(data);
                 //TODO: what if connection fails, or even fails permanently? Should retry connection at different intervals
             }
-        }
-        else
-        {
+#else
             // TODO wait on gameSessionGUID using an IEnumerator
             // if (defaultGameSessionGUID != gameSessionGUID)
             // {
@@ -547,7 +538,7 @@ public class RedMetricsManager : MonoBehaviour
             // Debug.Log(string.Format (this.GetType() + " sendEvent - gameSessionGUID={0}, gameVersionGuid={1}, json={2}", gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
-        }
+#endif
     }
 
     public override string ToString()
