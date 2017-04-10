@@ -27,7 +27,7 @@ public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray
     // otherwise, the default browser will open the MOOC page
     private void setTabsMode(bool isTabsMode)
     {
-        Debug.Log(this.GetType() + " setTabsMode " + isTabsMode);
+        // Debug.Log(this.GetType() + " setTabsMode " + isTabsMode);
         if (isTabsMode)
         {
             MainMenuManager.setVisibility(this, _sameTabKey, true, true, "setTabsMode");

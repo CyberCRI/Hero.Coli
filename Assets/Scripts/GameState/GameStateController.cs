@@ -81,6 +81,7 @@ public class GameStateController : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " Start");
         _scorekeeper = new Scorekeeper();
+        I18n.register(_scorekeeper);
         loadLevels();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿// #define WORLDRECORDS
+
+using UnityEngine;
 using System;
 
-public class Scorekeeper
+public class Scorekeeper : ILocalizable
 {
     // all chapters + total time
     public const int completionsCount = Checkpoint.chapterCount + 1;
+#if WORLDRECORDS
     private const int _columnCount = 4;
+#else 
+    private const int _columnCount = 3;
+#endif
     private const string _keyStem = "TUTORIAL.FINALSCOREBOARD.";
     private const string _chapterSuffix = "CHAPTER";
     private const string _totalSuffix = "TOTAL";
@@ -24,6 +30,7 @@ public class Scorekeeper
     private int _currentChapter = 0, _furthestChapter = -1;
     private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString, _notCompletedString;
     private MapChapterUnlocker _unlocker;
+    private UILabel[] _columnLabels;
 
     public Scorekeeper()
     {
@@ -159,7 +166,7 @@ public class Scorekeeper
                 // RedMetrics
                 customData = (null == customData || !isChapterCompletion) ? getCustomData(index, isChapterCompletion) : customData;
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
-
+#if WORLDRECORDS
                 if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)
                 {
                     // Debug.Log(this.GetType() + " endChapter world " + completionType + " completion record broken");
@@ -171,6 +178,7 @@ public class Scorekeeper
                     // RedMetrics
                     RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWWORLDRECORD, customData);
                 }
+#endif
             }
         }
     }
@@ -208,10 +216,13 @@ public class Scorekeeper
         _millisecondsString = Localization.Localize(_keyStem + _millisecondsSuffix);
         _notCompletedString = Localization.Localize(_notCompletedKey);
 
-        // Debug.Log("h='" + _hours + "'");
-        // Debug.Log("min='" + _minutes + "'");
-        // Debug.Log("s='" + _seconds + "'");
-        // Debug.Log("ms='" + _milliseconds + "'");
+        // Debug.Log("_chapterString='" + _chapterString + "'");
+        // Debug.Log("_totalString='" + _totalString + "'");
+        // Debug.Log("h='" + _hoursString + "'");
+        // Debug.Log("min='" + _minutesString + "'");
+        // Debug.Log("s='" + _secondsString + "'");
+        // Debug.Log("ms='" + _millisecondsString + "'");
+        // Debug.Log("_notCompletedString='" + _notCompletedString + "'");
 
         for (int index = 0; index <= completionsCount; index++)
         {
@@ -234,7 +245,9 @@ public class Scorekeeper
                 }
                 result[1] += "\n" + secondsToString(chapters[index - 1].ownLastCompletionTime);
                 result[2] += "\n" + secondsToString(chapters[index - 1].ownBestCompletionTime);
+#if WORLDRECORDS
                 result[3] += "\n" + secondsToString(chapters[index - 1].worldBestCompletionTime);
+#endif
             }
         }
         return result;
@@ -242,21 +255,32 @@ public class Scorekeeper
 
     public void finish(float endTime, UILabel[] columnLabels)
     {
-        // Debug.Log(this.GetType() + " fillInColumns");
+        // Debug.Log(this.GetType() + " finish");
 
         // end last chapter
         endChapter(_currentChapter, endTime);
 
-        if (_columnCount != columnLabels.Length)
+#if !WORLDRECORDS
+        columnLabels[3].gameObject.SetActive(false);
+        float deltaX = columnLabels[1].transform.localPosition.x - columnLabels[0].transform.localPosition.x;
+        columnLabels[0].transform.localPosition = new Vector3(-deltaX, columnLabels[0].transform.localPosition.y, columnLabels[0].transform.localPosition.z);
+        columnLabels[1].transform.localPosition = new Vector3(0, columnLabels[1].transform.localPosition.y, columnLabels[1].transform.localPosition.z);
+        columnLabels[2].transform.localPosition = new Vector3(deltaX, columnLabels[2].transform.localPosition.y, columnLabels[2].transform.localPosition.z);
+#endif
+        _columnLabels = columnLabels;
+        fillInScoreboard();
+    }
+
+    private void fillInScoreboard()
+    {
+        // Debug.Log(this.GetType() + " fillInScoreboard");
+        if (null != _columnLabels)
         {
-            Debug.LogWarning(this.GetType() + "incorrect column count");
-        }
-        else
-        {
+            // Debug.Log(this.GetType() + " fillInScoreboard null != _columnLabels");
             string[] results = getCompletionAbstract();
             for (int column = 0; column < _columnCount; column++)
             {
-                columnLabels[column].text = results[column];
+                _columnLabels[column].text = results[column];
             }
         }
     }
@@ -290,6 +314,12 @@ public class Scorekeeper
         // Debug.Log(this.GetType() + " setMapChapterUnlocker");
         _unlocker = unlocker;
         _unlocker.setFurthestChapter(furthestChapter);
+    }
+
+    public void onLanguageChanged()
+    {
+        // Debug.Log(this.GetType() + " onLanguageChanged");
+        fillInScoreboard();
     }
 }
 
