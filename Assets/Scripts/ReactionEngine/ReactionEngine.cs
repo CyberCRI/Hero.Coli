@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Xml;
-using System;
 using System.Collections.Generic;
 
 //!
@@ -129,7 +127,7 @@ public class ReactionEngine : MonoBehaviour {
   public string[]      _moleculesFiles;                 //!< all the molecule files
   public string[]      _fickFiles;                      //!< all the Fick diffusion files
   public string[]      _activeTransportFiles;           //!< all the Fick diffusion files
-  public static float  reactionsSpeed = 0.9f;           //!< Global reaction speed
+  public const float reactionSpeed = 50f;               //!< Global reaction speed
   public bool enableSequential;                         //!< Enable sequential mode (if reactions are computed one after the other)
   public bool enableNoise;                              //!< Add Noise in each Reaction
   public bool enableEnergy;                             //!< Enable energy consumption

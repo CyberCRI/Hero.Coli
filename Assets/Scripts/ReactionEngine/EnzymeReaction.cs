@@ -184,7 +184,7 @@ public class EnzymeReaction : IReaction
         }
 
 
-    float Vmax = _Kcat * enzyme.getConcentration();
+    float Vmax = _Kcat * enzyme.getConcentration() * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime;
     float effectorConcentration = 0;
 
     if (_effector != "False")

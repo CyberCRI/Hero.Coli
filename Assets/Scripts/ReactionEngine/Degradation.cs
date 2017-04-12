@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections;
 
 // ========================== DEGRADATION ================================
@@ -58,9 +57,9 @@ public class Degradation : IReaction
     Molecule mol = ReactionEngine.getMoleculeFromName(_molName, molecules);
     float delta = mol.getDegradationRate() * mol.getConcentration();
     if (enableSequential)
-      mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed);
+      mol.subConcentration(mol.getDegradationRate() * mol.getConcentration() * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime);
     else
-      mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionsSpeed);
+      mol.subNewConcentration(delta * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime);
   }
 
     public override bool hasValidData()

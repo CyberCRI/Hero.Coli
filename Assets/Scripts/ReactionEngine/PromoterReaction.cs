@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine;
@@ -376,7 +375,7 @@ public class PromoterReaction : IReaction
             // if( pro == null) Debug.Log("pro is null");
 
             float increase = delta * pro.v * _terminatorFactor * _beta
-                               * ReactionEngine.reactionsSpeed * _reactionSpeed;
+                               * ReactionEngine.reactionSpeed * Time.deltaTime * _reactionSpeed;
 
             // if(_debug) Debug.Log(this.GetType() + " react increase="+increase
             // 		+", delta:"+delta

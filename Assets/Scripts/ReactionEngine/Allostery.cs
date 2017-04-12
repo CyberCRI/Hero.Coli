@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Xml;
 
 /*!
@@ -181,7 +180,7 @@ public class Allostery : IReaction
     else
       {
         m = (float)Math.Pow(effector.getConcentration() / _K, _n);
-        delta =  (m / (1 + m)) * protein.getConcentration() * _reactionSpeed * ReactionEngine.reactionsSpeed;
+        delta =  (m / (1 + m)) * protein.getConcentration() * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime;
 
         float energyCoef;
         float energyCostTot;    

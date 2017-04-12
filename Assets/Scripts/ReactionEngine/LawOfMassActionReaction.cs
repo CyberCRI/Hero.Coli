@@ -14,9 +14,9 @@ public class LawOfMassActionReaction : IReaction
     // activation energy
     private float Ea;
     // universal ideal gas law constant
-    private float R = 8.31446f; // J mol−1 K−1
+    private const float R = 8.31446f; // J mol−1 K−1
     // temperature
-    private float T = 293f; // 293°K ≈ 20°C
+    private const float T = 293f; // 293°K ≈ 20°C
 
     //! Default Constructor
     public LawOfMassActionReaction() : base() {}
@@ -48,7 +48,7 @@ public class LawOfMassActionReaction : IReaction
             compute_k();
         }
         compute_r(molecules);
-        float delta = r * Time.deltaTime;
+        float delta = r * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime;
         foreach (Reactant reactant in _reactants)
         {
             mol = ReactionEngine.getMoleculeFromName(reactant.getName(), molecules);

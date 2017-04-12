@@ -1,9 +1,5 @@
 using UnityEngine;
-using System;
-using System.Xml;
-using System.IO;
 using System.Collections;
-using System.Collections.Generic;
 
 /*!
   \brief This class represents an active transport between two mediums.
@@ -55,7 +51,7 @@ public class ActiveTransportReaction : EnzymeReaction
     if (substrate == null)
       return ;
 
-    float delta = execEnzymeReaction(molSrcMed) * _reactionSpeed * ReactionEngine.reactionsSpeed;
+    float delta = execEnzymeReaction(molSrcMed) * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime;
 
     float energyCoef;
     float energyCostTot;

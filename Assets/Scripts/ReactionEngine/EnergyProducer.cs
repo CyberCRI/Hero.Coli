@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -49,7 +48,7 @@ public class ATPProducer : IReaction
   public override void react(ArrayList molecules)
   {
     //TODO this should depend on Time.deltaTime
-    _medium.addEnergy(_production * _reactionSpeed * ReactionEngine.reactionsSpeed);
+    _medium.addEnergy(_production * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime);
   }
   
 

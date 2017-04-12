@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 
 /*!
   \brief Describe an InstantReaction. This class can be loaded by the ReactionEngine
