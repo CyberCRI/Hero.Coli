@@ -129,11 +129,11 @@ public class PromoterBrick : BioBrick
                 TreeNode<PromoterNodeData> formulaTree = parser.Parse(value);
                 bool activated = false, repressed = false;
 
-                // Debug.LogWarning(this.GetType() + " recGetPromoterType on " + Logger.ToString<PromoterNodeData>(formulaTree));
+                Debug.LogWarning(this.GetType() + " " + this.getInternalName() + " recGetPromoterType on " + Logger.ToString<PromoterNodeData>(formulaTree));
 
                 recGetPromoterType(formulaTree, out activated, out repressed);
 
-                // Debug.Log(this.GetType() + " formula _activators=" + Logger.ToString<string>(_activators) + " _repressors=" + Logger.ToString<string>(_repressors));
+                Debug.Log(this.GetType() + " " + this.getInternalName() + " formula _activators=" + Logger.ToString<string>(_activators) + " _repressors=" + Logger.ToString<string>(_repressors));
 
                 if (repressed && !activated)
                 {
@@ -195,7 +195,8 @@ public class PromoterBrick : BioBrick
          && parentFormulaTree.getData().token != PromoterParser.eNodeType.NOT);
         if (result)
         {
-            // Debug.Log(this.GetType() + " isActivated " + parentFormulaTree.getData());
+            Debug.Log(this.GetType() + " isActivated " + parentFormulaTree.getData());
+            Debug.Log(this.GetType() + " isActivated will add " + childFormulaTree.getRightNode());
             _activators.Add(childFormulaTree.getRightNode().getData().value);
         }
         return result;
