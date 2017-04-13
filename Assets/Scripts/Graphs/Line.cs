@@ -1,3 +1,5 @@
+#define DEV
+
 using UnityEngine;
 using System.Collections.Generic;
 using Vectrosity;
@@ -8,7 +10,7 @@ using Vectrosity;
 */
 public class Line
 {
-	public string name; //!< The line name
+    public string name; //!< The line name
     public string moleculeName; //!< The name of the molecule whose concentration is represented by this VectrosityPanelLine
 
     public Color color { get; set; } //!< The line color
@@ -70,8 +72,9 @@ public class Line
         {"REPR2*", Color.white}
   };
 
-  	public string generateLineName(int _mediumId, string _moleculeName) {
-        return _mediumId+"."+_moleculeName;
+    public string generateLineName(int _mediumId, string _moleculeName)
+    {
+        return _mediumId + "." + _moleculeName;
     }
 
     /*!
@@ -188,7 +191,18 @@ public class Line
     }
     private float getY(float y)
     {
+#if DEV
+        if (Random.value > 0.5f)
+        {
+            return 0;
+        }
+        else
+        {
+            return graphHeight * _ratioH;
+        }
+#else
         return Mathf.Clamp(y, 0, graphHeight) * _ratioH;
+#endif
     }
 
     private void computeRatios()
@@ -202,13 +216,14 @@ public class Line
 
     public void doDebugAction()
     {
+#if DEV
         string allValues = "[";
         foreach (Vector2 vec in _pointsList)
         {
             allValues += ";" + vec.ToString();
         }
         allValues += "]";
-        // Debug.Log(this.GetType() + " Line _pointsList=" + allValues);
+        Debug.Log(this.GetType() + " Line _pointsList=" + allValues);
 
         allValues = "[";
         foreach (float flt in _floatList)
@@ -216,7 +231,8 @@ public class Line
             allValues += ";" + flt.ToString();
         }
         allValues += "]";
-        // Debug.Log(this.GetType() + " Line _floatList=" + allValues);
+        Debug.Log(this.GetType() + " Line _floatList=" + allValues);
+#endif
     }
 
     public void setActive(bool isActive)
