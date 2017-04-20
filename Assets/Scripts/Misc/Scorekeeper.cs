@@ -43,13 +43,36 @@ public class Scorekeeper : ILocalizable
         {
             if (_furthestChapter < 0)
             {
-                _furthestChapter = MemoryManager.get().configuration.furthestChapter;
+                furthestChapter = MemoryManager.get().configuration.furthestChapter;
+                // Debug.Log(this.GetType() + " furthestChapter.get " + _furthestChapter);
             }
             return _furthestChapter;
         }
         set
         {
-            _furthestChapter = value;
+            int checkedValue = value;
+            if (value < 0)
+            {
+                Debug.LogWarning(this.GetType() + " furthestChapter.set tried to set to " + value + " < 0");
+                checkedValue = 0;
+            }
+            else if (value > _unlocker.maxChapterIndex)
+            {
+                Debug.LogWarning(this.GetType() + " furthestChapter.set tried to set to " + value + " > MapChapterUnlocker.maxChapterIndex = " + _unlocker.maxChapterIndex);
+                checkedValue = _unlocker.maxChapterIndex;
+            }
+
+            // Debug.Log(this.GetType() + " furthestChapter.set set to " + value + ", was " + _furthestChapter);
+
+            _furthestChapter = checkedValue;
+            MemoryManager.get().configuration.furthestChapter = checkedValue;
+            _unlocker.setFurthestChapter(checkedValue);
+
+            // RedMetrics
+            CustomData customData = getCustomData(checkedValue, true);
+            RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST, customData);
+
+            // Debug.Log(this.GetType() + " furthestChapter.set set to " + _furthestChapter);
         }
     }
 
@@ -111,19 +134,11 @@ public class Scorekeeper : ILocalizable
         {
             // Debug.Log(this.GetType() + " endChapter logged ");
 
-            CustomData customData = null;
-
             // is new chapter unlocked?
             if (index + 1 > furthestChapter)
             {
                 // Debug.Log(this.GetType() + " endChapter unlocked chapter index = " + (index + 1));
                 furthestChapter = index + 1;
-                MemoryManager.get().configuration.furthestChapter = furthestChapter;
-                _unlocker.setFurthestChapter(furthestChapter);
-
-                // RedMetrics
-                customData = getCustomData(index, true);
-                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST, customData);
             }
             // else
             // {
@@ -164,7 +179,7 @@ public class Scorekeeper : ILocalizable
                 MemoryManager.get().configuration.setBestTime(index, chapters[index].ownBestCompletionTime);
 
                 // RedMetrics
-                customData = (null == customData || !isChapterCompletion) ? getCustomData(index, isChapterCompletion) : customData;
+                CustomData customData = getCustomData(index, isChapterCompletion);
                 RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWOWNRECORD, customData);
 #if WORLDRECORDS
                 if (chapters[index].ownLastCompletionTime < chapters[index].worldBestCompletionTime)

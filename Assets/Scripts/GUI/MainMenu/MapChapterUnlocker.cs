@@ -8,6 +8,15 @@ public class MapChapterUnlocker : MonoBehaviour
     private MainMenuItem _backButton;
     private bool _updateOnDisable = false;
     private int _index;
+    private int _maxChapterIndex;
+    public int maxChapterIndex
+    {
+        get
+        {
+            initializeIfNecessary();
+            return _maxChapterIndex;
+        }
+    }
 
     private MainMenuItemArray chaptersArray
     {
@@ -32,14 +41,22 @@ public class MapChapterUnlocker : MonoBehaviour
         if (null == _savedItems)
         {
             // Debug.Log(this.GetType() + " initializeIfNecessary initializes");
-            // save all but the backbutton in this array 
-            _savedItems = new CheckpointMainMenuItem[_chaptersArray._items.Length - 1];
 
-            for (int i = 0; i < _chaptersArray._items.Length - 1; i++)
+            // _chaptersArray contains chapters and the backbutton
+            _maxChapterIndex = _chaptersArray._items.Length - 2;
+
+            // save all but the backbutton in this array
+            _savedItems = new CheckpointMainMenuItem[_maxChapterIndex + 1];
+            // Debug.Log(this.GetType() + " initializeIfNecessary initializes with"
+            // + " _chaptersArray._items.Length=" + _chaptersArray._items.Length
+            // + " _maxChapterIndex=" + _maxChapterIndex
+            // + " _savedItems.Length=" + _savedItems.Length);
+
+            for (int i = 0; i < _savedItems.Length; i++)
             {
                 // Debug.Log(this.GetType() + " initializeIfNecessary saves item " + i + " = " + _chaptersArray._items[i].name);
                 _savedItems[i] = _chaptersArray._items[i] as CheckpointMainMenuItem;
-                string debugString = (null == _savedItems[i]) ? "null" : _savedItems[i].name;
+                // string debugString = (null == _savedItems[i]) ? "null" : _savedItems[i].name;
                 // Debug.Log(this.GetType() + " initializeIfNecessary saved " + debugString);
             }
             _backButton = _chaptersArray._items[_chaptersArray._items.Length - 1];
@@ -62,7 +79,8 @@ public class MapChapterUnlocker : MonoBehaviour
             chaptersArray._items = new MainMenuItem[index + 2];
 
             // activation of unlocked chapters
-            for (int i = 0; i < chaptersArray._items.Length - 1; i++)
+            // for (int i = 0; i < chaptersArray._items.Length - 1; i++)
+            for (int i = 0; i <= index; i++)
             {
                 // Debug.Log(this.GetType() + " setFurthestChapter unlocks item " + i + " = " + savedItems[i].name);
                 chaptersArray._items[i] = savedItems[i];
