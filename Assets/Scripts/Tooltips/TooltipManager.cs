@@ -61,9 +61,13 @@ public class TooltipManager : MonoBehaviour, ILocalizable
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-
     public string[] inputFiles;
+    public TooltipPanel bioBrickTooltipPanel;
+    public TooltipPanel deviceTooltipPanel;
+    public GameStateController gameStateController;
+    public Camera uiCamera;
 
+    private UIPanel _tooltipPanel;
     private UISprite _backgroundSprite;
     private UILocalize _titleLabel;
     private UILocalize _typeLabel;
@@ -79,35 +83,38 @@ public class TooltipManager : MonoBehaviour, ILocalizable
     private CraftZoneDisplayedBioBrick _rbs;
     private CraftZoneDisplayedBioBrick _gene;
     private CraftZoneDisplayedBioBrick _terminator;
-
-    //public GameObject _tooltipPanel;
-    private UIPanel _tooltipPanel;
-    public TooltipPanel bioBrickTooltipPanel;
-    public TooltipPanel deviceTooltipPanel;
-
-    // internal variable
     private static LinkedList<BioBrick> _bricks;
+    private Dictionary<string, TooltipInfo> _loadedInfoWindows = new Dictionary<string, TooltipInfo>();
 
     [SerializeField]
     private string deviceBackground;
     [SerializeField]
     private string bioBrickBackground;
 
-    public static string getDeviceBackground()
-    {
-        return _instance.deviceBackground;
-    }
-    public static string getBioBrickBackground()
-    {
-        return _instance.bioBrickBackground;
-    }
-
-    public GameStateController gameStateController;
-
-    private Dictionary<string, TooltipInfo> _loadedInfoWindows = new Dictionary<string, TooltipInfo>();
-    public const string _bioBrickPrefix = "b_";
+    private const string _bioBrickPrefix = "b_";
     private const string _devicePrefix = "d_";
     private const string _basePairsUnitString = "bp";
+    private const string _genericExplanationSuffix = "TOOLTIP.D_GENERICEXPLANATION."; 
+    private const string _beginningSuffixKey = _genericExplanationSuffix + "BEGINNING";
+    private const string _quantityBASESuffixKey = _genericExplanationSuffix + "QUANTITYBASE";
+    private const string _quantityLOWSuffixKey = _genericExplanationSuffix + "QUANTITYLOW"; 
+    private const string _quantityMEDSuffixKey = _genericExplanationSuffix + "QUANTITYMED";
+    private const string _quantityHighSuffixKey = _genericExplanationSuffix + "QUANTITYHIGH";
+    private const string _quantitySuffixKey = _genericExplanationSuffix + "QUANTITY";
+    private const string _repressedSuffixKey = _genericExplanationSuffix + "REPRESSED";
+    private const string _activatedSuffixKey = _genericExplanationSuffix + "ACTIVATED";
+    private const string _andSuffixKey = _genericExplanationSuffix + "AND";
+    
+    private static string _beginningSuffix = _beginningSuffixKey;
+    private static string _quantityBaseSuffix = _quantityBASESuffixKey;
+    private static string _quantityLowSuffix = _quantityLOWSuffixKey; 
+    private static string _quantityMedSuffix = _quantityMEDSuffixKey; 
+    private static string _quantityHighSuffix = _quantityHighSuffixKey;
+    private static string _quantitySuffix = _quantitySuffixKey;
+    private static string _repressedSuffix = _repressedSuffixKey;
+    private static string _activatedSuffix = _activatedSuffixKey;
+    private static string _andSuffix = _andSuffixKey;
+    private static string _endSuffix = ".";
 
     public enum Quadrant
     {
@@ -123,7 +130,14 @@ public class TooltipManager : MonoBehaviour, ILocalizable
         DEVICE
     }
 
-    public Camera uiCamera;
+    public static string getDeviceBackground()
+    {
+        return _instance.deviceBackground;
+    }
+    public static string getBioBrickBackground()
+    {
+        return _instance.bioBrickBackground;
+    }
 
     private static void setVarsFromTooltipPanel(TooltipType type)
     {
@@ -407,28 +421,6 @@ public class TooltipManager : MonoBehaviour, ILocalizable
             return false;
         }
     }
-
-    private const string _genericExplanationSuffix = "TOOLTIP.D_GENERICEXPLANATION."; 
-    private const string _beginningSuffixKey = _genericExplanationSuffix + "BEGINNING";
-    private const string _quantityBASESuffixKey = _genericExplanationSuffix + "QUANTITYBASE";
-    private const string _quantityLOWSuffixKey = _genericExplanationSuffix + "QUANTITYLOW"; 
-    private const string _quantityMEDSuffixKey = _genericExplanationSuffix + "QUANTITYMED";
-    private const string _quantityHighSuffixKey = _genericExplanationSuffix + "QUANTITYHIGH";
-    private const string _quantitySuffixKey = _genericExplanationSuffix + "QUANTITY";
-    private const string _repressedSuffixKey = _genericExplanationSuffix + "REPRESSED";
-    private const string _activatedSuffixKey = _genericExplanationSuffix + "ACTIVATED";
-    private const string _andSuffixKey = _genericExplanationSuffix + "AND";
-    
-    private static string _beginningSuffix = _beginningSuffixKey;
-    private static string _quantityBaseSuffix = _quantityBASESuffixKey;
-    private static string _quantityLowSuffix = _quantityLOWSuffixKey; 
-    private static string _quantityMedSuffix = _quantityMEDSuffixKey; 
-    private static string _quantityHighSuffix = _quantityHighSuffixKey;
-    private static string _quantitySuffix = _quantitySuffixKey;
-    private static string _repressedSuffix = _repressedSuffixKey;
-    private static string _activatedSuffix = _activatedSuffixKey;
-    private static string _andSuffix = _andSuffixKey;
-    private static string _endSuffix = ".";
     
     private void setExplanationSuffixes()
     {
