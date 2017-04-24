@@ -171,55 +171,27 @@ public class PromoterBrick : BioBrick
             {
                 // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " call on left " + Logger.ToString<PromoterNodeData>(leftFormulaTree));
                 recGetPromoterType(leftFormulaTree, out leftActivated, out leftRepressed, formulaTree);
-                // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " call on left " + Logger.ToString<PromoterNodeData>(leftFormulaTree) + " returns "
-                // + " leftActivated=" + leftActivated
-                // + " leftRepressed=" + leftRepressed
-                // );
             }
 
             if (null != rightFormulaTree && (!leftActivated || !leftRepressed))
             {
                 // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " call on right " + Logger.ToString<PromoterNodeData>(rightFormulaTree));
                 recGetPromoterType(rightFormulaTree, out rightActivated, out rightRepressed, formulaTree);
-                // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " call on right " + Logger.ToString<PromoterNodeData>(rightFormulaTree) + " returns "
-                // + " leftActivated=" + leftActivated
-                // + " leftRepressed=" + leftRepressed
-                // );
             }
 
-            activated = leftActivated || rightActivated;
-            repressed = leftRepressed || rightRepressed;
-
-            // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " set "
-            //     + " activated=" + activated
-            //     + " repressed=" + repressed
-            // );
-
-            if (null != parentFormulaTree)
-            {
-                // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " recursive calls on isActivated isRepressed ");
-                activated = activated || isActivated(parentFormulaTree, formulaTree);
-                repressed = repressed || isRepressed(parentFormulaTree, formulaTree);
-            }
-            else
-            {
-                if (formulaTree.getData().token == PromoterParser.eNodeType.CONSTANT)
-                {
-                    // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " formulaTree.getData().token == PromoterParser.eNodeType.CONSTANT ");
-                    activated = true;
-                    // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " adding formulaTree.getData().value=" + formulaTree.getRightNode().getData().value);
-                    _activators.Add(formulaTree.getRightNode().getData().value);
-                    // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " added formulaTree.getData().value=" + formulaTree.getRightNode().getData().value);
-                }
-                // activated = activated || formulaTree.getData().token == PromoterParser.eNodeType.CONSTANT;
-            }
+            // Debug.Log(this.GetType() + " recGetPromoterType " + this.getInternalName() + " " + Logger.ToString<PromoterNodeData>(formulaTree) + " recursive calls on isActivated isRepressed ");
+            bool isNodeActivated = setActivators(parentFormulaTree, formulaTree);
+            bool isNodeRepressed = setRepressors(parentFormulaTree, formulaTree);
+            activated = isNodeActivated || leftActivated || rightActivated;
+            repressed = isNodeRepressed || leftRepressed || rightRepressed;
         }
     }
 
-    private bool isActivated(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
+    // returns true if this node represents induction
+    private bool setActivators(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
     {
         bool result = ((childFormulaTree.getData().token == PromoterParser.eNodeType.CONSTANT)
-         && parentFormulaTree.getData().token != PromoterParser.eNodeType.NOT);
+         && ((null == parentFormulaTree) || (parentFormulaTree.getData().token != PromoterParser.eNodeType.NOT)));
         if (result)
         {
             // Debug.Log(this.GetType() + " isActivated " + parentFormulaTree.getData());
@@ -229,13 +201,15 @@ public class PromoterBrick : BioBrick
         return result;
     }
 
-    private bool isRepressed(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
+    // returns true if this node represents inhibition
+    private bool setRepressors(TreeNode<PromoterNodeData> parentFormulaTree, TreeNode<PromoterNodeData> childFormulaTree)
     {
         bool result = ((childFormulaTree.getData().token == PromoterParser.eNodeType.CONSTANT)
-         && parentFormulaTree.getData().token == PromoterParser.eNodeType.NOT);
+         && (null != parentFormulaTree) && parentFormulaTree.getData().token == PromoterParser.eNodeType.NOT);
         if (result)
         {
             // Debug.Log(this.GetType() + " isRepressed " + parentFormulaTree.getData());
+            // Debug.Log(this.GetType() + " isRepressed will add " + childFormulaTree.getRightNode());
             _repressors.Add(childFormulaTree.getRightNode().getData().value);
         }
         return result;
