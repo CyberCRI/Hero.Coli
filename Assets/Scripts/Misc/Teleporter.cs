@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class Teleporter : MonoBehaviour
 {
@@ -25,6 +24,7 @@ public class Teleporter : MonoBehaviour
         return null;
     }
 
+    // dev method
     public void activateAll(bool activate)
     {
         foreach (var zone in _zones)
@@ -40,6 +40,7 @@ public class Teleporter : MonoBehaviour
 
     void addDevices(CheckPointData checkPoint)
     {
+        // Debug.Log(this.GetType() + " addDevices(" + checkPoint.name + ")");
         if (checkPoint.deviceDataList != null)
         {
             foreach (DeviceEquippedData knownDevice in checkPoint.deviceDataList)
@@ -55,8 +56,10 @@ public class Teleporter : MonoBehaviour
                 }
             }
         }
+        // Debug.Log(this.GetType() + " addDevices(" + checkPoint.name + ") done, considering rec call");
         if (checkPoint.previous)
         {
+            // Debug.Log(this.GetType() + " addDevices rec call on " + checkPoint.previous.name);
             addDevices(checkPoint.previous);
         }
     }
@@ -77,10 +80,13 @@ public class Teleporter : MonoBehaviour
                 checkpoint.GetComponent<SwitchZoneOnOff>().triggerSwitchZone();
             }
             CellControl.get(this.GetType().ToString()).teleport(checkpoint.transform.position);
+
             Checkpoint checkpointComponent = checkpoint.GetComponent<Checkpoint>();
             AvailableBioBricksManager.get().availableBioBrickData = checkpointComponent.checkPointData;
             // Debug.Log(this.GetType() + " teleport(" + teleportIndex + ") availableBioBrickData set");
             // AvailableBioBricksManager.get().logAvailableBioBrickData();
+
+            // to hide StartPosition's dummy player
             foreach (Transform child in checkpoint.transform)
             {
                 if (child.gameObject.tag == "Dummy")
@@ -88,6 +94,7 @@ public class Teleporter : MonoBehaviour
                     child.gameObject.SetActive(false);
                 }
             }
+
             if (checkpointComponent.checkPointData != null)
             {
                 addDevices(checkpointComponent.checkPointData);

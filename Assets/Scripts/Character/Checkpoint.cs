@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 public class Checkpoint : MonoBehaviour {
-	public const int chapterCount = 9;
 	public const string checkpointTag = "Checkpoint";
 	/// <summary>
 	/// Respawn index. Useful for the chapter select screen

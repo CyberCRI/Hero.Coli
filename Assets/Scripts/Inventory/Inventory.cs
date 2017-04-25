@@ -69,7 +69,7 @@ public class Inventory : DeviceContainer
 	[SerializeField]
 	private DeviceListData _allDevices;
 
-	public DeviceListData availableDevices;
+	// public DeviceListData availableDevices;
     //old device files
     //private string[] _deviceFiles = new string[]{ "Assets/Data/devices"};
     //private string[] _deviceFiles = new string[]{ "Assets/Data/raph/devices", Inventory._saveFilePathRead };

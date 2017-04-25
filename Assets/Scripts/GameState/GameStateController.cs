@@ -90,7 +90,7 @@ public class GameStateController : MonoBehaviour
     public const string _interfaceScene = "Interface1.0";
     public const string _bacteriumScene = "Bacterium1.0";
 
-    private Scorekeeper _scorekeeper = new Scorekeeper();
+    private Scorekeeper _scorekeeper;
 
     public const string keyPrefix = "KEY.";
     // public const string _inventoryKey = keyPrefix + "INVENTORY";
@@ -649,13 +649,6 @@ public class GameStateController : MonoBehaviour
         StartCoroutine(waitFadeAndDisplayEndWindow(1.0f, endTime));
     }
 
-    public void resetPlayerPrefsAndRestart()
-    {
-        Debug.LogWarning(this.GetType() + " PlayerPrefs.DeleteAll");
-        PlayerPrefs.DeleteAll();
-        restart();
-    }
-
     private IEnumerator waitFadeAndDisplayEndWindow(float waitTime, float endTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -666,6 +659,13 @@ public class GameStateController : MonoBehaviour
         // scoreboard variant
         _scorekeeper.finish(endTime, new UILabel[] { _chaptersLabel, _ownTimesLabel, _ownRecordsLabel, _worldRecordsLabel });
         ModalManager.setModal(_finalScoreboard, true, _finalScoreboardQuitButton.gameObject, _finalScoreboardQuitButton.GetType().AssemblyQualifiedName);
+    }
+
+    public void resetPlayerPrefsAndRestart()
+    {
+        Debug.LogWarning(this.GetType() + " PlayerPrefs.DeleteAll");
+        PlayerPrefs.DeleteAll();
+        restart();
     }
 
     public void changeState(GameState newState)

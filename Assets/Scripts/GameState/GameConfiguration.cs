@@ -86,16 +86,18 @@ public class GameConfiguration
     private static FloatConfigurationParameter[] _bestTimes
         = null;
 
-    private void initializeBestTimes()
+    private void initializeBestTimesIfNecessary()
     {
-        // Debug.Log(this.GetType() + " initializeBestTimes");
-
-        _bestTimes = new FloatConfigurationParameter[Scorekeeper.completionsCount];
-        for (int index = 0; index < Scorekeeper.completionsCount; index++)
+        // Debug.Log(this.GetType() + " initializeBestTimesIfNecessary");
+        if (null == _bestTimes)
         {
-            // Debug.Log(this.GetType() + " initializeBestTimes index = " + index);
-            _bestTimes[index] = new FloatConfigurationParameter(Mathf.Infinity, Mathf.Infinity, _bestCompletionTimeChapterStem + index);
-            _bestTimes[index].initialize();
+            _bestTimes = new FloatConfigurationParameter[Scorekeeper.completionsCount];
+            for (int index = 0; index < Scorekeeper.completionsCount; index++)
+            {
+                // Debug.Log(this.GetType() + " initializeBestTimes index = " + index);
+                _bestTimes[index] = new FloatConfigurationParameter(Mathf.Infinity, Mathf.Infinity, _bestCompletionTimeChapterStem + index);
+                _bestTimes[index].initialize();
+            }
         }
     }
 
@@ -239,6 +241,7 @@ public class GameConfiguration
         get
         {
             // Debug.Log(this.GetType() + " getting _bestTimes");
+            initializeBestTimesIfNecessary();
             float[] result = new float[Scorekeeper.completionsCount];
             for (int index = 0; index < Scorekeeper.completionsCount; index++)
             {
@@ -249,6 +252,7 @@ public class GameConfiguration
         set
         {
             // Debug.Log(this.GetType() + " trying to set _bestTimes...");
+            initializeBestTimesIfNecessary();
             for (int index = 0; index < Scorekeeper.completionsCount; index++)
             {
                 if (value[index] < _bestTimes[index].val)
@@ -296,7 +300,6 @@ public class GameConfiguration
         _isSoundOn.initialize();
         _furthestChapterReached.initialize();
         _isAdmin.initialize();
-        initializeBestTimes();
 
         // Debug.Log(this.GetType() + " load done");
     }
