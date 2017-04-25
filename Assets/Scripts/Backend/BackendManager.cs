@@ -4,124 +4,122 @@ using System.Collections;
 public class BackendManager : MonoBehaviour
 {
     [SerializeField]
-    private bool isTestGUID = false;
+    private bool _isTestGUID = false;
     [SerializeField]
-    private bool forceAdmin = false;
+    private bool _forceAdmin = false;
     [SerializeField]
     private int _layer;
-    private float duration = 2.0f;
+    private int _depth = 0;
+    private const float _duration = 2.0f;
+    private static bool _isHurtLightEffectsOn = false;
+    public static bool isHurtLightEffectsOn
+    {
+        get
+        {
+            return _isHurtLightEffectsOn;
+        }
+    }
 
     void Start()
     {
-        isTestGUID = GameConfiguration.isAdmin;
+        _isTestGUID = GameConfiguration.isAdmin;
     }
-
-    private int _depth = 0;
 
     // Update is called once per frame
     void Update()
     {
         //logging mode: to test or to production RedMetrics version
-        if (forceAdmin || (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.RightControl)))
+        if (_forceAdmin || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.LeftAlt)))
         {
-            forceAdmin = false;
-
-            // Debug.Log(this.GetType() + " Update space pressed BEFORE"
-            // + " guid=" + RedMetricsManager.get().getGameVersion()
-            // + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
-            // );            
-
-            isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
-
-            // Debug.Log(this.GetType() + " Update space pressed AFTER"
-            // + " guid=" + RedMetricsManager.get().getGameVersion()
-            // + " ie isTest=" + MemoryManager.get().configuration.isTestGUID()
-            // );    
-
-            //display feedback for logging mode
-            string msg;
-            if (isTestGUID)
-            {
-                msg = "REDMETRICS TEST MODE";
-            }
-            else
-            {
-                msg = "REDMETRICS DEFAULT MODE";
-            }
-
-            StartCoroutine(waitAndDestroy(createMessage(msg)));
+            setAdmin();
         }
-
-        if (GameConfiguration.isAdmin)
+        else if (GameConfiguration.isAdmin)
         {
+            // not managed here: search for 'GameConfiguration.isAdmin'
+            // - teleportation
+            // - chemicals' concentrations
+            // - life and energy
+            // - BlackLight (deprecated)
+
             // to instantly change the language
             if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
-                // language swap
-                I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
-                if (I18n.changeLanguageTo(newLanguage))
-                {
-                    RedMetricsManager.get().sendEvent(TrackingEvent.ADMINCONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
-                }
+                swapLanguage();
+            }
 
-                // layer detection
-                // GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
-                // foreach (GameObject go in gos)
-                // {
-                //     if (go.layer == _layer)
-                //     {
-                //         Debug.Log(go.name);
-                //     }
-                // }
-            }
-            // to be able to go over or under obstacles
-            if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+            else if (Input.GetKeyDown(KeyCode.Comma))
             {
-                Vector3 position = Character.get().transform.position;
-                Character.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
-                _depth++;
+                // to be able to go over or under obstacles
+                moveCharacterDown();
             }
-            if (Input.GetKeyDown(KeyCode.KeypadDivide))
+            else if (
+              (Input.GetKeyDown(KeyCode.Period) && I18n.getCurrentLanguage() == I18n.Language.English)
+              ||
+              (Input.GetKeyDown(KeyCode.Semicolon) && I18n.getCurrentLanguage() == I18n.Language.French)
+            )
             {
-                Vector3 position = Character.get().transform.position;
-                Character.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
-                _depth--;
+                moveCharacterUp();
             }
-            if (Input.GetKeyDown(KeyCode.KeypadMinus))
+            else if (
+              (Input.GetKeyDown(KeyCode.Slash) && I18n.getCurrentLanguage() == I18n.Language.English)
+              ||
+              (Input.GetKeyDown(KeyCode.Exclaim) && I18n.getCurrentLanguage() == I18n.Language.French)
+            )
             {
-                Vector3 position = Character.get().transform.position;
-                Character.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
-                _depth = 0;
+                resetCharacterVerticalPosition();
             }
-            if (Input.GetKeyDown(KeyCode.KeypadPeriod))
+
+            else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab))
             {
-                GameStateController.get().triggerEnd();
+                // unlock everything
+                unlockAll();
             }
-            if (Input.GetKeyDown(KeyCode.End))
+
+            else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Backspace))
             {
-                // Debug.Log(this.GetType() + " setAllListedStatuses");
-                DevicesDisplayer.get().setAllListedStatuses();
+                // to erase all info in PlayerPrefs
+                resetPlayerPrefs();
+            }
+
+            else if (Input.GetKeyDown(KeyCode.End))
+            {
+                // toggles special effects - light dimming when Cellia is hurt
+                // to activate in AmbientLighting
+                toggleHurtLightEffects();
+            }
+
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                // to end the game instantly, displaying stats and validating current chapter
+                endGame();
             }
         }
+    }
 
-        /*
-        #if UNITY_EDITOR
-                // for optimization process
-                float _minFPSThreshold = 30; // frames per second
-                float _maxDeltaTime = 1/_minFPSThreshold; // seconds
+    private void setAdmin()
+    {
+        Debug.Log(this.GetType() + " setAdmin");
+        _forceAdmin = false;
+        _isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
 
-                // TODO check difference
-                // Time.fixedDeltaTime
-                // Time.unscaledDeltaTime
+        //display feedback for logging mode
+        string msg;
+        if (_isTestGUID)
+        {
+            msg = "REDMETRICS TEST MODE";
+        }
+        else
+        {
+            msg = "REDMETRICS DEFAULT MODE";
+        }
 
-                if (Time.deltaTime > _maxDeltaTime)
-                {
-                    // pause the game in editor
-                    // EditorApplication.
+        StartCoroutine(waitAndDestroy(createMessage(msg)));
+    }
 
-                }
-        #endif
-        */
+    IEnumerator waitAndDestroy(GameObject go)
+    {
+        yield return new WaitForSeconds(_duration);
+        GameObject.Destroy(go);
     }
 
     public GameObject createMessage(string msg)
@@ -133,9 +131,80 @@ public class BackendManager : MonoBehaviour
         return go;
     }
 
-    IEnumerator waitAndDestroy(GameObject go)
+    private void toggleHurtLightEffects()
     {
-        yield return new WaitForSeconds(duration);
-        GameObject.Destroy(go);
+        _isHurtLightEffectsOn = !_isHurtLightEffectsOn;
+        Debug.Log(this.GetType() + " toggleHurtLightEffects set to " + _isHurtLightEffectsOn);
+    }
+
+    private void unlockAll()
+    {
+        Debug.Log(this.GetType() + " unlockAll");
+        GameStateController.unlockAll();
+    }
+
+    private void resetPlayerPrefs()
+    {
+        Debug.Log(this.GetType() + " resetPlayerPrefs");
+        GameStateController.get().resetPlayerPrefsAndRestart();
+    }
+
+    private void endGame()
+    {
+        Debug.Log(this.GetType() + " endGame");
+        GameStateController.get().triggerEnd();
+    }
+
+    private void swapLanguage()
+    {
+        Debug.Log(this.GetType() + " swapLanguage");
+
+        // language swap
+        I18n.Language newLanguage = (I18n.Language.English == I18n.getCurrentLanguage()) ? I18n.Language.French : I18n.Language.English;
+        if (I18n.changeLanguageTo(newLanguage))
+        {
+            RedMetricsManager.get().sendEvent(TrackingEvent.ADMINCONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
+        }
+    }
+
+    private void logObjectsOfLayer(int layer = int.MinValue)
+    {
+        Debug.Log(this.GetType() + " logObjectsOfLayer");
+
+        int usedLayer = int.MinValue == layer ? _layer : layer;
+
+        // layer detection
+        GameObject[] gos = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        foreach (GameObject go in gos)
+        {
+            if (go.layer == usedLayer)
+            {
+                Debug.Log(go.name);
+            }
+        }
+    }
+
+    private void resetCharacterVerticalPosition()
+    {
+        Debug.Log(this.GetType() + " resetCharacterVerticalPosition");
+        Vector3 position = Character.get().transform.position;
+        Character.get().transform.position = new Vector3(position.x, position.y - _depth, position.z);
+        _depth = 0;
+    }
+
+    private void moveCharacterUp()
+    {
+        Debug.Log(this.GetType() + " moveCharacterUp");
+        Vector3 position = Character.get().transform.position;
+        Character.get().transform.position = new Vector3(position.x, position.y - 1, position.z);
+        _depth--;
+    }
+
+    private void moveCharacterDown()
+    {
+        Debug.Log(this.GetType() + " moveCharacterDown");
+        Vector3 position = Character.get().transform.position;
+        Character.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
+        _depth++;
     }
 }

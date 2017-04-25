@@ -649,6 +649,13 @@ public class GameStateController : MonoBehaviour
         StartCoroutine(waitFadeAndDisplayEndWindow(1.0f, endTime));
     }
 
+    public void resetPlayerPrefsAndRestart()
+    {
+        Debug.LogWarning(this.GetType() + " PlayerPrefs.DeleteAll");
+        PlayerPrefs.DeleteAll();
+        restart();
+    }
+
     private IEnumerator waitFadeAndDisplayEndWindow(float waitTime, float endTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -784,6 +791,13 @@ public class GameStateController : MonoBehaviour
     {
         // Debug.Log("GameStateController startChapter(" + index + ", " + time + ")");
         _instance._scorekeeper.startChapter(index, time);
+    }
+    
+    // dev method
+    public static void unlockAll()
+    {
+        Debug.Log("GameStateController unlockAll");
+        _instance._scorekeeper.unlockAll();
     }
 
     public void setInterfaceElements(

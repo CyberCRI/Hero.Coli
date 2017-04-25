@@ -1,4 +1,4 @@
-﻿//v1.51
+﻿//v1.52
 public enum TrackingEvent
 {
     // standard events

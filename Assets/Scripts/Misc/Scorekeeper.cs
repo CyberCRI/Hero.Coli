@@ -97,6 +97,13 @@ public class Scorekeeper : ILocalizable
         }
     }
 
+    // dev method
+    public void unlockAll()
+    {
+        Debug.Log(this.GetType() + " unlockAll");
+        furthestChapter = _unlocker.maxChapterIndex;
+    }
+
     public void collideChapter(int index, float time)
     {
         // Debug.Log(this.GetType() + " collideChapter(" + index + ", " + time + ")");

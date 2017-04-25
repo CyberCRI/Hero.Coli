@@ -71,7 +71,7 @@ public class MapChapterUnlocker : MonoBehaviour
         _chaptersArray.itemToActivateFirst = index;
         // Debug.Log(this.GetType() + " setFurthestChapter _chaptersArray.itemToActivateFirst = " + index);
 
-        if (!this.isActiveAndEnabled)
+        // if (!this.isActiveAndEnabled)
         {
             // Debug.Log(this.GetType() + " setFurthestChapter isActiveAndEnabled");
 
@@ -100,13 +100,13 @@ public class MapChapterUnlocker : MonoBehaviour
 
             // Debug.Log(this.GetType() + " setFurthestChapter = " + index);
         }
-        else
-        {
-            // Don't process if the map is already displayed
-            // May otherwise interfere with arrow key navigation of main menu items
-            // Debug.Log(this.GetType() + " setFurthestChapter !isActiveAndEnabled: can't process");
-            _updateOnDisable = true;
-        }
+        // else
+        // {
+        //     // Don't process if the map is already displayed
+        //     // May otherwise interfere with arrow key navigation of main menu items
+        //     // Debug.Log(this.GetType() + " setFurthestChapter !isActiveAndEnabled: can't process");
+        //     _updateOnDisable = true;
+        // }
     }
 
     void OnDisable()

@@ -298,6 +298,7 @@ public class DevicesDisplayer : MonoBehaviour
         }
     }
 
+    // dev test method
     public void setAllListedStatuses()
     {
         // Debug.Log(this.GetType() + " setAllListedStatuses");

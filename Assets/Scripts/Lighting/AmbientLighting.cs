@@ -167,16 +167,19 @@ public class AmbientLighting : MonoBehaviour
         }
     }
 
+    // life is between 0f and 1f
     public void setInjured(float life)
     {
-        if (!_blackLight)
+#if DEV
+        if (BackendManager.isHurtLightEffectsOn && !_blackLight)
         {
-            changeLightIntensity(_directionalLight, _lightingSave.GetOriginDirectional() * life);
-            changeLightIntensity(_phenoLight, _lightingSave.GetOriginPheno() * life);
-            changeLightIntensity(_spotLight, _lightingSave.GetOriginSpot() * life);
+            changeLightIntensity(_directionalLight, _lightingSave.getOriginDirectional() * life);
+            changeLightIntensity(_phenoLight, _lightingSave.getOriginPheno() * life);
+            changeLightIntensity(_spotLight, _lightingSave.getOriginSpot() * life);
         }
+#endif
         _alphaColor = _backgroundBloodRenderer.material.color;
-        _alphaColor.a = 0.5f - life;
+        _alphaColor.a = 1f - life * life;
         _backgroundBloodRenderer.material.color = _alphaColor;
     }
 
@@ -189,7 +192,7 @@ public class AmbientLighting : MonoBehaviour
 
     public void startReset()
     {
-        _lightingSave.GetOriginForReset();
+        _lightingSave.getOriginForReset();
     }
 
     public void resetLighting(float directional, float pheno, float spotLight)
