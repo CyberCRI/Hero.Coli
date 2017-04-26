@@ -81,13 +81,6 @@ public class BackendManager : MonoBehaviour
                 resetPlayerPrefs();
             }
 
-            else if (Input.GetKeyDown(KeyCode.End))
-            {
-                // toggles special effects - light dimming when Cellia is hurt
-                // to activate in AmbientLighting
-                toggleHurtLightEffects();
-            }
-
             else if (Input.GetKeyDown(KeyCode.Tab))
             {
                 // to end the game instantly, displaying stats and validating current chapter
@@ -129,12 +122,6 @@ public class BackendManager : MonoBehaviour
         go.transform.position = new Vector3(0.5f, 0.5f, 0.0f);
         guiText.text = msg;
         return go;
-    }
-
-    private void toggleHurtLightEffects()
-    {
-        _isHurtLightEffectsOn = !_isHurtLightEffectsOn;
-        Debug.Log(this.GetType() + " toggleHurtLightEffects set to " + _isHurtLightEffectsOn);
     }
 
     private void unlockAll()
