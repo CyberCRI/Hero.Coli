@@ -146,6 +146,7 @@ public class BackendManager : MonoBehaviour
     private void resetPlayerPrefs()
     {
         Debug.Log(this.GetType() + " resetPlayerPrefs");
+        MemoryManager.get().configuration.furthestChapter = 0;
         GameStateController.get().resetPlayerPrefsAndRestart();
     }
 

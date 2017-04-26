@@ -98,9 +98,9 @@ public class Character : CellAnimator
     //Life
     private const float _maxDisplayedLife = 100f;
     private const float _maxLife = 1f;
-    private const float _lifeRegen = 0.1f;
+    public const float lifeRegenerationRate = 0.1f;
     [SerializeField]
-    private Life _lifeManager = new Life(_maxLife, _lifeRegen);
+    private Life _lifeManager = new Life(_maxLife, lifeRegenerationRate);
 
     //Energy
     private const float _maxDisplayedEnergy = 100f;
@@ -108,7 +108,7 @@ public class Character : CellAnimator
     private float _energy = 1f;
     private float _maxMediumEnergy = 1f;
     private float _energyBefore = 1f;
-    private float _lowEnergyDpt = 3 * _lifeRegen;
+    private float _lowEnergyDpt = 3 * lifeRegenerationRate;
 
     //Status
     private bool _pause;

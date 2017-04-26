@@ -212,15 +212,15 @@ public class GameConfiguration
         set
         {
             // Debug.Log(this.GetType() + " trying to set furthestChapter to " + value);
-            if (value > _furthestChapterReached.val)
-            {
+            // if (value > _furthestChapterReached.val)
+            // {
                 // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
                 _furthestChapterReached.val = value;
-            }
-            else
-            {
-                Debug.LogWarning(this.GetType() + " tried to update furthestChapter to " + value + " <= " + _furthestChapterReached.val);
-            }
+            // }
+            // else
+            // {
+            //     Debug.LogWarning(this.GetType() + " tried to update furthestChapter to " + value + " <= " + _furthestChapterReached.val);
+            // }
         }
     }
 

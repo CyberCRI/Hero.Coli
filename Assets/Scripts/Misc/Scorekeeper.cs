@@ -26,7 +26,7 @@ public class Scorekeeper : ILocalizable
     private ChapterCompletion[] _chapters = null;
     private float _startTime;
     private int _currentChapterIndex = 0, _furthestChapterIndex = -1;
-    private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, _millisecondsString, _notCompletedString;
+    private string _chapterString, _totalString, _hoursString, _minutesString, _secondsString, /*_millisecondsString, */_notCompletedString;
     private static MapChapterUnlocker _unlocker;
     private UILabel[] _columnLabels;
     private bool _isFurthestChapterInitialized = false;
@@ -103,7 +103,7 @@ public class Scorekeeper : ILocalizable
             }
             else if (value == _furthestChapterIndex)
             {
-                Debug.Log(this.GetType() + " furthestChapter.set tried to set again to " + value);
+                // Debug.Log(this.GetType() + " furthestChapter.set tried to set again to " + value);
             }
             else
             {
@@ -164,7 +164,7 @@ public class Scorekeeper : ILocalizable
     // dev method
     public void unlockAll()
     {
-        Debug.Log(this.GetType() + " unlockAll");
+        // Debug.Log(this.GetType() + " unlockAll");
         furthestChapter = _unlocker.maxChapterIndex;
     }
 
@@ -271,7 +271,7 @@ public class Scorekeeper : ILocalizable
 
     private CustomData getCustomData(int index)
     {
-        Debug.Log(this.GetType() + " getCustomData(" + index + ")");
+        // Debug.Log(this.GetType() + " getCustomData(" + index + ")");
         CustomData data;
 
         if (isTotalCompletion(index))
@@ -291,8 +291,7 @@ public class Scorekeeper : ILocalizable
 
     private string[] getCompletionAbstract()
     {
-        Debug.Log(this.GetType() + " getCompletionAbstract with completionsCount=" + completionsCount);
-
+        // Debug.Log(this.GetType() + " getCompletionAbstract with completionsCount=" + completionsCount);
 
         string[] result = new string[_columnCount];
 
@@ -301,7 +300,7 @@ public class Scorekeeper : ILocalizable
         _hoursString = Localization.Localize(_keyStem + _hoursSuffix);
         _minutesString = Localization.Localize(_keyStem + _minutesSuffix);
         _secondsString = Localization.Localize(_keyStem + _secondsSuffix);
-        _millisecondsString = Localization.Localize(_keyStem + _millisecondsSuffix);
+        // _millisecondsString = Localization.Localize(_keyStem + _millisecondsSuffix);
         _notCompletedString = Localization.Localize(_notCompletedKey);
 
         // Debug.Log("_chapterString='" + _chapterString + "'");
@@ -390,7 +389,8 @@ public class Scorekeeper : ILocalizable
             {
                 result += time.Minutes + _minutesString;
             }
-            result += time.Seconds + _secondsString + time.Milliseconds + _millisecondsString;
+            // result += time.Seconds + _secondsString + time.Milliseconds + _millisecondsString;
+            result += time.Seconds + _secondsString;
         }
         return result;
     }

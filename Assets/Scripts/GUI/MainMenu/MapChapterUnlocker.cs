@@ -8,6 +8,7 @@ public class MapChapterUnlocker : MonoBehaviour
     private MainMenuItem _backButton;
     private bool _updateOnDisable = false;
     private int _index;
+    // furthestChapter <= _maxChapterIndex
     private int _maxChapterIndex;
     public int maxChapterIndex
     {
@@ -35,6 +36,11 @@ public class MapChapterUnlocker : MonoBehaviour
             return _savedItems;
         }
     }
+
+    // void Start()
+    // {
+    //     Debug.Log(this.GetType() + " _maxChapterIndex=" + _maxChapterIndex);
+    // }
 
     private void initializeIfNecessary()
     {
