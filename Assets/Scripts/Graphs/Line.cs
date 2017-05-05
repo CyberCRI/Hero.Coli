@@ -120,6 +120,7 @@ public class Line
         resize();
         redraw();
         this._vectorline.rectTransform.position = _graphPlaceHolder.position;
+		this._vectorline.rectTransform.SetParent (this._graphPlaceHolder);
     }
 
     /*!
