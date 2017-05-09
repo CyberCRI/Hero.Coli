@@ -285,12 +285,9 @@ public class GameConfiguration
 
     public void load()
     {
-        //  already taken care of
-        // language = I18n.Language.English;
-
         // Debug.Log(this.GetType() + " load");
 
-        RedMetricsManager.get().setLocalPlayerGUID(playerGUID);
+        RedMetricsManager.get().localPlayerGUID = playerGUID;
 
         initializeGameVersionGUID();
         _restartBehavior.initialize();
@@ -370,7 +367,7 @@ public class GameConfiguration
             if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID))
             {
                 // if the game is launched in the editor,
-                // sets the localPlayerGUID to a test GUID 
+                // sets the Game Version GUID to a test GUID 
                 // so that events are logged onto a test version
                 // instead of the regular game version
                 // to prevent data from being contaminated by tests

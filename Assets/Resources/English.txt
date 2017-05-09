@@ -88,7 +88,7 @@ MENU.LEARNMORE.EXPLANATION=Visit these sites to learn more about synthetic biolo
 LEARNMORE.LINK.MIHS=http://igemhs.wix.com/mooc#!fundamental-facts/c5m9
 LEARNMORE.LINK.SB1=https://syntheticbiology1.com/
 STUDY.GAMEDEV.LINK=https://docs.google.com/forms/d/1KeQIG3UDwX8NzrrdeU598qzcD1B7-SrwCz_cRWxuTsU/viewform
-STUDY.LEARN.LINK=https://docs.google.com/forms/d/1Mz4hH2btTRki91JsM7BYnQUj4hlr3gp3FlTYAdZDAYM/viewform?usp=send_form
+STUDY.LEARN.LINK=https://docs.google.com/forms/d/e/1FAIpQLScR_3RoqyPyzc2VpfnkfD8sN0cuZQ9-Shc3u0kgNGiZgvTfmg/viewform?usp=pp_url&entry.1083959159=
 BRICK.PRBAD1=pBAD strong
 BRICK.PRBAD2=pBAD medium
 BRICK.PRBAD3=pBAD weak

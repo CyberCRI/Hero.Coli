@@ -7,9 +7,9 @@ public static class URLOpener
         return Localization.Localize(urlKey);
     }
 
-    public static void open(string urlKey, bool newTab = false)
+    public static void open(string urlKey, bool newTab = false, string urlParameters = "")
     {
-        string localizedUrl = getLocalizedUrl(urlKey);
+        string localizedUrl = getLocalizedUrl(urlKey) + urlParameters;
         if (!newTab)
         {
             RedMetricsManager.get().sendEvent(TrackingEvent.GOTOURL, new CustomData(CustomDataTag.SAMETAB, localizedUrl));
