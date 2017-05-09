@@ -339,7 +339,7 @@ public abstract class IReaction : LoadableFromXmlImpl
                     Debug.LogError(this.GetType() + " loadReactionReactant Empty quantity field in instant reaction reactant definition");
                     return false;
                 }
-                reactant.v = float.Parse(attr.InnerText.Replace(",", "."));
+                reactant.v = parseFloat(attr.InnerText);
             }
         }
         addReactant(reactant);
@@ -391,7 +391,7 @@ public abstract class IReaction : LoadableFromXmlImpl
                     Debug.LogError(this.GetType() + " loadReactionProduct Empty quantity field in instant reaction product definition");
                     return false;
                 }
-                product.v = float.Parse(attr.InnerText.Replace(",", "."));
+                product.v = parseFloat(attr.InnerText);
             }
         }
         addProduct(product);
@@ -411,7 +411,7 @@ public abstract class IReaction : LoadableFromXmlImpl
             setEnergyCost(0f);
         }
         else
-            setEnergyCost(float.Parse(value.Replace(",", ".")));
+            setEnergyCost(parseFloat(value));
         return true;
     }
 

@@ -509,7 +509,7 @@ public class Medium : LoadableFromXmlImpl
             setEnergy(0f);
         }
         else
-            setEnergy(float.Parse(value.Replace(",", ".")));
+            setEnergy(parseFloat(value));
 
         return true;
     }
@@ -530,7 +530,7 @@ public class Medium : LoadableFromXmlImpl
             productionRate = 0f;
         }
         else
-            productionRate = float.Parse(value.Replace(",", "."));
+            productionRate = parseFloat(value);
         setEnergyProductionRate(productionRate);
 
         return true;
@@ -552,7 +552,7 @@ public class Medium : LoadableFromXmlImpl
             prodMax = 0f;
         }
         else
-            prodMax = float.Parse(value.Replace(",", "."));
+            prodMax = parseFloat(value);
         setMaxEnergy(prodMax);
 
         return true;

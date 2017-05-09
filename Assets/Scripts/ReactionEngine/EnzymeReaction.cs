@@ -330,25 +330,25 @@ public class EnzymeReaction : IReaction
             b = b && loadEnzymeString(attr.InnerText, setEnzyme);
             break;
           case "Kcat":
-            b = b && loadEnzymeFloat(attr.InnerText, setKcat);
+            b = b && loadFloat(attr.InnerText, setKcat);
             break;
           case "effector":
             b = b && loadEnzymeString(attr.InnerText, setEffector);
             break;
           case "alpha":
-            b = b && loadEnzymeFloat(attr.InnerText, setAlpha);
+            b = b && loadFloat(attr.InnerText, setAlpha);
             break;
           case "EnergyCost":
-            b = b && loadEnzymeFloat(attr.InnerText, setEnergyCost);
+            b = b && loadFloat(attr.InnerText, setEnergyCost);
             break;
           case "beta":
-            b = b && loadEnzymeFloat(attr.InnerText, setBeta);
+            b = b && loadFloat(attr.InnerText, setBeta);
             break;
           case "Km":
-            b = b && loadEnzymeFloat(attr.InnerText, setKm);
+            b = b && loadFloat(attr.InnerText, setKm);
             break;
           case "Ki":
-            b = b && loadEnzymeFloat(attr.InnerText, setKi);
+            b = b && loadFloat(attr.InnerText, setKi);
             break;
           case "Products":
             b = b && loadEnzymeReactionProducts(attr);
@@ -396,10 +396,6 @@ public class EnzymeReaction : IReaction
       }
       return valid;
     }
-
-    private delegate void  StrSetter(string dst);
-    private delegate void  FloatSetter(float dst);
-    
     
     /*!
     \brief Load and parse a string and give it to the given setter
@@ -411,22 +407,6 @@ public class EnzymeReaction : IReaction
       if (String.IsNullOrEmpty(value))
         return false;
       setter(value);
-      return true;    
-    }
-    
-    /*!
-    \brief Load and parse a string and give it to the given setter
-    \param value The string to parse and load
-    \param setter The delegate setter
-   */
-    private bool loadEnzymeFloat(string value, FloatSetter setter)
-    {
-      if (String.IsNullOrEmpty(value))
-      {
-        Debug.LogError(this.GetType() + " loadEnzymeFloat : Empty productionMax field");
-        return false;
-      }
-      setter(float.Parse(value.Replace(",", ".")));
       return true;    
     }
     

@@ -60,10 +60,10 @@ public class FickProperties : LoadableFromXmlImpl
           }
           break;
         case "P":
-          P = float.Parse(attr.InnerText.Replace(",", "."));
+          P = parseFloat(attr.InnerText);
           break;
         case "surface":
-          surface = float.Parse(attr.InnerText.Replace(",", "."));
+          surface = parseFloat(attr.InnerText);
           break;
         default:
           Debug.LogError(this.GetType() + " tryInstantiateFromXml(node) unexpected attribute "+attr.Name);

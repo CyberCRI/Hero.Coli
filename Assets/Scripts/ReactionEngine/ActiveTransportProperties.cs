@@ -75,28 +75,28 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
         enzyme = checkActiveTransportString(attr.InnerText);
         break;
       case "Kcat":
-        Kcat = checkActiveTransportFloat(attr.InnerText);
+        Kcat = checkFloat(attr.InnerText);
         break;
       case "effector":
         effector = checkActiveTransportString(attr.InnerText);
         break;
       case "alpha":
-        alpha = checkActiveTransportFloat(attr.InnerText);
+        alpha = checkFloat(attr.InnerText);
         break;
       case "beta":
-        beta = checkActiveTransportFloat(attr.InnerText);
+        beta = checkFloat(attr.InnerText);
         break;
       case "Km":
-        Km = checkActiveTransportFloat(attr.InnerText);
+        Km = checkFloat(attr.InnerText);
         break;
       case "Ki":
-        Ki = checkActiveTransportFloat(attr.InnerText);
+        Ki = checkFloat(attr.InnerText);
         break;
       case "Medium":
         mediumId = checkActiveTransportInt(attr.InnerText);
         break;
       case "EnergyCost":
-        energyCost = checkActiveTransportFloat(attr.InnerText);
+        energyCost = checkFloat(attr.InnerText);
         break;
       case "MediumSrc":
         srcMediumId = checkActiveTransportInt(attr.InnerText);
@@ -148,21 +148,6 @@ public class ActiveTransportProperties : LoadableFromXmlImpl
       return "";
     }
     return value;
-  }
-  
-  /*!
-  \brief Check the validity of a string to get parsed by float.Parse and return the float that corresponding
-  \param value the string to check
-  \return Return the corresponding float if everything is ok or 0 else
-  */
-  private float checkActiveTransportFloat(string value)
-  {
-    if (String.IsNullOrEmpty(value))
-    {
-      // Debug.Log(this.GetType() + " Error: Empty field");
-      return 0f;
-    }
-    return(float.Parse(value.Replace(",", ".")));
   }
   
   /*!

@@ -200,13 +200,13 @@ public class Molecule : LoadableFromXmlImpl
                             setDescription(attr.InnerText);
                             break;
                         case "concentration":
-                            setConcentration(float.Parse(attr.InnerText.Replace(",", ".")));
+                            setConcentration(parseFloat(attr.InnerText));
                             break;
                         case "degradationRate":
-                            setDegradationRate(float.Parse(attr.InnerText.Replace(",", ".")));
+                            setDegradationRate(parseFloat(attr.InnerText));
                             break;
                         case "FickFactor":
-                            setFickFactor(float.Parse(attr.InnerText.Replace(",", ".")));
+                            setFickFactor(parseFloat(attr.InnerText));
                             break;
                         case XMLTags.COMMENT:
                             break;

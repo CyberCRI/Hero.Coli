@@ -129,7 +129,7 @@ public class PromoterBrick : BioBrick
                 TreeNode<PromoterNodeData> formulaTree = parser.Parse(value);
                 bool activated = false, repressed = false;
 
-                // Debug.Log(this.GetType() + " set_formula " + this.getInternalName() + " recGetPromoterType on " + Logger.ToString<PromoterNodeData>(formulaTree));
+                // Debug.Log(this.GetType() + " set_formula " + this.getInternalName() + " recGetPromoterType on " + PromoterParser.PPTree(formulaTree));
 
                 recGetPromoterType(formulaTree, out activated, out repressed);
 

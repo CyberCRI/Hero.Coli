@@ -241,10 +241,10 @@ public class Allostery : IReaction
             b = b && loadAllosteryString(attr.InnerText, setEffector);
             break;
           case "K":
-            b = b && loadAllosteryFloat(attr.InnerText, setK);
+            b = b && loadFloat(attr.InnerText, setK);
             break;
           case "EnergyCost":
-            b = b && loadAllosteryFloat(attr.InnerText, setEnergyCost);
+            b = b && loadFloat(attr.InnerText, setEnergyCost);
             break;
           case "n":
             setN(Convert.ToInt32(attr.InnerText));
@@ -284,9 +284,6 @@ public class Allostery : IReaction
             && !string.IsNullOrEmpty(_product);            //! The name of the product
     }
     
-    private delegate void  StrSetter(string dst);
-    private delegate void  FloatSetter(float dst);
-    
     /*!
 \brief This function load and parse a string and give it to the given setter
 \param value The string to parse and load
@@ -301,23 +298,6 @@ public class Allostery : IReaction
         return false;
       }
       setter(value);
-      return true;    
-    }
-    
-    /*!
-\brief This function load and parse a string and give it to the given setter
-\param value The string to parse and load
-\param setter The delegate setter
-\return Return true is success false otherwise
-  */
-    private bool loadAllosteryFloat(string value, FloatSetter setter)
-    {
-      if (String.IsNullOrEmpty(value))
-        {
-            Debug.LogError(this.GetType() + " loadAllosteryString empty productionMax field");
-        return false;
-      }
-      setter(float.Parse(value.Replace(",", ".")));
       return true;    
     }
 }

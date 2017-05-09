@@ -297,7 +297,7 @@ public class PromoterReaction : IReaction
     {
         if (node == null || molecules == null)
             return 0f;
-        return float.Parse(node.getData().value.Replace(",", "."));
+        return parseFloat(node.getData().value);
     }
 
     /*! 
@@ -327,7 +327,7 @@ public class PromoterReaction : IReaction
                     return mol.getConcentration();
             }
             else if (node.getData().token == PromoterParser.eNodeType.NUM)
-                return float.Parse(node.getData().value.Replace(",", "."));
+                return parseFloat(node.getData().value);
         }
         return 1.0f;
     }
@@ -537,7 +537,7 @@ A PromoterReaction should respect this syntax:
             Debug.LogError(this.GetType() + " Empty productionMax field");
             return false;
         }
-        setBeta(float.Parse(value.Replace(",", ".")));
+        setBeta(parseFloat(value));
         return true;
     }
 
@@ -553,7 +553,7 @@ A PromoterReaction should respect this syntax:
             Debug.LogError(this.GetType() + " Empty TerminatorFactor field");
             return false;
         }
-        setTerminatorFactor(float.Parse(value.Replace(",", ".")));
+        setTerminatorFactor(parseFloat(value));
         return true;
     }
 
@@ -570,7 +570,7 @@ A PromoterReaction should respect this syntax:
             setEnergyCost(0f);
         }
         else
-            setEnergyCost(float.Parse(value.Replace(",", ".")));
+            setEnergyCost(parseFloat(value));
         return true;
     }
 
@@ -588,7 +588,7 @@ A PromoterReaction should respect this syntax:
             return false;
         }
 
-        Product gene = new Product(name, float.Parse(RBSf.Replace(",", ".")));
+        Product gene = new Product(name, parseFloat(RBSf));
         addProduct(gene);
         return true;
     }
