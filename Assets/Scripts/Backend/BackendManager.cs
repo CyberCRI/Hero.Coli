@@ -1,16 +1,74 @@
-﻿using UnityEngine;
+﻿// #define FORCEADMIN
+// #define FORCENOTADMIN
+
+using UnityEngine;
 using System.Collections;
 
+// admin mode unlocks actions and logs to a test GUID
 public class BackendManager : MonoBehaviour
 {
-    [SerializeField]
-    private bool _isTestGUID = false;
+    //////////////////////////////// singleton fields & methods ////////////////////////////////
+    private const string gameObjectName = "BackendManager";
+    private static BackendManager _instance;
+    public static BackendManager get()
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("BackendManager get was badly initialized");
+            _instance = GameObject.Find(gameObjectName).GetComponent<BackendManager>();
+        }
+        return _instance;
+    }
+    void Awake()
+    {
+        // Debug.Log(this.GetType() + " Awake");
+        if ((_instance != null) && (_instance != this))
+        {
+            Debug.LogError(this.GetType() + " has two running instances");
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        _instance = (_instance == this) ? null : _instance;
+    }
+
+    private bool _initialized = false;
+    public void initializeIfNecessary(GameObject adminStatusIndicator)
+    {
+        if (!_initialized)
+        {
+            _initialized = true;
+            _adminStatusIndicator = adminStatusIndicator;
+            showAdminIndicator(GameConfiguration.isAdmin);
+        }
+    }
+
+    void Start()
+    {
+#if FORCEADMIN
+        setAdmin(true);
+#elif FORCENOTADMIN
+        setAdmin(false);
+#endif
+        Debug.Log(this.GetType() + " Start");
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
     [SerializeField]
     private bool _forceAdmin = false;
     [SerializeField]
     private int _layer;
+    private GameObject _adminStatusIndicator;
     private int _depth = 0;
     private const float _duration = 2.0f;
+    [SerializeField]
     private static bool _isHurtLightEffectsOn = false;
     public static bool isHurtLightEffectsOn
     {
@@ -20,18 +78,30 @@ public class BackendManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void showAdminIndicator(bool doShow)
     {
-        _isTestGUID = GameConfiguration.isAdmin;
+        if (null != _adminStatusIndicator)
+        {
+            Debug.Log(this.GetType() + " adminStatusIndicator SetActive " + doShow);
+            _adminStatusIndicator.gameObject.SetActive(doShow);
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " adminStatusIndicator is null");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         //logging mode: to test or to production RedMetrics version
-        if (_forceAdmin || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.LeftAlt)))
+        if (_forceAdmin)
         {
-            setAdmin();
+            setAdmin(true);
+        }
+        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            switchAdmin();
         }
         else if (GameConfiguration.isAdmin)
         {
@@ -89,23 +159,25 @@ public class BackendManager : MonoBehaviour
         }
     }
 
-    private void setAdmin()
+    private void switchAdmin()
     {
-        Debug.Log(this.GetType() + " setAdmin");
+        setAdmin(!GameConfiguration.isAdmin);
+    }
+
+    private void setAdmin(bool _setAdmin)
+    {
+        Debug.Log(this.GetType() + " setAdmin(" + _setAdmin + ")");
         _forceAdmin = false;
-        _isTestGUID = MemoryManager.get().configuration.switchMetricsGameVersion();
+        if (GameConfiguration.isAdmin != _setAdmin)
+        {
+            GameConfiguration.isAdmin = _setAdmin;
+        }
+
+        Debug.Log(this.GetType() + " setAdmin showAdminIndicator");
+        showAdminIndicator(GameConfiguration.isAdmin);
 
         //display feedback for logging mode
-        string msg;
-        if (_isTestGUID)
-        {
-            msg = "REDMETRICS TEST MODE";
-        }
-        else
-        {
-            msg = "REDMETRICS DEFAULT MODE";
-        }
-
+        string msg = GameConfiguration.isAdmin ? "REDMETRICS ADMIN MODE" : "REDMETRICS DEFAULT MODE";
         StartCoroutine(waitAndDestroy(createMessage(msg)));
     }
 

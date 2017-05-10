@@ -86,9 +86,6 @@ public class InterfaceLinkManager : LinkManager
     private CraftFinalizer craftFinalizer;
 
     [SerializeField]
-    private GameObject tutorialArrow;
-
-    [SerializeField]
     private GameObject tutorialPanels;
 
     [SerializeField]
@@ -127,9 +124,12 @@ public class InterfaceLinkManager : LinkManager
     public FocusMaskManager focusMaskManager;
     [SerializeField]
     private MapChapterUnlocker chapterUnlocker;
-    
+
     public IconAnimation lifeIndicator;
     public IconAnimation energyIndicator;
+
+    [SerializeField]
+    private GameObject adminStatusIndicator;
 
     protected override int getLMIndex()
     {
@@ -262,6 +262,7 @@ public class InterfaceLinkManager : LinkManager
         DevicesDisplayer.get().initializeIfNecessary();
         Inventory.get().initialize();
         GUITransitioner.get().initialize();
+        BackendManager.get().initializeIfNecessary(adminStatusIndicator);
     }
 
 }

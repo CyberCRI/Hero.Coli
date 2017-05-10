@@ -103,9 +103,14 @@ public class GameConfiguration
 
 
 #if UNITY_EDITOR
-    private static bool _adminStartValue = true, _adminDefaultValue = true;
+    // if the game is launched in the editor,
+    // sets the Game Version GUID to a test GUID 
+    // so that events are logged onto a test version
+    // instead of the regular game version
+    // to prevent data from being contaminated by tests
+    private const bool _adminStartValue = true, _adminDefaultValue = true;
 #else
-    private static bool _adminStartValue = false, _adminDefaultValue = false;
+    private const bool _adminStartValue = false, _adminDefaultValue = false;
 #endif
     private static BoolConfigurationParameter _isAdmin = new BoolConfigurationParameter(_adminStartValue, _adminDefaultValue, _isAdminKey);
 
@@ -214,8 +219,8 @@ public class GameConfiguration
             // Debug.Log(this.GetType() + " trying to set furthestChapter to " + value);
             // if (value > _furthestChapterReached.val)
             // {
-                // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
-                _furthestChapterReached.val = value;
+            // Debug.Log(this.GetType() + " setting furthestChapter to " + value);
+            _furthestChapterReached.val = value;
             // }
             // else
             // {
@@ -230,9 +235,15 @@ public class GameConfiguration
         {
             return _isAdmin.val;
         }
-        set
+        set // should only be called by BackEndManager
         {
-            _isAdmin.val = value;
+            if (value != _isAdmin.val)
+            {
+                _isAdmin.val = value;
+                RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
+                MemoryManager.get().configuration.setMetricsDestination(!value);
+                RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHTOGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
+            }
         }
     }
 
@@ -289,6 +300,7 @@ public class GameConfiguration
 
         RedMetricsManager.get().localPlayerGUID = playerGUID;
 
+        _isAdmin.initialize();
         initializeGameVersionGUID();
         _restartBehavior.initialize();
         // _gameMap.initialize();
@@ -296,7 +308,6 @@ public class GameConfiguration
         _isLeftClickToMove.initialize();
         _isSoundOn.initialize();
         _furthestChapterReached.initialize();
-        _isAdmin.initialize();
 
         // Debug.Log(this.GetType() + " load done");
     }
@@ -364,19 +375,10 @@ public class GameConfiguration
         {
             string storedGUID = PlayerPrefs.GetString(_gameVersionGUIDPlayerPrefsKey);
             // Debug.Log("storedGUID="+storedGUID);
-            if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID))
+            if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID) || isTestGUID() != isAdmin)
             {
-                // if the game is launched in the editor,
-                // sets the Game Version GUID to a test GUID 
-                // so that events are logged onto a test version
-                // instead of the regular game version
-                // to prevent data from being contaminated by tests
-                setMetricsDestination(!Application.isEditor);
-            }
-            else
-            {
-                // Debug.Log(this.GetType() + "gameVersionGUID get calls set to storedGUID = " + storedGUID);
-                setGameVersion(storedGUID);
+                Debug.LogWarning(this.GetType() + " initializeGameVersionGUID storedGUID=" + storedGUID + " => setMetricsDestination(" + !isAdmin + ")");
+                setMetricsDestination(!isAdmin);
             }
         }
         // Debug.Log(this.GetType() + " initializeGameVersionGUID done with"
@@ -421,26 +423,14 @@ public class GameConfiguration
         // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ") done");
     }
 
-    private void setGameVersion(string guid)
-    {
-        setGameVersion(new System.Guid(guid));
-    }
-
     private void setGameVersion(System.Guid guid)
     {
         // Debug.Log(this.GetType() + " setGameVersion " + guid);
         RedMetricsManager.get().setGameVersion(guid);
-        isAdmin = isTestGUID();
-    }
-
-    //switches the logging mode from test to normal and conversely
-    //returns true if switched to test
-    public bool switchMetricsGameVersion()
-    {
-        RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHFROMGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
-        setMetricsDestination(isTestGUID());
-        RedMetricsManager.get().sendEvent(TrackingEvent.SWITCHTOGAMEVERSION, RedMetricsManager.get().generateCustomDataForGuidInit());
-        return isTestGUID();
+        if (isAdmin != isTestGUID())
+        {
+            Debug.LogWarning(this.GetType() + " setGameVersion: incorrect status isAdmin != isTestGUID");
+        }
     }
 
     public bool isTestGUID()
