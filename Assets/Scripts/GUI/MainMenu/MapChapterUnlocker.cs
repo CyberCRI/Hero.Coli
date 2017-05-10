@@ -3,7 +3,7 @@ using UnityEngine;
 public class MapChapterUnlocker : MonoBehaviour
 {
     [SerializeField]
-    private MainMenuItemArray _chaptersArray;
+    private ChapterSelectionMainMenuItemArray _chaptersArray;
     private CheckpointMainMenuItem[] _savedItems; // contains all saved chapters; does not contain the back button
     private MainMenuItem _backButton;
     private bool _updateOnDisable = false;

@@ -36,6 +36,7 @@ public enum TrackingEvent
     SELECTMENU,
     CONFIGURE,
     GOTOMOOC,
+    GOTOSTUDY,
     GOTOURL,
 
     // alternative configuration routes

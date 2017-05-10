@@ -4,7 +4,7 @@ using System.Collections;
 public class LearnMoreMainMenuItem : MainMenuItem {
 
     [SerializeField]
-    private bool _sameTab;
+    private bool _newTab;
     [SerializeField]
     private string _urlKey;
     [SerializeField]
@@ -12,6 +12,6 @@ public class LearnMoreMainMenuItem : MainMenuItem {
     
     public override void click () {
         // Debug.Log(this.GetType() + " clicked "+itemName);
-		_learnMoreOptionsArray.goToMOOC(_urlKey, _sameTab);
+		_learnMoreOptionsArray.goToMOOC(_urlKey, _newTab);
     }
 }

@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class BackMainMenuItem : MainMenuItem {
-    public override void click() {
+public class BackMainMenuItem : MainMenuItem
+{
+    [SerializeField]
+    private MainMenuManager.MainMenuScreen _screen;
+
+    public override void click()
+    {
         // Debug.Log(this.GetType());
-        MainMenuManager.get ().switchTo (MainMenuManager.MainMenuScreen.DEFAULT);
+        MainMenuManager.get().switchTo(_screen);
     }
 
-	public override void initialize ()
-	{
-		base.initialize ();
-	}
+    public override void initialize()
+    {
+        base.initialize();
+    }
 }

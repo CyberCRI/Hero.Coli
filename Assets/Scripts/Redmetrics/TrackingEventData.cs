@@ -98,7 +98,7 @@ public abstract class TrackingEventData
 public enum CustomDataTag
 {
     LOCALPLAYERGUID,    //for GUID stored in local PlayerPrefs
-    GLOBALPLAYERGUID,   //for GUID associated to an acount
+    GLOBALPLAYERGUID,   //for GUID associated to an account
     
     PLATFORM,           //the runtime platform on which the game is run
     
@@ -109,7 +109,8 @@ public enum CustomDataTag
     NANOBOT,
     PLASMID,
 
-    SOURCE,             // death cause
+    SOURCE,             // cause of death or source of event - webpage or game
+
     DEVICES,            // event context: devices
     LIFE,               // event context: life
     ENERGY,             // event context: energy
@@ -151,7 +152,9 @@ public enum CustomDataValue
     CONTROLS,
     LANGUAGE,
     SOUND,
+    SCIENCE,
     LEARNMORE,
+    CONTRIBUTE,
 
     // death causes
     MINE,               // instant death - stepped on a mine
@@ -162,7 +165,10 @@ public enum CustomDataValue
     NOENERGY,           // no energy left
     AMPICILLIN,         // ampicillin toxins - walls or self-production
     MULTIPLE,           // multiple non instant-death causes: NOENERGY & AMPICILLIN
-    UNKNOWN             // ?
+    UNKNOWN,            // ?
+
+    GAME,               // source of event: some events can be triggered from game or webpage
+    WEBPAGE
 }
 
 public class CustomData: Dictionary<string, string>

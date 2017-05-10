@@ -233,7 +233,7 @@ public class RedMetricsManager : MonoBehaviour
 
     private void sendDataStandalone(string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
-        Debug.Log(this.GetType() + " sendDataStandalone");
+        // Debug.Log(this.GetType() + " sendDataStandalone");
         string url = _redMetricsURL + urlSuffix;
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers.Add("Content-Type", "application/json");
@@ -517,7 +517,7 @@ public class RedMetricsManager : MonoBehaviour
             if (_isGameSessionGUIDCreated)
             {
                 string json = getJsonString(data);
-                Debug.Log(this.GetType() + " UNITY_WEBPLAYER sendEvent("+json+")");
+                // Debug.Log(this.GetType() + " UNITY_WEBPLAYER sendEvent("+json+")");
                 Application.ExternalCall("rmPostEvent", json);
             }
             else
@@ -537,7 +537,7 @@ public class RedMetricsManager : MonoBehaviour
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(_gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString(data);
-            Debug.Log(string.Format (this.GetType() + " !UNITY_WEBPLAYER sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
+            // Debug.Log(string.Format (this.GetType() + " !UNITY_WEBPLAYER sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
 #endif
