@@ -20,7 +20,6 @@ public class GameConfiguration
     private const string _sandboxLevel2 = "Sandbox-0.2";
 
     private const string _localPlayerGUIDPlayerPrefsKey = "localPlayerGUID";
-    private const string _gameVersionGUIDPlayerPrefsKey = "gameVersionGUID";
 
     public enum RestartBehavior
     {
@@ -317,7 +316,8 @@ public class GameConfiguration
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //test
     // public const string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";
-    public System.Guid testVersionGUID = new System.Guid("83f99dfa-bd87-43e1-940d-f28bbcea5b1d");
+    public const string testVersionGUIDString = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";
+    public System.Guid testVersionGUID = new System.Guid(testVersionGUIDString);
     // v 1.0
     // private const string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
     // v 1.31
@@ -333,7 +333,8 @@ public class GameConfiguration
     // v1.51
     // public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");
     // v1.52
-    public System.Guid labelledGameVersionGUID = new System.Guid("915953b4-f9e1-41ca-acc4-4e4e90667102");
+    public const string labelledGameVersionGUIDString = "915953b4-f9e1-41ca-acc4-4e4e90667102";
+    public System.Guid labelledGameVersionGUID = new System.Guid(labelledGameVersionGUIDString);
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
 
@@ -370,16 +371,14 @@ public class GameConfiguration
     // must be called before the connection through RedMetrics.js initiated by the "rmConnect" call
     public void initializeGameVersionGUID()
     {
-        // Debug.Log(this.GetType() + " initializeGameVersionGUID");
+        // Debug.Log(this.GetType() + " initializeGameVersionGUID with RedMetricsManager.gameVersion=" + RedMetricsManager.get().getGameVersion());
         if (!RedMetricsManager.get().isGameVersionInitialized())
         {
-            string storedGUID = PlayerPrefs.GetString(_gameVersionGUIDPlayerPrefsKey);
-            // Debug.Log("storedGUID="+storedGUID);
-            if (string.IsNullOrEmpty(storedGUID) || !isGUIDCorrect(storedGUID) || isTestGUID() != isAdmin)
-            {
-                Debug.LogWarning(this.GetType() + " initializeGameVersionGUID storedGUID=" + storedGUID + " => setMetricsDestination(" + !isAdmin + ")");
-                setMetricsDestination(!isAdmin);
-            }
+            setMetricsDestination(!isAdmin);
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " initializeGameVersionGUID RedMetricsManager GameVersion already initialized");
         }
         // Debug.Log(this.GetType() + " initializeGameVersionGUID done with"
         // + " guid=" + RedMetricsManager.get().getGameVersion()
@@ -392,7 +391,7 @@ public class GameConfiguration
     private bool isGUIDCorrect(string guid)
     {
         // Debug.Log(this.GetType() + " initializeGameVersionGUID("+guid+")");
-        return (guid == labelledGameVersionGUID.ToString() || guid == testVersionGUID.ToString());
+        return (!string.IsNullOrEmpty(guid)) && (guid == labelledGameVersionGUIDString || guid == testVersionGUIDString);
     }
 
     //sets the destination to which logs will be sent
@@ -404,7 +403,6 @@ public class GameConfiguration
         if (guid != RedMetricsManager.get().getGameVersion())
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
-            PlayerPrefs.SetString(_gameVersionGUIDPlayerPrefsKey, guid.ToString());
 #if UNITY_WEBPLAYER
             if (RedMetricsManager.get().isStartEventSent)
             {
@@ -427,9 +425,9 @@ public class GameConfiguration
     {
         // Debug.Log(this.GetType() + " setGameVersion " + guid);
         RedMetricsManager.get().setGameVersion(guid);
-        if (isAdmin != isTestGUID())
+        if (isTestGUID() != isAdmin)
         {
-            Debug.LogWarning(this.GetType() + " setGameVersion: incorrect status isAdmin != isTestGUID");
+            Debug.LogWarning(this.GetType() + " setGameVersion: incorrect status isTestGUID() != isAdmin");
         }
     }
 

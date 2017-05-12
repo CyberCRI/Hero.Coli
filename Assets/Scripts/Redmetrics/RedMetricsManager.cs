@@ -28,7 +28,7 @@ public class RedMetricsManager : MonoBehaviour
             if (null != _instance)
             {
                 //RedMetricsManager object is not destroyed when game restarts
-                Debug.Log("RedMetricsManager get DontDestroyOnLoad");
+                // Debug.Log("RedMetricsManager get DontDestroyOnLoad");
                 _instance.initializeIfNecessary();
             }
             else
@@ -41,7 +41,7 @@ public class RedMetricsManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log(this.GetType() + " Awake with gameVersionGuid=" + gameVersionGuid);
+        // Debug.Log(this.GetType() + " Awake with gameVersionGuid=" + gameVersionGuid);
         if ((_instance != null) && (_instance != this))
         {
             Debug.LogWarning(this.GetType() + " has two running instances: anti duplicate initialization");
@@ -56,7 +56,7 @@ public class RedMetricsManager : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
+        // Debug.Log(this.GetType() + " OnDestroy " + (_instance == this));
         if (this == _instance)
         {
             _instance = null;
@@ -74,7 +74,7 @@ public class RedMetricsManager : MonoBehaviour
     private bool _initialized = false;
     private void initializeIfNecessary()
     {
-        Debug.Log(this.GetType() + " initializeIfNecessary _initialized=" + _initialized);
+        // Debug.Log(this.GetType() + " initializeIfNecessary _initialized=" + _initialized);
         if (!_initialized)
         {
             DontDestroyOnLoad(_instance.gameObject);
@@ -84,7 +84,7 @@ public class RedMetricsManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(this.GetType() + " Start with gameVersionGuid=" + gameVersionGuid);
+        // Debug.Log(this.GetType() + " Start with gameVersionGuid=" + gameVersionGuid);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +109,7 @@ public class RedMetricsManager : MonoBehaviour
     {
         set
         {
-            Debug.Log(this.GetType() + " localPlayerGUID_set " + value);
+            // Debug.Log(this.GetType() + " localPlayerGUID_set " + value);
             _localPlayerGUID = value;
         }
     } 
@@ -130,25 +130,25 @@ public class RedMetricsManager : MonoBehaviour
 
     public void setGameSessionGUID(string gameSessionGUID)
     {
-        Debug.Log(this.GetType() + " setGameSessionGUID " + _gameSessionGUID);
+        // Debug.Log(this.GetType() + " setGameSessionGUID " + _gameSessionGUID);
         _gameSessionGUID = new System.Guid(gameSessionGUID);
     }
 
     public void setGlobalPlayerGUID(string globalPlayerGUID)
     {
-        Debug.Log(this.GetType() + " setGlobalPlayerGUID " + globalPlayerGUID);
+        // Debug.Log(this.GetType() + " setGlobalPlayerGUID " + globalPlayerGUID);
         _globalPlayerGUID = globalPlayerGUID;
     }
 
-    public void setGameVersion(string gVersion)
-    {
-        Debug.Log(this.GetType() + " setGameVersion str " + gameVersionGuid + " to " + gVersion);
-        gameVersionGuid = new System.Guid(gVersion);
-    }
+    // public void setGameVersion(string gVersion)
+    // {
+    //     // Debug.Log(this.GetType() + " setGameVersion str " + gameVersionGuid + " to " + gVersion);
+    //     gameVersionGuid = new System.Guid(gVersion);
+    // }
 
     public void setGameVersion(System.Guid gVersion)
     {
-        Debug.Log(this.GetType() + " setGameVersion Guid " + gameVersionGuid + " to " + gVersion);
+        // Debug.Log(this.GetType() + " setGameVersion Guid " + gameVersionGuid + " to " + gVersion);
         gameVersionGuid = gVersion;
     }
 
@@ -159,7 +159,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public bool isGameVersionInitialized()
     {
-        Debug.Log(this.GetType() + " isGameVersionInitialized");
+        // Debug.Log(this.GetType() + " isGameVersionInitialized");
         return defaultGameVersionGuid != gameVersionGuid;
     }
 
@@ -168,14 +168,14 @@ public class RedMetricsManager : MonoBehaviour
 
     public static IEnumerator GET(string url, System.Action<WWW> callback)
     {
-        Debug.Log("RedMetricsManager GET");
+        // Debug.Log("RedMetricsManager GET");
         WWW www = new WWW(url);
         return waitForWWW(www, callback);
     }
 
     public static IEnumerator POST(string url, Dictionary<string, string> post, System.Action<WWW> callback)
     {
-        Debug.Log("RedMetricsManager POST");
+        // Debug.Log("RedMetricsManager POST");
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<string, string> post_arg in post)
         {
@@ -188,14 +188,14 @@ public class RedMetricsManager : MonoBehaviour
 
     public static IEnumerator POST(string url, byte[] post, Dictionary<string, string> headers, System.Action<WWW> callback)
     {
-        Debug.Log("RedMetricsManager POST url: " + url);
+        // Debug.Log("RedMetricsManager POST url: " + url);
         WWW www = new WWW(url, post, headers);
         return waitForWWW(www, callback);
     }
 
     private static IEnumerator waitForWWW(WWW www, System.Action<WWW> callback)
     {
-        Debug.Log("RedMetricsManager waitForWWW");
+        // Debug.Log("RedMetricsManager waitForWWW");
         float elapsedTime = 0.0f;
 
         if (null == www)
@@ -223,7 +223,7 @@ public class RedMetricsManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("RedMetricsManager waitForWWW: message successfully transmitted");
+        // Debug.Log("RedMetricsManager waitForWWW: message successfully transmitted");
         callback(www); // Pass retrieved result.
     }
 
@@ -233,18 +233,18 @@ public class RedMetricsManager : MonoBehaviour
 
     private void sendDataStandalone(string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
-        Debug.Log(this.GetType() + " sendDataStandalone");
+        // Debug.Log(this.GetType() + " sendDataStandalone");
         string url = _redMetricsURL + urlSuffix;
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers.Add("Content-Type", "application/json");
         byte[] pData = System.Text.Encoding.ASCII.GetBytes(pDataString.ToCharArray());
-        Debug.Log(this.GetType() + " sendDataStandalone StartCoroutine POST with data=" + pDataString);
+        // Debug.Log(this.GetType() + " sendDataStandalone StartCoroutine POST with data=" + pDataString);
         StartCoroutine(RedMetricsManager.POST(url, pData, headers, callback));
     }
 
     private void createPlayer(System.Action<WWW> callback)
     {
-        Debug.Log(this.GetType() + " createPlayer");
+        // Debug.Log(this.GetType() + " createPlayer");
         CreatePlayerData data = new CreatePlayerData();
         string json = getJsonString(data);
         sendDataStandalone(_redMetricsPlayer, json, callback);
@@ -252,7 +252,7 @@ public class RedMetricsManager : MonoBehaviour
 
     private void testGet(System.Action<WWW> callback)
     {
-        Debug.Log(this.GetType() + " testGet");
+        // Debug.Log(this.GetType() + " testGet");
         string url = _redMetricsURL + _redMetricsPlayer;
         StartCoroutine(RedMetricsManager.GET(url, callback));
     }
@@ -267,7 +267,7 @@ public class RedMetricsManager : MonoBehaviour
         {
             if (www.error == null)
             {
-                Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
+                // Debug.Log(string.Format("{0} wwwLogger Success: {1} from {2}", this.GetType(), www.text, origin));
             }
             else
             {
@@ -278,7 +278,7 @@ public class RedMetricsManager : MonoBehaviour
 
     private string extractPID(WWW www)
     {
-        Debug.Log(this.GetType() + " extractPID");
+        // Debug.Log(this.GetType() + " extractPID");
         string result = null;
         wwwLogger(www, "extractPID");
         if (www != null && www.text != null)
@@ -287,7 +287,7 @@ public class RedMetricsManager : MonoBehaviour
             string[] split1 = trimmed.Split('\n');
             foreach (string s1 in split1)
             {
-                Debug.Log(s1);
+                // Debug.Log(s1);
                 if (s1.Length > 5)
                 {
                     string[] split2 = s1.Trim().Split(':');
@@ -314,7 +314,7 @@ public class RedMetricsManager : MonoBehaviour
 
     private void trackStart(WWW www)
     {
-        Debug.Log(this.GetType() + " trackStart: www =? null:" + (null == www));
+        // Debug.Log(this.GetType() + " trackStart: www =? null:" + (null == www));
         string pID = extractPID(www);
         if (null != pID)
         {
@@ -326,7 +326,7 @@ public class RedMetricsManager : MonoBehaviour
 
     private void sendStartEventWithPlayerGUID()
     {
-        Debug.Log(this.GetType() + " sendStartEventWithPlayerGUID");
+        // Debug.Log(this.GetType() + " sendStartEventWithPlayerGUID");
         if (string.IsNullOrEmpty(_localPlayerGUID))
         {
             sendEvent(TrackingEvent.START);
@@ -343,7 +343,7 @@ public class RedMetricsManager : MonoBehaviour
         //TODO manage GLOBALPLAYERGUID
         CustomData guidCD = new CustomData(CustomDataTag.LOCALPLAYERGUID, _localPlayerGUID);
         guidCD.Add(CustomDataTag.PLATFORM, Application.platform.ToString().ToLowerInvariant());
-        Debug.Log(this.GetType() + " generated guidCD=" + guidCD);
+        // Debug.Log(this.GetType() + " generated guidCD=" + guidCD);
         return guidCD;
     }
 
@@ -351,23 +351,23 @@ public class RedMetricsManager : MonoBehaviour
     // Should be called only after localPlayerGUID is set
     public void sendStartEvent()
     {
-        Debug.Log(this.GetType() + " sendStartEvent");
+        // Debug.Log(this.GetType() + " sendStartEvent");
         if (!_isStartEventSent)
         {
-            Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
+            // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
 
 #if UNITY_WEBPLAYER
             // all web players
             // management of game start for webglplayer
-            Debug.Log(this.GetType() + " sendStartEvent calls connect");
+            // Debug.Log(this.GetType() + " sendStartEvent calls connect");
             connect();
             sendStartEventWithPlayerGUID();
 
 #else
             // other players + editor
-            Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
+            // Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
             //gameSessionGUID hasn't been initialized
-            Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
+            // Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
             createPlayer(www => trackStart(www));
 #endif
             _isStartEventSent = true;
@@ -377,20 +377,20 @@ public class RedMetricsManager : MonoBehaviour
     //called by the browser when connection is established
     public void ConfirmWebplayerConnection()
     {
-        Debug.Log(this.GetType() + " ConfirmWebplayerConnection");
+        // Debug.Log(this.GetType() + " ConfirmWebplayerConnection");
         _isGameSessionGUIDCreated = true;
         executeAndClearAllWaitingEvents();
     }
 
     private void addEventToSendLater(TrackingEventDataWithoutIDs data)
     {
-        Debug.Log(this.GetType() + " addEventToSendLater " + data);
+        // Debug.Log(this.GetType() + " addEventToSendLater " + data);
         waitingList.AddLast(data);
     }
 
     private void executeAndClearAllWaitingEvents()
     {
-        Debug.Log(this.GetType() + " executeAndClearAllWaitingEvents");
+        // Debug.Log(this.GetType() + " executeAndClearAllWaitingEvents");
         foreach (TrackingEventDataWithoutIDs data in waitingList)
         {
             sendEvent(data);
@@ -401,13 +401,13 @@ public class RedMetricsManager : MonoBehaviour
     //webplayer
     public void connect()
     {
-        Debug.Log(this.GetType() + " connect");
+        // Debug.Log(this.GetType() + " connect");
 #if UNITY_WEBPLAYER
-            Debug.Log(this.GetType() + " Unity connect");
+            // Debug.Log(this.GetType() + " Unity connect");
             // force to wait for MemoryManager
             ConnectionData data = new ConnectionData(gameVersionGuid);
             string json = getJsonString(data);
-            Debug.Log(this.GetType() + " connect will rmConnect json={0}", json);
+            // Debug.Log(this.GetType() + " connect will rmConnect json={0}", json);
             Application.ExternalCall("rmConnect", json);
 #else
             Debug.LogWarning(this.GetType() + " called connect, but not from WebGLPlayer");
@@ -417,7 +417,7 @@ public class RedMetricsManager : MonoBehaviour
     public void disconnect()
     {
 #if UNITY_WEBPLAYER
-            Debug.Log(this.GetType() + " Unity disconnect");
+            // Debug.Log(this.GetType() + " Unity disconnect");
             Application.ExternalCall("rmDisconnect");
             resetConnectionVariables();
 #endif
@@ -467,12 +467,12 @@ public class RedMetricsManager : MonoBehaviour
     public void sendRichEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
         string customDataString = null == customData ? "" : ", " + customData;
-        Debug.Log(this.GetType() + " sendRichEvent(" + trackingEvent + customDataString);
+        // Debug.Log(this.GetType() + " sendRichEvent(" + trackingEvent + customDataString);
 
         CustomData context = Character.get().getEventContext();
         if (customData != null)
         {
-            Debug.Log(this.GetType() + " merging from trackingEvent " + trackingEvent);
+            // Debug.Log(this.GetType() + " merging from trackingEvent " + trackingEvent);
             context.merge(customData);
         }
         sendEvent(trackingEvent, context, section, coordinates, userTime);
@@ -481,7 +481,7 @@ public class RedMetricsManager : MonoBehaviour
     public void sendEvent(TrackingEvent trackingEvent, CustomData customData = null, string section = null, int[] coordinates = null, string userTime = null)
     {
         // test Application.internetReachability
-        Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
+        // Debug.Log(this.GetType() + " sendEvent " + trackingEvent + " " + customData);
         string checkedSection = section;
 
         //TODO remove dependency to Character class
@@ -511,13 +511,13 @@ public class RedMetricsManager : MonoBehaviour
             }
         }
 
-        Debug.Log(this.GetType() + " sendEvent " + trackingEvent.ToString());
+        // Debug.Log(this.GetType() + " sendEvent " + trackingEvent.ToString());
 #if UNITY_WEBPLAYER
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates, userTime);
             if (_isGameSessionGUIDCreated)
             {
                 string json = getJsonString(data);
-                Debug.Log(this.GetType() + " UNITY_WEBPLAYER sendEvent("+json+")");
+                // Debug.Log(this.GetType() + " UNITY_WEBPLAYER sendEvent("+json+")");
                 Application.ExternalCall("rmPostEvent", json);
             }
             else
@@ -537,7 +537,7 @@ public class RedMetricsManager : MonoBehaviour
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(_gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString(data);
-            Debug.Log(string.Format (this.GetType() + " !UNITY_WEBPLAYER sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
+            // Debug.Log(string.Format (this.GetType() + " !UNITY_WEBPLAYER sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
 #endif
