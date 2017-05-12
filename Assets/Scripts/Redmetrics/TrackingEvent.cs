@@ -31,6 +31,7 @@ public enum TrackingEvent
     SELECT,             // selected a slot
     ADD,                // added a brick to the crafting zone using available bricks, or equipped a device through this process
     REMOVE,             // removed a brick from the crafting zone using craft zone bricks, or unequipped a device through this process or using a craft result device                         
+    HINT,               // a hint message was displayed
 
     // main menu
     SELECTMENU,

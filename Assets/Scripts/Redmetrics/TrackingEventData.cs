@@ -133,6 +133,8 @@ public enum CustomDataTag
     CHAPTER,
     TOTAL,
 
+    MESSAGE,            // hint message that was displayed
+
     DURATION
 }
 

@@ -18,6 +18,7 @@ public class MovementHint : MonoBehaviour
         if (_elapsedTime > _waitThreshold)
         {
             InfoWindowManager.displayInfoWindow(_infoWindowCode);
+            RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, _infoWindowCode.ToString()));
             _elapsedTime = 0;
         }
         else if (
