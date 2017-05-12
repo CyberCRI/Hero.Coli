@@ -1,7 +1,8 @@
-﻿// #define FORCEADMIN
+﻿#define FORCEADMIN
 // #define FORCENOTADMIN
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 // admin mode unlocks actions and logs to a test GUID
@@ -39,12 +40,13 @@ public class BackendManager : MonoBehaviour
     }
 
     private bool _initialized = false;
-    public void initializeIfNecessary(GameObject adminTools)
+    public void initializeIfNecessary(GameObject adminTools, GameObject genericAdminButton)
     {
         if (!_initialized)
         {
             _initialized = true;
             _adminTools = adminTools;
+            _genericAdminButton = genericAdminButton;
             showAdminTools(GameConfiguration.isAdmin);
         }
     }
@@ -65,7 +67,7 @@ public class BackendManager : MonoBehaviour
     private bool _forceAdmin = false;
     [SerializeField]
     private int _layer;
-    private GameObject _adminTools;
+    private GameObject _adminTools, _genericAdminButton;
     private int _depth = 0;
     private const float _duration = 2.0f;
     [SerializeField]
@@ -205,6 +207,7 @@ public class BackendManager : MonoBehaviour
     private void resetPlayerPrefs()
     {
         Debug.Log(this.GetType() + " resetPlayerPrefs");
+        // ?
         MemoryManager.get().configuration.furthestChapter = 0;
         GameStateController.get().resetPlayerPrefsAndRestart();
     }
@@ -266,5 +269,80 @@ public class BackendManager : MonoBehaviour
         Vector3 position = Character.get().transform.position;
         Character.get().transform.position = new Vector3(position.x, position.y + 1, position.z);
         _depth++;
+    }
+
+    private GameObject[] _testGameObjects;
+    private Behaviour _listener;
+
+    public void setTestObjects(GameObject[] testGameObjects, Behaviour listener)
+    {
+        _testGameObjects = testGameObjects;
+        _listener = listener;
+
+        foreach(GameObject tgo in _testGameObjects)
+        {
+            createGOBTestButton(tgo);
+        }
+        createGOBTestButton(null, listener);
+        createAllSpecialButtons();
+    }
+
+    private int buttonIndex = 1;
+    private void createGOBTestButton(GameObject toActivate, Behaviour behaviour = null)
+    {
+        GameObject go;
+        Button button;
+        createButton(out go, out button);
+        GameObjectAndBehaviourActivator activator = go.AddComponent<GameObjectAndBehaviourActivator>();
+        activator.goToActivate = toActivate;
+        activator.behaviourToActivate = behaviour;
+        activator.button = button;
+        button.onClick.AddListener( () => {activator.click();});
+    }
+
+    private void createButton(out GameObject go, out Button button, string label = null, OnClick onclickdelegate = null)
+    {
+        go = GameObject.Instantiate(_genericAdminButton);
+        button = go.GetComponent<Button>();
+        go.transform.SetParent(_adminTools.transform);
+        Vector3 position = _genericAdminButton.transform.position;
+        if (null != label)
+        {
+            Text buttonText = go.GetComponentInChildren<Text>();
+            if (null != buttonText)
+            {
+                buttonText.text = label;
+            }
+        }
+        if (null != onclickdelegate)
+        {
+            button.onClick.AddListener( () => {onclickdelegate();});
+        }
+        go.transform.position = new Vector3(position.x, position.y - buttonIndex * 30f, position.z);
+        buttonIndex++;
+    }
+
+    public delegate void OnClick();
+    private void createAllSpecialButtons()
+    {
+        GameObject go;
+        Button button;
+        createButton(out go, out button, "unlockAll", unlockAll);
+        createButton(out go, out button, "endGame", endGame);
+        createButton(out go, out button, "resetPlayerPrefs", resetPlayerPrefs);
+        createButton(out go, out button, "moveCharacterDown", moveCharacterDown);
+        createButton(out go, out button, "moveCharacterUp", moveCharacterUp);
+        createButton(out go, out button, "resetCharacterVerticalPosition", resetCharacterVerticalPosition);
+        createButton(out go, out button, "swapLanguage", swapLanguage);
+
+        /*
+        swapLanguage();
+        moveCharacterDown();
+        moveCharacterUp();
+        resetCharacterVerticalPosition();
+        unlockAll();
+        resetPlayerPrefs();
+        endGame();
+        */
     }
 }

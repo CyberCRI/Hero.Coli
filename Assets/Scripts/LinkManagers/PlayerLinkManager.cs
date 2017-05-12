@@ -74,6 +74,12 @@ public class PlayerLinkManager : LinkManager
     private CellControl cellControl;
     [SerializeField]
     private BoundCamera mainBoundCamera;
+    [SerializeField]
+    private Behaviour listener;
+
+    // for tests
+    [SerializeField]
+    private GameObject[] testGameObjects;
 
     protected override int getLMIndex()
     {
@@ -119,5 +125,7 @@ public class PlayerLinkManager : LinkManager
         cellControl.initialize();
 
         base.finishInitialize();
+
+        BackendManager.get().setTestObjects(testGameObjects, listener);
     }
 }

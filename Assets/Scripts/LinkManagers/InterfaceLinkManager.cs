@@ -129,7 +129,7 @@ public class InterfaceLinkManager : LinkManager
     public IconAnimation energyIndicator;
 
     [SerializeField]
-    private GameObject adminTools;
+    private GameObject adminTools, genericAdminButton;
 
     protected override int getLMIndex()
     {
@@ -262,7 +262,7 @@ public class InterfaceLinkManager : LinkManager
         DevicesDisplayer.get().initializeIfNecessary();
         Inventory.get().initialize();
         GUITransitioner.get().initialize();
-        BackendManager.get().initializeIfNecessary(adminTools);
+        BackendManager.get().initializeIfNecessary(adminTools, genericAdminButton);
     }
 
 }
