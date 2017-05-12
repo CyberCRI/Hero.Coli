@@ -1,4 +1,4 @@
-﻿#define FORCEADMIN
+﻿// #define FORCEADMIN
 // #define FORCENOTADMIN
 
 using UnityEngine;

@@ -11,7 +11,9 @@ public class ResolutionScript : MonoBehaviour {
 		Screen.SetResolution(1024, 640, true);
 		this.GetComponent<Camera>().aspect = 16f / 10f;
 		#else
-		Screen.SetResolution(1280, 720, false);
+		// Screen.SetResolution(1280, 720, false);
+		Screen.SetResolution(1920, 1080, false);
+		this.GetComponent<Camera>().aspect = 16f / 9f;
 		#endif
 	}
 
