@@ -39,13 +39,13 @@ public class BackendManager : MonoBehaviour
     }
 
     private bool _initialized = false;
-    public void initializeIfNecessary(GameObject adminStatusIndicator)
+    public void initializeIfNecessary(GameObject adminTools)
     {
         if (!_initialized)
         {
             _initialized = true;
-            _adminStatusIndicator = adminStatusIndicator;
-            showAdminIndicator(GameConfiguration.isAdmin);
+            _adminTools = adminTools;
+            showAdminTools(GameConfiguration.isAdmin);
         }
     }
 
@@ -65,7 +65,7 @@ public class BackendManager : MonoBehaviour
     private bool _forceAdmin = false;
     [SerializeField]
     private int _layer;
-    private GameObject _adminStatusIndicator;
+    private GameObject _adminTools;
     private int _depth = 0;
     private const float _duration = 2.0f;
     [SerializeField]
@@ -78,16 +78,16 @@ public class BackendManager : MonoBehaviour
         }
     }
 
-    private void showAdminIndicator(bool doShow)
+    private void showAdminTools(bool doShow)
     {
-        if (null != _adminStatusIndicator)
+        if (null != _adminTools)
         {
-            Debug.Log(this.GetType() + " adminStatusIndicator SetActive " + doShow);
-            _adminStatusIndicator.gameObject.SetActive(doShow);
+            Debug.Log(this.GetType() + " adminTools SetActive " + doShow);
+            _adminTools.gameObject.SetActive(doShow);
         }
         else
         {
-            Debug.LogWarning(this.GetType() + " adminStatusIndicator is null");
+            Debug.LogWarning(this.GetType() + " adminTools is null");
         }
     }
 
@@ -173,8 +173,8 @@ public class BackendManager : MonoBehaviour
             GameConfiguration.isAdmin = _setAdmin;
         }
 
-        Debug.Log(this.GetType() + " setAdmin showAdminIndicator");
-        showAdminIndicator(GameConfiguration.isAdmin);
+        Debug.Log(this.GetType() + " setAdmin showAdminTools");
+        showAdminTools(GameConfiguration.isAdmin);
 
         //display feedback for logging mode
         string msg = GameConfiguration.isAdmin ? "REDMETRICS ADMIN MODE" : "REDMETRICS DEFAULT MODE";
