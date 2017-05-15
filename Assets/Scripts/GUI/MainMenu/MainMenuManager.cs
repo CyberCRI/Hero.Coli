@@ -83,9 +83,11 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private SettingsMainMenuItemArray settingsItems;
     [SerializeField]
-    private ControlsMainMenuItemArray controlItems;
+    private GraphicsOptionsMainMenuItemArray graphicsItems;
     [SerializeField]
     private SoundOptionsMainMenuItemArray soundItems;
+    [SerializeField]
+    private ControlsMainMenuItemArray controlItems;
     // science submenu
     [SerializeField]
     private ScienceMainMenuItemArray scienceItems;
@@ -113,6 +115,7 @@ public class MainMenuManager : MonoBehaviour
         SETTINGS,
         CONTROLS,
         SOUNDOPTIONS,
+        GRAPHICSOPTIONS,
         SCIENCE,
         CONTRIBUTE,
         LEARNMOREOPTIONS,
@@ -390,10 +393,11 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initializedArrays)
         {
-            arrays = new MainMenuItemArray[8] {
+            arrays = new MainMenuItemArray[9] {
                 mainMenuItems,
                 chapterSelectionItems,
                 settingsItems,
+                graphicsItems,
                 soundItems,
                 controlItems,
                 scienceItems,
@@ -433,11 +437,14 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuScreen.SETTINGS:
                 toActivate = settingsItems;
                 break;
-            case MainMenuScreen.CONTROLS:
-                toActivate = controlItems;
+            case MainMenuScreen.GRAPHICSOPTIONS:
+                toActivate = graphicsItems;
                 break;
             case MainMenuScreen.SOUNDOPTIONS:
                 toActivate = soundItems;
+                break;
+            case MainMenuScreen.CONTROLS:
+                toActivate = controlItems;
                 break;
             // science submenu
             case MainMenuScreen.SCIENCE:

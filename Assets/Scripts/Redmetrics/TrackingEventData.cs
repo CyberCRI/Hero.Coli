@@ -123,6 +123,7 @@ public enum CustomDataTag
 
     CONTROLS,
     LANGUAGE,
+    GRAPHICS,
     SOUND,
 
     NEWTAB,
@@ -153,6 +154,7 @@ public enum CustomDataValue
     SETTINGS,
     CONTROLS,
     LANGUAGE,
+    GRAPHICS,
     SOUND,
     SCIENCE,
     LEARNMORE,
