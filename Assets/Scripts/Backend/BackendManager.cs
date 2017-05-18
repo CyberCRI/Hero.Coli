@@ -58,7 +58,7 @@ public class BackendManager : MonoBehaviour
 #elif FORCENOTADMIN
         setAdmin(false);
 #endif
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
