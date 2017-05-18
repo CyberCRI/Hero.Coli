@@ -87,9 +87,9 @@ public class PhenoToxic : Phenotype
             // apply linear function defined on domain [_dataPoint1.x, _dataPoint2.x]
             intensity = _curveCoefs1.x * concentration + _curveCoefs1.y;
         }
-        Debug.Log(this.GetType() + " computed dps=" + intensity);
+        //Debug.Log(this.GetType() + " computed dps=" + intensity);
         intensity *= Time.deltaTime;
-        Debug.Log(this.GetType() + " computed damage=" + intensity);
+        //Debug.Log(this.GetType() + " computed damage=" + intensity);
 
         character.subLife(intensity);
     }
