@@ -7,10 +7,14 @@ using System.Collections.Generic;
  */
 public class InstantReactionProperties
 {
-  public string name;                           //!< The name of the reaction
-  public LinkedList<Reactant> reactants;        //!< The List of reactants
-  public LinkedList<Product> products;          //!< The products of the reaction
-  public float energyCost;                      //!< The cost in energy of the reaction
+	public string name;
+	//!< The name of the reaction
+	public LinkedList<Reactant> reactants;
+	//!< The List of reactants
+	public LinkedList<Product> products;
+	//!< The products of the reaction
+	public float energyCost;
+	//!< The cost in energy of the reaction
 }
 
 /*!
@@ -24,103 +28,100 @@ public class InstantReactionProperties
   
   
   */
-public class InstantReaction : IReaction
+public class InstantReaction : Reaction
 {
-  //! Default Constructor
-  public InstantReaction()
-  {
-    _reactants = new LinkedList<Reactant>();
-  }
+	//! Default Constructor
+	public InstantReaction ()
+	{
+		_reactants = new LinkedList<Reactant> ();
+	}
 
-  //! Default constructor
-  public InstantReaction(InstantReaction r) : base(r)
-  {
-    _reactants = r._reactants;
-  }
+	//! Default constructor
+	public InstantReaction (InstantReaction r) : base (r)
+	{
+		_reactants = r._reactants;
+	}
 
-  /* !
+	/* !
     \brief Checks that two reactions have the same InstantReaction field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool PartialEquals(IReaction reaction)
-  {
-    InstantReaction instant = reaction as InstantReaction;
-    return (instant != null)
-    && base.PartialEquals(reaction)
-    && _reactants.Equals(instant._reactants);
-  }
+	protected override bool PartialEquals (Reaction reaction)
+	{
+		InstantReaction instant = reaction as InstantReaction;
+		return (instant != null)
+		&& base.PartialEquals (reaction)
+		&& _reactants.Equals (instant._reactants);
+	}
 
-  /*!
+	/*!
     \brief Build an Instant reaction with a InstantReactionProperties class
     \param props The properties
     \return Return a new reaction or null if it fail.
    */
-  public static IReaction       buildInstantReactionFromProps(InstantReactionProperties props)
-  {
-    if (props == null)
-      return null;
+	public static Reaction       buildInstantReactionFromProps (InstantReactionProperties props)
+	{
+		if (props == null)
+			return null;
 
-    InstantReaction reaction = new InstantReaction();
+		InstantReaction reaction = new InstantReaction ();
 
-    reaction.setName(props.name);
-    reaction.setEnergyCost(props.energyCost);
-    Reactant newReactant;
-    foreach (Reactant r in props.reactants)
-      {
-        newReactant = new Reactant(r);
-        reaction.addReactant(newReactant);
-      }
-    Product newProd;
-    foreach (Product p in props.products)
-      {
-        newProd = new Product(p);
-        reaction.addProduct(newProd);
-      }
-    return reaction;
-  }
+		reaction.setName (props.name);
+		reaction.setEnergyCost (props.energyCost);
+		Reactant newReactant;
+		foreach (Reactant r in props.reactants) {
+			newReactant = new Reactant (r);
+			reaction.addReactant (newReactant);
+		}
+		Product newProd;
+		foreach (Product p in props.products) {
+			newProd = new Product (p);
+			reaction.addProduct (newProd);
+		}
+		return reaction;
+	}
 
 
-  public void addReactant(Reactant reactant) { if (reactant != null) _reactants.AddLast(reactant); }
+	public void addReactant (Reactant reactant)
+	{
+		if (reactant != null)
+			_reactants.AddLast (reactant);
+	}
 
 
-  /*!
+	/*!
    Find the Limiting reactant in the attribute _reactant
    and return the factor as following :
 
         [MinReactant] / CoefReactant
   */
-  private float getLimitantFactor(ArrayList molecules)
-  {
-    Reactant minReact = null;
-    bool b = true;
-    Molecule mol = null;
-    Molecule molMin = null;
+	private float getLimitantFactor (Dictionary<string, Molecule> molecules)
+	{
+		Reactant minReact = null;
+		bool b = true;
+		Molecule mol = null;
+		Molecule molMin = null;
 
-    foreach (Reactant r in _reactants)
-      {
-        mol = ReactionEngine.getMoleculeFromName(r.getName(), molecules);
-        if (b && mol != null)
-          {
-            molMin = mol;
-            minReact = r;
-            b = false;
-          }
-        else if (mol != null)
-          {
-            if (molMin != null && ((mol.getConcentration() / r.v) < (molMin.getConcentration() / minReact.v)))
-              {
-                molMin = mol;
-                minReact = r;
-              }
-          }
-      }
-    if (minReact == null)
-      return 0f;
-    return (molMin.getConcentration() / minReact.v);
-  }
+		foreach (Reactant r in _reactants) {
+			mol = ReactionEngine.getMoleculeFromName (r.getName (), molecules);
+			if (b && mol != null) {
+				molMin = mol;
+				minReact = r;
+				b = false;
+			} else if (mol != null) {
+				if (molMin != null && ((mol.getConcentration () / r.v) < (molMin.getConcentration () / minReact.v))) {
+					molMin = mol;
+					minReact = r;
+				}
+			}
+		}
+		if (minReact == null)
+			return 0f;
+		return (molMin.getConcentration () / minReact.v);
+	}
 
 
-  /*!
+	/*!
    This function is called at each frame.
    It find the limiting reactant and consume as reactant and produce product
    as much as possible.
@@ -131,51 +132,47 @@ public class InstantReaction : IReaction
         for each product P : [P] += delta * Coef_P
         for each reactant R : [R] -= delta * Coef_R
   */
-  public override void react(ArrayList molecules)
-  {
-    if (!_isActive)
-      return;
+	public override void react (Dictionary<string, Molecule> molecules)
+	{
+		if (!_isActive)
+			return;
     
-    float delta = getLimitantFactor(molecules);
+		float delta = getLimitantFactor (molecules);
 
-    float energyCoef;
-    float energyCostTot;    
-    if (delta > 0f && _energyCost > 0f && enableEnergy)
-      {
-        energyCostTot = _energyCost * delta;
-        energyCoef = _medium.getEnergy() / energyCostTot;
-        if (energyCoef > 1f)
-          energyCoef = 1f;
-        _medium.subEnergy(energyCostTot);
-      }
-    else
-      energyCoef = 1f;
+		float energyCoef;
+		float energyCostTot;    
+		if (delta > 0f && _energyCost > 0f && enableEnergy) {
+			energyCostTot = _energyCost * delta;
+			energyCoef = _medium.getEnergy () / energyCostTot;
+			if (energyCoef > 1f)
+				energyCoef = 1f;
+			_medium.subEnergy (energyCostTot);
+		} else
+			energyCoef = 1f;
 
-    delta *= energyCoef;
-    Molecule mol;
-    foreach (Reactant react in _reactants)
-      {
-        mol = ReactionEngine.getMoleculeFromName(react.getName(), molecules);
-        if (enableSequential)
-          mol.subConcentration(delta * react.v);
-        else
-          mol.subNewConcentration(delta * react.v);
-      }
-    foreach (Product prod in _products)
-      {
-        mol = ReactionEngine.getMoleculeFromName(prod.getName(), molecules);
-        if (enableSequential)
-          mol.addConcentration(delta * prod.v);
-        else
-          mol.addNewConcentration(delta * prod.v);
-      }
-  }
+		delta *= energyCoef;
+		Molecule mol;
+		foreach (Reactant react in _reactants) {
+			mol = ReactionEngine.getMoleculeFromName (react.getName (), molecules);
+			if (enableSequential)
+				mol.subConcentration (delta * react.v);
+			else
+				mol.subNewConcentration (delta * react.v);
+		}
+		foreach (Product prod in _products) {
+			mol = ReactionEngine.getMoleculeFromName (prod.getName (), molecules);
+			if (enableSequential)
+				mol.addConcentration (delta * prod.v);
+			else
+				mol.addNewConcentration (delta * prod.v);
+		}
+	}
 
 
 
 
 
-    /*
+	/*
       An Instant reaction should respect this syntax:
 
               <instantReaction>

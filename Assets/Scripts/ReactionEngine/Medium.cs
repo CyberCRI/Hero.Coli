@@ -21,8 +21,8 @@ using System.Xml;
 
 public class Medium : LoadableFromXmlImpl
 {
-    private LinkedList<IReaction> _reactions;               //!< The list of reactions
-    private ArrayList _molecules;               //!< The list of molecules (Molecule)
+    private LinkedList<Reaction> _reactions;               //!< The list of reactions
+	private Dictionary<string, Molecule> _molecules;               //!< The list of molecules (Molecule)
 
     private int _numberId;                            //!< The id of the Medium
     private string _name;                          //!< The name of the Medium
@@ -49,13 +49,13 @@ public class Medium : LoadableFromXmlImpl
     public int getId() { return _numberId; }
     public void setName(string name) { _name = name; }
     public string getName() { return _name; }
-    public void setReactions(LinkedList<IReaction> RL) { _reactions = RL; }
-    public LinkedList<IReaction> getReactions() { return _reactions; }
+    public void setReactions(LinkedList<Reaction> RL) { _reactions = RL; }
+    public LinkedList<Reaction> getReactions() { return _reactions; }
     public void setReactionSet(string reactionsSet) { _reactionsSet = reactionsSet; }
     public string getReactionSet() { return _reactionsSet; }
     public void setMoleculeSet(string moleculesSet) { _moleculesSet = moleculesSet; }
     public string getMoleculeSet() { return _moleculesSet; }
-    public ArrayList getMolecules() { return _molecules; }
+	public Dictionary<string, Molecule> getMolecules() { return _molecules; }
 
     //TODO extract energy methods and fields and make class out of it
     public void setEnergy(float v) { _energy = Mathf.Min(v, _maxEnergy); if (_energy < 0f) _energy = 0f; }
@@ -94,7 +94,7 @@ public class Medium : LoadableFromXmlImpl
 
     public void resetMolecules()
     {
-        foreach (Molecule m in _molecules)
+		foreach (Molecule m in _molecules.Values)
         {
             m.setConcentration(0);
         }
@@ -109,14 +109,14 @@ public class Medium : LoadableFromXmlImpl
     public void enableEnergy(bool b)
     {
         _enableEnergy = b;
-        foreach (IReaction r in _reactions)
+        foreach (Reaction r in _reactions)
             r.enableEnergy = b;
     }
 
     public void enableSequential(bool b)
     {
         _enableSequential = b;
-        foreach (IReaction r in _reactions)
+        foreach (Reaction r in _reactions)
             r.enableSequential = b;
     }
 
@@ -129,7 +129,7 @@ public class Medium : LoadableFromXmlImpl
       \brief Add a new reaction to the medium
       \param reaction The reaction to add.
      */
-    public void addReaction(IReaction reaction)
+    public void addReaction(Reaction reaction)
     {
         // Debug.Log(this.GetType() + " addReaction to medium#"+_numberId+" with "+reaction);
         if (reaction != null)
@@ -137,7 +137,7 @@ public class Medium : LoadableFromXmlImpl
             reaction.setMedium(this);
             reaction.enableEnergy = _enableEnergy;
             _reactions.AddLast(reaction);
-            // Debug.Log(this.GetType() + " addReaction _reactions="+Logger.ToString<IReaction>(_reactions));
+            // Debug.Log(this.GetType() + " addReaction _reactions="+Logger.ToString<Reaction>(_reactions));
         }
         else
         {
@@ -152,7 +152,7 @@ public class Medium : LoadableFromXmlImpl
      */
     public void removeReactionByName(string name)
     {
-        LinkedListNode<IReaction> node = _reactions.First;
+        LinkedListNode<Reaction> node = _reactions.First;
         bool b = true;
 
         while (node != null && b)
@@ -171,9 +171,9 @@ public class Medium : LoadableFromXmlImpl
       \param reaction The model of reaction to remove.
       \param checkNameAndMedium Whether the name  and medium must be taken into account or not.
      */
-    public void removeReaction(IReaction reaction, bool checkNameAndMedium)
+    public void removeReaction(Reaction reaction, bool checkNameAndMedium)
     {
-        LinkedListNode<IReaction> node = _reactions.First;
+        LinkedListNode<Reaction> node = _reactions.First;
         bool b = true;
 
         while (node != null && b)
@@ -229,8 +229,8 @@ public class Medium : LoadableFromXmlImpl
     {
         if (reactionsSet == null)
             return;
-        foreach (IReaction reaction in reactionsSet.reactions)
-            addReaction(IReaction.copyReaction(reaction));
+        foreach (Reaction reaction in reactionsSet.reactions)
+            addReaction(Reaction.copyReaction(reaction));
         //       _reactions.AddLast(reaction);
     }
 
@@ -238,9 +238,9 @@ public class Medium : LoadableFromXmlImpl
       \brief Load degradation from each molecules
       \param allMolecules The list of all the molecules
      */
-    public void initDegradationReactions(ArrayList allMolecules)
+    public void initDegradationReactions(Dictionary<string, Molecule> allMolecules)
     {
-        foreach (Molecule mol in allMolecules)
+        foreach (Molecule mol in allMolecules.Values)
             addReaction(new Degradation(mol.getDegradationRate(), mol.getName()));
     }
 
@@ -249,14 +249,14 @@ public class Medium : LoadableFromXmlImpl
       \param molSet The set to Load
       \param allMolecules The list of all the molecules
      */
-    public void initMoleculesFromMoleculeSets(MoleculeSet molSet, ArrayList allMolecules)
+	public void initMoleculesFromMoleculeSets(MoleculeSet molSet, Dictionary<string, Molecule> allMolecules)
     {
         // Debug.Log(this.GetType() + " initMoleculesFromMoleculeSets medium#" + _numberId);
         Molecule newMol;
         Molecule startingMolStatus;
 
-        _molecules = new ArrayList();
-        foreach (Molecule mol in allMolecules)
+		_molecules = new Dictionary<string, Molecule>();
+        foreach (Molecule mol in allMolecules.Values)
         {
             newMol = new Molecule(mol);
             startingMolStatus = ReactionEngine.getMoleculeFromName(mol.getName(), molSet.molecules);
@@ -273,7 +273,7 @@ public class Medium : LoadableFromXmlImpl
             // + " with cc=" + newMol.getConcentration()
             // 
             // );
-            _molecules.Add(newMol);
+			_molecules.Add(newMol.getName(), newMol);
         }
     }
 
@@ -287,7 +287,7 @@ public class Medium : LoadableFromXmlImpl
         reaction.setProduction(_energyProductionRate);
         reaction.setName("ATP Production");
         if (_reactions == null)
-            setReactions(new LinkedList<IReaction>());
+            setReactions(new LinkedList<Reaction>());
         addReaction(reaction);
     }
 
@@ -300,7 +300,7 @@ public class Medium : LoadableFromXmlImpl
     {
 
         //Receive a linkedlist of Sets
-        _reactions = new LinkedList<IReaction>();
+        _reactions = new LinkedList<Reaction>();
         _numberGenerator = new NumberGenerator(NumberGenerator.normale, -10f, 10f, 0.01f);
 
         //Try to find the good set in the LinkedList
@@ -308,7 +308,7 @@ public class Medium : LoadableFromXmlImpl
         MoleculeSet molSet = ReactionEngine.getMoleculeSetFromId(_moleculesSet, moleculesSets);
 
         //Put all the different molecules from the linkedList in an arrayList
-        ArrayList allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
+        var allMolecules = ReactionEngine.getAllMoleculesFromMoleculeSets(moleculesSets);
 
         if (reactSet == null)
             Debug.LogWarning(this.GetType() + " Init Cannot find group of reactions named " + _reactionsSet);
@@ -319,7 +319,7 @@ public class Medium : LoadableFromXmlImpl
         initReactionsFromReactionSet(reactSet);
         initMoleculesFromMoleculeSets(molSet, allMolecules);
         initDegradationReactions(allMolecules);
-        foreach (IReaction r in _reactions)
+        foreach (Reaction r in _reactions)
         {
             r.enableSequential = _enableSequential;
         }
@@ -331,7 +331,7 @@ public class Medium : LoadableFromXmlImpl
      */
     public void updateMoleculesConcentrations()
     {
-        foreach (Molecule m in _molecules)
+        foreach (Molecule m in _molecules.Values)
             m.updateConcentration();
     }
 
@@ -341,7 +341,7 @@ public class Medium : LoadableFromXmlImpl
     public void Log()
     {
         string content = "";
-        foreach (Molecule m in _molecules)
+        foreach (Molecule m in _molecules.Values)
         {
             if (!string.IsNullOrEmpty(content))
             {
@@ -360,9 +360,9 @@ public class Medium : LoadableFromXmlImpl
     {
 
         if (enableShufflingReactionOrder)
-            LinkedListExtensions.Shuffle<IReaction>(_reactions);
+            LinkedListExtensions.Shuffle<Reaction>(_reactions);
 
-        foreach (IReaction reaction in _reactions)
+        foreach (Reaction reaction in _reactions)
         {
             // PromoterReaction promoter = reaction as PromoterReaction;
             // if (promoter != null) {
@@ -377,7 +377,7 @@ public class Medium : LoadableFromXmlImpl
         {
             float noise;
 
-            foreach (Molecule m in _molecules)
+            foreach (Molecule m in _molecules.Values)
             {
                 noise = _numberGenerator.getNumber();
                 if (_enableSequential)
@@ -654,7 +654,7 @@ public class Medium : LoadableFromXmlImpl
     {
 
         string moleculeString = null == _molecules ? "" : Logger.ToString<Molecule>("Molecule", _molecules);
-        string reactionString = null == _reactions ? "" : Logger.ToString<IReaction>(_reactions);
+        string reactionString = null == _reactions ? "" : Logger.ToString<Reaction>(_reactions);
 
         return "[Medium "
                 + "name:" + _name

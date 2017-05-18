@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Mine : ResettableMine
 {
@@ -82,12 +83,12 @@ public class Mine : ResettableMine
         Collider match = System.Array.Find(hitsColliders, (col) => col.gameObject.name == Character.gameObjectName);
         if (match)
         {
-            ArrayList molecules = Character.get().medium.getMolecules();
+            var molecules = Character.get().medium.getMolecules();
 
-            foreach (Molecule m in molecules)
+            foreach (Molecule m in molecules.Values)
             {
                 //If player has the Green Fluorescence with a sufficient concentration: the mine appears
-                if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
+				if (m.getName() == _targetMolecule && m.getConcentration() > _concentrationTreshold)
                 {
                     if (!_isNear)
                     {
@@ -97,7 +98,7 @@ public class Mine : ResettableMine
                         _isNear = true;
                     }
                 }
-                else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
+				else if (m.getName() == _targetMolecule && m.getConcentration() < _concentrationTreshold)
                 {
                     iTween.ScaleTo(this.gameObject, _optionsOut);
                     //iTween.FadeTo (transform.FindChild("Mine Light Collider").gameObject, _optionsOut);

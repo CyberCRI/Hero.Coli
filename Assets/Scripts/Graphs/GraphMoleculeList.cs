@@ -44,7 +44,7 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
     private float _concentration;
     private Molecule _molecule;
     private DisplayedMolecule _displayedMolecule, _createdDisplayedMolecule;
-    private ArrayList _moleculesArrayList;
+	private Dictionary<string, Molecule> _moleculesDictionary;
     private Dictionary<Molecule, DisplayedMolecule> _molecules = null;
     private List<KeyValuePair<Molecule, DisplayedMolecule>> _toAdd = new List<KeyValuePair<Molecule, DisplayedMolecule>>();
     private List<EquippedDisplayedDeviceWithMolecules> _containers;
@@ -300,9 +300,9 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         // Debug.Log(this.GetType() + " initializeMolecules");
 
         _molecules = new Dictionary<Molecule, DisplayedMolecule>();
-        _moleculesArrayList = _reactionEngine.getMoleculesFromMedium(mediumId);
+		_moleculesDictionary = _reactionEngine.getMoleculesFromMedium(mediumId);
 
-        foreach (System.Object molecule in _moleculesArrayList)
+        foreach (System.Object molecule in _moleculesDictionary)
         {
             // Debug.Log(this.GetType() + " initializeMolecules treating " + ((Molecule)molecule).getName());
             _molecule = (Molecule)molecule;

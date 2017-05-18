@@ -8,7 +8,7 @@ using UnityEngine;
   \details It contains a name, a list of products, and an activation boolean.
   The react() function should be implemented in child classes.
  */
-public abstract class IReaction : LoadableFromXmlImpl
+public abstract class Reaction : LoadableFromXmlImpl
 {
     protected string _name;                       //!< The name of the reaction
     protected LinkedList<Reactant> _reactants;    //!< The list of reactants
@@ -30,7 +30,7 @@ public abstract class IReaction : LoadableFromXmlImpl
     protected const string orderTag = "n";
 
     //! Default constructor
-    public IReaction()
+    public Reaction()
     {
         _products = new LinkedList<Product>();
         _reactants = new LinkedList<Reactant>();
@@ -47,7 +47,7 @@ public abstract class IReaction : LoadableFromXmlImpl
     }
 
     //! Copy Constructor
-    public IReaction(IReaction r)
+    public Reaction(Reaction r)
     {
         _products = new LinkedList<Product>();
         foreach (Product product in r._products)
@@ -83,7 +83,7 @@ public abstract class IReaction : LoadableFromXmlImpl
       \param r Reaction to copy
       \return Return a reference on the new reaction or null if the given reaction is unknown.
      */
-    public static IReaction copyReaction(IReaction r)
+    public static Reaction copyReaction(Reaction r)
     {
         if (r as Degradation != null)
             return new Degradation(r as Degradation);
@@ -108,7 +108,7 @@ public abstract class IReaction : LoadableFromXmlImpl
 
     //! This function should be implemented by each reaction that inherit from this class.
     //! It's called at each tick of the game.
-    public abstract void react(ArrayList molecules);
+    public abstract void react(Dictionary<string, Molecule> molecules);
 
     /*! 
       \brief Add a Product to the product list.
@@ -179,7 +179,7 @@ public abstract class IReaction : LoadableFromXmlImpl
       \param reaction The reaction that will be compared to 'this'.
       \param nameMustMatch Whether the name must be taken into account or not.
      */
-    public bool Equals(IReaction reaction, bool checkNameAndMedium)
+    public bool Equals(Reaction reaction, bool checkNameAndMedium)
     {
         if (checkNameAndMedium)
         {
@@ -194,7 +194,7 @@ public abstract class IReaction : LoadableFromXmlImpl
       except for medium
       \param reaction The reaction that will be compared to 'this'.
      */
-    protected virtual bool PartialEquals(IReaction reaction)
+    protected virtual bool PartialEquals(Reaction reaction)
     {
         //TODO check this
     // if(!hasValidData() || !reaction.hasValidData())

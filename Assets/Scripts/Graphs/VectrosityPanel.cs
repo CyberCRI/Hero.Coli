@@ -24,7 +24,7 @@ public class VectrosityPanel : MonoBehaviour
 
     public List<Line> _lines = new List<Line>();
     public int lineCount;
-    public ArrayList _molecules;
+	public Dictionary<string, Molecule> _molecules;
     public bool _paused = false;
 
     private bool areLinesNull = false;
@@ -89,7 +89,7 @@ public class VectrosityPanel : MonoBehaviour
         }
 
         Line line;
-        foreach (Molecule m in _molecules)
+        foreach (Molecule m in _molecules.Values)
         {
             line = _lines.Find(l => m.getName() == l.moleculeName);
             if (null == line)

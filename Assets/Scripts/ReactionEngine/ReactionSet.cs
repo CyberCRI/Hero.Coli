@@ -19,7 +19,7 @@ A reaction set musth be declare in molecule's files respecting this syntax:
   
   
  */
-public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
+public class ReactionSet : CompoundLoadableFromXmlImpl<Reaction>
 {
   //!< The list of reactions present in the set.
   //TODO setter/modifier/appender
@@ -36,7 +36,7 @@ public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
   public override string getTag() {return "reactions";}
 
 
-  IReaction create(string reactionType)
+  Reaction create(string reactionType)
   {
     switch(reactionType)
     {
@@ -66,13 +66,13 @@ public class ReactionSet : CompoundLoadableFromXmlImpl<IReaction>
     }
   }
 
-  protected override IReaction construct(XmlNode node)
+  protected override Reaction construct(XmlNode node)
   {
     return create(node.Name);
   }
 	
   public override string ToString()
 	{
-    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<IReaction>("IReaction", reactions)+"]";
+    return "ReactionSet[id:"+_stringId+", reactions="+Logger.ToString<Reaction>("IReaction", reactions)+"]";
 	}
 }

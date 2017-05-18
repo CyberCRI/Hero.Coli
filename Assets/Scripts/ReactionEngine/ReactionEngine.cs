@@ -143,7 +143,7 @@ public class ReactionEngine : MonoBehaviour {
     \param mediumId The medium ID.
     \param reaction The reaction to add.
    */
-  public void addReactionToMedium(int mediumId, IReaction reaction)
+  public void addReactionToMedium(int mediumId, Reaction reaction)
   {
 	// Debug.Log(this.GetType() + " addReactionToMedium("+mediumId+", "+reaction+")");
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
@@ -166,7 +166,7 @@ public class ReactionEngine : MonoBehaviour {
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////*/
 		
-    med.addReaction(IReaction.copyReaction(reaction));
+    med.addReaction(Reaction.copyReaction(reaction));
   }
 
   /*!
@@ -189,7 +189,7 @@ public class ReactionEngine : MonoBehaviour {
     \param reaction The model of reaction to remove.
     \param checkNameAndMedium Whether the name and medium must be taken into account or not.
    */
-  public void removeReaction(int mediumId, IReaction reaction, bool checkNameAndMedium = false)
+  public void removeReaction(int mediumId, Reaction reaction, bool checkNameAndMedium = false)
   {
     Medium med = ReactionEngine.getMediumFromId(mediumId, _mediums);
 
@@ -220,15 +220,13 @@ public class ReactionEngine : MonoBehaviour {
       \param name The name of the molecule
       \param molecules The molecule list where to search in.
   */
-  public static Molecule        getMoleculeFromName(string name, ArrayList molecules)
+	public static Molecule        getMoleculeFromName(string name, Dictionary<string, Molecule> molecules)
   {
-    if(null != molecules)
-    {
-      foreach (Molecule mol in molecules)
-        if (mol.getName() == name)
-          return mol;
-    }
-    return null;
+		if (null != molecules) {
+			if (molecules.ContainsKey (name))
+				return molecules [name];
+		}
+		return null;
   }
 
 //! Return the ReactionSet reference corresponding to the given id
@@ -249,9 +247,9 @@ public class ReactionEngine : MonoBehaviour {
       \param mol Molecule to match.
       \param list Molecule list where to search in.
   */
-  public static bool    isMoleculeDuplicated(Molecule mol, ArrayList list)
+	public static bool    isMoleculeDuplicated(Molecule mol, Dictionary<string, Molecule> list)
   {
-    foreach (Molecule mol2 in list)
+    foreach (Molecule mol2 in list.Values)
       if (mol2.getName() == mol.getName())
         return true;
     return false;
@@ -270,17 +268,17 @@ public class ReactionEngine : MonoBehaviour {
   /*!
       \param list the list of MoleculeSet
   */
-  public static ArrayList    getAllMoleculesFromMoleculeSets(LinkedList<MoleculeSet> list)
+  public static Dictionary<string, Molecule> getAllMoleculesFromMoleculeSets(LinkedList<MoleculeSet> list)
   {
 
-    ArrayList molecules = new ArrayList();
+	var molecules = new Dictionary<string, Molecule>();
 
     
     foreach (MoleculeSet molSet in list)
       {
-        foreach (Molecule mol in molSet.molecules)
+        foreach (Molecule mol in molSet.molecules.Values)
           if (!isMoleculeDuplicated(mol, molecules))
-            molecules.Add(mol);
+					molecules.Add(mol.getName(), mol);
       }
     return molecules;
   }
@@ -298,7 +296,7 @@ public class ReactionEngine : MonoBehaviour {
     return null;
   }
 	
-    public ArrayList getMoleculesFromMedium(int id) {
+	public Dictionary<string, Molecule> getMoleculesFromMedium(int id) {
         //"warn" parameter is true to indicate that there is no such Medium
         //as the one needed to get molecules
     Medium medium = LinkedListExtensions.Find<Medium>(

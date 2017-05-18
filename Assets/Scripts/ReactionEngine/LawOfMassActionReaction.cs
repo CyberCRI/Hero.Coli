@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class LawOfMassActionReaction : IReaction
+public class LawOfMassActionReaction : Reaction
 {
     // rate
     private float r = 0;
@@ -29,7 +30,7 @@ public class LawOfMassActionReaction : IReaction
         k = A * Mathf.Exp(-Ea / (R * T));
     }
 
-    private void compute_r(ArrayList molecules)
+	private void compute_r(Dictionary<string, Molecule> molecules)
     {
         r = k;
         Molecule mol;
@@ -40,7 +41,7 @@ public class LawOfMassActionReaction : IReaction
         }
     }
 
-    public override void react(ArrayList molecules)
+    public override void react(Dictionary<string, Molecule> molecules)
     {
         Molecule mol;
         if (0 == k)

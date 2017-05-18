@@ -349,11 +349,11 @@ public class Device : DNABit
         return reactions;
     }
 
-    public LinkedList<IReaction> getReactions()
+    public LinkedList<Reaction> getReactions()
     {
         // Debug.Log(this.GetType() + " getReactions(); device="+this);
 
-        LinkedList<IReaction> reactions = new LinkedList<IReaction>();
+        LinkedList<Reaction> reactions = new LinkedList<Reaction>();
         LinkedList<PromoterProperties> props = new LinkedList<PromoterProperties>(getPromoterReactions());
         foreach (PromoterProperties promoterProps in props)
         {
