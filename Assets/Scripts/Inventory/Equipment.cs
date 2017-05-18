@@ -66,10 +66,10 @@ public class Equipment : DeviceContainer
     {
         // Debug.Log(this.GetType() + " addToReactionEngine reactions from device "+device.getInternalName()+" ("+device.ToString ()+")");
 
-        LinkedList<IReaction> reactions = device.getReactions();
+        LinkedList<Reaction> reactions = device.getReactions();
         // Debug.Log(this.GetType() + " addToReactionEngine reactions="+Logger.ToString<IReaction>(reactions)+" from "+device);
 
-        foreach (IReaction reaction in reactions)
+        foreach (Reaction reaction in reactions)
         {
             // Debug.Log(this.GetType() + " addToReactionEngine adding reaction="+reaction);
             _reactionEngine.addReactionToMedium(_characterMediumID, reaction);
@@ -114,7 +114,7 @@ public class Equipment : DeviceContainer
     {
         // Debug.Log(this.GetType() + " removeFromReactionEngine reactions from device "+device);
 
-        LinkedList<IReaction> reactions = device.getReactions();
+        LinkedList<Reaction> reactions = device.getReactions();
         // Debug.Log(this.GetType() + " removeFromReactionEngine device implies reactions="+Logger.ToString<IReaction>(reactions));
 
         //LinkedList<Medium> mediums = _reactionEngine.getMediumList();
@@ -124,7 +124,7 @@ public class Equipment : DeviceContainer
         // Debug.Log(this.GetType() + " removeFromReactionEngine initialcharacterReactions="+Logger.ToString<IReaction>(characterReactions)
         //  );
 
-        foreach (IReaction reaction in reactions)
+        foreach (Reaction reaction in reactions)
         {
             // Debug.Log(this.GetType() + " removeFromReactionEngine removing reaction="+reaction);
             _reactionEngine.removeReaction(_characterMediumID, reaction, false);

@@ -7,7 +7,7 @@ public class GraphWindow : MonoBehaviour {
 
   public Camera _VectrosityCam;
   private LinkedList<Curve> _curves;
-  private ArrayList _molecules;
+	private Dictionary<string, Molecule> _molecules;
 
   GraphWindow()
   {
@@ -19,7 +19,7 @@ public class GraphWindow : MonoBehaviour {
     _molecules = medium.getMolecules();
     if (_molecules == null)
       return ;
-    foreach (Molecule mol in _molecules)
+    foreach (Molecule mol in _molecules.Values)
       _curves.AddLast(new Curve(mol, gameObject.GetComponent<Transform>().localPosition, _VectrosityCam));
   }
 
@@ -53,7 +53,7 @@ public class GraphWindow : MonoBehaviour {
   void Update ()
   {
     LinkedListNode<Curve> node = _curves.First;
-    foreach (Molecule mol in _molecules)
+    foreach (Molecule mol in _molecules.Values)
       {
         Vector2 p = new Vector2((float)Time.timeSinceLevelLoad*100f, mol.getConcentration());
 //         Debug.Log(this.GetType() + " " + ps);

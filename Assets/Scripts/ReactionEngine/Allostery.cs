@@ -8,6 +8,9 @@ using System.Xml;
   
   \sa Allostery
  */
+using System.Collections.Generic;
+
+
 public class AllosteryProperties
 {
   public string name;
@@ -62,7 +65,7 @@ See example of definition :
     
     
  */
-public class Allostery : IReaction
+public class Allostery : Reaction
 {
   private string _effector;             //! The name of the effector
   private float _K;                     //! The binding affinity between the effector and the protein
@@ -100,7 +103,7 @@ public class Allostery : IReaction
     \brief Checks that two reactions have the same Allostery field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool PartialEquals(IReaction reaction)
+  protected override bool PartialEquals(Reaction reaction)
   {
     Allostery allostery = reaction as Allostery;
     return (allostery != null)
@@ -119,7 +122,7 @@ public class Allostery : IReaction
     \param props Properties of the reaction
     \return This function return a new Allostery reaction or null if props is null
    */
-  public static IReaction       buildAllosteryFromProps(AllosteryProperties props)
+  public static Reaction       buildAllosteryFromProps(AllosteryProperties props)
   {
     if (props == null)
       return null;
@@ -154,7 +157,7 @@ public class Allostery : IReaction
     Reference : http://2007.igem.org/wiki/index.php?title=ETHZ/Model#Mathematical_Model
     \param molecules Molecule list of the medium where the reaction take place
    */
-  public override void react(ArrayList molecules)
+	public override void react(Dictionary<string, Molecule> molecules)
   {
     if (!_isActive)
       return;

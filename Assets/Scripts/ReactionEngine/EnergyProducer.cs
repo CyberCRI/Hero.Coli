@@ -10,7 +10,10 @@ using UnityEngine;
   real reactions you can create a new reaction that inherit from IReaction class.
   
  */
-public class ATPProducer : IReaction
+using System.Collections.Generic;
+
+
+public class ATPProducer : Reaction
 {
   private float _production;            //!< Production speed
 
@@ -33,7 +36,7 @@ public class ATPProducer : IReaction
     \brief Checks that two reactions have the same ATPProducer field values.
     \param reaction The reaction that will be compared to 'this'.
    */
-  protected override bool PartialEquals(IReaction reaction)
+  protected override bool PartialEquals(Reaction reaction)
   {
     ATPProducer producer = reaction as ATPProducer;
     return (producer != null)
@@ -45,7 +48,7 @@ public class ATPProducer : IReaction
     \brief This function is called at each step of time.
     \param molecules The list of molecules in the medium (useless here)
    */
-  public override void react(ArrayList molecules)
+  public override void react(Dictionary<string, Molecule> molecules)
   {
     //TODO this should depend on Time.deltaTime
     _medium.addEnergy(_production * _reactionSpeed * ReactionEngine.reactionSpeed * Time.deltaTime);

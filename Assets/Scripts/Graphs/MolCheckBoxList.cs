@@ -24,10 +24,10 @@ public class MolCheckBoxList : MonoBehaviour {
     int i = 1;
     if (_medium == null)
       return ;
-    ArrayList molecules = _medium.getMolecules();
+    var molecules = _medium.getMolecules();
     if (molecules == null)
       return ;
-    foreach (Molecule mol in molecules)
+    foreach (Molecule mol in molecules.Values)
       {
         Vector3 pos = new Vector3(gameObject.transform.position.x - 0.14f, gameObject.transform.position.y + i * 0.05f - 0.07f, gameObject.transform.position.z);
 
