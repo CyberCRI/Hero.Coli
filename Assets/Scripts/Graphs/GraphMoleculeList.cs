@@ -305,9 +305,8 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         foreach (var molecule in _moleculesDictionary.Values)
         {
             // Debug.Log(this.GetType() + " initializeMolecules treating " + ((Molecule)molecule).getName());
-            _molecule = molecule;
-            _molecule.refreshTranslation();
-            _molecules.Add(_molecule, null);
+            molecule.refreshTranslation();
+            _molecules.Add(molecule, null);
         }
     }
 

@@ -1,6 +1,6 @@
 public class SettingsMainMenuItemArray : MainMenuItemArray
 {
-	// graphics: all but webgl
+	// graphics: all but webgl & android
 	// controls: all but android
 
 	void setAndroidDisplay()
@@ -8,16 +8,20 @@ public class SettingsMainMenuItemArray : MainMenuItemArray
 		GraphicsOptionsMainMenuItem graphicsButton = getItemOfType<GraphicsOptionsMainMenuItem>();
 		SoundOptionMainMenuItem soundButton = getItemOfType<SoundOptionMainMenuItem>();
 		ControlsMainMenuItem controlsButton = getItemOfType<ControlsMainMenuItem>();
-		float relativeOffsetY = controlsButton.GetComponent<UIAnchor>().relativeOffset.y;
-		controlsButton.gameObject.SetActive (false);
-
 		BackMainMenuItem backButton = getItemOfType<BackMainMenuItem> ();
-		backButton.GetComponent<UIAnchor> ().relativeOffset.y = relativeOffsetY;
 
-		this._items = new MainMenuItem[3];
-		this._items[0] = graphicsButton;
-		this._items[1] = soundButton;
-		this._items[2] = backButton;
+		float graphicsRelativeOffsetY = graphicsButton.GetComponent<UIAnchor>().relativeOffset.y;
+		float soundRelativeOffsetY = graphicsButton.GetComponent<UIAnchor>().relativeOffset.y;
+		
+		controlsButton.gameObject.SetActive (false);
+		graphicsButton.gameObject.SetActive (false);
+
+		soundButton.GetComponent<UIAnchor>().relativeOffset.y = graphicsRelativeOffsetY;
+		backButton.GetComponent<UIAnchor> ().relativeOffset.y = soundRelativeOffsetY;
+
+		this._items = new MainMenuItem[2];
+		this._items[0] = soundButton;
+		this._items[1] = backButton;
 	}
 
 	void setWebPlayerDisplay()
@@ -47,9 +51,11 @@ public class SettingsMainMenuItemArray : MainMenuItemArray
 
 	void Start()
 	{
-#if UNITY_WEBPLAYER && !UNITY_EDITOR
+#if UNITY_EDITOR
+
+#elif UNITY_WEBPLAYER
 		setWebPlayerDisplay(); 
-#elif UNITY_ANDROID && !UNITY_EDITOR
+#elif UNITY_ANDROID
 		setAndroidDisplay();
 #endif
 	}

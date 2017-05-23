@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ResolutionScript : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class ResolutionScript : MonoBehaviour
     public enum RESOLUTION
     {
         NONE,
-        NATIVE,
+        NATIVERESOLUTION,
         WIDTH640 = 640,
         WIDTH800 = 800,
         WIDTH1024 = 1024,
@@ -22,7 +21,7 @@ public class ResolutionScript : MonoBehaviour
     public enum ASPECTRATIO
     {
         NONE,
-        NATIVE,
+        NATIVEASPECTRATIO,
         RATIO43,
         RATIO1610,
         RATIO169
@@ -42,8 +41,8 @@ public class ResolutionScript : MonoBehaviour
         if (resolution != RESOLUTION.NONE)
         {
             // width changes, aspectRatio is fixed
-            Debug.Log(this.GetType() + " setResolution resolution=" + resolution + "=" + ((int)resolution).ToString());
-            int width = resolution == RESOLUTION.NATIVE ? initialWidth : (int)resolution;
+            // Debug.Log(this.GetType() + " setResolution resolution=" + resolution + "=" + ((int)resolution).ToString());
+            int width = resolution == RESOLUTION.NATIVERESOLUTION ? initialWidth : (int)resolution;
             int height = Mathf.RoundToInt(width / this.GetComponent<Camera>().aspect);
             Screen.SetResolution(width, height, true);
         }
@@ -53,7 +52,7 @@ public class ResolutionScript : MonoBehaviour
             float ratio = initialAspectRatio;
             switch (aspectRatio)
             {
-                case ASPECTRATIO.NATIVE:
+                case ASPECTRATIO.NATIVEASPECTRATIO:
                     break;
                 case ASPECTRATIO.RATIO43:
                     ratio = 4f / 3f;
@@ -74,11 +73,11 @@ public class ResolutionScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("ScreenResolution=" + Screen.width + "x" + Screen.height);
+        // Debug.Log("ScreenResolution=" + Screen.width + "x" + Screen.height);
         initialWidth = 0 == initialWidth ? Screen.width : initialWidth;
 
         Camera thisCamera = this.GetComponent<Camera>();
-        Debug.Log("CameraResolution=" + thisCamera.pixelWidth + "x" + thisCamera.pixelHeight);
+        // Debug.Log("CameraResolution=" + thisCamera.pixelWidth + "x" + thisCamera.pixelHeight);
 
         initialAspectRatio = 0 == initialAspectRatio ? thisCamera.aspect : initialAspectRatio;
 

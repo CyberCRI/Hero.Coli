@@ -7,42 +7,32 @@ public class GraphicsOptionMainMenuItem : MainMenuItem
     [SerializeField]
     private ResolutionScript.ASPECTRATIO _ratio;
 
+    private const string _keyPrefix = "MENU.GRAPHICS.";
+
     public override void click()
     {
-        Debug.Log(this.GetType() + " clicked " + itemName);
+        // Debug.Log(this.GetType() + " click " + itemName);
 
-        GameObject[] scripts = Resources.FindObjectsOfTypeAll(typeof(ResolutionScript)) as GameObject[];
-
-        if (null != scripts)
+        GraphicsOptionsMainMenuItemArray array = transform.GetComponentInParent<GraphicsOptionsMainMenuItemArray>();
+        if (null != array)
         {
-            Debug.Log(this.GetType() + " clicked found " + scripts.Length + " scripts");
-
-            foreach (GameObject go in scripts)
-            {
-                ResolutionScript script = go.GetComponent<ResolutionScript>();
-                if (null != script)
-                {
-                    Debug.Log(this.GetType() + " clicked calling setResolution(" + _resolution + ", " + _ratio + ") on go=" + go.name);
-                    script.setResolution(_resolution, _ratio);
-                }
-                else
-                {
-                    Debug.Log(this.GetType() + " clicked failed to find ResolutionScript on go=" + go.name);
-                }
-            }
+            array.applyGraphicsConfiguration(_resolution, _ratio);
         }
         else
         {
-            Debug.LogWarning(this.GetType() + " clicked found 0 scripts");
+            Debug.LogWarning(this.GetType() + " clicked found no parent GraphicsOptionsMainMenuItemArray");
         }
-
-        CustomData data = new CustomData(CustomDataTag.GRAPHICS, _resolution.ToString());
-        data.merge(new CustomData(CustomDataTag.GRAPHICS, _resolution.ToString()));
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, data);
     }
 
     public override void initialize()
     {
-        this.GetComponentInChildren<UILabel>().text = _resolution == ResolutionScript.RESOLUTION.NONE ? _ratio.ToString() : _resolution.ToString();
+        // Debug.Log(this.GetType() + " initialize " + name + " with _resolution=" + _resolution + " and _ratio=" + _ratio + " with " + this.GetComponentInChildren<UILabel>().text);
+        UILocalize localize = this.GetComponentInChildren<UILocalize>();
+        if (null != localize)
+        {
+            localize.key = _resolution == ResolutionScript.RESOLUTION.NONE ? _keyPrefix+_ratio.ToString() : _keyPrefix+_resolution.ToString();
+            localize.Localize();
+        }
+        
     }
 }

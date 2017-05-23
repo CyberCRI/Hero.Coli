@@ -58,7 +58,7 @@ public class BackendManager : MonoBehaviour
 #elif FORCENOTADMIN
         setAdmin(false);
 #endif
-        Debug.Log(this.GetType() + " Start");
+        // Debug.Log(this.GetType() + " Start");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -84,7 +84,7 @@ public class BackendManager : MonoBehaviour
     {
         if (null != _adminTools)
         {
-            Debug.Log(this.GetType() + " adminTools SetActive " + doShow);
+            // Debug.Log(this.GetType() + " adminTools SetActive " + doShow);
             _adminTools.gameObject.SetActive(doShow);
         }
         else
