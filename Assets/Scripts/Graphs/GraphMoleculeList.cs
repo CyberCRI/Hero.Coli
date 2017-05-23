@@ -302,10 +302,10 @@ public class GraphMoleculeList : MonoBehaviour, ILocalizable
         _molecules = new Dictionary<Molecule, DisplayedMolecule>();
 		_moleculesDictionary = _reactionEngine.getMoleculesFromMedium(mediumId);
 
-        foreach (System.Object molecule in _moleculesDictionary)
+        foreach (var molecule in _moleculesDictionary.Values)
         {
             // Debug.Log(this.GetType() + " initializeMolecules treating " + ((Molecule)molecule).getName());
-            _molecule = (Molecule)molecule;
+            _molecule = molecule;
             _molecule.refreshTranslation();
             _molecules.Add(_molecule, null);
         }

@@ -471,20 +471,20 @@ public class GameStateController : MonoBehaviour
                     break;
 
                 case GameState.MainMenu:
-                    if (Input.GetKeyDown(KeyCode.UpArrow))
+					if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
                     {
                         _mainMenu.selectPrevious();
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow))
+					else if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
                     {
                         _mainMenu.selectNext();
                     }
-                    else if (Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
+					else if (Input.GetButtonUp("Submit") || Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                     {
                         // Debug.Log(this.GetType() + " MainMenu Return/KeypadEnter");
                         _mainMenu.getCurrentItem().click();
                     }
-                    else if (Input.GetKeyDown(KeyCode.Escape))
+					else if (Input.GetButtonDown("Cancel"))
                     {
                         _mainMenu.escape();
                     }
@@ -502,7 +502,7 @@ public class GameStateController : MonoBehaviour
                         changeState(GameState.Pause);
                     }
                     //main menu
-                    else if (Input.GetKeyDown(KeyCode.Escape))
+                    else if (Input.GetButtonDown("Cancel"))
                     {
                         goToMainMenuFrom(GameState.Game);
                     }
@@ -532,7 +532,7 @@ public class GameStateController : MonoBehaviour
                     break;
 
                 case GameState.Pause:
-                    if (Input.GetKeyDown(KeyCode.Escape))
+					if (Input.GetButtonDown("Cancel"))
                     {
                         goToMainMenuFrom(GameState.Pause);
                     }
@@ -593,7 +593,7 @@ public class GameStateController : MonoBehaviour
                     break;
 
                 case GameState.End:
-                    if (Input.GetKeyDown(KeyCode.Escape))
+					if (Input.GetButtonDown("Cancel"))
                     {
                         goToMainMenuFrom(GameState.End);
                     }

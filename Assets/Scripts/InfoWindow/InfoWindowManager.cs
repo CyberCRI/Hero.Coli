@@ -213,7 +213,9 @@ public class InfoWindowManager : MonoBehaviour
 
     public static GameStateTarget manageKeyPresses()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)
+		if (Input.GetButtonDown("Submit")
+			|| Input.GetButtonDown("Cancel")
+			|| Input.GetKeyDown(KeyCode.Escape)
            || Input.GetKeyDown(KeyCode.Space)
            || Input.GetKeyDown(KeyCode.Return)
            || Input.GetKeyUp(KeyCode.KeypadEnter)

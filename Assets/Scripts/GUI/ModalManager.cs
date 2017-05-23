@@ -487,7 +487,7 @@ public class ModalManager : MonoBehaviour
             bool keyPressedEventConsumed = false;
 
             //getting out of Pause
-            if ((Input.GetKeyDown(KeyCode.Escape) || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
+            if ((Input.GetButtonDown("Cancel") || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
             {
                 // Debug.Log("ModalManager getting out of pause");
                 ModalManager.unsetModal();
@@ -499,11 +499,11 @@ public class ModalManager : MonoBehaviour
                 if (null != _instance._currentModalElement)
                 {
                     //Modal windows key presses
-                    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
+					if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                     {
                         keyPressedEventConsumed = manageValidateButton();
                     }
-                    else if (Input.GetKeyDown(KeyCode.Escape))
+					else if (Input.GetButtonDown("Cancel"))
                     {
                         if (isCancelButtonActive())
                         {
