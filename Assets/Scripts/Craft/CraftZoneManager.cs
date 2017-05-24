@@ -65,7 +65,8 @@ public class CraftZoneManager : MonoBehaviour
     private int _slotCount;
     [SerializeField]
     private GameObject _slotPrefab;
-    private const string _slotNameRoot = "slot";
+    public const string _brickNameRoot = "brick";
+    public const string _slotNameRoot = "slot";
     [HideInInspector]
     public Transform slotsGrid;
     private LinkedList<CraftZoneDisplayedBioBrick> _currentDisplayedBricks = new LinkedList<CraftZoneDisplayedBioBrick>();
