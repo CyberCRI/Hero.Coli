@@ -85,6 +85,7 @@ public class Character : CellAnimator
 
     public IconAnimation lifeAnimation;
     public IconAnimation energyAnimation;
+	public AudioClip respawnSound;
     private Medium _medium;
     public Medium medium
     {
@@ -556,6 +557,7 @@ public class Character : CellAnimator
 
     void respawn(CellControl cc)
     {
+		SoundManager.instance.PlaySound (respawnSound);
         enableEyes(true);
 
         foreach (GameObject flagellum in _flagella)

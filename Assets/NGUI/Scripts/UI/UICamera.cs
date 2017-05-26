@@ -192,10 +192,8 @@ public class UICamera : MonoBehaviour
 	/// Various keys used by the camera.
 	/// </summary>
 
-	public KeyCode submitKey0 = KeyCode.Return;
-	public KeyCode submitKey1 = KeyCode.JoystickButton0;
-	public KeyCode cancelKey0 = KeyCode.Escape;
-	public KeyCode cancelKey1 = KeyCode.JoystickButton1;
+	public string submitName = "Submit";
+	public string cancelName = "Cancel";
 
 	public delegate void OnCustomInput ();
 
@@ -767,8 +765,7 @@ public class UICamera : MonoBehaviour
 		if (onCustomInput != null) onCustomInput();
 
 		// Clear the selection on the cancel key, but only if mouse input is allowed
-		if (useMouse && mSel != null && ((cancelKey0 != KeyCode.None && Input.GetKeyDown(cancelKey0)) ||
-			(cancelKey1 != KeyCode.None && Input.GetKeyDown(cancelKey1)))) selectedObject = null;
+		if (useMouse && mSel != null && Input.GetButtonDown("Cancel")) selectedObject = null;
 
 		// Forward the input to the selected object
 		if (mSel != null)
@@ -981,8 +978,8 @@ public class UICamera : MonoBehaviour
 		// If this is an input field, ignore WASD and Space key presses
 		inputHasFocus = (mSel != null && mSel.GetComponent<UIInput>() != null);
 
-		bool submitKeyDown = (submitKey0 != KeyCode.None && Input.GetKeyDown(submitKey0)) || (submitKey1 != KeyCode.None && Input.GetKeyDown(submitKey1));
-		bool submitKeyUp = (submitKey0 != KeyCode.None && Input.GetKeyUp(submitKey0)) || (submitKey1 != KeyCode.None && Input.GetKeyUp(submitKey1));
+		bool submitKeyDown = Input.GetButtonDown("Submit");
+		bool submitKeyUp = Input.GetButtonUp("Submit");
 
 		if (submitKeyDown || submitKeyUp)
 		{
@@ -1020,8 +1017,7 @@ public class UICamera : MonoBehaviour
 		if (useKeyboard && Input.GetKeyDown(KeyCode.Tab)) Notify(mSel, "OnKey", KeyCode.Tab);
 
 		// Send out the cancel key notification
-		if (cancelKey0 != KeyCode.None && Input.GetKeyDown(cancelKey0)) Notify(mSel, "OnKey", KeyCode.Escape);
-		if (cancelKey1 != KeyCode.None && Input.GetKeyDown(cancelKey1)) Notify(mSel, "OnKey", KeyCode.Escape);
+		if (Input.GetButtonDown("Cancel")) Notify(mSel, "OnKey", KeyCode.Escape);
 
 		currentTouch = null;
 	}

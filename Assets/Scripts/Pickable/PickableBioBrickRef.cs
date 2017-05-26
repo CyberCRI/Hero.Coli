@@ -11,6 +11,8 @@ public class PickableBioBrickRef : PickableBioBrick
 	[SerializeField]
 	private int amount = 1;
 
+	private AudioSource pickupSound;
+
 	[SerializeField]
 	private BiobrickDataCount bioBrickDataCount;
 

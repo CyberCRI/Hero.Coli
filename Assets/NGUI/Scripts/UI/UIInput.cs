@@ -371,7 +371,7 @@ public class UIInput : MonoBehaviour
 				}
 				else if (c == '\r' || c == '\n')
 				{
-					if (UICamera.current.submitKey0 == KeyCode.Return || UICamera.current.submitKey1 == KeyCode.Return)
+					if (UICamera.current.submitName == "Submit")
 					{
 						// Not multi-line input, or control isn't held
 						if (!label.multiLine || (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl)))
