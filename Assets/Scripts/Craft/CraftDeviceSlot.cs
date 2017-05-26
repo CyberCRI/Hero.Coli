@@ -230,6 +230,7 @@ public class CraftDeviceSlot : MonoBehaviour
             int index = getIndexFromBrick(brick);
             removeBrick(currentBricks[index]);
             currentBricks[index] = brick;
+            brick.gameObject.name = this.gameObject.name + CraftZoneManager._brickNameRoot + index;
             dummyBrickGameObjectsSprites[index].enabled = false;
 
             checkDevice();

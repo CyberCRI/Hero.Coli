@@ -29,6 +29,11 @@ public class FocusMaskManager : MonoBehaviour
     private Advisor _advisor;
     [HideInInspector]
     public CellControl cellControl;
+    [SerializeField]
+    private UIAnchor _anchor;
+    [SerializeField]
+    private Camera _interfaceCamera;
+    private Camera _worldCamera;
 
     // test code
 #if DEV
@@ -42,7 +47,7 @@ public class FocusMaskManager : MonoBehaviour
     protected static FocusMaskManager _instance;
     public static FocusMaskManager get()
     {
-        // Debug.Log("FocusMaskManager get");
+        // Debug.Log(" FocusMaskManager get");
         if (_instance == null)
         {
             Debug.LogWarning("FocusMaskManager get was badly initialized");
@@ -97,6 +102,7 @@ public class FocusMaskManager : MonoBehaviour
 
     public void focusOn(ExternalOnPressButton target, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
+        // Debug.Log(this.GetType() + " focusOn0 ExternalOnPressButton " + target.name);
         focusOn(target, Vector3.zero, callback, advisorTextKey, scaleToComponent);
     }
 
@@ -104,39 +110,52 @@ public class FocusMaskManager : MonoBehaviour
     {
         if (null != target)
         {
-            // Debug.Log("FocusMaskManager focusOn "+target.name);
+            // Debug.Log(this.GetType() + " focusOn ExternalOnPressButton " + target.name);
             float scaleFactor = computeScaleFactor(scaleToComponent, target.transform.localScale, manualScale);
 
-            focusOn(target.transform.position, callback, scaleFactor, false, advisorTextKey);
+            focusOn(getScreenPosition(_interfaceCamera, target.transform.position), callback, scaleFactor, false, advisorTextKey);
             _target = target;
         }
         else
         {
-            // Debug.Log("FocusMaskManager focusOn null");
+            // Debug.Log(this.GetType() + " focusOn null");
         }
     }
 
     public void focusOn(GameObject go, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
+        // Debug.Log(this.GetType() + " focusOn(GameObject go, Callback callback,...)");
         focusOn(go, Vector3.zero, callback, advisorTextKey, scaleToComponent);
     }
 
     public void focusOn(GameObject go, Vector3 manualScale, Callback callback = null, string advisorTextKey = null, bool scaleToComponent = false)
     {
-        float scaleFactor = computeScaleFactor(scaleToComponent, go.transform.localScale, manualScale);
+        // Debug.Log(this.GetType() + " focusOn(GameObject go, Vector3 manualScale,...)");
 
-        Vector3 position = go.transform.position;
-
-        bool isInterfaceObject = (this.gameObject.layer == go.layer);
-        // Debug.Log("isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
-        if (!isInterfaceObject)
+        if (null != go)
         {
-            Camera camera = GameObject.Find(Character.playerTag).GetComponentInChildren<Camera>();
-            position = camera.WorldToScreenPoint(go.transform.position);
-            position -= focusMask.transform.localScale / 4;
-        }
 
-        focusOn(position, callback, scaleFactor, !isInterfaceObject, advisorTextKey, true);
+            float scaleFactor = computeScaleFactor(scaleToComponent, go.transform.localScale, manualScale);
+
+            bool isInterfaceObject = (this.gameObject.layer == go.layer);
+            // Debug.Log(this.GetType() + " isInterfaceObject=" + isInterfaceObject + " because layer=" + go.layer);
+            Camera camera = _interfaceCamera;
+            if (!isInterfaceObject)
+            {
+                // Debug.Log(this.GetType() + " !isInterfaceObject");
+                _worldCamera = null == _worldCamera ? GameObject.FindWithTag("MainCamera").GetComponentInChildren<Camera>() : _worldCamera;
+                camera = _worldCamera;
+            }
+            else
+            {
+                // Debug.Log(this.GetType() + " isInterfaceObject");
+            }
+            focusOn(getScreenPosition(camera, go.transform.position), callback, scaleFactor, !isInterfaceObject, advisorTextKey, true);
+        }
+        else
+        {
+            Debug.LogWarning(this.GetType() + " focusOn: game object is null");
+        }
     }
 
     float computeScaleFactor(bool scaleToComponent, Vector3 localScale, Vector3 manualScale)
@@ -164,46 +183,56 @@ public class FocusMaskManager : MonoBehaviour
         return result;
     }
 
+    private static Vector2 getScreenPosition(Camera camera, Vector3 gameObjectPosition)
+    {
+        // Debug.Log("FocusMaskManager getScreenPosition");
+        if (null != camera && null != gameObjectPosition)
+        {
+            // Debug.Log("FocusMaskManager getScreenPosition(" + camera.name + "," + gameObjectPosition + ")");
+            Vector3 screenPoint = camera.WorldToScreenPoint(gameObjectPosition);
+            Vector2 screenPosition = new Vector2(screenPoint.x / camera.pixelWidth - 0.5f, screenPoint.y / camera.pixelHeight - 0.5f);
+            // Debug.Log("FocusMaskManager getScreenPosition(" + camera.name + "," + gameObjectPosition + ") result=" + screenPosition);
+            return screenPosition;
+        }
+        else
+        {
+            Debug.LogWarning("FocusMaskManager getScreenPosition: null parameter");
+            return Vector2.zero;
+        }
+    }
+
     // TODO add bool argument to force updated positioning of focus mask and arrow to prevent misplacement bugs
     // cf issue #345
-    public void focusOn(Vector3 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showButton = false)
+    // position.x and position.y are in [0,1]
+    public void focusOn(Vector2 position, Callback callback = null, float scaleFactor = 1f, bool local = true, string advisorTextKey = null, bool showButton = false)
     {
-        // Debug.Log("focusOn("+position+")");
-        if (null != position)
+        // Debug.Log(this.GetType() + " focusOn(" + position + ")");
+        if (null != position
+            && position.x >= -1
+            && position.x <= 1
+            && position.y >= -1
+            && position.y <= 1
+            )
         {
             reset(true);
 
             _target = null;
 
-            // Debug.Log("old pos="+this.transform.position);
-
-            Vector3 newPosition;
-            if (local)
-            {
-                newPosition = new Vector3(position.x, position.y, this.transform.localPosition.z);
-                this.transform.localPosition = newPosition;
-            }
-            else
-            {
-                newPosition = new Vector3(position.x, position.y, this.transform.position.z);
-                this.transform.position = newPosition;
-            }
-            // Debug.Log("new glopos="+this.transform.position);
-            // Debug.Log("new pos="+newPosition);
+            _anchor.relativeOffset = position;
 
             if (1f != scaleFactor)
             {
-                // Debug.Log("will scale focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale+" with factor="+scaleFactor);
+                // Debug.Log(this.GetType() + " will scale focusMask=" + focusMask.transform.localScale + " and hole=" + hole.transform.localScale + " with factor=" + scaleFactor);
                 focusMask.transform.localScale = scaleFactor * _baseFocusMaskScale;
                 hole.transform.localScale = scaleFactor * _baseHoleScale;
-                // Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
+                // Debug.Log(this.GetType() + " now focusMask=" + focusMask.transform.localScale + " and hole=" + hole.transform.localScale);
             }
             else
             {
-                // Debug.Log("will scale back focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);
+                // Debug.Log(this.GetType() + " will scale back focusMask=" + focusMask.transform.localScale + " and hole=" + hole.transform.localScale);
                 focusMask.transform.localScale = _baseFocusMaskScale;
                 hole.transform.localScale = _baseHoleScale;
-                // Debug.Log("now focusMask="+focusMask.transform.localScale+" and hole="+hole.transform.localScale);                
+                // Debug.Log(this.GetType() + " now focusMask=" + focusMask.transform.localScale + " and hole=" + hole.transform.localScale);
             }
 
             pointAt(position);
@@ -247,14 +276,14 @@ public class FocusMaskManager : MonoBehaviour
         _advisor.gameObject.SetActive(show);
         if (null != cellControl)
         {
-            // Debug.Log(this.GetType() + "show("+show+") freezePlayer("+show+")");
+            // Debug.Log(this.GetType() + " show(" + show + ") freezePlayer(" + show + ")");
             cellControl.freezePlayer(show);
         }
     }
 
     public void reset(bool keepDisplayed)
     {
-        // Debug.Log("FocusMaskManager reinitialize");
+        // Debug.Log(this.GetType() + " reinitialize");
         this.gameObject.SetActive(true);
         show(keepDisplayed);
         clickBlocker.SetActive(keepDisplayed);

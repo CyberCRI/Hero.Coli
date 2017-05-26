@@ -92,7 +92,6 @@ public class GameStateController : MonoBehaviour
 	private Scorekeeper _scorekeeper;
 
 	public const string keyPrefix = "KEY.";
-	// public const string _inventoryKey = keyPrefix + "INVENTORY";
 	public const string _craftingKey = keyPrefix + "CRAFTING";
 	public const string _pauseKey = keyPrefix + "PAUSE";
 	public const string _sandboxKey = keyPrefix + "SANDBOX";
@@ -510,24 +509,12 @@ public class GameStateController : MonoBehaviour
 						case GUITransitioner.GameScreen.screen1:
 							break;
 						case GUITransitioner.GameScreen.screen2:
-                                    // if (isShortcutKeyDown(_inventoryKey) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
-                                    // {
-                                    //     Debug.Log(this.GetType() + " Update out of inventory key pressed");
-                                    //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
-                                    // }
-                                    // else
 							if (((isShortcutKeyDown (_craftingKey) || Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update inventory to craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
 							}
 							break;
 						case GUITransitioner.GameScreen.screen3:
-                                    // if (isShortcutKeyDown(_inventoryKey) && Inventory.isOpenable())
-                                    // {
-                                    //     Debug.Log(this.GetType() + " Update craft to inventory key pressed");
-                                    //     gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen2);
-                                    // }
-                                    // else 
 							if (
 								(isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting") || Input.GetKeyDown (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) && canPressCraftShortcut ()
 								&& canPressCraftShortcut ()) {

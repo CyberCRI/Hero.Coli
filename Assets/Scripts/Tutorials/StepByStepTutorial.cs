@@ -24,10 +24,13 @@ public abstract class StepByStepTutorial : MonoBehaviour
     protected const string _craftResultPrefix = "c_";
     protected const string _GFPdevice1 = "PRCONS:RBS3:FLUO1:DTER";
     protected const string _GFPdevice2 = "PRCONS:RBS2:FLUO1:DTER";
-    protected const string _slotBaseName = "slot";
+    protected const string _craftSlotBrickBaseName = CraftZoneManager._brickNameRoot;
+    protected const string _slotBaseName = CraftZoneManager._slotNameRoot;
     protected const string _slotSelectionSpriteSuffix = "SelectionSprite";
+    
     protected const string _craftSlot1 = _slotBaseName + "0" + _slotSelectionSpriteSuffix;
     protected const string _craftSlot2 = _slotBaseName + "1" + _slotSelectionSpriteSuffix;
+    protected const string _craftSlot1Brick1 = _craftSlot1 + _craftSlotBrickBaseName + "0";
     protected const string _PBAD3Brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "PRBAD3";
     protected const string _RBS2brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "RBS2";
     protected const string _RBS1brick = AvailableDisplayedBioBrick._availableDisplayedPrefix + "RBS1";
@@ -89,10 +92,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
     void Start()
     {
         // Debug.Log(this.GetType() + "Start");
-        // if (null == focusMaskManager)
-        // {
         focusMaskManager = FocusMaskManager.get();
-        // }
     }
 
     protected virtual bool skipStep(int step)
@@ -119,7 +119,7 @@ public abstract class StepByStepTutorial : MonoBehaviour
                     }
                     else
                     {
-                        // Debug.Log(this.GetType() + " preparing step " + step + " searching for " + focusObjects[step]);
+                        // Debug.Log(this.GetType() + " preparing step " + _step + " searching for " + focusObjects[_step]);
                         GameObject go = GameObject.Find(focusObjects[_step]);
                         if (go == null)
                         {
@@ -128,19 +128,19 @@ public abstract class StepByStepTutorial : MonoBehaviour
                         }
                         else
                         {
-                            // Debug.Log(this.GetType() + " go != null at step=" + step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
+                            // Debug.Log(this.GetType() + " go != null at step=" + _step + ", go.transform.position=" + go.transform.position + " & go.transform.localPosition=" + go.transform.localPosition);
                             ExternalOnPressButton target = go.GetComponent<ExternalOnPressButton>();
                             if (null != target)
                             {
-                                // Debug.Log(this.GetType() + " target != null at step=" + step);
-                                focusMaskManager.focusOn(target, next, textHints[_step]);
+                                // Debug.Log(this.GetType() + " target != null at step=" + _step);
+                                focusMaskManager.focusOn(target, next, textHints[_step], true);
                             }
                             else
                             {
-                                // Debug.Log(this.GetType() + " target == null at step=" + step);
+                                // Debug.Log(this.GetType() + " target == null at step=" + _step);
                                 focusMaskManager.focusOn(go, next, textHints[_step], true);
                             }
-                            // Debug.Log(this.GetType() + " prepared step=" + step);
+                            // Debug.Log(this.GetType() + " prepared step=" + _step);
                             prepared = true;
                         }
                     }
