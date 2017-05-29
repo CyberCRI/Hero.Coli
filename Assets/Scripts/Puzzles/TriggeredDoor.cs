@@ -14,6 +14,9 @@ public class TriggeredDoor : TriggeredBehaviour
     [SerializeField]
     private bool _preventReset = false;
 
+	public PlayableSound doorOpenSound;
+	public PlayableSound doorCloseSound;
+
     // TODO switch/channeling mode
     // // If true, switch mode: the door opens completely however short the entering collision was.
     // // Otherwise, channeling mode: the player has to wait in the collider for the door to completely open.
@@ -67,6 +70,8 @@ public class TriggeredDoor : TriggeredBehaviour
     void openDoor()
     {
         // Debug.Log(this.GetType() + " openDoor");
+		if (!_isDoorOpening)
+			doorOpenSound.Play();
         _isDoorOpening = true;
         _isDoorClosing = false;
         iTween.MoveTo(gameObject, generateOpenHash());
@@ -104,6 +109,8 @@ public class TriggeredDoor : TriggeredBehaviour
     private void closeDoor()
     {
         // Debug.Log(this.GetType() + " closeDoor");
+		if (!_isDoorClosing)
+			doorCloseSound.Play();
         _isDoorOpening = false;
         _isDoorClosing = true;
         iTween.MoveTo(gameObject, generateCloseHash());

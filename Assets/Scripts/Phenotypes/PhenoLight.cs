@@ -22,6 +22,9 @@ public class PhenoLight : Phenotype
     private TriggeredLightEmitter _triggered;
     private TriggeredLightEmitter _lm;
 
+	public PlayableSound illuminateSound;
+	public PlayableSound darkIlluminateSound;
+
     private const float _maxConcentration = 270f, _maxValue = 8f;
     private const float _steepness = _maxValue / _maxConcentration;
 
@@ -58,6 +61,10 @@ public class PhenoLight : Phenotype
                 {
                     if (!_isSystemTriggered)
                     {
+						if (_blackLightSpotLight.enabled)
+							darkIlluminateSound.PlayIfNotPlayed ();
+						else
+							illuminateSound.PlayIfNotPlayed ();
                         turnLightOn();
                     }
                     else
