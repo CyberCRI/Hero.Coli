@@ -90,7 +90,15 @@ public class SoundManager : MonoBehaviour
 	[Tooltip ("The audio mixer group associated with UI sounds")]
 	public AudioMixerGroup UIsoundsMixerGroup;
 
+	void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
 
+	void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
 
 	void Awake ()
 	{
@@ -121,14 +129,6 @@ public class SoundManager : MonoBehaviour
 			var audio = _soundsAudio [key];
 			Destroy (audio.audioSource);
 			_soundsAudio.Remove (key);
-		}
-
-		// Stop and remove all UI sound fx
-		keys = new List<int> (_UISoundsAudio.Keys);
-		foreach (int key in _UISoundsAudio.Keys) {
-			Audio audio = _UISoundsAudio [key];
-			Destroy (audio.audioSource);
-			_UISoundsAudio.Remove (key);
 		}
 	}
 
@@ -198,9 +198,9 @@ public class SoundManager : MonoBehaviour
 	void OnApplicationPause (bool pauseStatus)
 	{
 		if (pauseStatus)
-			PauseAllSounds ();
+			PauseAll ();
 		else
-			ResumeAllSounds ();
+			ResumeAll ();
 	}
 
 

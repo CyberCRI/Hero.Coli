@@ -11,7 +11,7 @@ public class PlaySoundOnTrigger : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.tag == Character.playerTag) {
-			SoundManager.instance.PlayUISound (sound.clip, sound.volume);
+			sound.Play ();
 		}
 	}
 }

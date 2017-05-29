@@ -124,6 +124,8 @@ public class Audio
 		this.audioSource.loop = loop;
 		this.audioSource.pitch = minPitch < maxPitch ? Random.Range (minPitch, maxPitch) : minPitch;
 		this.audioSource.volume = 0.0f;
+		this.audioSource.maxDistance = 100.0f;
+		this.audioSource.rolloffMode = AudioRolloffMode.Custom;
 		switch (this._audioType) {
 			case AudioType.Music:
 				this.audioSource.outputAudioMixerGroup = SoundManager.instance.musicMixerGroup;

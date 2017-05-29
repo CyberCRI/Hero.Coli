@@ -79,7 +79,7 @@ public class GameConfiguration
     private static float _baseVolume
         = -1;
     private static BoolConfigurationParameter _isSoundOn
-        = new BoolConfigurationParameter(false, false, _isSoundOnKey, onSoundChanged);
+        = new BoolConfigurationParameter(true, true, _isSoundOnKey, onSoundChanged);
     private static IntConfigurationParameter _furthestChapterReached
         = new IntConfigurationParameter(0, 0, _furthestChapterReachedKey);
     private static FloatConfigurationParameter[] _bestTimes
