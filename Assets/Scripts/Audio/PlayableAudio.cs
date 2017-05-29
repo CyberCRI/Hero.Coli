@@ -16,6 +16,8 @@ public abstract class PlayableAudio {
 	[Range(0.0f, 1.0f)]
 	public float volume = 1.0f;
 
+	protected int audioId = -1;
+
 	public Audio.AudioType audioType {
 		get {
 			return GetAudioType ();
@@ -25,6 +27,8 @@ public abstract class PlayableAudio {
 	protected abstract Audio.AudioType GetAudioType();
 
 	public abstract void Play();
+
+	public abstract void Stop();
 }
 
 [System.Serializable]
@@ -78,7 +82,14 @@ public class PlayableMusic : PlayableAudio {
 	public void Play (Transform transform)
 	{
 		if (clip != null)
-			SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicFadeOut, transform);
+			audioId = SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicFadeOut, transform);
+	}
+
+	public override void Stop ()
+	{
+		var audio = SoundManager.instance.GetAudio (audioId);
+		if (audio != null)
+			audio.Stop ();
 	}
 }
 
@@ -111,7 +122,7 @@ public class PlayableSound : PlayableAbstractSound
 	/// Whether the audio will be lopped
 	/// </summary>
 	[Tooltip("Whether the audio will be looped")]
-	public bool loop = true;
+	public bool loop = false;
 
 	protected override Audio.AudioType GetAudioType ()
 	{
@@ -123,10 +134,29 @@ public class PlayableSound : PlayableAbstractSound
 		Play(sourceTransform);
 	}
 
+	public void PlayIfNotPlayed()
+	{
+		PlayIfNotPlayed (sourceTransform);
+	}
+
+	public void PlayIfNotPlayed(Transform sourceTransform)
+	{
+		if (clip != null && SoundManager.instance.GetSoundAudio(audioId) == null)
+			audioId = SoundManager.instance.PlaySound (clip, volume, loop, minPitch, maxPitch, sourceTransform);
+	}
+
 	public void Play(Transform sourceTransform)
 	{
 		if (clip != null)
-			SoundManager.instance.PlaySound (clip, volume, loop, minPitch, maxPitch, sourceTransform);
+			audioId = SoundManager.instance.PlaySound (clip, volume, loop, minPitch, maxPitch, sourceTransform);
+	}
+		
+	public override void Stop ()
+	{
+		var audio = SoundManager.instance.GetAudio (audioId);
+		if (audio != null) {
+			audio.Stop ();
+		}
 	}
 }
 
@@ -141,6 +171,13 @@ public class PlayableUISound : PlayableAbstractSound
 	public override void Play ()
 	{
 		if (clip != null)
-			SoundManager.instance.PlayUISound (clip, volume, minPitch, maxPitch);
+			audioId = SoundManager.instance.PlayUISound (clip, volume, minPitch, maxPitch);
+	}
+
+	public override void Stop ()
+	{
+		var audio = SoundManager.instance.GetAudio (audioId);
+		if (audio != null)
+			audio.Stop ();
 	}
 }

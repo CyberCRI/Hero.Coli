@@ -158,10 +158,7 @@ public class Audio
 			CreateAudioSource (_initClip, loop, _minPitch, _maxPitch);
 		}
 
-		if (this._audioType == AudioType.UISound)
-			this.audioSource.PlayOneShot (this.audioSource.clip);
-		else
-			this.audioSource.Play ();
+		this.audioSource.Play ();
 		this.playing = true;
 
 		this._fadeInterpolater = 0.0f;

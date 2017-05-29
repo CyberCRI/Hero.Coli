@@ -16,7 +16,7 @@ public class NanobotsPickUpHandler : MonoBehaviour
             RedMetricsManager.get().sendEvent(TrackingEvent.PICKUP, data);
             if (_pickedUpNumber == 1)
             {
-                ModalManager.setModal("T1_NANOBOT");
+				ModalManager.setModal("T1_NANOBOT", true, false);
             }
             _nanoCounter = (null == _nanoCounter) ? GameObject.Find("NanobotsIndicator").GetComponent<NanobotsCounter>() : _nanoCounter;
             _nanoCounter.updateLabel(_pickedUpNumber);

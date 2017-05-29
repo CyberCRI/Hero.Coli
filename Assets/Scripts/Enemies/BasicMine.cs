@@ -13,7 +13,7 @@ public class BasicMine : ResettableMine
         detonate();
         if (collision.gameObject.name == Character.gameObjectName)
         {
-            Character.get().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.MINE.ToString()));
+            Character.get().kill(CustomDataValue.MINE);
         }
         else if (collision.gameObject.tag == "NPC")
         {

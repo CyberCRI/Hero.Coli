@@ -4,7 +4,7 @@ using System.Collections;
 public class DelayedFlagellaBacteriumSelector : BacteriumSelector
 {
     [SerializeField]
-    private string _redmetricsName;
+	private CustomDataValue _redmetricsName;
     [SerializeField]
     private int _requiredFlagellaCount;
     [SerializeField]
@@ -26,7 +26,7 @@ public class DelayedFlagellaBacteriumSelector : BacteriumSelector
     private IEnumerator kill()
     {
         yield return new WaitForSeconds(_delay);
-        Character.get().kill(new CustomData(CustomDataTag.SOURCE, _redmetricsName));
+        Character.get().kill(_redmetricsName);
         yield return null;
     }
 }

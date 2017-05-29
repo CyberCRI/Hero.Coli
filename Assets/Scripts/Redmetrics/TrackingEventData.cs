@@ -169,6 +169,8 @@ public enum CustomDataValue
     NOENERGY,           // no energy left
     AMPICILLIN,         // ampicillin toxins - walls or self-production
     MULTIPLE,           // multiple non instant-death causes: NOENERGY & AMPICILLIN
+	AMPICILLINWALL1,	// ampicilin wall 1
+	AMPICILLINWALL2,	// ampicilin wall 2
     UNKNOWN,            // ?
 
     GAME,               // source of event: some events can be triggered from game or webpage

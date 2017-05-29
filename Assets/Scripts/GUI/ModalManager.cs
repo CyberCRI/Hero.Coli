@@ -23,6 +23,7 @@ public class ModalManager : MonoBehaviour
     }
 
 	public PlayableUISound unsetModalSound;
+	public PlayableUISound setModalSound;
 
     void Awake()
     {
@@ -382,7 +383,7 @@ public class ModalManager : MonoBehaviour
     public static void setModal(GameObject guiComponent,
                                 bool lockPause = true,
                                 GameObject validateButton = null, string validateButtonClass = null,
-                                GameObject cancelButton = null, string cancelButtonClass = null
+		GameObject cancelButton = null, string cancelButtonClass = null, bool playSound = true
                                 )
     {
         //hide previous modal component
@@ -403,6 +404,8 @@ public class ModalManager : MonoBehaviour
         //                                ));
         if (null != guiComponent)
         {
+			if (playSound)
+				_instance.setModalSound.Play ();
             Vector3 position = guiComponent.transform.localPosition;
             _instance._previousZ = position.z;
             guiComponent.transform.localPosition = new Vector3(position.x, position.y, _instance.foregroundZ);
@@ -421,7 +424,7 @@ public class ModalManager : MonoBehaviour
         }
     }
 
-    public static bool setModal(string code, bool lockPause = true)
+	public static bool setModal(string code, bool lockPause = true, bool playSound = true)
     {
 #if QUICKTEST
         return true;
@@ -434,7 +437,8 @@ public class ModalManager : MonoBehaviour
                          _instance._validateButton,
                          _instance._validateButtonClass,
                          _instance._cancelButton,
-                         _instance._cancelButtonClass
+                         _instance._cancelButtonClass,
+						playSound
                          );
 
             return true;

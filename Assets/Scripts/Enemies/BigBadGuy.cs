@@ -119,7 +119,7 @@ public class BigBadGuy : MonoBehaviour
             if (null != character)
             {
                 // Debug.Log(this.GetType() + " OnCollisionEnter hit character");
-                character.kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.ENEMY.ToString()));
+				character.kill(CustomDataValue.ENEMY);
             }
         }
     }

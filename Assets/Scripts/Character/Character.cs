@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 public class Character : CellAnimator
@@ -31,12 +32,6 @@ public class Character : CellAnimator
         }
         return _instance;
     }
-
-	public AudioClip movementSound;
-	[Range(0.0f, 1.0f)]
-	public float movementSoundVolume;
-	public float movementSoundPitchMin;
-	public float movementSoundPitchMax;
 
     void Awake()
     {
@@ -88,11 +83,19 @@ public class Character : CellAnimator
     private AmbientLighting _ambientLighting;
     [SerializeField]
     private GameObject _savedCellPrefab;
-    private CustomData _deathData;
+    private CustomDataValue _deathData;
 
     public IconAnimation lifeAnimation;
     public IconAnimation energyAnimation;
-	public AudioClip respawnSound;
+	public PlayableSound respawnSound;
+	public PlayableSound deathSound;
+	public PlayableSound deathMineSound;
+	public PlayableSound deathCrushSound;
+	public PlayableSound deathNoEnergySound;
+	public PlayableSound deathSuicideSound;
+	public PlayableSound deathEnemySound;
+	public PlayableSound hurtAntibiotics;
+	public PlayableSound deathAmpicilinSound;
     private Medium _medium;
     public Medium medium
     {
@@ -185,7 +188,7 @@ public class Character : CellAnimator
         }
     }
 
-    public void kill(CustomData data)
+    public void kill(CustomDataValue data)
     {
         // report the cause of death to RedMetrics
         _deathData = data;
@@ -340,12 +343,12 @@ public class Character : CellAnimator
                     {
                         Debug.LogError("unknown death cause");
                     }
-                    _deathData = new CustomData(CustomDataTag.SOURCE, deathCause.ToString());
+                    _deathData = deathCause;
                 }
 
-                RedMetricsManager.get().sendRichEvent(TrackingEvent.DEATH, _deathData, getLastCheckpointName());
-                _deathData = null;
+				RedMetricsManager.get().sendRichEvent(TrackingEvent.DEATH, new CustomData(CustomDataTag.SOURCE, _deathData.ToString()), getLastCheckpointName());
                 StartCoroutine(RespawnCoroutine());
+				_deathData = CustomDataValue.UNKNOWN;
             }
             float life = _lifeManager.getLife();
             if (_lifeManager.getLife() <= 0.95f)
@@ -510,6 +513,29 @@ public class Character : CellAnimator
 
     IEnumerator deathEffectCoroutine(CellControl cc)
     {
+		switch (_deathData) {
+		case CustomDataValue.ENEMY:
+			deathEnemySound.Play ();
+			break;
+		case CustomDataValue.MINE:
+			deathMineSound.Play ();
+			break;
+		case CustomDataValue.CRUSHED:
+			deathCrushSound.Play ();
+			break;
+		case CustomDataValue.SUICIDEBUTTON:
+			deathSuicideSound.Play ();
+			break;
+		case CustomDataValue.NOENERGY:
+			deathNoEnergySound.Play();
+			break;
+		case CustomDataValue.AMPICILLIN:
+			deathAmpicilinSound.Play();
+			break;
+		default:
+			deathSound.Play();
+			break;
+		}
         cc.enabled = false;
 
         iTween.ScaleTo(gameObject, _optionsOut);
@@ -564,7 +590,7 @@ public class Character : CellAnimator
 
     void respawn(CellControl cc)
     {
-		SoundManager.instance.PlaySound (respawnSound);
+		respawnSound.Play ();
         enableEyes(true);
 
         foreach (GameObject flagellum in _flagella)

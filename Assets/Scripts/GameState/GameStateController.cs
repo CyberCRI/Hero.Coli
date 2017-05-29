@@ -106,6 +106,11 @@ public class GameStateController : MonoBehaviour
 			return _gameState;
 		}
 	}
+	public bool isInCraftScreen {
+		get {
+			return gUITransitioner._currentScreen == GUITransitioner.GameScreen.screen3;
+		}
+	}
 	public GUITransitioner gUITransitioner;
 
 	private Fade _fadeSprite;
@@ -487,7 +492,7 @@ public class GameStateController : MonoBehaviour
 				}
 				//suicide
 				else if (Input.GetButtonDown ("Suicide")) {
-					Character.get().kill(new CustomData(CustomDataTag.SOURCE, CustomDataValue.SUICIDEBUTTON.ToString()));
+					Character.get().kill(CustomDataValue.SUICIDEBUTTON);
 				}
                 //crafting
 				else if (((isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {

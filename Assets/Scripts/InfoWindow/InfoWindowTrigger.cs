@@ -11,12 +11,12 @@ public class InfoWindowTrigger : MonoBehaviour {
     _alreadyDisplayed = false;
   }
 
-  protected void displayInfoWindow()
+	protected void displayInfoWindow(bool playSound = true)
   {
     if(!_alreadyDisplayed)
     {
       // Debug.Log(this.GetType() + " call to InfoWindowManager");
-      InfoWindowManager.displayInfoWindow(infoWindowCode);
+      InfoWindowManager.displayInfoWindow(infoWindowCode, playSound);
       _alreadyDisplayed = true;
     }
   }

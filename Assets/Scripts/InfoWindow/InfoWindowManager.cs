@@ -98,14 +98,14 @@ public class InfoWindowManager : MonoBehaviour
         return _instance.infoPanel.activeInHierarchy;
     }
 
-    public static bool displayInfoWindow(string code)
+	public static bool displayInfoWindow(string code, bool playSound = true)
     {
 #if QUICKTEST
         return true;
 #endif
         if (fillInFieldsFromCode(code))
         {
-            ModalManager.setModal(_instance.infoPanel);
+			ModalManager.setModal(_instance.infoPanel, true, null, null, null, null, playSound);
             return true;
         }
         else

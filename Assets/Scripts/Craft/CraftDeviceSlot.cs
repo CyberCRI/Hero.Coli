@@ -24,6 +24,11 @@ public class CraftDeviceSlot : MonoBehaviour
     [SerializeField]
     private BioBricksCollapse _bricksCollapse;
 
+	[SerializeField]
+	private PlayableUISound _successfulCraftSound;
+	[SerializeField]
+	private PlayableUISound _genericCraftSound;
+
     private bool _initialized = false;
 
     private bool _isCollapsingBricks = false;
@@ -266,6 +271,7 @@ public class CraftDeviceSlot : MonoBehaviour
         {
             // Debug.Log(this.GetType() + " checkDevice");
             _isCraftSuccess = (Inventory.get().canAddDevice(getCurrentDevice()) == Inventory.AddingResult.SUCCESS);
+			_isInCraftScreen = GameStateController.get ().isInCraftScreen;
             onBricksCollapsedCallback = OnCollapseAnimationCompleted;
             askCollapseBricks();
             // Debug.Log(this.GetType() + " checkDevice done");
@@ -276,6 +282,7 @@ public class CraftDeviceSlot : MonoBehaviour
         }
     }
     private bool _isCraftSuccess = false;
+	private bool _isInCraftScreen = false;
     public void OnCollapseAnimationCompleted()
     {
         // Debug.Log(this.GetType() + " animateCollapseCompleted");
@@ -284,19 +291,25 @@ public class CraftDeviceSlot : MonoBehaviour
 
         // Debug.Log(this.GetType() + " animateCollapseCompleted _isCraftSuccess="+_isCraftSuccess);
 
-        if (_isCraftSuccess)
-        {
-            // feedback on new listed device
-            CraftFinalizer.get().finalizeCraft();
-            // feedback on crafted device
-            _resultDevice.playFeedback();
+		if (_isCraftSuccess) {
+			// feedback on new listed device
+			CraftFinalizer.get ().finalizeCraft ();
+			// feedback on crafted device
+			_resultDevice.playFeedback ();
 
-            // feedback on new listed device
-            CraftFinalizer.get().finalizeCraft();
+			// feedback on new listed device
+			CraftFinalizer.get ().finalizeCraft ();
 
-            _isCraftSuccess = false;
-        }
+			if (_isInCraftScreen)
+				_successfulCraftSound.Play ();
+
+			_isCraftSuccess = false;
+		} else {
+			if (_isInCraftScreen)
+				_genericCraftSound.Play ();
+		}
         // Debug.Log(this.GetType() + " animateCollapseCompleted done");
+		_isInCraftScreen = false;
     }
 
     public Device getCurrentDevice()

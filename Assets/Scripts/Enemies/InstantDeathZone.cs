@@ -9,7 +9,7 @@ public class InstantDeathZone : MonoBehaviour
     {
         if (Character.playerTag == collision.gameObject.tag)
         {
-            Character.get().kill(new CustomData(CustomDataTag.SOURCE, _deathCause.ToString()));
+            Character.get().kill(_deathCause);
         }
     }
 }
