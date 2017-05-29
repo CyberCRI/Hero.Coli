@@ -69,9 +69,7 @@ public class InfoWindowManager : MonoBehaviour
 
     public GameStateController gameStateController;
 
-	public AudioClip nextSound;
-	[Range(0.0f, 1.0f)]
-	public float nextSoundVolume = 1.0f;
+	public PlayableUISound nextSound;
 
     private Dictionary<string, StandardInfoWindowInfo> _loadedInfoWindows = new Dictionary<string, StandardInfoWindowInfo>();
     private const string _genericPrefix = "INFO.";
@@ -185,11 +183,7 @@ public class InfoWindowManager : MonoBehaviour
         // Debug.Log("InfoWindowManager next()");
         ModalManager.unsetModal();
         _instance.gameStateController.tryUnlockPause();
-		if (_instance.nextSound != null) {
-			Debug.Log ("nextSound");
-			SoundManager.instance.PlayUISound (_instance.nextSound, _instance.nextSoundVolume);
-		}
-
+		_instance.nextSound.Play ();
         switch (_instance.nextAction)
         {
             case NextAction.GOTOWORLD:

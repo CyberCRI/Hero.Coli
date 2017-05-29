@@ -10,6 +10,8 @@ public class Audio
 	float _tempFadeSeconds;
 	float _fadeInterpolater;
 	float _onFadeStartVolume;
+	float _minPitch;
+	float _maxPitch;
 	AudioType _audioType;
 	AudioClip _initClip;
 	Transform _sourceTransform;
@@ -81,7 +83,7 @@ public class Audio
 		UISound
 	}
 
-	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue, Transform sourceTransform)
+	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue, float minPitch, float maxPitch, Transform sourceTransform)
 	{
 		if (sourceTransform == null) {
 			this._sourceTransform = SoundManager.instance.gameObject.transform;
@@ -100,6 +102,8 @@ public class Audio
 		this._initTargetVolume = volume;
 		this._tempFadeSeconds = -1;
 		this._volume = 0.0f;
+		this._minPitch = minPitch;
+		this._maxPitch = maxPitch;
 		this.fadeInSeconds = fadeInValue;
 		this.fadeOutSeconds = fadeOutValue;
 
@@ -108,16 +112,17 @@ public class Audio
 		this.stopping = false;
 		this.activated = false;
 
-		CreateAudioSource (clip, loop);
+		CreateAudioSource (clip, loop, minPitch, maxPitch);
 		Play ();
 	}
 
-	void CreateAudioSource (AudioClip clip, bool loop)
+	void CreateAudioSource (AudioClip clip, bool loop, float minPitch, float maxPitch)
 	{
 		this.audioSource = _sourceTransform.gameObject.AddComponent<AudioSource> () as AudioSource;
 
 		this.audioSource.clip = clip;
 		this.audioSource.loop = loop;
+		this.audioSource.pitch = minPitch < maxPitch ? Random.Range (minPitch, maxPitch) : minPitch;
 		this.audioSource.volume = 0.0f;
 		switch (this._audioType) {
 			case AudioType.Music:
@@ -150,7 +155,7 @@ public class Audio
 	public void Play (float volume)
 	{
 		if (this.audioSource == null) {
-			CreateAudioSource (_initClip, loop);
+			CreateAudioSource (_initClip, loop, _minPitch, _maxPitch);
 		}
 
 		if (this._audioType == AudioType.UISound)

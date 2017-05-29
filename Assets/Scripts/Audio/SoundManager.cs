@@ -432,12 +432,11 @@ public class SoundManager : MonoBehaviour
 
 		// Create the audioSource
 		//AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-		var newAudio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, sourceTransform);
+		var newAudio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, 1.0f, 1.0f, sourceTransform);
 
 		// Add it to music list
 		_musicAudio.Add(newAudio.audioID, newAudio);
 
-		Debug.Log (_musicAudio);
 		return newAudio.audioID;
 	}
 
@@ -449,7 +448,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound(AudioClip clip)
 	{
-		return PlaySound(clip, 1f, false, null);
+		return PlaySound(clip, 1f, false, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -460,7 +459,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound(AudioClip clip, float volume)
 	{
-		return PlaySound(clip, volume, false, null);
+		return PlaySound(clip, volume, false, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -471,7 +470,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound(AudioClip clip, bool loop)
 	{
-		return PlaySound(clip, 1f, loop, null);
+		return PlaySound(clip, 1f, loop, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -482,7 +481,7 @@ public class SoundManager : MonoBehaviour
 	/// <param name="loop">Wether the sound is looped</param>
 	/// <param name="sourceTransform">The transform that is the source of the sound (will become 3D audio). If 3D audio is not wanted, use null</param>
 	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound(AudioClip clip, float volume, bool loop, Transform sourceTransform)
+	public int PlaySound(AudioClip clip, float volume, bool loop, float minPitch, float maxPitch, Transform sourceTransform)
 	{
 		if (clip == null)
 		{
@@ -499,7 +498,7 @@ public class SoundManager : MonoBehaviour
 
 		// Create the audioSource
 		instance.gameObject.AddComponent<AudioSource>();
-		Audio newAudio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
+		Audio newAudio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, 1f, 1f, sourceTransform);
 
 		// Add it to music list
 		_soundsAudio.Add(newAudio.audioID, newAudio);
@@ -515,7 +514,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlayUISound(AudioClip clip)
 	{
-		return PlayUISound(clip, 1f);
+		return PlayUISound(clip, 1f, 1.0f, 1.0f);
 	}
 
 	/// <summary>
@@ -525,6 +524,17 @@ public class SoundManager : MonoBehaviour
 	/// <param name="volume"> The volume the music will have</param>
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlayUISound(AudioClip clip, float volume)
+	{
+		return PlayUISound (clip, volume, 1.0f, 1.0f);
+	}
+
+	/// <summary>
+	/// Play a UI sound fx
+	/// </summary>
+	/// <param name="clip">The audio clip to play</param>
+	/// <param name="volume"> The volume the music will have</param>
+	/// <returns>The ID of the created Audio object</returns>
+	public int PlayUISound(AudioClip clip, float volume, float minPitch, float maxPitch)
 	{
 		if (clip == null)
 		{
@@ -541,7 +551,7 @@ public class SoundManager : MonoBehaviour
 
 		// Create the audioSource
 		//AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-		Audio newAudio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f, null);
+		Audio newAudio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f, 1f, 1f, null);
 
 		// Add it to music list
 		_UISoundsAudio.Add(newAudio.audioID, newAudio);

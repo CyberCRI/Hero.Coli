@@ -3,10 +3,10 @@ using System.Collections;
 
 public class PlaySoundOnTrigger : MonoBehaviour {
 	/// <summary>
-	/// The audio that will be played if the player enters the trigger
+	/// The sound that will be played if the player enters the trigger
 	/// </summary>
-	[Tooltip("The audio that will be played if the player enters the trigger")]
-	public AudioSource sound;
+	[Tooltip("The sound that will be played if the player enters the trigger")]
+	public PlayableUISound sound;
 
 	void OnTriggerEnter(Collider col)
 	{

@@ -8,7 +8,8 @@ public class ChapterSelectionMainMenuItem : MainMenuItem {
 	/// <summary>
 	/// Called the user clicks on this instance
 	/// </summary>
-	public override void click() { 
+	public override void click() {
+		base.click ();
 		MainMenuManager.get ().switchTo (MainMenuManager.MainMenuScreen.CHAPTERSELECTION);
 	}
 

@@ -12,7 +12,7 @@ public class DebugPauseCounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        string state = GameStateController.get ().getState().ToString();
+		string state = GameStateController.get ().gameState.ToString();
         string pause = 0 == Time.timeScale? "P\n":"";
         label.text = pause+GameStateController.getPausesInStackCount().ToString()+"\n"+state;
 	}

@@ -31,6 +31,13 @@ public class Character : CellAnimator
         }
         return _instance;
     }
+
+	public AudioClip movementSound;
+	[Range(0.0f, 1.0f)]
+	public float movementSoundVolume;
+	public float movementSoundPitchMin;
+	public float movementSoundPitchMax;
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
