@@ -8,6 +8,7 @@ public class BackMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType());
+		base.click();
         MainMenuManager.get().switchTo(_screen);
     }
 

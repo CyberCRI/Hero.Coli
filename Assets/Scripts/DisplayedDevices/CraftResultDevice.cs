@@ -4,10 +4,10 @@ public class CraftResultDevice : DisplayedDevice
 {
     public CraftDeviceSlot slot;
 
-    public override void OnPress(bool isPressed)
+    public void OnPress(bool isPressed)
     {
         // Debug.Log(this.GetType() + " OnPress("+isPressed+")");
-        base.OnPress(isPressed);
+		base.OnPress(isPressed);
         
         if (null != slot)
         {

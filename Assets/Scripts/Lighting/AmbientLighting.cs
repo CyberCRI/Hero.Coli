@@ -12,7 +12,6 @@ public class AmbientLighting : MonoBehaviour
     private Color[] _color;
     [SerializeField]
     private Renderer _backgroundRenderer;
-    [SerializeField]
     private Renderer _backgroundBloodRenderer;
     [SerializeField]
     private LightingSave _lightingSave;
@@ -84,8 +83,9 @@ public class AmbientLighting : MonoBehaviour
         _originMaxPulse = _ampicillinPulsingLight.GetMaxIntensityValue();
         _originMinPulse = _ampicillinPulsingLight.GetMinIntensityValue();
         _character = Character.get();
-        Color color = _backgroundBloodRenderer.material.color;
-        color.a = 0;
+		_backgroundBloodRenderer = GameObject.FindGameObjectWithTag ("BackgroundBlood").GetComponent<Renderer> ();
+		Color color = _backgroundBloodRenderer.material.color;
+		color.a = 0;
         _backgroundBloodRenderer.material.color = color;
 
         _phenoLight.enabled = true;

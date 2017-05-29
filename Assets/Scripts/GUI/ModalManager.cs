@@ -22,6 +22,10 @@ public class ModalManager : MonoBehaviour
         return _instance;
     }
 
+	public AudioClip unsetModalSound;
+	[Range(0.0f, 1.0f)]
+	public float unsetModalSoundVolume = 1.0f;
+
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
@@ -449,7 +453,8 @@ public class ModalManager : MonoBehaviour
     {
         if (null != _instance._currentModalElement)
         {
-
+			if (_instance.unsetModalSound != null)
+				SoundManager.instance.PlaySound (_instance.unsetModalSound, _instance.unsetModalSoundVolume);
             Vector3 position = _instance._currentModalElement.transform.localPosition;
             _instance._currentModalElement.transform.localPosition = new Vector3(position.x, position.y, _instance._previousZ);
 

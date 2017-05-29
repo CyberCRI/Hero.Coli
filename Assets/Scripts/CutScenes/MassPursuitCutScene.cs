@@ -37,9 +37,9 @@ public class MassPursuitCutScene : CutScene
 
     public override void startCutScene()
     {
-        _CutSceneCam.transform.position = _boundCamera.transform.position;
-        _CutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-        _boundCamera.gameObject.SetActive(false);
+        _CutSceneCam.transform.position = BoundCamera.instance.transform.position;
+        _CutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
+        BoundCamera.instance.gameObject.SetActive(false);
         _CutSceneCam.gameObject.SetActive(true);
         _wayPoint1.transform.position = _CutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_wayPoint2.transform.position.x, _wayPoint1.transform.position.y + _offSet, _wayPoint2.transform.position.z);
@@ -51,7 +51,7 @@ public class MassPursuitCutScene : CutScene
     {
         StartCoroutine(waitBetweenActivation(2f));
         _CutSceneCam.gameObject.SetActive(false);
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _reinstantiateOnTrigger = true;
     }
 
@@ -88,7 +88,7 @@ public class MassPursuitCutScene : CutScene
     {
         end();
         _wayPoint1.transform.position = _wayPoint2.transform.position;
-        _wayPoint2.transform.position = _boundCamera.transform.position;
+        _wayPoint2.transform.position = BoundCamera.instance.transform.position;
     }
 
     IEnumerator waitBetweenActivation(float timeToWait)

@@ -75,6 +75,11 @@ public class MainMenuManager : MonoBehaviour
 
     private MainMenuItemArray _current;
 
+	[SerializeField]
+	private AudioClip _selectSound;
+	[SerializeField]
+	[Range(0.0f, 1.0f)]
+	private float _selectSoundVolume = 1.0f;
     [SerializeField]
     private MainMenuItemArray mainMenuItems;
     [SerializeField]
@@ -244,12 +249,16 @@ public class MainMenuManager : MonoBehaviour
     public bool selectNext()
     {
         // Debug.Log(this.GetType() + " selectNext");
+		if (_selectSound != null)
+			SoundManager.instance.PlayUISound (_selectSound, _selectSoundVolume);
         return selectItem(_currentIndex + 1, SelectionMode.NEXT);
     }
 
     public bool selectPrevious()
     {
         // Debug.Log(this.GetType() + " selectPrevious");
+		if (_selectSound != null)
+			SoundManager.instance.PlayUISound (_selectSound, _selectSoundVolume);
         return selectItem(_currentIndex - 1, SelectionMode.PREVIOUS);
     }
 

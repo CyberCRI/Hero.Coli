@@ -31,7 +31,7 @@ public class AmpicillinTutorialCutScene : CutScene
     // Use this for initialization
     public override void initialize()
     {
-        _initialTarget = _boundCamera.target;
+		_initialTarget = BoundCamera.instance.target;
         _iTweenEventBigGuy.Values.Remove("speed");
         _iTweenEventBigGuy.Values.Add("speed", iTweenEventSpeed);
     }
@@ -56,11 +56,11 @@ public class AmpicillinTutorialCutScene : CutScene
 
     public override void startCutScene()
     {
-        _cutSceneCam.transform.position = _boundCamera.transform.position;
-        _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-        _cutSceneCam.fieldOfView = _boundCamera.GetComponent<Camera>().fieldOfView;
-        _boundCamera.target = _iTweenEventBigGuy.gameObject.transform;
-        _boundCamera.gameObject.SetActive(false);
+        _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+        _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
+        _cutSceneCam.fieldOfView = BoundCamera.instance.GetComponent<Camera>().fieldOfView;
+        BoundCamera.instance.target = _iTweenEventBigGuy.gameObject.transform;
+        BoundCamera.instance.gameObject.SetActive(false);
         _cutSceneCam.gameObject.SetActive(true);
         _wayPoint1.transform.position = _cutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_iTweenEventBigGuy.transform.position.x, _cutSceneCam.transform.position.y, _iTweenEventBigGuy.transform.position.z);
@@ -80,7 +80,7 @@ public class AmpicillinTutorialCutScene : CutScene
     void launchCutSceneSecondPart()
     {
         _iTweenEventBigGuy.enabled = true;
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
     }
 
@@ -109,7 +109,7 @@ public class AmpicillinTutorialCutScene : CutScene
         _wayPoint2.transform.position = new Vector3(_initialTarget.position.x, _cutSceneCam.transform.position.y, _initialTarget.position.z);
         _cutSceneCam.transform.position = _wayPoint1.transform.position;
         _cutSceneCam.gameObject.SetActive(true);
-        _boundCamera.gameObject.SetActive(false);
+        BoundCamera.instance.gameObject.SetActive(false);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
         StartCoroutine(waitForEnd());
 
@@ -128,9 +128,9 @@ public class AmpicillinTutorialCutScene : CutScene
 
     public override void endCutScene()
     {
-        _boundCamera.target = _initialTarget;
+        BoundCamera.instance.target = _initialTarget;
         _cutSceneCam.gameObject.SetActive(false);
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
         ModalManager.setModal("T1_AMPICILLIN");
     }

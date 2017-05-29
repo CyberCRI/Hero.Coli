@@ -168,7 +168,7 @@ public class DisplayedBioBrick : GenericDisplayedBioBrick {
     return "Displayed biobrick id="+_id+", inner biobrick="+_biobrick+",  time="+Time.realtimeSinceStartup;
   }
 
-	public override void OnPress(bool isPressed) {
+public override void OnPress(bool isPressed) {
 		// Debug.Log(this.GetType() + " OnPress _id="+_id+", isPressed="+isPressed);
   }
 }

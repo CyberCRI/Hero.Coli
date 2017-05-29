@@ -13,7 +13,7 @@ public class SetCameraOffset : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _originOffsetY = GUITransitioner.get().mainBoundCamera.offset.y;
+        _originOffsetY = BoundCamera.instance.offset.y;
     }
 
     void OnTriggerEnter(Collider col)
@@ -23,12 +23,12 @@ public class SetCameraOffset : MonoBehaviour
             if (_resetCam)
             {
                 // Debug.Log(this.GetType() + " " + name + " resetting camera offset");
-                GUITransitioner.get().mainBoundCamera.ZoomInOut(_originOffsetY, _timeToSetCam);
+                BoundCamera.instance.ZoomInOut(_originOffsetY, _timeToSetCam);
             }
             else
             {
                 // Debug.Log(this.GetType() + " " + name + " setting camera with offset="+_offSetValue);
-                GUITransitioner.get().mainBoundCamera.ZoomInOut(_offSetValue, _timeToSetCam);
+                BoundCamera.instance.ZoomInOut(_offSetValue, _timeToSetCam);
             }
         }
     }

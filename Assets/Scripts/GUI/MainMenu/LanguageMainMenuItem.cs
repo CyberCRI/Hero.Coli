@@ -26,6 +26,7 @@ public class LanguageMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType() + " clicked "+itemName);
+		base.click();
         languagesArray.selectLanguage(language);
 		RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.LANGUAGE, I18n.getCurrentLanguage().ToString()));
     }

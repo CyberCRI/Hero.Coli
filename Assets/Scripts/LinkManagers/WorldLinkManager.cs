@@ -136,5 +136,7 @@ public class WorldLinkManager : LinkManager
         }
 
         GameStateController.get().teleporter = teleporter;
+
+		BoundCamera.instance.Reset ();
     }
 }

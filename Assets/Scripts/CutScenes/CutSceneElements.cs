@@ -26,7 +26,6 @@ public class CutSceneElements : MonoBehaviour
     protected static CullingMaskHandler _cullingMaskHandler;
     private int _originCullingMask;
     protected static Camera _cutSceneCameraUI;
-    protected static BoundCamera _boundCamera;
     public const string doorTag = "Door";
 
     private T lazyInitObject<T>(T t, string gameObjectOrTagName, bool isTag = false)
@@ -56,7 +55,6 @@ public class CutSceneElements : MonoBehaviour
         _blackBar = lazyInitObject<CutSceneBlackBarHandler>(_blackBar, "CutSceneBlackBars");
         _cullingMaskHandler = lazyInitObject<CullingMaskHandler>(_cullingMaskHandler, "InterfaceCamera", true);
         _cutSceneCameraUI = lazyInitObject<Camera>(_cutSceneCameraUI, "CutSceneCamera");
-        _boundCamera = lazyInitObject<BoundCamera>(_boundCamera, "MainCamera", true);
     }
 
     public static void reset()
@@ -65,6 +63,5 @@ public class CutSceneElements : MonoBehaviour
         _blackBar = null;
         _cullingMaskHandler = null;
         _cutSceneCameraUI = null;
-        _boundCamera = null;
     }
 }

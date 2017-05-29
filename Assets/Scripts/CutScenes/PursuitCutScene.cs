@@ -38,7 +38,7 @@ public class PursuitCutScene : CutScene
             if (_step == 0)
             {
                 start();
-                _mainCamOrigin = _boundCamera.transform.position;
+                _mainCamOrigin = BoundCamera.instance.transform.position;
             }
         }
     }
@@ -60,17 +60,17 @@ public class PursuitCutScene : CutScene
     {
         if (value == 1)
         {
-            _mainCamCopy.transform.position = _boundCamera.transform.position;
-            _mainCamCopy.transform.rotation = _boundCamera.transform.rotation;
+            _mainCamCopy.transform.position = BoundCamera.instance.transform.position;
+            _mainCamCopy.transform.rotation = BoundCamera.instance.transform.rotation;
             _mainCamCopy.gameObject.SetActive(true);
-            _boundCamera.gameObject.SetActive(false);
-            _wayPoint1.transform.position = _boundCamera.transform.position;
+            BoundCamera.instance.gameObject.SetActive(false);
+            _wayPoint1.transform.position = BoundCamera.instance.transform.position;
             _wayPoint2.transform.position = new Vector3(_badGuy.transform.position.x, _mainCamCopy.transform.position.y, _badGuy.transform.position.z);
             startScrollingCam();
         }
         else if (value == 2)
         {
-            _boundCamera.gameObject.SetActive(false);
+            BoundCamera.instance.gameObject.SetActive(false);
             _mainCamCopy.gameObject.SetActive(true);
             _wayPoint1.transform.position = _mainCamCopy.transform.position;
             _wayPoint2.transform.position = _mainCamOrigin;
@@ -79,9 +79,9 @@ public class PursuitCutScene : CutScene
         }
         else if (value == 3)
         {
-            _boundCamera.target = _cellControl.transform;
+            BoundCamera.instance.target = _cellControl.transform;
             _mainCamCopy.gameObject.SetActive(false);
-            _boundCamera.gameObject.SetActive(true);
+            BoundCamera.instance.gameObject.SetActive(true);
             end();
         }
     }
@@ -105,9 +105,9 @@ public class PursuitCutScene : CutScene
         {
             yield return null;
         }
-        _boundCamera.target = _badGuy.transform;
+        BoundCamera.instance.target = _badGuy.transform;
         _mainCamCopy.gameObject.SetActive(false);
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         cutSceneSecondPart();
         yield return null;
     }

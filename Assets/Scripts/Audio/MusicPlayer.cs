@@ -62,7 +62,8 @@ public abstract class MusicPlayer : MonoBehaviour {
 	{
 		if (silence)
 			SoundManager.instance.StopAllMusic ();
-		else if (delay > 0.0f)
+		// Since the delay stops the current music we should check first if current music is not already the one we intend to play
+		else if (delay > 0.0f && SoundManager.instance.GetMusicAudio(clip) == null)
 			StartCoroutine (DelayedMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, delay));
 		else
 			SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds);
@@ -70,11 +71,8 @@ public abstract class MusicPlayer : MonoBehaviour {
 
 	protected IEnumerator DelayedMusic (AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float delay)
 	{
-		// There's no need to play the music if it's the same as the current one
-		if (SoundManager.instance.GetMusicAudio (clip) == null) {
-			SoundManager.instance.StopAllMusic ();
-			yield return new WaitForSeconds (delay);
-			SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds);
-		}
+		//SoundManager.instance.StopAllMusic ();
+		yield return new WaitForSecondsRealtime (delay);
+		SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds);
 	}
 }

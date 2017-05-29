@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
 public abstract class ExternalOnPressButton : MonoBehaviour {
-    
-    public abstract void OnPress(bool isPressed);
+
+	public abstract void OnPress(bool isPressed);
 }

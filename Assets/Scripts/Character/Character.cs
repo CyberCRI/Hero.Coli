@@ -496,7 +496,7 @@ public class Character : CellAnimator
     {
 
         CellControl cc = GetComponent<CellControl>();
-        GUITransitioner.get().mainBoundCamera.offset.y = _originOffsetY;
+        BoundCamera.instance.offset.y = _originOffsetY;
 
         yield return StartCoroutine(deathEffectCoroutine(cc));
     }

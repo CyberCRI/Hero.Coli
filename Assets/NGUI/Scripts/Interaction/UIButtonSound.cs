@@ -23,6 +23,7 @@ public class UIButtonSound : MonoBehaviour
 
 	public AudioClip audioClip;
 	public Trigger trigger = Trigger.OnClick;
+	[Range(0.0f, 1.0f)]
 	public float volume = 1f;
 	public float pitch = 1f;
 
@@ -30,6 +31,7 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
 		{
+			//NGUITools.PlaySound (audioClip, volume, pitch);
 			SoundManager.instance.PlayUISound (audioClip, volume);
 		}
 	}
@@ -38,7 +40,8 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
 		{
-			SoundManager.instance.PlaySound (audioClip, volume);
+			//NGUITools.PlaySound (audioClip, volume, pitch);
+			SoundManager.instance.PlayUISound (audioClip, volume);
 		}
 	}
 
@@ -46,7 +49,8 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && trigger == Trigger.OnClick)
 		{
-			SoundManager.instance.PlaySound (audioClip, volume);
+			//NGUITools.PlaySound (audioClip, volume, pitch);
+			SoundManager.instance.PlayUISound (audioClip, volume);
 		}
 	}
 }

@@ -12,6 +12,7 @@ public class LearnMoreMainMenuItem : MainMenuItem {
     
     public override void click () {
         // Debug.Log(this.GetType() + " clicked "+itemName);
+		base.click();
 		_learnMoreOptionsArray.goToMOOC(_urlKey, _newTab);
     }
 }

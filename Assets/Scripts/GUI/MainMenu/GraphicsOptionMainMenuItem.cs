@@ -12,7 +12,7 @@ public class GraphicsOptionMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType() + " click " + itemName);
-
+		base.click();
         GraphicsOptionsMainMenuItemArray array = transform.GetComponentInParent<GraphicsOptionsMainMenuItemArray>();
         if (null != array)
         {

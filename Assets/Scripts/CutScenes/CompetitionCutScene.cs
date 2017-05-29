@@ -49,13 +49,13 @@ public class CompetitionCutScene : CutScene
         if (_iterationPlayer == 1)
         {
             _iterationPlayer++;
-            _cutSceneCam.transform.position = _boundCamera.transform.position;
-            _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-            _boundCamera.target = _npc.gameObject.transform;
-            _boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y + _offset, _boundCamera.offset.z);
+            _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+            _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
+            BoundCamera.instance.target = _npc.gameObject.transform;
+            BoundCamera.instance.offset = new Vector3(BoundCamera.instance.offset.x, BoundCamera.instance.offset.y + _offset, BoundCamera.instance.offset.z);
             _wayPoint1.transform.position = _cutSceneCam.transform.position;
             _wayPoint2.transform.position = new Vector3(_npc.transform.position.x, _cutSceneCam.transform.position.y + _offset, _npc.transform.position.z);
-            _boundCamera.gameObject.SetActive(false);
+            BoundCamera.instance.gameObject.SetActive(false);
             _cutSceneCam.gameObject.SetActive(true);
             StartCoroutine(waitForSecondPart());
         }
@@ -83,13 +83,13 @@ public class CompetitionCutScene : CutScene
 
         if (col.tag == CutSceneElements.doorTag)
         {
-            _boundCamera.target = _cellControl.gameObject.transform;
-            _boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);
-            _cutSceneCam.transform.position = _boundCamera.transform.position;
-            _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
+            BoundCamera.instance.target = _cellControl.gameObject.transform;
+            BoundCamera.instance.offset = new Vector3(BoundCamera.instance.offset.x, BoundCamera.instance.offset.y, BoundCamera.instance.offset.z);
+            _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+            _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
             _wayPoint1.transform.position = _cutSceneCam.transform.position;
-            _wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y - _boundCamera.offset.y, _cellControl.transform.position.z);
-            _boundCamera.gameObject.SetActive(false);
+            _wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y - BoundCamera.instance.offset.y, _cellControl.transform.position.z);
+            BoundCamera.instance.gameObject.SetActive(false);
             _cutSceneCam.gameObject.SetActive(true);
             _cutSceneCam.GetComponent<PlatformMvt>().restart();
             StartCoroutine(waitForCamReset());
@@ -98,13 +98,13 @@ public class CompetitionCutScene : CutScene
         if (col.tag == "CutSceneElement")
         {
             start();
-            _cutSceneCam.transform.position = _boundCamera.transform.position;
-            _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-            _boundCamera.target = _npc.gameObject.transform;
-            _boundCamera.offset = new Vector3(_boundCamera.offset.x, _offset, _boundCamera.offset.z);
+            _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+            _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
+            BoundCamera.instance.target = _npc.gameObject.transform;
+            BoundCamera.instance.offset = new Vector3(BoundCamera.instance.offset.x, _offset, BoundCamera.instance.offset.z);
             _wayPoint1.transform.position = _cutSceneCam.transform.position;
             _wayPoint2.transform.position = new Vector3(_npc.transform.position.x, _cutSceneCam.transform.position.y - _offset, _npc.transform.position.z);
-            _boundCamera.gameObject.SetActive(false);
+            BoundCamera.instance.gameObject.SetActive(false);
             _cutSceneCam.gameObject.SetActive(true);
             _cutSceneCam.GetComponent<PlatformMvt>().restart();
             StartCoroutine(waitForWinNPC());
@@ -125,7 +125,7 @@ public class CompetitionCutScene : CutScene
     void launchCutSceneSecondPart()
     {
         _npc.GetComponent<PlatformMvt>().enabled = true;
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         StartCoroutine(waitForThirdPart());
     }
@@ -143,13 +143,13 @@ public class CompetitionCutScene : CutScene
 
     void launchCutSceneThirdPart()
     {
-        _cutSceneCam.transform.position = _boundCamera.transform.position;
-        _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
+        _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+        _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
         _wayPoint1.transform.position = _cutSceneCam.transform.position;
-        _wayPoint2.transform.position = new Vector3(_camPosition.position.x, _camPosition.position.y + _boundCamera.offset.y, _camPosition.transform.position.z);
-        _boundCamera.target = _camPosition;
-        _boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y - (_boundCamera.offset.y / 2), _boundCamera.offset.z);
-        _boundCamera.gameObject.SetActive(false);
+        _wayPoint2.transform.position = new Vector3(_camPosition.position.x, _camPosition.position.y + BoundCamera.instance.offset.y, _camPosition.transform.position.z);
+        BoundCamera.instance.target = _camPosition;
+        BoundCamera.instance.offset = new Vector3(BoundCamera.instance.offset.x, BoundCamera.instance.offset.y - (BoundCamera.instance.offset.y / 2), BoundCamera.instance.offset.z);
+        BoundCamera.instance.gameObject.SetActive(false);
         _cutSceneCam.gameObject.SetActive(true);
         StartCoroutine(waitForEnd());
     }
@@ -158,7 +158,7 @@ public class CompetitionCutScene : CutScene
     {
         // Debug.Log(this.GetType() + " 3");
         yield return new WaitForSeconds(3f);
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         //_camPosition.GetComponent<PlatformMvt> ().enabled = true;
         yield return new WaitForSeconds(2f);
@@ -174,7 +174,7 @@ public class CompetitionCutScene : CutScene
             yield return null;
         }
         end();
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         StartCoroutine(waitForEndNPC());
         yield return null;
@@ -187,19 +187,19 @@ public class CompetitionCutScene : CutScene
         {
             yield return null;
         }
-        _boundCamera.gameObject.SetActive(true);
+        BoundCamera.instance.gameObject.SetActive(true);
         _cutSceneCam.gameObject.SetActive(false);
         while (Vector3.Distance(_npc.transform.position, _wayPointNPCEnd.transform.position) >= 0.05f)
         {
             yield return null;
         }
-        _cutSceneCam.transform.position = _boundCamera.transform.position;
-        _cutSceneCam.transform.rotation = _boundCamera.transform.rotation;
-        _boundCamera.target = _cellControl.gameObject.transform;
-        _boundCamera.offset = new Vector3(_boundCamera.offset.x, _boundCamera.offset.y, _boundCamera.offset.z);
+        _cutSceneCam.transform.position = BoundCamera.instance.transform.position;
+        _cutSceneCam.transform.rotation = BoundCamera.instance.transform.rotation;
+        BoundCamera.instance.target = _cellControl.gameObject.transform;
+        BoundCamera.instance.offset = new Vector3(BoundCamera.instance.offset.x, BoundCamera.instance.offset.y, BoundCamera.instance.offset.z);
         _wayPoint1.transform.position = _cutSceneCam.transform.position;
         _wayPoint2.transform.position = new Vector3(_cellControl.transform.position.x, _cutSceneCam.transform.position.y, _cellControl.transform.position.z);
-        _boundCamera.gameObject.SetActive(false);
+        BoundCamera.instance.gameObject.SetActive(false);
         _cutSceneCam.gameObject.SetActive(true);
         _cutSceneCam.GetComponent<PlatformMvt>().restart();
         StartCoroutine(waitForCamReset());

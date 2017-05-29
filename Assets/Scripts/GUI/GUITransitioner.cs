@@ -77,9 +77,6 @@ public class GUITransitioner : MonoBehaviour
     };
 
 
-    //public GameObject _mainCameraObject;
-    public BoundCamera mainBoundCamera;
-
     public GameObject worldScreen;
     public GameObject craftScreen;
     private DevicesDisplayer _devicesDisplayer;
@@ -135,25 +132,25 @@ public class GUITransitioner : MonoBehaviour
      * "Defensive programming" method
      * Cannot work during Awake
       private void checkCamera() {
-          if(_mainBoundCamera == null) {
-              _mainBoundCamera = GameObject.Find ("Main Camera").GetComponent<BoundCamera>() as BoundCamera;
+          if(_BoundCamera.instance == null) {
+              _BoundCamera.instance = GameObject.Find ("Main Camera").GetComponent<BoundCamera>() as BoundCamera;
           }
       }
    */
 
     private void ZoomIn()
     {
-        if (null != mainBoundCamera)
+        if (null != BoundCamera.instance)
         {
-            mainBoundCamera.SetZoom(true);
+            BoundCamera.instance.SetZoom(true);
         }
     }
 
     private void ZoomOut()
     {
-        if (null != mainBoundCamera)
+        if (null != BoundCamera.instance)
         {
-            mainBoundCamera.SetZoom(false);
+            BoundCamera.instance.SetZoom(false);
         }
     }
 

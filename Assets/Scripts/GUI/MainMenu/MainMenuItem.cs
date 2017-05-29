@@ -74,6 +74,10 @@ public class MainMenuItem : MonoBehaviour
         }
     }
 
+	public AudioClip clickSound;
+	[Range(0.0f, 1.0f)]
+	public float clickSoundVolume = 1.0f;
+
     public virtual void select()
     {
         _isSelected = true;
@@ -89,7 +93,8 @@ public class MainMenuItem : MonoBehaviour
 
     public virtual void click()
     {
-        // Debug.Log(this.GetType() + " clicked " + itemName);
+		if (clickSound != null)
+			SoundManager.instance.PlayUISound (clickSound, clickSoundVolume);
     }
 
     void OnPress(bool isPressed)

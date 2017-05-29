@@ -105,6 +105,7 @@ public class Audio
 
 		this.playing = false;
 		this.paused = false;
+		this.stopping = false;
 		this.activated = false;
 
 		CreateAudioSource (clip, loop);
@@ -152,7 +153,10 @@ public class Audio
 			CreateAudioSource (_initClip, loop);
 		}
 
-		this.audioSource.Play ();
+		if (this._audioType == AudioType.UISound)
+			this.audioSource.PlayOneShot (this.audioSource.clip);
+		else
+			this.audioSource.Play ();
 		this.playing = true;
 
 		this._fadeInterpolater = 0.0f;
@@ -258,13 +262,17 @@ public class Audio
 	void FadeInFadeOutVolume ()
 	{
 		float fadeValue;
-		this._fadeInterpolater += Time.deltaTime;
+		this._fadeInterpolater += Time.unscaledDeltaTime;
 		if (this._volume > this._targetVolume)
 			fadeValue = this._tempFadeSeconds != -1 ? this._tempFadeSeconds : this.fadeOutSeconds;
 		else
 			fadeValue = this._tempFadeSeconds != -1 ? this._tempFadeSeconds : this.fadeInSeconds;
 
-		this._volume = Mathf.Lerp (this._onFadeStartVolume, this._targetVolume, this._fadeInterpolater / fadeValue);
+		if (fadeValue != 0)
+			this._volume = Mathf.Lerp (this._onFadeStartVolume, this._targetVolume, this._fadeInterpolater / fadeValue);
+		else {
+			this._volume = this._targetVolume;
+		}
 	}
 
 	void ApplyGlobalVolumeSettings ()

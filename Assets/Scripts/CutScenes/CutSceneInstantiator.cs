@@ -22,15 +22,15 @@ public class CutSceneInstantiator : CutSceneElements
 
         if (!_isResetCameraSaved)
         {
-            _resetCamera = _boundCamera.transform;
+            _resetCamera = BoundCamera.instance.transform;
             _isResetCameraSaved = true;
         }
         else
         {
-            _boundCamera.transform.position = _resetCamera.position;
-            _boundCamera.transform.rotation = _resetCamera.rotation;
-            _boundCamera.target = _cellControl.gameObject.transform;
-            _boundCamera.gameObject.SetActive(true);
+            BoundCamera.instance.transform.position = _resetCamera.position;
+            BoundCamera.instance.transform.rotation = _resetCamera.rotation;
+            BoundCamera.instance.target = _cellControl.gameObject.transform;
+            BoundCamera.instance.gameObject.SetActive(true);
             _cutSceneCameraUI.enabled = false;
             _blackBar.closeBar(false);
             _cellControl.freezePlayer(false);

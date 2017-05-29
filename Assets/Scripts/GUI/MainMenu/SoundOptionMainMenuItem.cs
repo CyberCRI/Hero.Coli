@@ -14,6 +14,7 @@ public class SoundOptionMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType() + " clicked " + itemName);
+		base.click();
         bool wasOn = MemoryManager.get().configuration.isSoundOn;
         MemoryManager.get().configuration.isSoundOn = !MemoryManager.get().configuration.isSoundOn;
         string soundValue = wasOn ? CustomDataValue.OFF.ToString() : CustomDataValue.ON.ToString();

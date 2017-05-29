@@ -92,6 +92,8 @@ public class SoundManager : MonoBehaviour
 	[Tooltip("The audio mixer group associated with UI sounds")]
 	public AudioMixerGroup UIsoundsMixerGroup;
 
+
+
 	void Awake()
 	{
 		if (_instance == null) {
@@ -435,6 +437,7 @@ public class SoundManager : MonoBehaviour
 		// Add it to music list
 		_musicAudio.Add(newAudio.audioID, newAudio);
 
+		Debug.Log (_musicAudio);
 		return newAudio.audioID;
 	}
 

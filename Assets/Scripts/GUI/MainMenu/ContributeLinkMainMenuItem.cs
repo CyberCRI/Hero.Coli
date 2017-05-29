@@ -10,6 +10,7 @@ public class ContributeLinkMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType() + " clicked "+itemName);
+		base.click();
         RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, CustomDataValue.CONTRIBUTE.ToString()));
         StudyFormLinker.openForm();
     }

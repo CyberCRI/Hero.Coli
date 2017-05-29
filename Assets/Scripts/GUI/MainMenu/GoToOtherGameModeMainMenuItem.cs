@@ -11,7 +11,7 @@
     public override void click()
     {
         // Debug.Log(this.GetType() + " click");
-
+		base.click();
         CustomDataValue modeValue = GameConfiguration.GameMode.ADVENTURE == MemoryManager.get().configuration.getMode() ? CustomDataValue.SANDBOX : CustomDataValue.ADVENTURE;
         RedMetricsManager.get().sendRichEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, modeValue.ToString()));
 

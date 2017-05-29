@@ -83,6 +83,7 @@ static public class NGUITools
 		{
 			if (mListener == null)
 			{
+				Debug.Log ("no listener");
 				mListener = GameObject.FindObjectOfType(typeof(AudioListener)) as AudioListener;
 
 				if (mListener == null)

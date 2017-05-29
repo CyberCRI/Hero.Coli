@@ -73,8 +73,6 @@ public class PlayerLinkManager : LinkManager
     [SerializeField]
     private CellControl cellControl;
     [SerializeField]
-    private BoundCamera mainBoundCamera;
-    [SerializeField]
     private Behaviour listener;
 
     // for tests
@@ -115,9 +113,6 @@ public class PlayerLinkManager : LinkManager
         //TODO use InterfaceLinkManager
         phenoFickContact.vectroPanel = GameObject.Find("RoomMediumInfoBackgroundSprite").GetComponent<VectrosityPanel>();
         phenoFickContact.graphMoleculeList = GameObject.Find("MediumInfoPanelRoom").GetComponent<GraphMoleculeList>();
-
-        //Main Camera
-        guiTransitioner.mainBoundCamera = mainBoundCamera;
     }
 
     public override void finishInitialize()
