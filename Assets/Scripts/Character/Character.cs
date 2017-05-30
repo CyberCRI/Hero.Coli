@@ -461,7 +461,6 @@ public class Character : CellAnimator
         }
     }
 
-    //TODO divide by 2 the chemicals
     void duplicateCell()
     {
         if (null != _lastNewCell)
