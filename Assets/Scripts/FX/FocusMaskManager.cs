@@ -241,14 +241,7 @@ public class FocusMaskManager : MonoBehaviour
 
             if (!string.IsNullOrEmpty(advisorTextKey))
             {
-                if (this.transform.localPosition.y >= 0)
-                {
-                    _advisor.setUpNanoBot(false, advisorTextKey, showButton);
-                }
-                else
-                {
-                    _advisor.setUpNanoBot(true, advisorTextKey, showButton);
-                }
+                _advisor.setUpNanoBot(position, advisorTextKey, scaleFactor, showButton);
                 _advisor.gameObject.SetActive(true);
             }
             else

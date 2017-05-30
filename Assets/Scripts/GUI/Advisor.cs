@@ -1,35 +1,31 @@
 ﻿using UnityEngine;
 
-public class Advisor : MonoBehaviour {
+public class Advisor : MonoBehaviour
+{
     [SerializeField]
-    private Transform _positionTop;
-    [SerializeField]
-    private Transform _positionBottom;
-    [SerializeField]
-    private GameObject _nanoBot;
-    [SerializeField]
-    private Vector3 _originalScale;
+    private UIAnchor _nanoBotAnchor;
     [SerializeField]
     private GameObject _nextButton;
     [SerializeField]
     private UILocalize _localize;
+    [SerializeField]
+    private float _topAnchorValue;
+    [SerializeField]
+    private float _bottomAnchorValue;
+    [SerializeField]
+    private float _highlightedAreaRatio;
+    [SerializeField]
+    private float _nanobotAreaRatio;
+    [SerializeField]
+    private float minX = -0.31f, minY = -0.23f, maxX = 0.37f, maxY = 0.2f;
 
-    void Start()
+    public void setUpNanoBot(Vector2 position, string text, float scaleFactor, bool showButton = false)
     {
-        _originalScale = _nanoBot.transform.localScale;
-    }
-
-    public void setUpNanoBot(bool top, string text, bool showButton = false)
-    {
-        if (top)
-        {
-            _nanoBot.transform.position = _positionTop.position;
-        }
-        else
-        {
-            _nanoBot.transform.position = _positionBottom.position;
-        }
-
+        float offset = scaleFactor * _highlightedAreaRatio + _nanobotAreaRatio;
+        _nanoBotAnchor.relativeOffset.x = position.x - Mathf.Sign(position.x) * offset;
+        _nanoBotAnchor.relativeOffset.x = _nanoBotAnchor.relativeOffset.x > 0 ? Mathf.Min(_nanoBotAnchor.relativeOffset.x, maxX) : Mathf.Max(_nanoBotAnchor.relativeOffset.x, minX);
+        _nanoBotAnchor.relativeOffset.y = position.y - Mathf.Sign(position.y) * offset;
+        _nanoBotAnchor.relativeOffset.y = _nanoBotAnchor.relativeOffset.y > 0 ? Mathf.Min(_nanoBotAnchor.relativeOffset.y, maxY) : Mathf.Max(_nanoBotAnchor.relativeOffset.y, minY);
         _localize.key = text;
         _localize.Localize();
         _nextButton.SetActive(showButton);
