@@ -113,6 +113,17 @@ public class SoundManager : MonoBehaviour
 	[Tooltip ("The audio mixer group associated with UI sounds")]
 	public AudioMixerGroup UIsoundsMixerGroup;
 
+	/// <summary>
+	/// The default audio mixer snapshot
+	/// </summary>
+	[Tooltip ("The default audio mixer snapshot")]
+	public AudioMixerSnapshot DefaultSnapshot;
+	/// <summary>
+	/// The low-light audio mixer snapshot
+	/// </summary>
+	[Tooltip ("the low-light audio mixer snapshot")]
+	public AudioMixerSnapshot LowlightSnapshot;
+
 	void OnEnable()
 	{
 		SceneManager.sceneLoaded += OnLevelFinishedLoading;
@@ -130,6 +141,16 @@ public class SoundManager : MonoBehaviour
 			instance.Init ();
 		} else if (_instance != this)
 			Destroy (this.gameObject);
+	}
+
+	public void TransitionToLowlightSnapshot(float timeToReach)
+	{
+		LowlightSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void TransitionToDefaultSnapshot(float timeToReach)
+	{
+		DefaultSnapshot.TransitionTo (timeToReach);
 	}
 
 	void OnLevelFinishedLoading (Scene scene, LoadSceneMode mode)
@@ -361,83 +382,20 @@ public class SoundManager : MonoBehaviour
 
 	#region Play Functions
 
-	/// <summary>
-	/// Play background music
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip)
+	public int PlayMusic (PlayableAbstractMusic playableMusic, List<PlayableSubMusic> subMusics = null)
 	{
-		return PlayMusic (clip, 1f, false, false, 1f, 1f, -1f, null);
-	}
-
-	/// <summary>
-	/// Play background music
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip, float volume)
-	{
-		return PlayMusic (clip, volume, false, false, 1f, 1f, -1f, null);
-	}
-
-	/// <summary>
-	/// Play background music
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <param name="loop">Wether the music is looped</param>
-	/// <param name = "persist" > Whether the audio persists in between scene changes</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip, float volume, bool loop, bool persist)
-	{
-		return PlayMusic (clip, volume, loop, persist, 1f, 1f, -1f, null);
-	}
-
-	/// <summary>
-	/// Play background music
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <param name="loop">Wether the music is looped</param>
-	/// <param name="persist"> Whether the audio persists in between scene changes</param>
-	/// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
-	/// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
-	{
-		return PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f, null);
-	}
-
-	/// <summary>
-	/// Play background music
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <param name="loop">Wether the music is looped</param>
-	/// <param name="persist"> Whether the audio persists in between scene changes</param>
-	/// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
-	/// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-	/// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds</param>
-	/// <param name="sourceTransform">The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip, float volume, bool loop, bool persist,
-		float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds,
-		Transform sourceTransform, List<PlayableSubMusic> subMusics = null)
-	{
-		if (clip == null) {
-			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", clip);
+		if (playableMusic.clip == null) {
+			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", playableMusic.clip);
 		}
 
 		if (ignoreDuplicateMusic) {
 			foreach (var audio in _musicAudio.Values)
-				if (audio.clip == clip)
+				if (audio.clip == playableMusic.clip)
 					return audio.audioID;
 		}
 
 		// Stop all current music playing
-		StopAllMusic (currentMusicfadeOutSeconds);
+		StopAllMusic (playableMusic.currentMusicFadeOut);
 
 		List<Audio> audioList = new List<Audio> ();
 		if (subMusics != null)
@@ -445,7 +403,7 @@ public class SoundManager : MonoBehaviour
 			foreach (var music in subMusics) {
 				if (music != null) {
 					var subAudio = new Audio (Audio.AudioType.Music, music.clip, music.clip, music.persist,
-						               music.volume, music.fadeInSeconds, music.fadeOutSeconds, 1.0f, 1.0f, sourceTransform);
+						music.volume, music.fadeInSeconds, music.fadeOutSeconds, 1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform);
 					audioList.Add (subAudio);
 					music.audioId = subAudio.audioID;
 					_musicAudio.Add (subAudio.audioID, subAudio);
@@ -454,126 +412,73 @@ public class SoundManager : MonoBehaviour
 		}
 
 		// Create the audioSource
-		var newAudio = new Audio (Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds,
-			fadeOutSeconds, 1.0f, 1.0f, sourceTransform, audioList);
+		var newAudio = new Audio (Audio.AudioType.Music, playableMusic.clip, playableMusic.loop,
+			playableMusic.persist, playableMusic.volume,
+			playableMusic.fadeInSeconds, playableMusic.fadeOutSeconds,
+			1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform, audioList);
 
 		// Add it to music list
 		_musicAudio.Add (newAudio.audioID, newAudio);
 
 		currentMainBackgroundMusicAudio = newAudio;
 
+		newAudio.playableAudio = playableMusic;
+
 		return newAudio.audioID;
 	}
 
-
-	/// <summary>
-	/// Play a sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound (AudioClip clip)
+	public int PlaySound (PlayableSound playableSound)
 	{
-		return PlaySound (clip, 1f, false, 0.0f, 0.0f, 1.0f, 1.0f, null);
-	}
-
-	/// <summary>
-	/// Play a sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound (AudioClip clip, float volume)
-	{
-		return PlaySound (clip, volume, false, 0.0f, 0.0f, 1.0f, 1.0f, null);
-	}
-
-	/// <summary>
-	/// Play a sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="loop">Wether the sound is looped</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound (AudioClip clip, bool loop)
-	{
-		return PlaySound (clip, 1f, loop, 0.0f, 0.0f, 1.0f, 1.0f, null);
-	}
-
-	/// <summary>
-	/// Play a sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <param name="loop">Wether the sound is looped</param>
-	/// <param name="sourceTransform">The transform that is the source of the sound (will become 3D audio). If 3D audio is not wanted, use null</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound (AudioClip clip, float volume, bool loop, float fadeInSeconds, float fadeOutSeconds, float minPitch, float maxPitch, Transform sourceTransform)
-	{
-		if (clip == null) {
-			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", clip);
+		if (playableSound.clip == null) {
+			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", playableSound.clip);
 		}
 
 		if (ignoreDuplicateSounds) {
 			foreach (var audio in _soundsAudio.Values) {
-				if (audio.clip == clip)
+				if (audio.clip == playableSound.clip)
 					return audio.audioID;
 			}
 		}
 
 		// Create the audioSource
-		Audio newAudio = new Audio (Audio.AudioType.Sound, clip, loop, false, volume, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
+		Audio newAudio = new Audio (Audio.AudioType.Sound, playableSound.clip, playableSound.loop, false,
+			playableSound.volume, playableSound.fadeInSeconds,
+			playableSound.fadeOutSeconds, playableSound.minPitch,
+			playableSound.maxPitch, playableSound.randomStart, playableSound.sourceTransform);
 
 		// Add it to music list
 		_soundsAudio.Add (newAudio.audioID, newAudio);
 
+		newAudio.playableAudio = playableSound;
+
 		return newAudio.audioID;
 	}
 
-
-	/// <summary>
-	/// Play a UI sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayUISound (AudioClip clip)
+	public int PlayUISound (PlayableUISound playableUISound)
 	{
-		return PlayUISound (clip, 1f, 1.0f, 1.0f);
-	}
-
-	/// <summary>
-	/// Play a UI sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayUISound (AudioClip clip, float volume)
-	{
-		return PlayUISound (clip, volume, 1.0f, 1.0f);
-	}
-
-	/// <summary>
-	/// Play a UI sound fx
-	/// </summary>
-	/// <param name="clip">The audio clip to play</param>
-	/// <param name="volume"> The volume the music will have</param>
-	/// <returns>The ID of the created Audio object</returns>
-	public int PlayUISound (AudioClip clip, float volume, float minPitch, float maxPitch)
-	{
-		if (clip == null) {
-			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", clip);
+		if (playableUISound.clip == null) {
+			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", playableUISound.clip);
 		}
 
 		if (ignoreDuplicateUISounds) {
 			foreach (var audio in _UISoundsAudio.Values) {
-				if (audio.clip == clip)
+				if (audio.clip == playableUISound.clip)
 					return audio.audioID;
 			}
 		}
 
 		// Create the audioSource
-		Audio newAudio = new Audio (Audio.AudioType.UISound, clip, false, false, volume, 0.0f, 0.0f, minPitch, maxPitch, null);
+		Audio newAudio = new Audio (Audio.AudioType.UISound, playableUISound.clip, false, false,
+			playableUISound.volume, 0.0f, 0.0f,
+			playableUISound.minPitch,
+			playableUISound.maxPitch,
+			playableUISound.randomStart,
+			null);
 
 		// Add it to music list
 		_UISoundsAudio.Add (newAudio.audioID, newAudio);
+
+		newAudio.playableAudio = playableUISound;
 
 		return newAudio.audioID;
 	}

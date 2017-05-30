@@ -58,7 +58,7 @@ public abstract class BioBrick : DNABit
     public BioBrick(Type type, double _count = 1)
     {
         _type = type;
-        isUnlimited |= MemoryManager.get().configuration.getMode() == GameConfiguration.GameMode.SANDBOX;
+        isUnlimited = MemoryManager.get().configuration.getMode() == GameConfiguration.GameMode.SANDBOX;
         _amount = isUnlimited ? double.PositiveInfinity : _count;
     }
 

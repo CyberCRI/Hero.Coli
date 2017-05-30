@@ -97,7 +97,7 @@ public class Audio
 	}
 
 	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume,
-		float fadeInValue, float fadeOutValue, float minPitch, float maxPitch,
+		float fadeInValue, float fadeOutValue, float minPitch, float maxPitch, bool randomStart,
 		Transform sourceTransform, List<Audio> subAudios = null)
 	{
 		if (sourceTransform == null) {
@@ -129,7 +129,7 @@ public class Audio
 		this.activated = false;
 
 		CreateAudioSource (clip, loop, minPitch, maxPitch);
-		Play ();
+		Play (randomStart);
 	}
 
 	void CreateAudioSource (AudioClip clip, bool loop, float minPitch, float maxPitch)
@@ -161,22 +161,24 @@ public class Audio
 	/// <summary>
 	/// Start playing audio clip from the beggining
 	/// </summary>
-	public void Play ()
+	public void Play (bool randomStart)
 	{
-		Play (this._initTargetVolume);
+		Play (this._initTargetVolume, randomStart);
 	}
 
 	/// <summary>
 	/// Start playing audio clip from the beggining
 	/// </summary>
 	/// <param name="volume">The target volume</param>
-	public void Play (float volume)
+	public void Play (float volume, bool randomStart)
 	{
 		if (this.audioSource == null) {
 			CreateAudioSource (_initClip, loop, _minPitch, _maxPitch);
 		}
 
 		this.audioSource.Play ();
+		if (randomStart)
+			this.audioSource.time = Random.Range (0.0f, this.audioSource.clip.length);
 		this.playing = true;
 
 		this._fadeInterpolater = 0.0f;
@@ -184,7 +186,7 @@ public class Audio
 		this._targetVolume = volume;
 
 		foreach (var audio in subAudios) {
-			audio.Play ();
+			audio.Play (false);
 		}
 	}
 

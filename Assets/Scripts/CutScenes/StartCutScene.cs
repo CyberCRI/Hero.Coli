@@ -36,6 +36,8 @@ public class StartCutScene : CutScene
     private bool _scaleUp = true;
     private bool _scaling = false;
 	private bool _first = true;
+	[SerializeField]
+	private PlayableUISound dialogSound;
 
 #if QUICKTEST
     private float[] waitTimes = new float[9] { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f };
@@ -49,6 +51,7 @@ public class StartCutScene : CutScene
 
     void say(string s, GameObject bubble, TextMesh text)
     {
+		dialogSound.Play ();
         bubble.SetActive(true);
         text.text = s;
     }

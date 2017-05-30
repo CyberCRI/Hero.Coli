@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class AmbientLighting : MonoBehaviour
 {
-
+	[SerializeField]
+	private float _snapshotTransitionTime;
+	private bool _lowLightSnapshot;
     [SerializeField]
     private Light _directionalLight;
     [SerializeField]
@@ -154,6 +156,10 @@ public class AmbientLighting : MonoBehaviour
             changeLightIntensity(_directionalLight, 1 - (distance / distanceMax));
             Color color = _backgroundRenderer.material.color;
             color.a = 1 - (distance / distanceMax);
+			if (color.a <= 0.25 && !_lowLightSnapshot) {
+				SoundManager.instance.TransitionToLowlightSnapshot (_snapshotTransitionTime);
+				_lowLightSnapshot = true;
+			}
             _backgroundRenderer.material.color = color;
         }
         if (col.tag == _blackLightInverseTag)
@@ -163,6 +169,10 @@ public class AmbientLighting : MonoBehaviour
             changeLightIntensity(_directionalLight, distance / distanceMax);
             Color color = _backgroundRenderer.material.color;
             color.a = distance / distanceMax;
+			if (color.a >= 0.75f && _lowLightSnapshot) {
+				SoundManager.instance.TransitionToDefaultSnapshot (_snapshotTransitionTime);
+				_lowLightSnapshot = false;
+			}
             _backgroundRenderer.material.color = color;
         }
     }
@@ -203,6 +213,8 @@ public class AmbientLighting : MonoBehaviour
         _alphaColor = _backgroundRenderer.material.color;
         _alphaColor.a = 1f;
         _backgroundRenderer.material.color = _alphaColor;
+		SoundManager.instance.TransitionToDefaultSnapshot (0.0f);
+		_lowLightSnapshot = false;
         changeLightIntensity(_directionalLight, directional);
         changeLightIntensity(_phenoLight, pheno);
         changeLightIntensity(_spotLight, spotLight);

@@ -94,7 +94,8 @@ public class Character : CellAnimator
 	public PlayableSound deathNoEnergySound;
 	public PlayableSound deathSuicideSound;
 	public PlayableSound deathEnemySound;
-	public PlayableSound hurtAntibiotics;
+	public PlayableSound hurtAntibioticsSound;
+	public PlayableSound hurtEnergySound;
 	public PlayableSound deathAmpicilinSound;
     private Medium _medium;
     public Medium medium
@@ -285,11 +286,17 @@ public class Character : CellAnimator
             takesDamage = _lifeManager.getVariation() < 0;
             if (!_isBeingInjured && takesDamage)
             {
+				if (_energy <= _lowEnergyThreshold)
+					hurtEnergySound.PlayIfNotPlayed ();
+				else
+					hurtAntibioticsSound.PlayIfNotPlayed ();
                 // starts being injured
                 lifeAnimation.play();
             }
             else if (_isBeingInjured && !takesDamage)
             {
+				hurtEnergySound.Stop ();
+				hurtAntibioticsSound.Stop ();
                 // stops being injured
                 lifeAnimation.stop();
             }
@@ -313,11 +320,13 @@ public class Character : CellAnimator
             _lifeManager.applyVariation();
             if (_lifeManager.getLife() == 0f && _isAlive)
             {
+				hurtEnergySound.Stop ();
+				hurtAntibioticsSound.Stop ();
                 _isAlive = false;
                 _ambientLighting.setDead();
 
                 // set cause of death if none
-                if (null == _deathData)
+				if (_deathData == CustomDataValue.UNKNOWN)
                 {
                     CustomDataValue deathCause = CustomDataValue.UNKNOWN;
                     bool isEnergyDepleted = (_energy <= _lowEnergyThreshold);

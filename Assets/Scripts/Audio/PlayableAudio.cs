@@ -17,6 +17,11 @@ public abstract class PlayableAudio {
 	[Range(0.0f, 1.0f)]
 	public float volume = 1.0f;
 
+	/// <summary>
+	/// If true, the audio will start at a random point.
+	/// </summary>
+	public bool randomStart = false;
+
 	protected int _audioId = -1;
 
 	public int audioId {
@@ -95,10 +100,7 @@ public class PlayableMusic : PlayableAbstractMusic {
 	{
 		if (clip != null || (SoundManager.instance.ignoreDuplicateMusic && SoundManager.instance.GetMusicAudio(clip) != null)) {
 			var subMusics = (movementSubMusic.clip != null) ? new List<PlayableSubMusic> { movementSubMusic } : new List<PlayableSubMusic>();
-			_audioId = SoundManager.instance.PlayMusic (clip, volume, loop,
-				persist, fadeInSeconds, fadeOutSeconds,
-				currentMusicFadeOut, transform, subMusics);
-			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			_audioId = SoundManager.instance.PlayMusic (this, subMusics);
 			if (movementSubMusic.clip != null)
 				SoundManager.instance.GetAudio (movementSubMusic.audioId).audioSource.outputAudioMixerGroup
 				= SoundManager.instance.movementMusicMixerGroup;
@@ -125,8 +127,7 @@ public class PlayableSubMusic : PlayableAbstractMusic
 	public int Play (Transform transform)
 	{
 		if (clip != null) {
-			_audioId = SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicFadeOut, transform);
-			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			_audioId = SoundManager.instance.PlayMusic (this);
 		}
 		return _audioId;
 	}
@@ -200,8 +201,7 @@ public class PlayableSound : PlayableAbstractSound
 	public int PlayIfNotPlayed(Transform sourceTransform)
 	{
 		if (clip != null && SoundManager.instance.GetSoundAudio (_audioId) == null) {
-			_audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
-			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			_audioId = SoundManager.instance.PlaySound (this);
 		}
 		return _audioId;
 	}
@@ -209,8 +209,7 @@ public class PlayableSound : PlayableAbstractSound
 	public int Play(Transform sourceTransform)
 	{
 		if (clip != null) {
-			_audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
-			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			_audioId = SoundManager.instance.PlaySound (this);
 		}
 		return _audioId;
 	}
@@ -235,8 +234,7 @@ public class PlayableUISound : PlayableAbstractSound
 	public override int Play ()
 	{
 		if (clip != null) {
-			_audioId = SoundManager.instance.PlayUISound (clip, volume, minPitch, maxPitch);
-			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			_audioId = SoundManager.instance.PlayUISound (this);
 		}
 		return _audioId;
 	}
