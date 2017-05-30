@@ -31,6 +31,25 @@ public class SoundManager : MonoBehaviour
 	}
 
 	/// <summary>
+	/// The current main background music
+	/// </summary>
+	/// <value>The current main background </value>
+	public Audio currentMainBackgroundMusicAudio { get; private set; }
+
+	public Audio currentMainBackgroundMovementSubAudio { 
+		get {
+			Audio res = null;
+			if (currentMainBackgroundMusicAudio != null) {
+				PlayableMusic playableMusic = (PlayableMusic)currentMainBackgroundMusicAudio.playableAudio;
+				if (playableMusic != null) {
+					res = GetAudio (playableMusic.movementSubMusic.audioId);
+				}
+			}
+			return res;
+		}
+	}
+
+	/// <summary>
 	/// When set to true, new Music Audios that have the same audio clip as any other Audio, will be ignored
 	/// </summary>
 	[Tooltip ("When set to true, new Music Audios that have the same audio clip as any other Audio, will be ignored")]
@@ -77,7 +96,11 @@ public class SoundManager : MonoBehaviour
 	/// </summary>
 	[Tooltip ("The audio mixer group associated with music")]
 	public AudioMixerGroup musicMixerGroup;
-
+	/// <summary>
+	/// The audio mixer group associated with the movement
+	/// </summary>
+	[Tooltip ("The audio mixer group associated with the movement")]
+	public AudioMixerGroup movementMusicMixerGroup;
 	/// <summary>
 	/// The audio mixer group associated with sounds
 	/// </summary>
@@ -399,7 +422,9 @@ public class SoundManager : MonoBehaviour
 	/// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds</param>
 	/// <param name="sourceTransform">The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null</param>
 	/// <returns>The ID of the created Audio object</returns>
-	public int PlayMusic (AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
+	public int PlayMusic (AudioClip clip, float volume, bool loop, bool persist,
+		float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds,
+		Transform sourceTransform, List<PlayableSubMusic> subMusics = null)
 	{
 		if (clip == null) {
 			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", clip);
@@ -414,11 +439,28 @@ public class SoundManager : MonoBehaviour
 		// Stop all current music playing
 		StopAllMusic (currentMusicfadeOutSeconds);
 
+		List<Audio> audioList = new List<Audio> ();
+		if (subMusics != null)
+		{
+			foreach (var music in subMusics) {
+				if (music != null) {
+					var subAudio = new Audio (Audio.AudioType.Music, music.clip, music.clip, music.persist,
+						               music.volume, music.fadeInSeconds, music.fadeOutSeconds, 1.0f, 1.0f, sourceTransform);
+					audioList.Add (subAudio);
+					music.audioId = subAudio.audioID;
+					_musicAudio.Add (subAudio.audioID, subAudio);
+				}
+			}
+		}
+
 		// Create the audioSource
-		var newAudio = new Audio (Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, 1.0f, 1.0f, sourceTransform);
+		var newAudio = new Audio (Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds,
+			fadeOutSeconds, 1.0f, 1.0f, sourceTransform, audioList);
 
 		// Add it to music list
 		_musicAudio.Add (newAudio.audioID, newAudio);
+
+		currentMainBackgroundMusicAudio = newAudio;
 
 		return newAudio.audioID;
 	}

@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Audio
 {
-	static int _audioCounter = 0;
-	float _volume;
-	float _targetVolume;
-	float _initTargetVolume;
-	float _tempFadeSeconds;
-	float _fadeInterpolater;
-	float _onFadeStartVolume;
-	float _minPitch;
-	float _maxPitch;
-	AudioType _audioType;
-	AudioClip _initClip;
-	Transform _sourceTransform;
+	protected static int _audioCounter = 0;
+	protected float _volume;
+	protected float _targetVolume;
+	protected float _initTargetVolume;
+	protected float _tempFadeSeconds;
+	protected float _fadeInterpolater;
+	protected float _onFadeStartVolume;
+	protected float _minPitch;
+	protected float _maxPitch;
+	protected AudioType _audioType;
+	protected AudioClip _initClip;
+	protected Transform _sourceTransform;
+	protected List<Audio> _subAudios = new List<Audio>();
 
 
 	/// <summary>
@@ -76,6 +78,17 @@ public class Audio
 	/// </summary>
 	public bool activated { get; private set; }
 
+	/// <summary>
+	/// A list of audios that are synchronized with this Audio
+	/// </summary>
+	/// <value>The sub audios.</value>
+	public List<Audio> subAudios { get; private set; }
+
+	/// <summary>
+	/// The corresponding playableAudio
+	/// </summary>
+	public PlayableAudio playableAudio { get; set; }
+
 	public enum AudioType
 	{
 		Music,
@@ -83,7 +96,9 @@ public class Audio
 		UISound
 	}
 
-	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue, float minPitch, float maxPitch, Transform sourceTransform)
+	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume,
+		float fadeInValue, float fadeOutValue, float minPitch, float maxPitch,
+		Transform sourceTransform, List<Audio> subAudios = null)
 	{
 		if (sourceTransform == null) {
 			this._sourceTransform = SoundManager.instance.gameObject.transform;
@@ -106,6 +121,7 @@ public class Audio
 		this._maxPitch = maxPitch;
 		this.fadeInSeconds = fadeInValue;
 		this.fadeOutSeconds = fadeOutValue;
+		this.subAudios = subAudios != null ? subAudios : new List<Audio> ();
 
 		this.playing = false;
 		this.paused = false;
@@ -166,6 +182,10 @@ public class Audio
 		this._fadeInterpolater = 0.0f;
 		this._onFadeStartVolume = this._volume;
 		this._targetVolume = volume;
+
+		foreach (var audio in subAudios) {
+			audio.Play ();
+		}
 	}
 
 	/// <summary>
@@ -178,6 +198,10 @@ public class Audio
 		this._targetVolume = 0.0f;
 
 		this.stopping = true;
+
+		foreach (var audio in subAudios) {
+			audio.Stop ();
+		}
 	}
 
 	/// <summary>
@@ -187,6 +211,10 @@ public class Audio
 	{
 		this.audioSource.Pause ();
 		this.paused = true;
+
+		foreach (var audio in subAudios) {
+			audio.Pause ();
+		}
 	}
 
 	/// <summary>
@@ -196,6 +224,10 @@ public class Audio
 	{
 		audioSource.UnPause ();
 		paused = false;
+
+		foreach (var audio in subAudios) {
+			audio.Resume ();
+		}
 	}
 
 	/// <summary>
@@ -232,6 +264,10 @@ public class Audio
 		this._fadeInterpolater = 0.0f;
 		this._onFadeStartVolume = startVolume;
 		this._tempFadeSeconds = fadeSeconds;
+
+		foreach (var audio in subAudios) {
+			audio.SetVolume (Mathf.Min(volume, audio._volume));
+		}
 	}
 
 	/// <summary>
@@ -277,6 +313,10 @@ public class Audio
 		else {
 			this._volume = this._targetVolume;
 		}
+
+		foreach (var audio in subAudios) {
+			audio._volume = Mathf.Min (this._volume, audio._volume);
+		}
 	}
 
 	void ApplyGlobalVolumeSettings ()
@@ -294,7 +334,7 @@ public class Audio
 		}
 	}
 
-	public void Update ()
+	public virtual void Update ()
 	{
 		if (this.audioSource == null)
 			return;
@@ -318,6 +358,11 @@ public class Audio
 
 		if (audioSource.isPlaying != playing) {
 			playing = audioSource.isPlaying;
+		}
+
+		foreach (var audio in subAudios) {
+			if (audio.audioSource != null)
+				audio.audioSource.timeSamples = this.audioSource.timeSamples;
 		}
 	}
 }

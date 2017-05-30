@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public abstract class PlayableAudio {
@@ -16,7 +17,12 @@ public abstract class PlayableAudio {
 	[Range(0.0f, 1.0f)]
 	public float volume = 1.0f;
 
-	protected int audioId = -1;
+	protected int _audioId = -1;
+
+	public int audioId {
+		get { return _audioId; }
+		set { _audioId = value; }
+	}
 
 	public Audio.AudioType audioType {
 		get {
@@ -26,13 +32,13 @@ public abstract class PlayableAudio {
 
 	protected abstract Audio.AudioType GetAudioType();
 
-	public abstract void Play();
+	public abstract int Play();
 
 	public abstract void Stop();
 }
 
-[System.Serializable]
-public class PlayableMusic : PlayableAudio {
+public abstract class PlayableAbstractMusic : PlayableAudio 
+{
 	/// <summary>
 	///  How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds
 	/// </summary>
@@ -74,23 +80,61 @@ public class PlayableMusic : PlayableAudio {
 	{
 		return Audio.AudioType.Music;
 	}
+}
 
-	public override void Play ()
+[System.Serializable]
+public class PlayableMusic : PlayableAbstractMusic {
+	public PlayableSubMusic movementSubMusic;
+
+	public override int Play ()
 	{
-		Play (sourceTransform);
+		return Play (sourceTransform);
 	}
 
-	public void Play (Transform transform)
+	public int Play (Transform transform)
 	{
-		if (clip != null)
-			audioId = SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicFadeOut, transform);
+		if (clip != null || (SoundManager.instance.ignoreDuplicateMusic && SoundManager.instance.GetMusicAudio(clip) != null)) {
+			var subMusics = (movementSubMusic.clip != null) ? new List<PlayableSubMusic> { movementSubMusic } : new List<PlayableSubMusic>();
+			_audioId = SoundManager.instance.PlayMusic (clip, volume, loop,
+				persist, fadeInSeconds, fadeOutSeconds,
+				currentMusicFadeOut, transform, subMusics);
+			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+			if (movementSubMusic.clip != null)
+				SoundManager.instance.GetAudio (movementSubMusic.audioId).audioSource.outputAudioMixerGroup
+				= SoundManager.instance.movementMusicMixerGroup;
+		}
+		return _audioId;
 	}
 
 	public override void Stop ()
 	{
-		var audio = SoundManager.instance.GetAudio (audioId);
+		var audio = SoundManager.instance.GetAudio (_audioId);
 		if (audio != null)
 			audio.Stop ();
+	}
+}
+
+[System.Serializable]
+public class PlayableSubMusic : PlayableAbstractMusic
+{
+	public override int Play ()
+	{
+		return Play (sourceTransform);
+	}
+
+	public int Play (Transform transform)
+	{
+		if (clip != null) {
+			_audioId = SoundManager.instance.PlayMusic (clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicFadeOut, transform);
+			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+		}
+		return _audioId;
+	}
+
+
+	public override void Stop ()
+	{
+		throw new System.NotImplementedException ();
 	}
 }
 
@@ -143,31 +187,37 @@ public class PlayableSound : PlayableAbstractSound
 		return Audio.AudioType.Sound;
 	}
 
-	public override void Play ()
+	public override int Play ()
 	{
-		Play(sourceTransform);
+		return Play(sourceTransform);
 	}
 
-	public void PlayIfNotPlayed()
+	public int PlayIfNotPlayed()
 	{
-		PlayIfNotPlayed (sourceTransform);
+		return PlayIfNotPlayed (sourceTransform);
 	}
 
-	public void PlayIfNotPlayed(Transform sourceTransform)
+	public int PlayIfNotPlayed(Transform sourceTransform)
 	{
-		if (clip != null && SoundManager.instance.GetSoundAudio(audioId) == null)
-			audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
+		if (clip != null && SoundManager.instance.GetSoundAudio (_audioId) == null) {
+			_audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
+			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+		}
+		return _audioId;
 	}
 
-	public void Play(Transform sourceTransform)
+	public int Play(Transform sourceTransform)
 	{
-		if (clip != null)
-			audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
+		if (clip != null) {
+			_audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
+			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+		}
+		return _audioId;
 	}
 		
 	public override void Stop ()
 	{
-		var audio = SoundManager.instance.GetAudio (audioId);
+		var audio = SoundManager.instance.GetAudio (_audioId);
 		if (audio != null) {
 			audio.Stop ();
 		}
@@ -182,15 +232,18 @@ public class PlayableUISound : PlayableAbstractSound
 		return Audio.AudioType.UISound;
 	}
 
-	public override void Play ()
+	public override int Play ()
 	{
-		if (clip != null)
-			audioId = SoundManager.instance.PlayUISound (clip, volume, minPitch, maxPitch);
+		if (clip != null) {
+			_audioId = SoundManager.instance.PlayUISound (clip, volume, minPitch, maxPitch);
+			SoundManager.instance.GetAudio (_audioId).playableAudio = this;
+		}
+		return _audioId;
 	}
 
 	public override void Stop ()
 	{
-		var audio = SoundManager.instance.GetAudio (audioId);
+		var audio = SoundManager.instance.GetAudio (_audioId);
 		if (audio != null)
 			audio.Stop ();
 	}

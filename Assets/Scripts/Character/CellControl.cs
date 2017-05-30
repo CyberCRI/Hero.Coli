@@ -33,8 +33,6 @@ public class CellControl : MonoBehaviour
         return _instance;
     }
 
-	public PlayableSound movementSound;
-    
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
@@ -279,7 +277,8 @@ public class CellControl : MonoBehaviour
         _inputMovement = Vector3.zero;
         cancelMouseMove();
 		setSpeed ();
-		movementSound.Stop ();
+		if (SoundManager.instance.currentMainBackgroundMovementSubAudio != null)
+			SoundManager.instance.currentMainBackgroundMovementSubAudio.SetVolume (0.0f);
     }
 
     public void freezePlayer(bool value)
@@ -302,7 +301,8 @@ public class CellControl : MonoBehaviour
     {
         if (Vector3.zero != _inputMovement)
         {
-			movementSound.PlayIfNotPlayed ();
+			if (SoundManager.instance.currentMainBackgroundMovementSubAudio != null)
+				SoundManager.instance.currentMainBackgroundMovementSubAudio.SetVolume (1.0f);
             Vector3 moveAmount = _inputMovement * currentMoveSpeed * Time.deltaTime;
 
             this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);

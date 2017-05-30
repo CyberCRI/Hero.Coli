@@ -70,8 +70,7 @@ public class TriggeredDoor : TriggeredBehaviour
     void openDoor()
     {
         // Debug.Log(this.GetType() + " openDoor");
-		if (!_isDoorOpening)
-			doorOpenSound.Play();
+		doorOpenSound.Play();
         _isDoorOpening = true;
         _isDoorClosing = false;
         iTween.MoveTo(gameObject, generateOpenHash());
@@ -109,8 +108,7 @@ public class TriggeredDoor : TriggeredBehaviour
     private void closeDoor()
     {
         // Debug.Log(this.GetType() + " closeDoor");
-		if (!_isDoorClosing)
-			doorCloseSound.Play();
+		doorCloseSound.Play();
         _isDoorOpening = false;
         _isDoorClosing = true;
         iTween.MoveTo(gameObject, generateCloseHash());
