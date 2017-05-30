@@ -431,7 +431,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound (AudioClip clip)
 	{
-		return PlaySound (clip, 1f, false, 1.0f, 1.0f, null);
+		return PlaySound (clip, 1f, false, 0.0f, 0.0f, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -442,7 +442,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound (AudioClip clip, float volume)
 	{
-		return PlaySound (clip, volume, false, 1.0f, 1.0f, null);
+		return PlaySound (clip, volume, false, 0.0f, 0.0f, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -453,7 +453,7 @@ public class SoundManager : MonoBehaviour
 	/// <returns>The ID of the created Audio object</returns>
 	public int PlaySound (AudioClip clip, bool loop)
 	{
-		return PlaySound (clip, 1f, loop, 1.0f, 1.0f, null);
+		return PlaySound (clip, 1f, loop, 0.0f, 0.0f, 1.0f, 1.0f, null);
 	}
 
 	/// <summary>
@@ -464,7 +464,7 @@ public class SoundManager : MonoBehaviour
 	/// <param name="loop">Wether the sound is looped</param>
 	/// <param name="sourceTransform">The transform that is the source of the sound (will become 3D audio). If 3D audio is not wanted, use null</param>
 	/// <returns>The ID of the created Audio object</returns>
-	public int PlaySound (AudioClip clip, float volume, bool loop, float minPitch, float maxPitch, Transform sourceTransform)
+	public int PlaySound (AudioClip clip, float volume, bool loop, float fadeInSeconds, float fadeOutSeconds, float minPitch, float maxPitch, Transform sourceTransform)
 	{
 		if (clip == null) {
 			Debug.LogError ("Sound Manager: Audio clip is null, cannot play music", clip);
@@ -478,7 +478,7 @@ public class SoundManager : MonoBehaviour
 		}
 
 		// Create the audioSource
-		Audio newAudio = new Audio (Audio.AudioType.Sound, clip, loop, false, volume, 0.0f, 0.0f, minPitch, maxPitch, sourceTransform);
+		Audio newAudio = new Audio (Audio.AudioType.Sound, clip, loop, false, volume, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
 
 		// Add it to music list
 		_soundsAudio.Add (newAudio.audioID, newAudio);

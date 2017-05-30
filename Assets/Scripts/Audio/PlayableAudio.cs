@@ -34,18 +34,6 @@ public abstract class PlayableAudio {
 [System.Serializable]
 public class PlayableMusic : PlayableAudio {
 	/// <summary>
-	/// How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)
-	/// </summary>
-	[Tooltip("How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)")]
-	public float fadeInSeconds = 1.0f;
-
-	/// <summary>
-	/// How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)
-	/// </summary>
-	[Tooltip("How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)")]
-	public float fadeOutSeconds = 1.0f;
-
-	/// <summary>
 	///  How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds
 	/// </summary>
 	[Tooltip(" How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds")]
@@ -62,6 +50,19 @@ public class PlayableMusic : PlayableAudio {
 	/// </summary>
 	[Tooltip("Whether the audio persists between scene changes")]
 	public bool persist = true;
+
+
+	/// <summary>
+	/// How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)
+	/// </summary>
+	[Tooltip("How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)")]
+	public float fadeInSeconds = 1.0f;
+
+	/// <summary>
+	/// How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)
+	/// </summary>
+	[Tooltip("How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)")]
+	public float fadeOutSeconds = 1.0f;
 
 	/// <summary>
 	/// The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null.
@@ -118,6 +119,19 @@ public class PlayableSound : PlayableAbstractSound
 	[Tooltip("The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null")]
 	public Transform sourceTransform;
 
+
+	/// <summary>
+	/// How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)
+	/// </summary>
+	[Tooltip("How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)")]
+	public float fadeInSeconds = 0.0f;
+
+	/// <summary>
+	/// How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)
+	/// </summary>
+	[Tooltip("How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)")]
+	public float fadeOutSeconds = 0.0f;
+
 	/// <summary>
 	/// Whether the audio will be lopped
 	/// </summary>
@@ -142,13 +156,13 @@ public class PlayableSound : PlayableAbstractSound
 	public void PlayIfNotPlayed(Transform sourceTransform)
 	{
 		if (clip != null && SoundManager.instance.GetSoundAudio(audioId) == null)
-			audioId = SoundManager.instance.PlaySound (clip, volume, loop, minPitch, maxPitch, sourceTransform);
+			audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
 	}
 
 	public void Play(Transform sourceTransform)
 	{
 		if (clip != null)
-			audioId = SoundManager.instance.PlaySound (clip, volume, loop, minPitch, maxPitch, sourceTransform);
+			audioId = SoundManager.instance.PlaySound (clip, volume, loop, fadeInSeconds, fadeOutSeconds, minPitch, maxPitch, sourceTransform);
 	}
 		
 	public override void Stop ()

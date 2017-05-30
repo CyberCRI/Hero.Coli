@@ -61,10 +61,6 @@ public class PhenoLight : Phenotype
                 {
                     if (!_isSystemTriggered)
                     {
-						if (_blackLightSpotLight.enabled)
-							darkIlluminateSound.PlayIfNotPlayed ();
-						else
-							illuminateSound.PlayIfNotPlayed ();
                         turnLightOn();
                     }
                     else
@@ -136,6 +132,8 @@ public class PhenoLight : Phenotype
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
             _blackLightSpotLight.gameObject.SetActive(false);
+			darkIlluminateSound.Stop ();
+			illuminateSound.Stop ();
         }
     }
 
@@ -145,6 +143,13 @@ public class PhenoLight : Phenotype
         {
             _triggered.triggerStart();
             _isSystemTriggered = true;
+
+			if (!_spotLight.enabled) {
+				if (_blackLightSpotLight.enabled)
+					darkIlluminateSound.Play ();
+				else
+					illuminateSound.Play ();
+			}
 
             _phenoLight.gameObject.SetActive(true);
             _phenoLight.color = _triggered.colorTo;
