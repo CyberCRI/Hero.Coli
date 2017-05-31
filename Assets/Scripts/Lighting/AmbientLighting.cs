@@ -130,6 +130,7 @@ public class AmbientLighting : MonoBehaviour
                 _spotLight.enabled = true;
                 changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
                 startReset();
             }
         }
@@ -142,6 +143,7 @@ public class AmbientLighting : MonoBehaviour
                 _spotLight.enabled = true;
                 changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
                 startReset();
             }
         }
