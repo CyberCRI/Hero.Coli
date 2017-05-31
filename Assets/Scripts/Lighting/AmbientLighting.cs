@@ -91,7 +91,7 @@ public class AmbientLighting : MonoBehaviour
 		Color color = _backgroundBloodRenderer.material.color;
 		color.a = 0;
         _backgroundBloodRenderer.material.color = color;
-
+		onLightToggle (true);
         _phenoLight.enabled = true;
         _spotLight.enabled = true;
         _blackLightSpotLight.enabled = false;

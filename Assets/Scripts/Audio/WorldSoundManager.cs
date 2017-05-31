@@ -43,7 +43,7 @@ public class WorldSoundManager : MonoBehaviour {
 	void OnAmbientLightToggle (bool lightOn)
 	{
 		if (lightOn)
-			SoundManager.instance.ActivateGameAudioMix (lightOnOffFading);
+			SoundManager.instance.ActivateNormalLightAudioMix (lightOnOffFading);
 		else
 			SoundManager.instance.ActivateLowLightAudioMix (lightOnOffFading);
 	}

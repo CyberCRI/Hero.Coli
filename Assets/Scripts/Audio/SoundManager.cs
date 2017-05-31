@@ -116,6 +116,16 @@ public class SoundManager : MonoBehaviour
 	[Tooltip ("the main menu audio mixer snapshot")]
 	public AudioMixerSnapshot mainMenuSnapshot;
 	/// <summary>
+	/// the pause menu snapshot
+	/// </summary>
+	[Tooltip ("the main menu audio mixer snapshot")]
+	public AudioMixerSnapshot pauseMenuSnapshot;
+	/// <summary>
+	/// The normal-light audio mixer snapshot
+	/// </summary>
+	[Tooltip ("the normal-light audio mixer snapshot")]
+	public AudioMixerSnapshot normalLightSnapshot;
+	/// <summary>
 	/// The low-light audio mixer snapshot
 	/// </summary>
 	[Tooltip ("the low-light audio mixer snapshot")]
@@ -164,12 +174,25 @@ public class SoundManager : MonoBehaviour
 	{
 		switch (type) {
 		case GameState.Game:
-			ActivateGameAudioMix (defaultTimeToReach);
+			ActivateGameAudioMix ();
 			break;
 		case GameState.MainMenu:
-			ActivateMainMenuAudioMix (defaultTimeToReach);
+			ActivateMainMenuAudioMix ();
+			break;
+		case GameState.Pause:
+			ActivatePauseAudioMix ();
 			break;
 		}
+	}
+		
+	public void ActivateNormalLightAudioMix ()
+	{
+		ActivateNormalLightAudioMix (defaultTimeToReach);
+	}
+
+	public void ActivateNormalLightAudioMix (float timeToReach)
+	{
+		normalLightSnapshot.TransitionTo (timeToReach);
 	}
 
 	public void ActivateLowLightAudioMix ()
@@ -200,6 +223,16 @@ public class SoundManager : MonoBehaviour
 	public void ActivateMainMenuAudioMix(float timeToReach)
 	{
 		mainMenuSnapshot.TransitionTo (timeToReach);
+	}
+		
+	public void ActivatePauseAudioMix ()
+	{
+		ActivatePauseAudioMix (defaultTimeToReach);
+	}
+
+	public void ActivatePauseAudioMix(float timeToReach)
+	{
+		pauseMenuSnapshot.TransitionTo (timeToReach);
 	}
 
 	public void ActivateIdleAudioMix ()
