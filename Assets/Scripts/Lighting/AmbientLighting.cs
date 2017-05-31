@@ -157,7 +157,7 @@ public class AmbientLighting : MonoBehaviour
             Color color = _backgroundRenderer.material.color;
             color.a = 1 - (distance / distanceMax);
 			if (color.a <= 0.25 && !_lowLightSnapshot) {
-				SoundManager.instance.TransitionToLowlightSnapshot (_snapshotTransitionTime);
+				SoundManager.instance.ActivateLowLightAudioMix (_snapshotTransitionTime);
 				_lowLightSnapshot = true;
 			}
             _backgroundRenderer.material.color = color;
@@ -170,7 +170,7 @@ public class AmbientLighting : MonoBehaviour
             Color color = _backgroundRenderer.material.color;
             color.a = distance / distanceMax;
 			if (color.a >= 0.75f && _lowLightSnapshot) {
-				SoundManager.instance.TransitionToDefaultSnapshot (_snapshotTransitionTime);
+				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
 				_lowLightSnapshot = false;
 			}
             _backgroundRenderer.material.color = color;
@@ -213,7 +213,7 @@ public class AmbientLighting : MonoBehaviour
         _alphaColor = _backgroundRenderer.material.color;
         _alphaColor.a = 1f;
         _backgroundRenderer.material.color = _alphaColor;
-		SoundManager.instance.TransitionToDefaultSnapshot (0.0f);
+		SoundManager.instance.ActivateDefaultAudioMix (_snapshotTransitionTime);
 		_lowLightSnapshot = false;
         changeLightIntensity(_directionalLight, directional);
         changeLightIntensity(_phenoLight, pheno);

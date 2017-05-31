@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 public class Audio
 {
@@ -15,6 +16,7 @@ public class Audio
 	protected float _maxPitch;
 	protected AudioType _audioType;
 	protected AudioClip _initClip;
+	protected AudioMixerGroup _audioMixerGroup;
 	protected Transform _sourceTransform;
 	protected List<Audio> _subAudios = new List<Audio>();
 
@@ -95,9 +97,9 @@ public class Audio
 		Sound,
 		UISound
 	}
-
-	public Audio (AudioType audioType, AudioClip clip, bool loop, bool persist, float volume,
-		float fadeInValue, float fadeOutValue, float minPitch, float maxPitch, bool randomStart,
+	public Audio (AudioType audioType, AudioClip clip, AudioMixerGroup audioMixerGroup,
+		bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue,
+		float minPitch, float maxPitch, bool randomStart,
 		Transform sourceTransform, List<Audio> subAudios = null)
 	{
 		if (sourceTransform == null) {
@@ -128,11 +130,11 @@ public class Audio
 		this.stopping = false;
 		this.activated = false;
 
-		CreateAudioSource (clip, loop, minPitch, maxPitch);
+		CreateAudioSource (clip, audioMixerGroup, loop, minPitch, maxPitch);
 		Play (randomStart);
 	}
 
-	void CreateAudioSource (AudioClip clip, bool loop, float minPitch, float maxPitch)
+	void CreateAudioSource (AudioClip clip, AudioMixerGroup audioMixerGroup, bool loop, float minPitch, float maxPitch)
 	{
 		this.audioSource = _sourceTransform.gameObject.AddComponent<AudioSource> () as AudioSource;
 
@@ -142,17 +144,7 @@ public class Audio
 		this.audioSource.volume = 0.0f;
 		this.audioSource.maxDistance = 100.0f;
 		this.audioSource.rolloffMode = AudioRolloffMode.Custom;
-		switch (this._audioType) {
-			case AudioType.Music:
-				this.audioSource.outputAudioMixerGroup = SoundManager.instance.musicMixerGroup;
-				break;
-			case AudioType.Sound:
-				this.audioSource.outputAudioMixerGroup = SoundManager.instance.soundsMixerGroup;
-				break;
-			case AudioType.UISound:
-				this.audioSource.outputAudioMixerGroup = SoundManager.instance.UIsoundsMixerGroup;
-				break;
-		}
+		this.audioSource.outputAudioMixerGroup = audioMixerGroup;
 		if (_sourceTransform != SoundManager.instance.gameObject.transform) {
 			this.audioSource.spatialBlend = 1;
 		}
@@ -173,7 +165,7 @@ public class Audio
 	public void Play (float volume, bool randomStart)
 	{
 		if (this.audioSource == null) {
-			CreateAudioSource (_initClip, loop, _minPitch, _maxPitch);
+			CreateAudioSource (_initClip, _audioMixerGroup, loop, _minPitch, _maxPitch);
 		}
 
 		this.audioSource.Play ();

@@ -36,19 +36,6 @@ public class SoundManager : MonoBehaviour
 	/// <value>The current main background </value>
 	public Audio currentMainBackgroundMusicAudio { get; private set; }
 
-	public Audio currentMainBackgroundMovementSubAudio { 
-		get {
-			Audio res = null;
-			if (currentMainBackgroundMusicAudio != null) {
-				PlayableMusic playableMusic = (PlayableMusic)currentMainBackgroundMusicAudio.playableAudio;
-				if (playableMusic != null) {
-					res = GetAudio (playableMusic.movementSubMusic.audioId);
-				}
-			}
-			return res;
-		}
-	}
-
 	/// <summary>
 	/// When set to true, new Music Audios that have the same audio clip as any other Audio, will be ignored
 	/// </summary>
@@ -117,19 +104,37 @@ public class SoundManager : MonoBehaviour
 	/// The default audio mixer snapshot
 	/// </summary>
 	[Tooltip ("The default audio mixer snapshot")]
-	public AudioMixerSnapshot DefaultSnapshot;
+	public AudioMixerSnapshot defaultSnapshot;
 	/// <summary>
 	/// The low-light audio mixer snapshot
 	/// </summary>
 	[Tooltip ("the low-light audio mixer snapshot")]
-	public AudioMixerSnapshot LowlightSnapshot;
+	public AudioMixerSnapshot lowlightSnapshot;
+	/// <summary>
+	/// The idle audio mixer snapshot
+	/// </summary>
+	[Tooltip ("the idle audio mixer snapshot")]
+	public AudioMixerSnapshot idleSnapshot;
+	/// <summary>
+	/// The movement audio mixer snapshot
+	/// </summary>
+	[Tooltip ("the movement audio mixer snapshot")]
+	public AudioMixerSnapshot movementSnapshot;
 
-	void OnEnable()
+	public enum AudioMixerGroupType
+	{
+		Music,
+		Movement,
+		Sound,
+		UI
+	}
+
+	void OnEnable ()
 	{
 		SceneManager.sceneLoaded += OnLevelFinishedLoading;
 	}
 
-	void OnDisable()
+	void OnDisable ()
 	{
 		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
 	}
@@ -143,14 +148,49 @@ public class SoundManager : MonoBehaviour
 			Destroy (this.gameObject);
 	}
 
-	public void TransitionToLowlightSnapshot(float timeToReach)
+	public void ActivateLowLightAudioMix (float timeToReach)
 	{
-		LowlightSnapshot.TransitionTo (timeToReach);
+		lowlightSnapshot.TransitionTo (timeToReach);
 	}
 
-	public void TransitionToDefaultSnapshot(float timeToReach)
+	public void ActivateDefaultAudioMix (float timeToReach)
 	{
-		DefaultSnapshot.TransitionTo (timeToReach);
+		defaultSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void ActivateIdleAudioMix (float timeToReach)
+	{
+		idleSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void ActivateMovementAudioMix (float timeToReach)
+	{
+		movementSnapshot.TransitionTo (timeToReach);
+	}
+
+	/// <summary>
+	/// Gets the audio mixer group corresponding to its type
+	/// </summary>
+	/// <returns>The audio mixer group.</returns>
+	/// <param name="audioMixerGroupType">Audio mixer group type.</param>
+	public AudioMixerGroup GetAudioMixerGroup (AudioMixerGroupType audioMixerGroupType)
+	{
+		AudioMixerGroup res = null;
+		switch (audioMixerGroupType) {
+		case AudioMixerGroupType.Music:
+			res = musicMixerGroup;
+			break;
+		case AudioMixerGroupType.Movement:
+			res = movementMusicMixerGroup;
+			break;
+		case AudioMixerGroupType.Sound:
+			res = soundsMixerGroup;
+			break;
+		case AudioMixerGroupType.UI:
+			res = UIsoundsMixerGroup;
+			break;
+		}
+		return res;
 	}
 
 	void OnLevelFinishedLoading (Scene scene, LoadSceneMode mode)
@@ -398,12 +438,13 @@ public class SoundManager : MonoBehaviour
 		StopAllMusic (playableMusic.currentMusicFadeOut);
 
 		List<Audio> audioList = new List<Audio> ();
-		if (subMusics != null)
-		{
+		if (subMusics != null) {
 			foreach (var music in subMusics) {
 				if (music != null) {
-					var subAudio = new Audio (Audio.AudioType.Music, music.clip, music.clip, music.persist,
-						music.volume, music.fadeInSeconds, music.fadeOutSeconds, 1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform);
+					var subAudio = new Audio (Audio.AudioType.Music,
+						               music.clip, GetAudioMixerGroup (music.mixerGroupType), 
+						               music.clip, music.persist, music.volume, music.fadeInSeconds,
+						               music.fadeOutSeconds, 1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform);
 					audioList.Add (subAudio);
 					music.audioId = subAudio.audioID;
 					_musicAudio.Add (subAudio.audioID, subAudio);
@@ -412,10 +453,9 @@ public class SoundManager : MonoBehaviour
 		}
 
 		// Create the audioSource
-		var newAudio = new Audio (Audio.AudioType.Music, playableMusic.clip, playableMusic.loop,
-			playableMusic.persist, playableMusic.volume,
-			playableMusic.fadeInSeconds, playableMusic.fadeOutSeconds,
-			1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform, audioList);
+		var newAudio = new Audio (Audio.AudioType.Music, playableMusic.clip, GetAudioMixerGroup (playableMusic.mixerGroupType), 
+			               playableMusic.loop, playableMusic.persist, playableMusic.volume, playableMusic.fadeInSeconds, playableMusic.fadeOutSeconds,
+			               1.0f, 1.0f, playableMusic.randomStart, playableMusic.sourceTransform, audioList);
 
 		// Add it to music list
 		_musicAudio.Add (newAudio.audioID, newAudio);
@@ -441,10 +481,11 @@ public class SoundManager : MonoBehaviour
 		}
 
 		// Create the audioSource
-		Audio newAudio = new Audio (Audio.AudioType.Sound, playableSound.clip, playableSound.loop, false,
-			playableSound.volume, playableSound.fadeInSeconds,
-			playableSound.fadeOutSeconds, playableSound.minPitch,
-			playableSound.maxPitch, playableSound.randomStart, playableSound.sourceTransform);
+		Audio newAudio = new Audio (Audio.AudioType.Sound, playableSound.clip, GetAudioMixerGroup (playableSound.mixerGroupType), 
+			                 playableSound.loop, false,
+			                 playableSound.volume, playableSound.fadeInSeconds,
+			                 playableSound.fadeOutSeconds, playableSound.minPitch,
+			                 playableSound.maxPitch, playableSound.randomStart, playableSound.sourceTransform);
 
 		// Add it to music list
 		_soundsAudio.Add (newAudio.audioID, newAudio);
@@ -468,12 +509,14 @@ public class SoundManager : MonoBehaviour
 		}
 
 		// Create the audioSource
-		Audio newAudio = new Audio (Audio.AudioType.UISound, playableUISound.clip, false, false,
-			playableUISound.volume, 0.0f, 0.0f,
-			playableUISound.minPitch,
-			playableUISound.maxPitch,
-			playableUISound.randomStart,
-			null);
+		Audio newAudio = new Audio (Audio.AudioType.UISound, playableUISound.clip,
+			                 GetAudioMixerGroup (playableUISound.mixerGroupType), 
+			                 false, false,
+			                 playableUISound.volume, 0.0f, 0.0f,
+			                 playableUISound.minPitch,
+			                 playableUISound.maxPitch,
+			                 playableUISound.randomStart,
+			                 null);
 
 		// Add it to music list
 		_UISoundsAudio.Add (newAudio.audioID, newAudio);

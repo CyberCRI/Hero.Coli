@@ -22,6 +22,15 @@ public abstract class PlayableAudio {
 	/// </summary>
 	public bool randomStart = false;
 
+	/// <summary>
+	/// The type of the mixer group
+	/// </summary>
+	public SoundManager.AudioMixerGroupType mixerGroupType {
+		get {
+			return GetAudioMixerGroupType ();
+		}
+	}
+
 	protected int _audioId = -1;
 
 	public int audioId {
@@ -36,6 +45,8 @@ public abstract class PlayableAudio {
 	}
 
 	protected abstract Audio.AudioType GetAudioType();
+
+	protected abstract SoundManager.AudioMixerGroupType GetAudioMixerGroupType();
 
 	public abstract int Play();
 
@@ -89,7 +100,7 @@ public abstract class PlayableAbstractMusic : PlayableAudio
 
 [System.Serializable]
 public class PlayableMusic : PlayableAbstractMusic {
-	public PlayableSubMusic movementSubMusic;
+	public List<PlayableSubMusic> subMusics;
 
 	public override int Play ()
 	{
@@ -98,12 +109,8 @@ public class PlayableMusic : PlayableAbstractMusic {
 
 	public int Play (Transform transform)
 	{
-		if (clip != null || (SoundManager.instance.ignoreDuplicateMusic && SoundManager.instance.GetMusicAudio(clip) != null)) {
-			var subMusics = (movementSubMusic.clip != null) ? new List<PlayableSubMusic> { movementSubMusic } : new List<PlayableSubMusic>();
+		if (clip != null) {
 			_audioId = SoundManager.instance.PlayMusic (this, subMusics);
-			if (movementSubMusic.clip != null)
-				SoundManager.instance.GetAudio (movementSubMusic.audioId).audioSource.outputAudioMixerGroup
-				= SoundManager.instance.movementMusicMixerGroup;
 		}
 		return _audioId;
 	}
@@ -114,11 +121,17 @@ public class PlayableMusic : PlayableAbstractMusic {
 		if (audio != null)
 			audio.Stop ();
 	}
+
+	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()
+	{
+		return SoundManager.AudioMixerGroupType.Music;
+	}
 }
 
 [System.Serializable]
 public class PlayableSubMusic : PlayableAbstractMusic
 {
+	public SoundManager.AudioMixerGroupType audioMixerGroupType;
 	public override int Play ()
 	{
 		return Play (sourceTransform);
@@ -135,7 +148,11 @@ public class PlayableSubMusic : PlayableAbstractMusic
 
 	public override void Stop ()
 	{
-		throw new System.NotImplementedException ();
+	}
+
+	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType()
+	{
+		return audioMixerGroupType;
 	}
 }
 
@@ -221,6 +238,11 @@ public class PlayableSound : PlayableAbstractSound
 			audio.Stop ();
 		}
 	}
+
+	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()
+	{
+		return SoundManager.AudioMixerGroupType.Sound;
+	}
 }
 
 [System.Serializable]
@@ -244,5 +266,10 @@ public class PlayableUISound : PlayableAbstractSound
 		var audio = SoundManager.instance.GetAudio (_audioId);
 		if (audio != null)
 			audio.Stop ();
+	}
+
+	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()
+	{
+		return SoundManager.AudioMixerGroupType.UI;
 	}
 }

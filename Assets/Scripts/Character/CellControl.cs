@@ -96,6 +96,8 @@ public class CellControl : MonoBehaviour
     [SerializeField]
     private string wallname;
 
+	public float audioMixerTimeToReach;
+
     public AbsoluteWASDButton absoluteWASDButton;
     public LeftClickToMoveButton leftClickToMoveButton;
     public RelativeWASDButton relativeWASDButton;
@@ -277,8 +279,7 @@ public class CellControl : MonoBehaviour
         _inputMovement = Vector3.zero;
         cancelMouseMove();
 		setSpeed ();
-		if (SoundManager.instance.currentMainBackgroundMovementSubAudio != null)
-			SoundManager.instance.currentMainBackgroundMovementSubAudio.SetVolume (0.0f);
+		SoundManager.instance.ActivateIdleAudioMix (audioMixerTimeToReach);
     }
 
     public void freezePlayer(bool value)
@@ -301,8 +302,7 @@ public class CellControl : MonoBehaviour
     {
         if (Vector3.zero != _inputMovement)
         {
-			if (SoundManager.instance.currentMainBackgroundMovementSubAudio != null)
-				SoundManager.instance.currentMainBackgroundMovementSubAudio.SetVolume (1.0f);
+			SoundManager.instance.ActivateMovementAudioMix (audioMixerTimeToReach);
             Vector3 moveAmount = _inputMovement * currentMoveSpeed * Time.deltaTime;
 
             this.GetComponent<Collider>().attachedRigidbody.AddForce(moveAmount);
