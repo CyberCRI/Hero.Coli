@@ -50,7 +50,11 @@ public abstract class PlayableAudio {
 
 	public abstract int Play();
 
-	public abstract void Stop();
+	public virtual void StopAll() {
+		var audioList = SoundManager.instance.GetAllAudio (clip);
+		foreach (var audio in audioList)
+			audio.Stop ();
+	}
 }
 
 public abstract class PlayableAbstractMusic : PlayableAudio 
@@ -115,13 +119,6 @@ public class PlayableMusic : PlayableAbstractMusic {
 		return _audioId;
 	}
 
-	public override void Stop ()
-	{
-		var audio = SoundManager.instance.GetAudio (_audioId);
-		if (audio != null)
-			audio.Stop ();
-	}
-
 	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()
 	{
 		return SoundManager.AudioMixerGroupType.Music;
@@ -143,11 +140,6 @@ public class PlayableSubMusic : PlayableAbstractMusic
 			_audioId = SoundManager.instance.PlayMusic (this);
 		}
 		return _audioId;
-	}
-
-
-	public override void Stop ()
-	{
 	}
 
 	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType()
@@ -217,7 +209,7 @@ public class PlayableSound : PlayableAbstractSound
 
 	public int PlayIfNotPlayed(Transform sourceTransform)
 	{
-		if (clip != null && SoundManager.instance.GetSoundAudio (_audioId) == null) {
+		if (clip != null && SoundManager.instance.GetSoundAudio (clip) == null) {
 			_audioId = SoundManager.instance.PlaySound (this);
 		}
 		return _audioId;
@@ -229,14 +221,6 @@ public class PlayableSound : PlayableAbstractSound
 			_audioId = SoundManager.instance.PlaySound (this);
 		}
 		return _audioId;
-	}
-		
-	public override void Stop ()
-	{
-		var audio = SoundManager.instance.GetAudio (_audioId);
-		if (audio != null) {
-			audio.Stop ();
-		}
 	}
 
 	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()
@@ -259,13 +243,6 @@ public class PlayableUISound : PlayableAbstractSound
 			_audioId = SoundManager.instance.PlayUISound (this);
 		}
 		return _audioId;
-	}
-
-	public override void Stop ()
-	{
-		var audio = SoundManager.instance.GetAudio (_audioId);
-		if (audio != null)
-			audio.Stop ();
 	}
 
 	protected override SoundManager.AudioMixerGroupType GetAudioMixerGroupType ()

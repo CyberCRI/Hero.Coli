@@ -85,18 +85,19 @@ public class Character : CellAnimator
     private GameObject _savedCellPrefab;
     private CustomDataValue _deathData;
 
+	// Events
+	public delegate void DeathEvent(CustomDataValue deathData);
+	public static event DeathEvent onCharacterDeath;
+
+	public delegate void HurtEvent(bool isBeingHurt);
+	public static event HurtEvent onHurtEnergy;
+	public static event HurtEvent onHurtAntibiotics;
+
+	public delegate void SimpleEvent();
+	public static event SimpleEvent onCharacterRespawn;
+
     public IconAnimation lifeAnimation;
     public IconAnimation energyAnimation;
-	public PlayableSound respawnSound;
-	public PlayableSound deathSound;
-	public PlayableSound deathMineSound;
-	public PlayableSound deathCrushSound;
-	public PlayableSound deathNoEnergySound;
-	public PlayableSound deathSuicideSound;
-	public PlayableSound deathEnemySound;
-	public PlayableSound hurtAntibioticsSound;
-	public PlayableSound hurtEnergySound;
-	public PlayableSound deathAmpicilinSound;
     private Medium _medium;
     public Medium medium
     {
@@ -287,16 +288,16 @@ public class Character : CellAnimator
             if (!_isBeingInjured && takesDamage)
             {
 				if (_energy <= _lowEnergyThreshold)
-					hurtEnergySound.PlayIfNotPlayed ();
+					onHurtEnergy (true);
 				else
-					hurtAntibioticsSound.PlayIfNotPlayed ();
+					onHurtAntibiotics (true);
                 // starts being injured
                 lifeAnimation.play();
             }
             else if (_isBeingInjured && !takesDamage)
             {
-				hurtEnergySound.Stop ();
-				hurtAntibioticsSound.Stop ();
+				onHurtEnergy (false);
+				onHurtAntibiotics (false);
                 // stops being injured
                 lifeAnimation.stop();
             }
@@ -320,8 +321,8 @@ public class Character : CellAnimator
             _lifeManager.applyVariation();
             if (_lifeManager.getLife() == 0f && _isAlive)
             {
-				hurtEnergySound.Stop ();
-				hurtAntibioticsSound.Stop ();
+				onHurtEnergy (false);
+				onHurtAntibiotics (false);
                 _isAlive = false;
                 _ambientLighting.setDead();
 
@@ -521,29 +522,7 @@ public class Character : CellAnimator
 
     IEnumerator deathEffectCoroutine(CellControl cc)
     {
-		switch (_deathData) {
-		case CustomDataValue.ENEMY:
-			deathEnemySound.Play ();
-			break;
-		case CustomDataValue.MINE:
-			deathMineSound.Play ();
-			break;
-		case CustomDataValue.CRUSHED:
-			deathCrushSound.Play ();
-			break;
-		case CustomDataValue.SUICIDEBUTTON:
-			deathSuicideSound.Play ();
-			break;
-		case CustomDataValue.NOENERGY:
-			deathNoEnergySound.Play();
-			break;
-		case CustomDataValue.AMPICILLIN:
-			deathAmpicilinSound.Play();
-			break;
-		default:
-			deathSound.Play();
-			break;
-		}
+		onCharacterDeath (_deathData);
         cc.enabled = false;
 
         iTween.ScaleTo(gameObject, _optionsOut);
@@ -598,7 +577,7 @@ public class Character : CellAnimator
 
     void respawn(CellControl cc)
     {
-		respawnSound.Play ();
+		onCharacterRespawn ();
         enableEyes(true);
 
         foreach (GameObject flagellum in _flagella)

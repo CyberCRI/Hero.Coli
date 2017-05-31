@@ -45,8 +45,17 @@ public class GameStateController : MonoBehaviour
 		return _instance;
 	}
 
-	public PlayableUISound mainMenuSound;
-	public PlayableUISound craftMenuSound;
+	public delegate void MenuEvent(MenuType type);
+	public static event MenuEvent onMenuChange;
+
+	public delegate void GameStateEvent(GameState type);
+	public static event GameStateEvent onGameStateChange;
+
+	public enum MenuType
+	{
+		MainMenu,
+		CraftMenu
+	}
 
 	void Awake ()
 	{
@@ -487,7 +496,7 @@ public class GameStateController : MonoBehaviour
 				}
                 //main menu
                 else if (Input.GetButtonDown ("Cancel")) {
-					mainMenuSound.Play ();
+					onMenuChange (MenuType.MainMenu);
 					goToMainMenuFrom (GameState.Game);
 				}
 				//suicide
@@ -497,7 +506,7 @@ public class GameStateController : MonoBehaviour
                 //crafting
 				else if (((isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 					// Debug.Log(this.GetType() + " Update craft key pressed");
-					craftMenuSound.Play();
+					onMenuChange (MenuType.CraftMenu);
 					gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
 				}
                     //TODO fix this feature                    
@@ -509,7 +518,7 @@ public class GameStateController : MonoBehaviour
 
 			case GameState.Pause:
 				if (Input.GetButtonDown ("Cancel")) {
-					mainMenuSound.Play ();
+					onMenuChange (MenuType.MainMenu);
 					goToMainMenuFrom (GameState.Pause);
 				} else {
 					GameStateTarget newState = ModalManager.manageKeyPresses ();
@@ -527,7 +536,7 @@ public class GameStateController : MonoBehaviour
 							if (((isShortcutKeyDown (_craftingKey) || Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update inventory to craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
-								craftMenuSound.Play ();
+								onMenuChange (MenuType.CraftMenu);
 							}
 							break;
 						case GUITransitioner.GameScreen.screen3:
@@ -536,7 +545,7 @@ public class GameStateController : MonoBehaviour
 								&& canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update out of craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen1);
-								craftMenuSound.Play ();
+								onMenuChange (MenuType.CraftMenu);
 							}
 							break;
 						default:
@@ -656,6 +665,7 @@ public class GameStateController : MonoBehaviour
 			Debug.LogWarning (this.GetType () + " changeState unexpected game state " + newState);
 			break;
 		}
+		onGameStateChange (_gameState);
 	}
 
 	public void setAndSaveLevelName (GameConfiguration.GameMap newMap, string cause = null)

@@ -2,7 +2,8 @@
 
 public class MainMenuItem : MonoBehaviour
 {
-
+	public delegate void MenuItemEvent(MenuItemType itemType);
+	public static event MenuItemEvent onMainMenuItemClick;
     private bool _initialized = false;
     [SerializeField]
     private bool _isLocalized = true;
@@ -74,7 +75,15 @@ public class MainMenuItem : MonoBehaviour
         }
     }
 
-	public PlayableUISound clickSound;
+	public enum MenuItemType
+	{
+		Basic,
+		Depth1,
+		Depth2,
+		Depth3,
+		Back
+	}
+	public MenuItemType itemType;
 
     public virtual void select()
     {
@@ -91,7 +100,7 @@ public class MainMenuItem : MonoBehaviour
 
     public virtual void click()
     {
-		clickSound.Play ();
+		onMainMenuItemClick (itemType);
     }
 
     void OnPress(bool isPressed)

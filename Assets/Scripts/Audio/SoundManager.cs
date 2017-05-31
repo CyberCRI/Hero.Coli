@@ -101,10 +101,20 @@ public class SoundManager : MonoBehaviour
 	public AudioMixerGroup UIsoundsMixerGroup;
 
 	/// <summary>
-	/// The default audio mixer snapshot
+	/// The default time to change snapshot
 	/// </summary>
-	[Tooltip ("The default audio mixer snapshot")]
-	public AudioMixerSnapshot defaultSnapshot;
+	public float defaultTimeToReach;
+
+	/// <summary>
+	/// The game audio mixer snapshot
+	/// </summary>
+	[Tooltip ("The game audio mixer snapshot")]
+	public AudioMixerSnapshot gameSnapshot;
+	/// <summary>
+	/// The main menu audio mixer snapshot
+	/// </summary>
+	[Tooltip ("the main menu audio mixer snapshot")]
+	public AudioMixerSnapshot mainMenuSnapshot;
 	/// <summary>
 	/// The low-light audio mixer snapshot
 	/// </summary>
@@ -132,11 +142,13 @@ public class SoundManager : MonoBehaviour
 	void OnEnable ()
 	{
 		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+		GameStateController.onGameStateChange += OnGameStateChange;
 	}
 
 	void OnDisable ()
 	{
 		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+		GameStateController.onGameStateChange -= OnGameStateChange;
 	}
 
 	void Awake ()
@@ -147,20 +159,62 @@ public class SoundManager : MonoBehaviour
 		} else if (_instance != this)
 			Destroy (this.gameObject);
 	}
+		
+	void OnGameStateChange (GameState type)
+	{
+		switch (type) {
+		case GameState.Game:
+			ActivateGameAudioMix (defaultTimeToReach);
+			break;
+		case GameState.MainMenu:
+			ActivateMainMenuAudioMix (defaultTimeToReach);
+			break;
+		}
+	}
+
+	public void ActivateLowLightAudioMix ()
+	{
+		ActivateLowLightAudioMix (defaultTimeToReach);
+	}
 
 	public void ActivateLowLightAudioMix (float timeToReach)
 	{
 		lowlightSnapshot.TransitionTo (timeToReach);
 	}
 
-	public void ActivateDefaultAudioMix (float timeToReach)
+	public void ActivateGameAudioMix ()
 	{
-		defaultSnapshot.TransitionTo (timeToReach);
+		ActivateGameAudioMix (defaultTimeToReach);
+	}
+
+	public void ActivateGameAudioMix (float timeToReach)
+	{
+		gameSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void ActivateMainMenuAudioMix ()
+	{
+		ActivateMainMenuAudioMix (defaultTimeToReach);
+	}
+
+	public void ActivateMainMenuAudioMix(float timeToReach)
+	{
+		mainMenuSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void ActivateIdleAudioMix ()
+	{
+		ActivateIdleAudioMix (defaultTimeToReach);
 	}
 
 	public void ActivateIdleAudioMix (float timeToReach)
 	{
 		idleSnapshot.TransitionTo (timeToReach);
+	}
+
+	public void ActivateMovementAudioMix ()
+	{
+		ActivateMovementAudioMix (defaultTimeToReach);
 	}
 
 	public void ActivateMovementAudioMix (float timeToReach)
@@ -416,6 +470,24 @@ public class SoundManager : MonoBehaviour
 			if (audio.clip == audioClip)
 				return audio;
 		return null;
+	}
+		
+	public List<Audio> GetAllAudio (AudioClip audioClip)
+	{
+		var listAudio = new List<Audio> ();
+		foreach (var audio in _musicAudio.Values) {
+			if (audio.clip == audioClip)
+				listAudio.Add (audio);
+		}
+		foreach (var audio in _soundsAudio.Values) {
+			if (audio.clip == audioClip)
+				listAudio.Add (audio);
+		}
+		foreach (var audio in _UISoundsAudio.Values) {
+			if (audio.clip == audioClip)
+				listAudio.Add (audio);
+		}
+		return listAudio;
 	}
 
 	#endregion

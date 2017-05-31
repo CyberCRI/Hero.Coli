@@ -83,6 +83,10 @@ public class CellControl : MonoBehaviour
 
     private bool _initialized = false;
 
+	// Events
+	public delegate void MovingAction(bool isMoving);
+	public static event MovingAction onCellMove;
+
     // public float baseMoveSpeed;
     [SerializeField]
     private float rotationSpeed;

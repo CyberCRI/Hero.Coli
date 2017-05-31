@@ -22,9 +22,8 @@ public class ModalManager : MonoBehaviour
         return _instance;
     }
 
-	public PlayableUISound unsetModalSound;
-	public PlayableUISound setModalSound;
-
+	public delegate void ToggleEvent(bool playSound, bool toggle);
+	public static event ToggleEvent onModalToggle;
     void Awake()
     {
         // Debug.Log(this.GetType() + " Awake");
@@ -404,8 +403,7 @@ public class ModalManager : MonoBehaviour
         //                                ));
         if (null != guiComponent)
         {
-			if (playSound)
-				_instance.setModalSound.Play ();
+			onModalToggle (playSound, true);
             Vector3 position = guiComponent.transform.localPosition;
             _instance._previousZ = position.z;
             guiComponent.transform.localPosition = new Vector3(position.x, position.y, _instance.foregroundZ);
@@ -455,7 +453,7 @@ public class ModalManager : MonoBehaviour
     {
         if (null != _instance._currentModalElement)
         {
-			_instance.unsetModalSound.Play ();
+			onModalToggle (true, false);
             Vector3 position = _instance._currentModalElement.transform.localPosition;
             _instance._currentModalElement.transform.localPosition = new Vector3(position.x, position.y, _instance._previousZ);
 

@@ -11,7 +11,8 @@ public class PhenoLight : Phenotype
 {
 
     // TODO use a LinkedList to manage overlapping light sources
-
+	public delegate void LightEvent(PhenoLight.LightType type, bool lightOn);
+	public static event LightEvent onLightToggle;
     [SerializeField]
     private Light _phenoLight, _spotLight, _blackLightSpotLight;
 
@@ -27,6 +28,12 @@ public class PhenoLight : Phenotype
 
     private const float _maxConcentration = 270f, _maxValue = 8f;
     private const float _steepness = _maxValue / _maxConcentration;
+
+	public enum LightType
+	{
+		Default,
+		Dark,
+	}
 
     //! Called at the beginning
     public override void StartPhenotype()
@@ -132,8 +139,8 @@ public class PhenoLight : Phenotype
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
             _blackLightSpotLight.gameObject.SetActive(false);
-			darkIlluminateSound.Stop ();
-			illuminateSound.Stop ();
+			onLightToggle (LightType.Dark, false);
+			onLightToggle (LightType.Default, false);
         }
     }
 
@@ -146,9 +153,9 @@ public class PhenoLight : Phenotype
 
 			if (!_spotLight.enabled) {
 				if (_blackLightSpotLight.enabled)
-					darkIlluminateSound.Play ();
+					onLightToggle (LightType.Dark, true);
 				else
-					illuminateSound.Play ();
+					onLightToggle (LightType.Default, true);
 			}
 
             _phenoLight.gameObject.SetActive(true);

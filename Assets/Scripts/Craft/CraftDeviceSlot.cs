@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class CraftDeviceSlot : MonoBehaviour
 {
+	public delegate void CraftEvent(bool successful);
+	public static event CraftEvent onCraftEvent;
     // GUI elements
     [SerializeField]
     private UISprite _craftSlotSprite;
@@ -23,11 +25,6 @@ public class CraftDeviceSlot : MonoBehaviour
 
     [SerializeField]
     private BioBricksCollapse _bricksCollapse;
-
-	[SerializeField]
-	private PlayableUISound _successfulCraftSound;
-	[SerializeField]
-	private PlayableUISound _genericCraftSound;
 
     private bool _initialized = false;
 
@@ -301,12 +298,12 @@ public class CraftDeviceSlot : MonoBehaviour
 			CraftFinalizer.get ().finalizeCraft ();
 
 			if (_isInCraftScreen)
-				_successfulCraftSound.Play ();
+				onCraftEvent (true);
 
 			_isCraftSuccess = false;
 		} else {
 			if (_isInCraftScreen)
-				_genericCraftSound.Play ();
+				onCraftEvent (false);
 		}
         // Debug.Log(this.GetType() + " animateCollapseCompleted done");
 		_isInCraftScreen = false;

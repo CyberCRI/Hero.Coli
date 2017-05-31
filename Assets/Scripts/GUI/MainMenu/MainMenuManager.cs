@@ -73,10 +73,9 @@ public class MainMenuManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+	public delegate void BasicEvent();
+	public static event BasicEvent onMenuSelectItem;
     private MainMenuItemArray _current;
-
-	[SerializeField]
-	private PlayableUISound _selectSound;
     [SerializeField]
     private MainMenuItemArray mainMenuItems;
     [SerializeField]
@@ -246,14 +245,14 @@ public class MainMenuManager : MonoBehaviour
     public bool selectNext()
     {
         // Debug.Log(this.GetType() + " selectNext");
-		_selectSound.Play();
+		onMenuSelectItem();
         return selectItem(_currentIndex + 1, SelectionMode.NEXT);
     }
 
     public bool selectPrevious()
     {
         // Debug.Log(this.GetType() + " selectPrevious");
-		_selectSound.Play();
+		onMenuSelectItem();
         return selectItem(_currentIndex - 1, SelectionMode.PREVIOUS);
     }
 

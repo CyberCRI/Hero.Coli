@@ -3,6 +3,8 @@ using System.Collections;
 
 public class TriggeredDoor : TriggeredBehaviour
 {
+	public delegate void DoorEvent(bool isDoorOpening);
+	public static event DoorEvent onDoorToggle;
     [SerializeField]
     private Transform moveTo;
     [SerializeField]
@@ -13,9 +15,6 @@ public class TriggeredDoor : TriggeredBehaviour
     private float minDistance = 0.1f;
     [SerializeField]
     private bool _preventReset = false;
-
-	public PlayableSound doorOpenSound;
-	public PlayableSound doorCloseSound;
 
     // TODO switch/channeling mode
     // // If true, switch mode: the door opens completely however short the entering collision was.
@@ -70,7 +69,6 @@ public class TriggeredDoor : TriggeredBehaviour
     void openDoor()
     {
         // Debug.Log(this.GetType() + " openDoor");
-		doorOpenSound.Play();
         _isDoorOpening = true;
         _isDoorClosing = false;
         iTween.MoveTo(gameObject, generateOpenHash());
@@ -108,7 +106,6 @@ public class TriggeredDoor : TriggeredBehaviour
     private void closeDoor()
     {
         // Debug.Log(this.GetType() + " closeDoor");
-		doorCloseSound.Play();
         _isDoorOpening = false;
         _isDoorClosing = true;
         iTween.MoveTo(gameObject, generateCloseHash());

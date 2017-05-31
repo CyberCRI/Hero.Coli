@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class AmbientLighting : MonoBehaviour
 {
+	public delegate void LightEvent(bool lightOn);
+	public static event LightEvent onLightToggle;
 	[SerializeField]
 	private float _snapshotTransitionTime;
-	private bool _lowLightSnapshot;
+	private bool _lowLight;
     [SerializeField]
     private Light _directionalLight;
     [SerializeField]
@@ -130,7 +132,6 @@ public class AmbientLighting : MonoBehaviour
                 _spotLight.enabled = true;
                 changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
                 startReset();
             }
         }
@@ -143,7 +144,6 @@ public class AmbientLighting : MonoBehaviour
                 _spotLight.enabled = true;
                 changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
                 _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
                 startReset();
             }
         }
@@ -158,9 +158,9 @@ public class AmbientLighting : MonoBehaviour
             changeLightIntensity(_directionalLight, 1 - (distance / distanceMax));
             Color color = _backgroundRenderer.material.color;
             color.a = 1 - (distance / distanceMax);
-			if (color.a <= 0.25 && !_lowLightSnapshot) {
-				SoundManager.instance.ActivateLowLightAudioMix (_snapshotTransitionTime);
-				_lowLightSnapshot = true;
+			if (color.a <= 0.25 && !_lowLight) {
+				onLightToggle (false);
+				_lowLight = true;
 			}
             _backgroundRenderer.material.color = color;
         }
@@ -171,9 +171,9 @@ public class AmbientLighting : MonoBehaviour
             changeLightIntensity(_directionalLight, distance / distanceMax);
             Color color = _backgroundRenderer.material.color;
             color.a = distance / distanceMax;
-			if (color.a >= 0.75f && _lowLightSnapshot) {
-				SoundManager.instance.ActivateDefaultAudioMix  (_snapshotTransitionTime);
-				_lowLightSnapshot = false;
+			if (color.a >= 0.75f && _lowLight) {
+				onLightToggle (true);
+				_lowLight = false;
 			}
             _backgroundRenderer.material.color = color;
         }
@@ -200,6 +200,8 @@ public class AmbientLighting : MonoBehaviour
         _alphaColor = _backgroundBloodRenderer.material.color;
         _alphaColor.a = 1f;
         _backgroundBloodRenderer.material.color = _alphaColor;
+		onLightToggle (true);
+		_lowLight = false;
     }
 
     public void startReset()
@@ -215,8 +217,8 @@ public class AmbientLighting : MonoBehaviour
         _alphaColor = _backgroundRenderer.material.color;
         _alphaColor.a = 1f;
         _backgroundRenderer.material.color = _alphaColor;
-		SoundManager.instance.ActivateDefaultAudioMix (_snapshotTransitionTime);
-		_lowLightSnapshot = false;
+		onLightToggle (true);
+		_lowLight = false;
         changeLightIntensity(_directionalLight, directional);
         changeLightIntensity(_phenoLight, pheno);
         changeLightIntensity(_spotLight, spotLight);
