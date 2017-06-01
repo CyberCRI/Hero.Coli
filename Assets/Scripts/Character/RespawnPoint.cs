@@ -2,6 +2,7 @@
 
 public class RespawnPoint: MonoBehaviour {
     private int _colNumber = 0;
+    public bool playTutorial = false;
 
     void OnTriggerEnter(Collider col)
     {

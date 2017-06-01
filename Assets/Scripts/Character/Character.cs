@@ -133,7 +133,7 @@ public class Character : CellAnimator
     private float _previousLife;
 
     //respawn
-    private GameObject _lastCheckpoint = null;
+    private RespawnPoint _lastCheckpoint = null;
     private GameObject _lastNewCell = null;
 
     private const float _respawnTimeS = 1.5f;
@@ -429,7 +429,7 @@ public class Character : CellAnimator
              && (null == _lastCheckpoint
               || _lastCheckpoint.name != col.gameObject.name))
         {
-            _lastCheckpoint = col.gameObject;
+            _lastCheckpoint = col.gameObject.GetComponent<RespawnPoint>();
             duplicateCell();
 
             //RedMetrics reporting
@@ -469,7 +469,7 @@ public class Character : CellAnimator
         {
             Destroy(_lastNewCell);
         }
-        else
+        else if (_lastCheckpoint.playTutorial)
         {
             ModalManager.setModal("FirstCheckpoint");
         }
