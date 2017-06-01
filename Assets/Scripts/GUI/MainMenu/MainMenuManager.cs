@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-
+﻿#define ARCADE
+using UnityEngine;
+using System.Collections.Generic;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -58,6 +59,20 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initialized)
         {
+
+            // default: has "Science" and "Quit" options
+            // Arcade: neither
+            // WebPlayer: no "Quit"
+            // #if UNITY_EDITOR
+
+            // #elif ARCADE
+#if ARCADE
+            // hide Science and Quit
+            mainMenuItems.hideIndexes(new List<int> { 5, 6 });
+#elif UNITY_WEBPLAYER
+            // hide Science
+		    mainMenuItems.hideIndexes(new List<int>{6});
+#endif
             _initialized = true;
         }
     }
@@ -73,8 +88,8 @@ public class MainMenuManager : MonoBehaviour
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-	public delegate void BasicEvent();
-	public static event BasicEvent onMenuSelectItem;
+    public delegate void BasicEvent();
+    public static event BasicEvent onMenuSelectItem;
     private MainMenuItemArray _current;
     [SerializeField]
     private MainMenuItemArray mainMenuItems;
@@ -245,14 +260,14 @@ public class MainMenuManager : MonoBehaviour
     public bool selectNext()
     {
         // Debug.Log(this.GetType() + " selectNext");
-		onMenuSelectItem();
+        onMenuSelectItem();
         return selectItem(_currentIndex + 1, SelectionMode.NEXT);
     }
 
     public bool selectPrevious()
     {
         // Debug.Log(this.GetType() + " selectPrevious");
-		onMenuSelectItem();
+        onMenuSelectItem();
         return selectItem(_currentIndex - 1, SelectionMode.PREVIOUS);
     }
 
