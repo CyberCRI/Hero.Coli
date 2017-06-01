@@ -16,28 +16,36 @@ public class CharacterSoundManager: MonoBehaviour {
 	public PlayableSound hurtAntibioticsSound;
 	public PlayableSound hurtEnergySound;
 
+	public PlayableSound divisionSound;
+
+	public PlayableSound pushSound;
+
 	void OnEnable()
 	{
 		Character.onCharacterRespawn += OnCharacterRespawn;
+		Character.onCharacterDivision += OnCharacterDivision;
 		Character.onCharacterDeath += OnCharacterDeath;
 		Character.onHurtEnergy += OnHurtEnergy;
 		Character.onHurtAntibiotics += OnHurtAntibiotics;
 		CellControl.onCellMove += OnCellMove;
+		PushableBox.onPlayerPushRock += OnPlayerPushRock;
 	}
 
 	void OnDisable()
 	{
+		Character.onCharacterDivision -= OnCharacterDivision;
 		Character.onCharacterRespawn -= OnCharacterRespawn;
 		Character.onCharacterDeath -= OnCharacterDeath;
 		Character.onHurtEnergy -= OnHurtEnergy;
 		Character.onHurtAntibiotics -= OnHurtAntibiotics;
 		CellControl.onCellMove -= OnCellMove;
+		PushableBox.onPlayerPushRock -= OnPlayerPushRock;
 	}
 
 	/// <summary>
 	/// Called whenever the player respawn
 	/// </summary>
-	void OnCharacterRespawn ()
+	public void OnCharacterRespawn ()
 	{
 		respawnSound.Play ();
 	}
@@ -46,7 +54,7 @@ public class CharacterSoundManager: MonoBehaviour {
 	/// Called whenever the player dies
 	/// </summary>
 	/// <param name="deathData">The death data that holds the type of death</param>
-	void OnCharacterDeath (CustomDataValue deathData)
+	public void OnCharacterDeath (CustomDataValue deathData)
 	{
 		switch (deathData) {
 		case CustomDataValue.ENEMY:
@@ -77,7 +85,7 @@ public class CharacterSoundManager: MonoBehaviour {
 	/// Called whenever the character is being hurt or stops being hurt by antibiotics
 	/// </summary>
 	/// <param name="isBeingHurt">If set to <c>true</c> character is being hurt.</param>
-	void OnHurtAntibiotics (bool isBeingHurt)
+	public void OnHurtAntibiotics (bool isBeingHurt)
 	{
 		if (isBeingHurt)
 			hurtAntibioticsSound.PlayIfNotPlayed ();
@@ -89,7 +97,7 @@ public class CharacterSoundManager: MonoBehaviour {
 	/// Called whenever the character is being hurt or stops being hurt by energy
 	/// </summary>
 	/// <param name="isBeingHurt">If set to <c>true</c> character is being hurt.</param>
-	void OnHurtEnergy (bool isBeingHurt)
+	public void OnHurtEnergy (bool isBeingHurt)
 	{
 		if (isBeingHurt)
 			hurtEnergySound.PlayIfNotPlayed ();
@@ -101,12 +109,25 @@ public class CharacterSoundManager: MonoBehaviour {
 	/// Called whenever the player moves
 	/// </summary>
 	/// <param name="isMoving">If set to <c>true</c> character is moving.</param>
-	void OnCellMove (bool isMoving)
+	public void OnCellMove (bool isMoving)
 	{
 		if (isMoving)
 			SoundManager.instance.ActivateMovementAudioMix (movementAudioMixFadingTime);
 		else
 			SoundManager.instance.ActivateIdleAudioMix (movementAudioMixFadingTime);
+	}
+
+	public void OnCharacterDivision ()
+	{
+		divisionSound.Play ();
+	}
+		
+	public void OnPlayerPushRock (bool canPush)
+	{
+		if (canPush)
+			pushSound.Play ();
+		else
+			pushSound.StopAll ();
 	}
 }
 

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class FocusMaskManager : MonoBehaviour
 {
-
+	public delegate void FocusEvent ();
+	public static event FocusEvent onFocusOn;
     [SerializeField]
     private GameObject focusMask;
     [SerializeField]
@@ -250,6 +251,7 @@ public class FocusMaskManager : MonoBehaviour
             }
 
             show(true);
+			onFocusOn ();
         }
 
     }

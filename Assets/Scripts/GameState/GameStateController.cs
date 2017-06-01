@@ -45,7 +45,7 @@ public class GameStateController : MonoBehaviour
 		return _instance;
 	}
 
-	public delegate void MenuEvent(MenuType type);
+	public delegate void MenuEvent(MenuType type, bool toggle);
 	public static event MenuEvent onMenuChange;
 
 	public delegate void GameStateEvent(GameState type);
@@ -496,7 +496,7 @@ public class GameStateController : MonoBehaviour
 				}
                 //main menu
                 else if (Input.GetButtonDown ("Cancel")) {
-					onMenuChange (MenuType.MainMenu);
+					onMenuChange (MenuType.MainMenu, true);
 					goToMainMenuFrom (GameState.Game);
 				}
 				//suicide
@@ -506,7 +506,7 @@ public class GameStateController : MonoBehaviour
                 //crafting
 				else if (((isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 					// Debug.Log(this.GetType() + " Update craft key pressed");
-					onMenuChange (MenuType.CraftMenu);
+					onMenuChange (MenuType.CraftMenu, true);
 					gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
 				}
                     //TODO fix this feature                    
@@ -518,7 +518,7 @@ public class GameStateController : MonoBehaviour
 
 			case GameState.Pause:
 				if (Input.GetButtonDown ("Cancel")) {
-					onMenuChange (MenuType.MainMenu);
+					onMenuChange (MenuType.MainMenu, true);
 					goToMainMenuFrom (GameState.Pause);
 				} else {
 					GameStateTarget newState = ModalManager.manageKeyPresses ();
@@ -536,7 +536,7 @@ public class GameStateController : MonoBehaviour
 							if (((isShortcutKeyDown (_craftingKey) || Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update inventory to craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
-								onMenuChange (MenuType.CraftMenu);
+								onMenuChange (MenuType.CraftMenu, true);
 							}
 							break;
 						case GUITransitioner.GameScreen.screen3:
@@ -545,7 +545,7 @@ public class GameStateController : MonoBehaviour
 								&& canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update out of craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen1);
-								onMenuChange (MenuType.CraftMenu);
+								onMenuChange (MenuType.CraftMenu, false);
 							}
 							break;
 						default:

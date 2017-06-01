@@ -355,7 +355,7 @@ public class Audio
 		}
 
 		foreach (var audio in subAudios) {
-			if (audio.audioSource != null)
+			if (audio.audioSource != null && audio.audioSource.timeSamples != this.audioSource.timeSamples)
 				audio.audioSource.timeSamples = this.audioSource.timeSamples;
 		}
 	}

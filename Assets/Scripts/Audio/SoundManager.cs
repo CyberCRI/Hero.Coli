@@ -145,6 +145,7 @@ public class SoundManager : MonoBehaviour
 	{
 		Music,
 		Movement,
+		Unpaused,
 		Sound,
 		UI
 	}

@@ -86,6 +86,7 @@ public class AmpicillinTutorialCutScene : CutScene
 
     IEnumerator killDummy(GameObject dummy)
     {
+		Character.get ().GetComponentInChildren<CharacterSoundManager> ().OnCharacterDeath (CustomDataValue.AMPICILLIN);
         _iTweenEventBigGuy.GetComponent<DeathDummy>().startDeath();
         StartCoroutine(waitForDummyDeath());
         yield return null;

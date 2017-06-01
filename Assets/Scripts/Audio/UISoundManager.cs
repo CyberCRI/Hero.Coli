@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UISoundManager : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class UISoundManager : MonoBehaviour
 	public PlayableUISound mainMenuItemDepth1Sound;
 	public PlayableUISound mainMenuItemDepth2Sound;
 	public PlayableUISound mainMenuItemDepth3Sound;
-	public PlayableUISound mainMenuItemBasicSound;
 	public PlayableUISound mainMenuItemBackSound;
+	public PlayableUISound mainMenuItemBasicSound;
 
 	public PlayableUISound successfulCraftSound;
 	public PlayableUISound genericCraftSound;
+
+	public PlayableUISound[] focusOnSoundArray;
+
+	int focusOnSoundIndex = 0;
 
 	void OnEnable ()
 	{
@@ -27,6 +32,7 @@ public class UISoundManager : MonoBehaviour
 		MainMenuManager.onMenuSelectItem += OnMenuSelectItem;
 		MainMenuItem.onMainMenuItemClick += OnMainMenuItemClick;
 		CraftDeviceSlot.onCraftEvent += OnCraftEvent;
+		FocusMaskManager.onFocusOn += OnFocusOn;
 	}
 
 	void OnDisable ()
@@ -36,9 +42,10 @@ public class UISoundManager : MonoBehaviour
 		MainMenuManager.onMenuSelectItem -= OnMenuSelectItem;
 		MainMenuItem.onMainMenuItemClick -= OnMainMenuItemClick;
 		CraftDeviceSlot.onCraftEvent -= OnCraftEvent;
+		FocusMaskManager.onFocusOn -= OnFocusOn;
 	}
 
-	void OnMenuChange (GameStateController.MenuType type)
+	void OnMenuChange (GameStateController.MenuType type, bool toggle)
 	{
 		switch (type) {
 		case GameStateController.MenuType.CraftMenu:
@@ -63,7 +70,7 @@ public class UISoundManager : MonoBehaviour
 			mainMenuItemDepth3Sound.Play ();
 			break;
 		case MainMenuItem.MenuItemType.Basic:
-			mainMenuItemDepth1Sound.Play ();
+			mainMenuItemBasicSound.Play ();
 			break;
 		case MainMenuItem.MenuItemType.Back:
 			mainMenuItemDepth1Sound.Play ();
@@ -95,5 +102,14 @@ public class UISoundManager : MonoBehaviour
 			successfulCraftSound.Play ();
 		else
 			genericCraftSound.Play ();
+	}
+		
+	void OnFocusOn ()
+	{
+		if (focusOnSoundArray.Length != 0) {
+			if (focusOnSoundIndex < focusOnSoundArray.Length)
+				focusOnSoundArray [focusOnSoundIndex].Play ();
+			focusOnSoundIndex = (focusOnSoundIndex + 1) % focusOnSoundArray.Length;
+		}
 	}
 }

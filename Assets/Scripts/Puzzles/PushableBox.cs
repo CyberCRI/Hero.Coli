@@ -3,6 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class PushableBox : MonoBehaviour
 {
+	public delegate void PushEvent(bool canPush);
+	public static event PushEvent onPlayerPushRock;
     [SerializeField]
     private float minSpeed;
     private Vector3 _initPos;
@@ -33,11 +35,13 @@ public class PushableBox : MonoBehaviour
                 if (col.collider.tag == Character.playerTag)
                 {
                     if (_control.currentMoveSpeed >= minSpeed)
-                    {
+					{
+						onPlayerPushRock (true);
                         _rigidBody.constraints = _canPush;
                     }
                     else if (_control.currentMoveSpeed < minSpeed)
                     {
+						onPlayerPushRock (false);
                         _rigidBody.constraints = _noPush;
                     }
                 }

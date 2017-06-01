@@ -95,6 +95,7 @@ public class Character : CellAnimator
 
 	public delegate void SimpleEvent();
 	public static event SimpleEvent onCharacterRespawn;
+	public static event SimpleEvent onCharacterDivision;
 
     public IconAnimation lifeAnimation;
     public IconAnimation energyAnimation;
@@ -478,6 +479,7 @@ public class Character : CellAnimator
         SavedCell savedCell = (SavedCell)_lastNewCell.GetComponent<SavedCell>();
         savedCell.initialize(this);
         _lastNewCell.SetActive(true);
+		onCharacterDivision ();
 
         StartCoroutine(popEffectCoroutine(savedCell));
     }

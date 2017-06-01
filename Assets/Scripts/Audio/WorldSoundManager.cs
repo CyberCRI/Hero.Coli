@@ -6,6 +6,7 @@ public class WorldSoundManager : MonoBehaviour {
 
 	public PlayableSound illuminateSound;
 	public PlayableSound darkIlluminateSound;
+	public PlayableSound lightOffSound;
 	public PlayableSound doorOpenSound;
 	public PlayableSound doorCloseSound;
 
@@ -36,8 +37,10 @@ public class WorldSoundManager : MonoBehaviour {
 		}
 		if (lightOn)
 			sound.Play ();
-		else
+		else {
 			sound.StopAll ();
+			lightOffSound.Play ();
+		}
 	}
 
 	void OnAmbientLightToggle (bool lightOn)
