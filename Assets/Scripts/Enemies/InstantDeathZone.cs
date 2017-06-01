@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class InstantDeathZone : MonoBehaviour
 {
-    [SerializeField]
-    private CustomDataValue _deathCause = CustomDataValue.CRUSHED;
+    private const CustomDataValue _deathCause = CustomDataValue.CRUSHED;
 
     void OnCollisionEnter(Collision collision)
     {

@@ -35,12 +35,14 @@ public class WorldSoundManager : MonoBehaviour {
 		case PhenoLight.LightType.Default:
 			sound = illuminateSound;
 			break;
+		case PhenoLight.LightType.None:
+			sound = lightOffSound;
+			break;
 		}
 		if (lightOn)
 			sound.Play ();
 		else {
 			sound.StopAll ();
-			lightOffSound.Play ();
 		}
 	}
 
