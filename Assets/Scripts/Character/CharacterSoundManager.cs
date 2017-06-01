@@ -74,6 +74,8 @@ public class CharacterSoundManager: MonoBehaviour {
 			deathNoEnergySound.Play();
 			break;
 		case CustomDataValue.AMPICILLIN:
+		case CustomDataValue.AMPICILLINWALL1:
+		case CustomDataValue.AMPICILLINWALL2:
 			deathAmpicilinSound.Play();
 			break;
 		default:
