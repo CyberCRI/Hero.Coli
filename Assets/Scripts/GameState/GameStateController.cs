@@ -717,7 +717,6 @@ public class GameStateController : MonoBehaviour
 		iTweenPath.paths.Clear ();
 		CutScene.reset ();
 		DisplayedDevice.reset ();
-		PickablePlasmid.reset ();
 		AvailableDisplayedBioBrick.reset ();
 		NanobotsPickUpHandler.reset ();
 		StepByStepTutorial.reset ();
