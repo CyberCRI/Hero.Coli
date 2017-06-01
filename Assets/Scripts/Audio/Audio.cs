@@ -20,6 +20,8 @@ public class Audio
 	protected Transform _sourceTransform;
 	protected List<Audio> _subAudios = new List<Audio>();
 
+	public const float maxDistance = 150.0f;
+
 
 	/// <summary>
 	/// The ID of the Audio
@@ -142,7 +144,7 @@ public class Audio
 		this.audioSource.loop = loop;
 		this.audioSource.pitch = minPitch < maxPitch ? Random.Range (minPitch, maxPitch) : minPitch;
 		this.audioSource.volume = 0.0f;
-		this.audioSource.maxDistance = 100.0f;
+		this.audioSource.maxDistance = maxDistance;
 		this.audioSource.rolloffMode = AudioRolloffMode.Custom;
 		this.audioSource.outputAudioMixerGroup = audioMixerGroup;
 		if (_sourceTransform != SoundManager.instance.gameObject.transform) {

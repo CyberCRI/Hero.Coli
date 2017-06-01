@@ -139,7 +139,8 @@ public class PhenoLight : Phenotype
         {
 			if (_spotLight.enabled)
 				onLightToggle (LightType.None, true);
-			onLightToggle (LightType.Dark, false);
+			if (_blackLightSpotLight.enabled)
+				onLightToggle (LightType.Dark, false);
 			onLightToggle (LightType.Default, false);
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
