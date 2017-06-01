@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class CharacterSoundManager: MonoBehaviour {
-	public float movementAudioMixFadingTime;
+	public float fadeToMovementTime;
+	public float fadeToIdleTime;
 
 	public PlayableSound respawnSound;
 
@@ -112,9 +113,9 @@ public class CharacterSoundManager: MonoBehaviour {
 	public void OnCellMove (bool isMoving)
 	{
 		if (isMoving)
-			SoundManager.instance.ActivateMovementAudioMix (movementAudioMixFadingTime);
+			SoundManager.instance.ActivateMovementAudioMix (fadeToMovementTime);
 		else
-			SoundManager.instance.ActivateIdleAudioMix (movementAudioMixFadingTime);
+			SoundManager.instance.ActivateIdleAudioMix (fadeToIdleTime);
 	}
 
 	public void OnCharacterDivision ()

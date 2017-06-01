@@ -224,6 +224,7 @@ public class SoundManager : MonoBehaviour
 	public void ActivateMainMenuAudioMix(float timeToReach)
 	{
 		mainMenuSnapshot.TransitionTo (timeToReach);
+		idleSnapshot.TransitionTo (timeToReach);
 	}
 		
 	public void ActivatePauseAudioMix ()
@@ -234,6 +235,7 @@ public class SoundManager : MonoBehaviour
 	public void ActivatePauseAudioMix(float timeToReach)
 	{
 		pauseMenuSnapshot.TransitionTo (timeToReach);
+		idleSnapshot.TransitionTo (timeToReach);
 	}
 
 	public void ActivateIdleAudioMix ()

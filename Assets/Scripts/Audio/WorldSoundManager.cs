@@ -30,6 +30,7 @@ public class WorldSoundManager : MonoBehaviour {
 		switch (type) {
 		case PhenoLight.LightType.Dark:
 			sound = darkIlluminateSound;
+			OnAmbientLightToggle (lightOn);
 			break;
 		case PhenoLight.LightType.Default:
 			sound = illuminateSound;
