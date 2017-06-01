@@ -33,6 +33,7 @@ public class PhenoLight : Phenotype
 	{
 		Default,
 		Dark,
+		None,
 	}
 
     //! Called at the beginning
@@ -136,11 +137,13 @@ public class PhenoLight : Phenotype
         _isSystemTriggered = false;
         if (_phenoLight)
         {
+			if (_spotLight.enabled)
+				onLightToggle (LightType.None, true);
+			onLightToggle (LightType.Dark, false);
+			onLightToggle (LightType.Default, false);
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
             _blackLightSpotLight.gameObject.SetActive(false);
-			onLightToggle (LightType.Dark, false);
-			onLightToggle (LightType.Default, false);
         }
     }
 
@@ -151,12 +154,10 @@ public class PhenoLight : Phenotype
             _triggered.triggerStart();
             _isSystemTriggered = true;
 
-			if (!_spotLight.enabled) {
-				if (_blackLightSpotLight.enabled)
-					onLightToggle (LightType.Dark, true);
-				else
-					onLightToggle (LightType.Default, true);
-			}
+			if (!_spotLight.enabled && _blackLightSpotLight.enabled)
+				onLightToggle (LightType.Dark, true);
+			else
+				onLightToggle (LightType.Default, true);
 
             _phenoLight.gameObject.SetActive(true);
             _phenoLight.color = _triggered.colorTo;
