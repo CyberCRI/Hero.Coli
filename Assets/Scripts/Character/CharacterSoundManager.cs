@@ -57,31 +57,33 @@ public class CharacterSoundManager: MonoBehaviour {
 	/// <param name="deathData">The death data that holds the type of death</param>
 	public void OnCharacterDeath (CustomDataValue deathData)
 	{
-		switch (deathData) {
-		case CustomDataValue.ENEMY:
-			deathEnemySound.Play ();
-			break;
-		case CustomDataValue.MINE:
-			deathMineSound.Play ();
-			break;
-		case CustomDataValue.CRUSHED:
-			deathCrushSound.Play ();
-			break;
-		case CustomDataValue.SUICIDEBUTTON:
-			deathSuicideSound.Play ();
-			break;
-		case CustomDataValue.NOENERGY:
-			deathNoEnergySound.Play();
-			break;
-		case CustomDataValue.AMPICILLIN:
-		case CustomDataValue.AMPICILLINWALL1:
-		case CustomDataValue.AMPICILLINWALL2:
-			deathAmpicilinSound.Play();
-			break;
-		default:
-			deathSound.Play();
-			break;
-		}
+		switch (deathData)
+        {
+            case CustomDataValue.ENEMY:
+                deathEnemySound.Play();
+                break;
+            case CustomDataValue.MINE:
+                deathMineSound.Play();
+                break;
+            case CustomDataValue.CRUSHED:
+                deathCrushSound.Play();
+                break;
+            case CustomDataValue.SUICIDEBUTTON:
+                deathSuicideSound.Play();
+                break;
+            case CustomDataValue.NOENERGY:
+                deathNoEnergySound.Play();
+                break;
+            case CustomDataValue.AMPICILLIN:
+            case CustomDataValue.AMPICILLINWALL1:
+            case CustomDataValue.AMPICILLINWALL2:
+                deathAmpicilinSound.Play();
+                break;
+            default:
+                deathSound.Play();
+                break;
+        }
+		ArcadeManager.instance.playAnimation(ArcadeManager.deathAnimation);
 	}
 
 	/// <summary>
@@ -123,6 +125,7 @@ public class CharacterSoundManager: MonoBehaviour {
 	public void OnCharacterDivision ()
 	{
 		divisionSound.Play ();
+		ArcadeManager.instance.playAnimation(ArcadeManager.divisionAnimation);
 	}
 		
 	public void OnPlayerPushRock (bool canPush)
