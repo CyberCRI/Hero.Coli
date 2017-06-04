@@ -159,6 +159,7 @@ public enum CustomDataValue
     SCIENCE,
     LEARNMORE,
     CONTRIBUTE,
+    QUIT,
 
     // death causes
     MINE,               // instant death - stepped on a mine

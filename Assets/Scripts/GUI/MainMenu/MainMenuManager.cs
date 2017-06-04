@@ -67,10 +67,11 @@ public class MainMenuManager : MonoBehaviour
             // #elif ARCADE
 #if ARCADE
             // hide Science and Quit
-            mainMenuItems.hideIndexes(new List<int> { 5, 6 });
+            // mainMenuItems.hideIndexes(new List<int> { 5, 6 });
+            mainMenuItems.hideIndexes(new List<int> { 5 }); // for testing purposes
 #elif UNITY_WEBPLAYER
-            // hide Science
-		    mainMenuItems.hideIndexes(new List<int>{6});
+            // hide QUIT
+		    mainMenuItems.hideIndexes(new List<int>{ 6 });
 #endif
             _initialized = true;
         }
