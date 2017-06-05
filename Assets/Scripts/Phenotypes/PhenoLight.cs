@@ -9,9 +9,10 @@ using System;
  */
 public class PhenoLight : Phenotype
 {
+    public const string gfpProtein = "FLUO1", rfpProtein = "FLUO2";
 
     // TODO use a LinkedList to manage overlapping light sources
-	public delegate void LightEvent(PhenoLight.LightType type, bool lightOn);
+	public delegate void LightEvent(PhenoLight.LightType type, bool lightOn, bool isGFP);
 	public static event LightEvent onLightToggle;
     [SerializeField]
     private Light _phenoLight, _spotLight, _blackLightSpotLight;
@@ -138,10 +139,10 @@ public class PhenoLight : Phenotype
         if (_phenoLight)
         {
 			if (_spotLight.enabled)
-				onLightToggle (LightType.None, true);
+				onLightToggle (LightType.None, true, _fluorescenceProtein == gfpProtein);
 			if (_blackLightSpotLight.enabled)
-				onLightToggle (LightType.Dark, false);
-			onLightToggle (LightType.Default, false);
+				onLightToggle (LightType.Dark, false, _fluorescenceProtein == gfpProtein);
+			onLightToggle (LightType.Default, false, _fluorescenceProtein == gfpProtein);
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
             _blackLightSpotLight.gameObject.SetActive(false);
@@ -156,9 +157,9 @@ public class PhenoLight : Phenotype
             _isSystemTriggered = true;
 
 			if (!_spotLight.enabled && _blackLightSpotLight.enabled)
-				onLightToggle (LightType.Dark, true);
+				onLightToggle (LightType.Dark, true, _fluorescenceProtein == gfpProtein);
 			else
-				onLightToggle (LightType.Default, true);
+				onLightToggle (LightType.Default, true, _fluorescenceProtein == gfpProtein);
 
             _phenoLight.gameObject.SetActive(true);
             _phenoLight.color = _triggered.colorTo;

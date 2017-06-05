@@ -24,7 +24,7 @@ public class WorldSoundManager : MonoBehaviour {
 		TriggeredDoor.onDoorToggle -= OnDoorToggle;
 	}
 
-	void OnPhenoLightToggle (PhenoLight.LightType type, bool lightOn)
+	void OnPhenoLightToggle (PhenoLight.LightType type, bool lightOn, bool isGFP)
 	{
 		PlayableSound sound = null;
 		switch (type) {
@@ -40,9 +40,28 @@ public class WorldSoundManager : MonoBehaviour {
 			break;
 		}
 		if (lightOn)
+		{
 			sound.Play ();
-		else {
+			if (isGFP)
+			{
+				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_gfp_start);
+			}
+			else
+			{
+				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_rfp_start);
+			}
+		}
+		else
+		{
 			sound.StopAll ();
+			if (isGFP)
+			{
+				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_gfp_end);
+			}
+			else
+			{
+				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_rfp_end);
+			}
 		}
 	}
 

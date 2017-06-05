@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 
 /*DESCRIPTION
  * This class creates the links between the Interface's Scene, classes and GameObject and the others
@@ -130,6 +130,8 @@ public class InterfaceLinkManager : LinkManager
 
     [SerializeField]
     private GameObject adminTools, genericAdminButton;
+    [SerializeField]
+    private Dropdown dropdown;
 
     protected override int getLMIndex()
     {
@@ -262,7 +264,7 @@ public class InterfaceLinkManager : LinkManager
         DevicesDisplayer.get().initializeIfNecessary();
         Inventory.get().initialize();
         GUITransitioner.get().initialize();
-        BackendManager.get().initializeIfNecessary(adminTools, genericAdminButton);
+        BackendManager.get().initializeIfNecessary(adminTools, genericAdminButton, dropdown);
     }
 
 }

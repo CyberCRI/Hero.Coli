@@ -9,7 +9,7 @@ public class PlaySoundOnTrigger : MonoBehaviour
     [Tooltip("The sound that will be played if the player enters the trigger")]
     public PlayableUISound sound;
     [SerializeField]
-    private string _arcadeAnimation = "A";
+    private ArcadeManager.Animation _arcadeAnimation = ArcadeManager.Animation.pickup_dna;
 
     public enum SoundType
     {

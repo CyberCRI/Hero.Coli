@@ -18,7 +18,9 @@ public class UISoundManager : MonoBehaviour
 	public PlayableUISound mainMenuItemBackSound;
 	public PlayableUISound mainMenuItemBasicSound;
 
+	// successful new genetic construction
 	public PlayableUISound successfulCraftSound;
+	// successful well-known genetic construction
 	public PlayableUISound genericCraftSound;
 
 	public PlayableUISound[] focusOnSoundArray;
@@ -99,9 +101,15 @@ public class UISoundManager : MonoBehaviour
 	void OnCraftEvent (bool successful)
 	{
 		if (successful)
+		{
 			successfulCraftSound.Play ();
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_create_device);
+		}
 		else
+		{
 			genericCraftSound.Play ();
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_assemble_device);
+		}
 	}
 		
 	void OnFocusOn ()

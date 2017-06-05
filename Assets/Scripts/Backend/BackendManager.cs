@@ -4,6 +4,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+#if ARCADE
+using System.Collections.Generic;
+using System.IO.Ports;
+#endif
 
 // admin mode unlocks actions and logs to a test GUID
 public class BackendManager : MonoBehaviour
@@ -40,16 +44,30 @@ public class BackendManager : MonoBehaviour
     }
 
     private bool _initialized = false;
-    public void initializeIfNecessary(GameObject adminTools, GameObject genericAdminButton)
+    public void initializeIfNecessary(GameObject adminTools, GameObject genericAdminButton, Dropdown dropdown)
     {
         if (!_initialized)
         {
             _initialized = true;
             _adminTools = adminTools;
             _genericAdminButton = genericAdminButton;
+            _debugDropdown = dropdown;
+#if ARCADE
+            _debugDropdown.onValueChanged.AddListener(delegate
+            {
+                switchPort();
+            });
+#endif
             showAdminTools(GameConfiguration.isAdmin);
         }
     }
+
+#if ARCADE
+    private void switchPort()
+    {
+        ArcadeManager.instance.switchPort(_dynamicPorts[_debugDropdown.value]);
+    }
+#endif
 
     void Start()
     {
@@ -70,6 +88,7 @@ public class BackendManager : MonoBehaviour
     private GameObject _adminTools, _genericAdminButton;
     private int _depth = 0;
     private const float _duration = 2.0f;
+    private string[] _dynamicPorts;
     [SerializeField]
     private static bool _isHurtLightEffectsOn = false;
     public static bool isHurtLightEffectsOn
@@ -79,6 +98,8 @@ public class BackendManager : MonoBehaviour
             return _isHurtLightEffectsOn;
         }
     }
+    [SerializeField]
+    private Dropdown _debugDropdown;
 
     private void showAdminTools(bool doShow)
     {
@@ -147,6 +168,11 @@ public class BackendManager : MonoBehaviour
                 unlockAll();
             }
 
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                displayPorts();
+            }
+
             else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Backspace))
             {
                 // to erase all info in PlayerPrefs
@@ -202,6 +228,33 @@ public class BackendManager : MonoBehaviour
     {
         Debug.Log(this.GetType() + " unlockAll");
         GameStateController.unlockAll();
+    }
+
+    private void displayPorts()
+    {
+        Debug.Log(this.GetType() + " displayPorts");
+#if ARCADE
+        _debugDropdown.ClearOptions();
+        _dynamicPorts = getPortNames();
+        _debugDropdown.AddOptions(new List<string>(_dynamicPorts));
+#endif
+    }
+
+    // cf http://answers.unity3d.com/questions/643078/serialportsgetportnames-error.html
+    private string[] getPortNames()
+    {
+        Debug.Log(this.GetType() + " getPortNames");
+
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        Debug.Log(this.GetType() + " getPortNames not unix");
+        return SerialPort.GetPortNames();
+
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_LINUX
+        Debug.Log(this.GetType() + " getPortNames UNIX");
+        List<string> serial_ports = new List<string>();
+        string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty*");
+        return ttys;
+#endif
     }
 
     private void resetPlayerPrefs()
@@ -279,7 +332,7 @@ public class BackendManager : MonoBehaviour
         _testGameObjects = testGameObjects;
         _listener = listener;
 
-        foreach(GameObject tgo in _testGameObjects)
+        foreach (GameObject tgo in _testGameObjects)
         {
             createGOBTestButton(tgo);
         }
@@ -297,7 +350,7 @@ public class BackendManager : MonoBehaviour
         activator.goToActivate = toActivate;
         activator.behaviourToActivate = behaviour;
         activator.button = button;
-        button.onClick.AddListener( () => {activator.click();});
+        button.onClick.AddListener(() => { activator.click(); });
     }
 
     private void createButton(out GameObject go, out Button button, string label = null, OnClick onclickdelegate = null)
@@ -316,7 +369,7 @@ public class BackendManager : MonoBehaviour
         }
         if (null != onclickdelegate)
         {
-            button.onClick.AddListener( () => {onclickdelegate();});
+            button.onClick.AddListener(() => { onclickdelegate(); });
         }
         go.transform.position = new Vector3(position.x, position.y - buttonIndex * 30f, position.z);
         buttonIndex++;
