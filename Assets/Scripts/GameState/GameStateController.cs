@@ -104,6 +104,9 @@ public class GameStateController : MonoBehaviour
 	private Scorekeeper _scorekeeper;
 
 	public const string keyPrefix = "KEY.";
+	
+    private bool _downButton = false;
+    private bool _upButton = false;
 
 	private GameState _gameState;
 	public GameState gameState {
@@ -467,16 +470,17 @@ public class GameStateController : MonoBehaviour
 				break;
 
 			case GameState.MainMenu:
-
-				if ((Input.GetButtonDown("Vertical") || Input.GetAxisRaw("Vertical") > 0)
-                     || (Input.GetButtonDown("Horizontal") || Input.GetAxisRaw("Horizontal") > 0))
+                    if (Input.GetAxisRaw("Vertical") > 0 || Input.GetAxisRaw("Horizontal") < 0)
                     {
-                        _mainMenu.selectPrevious();
+                        if (!_downButton)
+                            _mainMenu.selectPrevious();
+                        _downButton = true;
                     }
-					else if ((Input.GetButtonDown("Vertical") || Input.GetAxisRaw("Vertical") < 0)
-                            || (Input.GetButtonDown("Horizontal") || Input.GetAxisRaw("Horizontal") < 0))
+                    else if (Input.GetAxisRaw("Vertical") < 0 || Input.GetAxisRaw("Horizontal") > 0)
                     {
-                        _mainMenu.selectNext();
+                        if (!_upButton)
+                            _mainMenu.selectNext();
+                        _upButton = true;
                     }
                     else if (Input.GetButtonUp("Submit") || Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
                     {
@@ -487,6 +491,12 @@ public class GameStateController : MonoBehaviour
                     {
                         _mainMenu.escape();
                     }
+                    else
+                    {
+                        _downButton = false;
+                        _upButton = false;
+                    }
+                    
 				break;
 			case GameState.Game:
 

@@ -4,8 +4,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-#if ARCADE
 using System.Collections.Generic;
+#if ARCADE
 using System.IO.Ports;
 #endif
 
