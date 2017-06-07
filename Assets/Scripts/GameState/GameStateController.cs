@@ -104,10 +104,6 @@ public class GameStateController : MonoBehaviour
 	private Scorekeeper _scorekeeper;
 
 	public const string keyPrefix = "KEY.";
-	public const string _craftingKey = keyPrefix + "CRAFTING";
-	public const string _pauseKey = keyPrefix + "PAUSE";
-	public const string _sandboxKey = keyPrefix + "SANDBOX";
-	public const string _forgetDevicesKey = keyPrefix + "FORGETDEVICES";
 
 	private GameState _gameState;
 	public GameState gameState {
@@ -471,21 +467,14 @@ public class GameStateController : MonoBehaviour
 				break;
 
 			case GameState.MainMenu:
-#if ARCADE
-				if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
-#else
-				if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
-#endif
-                     || (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0))
+
+				if ((Input.GetButtonDown("Vertical") || Input.GetAxisRaw("Vertical") > 0)
+                     || (Input.GetButtonDown("Horizontal") || Input.GetAxisRaw("Horizontal") > 0))
                     {
                         _mainMenu.selectPrevious();
                     }
-#if ARCADE
-					else if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
-#else
-					else if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
-#endif
-                            || (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0))
+					else if ((Input.GetButtonDown("Vertical") || Input.GetAxisRaw("Vertical") < 0)
+                            || (Input.GetButtonDown("Horizontal") || Input.GetAxisRaw("Horizontal") < 0))
                     {
                         _mainMenu.selectNext();
                     }
@@ -504,7 +493,7 @@ public class GameStateController : MonoBehaviour
 				prepareGameLevelIfNecessary ();
 
                 //pause
-				if (isShortcutKeyDown (_pauseKey) || Input.GetButtonDown("Pause")) {
+				if (Input.GetButtonDown("Pause")) {
 				// Debug.Log(this.GetType() + " Update - Escape/Pause key pressed");
 					ModalManager.setModal (_pauseIndicator, false);
 					changeState (GameState.Pause);
@@ -519,16 +508,11 @@ public class GameStateController : MonoBehaviour
 					Character.get().kill(CustomDataValue.SUICIDEBUTTON);
 				}
                 //crafting
-				else if (((isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
+				else if (((Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 					// Debug.Log(this.GetType() + " Update craft key pressed");
 					onMenuChange (MenuType.CraftMenu, true);
 					gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
 				}
-                    //TODO fix this feature                    
-                    // else if(isShortcutKeyDown(_forgetDevicesKey))
-                    // {
-                    //     Inventory.get ().switchDeviceKnowledge();
-                    // }
 				break;
 
 			case GameState.Pause:
@@ -548,7 +532,7 @@ public class GameStateController : MonoBehaviour
 						case GUITransitioner.GameScreen.screen1:
 							break;
 						case GUITransitioner.GameScreen.screen2:
-							if (((isShortcutKeyDown (_craftingKey) || Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
+							if (((Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update inventory to craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
 								onMenuChange (MenuType.CraftMenu, true);
@@ -556,7 +540,7 @@ public class GameStateController : MonoBehaviour
 							break;
 						case GUITransitioner.GameScreen.screen3:
 							if (
-								(isShortcutKeyDown (_craftingKey) || Input.GetButtonDown ("Crafting") || Input.GetKeyDown (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) && canPressCraftShortcut ()
+								(Input.GetButtonDown ("Crafting") || Input.GetKeyDown (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) && canPressCraftShortcut ()
 								&& canPressCraftShortcut ()) {
 								// Debug.Log(this.GetType() + " Update out of craft key pressed");
 								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen1);

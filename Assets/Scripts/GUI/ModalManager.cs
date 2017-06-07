@@ -491,7 +491,7 @@ public class ModalManager : MonoBehaviour
             bool keyPressedEventConsumed = false;
 
             //getting out of Pause
-            if ((Input.GetButtonDown("Cancel") || GameStateController.isShortcutKeyDown(GameStateController._pauseKey)) && (0 == GameStateController.getPausesInStackCount()))
+            if ((Input.GetButtonDown("Cancel") ||Input.GetButton("Pause")) && (0 == GameStateController.getPausesInStackCount()))
             {
                 // Debug.Log("ModalManager getting out of pause");
                 ModalManager.unsetModal();

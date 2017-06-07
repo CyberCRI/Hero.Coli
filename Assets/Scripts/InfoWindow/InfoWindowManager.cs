@@ -179,7 +179,6 @@ public class InfoWindowManager : MonoBehaviour
 
     public static void next()
     {
-		Debug.Log ("next");
         // Debug.Log("InfoWindowManager next()");
         ModalManager.unsetModal();
         _instance.gameStateController.tryUnlockPause();
