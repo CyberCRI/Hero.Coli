@@ -471,18 +471,33 @@ public class GameStateController : MonoBehaviour
 				break;
 
 			case GameState.MainMenu:
-				if ((Input.GetButtonDown ("Vertical") && Input.GetAxisRaw ("Vertical") > 0)
-				     || (Input.GetButtonDown ("Horizontal") && Input.GetAxisRaw ("Horizontal") > 0)) {
-					_mainMenu.selectPrevious ();
-				} else if ((Input.GetButtonDown ("Vertical") && Input.GetAxisRaw ("Vertical") < 0)
-				          || (Input.GetButtonDown ("Horizontal") && Input.GetAxisRaw ("Horizontal") < 0)) {
-					_mainMenu.selectNext ();
-				} else if (Input.GetButtonUp ("Submit") || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) {
-					// Debug.Log(this.GetType() + " MainMenu Return/KeypadEnter");
-					_mainMenu.getCurrentItem ().click ();
-				} else if (Input.GetButtonDown ("Cancel")) {
-					_mainMenu.escape ();
-				}
+#if ARCADE
+				if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
+#else
+				if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
+#endif
+                     || (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0))
+                    {
+                        _mainMenu.selectPrevious();
+                    }
+#if ARCADE
+					else if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
+#else
+					else if ((Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
+#endif
+                            || (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0))
+                    {
+                        _mainMenu.selectNext();
+                    }
+                    else if (Input.GetButtonUp("Submit") || Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
+                    {
+                        // Debug.Log(this.GetType() + " MainMenu Return/KeypadEnter");
+                        _mainMenu.getCurrentItem().click();
+                    }
+                    else if (Input.GetButtonDown("Cancel"))
+                    {
+                        _mainMenu.escape();
+                    }
 				break;
 			case GameState.Game:
 

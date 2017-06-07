@@ -231,7 +231,11 @@ public class CellControl : MonoBehaviour
             cancelMouseMove();
 
             //Translate
+#if ARCADE
+            _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, -Input.GetAxis("Vertical"));
+#else
             _inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+#endif
 
             if (_inputMovement.sqrMagnitude > 1)
             {
@@ -254,7 +258,11 @@ public class CellControl : MonoBehaviour
         {
             cancelMouseMove();
 
+#if ARCADE
             float norm = Input.GetAxis("Vertical");
+#else
+            float norm = -Input.GetAxis("Vertical");
+#endif
             if (norm < 0) norm = 0;
 
             float deltaAngle = Input.GetAxis("Horizontal");
