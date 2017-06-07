@@ -537,10 +537,12 @@ public class MainMenuManager : MonoBehaviour
         switchTo(MainMenuScreen.DEFAULT);
 #endif
         cullingMaskHandler.showMainMenu(true);
+        ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_tactile_start);
     }
 
     public void close()
     {
+        ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_tactile_end);
         // Debug.Log(this.GetType() + " close");
         GUITransitioner.showGraphs(true, GUITransitioner.GRAPH_HIDER.MAINMENU);
         this.gameObject.SetActive(false);

@@ -67,6 +67,8 @@ public class ArcadeManager : MonoBehaviour
         bacterium_divide,
         // bacterium_dialog,
         // bacterium_loses_energy,
+        gui_tactile_start,
+        gui_tactile_end,
     }
 
     private Dictionary<Animation, string> _animations = new Dictionary<Animation, string> {
@@ -110,6 +112,8 @@ public class ArcadeManager : MonoBehaviour
         {Animation.bacterium_divide, "g"},
         // {Animation.bacterium_dialog, "h"},
         // {Animation.bacterium_loses_energy, "i"},
+        {Animation.gui_tactile_start, "J"},
+        {Animation.gui_tactile_end, "j"},
     };
 
     private string getCode(Animation animation)
