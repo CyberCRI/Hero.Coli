@@ -254,6 +254,8 @@ public class BackendManager : MonoBehaviour
         List<string> serial_ports = new List<string>();
         string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty*");
         return ttys;
+#else
+        return null;
 #endif
     }
 
