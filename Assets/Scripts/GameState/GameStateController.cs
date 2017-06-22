@@ -432,44 +432,52 @@ public class GameStateController : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update ()
-	{
+	void Update()
+    {
 
-		// if (_finishLoadLevels)
-		// {
-		// Debug.Log(this.GetType() + " _finishLoadLevels = true => finishLoadLevels()");
-		//     _finishLoadLevels = false;
-		//     finishLoadLevels();
-		// }
+        // if (_finishLoadLevels)
+        // {
+        // Debug.Log(this.GetType() + " _finishLoadLevels = true => finishLoadLevels()");
+        //     _finishLoadLevels = false;
+        //     finishLoadLevels();
+        // }
 
-		if (_finishedLoadingLevels) {
+        if (_finishedLoadingLevels)
+        {
 
-			// TODO replace by per-checkpoint teleportation
-			if (GameConfiguration.isAdmin) {
-				foreach (CheckpointShortcut sc in _shortcuts) {
-					if (Input.GetKeyDown (sc.keyCode)) {
-						// Debug.Log(this.GetType() + " pressed shortcut to teleport the character to checkpoint " + sc.index);
-						goToCheckpoint (sc.index);
-					}
-				}
-			}
+            // TODO replace by per-checkpoint teleportation
+            if (GameConfiguration.isAdmin)
+            {
+                foreach (CheckpointShortcut sc in _shortcuts)
+                {
+                    if (Input.GetKeyDown(sc.keyCode))
+                    {
+                        // Debug.Log(this.GetType() + " pressed shortcut to teleport the character to checkpoint " + sc.index);
+                        goToCheckpoint(sc.index);
+                    }
+                }
+            }
 
-			switch (_gameState) {
+            switch (_gameState)
+            {
 
-			case GameState.Start:
+                case GameState.Start:
 
-				_endWindow.SetActive (false);
-				_finalScoreboard.SetActive (false);
+                    _endWindow.SetActive(false);
+                    _finalScoreboard.SetActive(false);
 
-				_mainMenu.setNewGame ();
-				if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get ("Update").configuration.restartBehavior) {
-					leaveMainMenu ();
-				} else {
-					goToMainMenuFrom (GameState.Game);
-				}
-				break;
+                    _mainMenu.setNewGame();
+                    if (GameConfiguration.RestartBehavior.GAME == MemoryManager.get("Update").configuration.restartBehavior)
+                    {
+                        leaveMainMenu();
+                    }
+                    else
+                    {
+                        goToMainMenuFrom(GameState.Game);
+                    }
+                    break;
 
-			case GameState.MainMenu:
+                case GameState.MainMenu:
                     if (Input.GetAxisRaw("Vertical") > 0 || Input.GetAxisRaw("Horizontal") < 0)
                     {
                         if (!_downButton)
@@ -491,91 +499,123 @@ public class GameStateController : MonoBehaviour
                     {
                         _mainMenu.escape();
                     }
+                    else if (Input.GetButtonDown("Sound"))
+                    {
+                        SoundManager.instance.toggleSound();
+                    }
                     else
                     {
                         _downButton = false;
                         _upButton = false;
                     }
-                    
-				break;
-			case GameState.Game:
 
-				prepareGameLevelIfNecessary ();
+                    break;
+                case GameState.Game:
 
-                //pause
-				if (Input.GetButtonDown("Pause")) {
-				// Debug.Log(this.GetType() + " Update - Escape/Pause key pressed");
-					ModalManager.setModal (_pauseIndicator, false);
-					changeState (GameState.Pause);
-				}
-                //main menu
-                else if (Input.GetButtonDown ("Cancel")) {
-					onMenuChange (MenuType.MainMenu, true);
-					goToMainMenuFrom (GameState.Game);
-				}
-				//suicide
-				else if (Input.GetButtonDown ("Suicide")) {
-					Character.get().kill(CustomDataValue.SUICIDEBUTTON);
-				}
-                //crafting
-				else if (((Input.GetButtonDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
-					// Debug.Log(this.GetType() + " Update craft key pressed");
-					onMenuChange (MenuType.CraftMenu, true);
-					gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
-				}
-				break;
+                    prepareGameLevelIfNecessary();
 
-			case GameState.Pause:
-				if (Input.GetButtonDown ("Cancel")) {
-					onMenuChange (MenuType.MainMenu, true);
-					goToMainMenuFrom (GameState.Pause);
-				} else {
-					GameStateTarget newState = ModalManager.manageKeyPresses ();
-					if (GameStateTarget.NoAction != newState) {
-						if (
-							GameStateTarget.NoTarget != newState
-							&& GameStateTarget.Pause != newState) {
-							changeState (getStateFromTarget (newState));
-						}
-					} else {
-						switch (gUITransitioner._currentScreen) {
-						case GUITransitioner.GameScreen.screen1:
-							break;
-						case GUITransitioner.GameScreen.screen2:
-							if (((Input.GetKeyDown ("Crafting")) && CraftZoneManager.isOpenable ()) && canPressCraftShortcut ()) {
-								// Debug.Log(this.GetType() + " Update inventory to craft key pressed");
-								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen3);
-								onMenuChange (MenuType.CraftMenu, true);
-							}
-							break;
-						case GUITransitioner.GameScreen.screen3:
-							if (
-								(Input.GetButtonDown ("Crafting") || Input.GetKeyDown (KeyCode.Return) || Input.GetKeyUp (KeyCode.KeypadEnter)) && canPressCraftShortcut ()
-								&& canPressCraftShortcut ()) {
-								// Debug.Log(this.GetType() + " Update out of craft key pressed");
-								gUITransitioner.GoToScreen (GUITransitioner.GameScreen.screen1);
-								onMenuChange (MenuType.CraftMenu, false);
-							}
-							break;
-						default:
-							Debug.LogWarning (this.GetType () + " Update unknown screen " + gUITransitioner._currentScreen);
-							break;
-						}
-					}
-				}
-				break;
+                    // pause
+                    if (Input.GetButtonDown("Pause"))
+                    {
+                        // Debug.Log(this.GetType() + " Update - Escape/Pause key pressed");
+                        ModalManager.setModal(_pauseIndicator, false);
+                        changeState(GameState.Pause);
+                    }
+                    // main menu
+                    else if (Input.GetButtonDown("Cancel"))
+                    {
+                        onMenuChange(MenuType.MainMenu, true);
+                        goToMainMenuFrom(GameState.Game);
+                    }
+					// sound
+                    else if (Input.GetButtonDown("Sound"))
+                    {
+                        SoundManager.instance.toggleSound();
+                    }
+                    // suicide
+                    else if (Input.GetButtonDown("Suicide"))
+                    {
+                        Character.get().kill(CustomDataValue.SUICIDEBUTTON);
+                    }
+                    // crafting
+                    else if (((Input.GetButtonDown("Crafting")) && CraftZoneManager.isOpenable()) && canPressCraftShortcut())
+                    {
+                        // Debug.Log(this.GetType() + " Update craft key pressed");
+                        onMenuChange(MenuType.CraftMenu, true);
+                        gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                    }
+                    break;
 
-			case GameState.End:
-				if (Input.GetButtonDown ("Cancel")) {
-					goToMainMenuFrom (GameState.End);
-				}
-				break;
+                case GameState.Pause:
+                    if (Input.GetButtonDown("Cancel"))
+                    {
+                        onMenuChange(MenuType.MainMenu, true);
+                        goToMainMenuFrom(GameState.Pause);
+                    }
+                    else if (Input.GetButtonDown("Sound"))
+                    {
+                        SoundManager.instance.toggleSound();
+                    }
+                    else
+                    {
+                        GameStateTarget newState = ModalManager.manageKeyPresses();
+                        if (GameStateTarget.NoAction != newState)
+                        {
+                            if (
+                                GameStateTarget.NoTarget != newState
+                                && GameStateTarget.Pause != newState)
+                            {
+                                changeState(getStateFromTarget(newState));
+                            }
+                        }
+                        else
+                        {
+                            switch (gUITransitioner._currentScreen)
+                            {
+                                case GUITransitioner.GameScreen.screen1:
+                                    break;
+                                case GUITransitioner.GameScreen.screen2:
+                                    if (((Input.GetKeyDown("Crafting")) && CraftZoneManager.isOpenable()) && canPressCraftShortcut())
+                                    {
+                                        // Debug.Log(this.GetType() + " Update inventory to craft key pressed");
+                                        gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen3);
+                                        onMenuChange(MenuType.CraftMenu, true);
+                                    }
+                                    break;
+                                case GUITransitioner.GameScreen.screen3:
+                                    if (
+                                        (Input.GetButtonDown("Crafting") || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter)) && canPressCraftShortcut()
+                                        && canPressCraftShortcut())
+                                    {
+                                        // Debug.Log(this.GetType() + " Update out of craft key pressed");
+                                        gUITransitioner.GoToScreen(GUITransitioner.GameScreen.screen1);
+                                        onMenuChange(MenuType.CraftMenu, false);
+                                    }
+                                    break;
+                                default:
+                                    Debug.LogWarning(this.GetType() + " Update unknown screen " + gUITransitioner._currentScreen);
+                                    break;
+                            }
+                        }
+                    }
+                    break;
 
-			default:
-				break;
-			}
-		}
-	}
+                case GameState.End:
+                    if (Input.GetButtonDown("Cancel"))
+                    {
+                        goToMainMenuFrom(GameState.End);
+                    }
+                    else if (Input.GetButtonDown("Sound"))
+                    {
+                        SoundManager.instance.toggleSound();
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 
 	private bool canPressCraftShortcut ()
 	{

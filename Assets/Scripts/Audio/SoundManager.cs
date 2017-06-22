@@ -377,6 +377,21 @@ public class SoundManager : MonoBehaviour
 			ResumeAll ();
 	}
 
+	public delegate void SoundToggleEvent();
+	public static event SoundToggleEvent onSoundToggle = () => {};
+
+    /// <summary>
+    /// Toggles the sound volume from 0 to max
+    /// </summary>
+    public void toggleSound()
+    {
+        bool wasOn = MemoryManager.get().configuration.isSoundOn;
+        MemoryManager.get().configuration.isSoundOn = !wasOn;
+        string soundValue = wasOn ? CustomDataValue.OFF.ToString() : CustomDataValue.ON.ToString();
+        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
+		onSoundToggle();
+    }
+
 
 	#region GetAudio Functions
 

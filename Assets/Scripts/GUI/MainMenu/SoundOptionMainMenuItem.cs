@@ -14,12 +14,9 @@ public class SoundOptionMainMenuItem : MainMenuItem
     public override void click()
     {
         // Debug.Log(this.GetType() + " clicked " + itemName);
-		base.click();
-        bool wasOn = MemoryManager.get().configuration.isSoundOn;
-        MemoryManager.get().configuration.isSoundOn = !MemoryManager.get().configuration.isSoundOn;
-        string soundValue = wasOn ? CustomDataValue.OFF.ToString() : CustomDataValue.ON.ToString();
+        base.click();
+        SoundManager.instance.toggleSound();
         updateSelection();
-        RedMetricsManager.get().sendEvent(TrackingEvent.CONFIGURE, new CustomData(CustomDataTag.SOUND, soundValue));
     }
 
     public void updateSelection()
@@ -35,6 +32,7 @@ public class SoundOptionMainMenuItem : MainMenuItem
     {
         if (null != soundONSprite && null != soundOFFSprite)
         {
+            SoundManager.onSoundToggle += updateSelection;
             soundONSprite.transform.position = this.gameObject.transform.position + offset;
             soundOFFSprite.transform.position = this.gameObject.transform.position + offset;
             updateSelection();
@@ -45,6 +43,7 @@ public class SoundOptionMainMenuItem : MainMenuItem
     {
         if (null != soundONSprite && null != soundOFFSprite)
         {
+            SoundManager.onSoundToggle -= updateSelection;
             soundONIcon.SetActive(false);
             soundOFFIcon.SetActive(false);
         }
