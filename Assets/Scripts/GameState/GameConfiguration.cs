@@ -367,8 +367,6 @@ public class GameConfiguration
         }
     }
 
-    // warning!
-    // must be called before the connection through RedMetrics.js initiated by the "rmConnect" call
     public void initializeGameVersionGUID()
     {
         // Debug.Log(this.GetType() + " initializeGameVersionGUID with RedMetricsManager.gameVersion=" + RedMetricsManager.get().getGameVersion());
@@ -403,20 +401,9 @@ public class GameConfiguration
         if (guid != RedMetricsManager.get().getGameVersion())
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
-#if UNITY_WEBGL
-            if (RedMetricsManager.get().isStartEventSent)
-            {
-                RedMetricsManager.get().disconnect();
-            }
-#endif
+            
             // Debug.Log(this.GetType() + " gameVersionGUID set calls setGameVersion");
             setGameVersion(guid);
-#if UNITY_WEBGL
-            if (RedMetricsManager.get().isStartEventSent)
-            {
-                RedMetricsManager.get().connect();
-            }
-#endif
         }
         // Debug.Log(this.GetType() + " setMetricsDestination(" + wantToBecomeLabelledGameVersion + ") done");
     }

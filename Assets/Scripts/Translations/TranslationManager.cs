@@ -23,7 +23,7 @@ public class TranslationManager : MonoBehaviour
 
     // called from js
     // calls the js callback 'getLanguageCallback'
-    public static void GetLanguage()
+    public void GetLanguage()
     {
 		// Debug.Log("TranslationManager GetLanguage");
         callJSFunctionWithLanguageJson("getLanguageCallback");

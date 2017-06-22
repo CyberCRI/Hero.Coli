@@ -112,7 +112,7 @@ public class RedMetricsManager : MonoBehaviour
             // Debug.Log(this.GetType() + " localPlayerGUID_set " + value);
             _localPlayerGUID = value;
         }
-    } 
+    }
     private string _globalPlayerGUID; //TODO login system
 
     private bool _isGameSessionGUIDCreated = false;
@@ -140,12 +140,6 @@ public class RedMetricsManager : MonoBehaviour
         _globalPlayerGUID = globalPlayerGUID;
     }
 
-    // public void setGameVersion(string gVersion)
-    // {
-    //     // Debug.Log(this.GetType() + " setGameVersion str " + gameVersionGuid + " to " + gVersion);
-    //     gameVersionGuid = new System.Guid(gVersion);
-    // }
-
     public void setGameVersion(System.Guid gVersion)
     {
         // Debug.Log(this.GetType() + " setGameVersion Guid " + gameVersionGuid + " to " + gVersion);
@@ -163,9 +157,6 @@ public class RedMetricsManager : MonoBehaviour
         return defaultGameVersionGuid != gameVersionGuid;
     }
 
-    //////////////////////////////////////////////////
-    /// standalone methods
-
     public static IEnumerator GET(string url, System.Action<WWW> callback)
     {
         // Debug.Log("RedMetricsManager GET");
@@ -173,6 +164,7 @@ public class RedMetricsManager : MonoBehaviour
         return waitForWWW(www, callback);
     }
 
+    // unused
     public static IEnumerator POST(string url, Dictionary<string, string> post, System.Action<WWW> callback)
     {
         // Debug.Log("RedMetricsManager POST");
@@ -227,11 +219,7 @@ public class RedMetricsManager : MonoBehaviour
         callback(www); // Pass retrieved result.
     }
 
-    ////////////////////////////////////////
-    /// helpers for standalone
-    /// 
-
-    private void sendDataStandalone(string urlSuffix, string pDataString, System.Action<WWW> callback)
+    private void sendData(string urlSuffix, string pDataString, System.Action<WWW> callback)
     {
         // Debug.Log(this.GetType() + " sendDataStandalone");
         string url = _redMetricsURL + urlSuffix;
@@ -247,7 +235,7 @@ public class RedMetricsManager : MonoBehaviour
         // Debug.Log(this.GetType() + " createPlayer");
         CreatePlayerData data = new CreatePlayerData();
         string json = getJsonString(data);
-        sendDataStandalone(_redMetricsPlayer, json, callback);
+        sendData(_redMetricsPlayer, json, callback);
     }
 
     private void testGet(System.Action<WWW> callback)
@@ -322,7 +310,6 @@ public class RedMetricsManager : MonoBehaviour
             sendStartEventWithPlayerGUID();
         }
     }
-    //////////////////////////////////////////////////
 
     private void sendStartEventWithPlayerGUID()
     {
@@ -355,33 +342,13 @@ public class RedMetricsManager : MonoBehaviour
         if (!_isStartEventSent)
         {
             // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
-
-#if UNITY_WEBGL
-            // all web players
-            // management of game start for webglplayer
-            // Debug.Log(this.GetType() + " sendStartEvent calls connect");
-            connect();
-            sendStartEventWithPlayerGUID();
-
-#else
-            // other players + editor
-            // Debug.Log(this.GetType() + " sendStartEvent isStartEventSent => createPlayer & trackStart");
-            //gameSessionGUID hasn't been initialized
-            // Debug.Log(this.GetType() + " sendStartEvent other players/editor: createPlayer");
+            // gameSessionGUID hasn't been initialized
             createPlayer(www => trackStart(www));
-#endif
             _isStartEventSent = true;
         }
     }
 
-    //called by the browser when connection is established
-    public void ConfirmWebGLConnection()
-    {
-        // Debug.Log(this.GetType() + " ConfirmWebGLConnection");
-        _isGameSessionGUIDCreated = true;
-        executeAndClearAllWaitingEvents();
-    }
-
+    // TODO: store events that can't be sent, during internet outage for instance
     private void addEventToSendLater(TrackingEventDataWithoutIDs data)
     {
         // Debug.Log(this.GetType() + " addEventToSendLater " + data);
@@ -398,36 +365,10 @@ public class RedMetricsManager : MonoBehaviour
         waitingList.Clear();
     }
 
-    //WebGL
-    public void connect()
-    {
-        // Debug.Log(this.GetType() + " connect");
-#if UNITY_WEBGL
-            // Debug.Log(this.GetType() + " Unity connect");
-            // force to wait for MemoryManager
-            ConnectionData data = new ConnectionData(gameVersionGuid);
-            string json = getJsonString(data);
-            // Debug.Log(this.GetType() + " connect will rmConnect json={0}", json);
-            Application.ExternalCall("rmConnect", json);
-#else
-            Debug.LogWarning(this.GetType() + " called connect, but not from WebGLPlayer");
-#endif
-    }
-
-    public void disconnect()
-    {
-#if UNITY_WEBGL
-            // Debug.Log(this.GetType() + " Unity disconnect");
-            Application.ExternalCall("rmDisconnect");
-            resetConnectionVariables();
-#endif
-    }
-
     private void resetConnectionVariables()
     {
         _isGameSessionGUIDCreated = false;
     }
-
 
     public string getJsonString(object obj)
     {
@@ -511,36 +452,15 @@ public class RedMetricsManager : MonoBehaviour
             }
         }
 
-        // Debug.Log(this.GetType() + " sendEvent " + trackingEvent.ToString());
-#if UNITY_WEBGL
-            TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates, userTime);
-            if (_isGameSessionGUIDCreated)
-            {
-                string json = getJsonString(data);
-                // Debug.Log(this.GetType() + " UNITY_WEBGL sendEvent("+json+")");
-                Application.ExternalCall("rmPostEvent", json);
-            }
-            else
-            {
-                addEventToSendLater(data);
-                //TODO: what if connection fails, or even fails permanently? Should retry connection at different intervals
-            }
-#else
-            // TODO wait on gameSessionGUID using an IEnumerator
-            // if (defaultGameSessionGUID != gameSessionGUID)
-            // {
-            // }
-            // else
-            // {
-            //     Debug.LogError(this.GetType() + " sendEvent default player guid: no registered player!");
-            // }
+        // // TODO: queue events that can't be sent during internet outage
+        // TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates, userTime);
+        // addEventToSendLater(data);
 
-            TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(_gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
-            string json = getJsonString(data);
-            // Debug.Log(string.Format (this.GetType() + " !UNITY_WEBGL sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
-            sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
-            //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
-#endif
+        TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(_gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
+        string json = getJsonString(data);
+        // Debug.Log(string.Format (this.GetType() + " sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
+        sendData(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
+        //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
     }
 
     public override string ToString()
