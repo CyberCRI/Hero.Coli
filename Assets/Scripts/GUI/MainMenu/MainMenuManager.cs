@@ -58,7 +58,6 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initialized)
         {
-
             // default: has "Science" and "Quit" options
             // Arcade: neither
             // WebGL: no "Quit"

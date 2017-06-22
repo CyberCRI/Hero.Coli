@@ -103,11 +103,12 @@ public class CharacterSoundManager: MonoBehaviour {
 		if (isBeingHurt)
 		{
 			hurtAntibioticsSound.PlayIfNotPlayed ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_antibiotics);
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_antibiotics_start);
 		}
 		else
 		{
 			hurtAntibioticsSound.StopAll ();
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_antibiotics_end);
 		}
 	}
 
@@ -120,11 +121,12 @@ public class CharacterSoundManager: MonoBehaviour {
 		if (isBeingHurt)
 		{
 			hurtEnergySound.PlayIfNotPlayed ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_energy);
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_energy_start);
 		}
 		else
 		{
 			hurtEnergySound.StopAll ();
+			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_energy_end);
 		}
 	}
 

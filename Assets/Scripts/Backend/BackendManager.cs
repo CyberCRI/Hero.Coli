@@ -4,8 +4,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-#if ARCADE
 using System.Collections.Generic;
+#if ARCADE
 using System.IO.Ports;
 #endif
 
@@ -255,6 +255,8 @@ public class BackendManager : MonoBehaviour
         List<string> serial_ports = new List<string>();
         string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty*");
         return ttys;
+#else
+        return null;
 #endif
     }
 #endif

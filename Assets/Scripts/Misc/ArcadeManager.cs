@@ -27,14 +27,15 @@ public class ArcadeManager : MonoBehaviour
 
     public enum Animation
     {
-        none,
+        none,                                       // warning: set on Prefab, auto-shifted when an animation is added before
+        gui_default,                                // warning: set on Prefab, auto-shifted when an animation is added before
         bacterium_move,
         pickup_dna,
         pickup_nanobot,
         bacterium_death,
         bacterium_respawn,
-        gui_brick_add,
-        gui_brick_remove,
+        gui_brick_add,                              // warning: set on Prefab, auto-shifted when an animation is added before
+        gui_brick_remove,                           // warning: set on Prefab, auto-shifted when an animation is added before
         // gui_menu_navigate_n,
         // gui_pop_up_appear,
         // gui_default_click,
@@ -69,10 +70,17 @@ public class ArcadeManager : MonoBehaviour
         // bacterium_loses_energy,
         gui_tactile_start,
         gui_tactile_end,
+        bacterium_speed_start,
+        bacterium_speed_end,
+        bacterium_hurt_antibiotics_start,
+        bacterium_hurt_antibiotics_end,
+        bacterium_hurt_energy_start,
+        bacterium_hurt_energy_end,
     }
 
     private Dictionary<Animation, string> _animations = new Dictionary<Animation, string> {
         {Animation.none, ""},
+        {Animation.gui_default, "F"},
         {Animation.bacterium_move, "A"}, // for sped-up movement
         {Animation.pickup_dna, "B"},
         {Animation.pickup_nanobot, "C"},
@@ -100,7 +108,7 @@ public class ArcadeManager : MonoBehaviour
         // {Animation.scenery_door_open, "U"},
         // {Animation.scenery_door_close, "V"},
         // {Animation.bacterium_death_energy, "W"},
-        {Animation.bacterium_hurt_energy, "O"},
+        {Animation.bacterium_hurt_energy, "X"},
         // {Animation.bacterium_death_crushed, "Y"},
         // {Animation.bacterium_bubbles, "Z"},
         // {Animation.bacterium_death_suicide, "a"},
@@ -114,6 +122,12 @@ public class ArcadeManager : MonoBehaviour
         // {Animation.bacterium_loses_energy, "i"},
         {Animation.gui_tactile_start, "J"},
         {Animation.gui_tactile_end, "j"},
+        {Animation.bacterium_speed_start, "A"},
+        {Animation.bacterium_speed_end, "a"},
+        {Animation.bacterium_hurt_antibiotics_start, "O"},
+        {Animation.bacterium_hurt_antibiotics_end, "o"},
+        {Animation.bacterium_hurt_energy_start, "X"},
+        {Animation.bacterium_hurt_energy_end, "x"},
     };
 
     private string getCode(Animation animation)
@@ -184,12 +198,12 @@ public class ArcadeManager : MonoBehaviour
     {
         if (!isPortOpen())
         {
-            Debug.Log("ArcadeManager checkConnection will try to connect");
+            // Debug.Log("ArcadeManager checkConnection will try to connect");
             instance._port = new SerialPort(instance._player1Port, 9600);
             try
             {
                 instance._port.Open();
-                Debug.Log("ArcadeManager checkConnection port successfully open");
+                // Debug.Log("ArcadeManager checkConnection port successfully open");
             }
             catch (Exception e)
             {
@@ -201,14 +215,14 @@ public class ArcadeManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("ArcadeManager checkConnection port was already open");
+            // Debug.Log("ArcadeManager checkConnection port was already open");
             return true;
         }
     }
 
     public void switchPort(string newPort)
     {
-        Debug.Log(this.GetType() + " switchPort(" + newPort + ")");
+        // Debug.Log(this.GetType() + " switchPort(" + newPort + ")");
         if(_port.IsOpen)
         {
             _port.Close();
@@ -220,7 +234,7 @@ public class ArcadeManager : MonoBehaviour
 
     public void playAnimation(Animation animation)
     {
-        Debug.Log(this.GetType() + " playAnimation(" + animation + ")");
+        // Debug.Log(this.GetType() + " playAnimation(" + animation + ")");
         playAnimation(getCode(animation));
     }
 
@@ -231,7 +245,7 @@ public class ArcadeManager : MonoBehaviour
         {
             if (checkConnection())
             {
-                Debug.Log(this.GetType() + " playAnimation(" + identifier + "): port open");
+                // Debug.Log(this.GetType() + " playAnimation(" + identifier + "): port open");
                 _port.Write(identifier);
             }
             else
@@ -241,7 +255,7 @@ public class ArcadeManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(this.GetType() + " playAnimation(" + identifier + "): parameter string was null");
+            // Debug.Log(this.GetType() + " playAnimation(" + identifier + "): parameter string was null");
         }
 
 #endif
