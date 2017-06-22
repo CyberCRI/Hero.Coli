@@ -8,7 +8,7 @@ public class SettingsMainMenuItemArray : MainMenuItemArray
     {
 #if UNITY_EDITOR
 
-#elif UNITY_WEBPLAYER
+#elif UNITY_WEBGL
 		hideIndexes(new List<int>{0});
 #elif UNITY_ANDROID
 		hideIndexes(new List<int>{0, 2});

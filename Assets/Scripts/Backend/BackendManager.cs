@@ -240,6 +240,7 @@ public class BackendManager : MonoBehaviour
 #endif
     }
 
+#if ARCADE
     // cf http://answers.unity3d.com/questions/643078/serialportsgetportnames-error.html
     private string[] getPortNames()
     {
@@ -256,6 +257,7 @@ public class BackendManager : MonoBehaviour
         return ttys;
 #endif
     }
+#endif
 
     private void resetPlayerPrefs()
     {

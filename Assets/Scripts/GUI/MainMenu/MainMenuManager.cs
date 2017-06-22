@@ -61,15 +61,14 @@ public class MainMenuManager : MonoBehaviour
 
             // default: has "Science" and "Quit" options
             // Arcade: neither
-            // WebPlayer: no "Quit"
-            // #if UNITY_EDITOR
-
-            // #elif ARCADE
-#if ARCADE
+            // WebGL: no "Quit"
+#if UNITY_EDITOR
+            // hide QUIT
+            // mainMenuItems.hideIndexes(new List<int>{ 6 });
+#elif ARCADE
             // hide Settings, Science and Quit
             mainMenuItems.hideIndexes(new List<int> { 4, 5, 6 });
-            // mainMenuItems.hideIndexes(new List<int> { 5 }); // for testing purposes
-#elif UNITY_WEBPLAYER
+#elif UNITY_WEBGL
             // hide QUIT
 		    mainMenuItems.hideIndexes(new List<int>{ 6 });
 #endif

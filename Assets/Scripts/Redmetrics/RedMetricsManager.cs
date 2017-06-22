@@ -356,7 +356,7 @@ public class RedMetricsManager : MonoBehaviour
         {
             // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
 
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             // all web players
             // management of game start for webglplayer
             // Debug.Log(this.GetType() + " sendStartEvent calls connect");
@@ -375,9 +375,9 @@ public class RedMetricsManager : MonoBehaviour
     }
 
     //called by the browser when connection is established
-    public void ConfirmWebplayerConnection()
+    public void ConfirmWebGLConnection()
     {
-        // Debug.Log(this.GetType() + " ConfirmWebplayerConnection");
+        // Debug.Log(this.GetType() + " ConfirmWebGLConnection");
         _isGameSessionGUIDCreated = true;
         executeAndClearAllWaitingEvents();
     }
@@ -398,11 +398,11 @@ public class RedMetricsManager : MonoBehaviour
         waitingList.Clear();
     }
 
-    //webplayer
+    //WebGL
     public void connect()
     {
         // Debug.Log(this.GetType() + " connect");
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             // Debug.Log(this.GetType() + " Unity connect");
             // force to wait for MemoryManager
             ConnectionData data = new ConnectionData(gameVersionGuid);
@@ -416,7 +416,7 @@ public class RedMetricsManager : MonoBehaviour
 
     public void disconnect()
     {
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             // Debug.Log(this.GetType() + " Unity disconnect");
             Application.ExternalCall("rmDisconnect");
             resetConnectionVariables();
@@ -512,12 +512,12 @@ public class RedMetricsManager : MonoBehaviour
         }
 
         // Debug.Log(this.GetType() + " sendEvent " + trackingEvent.ToString());
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             TrackingEventDataWithoutIDs data = new TrackingEventDataWithoutIDs(trackingEvent, customData, checkedSection, checkedCoordinates, userTime);
             if (_isGameSessionGUIDCreated)
             {
                 string json = getJsonString(data);
-                // Debug.Log(this.GetType() + " UNITY_WEBPLAYER sendEvent("+json+")");
+                // Debug.Log(this.GetType() + " UNITY_WEBGL sendEvent("+json+")");
                 Application.ExternalCall("rmPostEvent", json);
             }
             else
@@ -537,7 +537,7 @@ public class RedMetricsManager : MonoBehaviour
 
             TrackingEventDataWithIDs data = new TrackingEventDataWithIDs(_gameSessionGUID, gameVersionGuid, trackingEvent, customData, checkedSection, checkedCoordinates);
             string json = getJsonString(data);
-            // Debug.Log(string.Format (this.GetType() + " !UNITY_WEBPLAYER sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
+            // Debug.Log(string.Format (this.GetType() + " !UNITY_WEBGL sendEvent - _localPlayerGUID={0}, gameSessionGUID={1}, gameVersionGuid={2}, json={3}", _localPlayerGUID, _gameSessionGUID, gameVersionGuid, json));
             sendDataStandalone(_redMetricsEvent, json, value => wwwLogger(value, "sendEvent(" + trackingEvent + ")"));
             //TODO pass data as parameter to sendDataStandalone so that it's serialized inside
 #endif

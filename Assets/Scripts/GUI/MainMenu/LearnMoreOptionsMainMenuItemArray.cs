@@ -16,11 +16,11 @@ public class LearnMoreOptionsMainMenuItemArray : MainMenuItemArray
     void Start()
     {
         // Debug.Log(this.GetType() + " Start");
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
         setTabsMode(true);
 #else
         setTabsMode(false);
-#endif  
+#endif
     }
 
     // will prepare two alternatives if true: same tab or new tab to access MOOC pages

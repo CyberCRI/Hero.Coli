@@ -403,7 +403,7 @@ public class GameConfiguration
         if (guid != RedMetricsManager.get().getGameVersion())
         {
             // Debug.Log(this.GetType() + " setMetricsDestination " + wantToBecomeLabelledGameVersion);
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             if (RedMetricsManager.get().isStartEventSent)
             {
                 RedMetricsManager.get().disconnect();
@@ -411,7 +411,7 @@ public class GameConfiguration
 #endif
             // Debug.Log(this.GetType() + " gameVersionGUID set calls setGameVersion");
             setGameVersion(guid);
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             if (RedMetricsManager.get().isStartEventSent)
             {
                 RedMetricsManager.get().connect();

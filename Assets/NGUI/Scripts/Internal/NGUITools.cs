@@ -728,7 +728,7 @@ static public class NGUITools
 
 	static public bool Save (string fileName, byte[] bytes)
 	{
-#if UNITY_WEBPLAYER || UNITY_FLASH
+#if UNITY_WEBGL || UNITY_FLASH
 		return false;
 #else
 		if (!NGUITools.fileAccess) return false;
@@ -765,7 +765,7 @@ static public class NGUITools
 
 	static public byte[] Load (string fileName)
 	{
-#if UNITY_WEBPLAYER || UNITY_FLASH
+#if UNITY_WEBGL || UNITY_FLASH
 		return null;
 #else
 		if (!NGUITools.fileAccess) return null;

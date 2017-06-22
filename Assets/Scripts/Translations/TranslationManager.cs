@@ -39,7 +39,7 @@ public class TranslationManager : MonoBehaviour
     private static void callJSFunctionWithLanguageJson(string functionName)
     {
 		// Debug.Log("TranslationManager callJSFunctionWithLanguageJson(" + functionName + ")");
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
             string currentLanguage = I18n.getCurrentLanguage().ToString().ToLowerInvariant();
             LanguageData data = new LanguageData(currentLanguage);
             string json = RedMetricsManager.get().getJsonString(data);

@@ -88,7 +88,7 @@ public class ResolutionScript : MonoBehaviour
 		Screen.SetResolution(1200, 750, true);
 		this.GetComponent<Camera>().aspect = 16f / 10f;
 
-#elif UNITY_WEBPLAYER && !UNITY_EDITOR
+#elif UNITY_WEBGL && !UNITY_EDITOR
         Screen.SetResolution(Screen.width, Screen.height, false);
 
 #else
