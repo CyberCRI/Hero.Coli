@@ -7,7 +7,7 @@ public class QuitMainMenuItem : MainMenuItem
     {
         // Debug.Log(this.GetType());
 		base.click();
+		MainMenuManager.get ().switchTo (MainMenuManager.MainMenuScreen.QUIT);
         RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, CustomDataValue.QUIT.ToString()));
-        Application.Quit();
     }
 }

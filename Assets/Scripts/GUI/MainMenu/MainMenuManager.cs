@@ -109,6 +109,9 @@ public class MainMenuManager : MonoBehaviour
     private ContributeMainMenuItemArray contributeItems;
     [SerializeField]
     private LearnMoreOptionsMainMenuItemArray learnMoreItems;
+	// quit submenu
+	[SerializeField]
+	private QuitMainMenuItemArray quitItems;
 
     [SerializeField]
     private ParticleSystemFeedback _feedback;
@@ -133,7 +136,8 @@ public class MainMenuManager : MonoBehaviour
         SCIENCE,
         CONTRIBUTE,
         LEARNMOREOPTIONS,
-        DEFAULT
+		QUIT,
+        DEFAULT,
     }
 
     //_currentIndex == -1 means nothing is selected
@@ -409,7 +413,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (!_initializedArrays)
         {
-            arrays = new MainMenuItemArray[9] {
+            arrays = new MainMenuItemArray[10] {
                 mainMenuItems,
                 chapterSelectionItems,
                 settingsItems,
@@ -418,7 +422,8 @@ public class MainMenuManager : MonoBehaviour
                 controlItems,
                 scienceItems,
                 contributeItems,
-                learnMoreItems
+                learnMoreItems,
+				quitItems,
                 };
             _initializedArrays = true;
         }
@@ -473,6 +478,9 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuScreen.LEARNMOREOPTIONS:
                 toActivate = learnMoreItems;
                 break;
+			case MainMenuScreen.QUIT:
+				toActivate = quitItems;
+				break;
             case MainMenuScreen.DEFAULT:
             default:
                 toActivate = mainMenuItems;
