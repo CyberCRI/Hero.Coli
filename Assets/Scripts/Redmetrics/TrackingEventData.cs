@@ -175,7 +175,13 @@ public enum CustomDataValue
     UNKNOWN,            // ?
 
     GAME,               // source of event: some events can be triggered from game or webpage
-    WEBPAGE
+    WEBPAGE,
+	QUITYES,
+	QUITNO,
+	CONTRIBUTEMAINMENU,
+	CONTRIBUTEHUD,
+	CONTRIBUTEEND,
+	CONTRIBUTEQUIT,
 }
 
 public class CustomData: Dictionary<string, string>

@@ -69,7 +69,7 @@ public class MainMenuManager : MonoBehaviour
             mainMenuItems.hideIndexes(new List<int> { 4, 5, 6 });
 #elif UNITY_WEBGL
             // hide QUIT
-		    mainMenuItems.hideIndexes(new List<int>{ 6 });
+		    //mainMenuItems.hideIndexes(new List<int>{ 6 });
 #endif
             _initialized = true;
         }

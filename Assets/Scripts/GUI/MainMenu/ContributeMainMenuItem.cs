@@ -8,6 +8,6 @@ public class ContributeMainMenuItem : MainMenuItem
         // Debug.Log(this.GetType() + " click");
 		base.click();
         MainMenuManager.get().switchTo(MainMenuManager.MainMenuScreen.CONTRIBUTE);
-        RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, CustomDataValue.CONTRIBUTE.ToString()));
+		RedMetricsManager.get().sendEvent(TrackingEvent.SELECTMENU, new CustomData(CustomDataTag.OPTION, CustomDataValue.CONTRIBUTE.ToString()));
     }
 }
