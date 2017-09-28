@@ -3,17 +3,11 @@ using System.Collections;
 
 public class ContributeLinkMainMenuItem : MainMenuItem
 {
-	public enum ContributeOrigin {
-		MAINMENU,
-		QUIT,
-		HUD,
-		END
-	};
     [SerializeField]
     private bool _newTab;
 
 	[SerializeField]
-	private ContributeOrigin _origin;
+	private CustomDataValue _dataValue;
 
     private const string _urlKey = "STUDY.LEARN.LINK";
 
@@ -21,28 +15,7 @@ public class ContributeLinkMainMenuItem : MainMenuItem
 	{
 		// Debug.Log(this.GetType() + " clicked "+itemName);
 		base.click ();
-		RedMetricsManager.get ().sendEvent (TrackingEvent.SELECTMENU, new CustomData (CustomDataTag.OPTION, getDataValue()));
-		StudyFormLinker.openFormGame (_origin == ContributeOrigin.HUD);
-	}
-
-	private string getDataValue()
-	{
-		string res = "";
-
-		switch (_origin) {
-		case ContributeOrigin.MAINMENU:
-			res = CustomDataValue.CONTRIBUTEMAINMENU.ToString ();
-			break;
-		case ContributeOrigin.HUD:
-			res = CustomDataValue.CONTRIBUTEHUD.ToString ();
-			break;
-		case ContributeOrigin.QUIT:
-			res = CustomDataValue.CONTRIBUTEEND.ToString ();
-			break;
-		case ContributeOrigin.END:
-			res = CustomDataValue.CONTRIBUTEQUIT.ToString ();
-			break;
-		}
-		return res;
+		RedMetricsManager.get ().sendEvent (TrackingEvent.SELECTMENU, new CustomData (CustomDataTag.OPTION, _dataValue.ToString()));
+		StudyFormLinker.openFormGame (false);
 	}
 }

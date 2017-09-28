@@ -18,7 +18,7 @@ public static class URLOpener
         else
         {
             RedMetricsManager.get().sendEvent(TrackingEvent.GOTOURL, new CustomData(CustomDataTag.NEWTAB, localizedUrl));
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
             // Debug.Log("URLOpener open WebGL attempting to open " + localizedUrl);
             Application.ExternalEval("window.open('" + localizedUrl + "','_blank')");
 #else
