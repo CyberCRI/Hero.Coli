@@ -22,9 +22,8 @@ public class ContributeLinkMainMenuItem : MainMenuItem
 		// Debug.Log(this.GetType() + " clicked "+itemName);
 		base.click ();
 		RedMetricsManager.get ().sendEvent (TrackingEvent.SELECTMENU, new CustomData (CustomDataTag.OPTION, getDataValue()));
-		StudyFormLinker.openForm ();
+		StudyFormLinker.openFormGame (_origin == ContributeOrigin.HUD);
 	}
-
 
 	private string getDataValue()
 	{
