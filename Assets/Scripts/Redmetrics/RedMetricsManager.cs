@@ -91,7 +91,7 @@ public class RedMetricsManager : MonoBehaviour
     //TODO interface to automatize data extraction for data gathering through sendEvent
     //eg: section, position
 
-    private const string _redMetricsURL = "https://api.redmetrics.io/v1/";
+    private const string _redMetricsURL = "http://api.redmetrics.129.194.69.36.xip.io/v1/";
     private const string _redMetricsPlayer = "player";
     private const string _redMetricsEvent = "event";
 
