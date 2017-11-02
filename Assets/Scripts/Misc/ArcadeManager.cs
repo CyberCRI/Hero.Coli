@@ -203,7 +203,7 @@ public class ArcadeManager : MonoBehaviour
             try
             {
                 instance._port.Open();
-				instance._port.WriteTimeout = 500;
+				instance._port.WriteTimeout = 100;
                 // Debug.Log("ArcadeManager checkConnection port successfully open");
             }
             catch (Exception e)
