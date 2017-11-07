@@ -31,8 +31,10 @@ public abstract class CellAnimator : MonoBehaviour {
         centralFlagellum.SetActive(count == 1 || count >= 3);
         rightFlagellum.SetActive(count >= 2);
         sideFlagellum.SetActive(count == 4);
-        ArcadeManager.Animation speedAnimation = count >= 4 ? ArcadeManager.Animation.bacterium_speed_start : ArcadeManager.Animation.bacterium_speed_end;
+		#if ARCADE
+        ArcadeAnimation speedAnimation = count >= 4 ? ArcadeAnimation.bacterium_speed_start : ArcadeAnimation.bacterium_speed_end;
         ArcadeManager.instance.playAnimation(speedAnimation);
+		#endif
     }
 
     public void safeFadeTo(Hashtable fadeOptions)

@@ -242,7 +242,9 @@ public class GUITransitioner : MonoBehaviour
                 //add medium info
                 setScreen3(false);
                 setScreen1(true);
-                ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_tactile_end);
+				#if ARCADE
+                ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_tactile_end);
+				#endif
             }
             GameStateController.get().tryUnlockPause();
             ZoomOut();
@@ -275,7 +277,9 @@ public class GUITransitioner : MonoBehaviour
                 //add medium info
                 setScreen3(false);
                 setScreen2(true);
-                ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_tactile_end);
+				#if ARCADE
+                ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_tactile_end);
+				#endif
             }
 
             ZoomIn();
@@ -309,7 +313,9 @@ public class GUITransitioner : MonoBehaviour
 
             }
             ZoomIn();
-            ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_tactile_start);
+			#if ARCADE
+            ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_tactile_start);
+			#endif
             _currentScreen = GameScreen.screen3;
 
         }

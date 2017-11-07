@@ -42,26 +42,30 @@ public class WorldSoundManager : MonoBehaviour {
 		if (lightOn)
 		{
 			sound.Play ();
+			#if ARCADE
 			if (isGFP)
 			{
-				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_gfp_start);
+				ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_gfp_start);
 			}
 			else
 			{
-				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_rfp_start);
+				ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_rfp_start);
 			}
+			#endif
 		}
 		else
 		{
 			sound.StopAll ();
+			#if ARCADE
 			if (isGFP)
 			{
-				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_gfp_end);
+				ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_gfp_end);
 			}
 			else
 			{
-				ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_rfp_end);
+				ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_rfp_end);
 			}
+			#endif
 		}
 	}
 

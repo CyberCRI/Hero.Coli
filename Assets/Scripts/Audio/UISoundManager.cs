@@ -103,12 +103,16 @@ public class UISoundManager : MonoBehaviour
 		if (successful)
 		{
 			successfulCraftSound.Play ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_create_device);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_create_device);
+			#endif
 		}
 		else
 		{
 			genericCraftSound.Play ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.gui_assemble_device);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_assemble_device);
+			#endif
 		}
 	}
 		

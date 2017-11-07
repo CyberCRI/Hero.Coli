@@ -23,8 +23,10 @@ public class UIButtonSound : MonoBehaviour
 
 	public Trigger trigger = Trigger.OnClick;
 	public PlayableUISound sound;
+	#if ARCADE
 	[SerializeField]
-	private ArcadeManager.Animation _animation = ArcadeManager.Animation.none;
+	private ArcadeAnimation _animation = ArcadeAnimation.none;
+	#endif
 
 	void OnHover (bool isOver)
 	{
@@ -32,7 +34,9 @@ public class UIButtonSound : MonoBehaviour
 		{
 			//NGUITools.PlaySound (audioClip, volume, pitch);
 			sound.Play();
+			#if ARCADE
 			ArcadeManager.instance.playAnimation(_animation);
+			#endif
 		}
 	}
 
@@ -42,7 +46,9 @@ public class UIButtonSound : MonoBehaviour
 		{
 			//NGUITools.PlaySound (audioClip, volume, pitch);
 			sound.Play();
+			#if ARCADE
 			ArcadeManager.instance.playAnimation(_animation);
+			#endif
 		}
 	}
 
@@ -52,7 +58,9 @@ public class UIButtonSound : MonoBehaviour
 		{
 			//NGUITools.PlaySound (audioClip, volume, pitch);
 			sound.Play();
+			#if ARCADE
 			ArcadeManager.instance.playAnimation(_animation);
+			#endif
 		}
 	}
 }

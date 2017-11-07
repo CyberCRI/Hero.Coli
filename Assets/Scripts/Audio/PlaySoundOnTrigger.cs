@@ -8,8 +8,10 @@ public class PlaySoundOnTrigger : MonoBehaviour
     /// </summary>
     [Tooltip("The sound that will be played if the player enters the trigger")]
     public PlayableUISound sound;
+	#if ARCADE
     [SerializeField]
-    private ArcadeManager.Animation _arcadeAnimation = ArcadeManager.Animation.pickup_dna;
+    private ArcadeAnimation _arcadeAnimation = ArcadeAnimation.pickup_dna;
+	#endif
 
     public enum SoundType
     {
@@ -22,7 +24,9 @@ public class PlaySoundOnTrigger : MonoBehaviour
         if (col.tag == Character.playerTag)
         {
             sound.Play();
+			#if ARCADE
             ArcadeManager.instance.playAnimation(_arcadeAnimation);
+			#endif
         }
     }
 }

@@ -49,7 +49,9 @@ public class CharacterSoundManager: MonoBehaviour {
 	public void OnCharacterRespawn ()
 	{
 		respawnSound.Play ();
-		ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_respawn);
+		#if ARCADE
+		ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_respawn);
+		#endif 
 	}
 
 	/// <summary>
@@ -62,36 +64,38 @@ public class CharacterSoundManager: MonoBehaviour {
         {
             case CustomDataValue.ENEMY:
                 deathEnemySound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_enemy);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_enemy);
                 break;
             case CustomDataValue.MINE:
                 deathMineSound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_enemy);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_enemy);
                 break;
             case CustomDataValue.CRUSHED:
                 deathCrushSound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_crushed);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_crushed);
                 break;
             case CustomDataValue.SUICIDEBUTTON:
                 deathSuicideSound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_suicide);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_suicide);
                 break;
             case CustomDataValue.NOENERGY:
                 deathNoEnergySound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_energy);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_energy);
                 break;
             case CustomDataValue.AMPICILLIN:
             case CustomDataValue.AMPICILLINWALL1:
             case CustomDataValue.AMPICILLINWALL2:
                 deathAmpicilinSound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death_antibiotics);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death_antibiotics);
                 break;
             default:
                 deathSound.Play();
-				// ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death);
+				// ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death);
                 break;
         }
-		ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_death);
+		#if ARCADE
+		ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_death);
+		#endif
 	}
 
 	/// <summary>
@@ -103,12 +107,16 @@ public class CharacterSoundManager: MonoBehaviour {
 		if (isBeingHurt)
 		{
 			hurtAntibioticsSound.PlayIfNotPlayed ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_antibiotics_start);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_hurt_antibiotics_start);
+			#endif
 		}
 		else
 		{
 			hurtAntibioticsSound.StopAll ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_antibiotics_end);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_hurt_antibiotics_end);
+			#endif
 		}
 	}
 
@@ -121,12 +129,16 @@ public class CharacterSoundManager: MonoBehaviour {
 		if (isBeingHurt)
 		{
 			hurtEnergySound.PlayIfNotPlayed ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_energy_start);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_hurt_energy_start);
+			#endif
 		}
 		else
 		{
 			hurtEnergySound.StopAll ();
-			ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_hurt_energy_end);
+			#if ARCADE
+			ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_hurt_energy_end);
+			#endif
 		}
 	}
 
@@ -145,7 +157,9 @@ public class CharacterSoundManager: MonoBehaviour {
 	public void OnCharacterDivision ()
 	{
 		divisionSound.Play ();
-		ArcadeManager.instance.playAnimation(ArcadeManager.Animation.bacterium_divide);
+		#if ARCADE
+		ArcadeManager.instance.playAnimation(ArcadeAnimation.bacterium_divide);
+		#endif
 	}
 		
 	public void OnPlayerPushRock (bool canPush)
