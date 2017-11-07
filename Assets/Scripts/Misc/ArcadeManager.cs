@@ -24,6 +24,7 @@ public class ArcadeManager : MonoBehaviour
     [SerializeField]
     private bool _initialized = false;
     private static ArcadeManager _instance = null;
+	private Queue<Animation> _animationQueue = new Queue<Animation>();
 
     public enum Animation
     {
@@ -203,7 +204,7 @@ public class ArcadeManager : MonoBehaviour
             try
             {
                 instance._port.Open();
-				instance._port.WriteTimeout = 100;
+				instance._port.WriteTimeout = 50;
                 // Debug.Log("ArcadeManager checkConnection port successfully open");
             }
             catch (Exception e)
@@ -236,18 +237,38 @@ public class ArcadeManager : MonoBehaviour
     public void playAnimation(Animation animation)
     {
         // Debug.Log(this.GetType() + " playAnimation(" + animation + ")");
-        playAnimation(getCode(animation));
+#if ARCADE
+		_animationQueue.Enqueue(animation);
+#endif 
     }
 
-    private void playAnimation(string identifier)
-    {
-#if ARCADE
+	private string getQueueContent()
+	{
+		string res = "";
+
+		foreach (var animation in _animationQueue) {
+			res += getCode (animation);
+		}
+
+		return res;
+	}
+
+   	private void write(string identifier)
+	{
         if (!string.IsNullOrEmpty(identifier))
         {
             if (checkConnection())
             {
                 // Debug.Log(this.GetType() + " playAnimation(" + identifier + "): port open");
-                _port.Write(identifier);
+				try {
+					_port.Write(identifier);
+				}
+				catch (Exception e)
+				{
+					Debug.LogError ("identifier = " + identifier);
+					Debug.LogError ("stack content = " + getQueueContent());
+					Debug.LogError(e);
+				}
             }
             else
             {
@@ -258,7 +279,13 @@ public class ArcadeManager : MonoBehaviour
         {
             // Debug.Log(this.GetType() + " playAnimation(" + identifier + "): parameter string was null");
         }
-
-#endif
     }
+
+	void Update()
+	{
+#if ARCADE
+		if (_animationQueue.Count > 0)
+			write(getCode(_animationQueue.Dequeue()));
+#endif
+	}
 }
