@@ -77,6 +77,7 @@ public class ArcadeManager : MonoBehaviour
     private bool _initialized = false;
     private static ArcadeManager _instance = null;
 	private Queue<ArcadeAnimation> _animationQueue = new Queue<ArcadeAnimation>();
+	private bool _stringMode = false;
 
     private Dictionary<ArcadeAnimation, string> _animations = new Dictionary<ArcadeAnimation, string> {
         {ArcadeAnimation.none, ""},
@@ -278,8 +279,16 @@ public class ArcadeManager : MonoBehaviour
 
 	void Update()
 	{
-		if (_animationQueue.Count > 0)
-			write(getCode(_animationQueue.Dequeue()));
+		if (!_stringMode) {
+			if (_animationQueue.Count > 0)
+				write (getCode (_animationQueue.Dequeue ()));
+		} else {
+			write (getQueueContent ());
+			_animationQueue.Clear ();
+		}
+
+		if (Input.GetKeyUp (KeyCode.Space))
+			_stringMode ^= true;
 	}
 }
 #endif 
