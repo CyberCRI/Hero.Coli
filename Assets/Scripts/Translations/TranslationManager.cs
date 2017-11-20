@@ -4,7 +4,7 @@ using System;
 public class TranslationManager : MonoBehaviour
 {
     // called from js
-    public static void SetLanguage(string language)
+    public void SetLanguage(string language)
     {
         // foreach(I18n.Language _language in Enum.GetValues(typeof(I18n.Language)).Cast<I18n.Language>)
         foreach (I18n.Language _language in Enum.GetValues(typeof(I18n.Language)))
