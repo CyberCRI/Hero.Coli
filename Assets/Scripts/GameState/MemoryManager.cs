@@ -56,6 +56,12 @@ public class MemoryManager : MonoBehaviour
                 loadLevelData(inputFiles, _loadedLevelInfo);
             }
             _initialized = true;
+
+#if UNITY_WEBGL
+            // Debug.Log(this.GetType() + " initializeIfNecessary Application.ExternalCall(getWebLocalPlayerGUID, true);");
+            Application.ExternalCall("getWebLocalPlayerGUID", "true");
+#endif
+
         }
     }
 
@@ -168,5 +174,11 @@ public class MemoryManager : MonoBehaviour
     public void sendCompletionEvent()
     {
         RedMetricsManager.get().sendRichEvent(TrackingEvent.COMPLETE);
+    }
+
+    public void GetWebLocalPlayerGUIDCallback(string webGUID)
+    {
+        // Debug.Log(this.GetType() + " GetWebLocalPlayerGUIDCallback(" + webGUID + ")");
+        configuration.setWebGUID(webGUID);
     }
 }

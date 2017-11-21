@@ -222,6 +222,10 @@ public class GameStateController : MonoBehaviour
 
 		MainMenuManager.get ().open ();
 
+#if UNITY_WEBGL
+		Application.ExternalCall("onUnityLoadingDone");
+#endif
+
 		// Debug.Log(this.GetType() + " finishLoadLevels done");
 	}
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LanguageMainMenuItem : MainMenuItem
+public class LanguageMainMenuItem : MainMenuItem, ILocalizable
 {
 
     [SerializeField]
@@ -22,6 +22,17 @@ public class LanguageMainMenuItem : MainMenuItem
     private float deselectedAlpha;
     [SerializeField]
     private UISprite languageSprite;
+
+    public override void initialize()
+    {
+        base.initialize();
+        I18n.register(this);
+    }
+
+    public void onLanguageChanged()
+    {
+        updateSelection();
+    }
 
     public override void click()
     {

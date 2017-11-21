@@ -121,6 +121,9 @@ public class Localization : MonoBehaviour
 
 			if (string.IsNullOrEmpty(mLanguage) && (languages != null && languages.Length > 0))
 			{
+#if UNITY_WEBGL
+				Application.ExternalCall("getWebLanguage", "true");
+#endif
 				currentLanguage = languages[0].name;
 			}
 		}

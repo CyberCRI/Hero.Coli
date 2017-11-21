@@ -29,6 +29,12 @@ public class TranslationManager : MonoBehaviour
         callJSFunctionWithLanguageJson("getLanguageCallback");
     }
 
+    // called from js
+    public void GetWebLanguageCallBack(string language)
+    {
+        //?
+    }
+
     // called from Unity
     public static void onLanguageChanged()
     {

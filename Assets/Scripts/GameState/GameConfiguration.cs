@@ -338,6 +338,13 @@ public class GameConfiguration
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
 
+    private string _webGUID;
+    public void setWebGUID(string webGUID)
+    {
+        // Debug.Log(this.GetType() + " setWebGUID(" + webGUID + ")");
+        _webGUID = webGUID;
+    }
+
     private string _playerGUID;
     public string playerGUID
     {
@@ -352,9 +359,23 @@ public class GameConfiguration
                 string storedGUID = PlayerPrefs.GetString(_localPlayerGUIDPlayerPrefsKey);
                 if (string.IsNullOrEmpty(storedGUID))
                 {
-                    // Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(storedGUID)");
-                    _playerGUID = Guid.NewGuid().ToString();
-                    PlayerPrefs.SetString(_localPlayerGUIDPlayerPrefsKey, _playerGUID);
+#if UNITY_WEBGL
+				    if(!string.IsNullOrEmpty(_webGUID))
+                    {
+                        // Debug.Log(this.GetType() + " playerGUID get !string.IsNullOrEmpty(_webGUID)");
+                        _playerGUID = _webGUID;
+                        PlayerPrefs.SetString(_localPlayerGUIDPlayerPrefsKey, _playerGUID);
+                    }
+                    else
+                    {
+#endif
+                        // Debug.Log(this.GetType() + " playerGUID get string.IsNullOrEmpty(storedGUID)");
+                        _playerGUID = Guid.NewGuid().ToString();
+                        PlayerPrefs.SetString(_localPlayerGUIDPlayerPrefsKey, _playerGUID);
+#if UNITY_WEBGL
+                    }
+#endif
+
                 }
                 else
                 {
