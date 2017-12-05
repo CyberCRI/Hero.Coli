@@ -182,6 +182,7 @@ public enum CustomDataValue
 	CONTRIBUTEHUD,
 	CONTRIBUTEEND,
 	CONTRIBUTEQUIT,
+	CONTRIBUTETOOLBAR,
 }
 
 public class CustomData: Dictionary<string, string>

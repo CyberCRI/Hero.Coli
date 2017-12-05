@@ -117,13 +117,13 @@ public class Localization : MonoBehaviour
 			mInstance = this;
 			DontDestroyOnLoad(gameObject);
 
+#if UNITY_WEBGL
+			Application.ExternalCall("getWebLanguage", "true");
+#endif
 			currentLanguage = PlayerPrefs.GetString("Language", startingLanguage);
 
 			if (string.IsNullOrEmpty(mLanguage) && (languages != null && languages.Length > 0))
 			{
-#if UNITY_WEBGL
-				Application.ExternalCall("getWebLanguage", "true");
-#endif
 				currentLanguage = languages[0].name;
 			}
 		}
