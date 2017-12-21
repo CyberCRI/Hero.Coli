@@ -88,6 +88,8 @@ public class PlayerLinkManager : LinkManager
     {
         base.initialize();
 
+        activateAllInArray(false);
+
         GUITransitioner guiTransitioner = GUITransitioner.get();
 
         //Cellcontrol connection

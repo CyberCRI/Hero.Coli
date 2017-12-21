@@ -14,6 +14,11 @@ public class TextMeshLocalizer : MonoBehaviour
         localize();
     }
 
+    void OnEnable()
+    {
+        localize();
+    }
+
     public virtual void localize()
     {
         localizer.Localize();
