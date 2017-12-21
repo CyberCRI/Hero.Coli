@@ -5,11 +5,18 @@ public class StudyHint : MonoBehaviour
 {
     private float _elapsedTime = 0f;
     private float _displayedTime = 0f;
-    private const float _waitThreshold = 3.0f;
+    private const float _waitThreshold = 45.0f;
     private const float _displayThreshold = 10.0f;
     private const string _messageCode = "STUDY";
     [SerializeField]
     private GameObject _speechBubble;
+
+#if ARCADE
+    void Start()
+    {
+        Destroy(this);
+    }
+#endif
 
     // Update is called once per frame
     void Update()
