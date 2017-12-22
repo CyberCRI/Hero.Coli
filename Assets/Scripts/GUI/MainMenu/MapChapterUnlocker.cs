@@ -49,10 +49,10 @@ public class MapChapterUnlocker : MonoBehaviour
             // Debug.Log(this.GetType() + " initializeIfNecessary initializes");
 
             // _chaptersArray contains chapters and the backbutton
-            _maxChapterIndex = _chaptersArray._items.Length - 2;
+            _maxChapterIndex = _chaptersArray._items.Length - 2; // 11 chapters, indices ranging 0 to 10, _maxChapterIndex = 10
 
             // save all but the backbutton in this array
-            _savedItems = new CheckpointMainMenuItem[_maxChapterIndex + 1];
+            _savedItems = new CheckpointMainMenuItem[_maxChapterIndex + 1]; // 11 chapters, indices ranging 0 to 10, #_savedItems = 11
             // Debug.Log(this.GetType() + " initializeIfNecessary initializes with"
             // + " _chaptersArray._items.Length=" + _chaptersArray._items.Length
             // + " _maxChapterIndex=" + _maxChapterIndex

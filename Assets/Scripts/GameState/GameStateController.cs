@@ -801,10 +801,10 @@ public class GameStateController : MonoBehaviour
 	}
     
 	// dev method
-	public static void unlockAll ()
+	public static void unlockAll (bool unlock)
 	{
 		Debug.Log ("GameStateController unlockAll");
-		_instance._scorekeeper.unlockAll ();
+		_instance._scorekeeper.unlockAll (unlock);
 	}
 
 	public void setInterfaceElements (

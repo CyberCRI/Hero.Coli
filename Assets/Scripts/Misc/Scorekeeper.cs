@@ -105,20 +105,17 @@ public class Scorekeeper : ILocalizable
             {
                 // Debug.Log(this.GetType() + " furthestChapter.set tried to set again to " + value);
             }
-            else
+            // Debug.Log(this.GetType() + " furthestChapter.set set to " + value + ", was " + _furthestChapter);
+            else if (_isFurthestChapterInitialized && value > _furthestChapterIndex)
             {
-                // Debug.Log(this.GetType() + " furthestChapter.set set to " + value + ", was " + _furthestChapter);
-                if (_isFurthestChapterInitialized)
-                {
-                    MemoryManager.get().configuration.furthestChapter = value;
-
-                    // RedMetrics
-                    CustomData customData = getCustomData(value);
-                    RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST, customData);
-                }
+                MemoryManager.get().configuration.furthestChapter = value;
 
                 _furthestChapterIndex = value;
                 _unlocker.setFurthestChapter(value);
+
+                // RedMetrics
+                CustomData customData = getCustomData(value);
+                RedMetricsManager.get().sendRichEvent(TrackingEvent.NEWFURTHEST, customData);
             }
         }
 
@@ -129,13 +126,13 @@ public class Scorekeeper : ILocalizable
     {
         if (!_isFurthestChapterInitialized)
         {
+            _isFurthestChapterInitialized = true;
             furthestChapter = MemoryManager.get().configuration.furthestChapter;
             if (MemoryManager.get().configuration.furthestChapter != _furthestChapterIndex)
             {
                 Debug.LogWarning(this.GetType() + " furthestChapter.get initialization failed with stored value=" + MemoryManager.get().configuration.furthestChapter);
                 furthestChapter = 0;
             }
-            _isFurthestChapterInitialized = true;
             // Debug.Log(this.GetType() + " initializeIfNecessary " + _furthestChapter);
         }
     }
@@ -162,10 +159,19 @@ public class Scorekeeper : ILocalizable
     }
 
     // dev method
-    public void unlockAll()
+    public void unlockAll(bool unlock)
     {
         // Debug.Log(this.GetType() + " unlockAll");
-        furthestChapter = _unlocker.maxChapterIndex;
+        if(unlock)
+        {
+            furthestChapter = _unlocker.maxChapterIndex;
+        }
+        else
+        {
+            MemoryManager.get().configuration.furthestChapter = -1;
+            _furthestChapterIndex = -1;
+            furthestChapter = 0;
+        }
     }
 
     public void collideChapter(int index, float time)

@@ -168,6 +168,12 @@ public class BackendManager : MonoBehaviour
                 unlockAll();
             }
 
+            else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                // lock everything
+                GameStateController.unlockAll(false);
+            }
+
             else if (Input.GetKeyDown(KeyCode.Space))
             {
                 displayPorts();
@@ -227,7 +233,7 @@ public class BackendManager : MonoBehaviour
     private void unlockAll()
     {
         Debug.Log(this.GetType() + " unlockAll");
-        GameStateController.unlockAll();
+        GameStateController.unlockAll(true);
     }
 
     private void displayPorts()
