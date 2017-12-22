@@ -10,7 +10,8 @@ public enum GameState
 	Game,
 	Pause,
 	End,
-	Default
+	Default,
+	NoValue
 }
 
 //specifies which game state is to be set after a computation
@@ -220,7 +221,7 @@ public class GameStateController : MonoBehaviour
 
 		_finishedLoadingLevels = true;
 
-		MainMenuManager.get ().open ();
+		_mainMenu.open (MainMenuManager.MainMenuScreen.CHAPTERSELECTION);
 
 #if UNITY_WEBGL
 		Application.ExternalCall("onUnityLoadingDone");
@@ -339,7 +340,7 @@ public class GameStateController : MonoBehaviour
 		// Debug.Log(this.GetType() + " endGame");
 		reinitializeLoadingVariables ();
 		_mainMenu.setNewGame ();
-		goToMainMenuFrom (GameState.MainMenu);
+		goToMainMenu (MainMenuManager.MainMenuScreen.DEFAULT, GameState.MainMenu);
 	}
 
 	private void prepareGameLevelIfNecessary ()
@@ -370,17 +371,17 @@ public class GameStateController : MonoBehaviour
 		}
 	}
 
-	public void goToMainMenu ()
+	public void goToMainMenu (MainMenuManager.MainMenuScreen target = MainMenuManager.MainMenuScreen.DEFAULT, GameState state = GameState.NoValue)
 	{
 		// Debug.Log(this.GetType() + " goToMainMenu");
-		goToMainMenuFrom (_gameState);
-	}
-
-	public void goToMainMenuFrom (GameState state)
-	{
+		onMenuChange(MenuType.MainMenu, true);
+		if(GameState.NoValue == state)
+		{
+			state = _gameState;
+		}
 		_stateBeforeMainMenu = state;
 		// Debug.Log(this.GetType() + " goToMainMenuFrom(" + state + ") with mainMenu=" + mainMenu);
-		_mainMenu.open ();
+		_mainMenu.open (target);
 		changeState (GameState.MainMenu);
 	}
 
@@ -477,7 +478,7 @@ public class GameStateController : MonoBehaviour
                     }
                     else
                     {
-                        goToMainMenuFrom(GameState.Game);
+                        goToMainMenu(MainMenuManager.MainMenuScreen.CHAPTERSELECTION, GameState.Game);
                     }
                     break;
 
@@ -528,8 +529,7 @@ public class GameStateController : MonoBehaviour
                     // main menu
                     else if (Input.GetButtonDown("Cancel"))
                     {
-                        onMenuChange(MenuType.MainMenu, true);
-                        goToMainMenuFrom(GameState.Game);
+                        goToMainMenu(MainMenuManager.MainMenuScreen.DEFAULT, GameState.Game);
                     }
 					// sound
                     else if (Input.GetButtonDown("Sound"))
@@ -553,8 +553,7 @@ public class GameStateController : MonoBehaviour
                 case GameState.Pause:
                     if (Input.GetButtonDown("Cancel"))
                     {
-                        onMenuChange(MenuType.MainMenu, true);
-                        goToMainMenuFrom(GameState.Pause);
+                        goToMainMenu(MainMenuManager.MainMenuScreen.DEFAULT, GameState.Pause);
                     }
                     else if (Input.GetButtonDown("Sound"))
                     {
@@ -607,7 +606,7 @@ public class GameStateController : MonoBehaviour
                 case GameState.End:
                     if (Input.GetButtonDown("Cancel"))
                     {
-                        goToMainMenuFrom(GameState.End);
+                        goToMainMenu(MainMenuManager.MainMenuScreen.DEFAULT, GameState.End);
                     }
                     else if (Input.GetButtonDown("Sound"))
                     {

@@ -184,6 +184,8 @@ public enum CustomDataValue
 	CONTRIBUTEQUIT,
 	CONTRIBUTETOOLBAR,
     CONTRIBUTESPEECHBUBBLE,
+    QUITCROSSMENU,
+    QUITCROSSHUD,
 }
 
 public class CustomData: Dictionary<string, string>

@@ -532,16 +532,13 @@ public class MainMenuManager : MonoBehaviour
         return true;
     }
 
-    public void open()
+    // to be called only by GameStateController
+    public void open(MainMenuScreen target = MainMenuScreen.CHAPTERSELECTION)
     {
         // Debug.Log(this.GetType() + " open");
         GUITransitioner.showGraphs(false, GUITransitioner.GRAPH_HIDER.MAINMENU);
         gameObject.SetActive(true);
-#if CHAPTER_SELECT_BUILD
-        switchTo(MainMenuScreen.CHAPTERSELECTION);
-#else
-        switchTo(MainMenuScreen.DEFAULT);
-#endif
+        switchTo(target);
         cullingMaskHandler.showMainMenu(true);
 		#if ARCADE
         ArcadeManager.instance.playAnimation(ArcadeAnimation.gui_tactile_start);
