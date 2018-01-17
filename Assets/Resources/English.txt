@@ -1,4 +1,4 @@
-﻿Warning:
+Warning:
 This file was generated from a spreadsheet.
 Please don't edit this file directly.
 
@@ -97,15 +97,15 @@ MENU.SOUND.ON=on
 MENU.SOUND.OFF=off
 MENU.SCIENCE=Science
 MENU.QUIT=quit
-MENU.QUIT.AREUSURE=Your progress can only be evaluated if you fill in the study after playing!
+MENU.QUIT.AREUSURE=Leaving now without filling in the survey will void your contribution to Science!
 MENU.QUIT.YES=quit
 MENU.QUIT.NO=back to game
-MENU.QUIT.CONTRIBUTE=fill in the study
+MENU.QUIT.CONTRIBUTE=fill in the survey
 MENU.YES=yes
 MENU.NO=no
 MENU.CONTRIBUTE=contribute to Science!
-MENU.CONTRIBUTE.EXPLANATION=Contribute anonymously to our project on game-based learning by filling in this form:
-MENU.CONTRIBUTE.LINK=open the form
+MENU.CONTRIBUTE.EXPLANATION=Contribute anonymously to our project on game-based learning by filling in this survey:
+MENU.CONTRIBUTE.LINK=open the survey
 MENU.LEARNMORE=learn more...
 MENU.LEARNMORE.GOTO=explore the website
 MENU.LEARNMORE.GOTONEWTAB=new tab - please allow the pop-up
@@ -366,7 +366,7 @@ HINT.INDUCEDPROMOTER.1=The previous promoter is more powerful and always active.
 HINT.INDUCEDPROMOTER.2=The new promoter is active only when there is l-arabinose.
 HINT.INDUCEDPROMOTER.3=It can be very useful in certain situations.
 HINT.INDUCEDPROMOTER.4=But not right now. Let's get some more DNA!
-HINT.FILLINSTUDY=Please fill in the form\nafter playing!
+HINT.FILLINSTUDY=Please fill in the survey\nafter playing!
 TUTORIAL.INTRODUCTION1.NANOBOTLABEL=This is a\nnanobot
 TUTORIAL.INTRODUCTION1.CELLLABEL=This is Cellia
 TUTORIAL.INTRODUCTION1.WELCOMETITLE=Welcome to the world of Hero.Coli!
@@ -397,7 +397,7 @@ TUTORIAL.FINALSCOREBOARD.MS=ms
 TUTORIAL.FINALSCOREBOARD.NOTCOMPLETED=not completed
 TUTORIAL.FINALSCOREBOARD.TITLE=YOU WON!
 TUTORIAL.FINALSCOREBOARD.SUBTITLE=You have completed the game, congratulations! But were you the fastest?
-TUTORIAL.FINALSCOREBOARD.EXPLANATION=Fill in the form a second time to help us know what you've learnt!
+TUTORIAL.FINALSCOREBOARD.EXPLANATION=Fill in the survey a second time to help us know what you've learnt!
 TUTORIAL.FINALSCOREBOARD.BOTTOM=You can also try the sandbox mode to play with more BioBricks.
 TUTORIAL.FINALSCOREBOARD.QUIT=QUIT
 TUTORIAL.FINALSCOREBOARD.CONTRIBUTE=CONTRIBUTE
