@@ -62,7 +62,9 @@ public enum ArcadeAnimation
 	bacterium_hurt_energy_end,
 }
 
-#if ARCADE
+#if !ARCADE
+public class ArcadeManager : MonoBehaviour{}
+#else
 public class ArcadeManager : MonoBehaviour
 {
     private string _player1Port = "/dev/ttyACM0";

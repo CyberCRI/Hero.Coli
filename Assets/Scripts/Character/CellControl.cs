@@ -22,12 +22,16 @@ public class CellControl : MonoBehaviour
                 }
                 else
                 {
+#if !NOLOG
                     Debug.LogError("Component CellControl of GameObject " + gameObjectName + " not found");
+#endif
                 }
             }
             else
             {
+#if !NOLOG
                 Debug.LogWarning("GameObject " + gameObjectName + " not found by " + origin);
+#endif
             }
         }
         return _instance;
@@ -37,8 +41,10 @@ public class CellControl : MonoBehaviour
     {
         // Debug.Log(this.GetType() + " Awake");
         if((_instance != null) && (_instance != this))
-        {            
+        {     
+#if !NOLOG       
             Debug.LogError(this.GetType() + " has two running instances");
+#endif
         }
         else
         {

@@ -16,7 +16,9 @@ public class MainMenuManager : MonoBehaviour
     {
         if (_instance == null)
         {
+#if !NOLOG
             Debug.LogWarning("MainMenuManager get was badly initialized");
+#endif
 
             //set from InterfaceLinkManager
             _instance = InterfaceLinkManager.get().mainMenu;
@@ -299,7 +301,9 @@ public class MainMenuManager : MonoBehaviour
         }
         if (!found)
         {
+#if !NOLOG
             Debug.LogWarning("MainMenuManager replaceTextBy static " + debug + " FAIL with target=" + target + " and replacement=" + replacement);
+#endif
         }
     }
 
@@ -360,7 +364,9 @@ public class MainMenuManager : MonoBehaviour
         }
         if (!found)
         {
+#if !NOLOG
             Debug.LogWarning("MainMenuManager setVisibility static " + debug + " FAIL with target=" + itemKey + " and isVisible=" + isVisible);
+#endif
         }
         MainMenuManager.redraw(current, debug, spacing);
     }
@@ -396,7 +402,9 @@ public class MainMenuManager : MonoBehaviour
             }
             else
             {
+#if !NOLOG
                 Debug.LogWarning("MainMenuManager redraw static no item");
+#endif
             }
         }
     }

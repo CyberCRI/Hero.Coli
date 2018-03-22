@@ -244,11 +244,15 @@ public class EnzymeReaction : Reaction
 		Molecule enzyme = ReactionEngine.getMoleculeFromName (_enzyme, molecules);
 
 		if (null == substrate) {
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " react couldn't find substrate '" + _substrate + "'");
+#endif
 			return 0;
 		}
 		if (null == enzyme) {
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " react couldn't find enzyme '" + _enzyme + "'");
+#endif
 			return 0;
 		}
 
@@ -261,20 +265,28 @@ public class EnzymeReaction : Reaction
 			if (effector != null) {
 				effectorConcentration = effector.getConcentration ();
 			} else {
+#if !NOLOG
 				Debug.LogWarning (this.GetType () + " react couldn't find effector '" + _effector + "'");
+#endif
 			}
 		}
 		if (_alpha == 0) {
 			_alpha = 0.0000000001f;
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " = 0");
+#endif
 		}
 		if (_Ki == 0) {
 			_Ki = 0.0000000001f;
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " = 0");
+#endif
 		}
 		if (_Km == 0) {
 			_Km = 0.0000000001f;
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " = 0");
+#endif
 		}
 
 		float denominator = _alpha * _Km * _Ki;
@@ -282,7 +294,9 @@ public class EnzymeReaction : Reaction
 
 		float bigDenominator = 1f + (substrate.getConcentration () / _Km) + (effectorConcentration / _Ki) + (substrate.getConcentration () * effectorConcentration / denominator);
 		if (bigDenominator == 0) {
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " enominator == 0");
+#endif
 			return 0;
 		}
 
@@ -304,7 +318,9 @@ public class EnzymeReaction : Reaction
     
 		Molecule substrate = ReactionEngine.getMoleculeFromName (_substrate, molecules);
 		if (substrate == null) {
+#if !NOLOG
 			Debug.LogWarning (this.GetType () + " react couldn't find substrate '" + _substrate + "'");
+#endif
 			return;
 		}
 
@@ -338,7 +354,9 @@ public class EnzymeReaction : Reaction
 					mol.addNewConcentration (delta);
 				}
 			} else {
+#if !NOLOG
 				Debug.LogWarning (this.GetType () + " react couldn't find product '" + pro.getName () + "'");
+#endif
 			}
 		}
 	}
@@ -424,11 +442,13 @@ public class EnzymeReaction : Reaction
 			        || (0 == _Ki)
 			        || (0 == _Km)) {
 				//TODO check also _Kcat, _beta
+#if !NOLOG
 				Debug.LogWarning (this.GetType () + " hasValidData please check values of "
 				+ "alpha=" + _alpha
 				+ ", Ki=" + _Ki
 				+ ", Km=" + _Km
 				+ " for reaction " + this.getName ());
+#endif
 			}
 		} else {
 			Debug.LogError (this.GetType ()

@@ -15,19 +15,25 @@ public class Character : CellAnimator
     {
         if (_instance == null)
         {
+#if !NOLOG
             Debug.LogWarning("Character get called too early");
+#endif
             GameObject go = GameObject.Find(gameObjectName);
             if (null != go)
             {
                 _instance = go.GetComponent<Character>();
                 if (null == _instance)
                 {
+#if !NOLOG
                     Debug.LogError("component Character of " + gameObjectName + " not found");
+#endif
                 }
             }
             else
             {
+#if !NOLOG
                 Debug.LogError(gameObjectName + " not found");
+#endif
             }
         }
         return _instance;
@@ -38,7 +44,9 @@ public class Character : CellAnimator
         // Debug.Log(this.GetType() + " Awake");
         if ((_instance != null) && (_instance != this))
         {
+#if !NOLOG
             Debug.LogError(this.GetType() + " has two running instances");
+#endif
         }
         else
         {
@@ -352,7 +360,9 @@ public class Character : CellAnimator
                     }
                     else
                     {
+#if !NOLOG
                         Debug.LogError("unknown death cause");
+#endif
                     }
                     _deathData = deathCause;
                 }
@@ -502,7 +512,9 @@ public class Character : CellAnimator
             }
             else
             {
+#if !NOLOG
                 Debug.LogWarning(this.GetType() + " OnTriggerEnter object tagged " + Checkpoint.checkpointTag + " has no " + typeof(Checkpoint) + " component");
+#endif
             }
         }
     }
@@ -645,7 +657,9 @@ public class Character : CellAnimator
         }
         else
         {
+#if !NOLOG
             Debug.LogWarning(this.GetType() + " popEffectCoroutine unexpected null savedCell");
+#endif
         }
     }
 }
