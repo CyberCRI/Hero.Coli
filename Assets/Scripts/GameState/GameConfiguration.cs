@@ -338,6 +338,21 @@ public class GameConfiguration
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
 
+    public void reset()
+    {
+        Debug.Log(this.GetType() + " reset");
+        furthestChapter = 0;
+        setWebGUID(null);
+#if UNITY_WEBGL
+        Debug.Log(this.GetType() + " reset Application.ExternalCall(deleteLocalPlayerGUID);");
+        Application.ExternalCall("deleteLocalPlayerGUID");
+#endif
+        _playerGUID = null;
+        PlayerPrefs.DeleteAll ();
+        load();
+        RedMetricsManager.get().sendStartEvent(true);
+    }
+
     private string _webGUID;
     public void setWebGUID(string webGUID)
     {
@@ -373,6 +388,8 @@ public class GameConfiguration
                         _playerGUID = Guid.NewGuid().ToString();
                         PlayerPrefs.SetString(_localPlayerGUIDPlayerPrefsKey, _playerGUID);
 #if UNITY_WEBGL
+                        Debug.Log(this.GetType() + " playerGUID get Application.ExternalCall(initializeGUIDState);");
+                        Application.ExternalCall("initializeGUIDState");
                     }
 #endif
 

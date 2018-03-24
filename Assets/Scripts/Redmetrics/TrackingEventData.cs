@@ -186,6 +186,7 @@ public enum CustomDataValue
     CONTRIBUTESPEECHBUBBLE,
     QUITCROSSMENU,
     QUITCROSSHUD,
+    RESETCONFIGURATION,    
 }
 
 public class CustomData: Dictionary<string, string>

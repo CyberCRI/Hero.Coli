@@ -336,10 +336,10 @@ public class RedMetricsManager : MonoBehaviour
 
     //////////////////////////////////////////////////
     // Should be called only after localPlayerGUID is set
-    public void sendStartEvent()
+    public void sendStartEvent(bool force = false)
     {
         // Debug.Log(this.GetType() + " sendStartEvent");
-        if (!_isStartEventSent)
+        if (!_isStartEventSent || force)
         {
             // Debug.Log(this.GetType() + " sendStartEvent !isStartEventSent");
             // gameSessionGUID hasn't been initialized
