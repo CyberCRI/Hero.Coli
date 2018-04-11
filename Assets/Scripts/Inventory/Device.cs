@@ -5,7 +5,10 @@ using UnityEngine;
 public class Device : DNABit
 {
     //TODO load that value from file
-    private static float _energyPerBasePair = 0.005f;
+    //TODO FIXME consumption should not be platform-hardware dependent:
+    // slow machines _energyPerBasePair = 0.005f;
+    // fast machines _energyPerBasePair = 0.002f;
+    private static float _energyPerBasePair = 0.002f;
 
     private static int _idCounter;
     private int _id;
