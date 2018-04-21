@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define TUTORIAL2
+
+using UnityEngine;
 using System.Collections;
 /// <summary>
 /// When clicked, starts the game at a specific checkpoint
@@ -52,7 +54,11 @@ public class CheckpointMainMenuItem : MainMenuItem
 
     [Tooltip("The gamemap the checkpoint is linked to.")]
     [SerializeField]
+#if !TUTORIAL2
     private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL1;
+#else
+    private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL2;
+#endif
     /// <summary>
     /// The gamemap the checkpoint is linked to.
     /// </summary>

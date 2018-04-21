@@ -1,3 +1,5 @@
+#define TUTORIAL2
+
 using UnityEngine;
 using System.Collections;
 using System;
@@ -645,7 +647,11 @@ public class GameStateController : MonoBehaviour
 		GameConfiguration.GameMap destination =
 			(GameConfiguration.getMode (GameConfiguration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
+#if !TUTORIAL2
                 GameConfiguration.GameMap.TUTORIAL1;
+#else
+				GameConfiguration.GameMap.TUTORIAL2;
+#endif
 
 		setAndSaveLevelName (destination, "goToOtherGameMode");
 		// RedMetricsManager.get().sendRichEvent(TrackingEvent.SWITCH, new CustomData(CustomDataTag.GAMELEVEL, destination.ToString()));
@@ -732,7 +738,11 @@ public class GameStateController : MonoBehaviour
 		// case GameConfiguration.GameMap.ADVENTURE1:
 		// case GameConfiguration.GameMap.SANDBOX1:
 		case GameConfiguration.GameMap.SANDBOX2:
+#if !TUTORIAL2
 		case GameConfiguration.GameMap.TUTORIAL1:
+#else
+		case GameConfiguration.GameMap.TUTORIAL2:
+#endif
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart
                 //whereas MemoryManager won't

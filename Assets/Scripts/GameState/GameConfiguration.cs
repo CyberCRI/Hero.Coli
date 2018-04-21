@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define TUTORIAL2
+
+using UnityEngine;
 using System;
 
 public class GameConfiguration
@@ -15,7 +17,11 @@ public class GameConfiguration
     }
 
     private const string _adventureLevel1 = "World1.0";
+#if !TUTORIAL2
     private const string _tutorial = "Tutorial1";
+#else
+    private const string _tutorial = "Tutorial2";
+#endif
     private const string _sandboxLevel1 = "Sandbox-0.1";
     private const string _sandboxLevel2 = "Sandbox-0.2";
 
@@ -34,7 +40,11 @@ public class GameConfiguration
         // ADVENTURE1,
         // SANDBOX1,
         SANDBOX2,
-        TUTORIAL1
+#if !TUTORIAL2
+        TUTORIAL1,
+#else
+        TUTORIAL2,
+#endif
     }
 
     // public enum TutorialMode
@@ -71,7 +81,11 @@ public class GameConfiguration
     private EnumConfigurationParameter<RestartBehavior> _restartBehavior
         = new EnumConfigurationParameter<RestartBehavior>(RestartBehavior.MAINMENU, RestartBehavior.MAINMENU, RestartBehavior.UNINITIALIZED, _restartBehaviorKey);
     private static EnumConfigurationParameter<GameMap> _gameMap
+    #if !TUTORIAL2
         = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL1, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
+    #else
+        = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL2, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
+    #endif
     private BoolConfigurationParameter _isAbsoluteWASD
         = new BoolConfigurationParameter(true, true, _isAbsoluteWASDKey);
     private BoolConfigurationParameter _isLeftClickToMove
@@ -472,7 +486,11 @@ public class GameConfiguration
         switch (map)
         {
             // case GameMap.ADVENTURE1:
+#if !TUTORIAL2
             case GameMap.TUTORIAL1:
+#else
+            case GameMap.TUTORIAL2:
+#endif
                 return GameMode.ADVENTURE;
             // case GameMap.SANDBOX1:
             case GameMap.SANDBOX2:
@@ -498,7 +516,11 @@ public class GameConfiguration
             //     return _sandboxLevel1;
             case GameMap.SANDBOX2:
                 return _sandboxLevel2;
+#if !TUTORIAL2
             case GameMap.TUTORIAL1:
+#else
+            case GameMap.TUTORIAL2:
+#endif
                 return _tutorial;
             default:
                 Debug.LogError("unknown map " + map);
