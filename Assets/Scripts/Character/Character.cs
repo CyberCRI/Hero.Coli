@@ -147,7 +147,8 @@ public class Character : CellAnimator
     private const float _respawnTimeS = 1.5f;
     private const float _disappearingTimeSRatio = 0.9f;
     private const float _disappearingTimeS = _disappearingTimeSRatio * _respawnTimeS;
-    private float _popEffectTimeS = 1.0f;
+    private float _popEffectTimeS = 1.0f; // time after which the new bacterium pops out of the old one
+    private float _popEffectTime2S = 0.3f; // time after which there is no collision between old and new bacteria
     private const float _baseScale = 145.4339f;
     private static Vector3 _baseScaleVector = new Vector3(_baseScale, _baseScale, _baseScale);
     private static Vector3 _reducedScaleVector = 0.7f * _baseScaleVector;
@@ -653,7 +654,19 @@ public class Character : CellAnimator
         yield return new WaitForSeconds(_popEffectTimeS);
         if (null != savedCell)
         {
+            savedCell.setEnabledCollider(true);
             savedCell.setCollidable(true);
+        }
+        else
+        {
+#if !NOLOG
+            Debug.LogWarning(this.GetType() + " popEffectCoroutine unexpected null savedCell");
+#endif
+        }
+        yield return new WaitForSeconds(_popEffectTime2S);
+        if (null != savedCell)
+        {
+            savedCell.setEnabledCollider(false);
         }
         else
         {

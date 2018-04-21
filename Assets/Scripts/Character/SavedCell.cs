@@ -42,6 +42,12 @@ public class SavedCell : CellAnimator {
     _cellCollider.isTrigger = !collidable;
   }
 
+  public void setEnabledCollider(bool enabled)
+  {
+    safeInitCollider();
+    _cellCollider.enabled = enabled;
+  }
+
   void OnTriggerExit(Collider col) {
     if(_cellCollider.isTrigger && (null != col.GetComponent<Character>()))
     {
