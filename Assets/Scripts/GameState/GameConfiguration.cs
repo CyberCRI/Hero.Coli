@@ -346,8 +346,13 @@ public class GameConfiguration
     // public const string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
     // v1.51
     // public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");
+#if !TUTORIAL2
     // v1.52
     public const string labelledGameVersionGUIDString = "915953b4-f9e1-41ca-acc4-4e4e90667102";
+#else
+    // v1.60
+    public const string labelledGameVersionGUIDString = "284308a6-3c3b-4355-aab3-ee0518f4c42b";
+#endif
     public System.Guid labelledGameVersionGUID = new System.Guid(labelledGameVersionGUIDString);
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
