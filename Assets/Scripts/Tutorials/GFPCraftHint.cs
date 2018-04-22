@@ -58,5 +58,10 @@ public class GFPCraftHint : StepByStepTutorial
             _focusObjects[4] = _craftResultPrefix + _GFPdevice2 + _backgroundSuffix;
         }
     }
+    protected override void end()
+    {
+        Character.get().gameObject.AddComponent<PutMovBackHint>();
+        base.end();
+    }
 }
 #endif
