@@ -25,6 +25,10 @@
     <texture>i_ampicillin</texture>
     <next>QuitModalWindow</next>
   </info>
+  <info code="T2_NEED3FLAGELLA">
+    <texture>i_3flagella</texture>
+    <next>QuitModalWindow</next>
+  </info>
   <info code="T1_FLUO1">
     <texture>i_gfp</texture>
     <next>GFPCraftHintModal</next>
@@ -35,6 +39,10 @@
   </info>
   <info code="T1_NANOBOT">
     <texture>i_nanobot</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T2_NEED4FLAGELLA">
+    <texture>i_4flagella</texture>
     <next>QuitModalWindow</next>
   </info>
   <info code="T1_FLUO2">
