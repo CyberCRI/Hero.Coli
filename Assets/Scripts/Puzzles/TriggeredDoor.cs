@@ -40,7 +40,7 @@ public class TriggeredDoor : TriggeredBehaviour
         // Debug.Log(this.GetType() + " resetPosition");
         if (!_preventReset)
         {
-            stopMovement();
+            stopMovement(false, false, true);
             transform.position = _origin;
         }
     }
@@ -122,27 +122,28 @@ public class TriggeredDoor : TriggeredBehaviour
         _isDoorClosing = false;
     }
 
-    void stopMovement(bool closing = true, bool opening = true)
+    void stopMovement(bool closing = true, bool opening = true, bool force = false)
     {
         // halt the potential coroutine
         if (null != waitCoroutine)
         {
-            // Debug.Log(this.GetType() + " triggerStart stops waitCoroutine");
+            // Debug.Log(this.GetType() + " stopMovement stops waitCoroutine");
             StopCoroutine(waitCoroutine);
         }
         // halt the closing
-        // Debug.Log(this.GetType() + " triggerStart searches iTween " + closeDoorITweenName);
-        iTween[] itweens = gameObject.GetComponents(typeof(iTween)) as iTween[];
+        // Debug.Log(this.GetType() + " stopMovement searches iTween " + closeDoorITweenName);
+        Component[] itweens = gameObject.GetComponents(typeof(iTween));
         if (null != itweens)
         {
             foreach (iTween it in itweens)
             {
-                if ((closing && closeDoorITweenName == it.name)
-                || (opening && openDoorITweenName == it.name))
+                if ( force
+                || (closing && (closeDoorITweenName == it.name)) // doesn't work: it.name is game object name and not iTween name
+                || (opening && (openDoorITweenName == it.name)) ) // same. Should use iTween.StopByName(string name) which stops ALL iTweens
                 {
+                    Debug.Log(this.GetType() + " stopMovement stops iTween " + it.name);
                     Destroy(it);
-                    // Debug.Log(this.GetType() + " triggerStart stops iTween " + closeDoorITweenName);
-                    break;
+                    //break;
                 }
             }
         }
