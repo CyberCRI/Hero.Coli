@@ -8,7 +8,7 @@
     <next>world</next>
   </info>
   <info code="PUTMOVBACK">
-    <texture>i_mov</texture>
+    <texture>i_putmovback</texture>
     <next>world</next>
   </info>
 </infoList>

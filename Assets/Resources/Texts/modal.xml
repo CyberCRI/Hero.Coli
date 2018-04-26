@@ -20,7 +20,6 @@
     <texture>i_biobrick</texture>
     <next>QuitModalWindow</next>
   </info>
-  
   <info code="T1_AMPICILLIN">
     <texture>i_ampicillin</texture>
     <next>QuitModalWindow</next>
@@ -45,17 +44,41 @@
     <texture>i_4flagella</texture>
     <next>QuitModalWindow</next>
   </info>
-  <info code="T1_FLUO2">
-    <texture>i_rfp</texture>
+  <info code="T2_DTER">
+    <texture>i_terminator</texture>
     <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_PRBAD3">
+    <texture>i_l-arabinose</texture>
+    <next>InducedPromoterHintModal</next>
   </info>
   <info code="T1_PLASMID">
     <texture>i_plasmid</texture>
     <next>PlasmidHintModal</next>
   </info>
-  <info code="T1_PRBAD3">
-    <texture>i_l-arabinose</texture>
-    <next>InducedPromoterHintModal</next>
+  <info code="T2_MOV">
+    <texture>i_mov</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T1_FLUO2">
+    <texture>i_rfp</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T2_PRCONS">
+    <texture>i_prcons</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T2_PLASMID">
+    <texture>i_plasmid</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T2_AMPR">
+    <texture>i_ampr</texture>
+    <next>QuitModalWindow</next>
+  </info>
+  <info code="T2_AMPI">
+    <texture>i_ampi</texture>
+    <next>QuitModalWindow</next>
   </info>
   <info code="T1_END">
     <texture>i_end</texture>

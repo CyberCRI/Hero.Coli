@@ -1,3 +1,5 @@
+#define TUTORIAL2
+
 using UnityEngine;
 
 public class PickablePlasmid : MonoBehaviour {
@@ -8,10 +10,11 @@ public class PickablePlasmid : MonoBehaviour {
     {
         if (col.tag == Character.playerTag)
         {
-            if (_playTutorial)
-            {
-                ModalManager.setModal("T1_PLASMID");
-            }
+            string modalCode = _playTutorial?"T1_PLASMID":"T2_PLASMID";
+            ModalManager.setModal(modalCode);
+#if TUTORIAL2
+            RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, modalCode));
+#endif
             RedMetricsManager.get ().sendRichEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.PLASMID, gameObject.name));
             CraftZoneManager.get().addSlot();
             Destroy(this.gameObject);

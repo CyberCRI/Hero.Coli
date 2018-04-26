@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define TUTORIAL2
+
+using UnityEngine;
 
 public class ModalTrigger : MonoBehaviour
 {
@@ -17,7 +19,9 @@ public class ModalTrigger : MonoBehaviour
 		if (!_alreadyDisplayed) {
 			// Debug.Log(this.GetType() + " call to ModalManager");
 			ModalManager.setModal (modalCode, true, playSound);
+#if TUTORIAL2
 			RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, modalCode));
+#endif
 			_alreadyDisplayed = true;
 		}
 	}
