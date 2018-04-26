@@ -19,6 +19,10 @@ public class PushableBox : MonoBehaviour
         _initPos = transform.position;
         _control = CellControl.get(this.GetType().ToString());
         _rigidBody = _rigidBody == null ? this.GetComponent<Rigidbody>() : _rigidBody;
+        if (null != _rigidBody)
+        {
+            _canPush = _rigidBody.constraints;
+        }
     }
 
     void OnCollisionEnter(Collision col)

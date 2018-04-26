@@ -6,6 +6,9 @@ public class PushableBoxFlagellaRequirementHint : MonoBehaviour
     private int requiredFlagellaCount;
     [SerializeField]
     private string _modalWindowCode;
+    [SerializeField]
+    private float reminderTimeDelta = 5.0f;
+    private float reminderTime = 0.0f;
 
     void OnCollisionEnter(Collision col)
     {
@@ -13,8 +16,12 @@ public class PushableBoxFlagellaRequirementHint : MonoBehaviour
         {
             if(!CellControl.get(this.GetType().ToString()).hasAtLeastFlagellaCount(requiredFlagellaCount))
             {
-                ModalManager.setModal(_modalWindowCode);
-                RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, _modalWindowCode));
+                if(Time.time - reminderTime > reminderTimeDelta)
+                {
+                    reminderTime = Time.time;
+                    ModalManager.setModal(_modalWindowCode);
+                    RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, _modalWindowCode));
+                }
             }
         }
     }

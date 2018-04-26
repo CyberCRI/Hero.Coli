@@ -17,6 +17,7 @@ public class ModalTrigger : MonoBehaviour
 		if (!_alreadyDisplayed) {
 			// Debug.Log(this.GetType() + " call to ModalManager");
 			ModalManager.setModal (modalCode, true, playSound);
+			RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, modalCode));
 			_alreadyDisplayed = true;
 		}
 	}
