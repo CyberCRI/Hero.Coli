@@ -12,10 +12,13 @@ public class PhenoLight : Phenotype
     public const string gfpProtein = "FLUO1", rfpProtein = "FLUO2";
 
     // TODO use a LinkedList to manage overlapping light sources
-	public delegate void LightEvent(PhenoLight.LightType type, bool lightOn, bool isGFP);
-	public static event LightEvent onLightToggle;
+    public delegate void LightEvent(PhenoLight.LightType type, bool lightOn, bool isGFP);
+    public static event LightEvent onLightToggle;
     [SerializeField]
     private Light _phenoLight, _spotLight, _blackLightSpotLight;
+    [SerializeField]
+    private float _blackLightSpotLightSpotAngle;
+    private float _previousIntensity = 0;
 
     public bool _active = false;
     private string _fluorescenceProtein;
@@ -24,22 +27,23 @@ public class PhenoLight : Phenotype
     private TriggeredLightEmitter _triggered;
     private TriggeredLightEmitter _lm;
 
-	public PlayableSound illuminateSound;
-	public PlayableSound darkIlluminateSound;
+    public PlayableSound illuminateSound;
+    public PlayableSound darkIlluminateSound;
 
     private const float _maxConcentration = 270f, _maxValue = 8f;
     private const float _steepness = _maxValue / _maxConcentration;
 
-	public enum LightType
-	{
-		Default,
-		Dark,
-		None,
-	}
+    public enum LightType
+    {
+        Default,
+        Dark,
+        None,
+    }
 
     //! Called at the beginning
     public override void StartPhenotype()
     {
+        _blackLightSpotLightSpotAngle = _blackLightSpotLight.spotAngle;
         turnLightOff();
     }
 
@@ -60,9 +64,16 @@ public class PhenoLight : Phenotype
 
             float intensity = Mathf.Min(_steepness * _mol.getConcentration(), _maxValue);
 
-            _phenoLight.intensity = intensity;
-            _spotLight.intensity = intensity;
-            _blackLightSpotLight.intensity = intensity;
+
+            if (intensity != _previousIntensity)
+            {
+                _previousIntensity = intensity;
+
+                _phenoLight.intensity = intensity;
+                _spotLight.intensity = intensity;
+                _blackLightSpotLight.intensity = intensity;
+                _blackLightSpotLight.spotAngle = intensity * _blackLightSpotLightSpotAngle / _maxValue;
+            }
 
             if (null != _triggered)
             {
@@ -138,11 +149,11 @@ public class PhenoLight : Phenotype
         _isSystemTriggered = false;
         if (_phenoLight)
         {
-			if (_spotLight.enabled)
-				onLightToggle (LightType.None, true, _fluorescenceProtein == gfpProtein);
-			if (_blackLightSpotLight.enabled)
-				onLightToggle (LightType.Dark, false, _fluorescenceProtein == gfpProtein);
-			onLightToggle (LightType.Default, false, _fluorescenceProtein == gfpProtein);
+            if (_spotLight.enabled)
+                onLightToggle(LightType.None, true, _fluorescenceProtein == gfpProtein);
+            if (_blackLightSpotLight.enabled)
+                onLightToggle(LightType.Dark, false, _fluorescenceProtein == gfpProtein);
+            onLightToggle(LightType.Default, false, _fluorescenceProtein == gfpProtein);
             _phenoLight.gameObject.SetActive(false);
             _spotLight.gameObject.SetActive(false);
             _blackLightSpotLight.gameObject.SetActive(false);
@@ -156,10 +167,10 @@ public class PhenoLight : Phenotype
             _triggered.triggerStart();
             _isSystemTriggered = true;
 
-			if (!_spotLight.enabled && _blackLightSpotLight.enabled)
-				onLightToggle (LightType.Dark, true, _fluorescenceProtein == gfpProtein);
-			else
-				onLightToggle (LightType.Default, true, _fluorescenceProtein == gfpProtein);
+            if (!_spotLight.enabled && _blackLightSpotLight.enabled)
+                onLightToggle(LightType.Dark, true, _fluorescenceProtein == gfpProtein);
+            else
+                onLightToggle(LightType.Default, true, _fluorescenceProtein == gfpProtein);
 
             _phenoLight.gameObject.SetActive(true);
             _phenoLight.color = _triggered.colorTo;
