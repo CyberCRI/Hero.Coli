@@ -1,4 +1,4 @@
-#define TUTORIAL2
+#define TUTORIAL3
 
 using UnityEngine;
 using System.Collections;
@@ -647,10 +647,10 @@ public class GameStateController : MonoBehaviour
 		GameConfiguration.GameMap destination =
 			(GameConfiguration.getMode (GameConfiguration.gameMap) == GameConfiguration.GameMode.ADVENTURE) ?
                 GameConfiguration.GameMap.SANDBOX2 :
-#if !TUTORIAL2
+#if !TUTORIAL3
                 GameConfiguration.GameMap.TUTORIAL1;
 #else
-				GameConfiguration.GameMap.TUTORIAL2;
+				GameConfiguration.GameMap.TUTORIAL3;
 #endif
 
 		setAndSaveLevelName (destination, "goToOtherGameMode");
@@ -738,10 +738,10 @@ public class GameStateController : MonoBehaviour
 		// case GameConfiguration.GameMap.ADVENTURE1:
 		// case GameConfiguration.GameMap.SANDBOX1:
 		case GameConfiguration.GameMap.SANDBOX2:
-#if !TUTORIAL2
+#if !TUTORIAL3
 		case GameConfiguration.GameMap.TUTORIAL1:
 #else
-		case GameConfiguration.GameMap.TUTORIAL2:
+		case GameConfiguration.GameMap.TUTORIAL3:
 #endif
                 //saving level name into MemoryManager
                 //because GameStateController current instance will be destroyed during restart

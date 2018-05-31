@@ -1,4 +1,4 @@
-#define TUTORIAL2
+#define TUTORIAL3
 
 using UnityEngine;
 
@@ -12,7 +12,7 @@ public class PickablePlasmid : MonoBehaviour {
         {
             string modalCode = _playTutorial?"T1_PLASMID":"T2_PLASMID";
             ModalManager.setModal(modalCode);
-#if TUTORIAL2
+#if TUTORIAL3
             RedMetricsManager.get().sendEvent(TrackingEvent.HINT, new CustomData(CustomDataTag.MESSAGE, modalCode));
 #endif
             RedMetricsManager.get ().sendRichEvent(TrackingEvent.PICKUP, new CustomData(CustomDataTag.PLASMID, gameObject.name));

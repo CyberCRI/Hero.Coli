@@ -1,4 +1,4 @@
-﻿#define TUTORIAL2
+﻿#define TUTORIAL3
 
 using UnityEngine;
 using System.Collections;
@@ -54,10 +54,10 @@ public class CheckpointMainMenuItem : MainMenuItem
 
     [Tooltip("The gamemap the checkpoint is linked to.")]
     [SerializeField]
-#if !TUTORIAL2
+#if !TUTORIAL3
     private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL1;
 #else
-    private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL2;
+    private GameConfiguration.GameMap _gameMap = GameConfiguration.GameMap.TUTORIAL3;
 #endif
     /// <summary>
     /// The gamemap the checkpoint is linked to.

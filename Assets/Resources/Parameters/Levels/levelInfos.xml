@@ -20,8 +20,8 @@
     <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
     <areAllDevicesAvailable>false</areAllDevicesAvailable>
   </info>
-  <info id="tutorial2">
-    <code>Tutorial2</code>
+  <info id="tutorial3">
+    <code>Tutorial3</code>
     <areAllBioBricksAvailable>false</areAllBioBricksAvailable>
     <areAllDevicesAvailable>false</areAllDevicesAvailable>
   </info>

@@ -1,4 +1,4 @@
-﻿#define TUTORIAL2
+﻿#define TUTORIAL3
 
 using UnityEngine;
 using System;
@@ -17,10 +17,10 @@ public class GameConfiguration
     }
 
     private const string _adventureLevel1 = "World1.0";
-#if !TUTORIAL2
+#if !TUTORIAL3
     private const string _tutorial = "Tutorial1";
 #else
-    private const string _tutorial = "Tutorial2";
+    private const string _tutorial = "Tutorial3";
 #endif
     private const string _sandboxLevel1 = "Sandbox-0.1";
     private const string _sandboxLevel2 = "Sandbox-0.2";
@@ -40,10 +40,10 @@ public class GameConfiguration
         // ADVENTURE1,
         // SANDBOX1,
         SANDBOX2,
-#if !TUTORIAL2
+#if !TUTORIAL3
         TUTORIAL1,
 #else
-        TUTORIAL2,
+        TUTORIAL3,
 #endif
     }
 
@@ -81,10 +81,10 @@ public class GameConfiguration
     private EnumConfigurationParameter<RestartBehavior> _restartBehavior
         = new EnumConfigurationParameter<RestartBehavior>(RestartBehavior.MAINMENU, RestartBehavior.MAINMENU, RestartBehavior.UNINITIALIZED, _restartBehaviorKey);
     private static EnumConfigurationParameter<GameMap> _gameMap
-    #if !TUTORIAL2
+    #if !TUTORIAL3
         = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL1, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
     #else
-        = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL2, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
+        = new EnumConfigurationParameter<GameMap>(GameMap.UNINITIALIZED, GameMap.TUTORIAL3, GameMap.UNINITIALIZED, _restartBehaviorKey, onMapChanged);
     #endif
     private BoolConfigurationParameter _isAbsoluteWASD
         = new BoolConfigurationParameter(true, true, _isAbsoluteWASDKey);
@@ -346,7 +346,7 @@ public class GameConfiguration
     // public const string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
     // v1.51
     // public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");
-#if !TUTORIAL2
+#if !TUTORIAL3
     // v1.52
     public const string labelledGameVersionGUIDString = "915953b4-f9e1-41ca-acc4-4e4e90667102";
 #else
@@ -491,10 +491,10 @@ public class GameConfiguration
         switch (map)
         {
             // case GameMap.ADVENTURE1:
-#if !TUTORIAL2
+#if !TUTORIAL3
             case GameMap.TUTORIAL1:
 #else
-            case GameMap.TUTORIAL2:
+            case GameMap.TUTORIAL3:
 #endif
                 return GameMode.ADVENTURE;
             // case GameMap.SANDBOX1:
@@ -521,10 +521,10 @@ public class GameConfiguration
             //     return _sandboxLevel1;
             case GameMap.SANDBOX2:
                 return _sandboxLevel2;
-#if !TUTORIAL2
+#if !TUTORIAL3
             case GameMap.TUTORIAL1:
 #else
-            case GameMap.TUTORIAL2:
+            case GameMap.TUTORIAL3:
 #endif
                 return _tutorial;
             default:
