@@ -1,4 +1,4 @@
-# =============== #
+﻿# =============== #
 # Unity generated #
 # =============== #
 Temp/
@@ -12,6 +12,7 @@ Library/
 ExportedObj/
 *.svd
 *.userprefs
+*.vs
 *.csproj
 *.pidb
 *.suo
