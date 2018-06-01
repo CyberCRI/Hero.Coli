@@ -11,8 +11,6 @@ public class BlackLight : MonoBehaviour {
 	private Light _directionalLight;
 	private float _initialIntensity;
 
-
-
 	private Camera _camera;
 	private Color _initialBackground;
 
@@ -31,9 +29,9 @@ public class BlackLight : MonoBehaviour {
 	
 
 	private bool _shaderChanged = false;
-  private const string _blackLight = "BL.";
-  private const string _blackLightOn = _blackLight+"ON";
-  private const string _blackLightOff = _blackLight+"OFF";
+      private const string _blackLight = "BL.";
+      private const string _blackLightOn = _blackLight+"ON";
+      private const string _blackLightOff = _blackLight+"OFF";
 
 	// Use this for initialization
 	void Start () {
@@ -48,21 +46,16 @@ public class BlackLight : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-
+	void Update ()
+    {
 		lerpLight();
 		switchLight();
-
-
-	
 	}
 
 	public void createBlackLight () {
 
 		_isCreating = true;
 		_isDestroying = false;
-
 
 		//Add spotlight 
 		_spotLightBL = new GameObject();
@@ -72,13 +65,13 @@ public class BlackLight : MonoBehaviour {
 		_spotLightBL.transform.localPosition = new Vector3(0f,0.05f,0f);
 		_spotLightBL.transform.localEulerAngles = new Vector3(90f,0f,0f);
 
-		_spotLightBL.AddComponent<Light>();
+		Light light = _spotLightBL.AddComponent<Light>();
 
-		_spotLightBL.GetComponent<Light>().type = LightType.Spot;
-		_spotLightBL.GetComponent<Light>().range = _range;
-		_spotLightBL.GetComponent<Light>().spotAngle = _angle;
-		_spotLightBL.GetComponent<Light>().intensity = 0f;
-		_spotLightBL.GetComponent<Light>().color = Color.white;
+        light.type = LightType.Spot;
+        light.range = _range;
+        light.spotAngle = _angle;
+        light.intensity = 0f;
+        light.color = Color.white;
 
 		//Add backGroundSpotlight
 		 _backGroundSpotlight = new GameObject();
@@ -88,15 +81,13 @@ public class BlackLight : MonoBehaviour {
 		_backGroundSpotlight.transform.localPosition = new Vector3(0f,-0.25f,0f);
 		_backGroundSpotlight.transform.localEulerAngles = new Vector3(90f,0f,0f);
 		
-		_backGroundSpotlight.AddComponent<Light>();
-		
-		_backGroundSpotlight.GetComponent<Light>().type = LightType.Spot;
-		_backGroundSpotlight.GetComponent<Light>().range = _bkRange;
-		_backGroundSpotlight.GetComponent<Light>().spotAngle = _bkAngle;
-		_backGroundSpotlight.GetComponent<Light>().intensity = 0;
-		_backGroundSpotlight.GetComponent<Light>().color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
+		Light bgLight = _backGroundSpotlight.AddComponent<Light>();
 
-
+        bgLight.type = LightType.Spot;
+        bgLight.range = _bkRange;
+        bgLight.spotAngle = _bkAngle;
+        bgLight.intensity = 0;
+        bgLight.color = new Color32(_bkColor.r,_bkColor.g,_bkColor.b,_bkColor.a);
 	}
 
 	public void leaveBlackLight () {
@@ -105,8 +96,8 @@ public class BlackLight : MonoBehaviour {
 		_isDestroying = true;
 
 		//Destroy BackgroundSpotlight
-		Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
-
+		//Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
+		Destroy (_backGroundSpotlight);
 	}
 
 
@@ -127,12 +118,15 @@ public class BlackLight : MonoBehaviour {
 	// add lerp effect on light and color for the transition between normal light and black light
 	public void lerpLight ()
 	{
-		if(_isCreating)
+        float timeUnit = 1.5f * Time.deltaTime;
+        float doubleTimeUnit = 2 * timeUnit;
+
+        if (_isCreating)
 		{
-			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, Color.black, 3*Time.deltaTime);
-			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, 0f, 3*Time.deltaTime);
-			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, _intensity, 1.5f*Time.deltaTime);
-			_backGroundSpotlight.GetComponent<Light>().intensity = Mathf.Lerp(_backGroundSpotlight.GetComponent<Light>().intensity, _bkIntensity, 3*Time.deltaTime);
+            _camera.backgroundColor = Color.Lerp (_camera.backgroundColor, Color.black, doubleTimeUnit);
+			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, 0f, doubleTimeUnit);
+			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, _intensity, timeUnit);
+			_backGroundSpotlight.GetComponent<Light>().intensity = Mathf.Lerp(_backGroundSpotlight.GetComponent<Light>().intensity, _bkIntensity, doubleTimeUnit);
 			//when finished
 			if (_camera.backgroundColor == Color.black)
 				_isCreating = false;
@@ -140,15 +134,16 @@ public class BlackLight : MonoBehaviour {
 		
 		if(_isDestroying)
 		{
-			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, _initialBackground, 1.5f*Time.deltaTime);
-			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, _initialIntensity, 1.5f*Time.deltaTime);
-			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, 0f, 3f*Time.deltaTime);
+			_camera.backgroundColor = Color.Lerp (_camera.backgroundColor, _initialBackground, timeUnit);
+			_directionalLight.intensity = Mathf.Lerp (_directionalLight.intensity, _initialIntensity, timeUnit);
+			_spotLightBL.GetComponent<Light>().intensity = Mathf.Lerp(_spotLightBL.GetComponent<Light>().intensity, 0f, doubleTimeUnit);
 			//when finished
 			if (_camera.backgroundColor == _initialBackground)
 			{
-				Destroy(gameObject.transform.FindChild("spotLightBL").gameObject);
-				
-				_isDestroying = false;
+                //Destroy(gameObject.transform.FindChild("spotLightBL").gameObject);
+                Destroy(_backGroundSpotlight);
+
+                _isDestroying = false;
 			}
 		}
 	}
@@ -157,18 +152,14 @@ public class BlackLight : MonoBehaviour {
 	// light on/off for the black light
 	public void switchLight ()
 	{
-    if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOn, true)
-                && !isActive
-       )
+        if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOn, true)&& !isActive)
 		{
 			createBlackLight();
 			if(!_shaderChanged)
 				setDiffuseTransparentPlane();
 			isActive = true;
 		}
-    if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOff, true)
-            && isActive
-       )
+        if (GameStateController.isShortcutKeyDown(GameStateController.keyPrefix+_blackLightOff, true) && isActive)
 		{
 			leaveBlackLight();
 			isActive = false;

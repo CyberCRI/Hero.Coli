@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class AmbientLighting : MonoBehaviour
 {
-	public delegate void LightEvent(bool lightOn);
+    #region Events
+    public delegate void LightEvent(bool lightOn);
 	public static event LightEvent onLightToggle;
-	[SerializeField]
+    #endregion
+
+    [SerializeField]
 	private float _snapshotTransitionTime;
 	private bool _lowLight;
     [SerializeField]
@@ -40,7 +43,6 @@ public class AmbientLighting : MonoBehaviour
 
     SpotLight : 
     GFP Classic = _spotLight, _color[2] (105,255,118,255), 57.5, 5.3
-    
     */
 
     public void changeLightColor(Light light, Color color)
@@ -65,7 +67,6 @@ public class AmbientLighting : MonoBehaviour
         light.intensity = intensity;
     }
 
-
     ////////////Tests
 #if DEV
     void Update()
@@ -84,14 +85,19 @@ public class AmbientLighting : MonoBehaviour
         changeLightProperty(_phenoLight, _color[1], 24, 4);
         changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
         _ampicillinPulsingLight = GameObject.Find("AmpicillinPulsingLight").GetComponent<PulsingLight>();
+
         _originMaxPulse = _ampicillinPulsingLight.GetMaxIntensityValue();
         _originMinPulse = _ampicillinPulsingLight.GetMinIntensityValue();
+
         _character = Character.get();
+
 		_backgroundBloodRenderer = GameObject.FindGameObjectWithTag ("BackgroundBlood").GetComponent<Renderer> ();
 		Color color = _backgroundBloodRenderer.material.color;
 		color.a = 0;
         _backgroundBloodRenderer.material.color = color;
+
 		onLightToggle (true);
+
         _phenoLight.enabled = true;
         _spotLight.enabled = true;
         _blackLightSpotLight.enabled = false;
@@ -101,16 +107,26 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == _blackLightTag)
-        {
-            _blackLight = true;
-            _blackLightSpotLight.enabled = true;
-            _spotLight.enabled = false;
-            _originGradient = col.transform.position;
-            _limitGradient = col.transform.GetChild(0).transform.position;
-            _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
-        }
-        if (col.tag == _blackLightInverseTag)
+        //if (col.tag == _blackLightTag)
+        //{
+        //    _blackLight = true;
+        //    _blackLightSpotLight.enabled = true;
+        //    _spotLight.enabled = false;
+        //    _originGradient = col.transform.position;
+        //    _limitGradient = col.transform.GetChild(0).transform.position;
+        //    _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
+        //}
+        //if (col.tag == _blackLightInverseTag)
+        //{
+        //    _blackLight = true;
+        //    _blackLightSpotLight.enabled = true;
+        //    _spotLight.enabled = false;
+        //    _originGradient = col.transform.position;
+        //    _limitGradient = col.transform.GetChild(0).transform.position;
+        //    _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
+        //}
+
+        if (col.CompareTag(_blackLightTag) || col.CompareTag(_blackLightInverseTag))
         {
             _blackLight = true;
             _blackLightSpotLight.enabled = true;
@@ -123,58 +139,105 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == _blackLightTag)
+        //if (col.tag == _blackLightTag)
+        //{
+        //    if (transform.position.x <= col.transform.position.x)
+        //    {
+        //        _blackLight = false;
+        //        _blackLightSpotLight.enabled = false;
+        //        _spotLight.enabled = true;
+        //        changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
+        //        _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+        //        startReset();
+        //    }
+        //}
+        //if (col.tag == _blackLightInverseTag)
+        //{
+        //    if (transform.position.x >= col.transform.position.x)
+        //    {
+        //        _blackLight = false;
+        //        _blackLightSpotLight.enabled = false;
+        //        _spotLight.enabled = true;
+        //        changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
+        //        _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+        //        startReset();
+        //    }
+        //}
+
+        if ((col.CompareTag(_blackLightTag) && transform.position.x <= col.transform.position.x) || (col.CompareTag(_blackLightInverseTag) && transform.position.x >= col.transform.position.x))
         {
-            if (this.transform.position.x <= col.transform.position.x)
-            {
-                _blackLight = false;
-                _blackLightSpotLight.enabled = false;
-                _spotLight.enabled = true;
-                changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
-                _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-                startReset();
-            }
-        }
-        if (col.tag == _blackLightInverseTag)
-        {
-            if (this.transform.position.x >= col.transform.position.x)
-            {
-                _blackLight = false;
-                _blackLightSpotLight.enabled = false;
-                _spotLight.enabled = true;
-                changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
-                _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-                startReset();
-            }
+            _blackLight = false;
+            _blackLightSpotLight.enabled = false;
+            _spotLight.enabled = true;
+            changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
+            _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+            startReset();
         }
     }
 
     void OnTriggerStay(Collider col)
     {
+        // Changement a Tester
+        //if (col.CompareTag(_blackLightTag) && col.CompareTag(_blackLightInverseTag))
+        //    return;
+
+        //float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
+        //float distance = Vector3.Distance(_originGradient, transform.position);
+
+        //float intensity = col.CompareTag(_blackLightTag) ? 1 - (distance / distanceMax) : (distance / distanceMax);
+
+        //changeLightIntensity(_directionalLight, intensity);
+
+        //Color color = _backgroundRenderer.material.color;
+        //color.a = 1 - (distance / distanceMax);
+
+        //bool intensityTest = false;
+        //bool lowLightTest = false;
+
+        //if (col.CompareTag(_blackLightTag))
+        //{
+        //    intensityTest = color.a <= 0.25;
+        //    lowLightTest = !_lowLight;
+        //}
+        //else
+        //{
+        //    intensityTest = color.a >= 0.75f;
+        //    lowLightTest = _lowLight;
+        //}
+
+        //if (intensityTest && lowLightTest)
+        //{
+        //	onLightToggle (lowLightTest);
+        //	_lowLight = !lowLightTest;
+        //}
+        //_backgroundRenderer.material.color = color;
+
         if (col.tag == _blackLightTag)
         {
             float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
-            float distance = Vector3.Distance(_originGradient, this.transform.position);
+            float distance = Vector3.Distance(_originGradient, transform.position);
             changeLightIntensity(_directionalLight, 1 - (distance / distanceMax));
             Color color = _backgroundRenderer.material.color;
             color.a = 1 - (distance / distanceMax);
-			if (color.a <= 0.25 && !_lowLight) {
-				onLightToggle (false);
-				_lowLight = true;
-			}
+            if (color.a <= 0.25 && !_lowLight)
+            {
+                onLightToggle(false);
+                _lowLight = true;
+            }
             _backgroundRenderer.material.color = color;
         }
-        if (col.tag == _blackLightInverseTag)
+        else if (col.tag == _blackLightInverseTag)
         {
             float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
-            float distance = Vector3.Distance(_originGradient, this.transform.position);
+            float distance = Vector3.Distance(_originGradient, transform.position);
             changeLightIntensity(_directionalLight, distance / distanceMax);
             Color color = _backgroundRenderer.material.color;
             color.a = distance / distanceMax;
-			if (color.a >= 0.75f && _lowLight) {
-				onLightToggle (true);
-				_lowLight = false;
-			}
+            if (color.a >= 0.75f && _lowLight)
+            {
+                onLightToggle(true);
+                _lowLight = false;
+            }
             _backgroundRenderer.material.color = color;
         }
     }
