@@ -10,26 +10,45 @@ public class AmbientLighting : MonoBehaviour
 
     [SerializeField]
 	private float _snapshotTransitionTime;
+
 	private bool _lowLight;
+
     [SerializeField]
     private Light _directionalLight;
+
     [SerializeField]
     private Light _phenoLight, _spotLight, _blackLightSpotLight;
+
     [SerializeField]
     private Color[] _color;
+
     [SerializeField]
     private Renderer _backgroundRenderer;
+
     private Renderer _backgroundBloodRenderer;
+
     [SerializeField]
     private LightingSave _lightingSave;
+
     private float _originalDirectionalIntensity;
     private float _originalSpotLightIntensity;
     private float _originalPhenoLightIntensity;
     private PulsingLight _ampicillinPulsingLight;
     private float _originMaxPulse;
     private float _originMinPulse;
+
     private Vector3 _originGradient;
     private Vector3 _limitGradient;
+
+    private Vector3 entryPoint;
+    private Vector3 exitPoint;
+
+    private float entryIntensity = 1f;
+    private float exitIntensity = 0.1f;
+
+    private float entryRatio = 0f;
+    private float exitRatio = 0f;
+
     private Character _character;
     private bool _blackLight = false;
     private const string _blackLightTag = "BlackLight", _blackLightInverseTag = "BlackLightInverse";
@@ -82,8 +101,12 @@ public class AmbientLighting : MonoBehaviour
     void Start()
     {
         _originalDirectionalIntensity = _directionalLight.intensity;
+
+        entryIntensity = _originalDirectionalIntensity;
+
         changeLightProperty(_phenoLight, _color[1], 24, 4);
         changeLightProperty(_spotLight, _color[1], 57.5f, 5.3f);
+
         _ampicillinPulsingLight = GameObject.Find("AmpicillinPulsingLight").GetComponent<PulsingLight>();
 
         _originMaxPulse = _ampicillinPulsingLight.GetMaxIntensityValue();
@@ -107,133 +130,69 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        //if (col.tag == _blackLightTag)
-        //{
-        //    _blackLight = true;
-        //    _blackLightSpotLight.enabled = true;
-        //    _spotLight.enabled = false;
-        //    _originGradient = col.transform.position;
-        //    _limitGradient = col.transform.GetChild(0).transform.position;
-        //    _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
-        //}
-        //if (col.tag == _blackLightInverseTag)
-        //{
-        //    _blackLight = true;
-        //    _blackLightSpotLight.enabled = true;
-        //    _spotLight.enabled = false;
-        //    _originGradient = col.transform.position;
-        //    _limitGradient = col.transform.GetChild(0).transform.position;
-        //    _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
-        //}
-
         if (col.CompareTag(_blackLightTag) || col.CompareTag(_blackLightInverseTag))
         {
             _blackLight = true;
             _blackLightSpotLight.enabled = true;
             _spotLight.enabled = false;
             _originGradient = col.transform.position;
-            _limitGradient = col.transform.GetChild(0).transform.position;
+
+            entryPoint = col.transform.Find("Entry").transform.position;
+            exitPoint = col.transform.Find("Exit").transform.position;
+
             _ampicillinPulsingLight.TweekRangeIntensity(0, 0.01f);
         }
     }
 
     void OnTriggerExit(Collider col)
     {
-        //if (col.tag == _blackLightTag)
-        //{
-        //    if (transform.position.x <= col.transform.position.x)
-        //    {
-        //        _blackLight = false;
-        //        _blackLightSpotLight.enabled = false;
-        //        _spotLight.enabled = true;
-        //        changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
-        //        _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-        //        startReset();
-        //    }
-        //}
-        //if (col.tag == _blackLightInverseTag)
-        //{
-        //    if (transform.position.x >= col.transform.position.x)
-        //    {
-        //        _blackLight = false;
-        //        _blackLightSpotLight.enabled = false;
-        //        _spotLight.enabled = true;
-        //        changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
-        //        _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-        //        startReset();
-        //    }
-        //}
+        // BESOIN DE TESTER SI SORTIE PAR ENTREE OU SORTIE
 
-        if ((col.CompareTag(_blackLightTag) && transform.position.x <= col.transform.position.x) || (col.CompareTag(_blackLightInverseTag) && transform.position.x >= col.transform.position.x))
-        {
-            _blackLight = false;
-            _blackLightSpotLight.enabled = false;
-            _spotLight.enabled = true;
-            changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
-            _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
-            startReset();
-        }
+        //if (col.CompareTag(_blackLightTag) || col.CompareTag(_blackLightInverseTag))
+        //{
+        //    _blackLight = false;
+        //    _blackLightSpotLight.enabled = false;
+        //    _spotLight.enabled = true;
+        //    changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
+        //    _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
+        //    startReset();
+        //}
     }
 
     void OnTriggerStay(Collider col)
     {
-        // Changement a Tester
-        //if (col.CompareTag(_blackLightTag) && col.CompareTag(_blackLightInverseTag))
-        //    return;
+        bool isBlackLight = col.CompareTag(_blackLightTag);
+        bool isBlackLightInverse = col.CompareTag(_blackLightInverseTag);
 
-        //float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
-        //float distance = Vector3.Distance(_originGradient, transform.position);
-
-        //float intensity = col.CompareTag(_blackLightTag) ? 1 - (distance / distanceMax) : (distance / distanceMax);
-
-        //changeLightIntensity(_directionalLight, intensity);
-
-        //Color color = _backgroundRenderer.material.color;
-        //color.a = 1 - (distance / distanceMax);
-
-        //bool intensityTest = false;
-        //bool lowLightTest = false;
-
-        //if (col.CompareTag(_blackLightTag))
-        //{
-        //    intensityTest = color.a <= 0.25;
-        //    lowLightTest = !_lowLight;
-        //}
-        //else
-        //{
-        //    intensityTest = color.a >= 0.75f;
-        //    lowLightTest = _lowLight;
-        //}
-
-        //if (intensityTest && lowLightTest)
-        //{
-        //	onLightToggle (lowLightTest);
-        //	_lowLight = !lowLightTest;
-        //}
-        //_backgroundRenderer.material.color = color;
-
-        if (col.tag == _blackLightTag)
+        if (isBlackLight || isBlackLightInverse)
         {
-            float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
-            float distance = Vector3.Distance(_originGradient, transform.position);
-            changeLightIntensity(_directionalLight, 1 - (distance / distanceMax));
+            Vector3 entryToPlayerVector = transform.position - entryPoint;
+
+            float entryExitDistance = Vector3.Distance(entryPoint, exitPoint);
+
+            Debug.Log("EnEx" + entryExitDistance);
+
+            Vector3 entryToExitVector = (exitPoint - entryPoint).normalized;
+
+            Vector3 PlayerPosInExitEnterLine = Vector3.Project(entryToPlayerVector, entryToExitVector);
+
+            float entryPlayerDistance = PlayerPosInExitEnterLine.magnitude;
+            Debug.Log("EnP' " + entryPlayerDistance);
+            exitRatio = entryPlayerDistance / entryExitDistance;
+            entryRatio = 1 - exitRatio;
+
+            float lightIntensity = entryRatio * entryIntensity + exitRatio * exitIntensity;
+            changeLightIntensity(_directionalLight, lightIntensity);
+
             Color color = _backgroundRenderer.material.color;
-            color.a = 1 - (distance / distanceMax);
-            if (color.a <= 0.25 && !_lowLight)
+            color.a = lightIntensity;
+
+            if (isBlackLight && color.a <= 0.25f && !_lowLight)
             {
                 onLightToggle(false);
                 _lowLight = true;
             }
-            _backgroundRenderer.material.color = color;
-        }
-        else if (col.tag == _blackLightInverseTag)
-        {
-            float distanceMax = Vector3.Distance(_originGradient, _limitGradient);
-            float distance = Vector3.Distance(_originGradient, transform.position);
-            changeLightIntensity(_directionalLight, distance / distanceMax);
-            Color color = _backgroundRenderer.material.color;
-            color.a = distance / distanceMax;
-            if (color.a >= 0.75f && _lowLight)
+            else if (isBlackLightInverse && color.a >= 0.75f && _lowLight)
             {
                 onLightToggle(true);
                 _lowLight = false;

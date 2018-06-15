@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BlackLight : MonoBehaviour {
-
+[System.Obsolete("Obsolete BlackLight")]
+public class BlackLight : MonoBehaviour
+{
+    // NOT USED ANYMORE
 
 	public bool isActive = false;
 	private bool _isCreating = false;			//used for the lerp during the creation of the black light
@@ -26,12 +28,12 @@ public class BlackLight : MonoBehaviour {
 	private float _bkAngle = 125f;
 	private float _bkIntensity = 2.5f;
 	private Color32 _bkColor = new Color32(55,65,172,255);
-	
 
 	private bool _shaderChanged = false;
-      private const string _blackLight = "BL.";
-      private const string _blackLightOn = _blackLight+"ON";
-      private const string _blackLightOff = _blackLight+"OFF";
+
+    private const string _blackLight = "BL.";
+    private const string _blackLightOn = _blackLight+"ON";
+    private const string _blackLightOff = _blackLight+"OFF";
 
 	// Use this for initialization
 	void Start () {
@@ -96,7 +98,7 @@ public class BlackLight : MonoBehaviour {
 		_isDestroying = true;
 
 		//Destroy BackgroundSpotlight
-		//Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
+		//old : Destroy (gameObject.transform.FindChild("backGroundSpotlight").gameObject);
 		Destroy (_backGroundSpotlight);
 	}
 
@@ -147,7 +149,6 @@ public class BlackLight : MonoBehaviour {
 			}
 		}
 	}
-
 
 	// light on/off for the black light
 	public void switchLight ()
