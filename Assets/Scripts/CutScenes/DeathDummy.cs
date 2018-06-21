@@ -75,12 +75,12 @@ public class DeathDummy : MonoBehaviour {
         //TODO find most robust method
         //GameObject body = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(). .transform.FindChild("body_perso");
         //GameObject body = gameObject.transform.FindChild("body_perso").gameObject;
-        GameObject body = toFade.transform.FindChild("dummy_body_perso").gameObject;
+        GameObject body = toFade.transform.Find("dummy_body_perso").gameObject;
         if (null != body)
         {
             iTween.FadeTo(body, fadeOptions);
         }
-        GameObject dna = toFade.transform.FindChild("dummy_dna_perso").gameObject;
+        GameObject dna = toFade.transform.Find("dummy_dna_perso").gameObject;
         if (null != dna)
         {
             iTween.FadeTo(dna, fadeOptions);
@@ -140,7 +140,7 @@ public class DeathDummy : MonoBehaviour {
 
     private void enableEyes(bool enable)
     {
-        foreach (MeshRenderer mr in transform.FindChild("dummy_FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
+        foreach (MeshRenderer mr in transform.Find("dummy_FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
         {
             mr.enabled = enable;
         }

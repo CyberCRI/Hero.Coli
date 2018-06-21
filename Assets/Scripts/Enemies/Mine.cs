@@ -60,17 +60,17 @@ public class Mine : ResettableMine
         detect();
 
         //Start the red light of the mine
-        if (transform.FindChild("Point light"))
+        if (transform.Find("Point light"))
         {
-            if (_isNear && !transform.FindChild("Point light").GetComponent<TriggeredLight>().isStarting)
+            if (_isNear && !transform.Find("Point light").GetComponent<TriggeredLight>().isStarting)
             {
-                transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerStart();
+                transform.Find("Point light").GetComponent<TriggeredLight>().triggerStart();
             }
 
             //end the red light of the mine
-            else if (!_isNear && transform.FindChild("Point light").GetComponent<TriggeredLight>().isStarting)
+            else if (!_isNear && transform.Find("Point light").GetComponent<TriggeredLight>().isStarting)
             {
-                transform.FindChild("Point light").GetComponent<TriggeredLight>().triggerExit();
+                transform.Find("Point light").GetComponent<TriggeredLight>().triggerExit();
             }
         }
     }
@@ -119,7 +119,7 @@ public class Mine : ResettableMine
     {
         if (_detonated)
         {
-            iTween.Stop(transform.FindChild("Point light").gameObject);
+            iTween.Stop(transform.Find("Point light").gameObject);
         }
     }
 }

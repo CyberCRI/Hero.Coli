@@ -584,7 +584,7 @@ public class Character : CellAnimator
 
     private void enableEyes(bool enable)
     {
-        foreach (MeshRenderer mr in transform.FindChild("FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
+        foreach (MeshRenderer mr in transform.Find("FBX_eyePlayer").GetComponentsInChildren<MeshRenderer>())
         {
             mr.enabled = enable;
         }

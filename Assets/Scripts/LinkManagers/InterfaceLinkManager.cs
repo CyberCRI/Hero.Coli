@@ -191,36 +191,36 @@ public class InterfaceLinkManager : LinkManager
 
         //CraftZoneManager
         craftZoneManager.craftFinalizer = craftFinalizer;
-        craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.FindChild("TopPanel").transform.FindChild("CraftSlotsPanel").gameObject;
+        craftZoneManager.assemblyZonePanel = craftScreenPanel.transform.Find("TopPanel").transform.Find("CraftSlotsPanel").gameObject;
         craftZoneManager.slotsGrid = craftSlotsGrid;
 
         //DevicesDisplayer
-        devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("DevicesPanel").GetComponent<UIPanel>();
+        devicesDisplayer.listedInventoryPanel = craftScreenPanel.transform.Find("BottomPanel").transform.Find("DevicesPanel").GetComponent<UIPanel>();
         devicesDisplayer.listedDevicesGrid = GameObject.Find("ListedDevicesGrid").transform;
         devicesDisplayer.graphMoleculeList = graphMoleculeList;
 
         //InfoWindowManager
         infoWindowManager.infoPanel = genericInfoWindow;
-        infoWindowManager.titleLabel = genericInfoWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
-        infoWindowManager.subtitleLabel = genericInfoWindow.transform.FindChild("SubtitleLabel").GetComponent<UILocalize>();
-        infoWindowManager.explanationLabel = genericInfoWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
-        infoWindowManager.bottomLabel = genericInfoWindow.transform.FindChild("BottomLabel").GetComponent<UILocalize>();
-        infoWindowManager.infoSprite = genericInfoWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>();
+        infoWindowManager.titleLabel = genericInfoWindow.transform.Find("TitleLabel").GetComponent<UILocalize>();
+        infoWindowManager.subtitleLabel = genericInfoWindow.transform.Find("SubtitleLabel").GetComponent<UILocalize>();
+        infoWindowManager.explanationLabel = genericInfoWindow.transform.Find("ExplanationLabel").GetComponent<UILocalize>();
+        infoWindowManager.bottomLabel = genericInfoWindow.transform.Find("BottomLabel").GetComponent<UILocalize>();
+        infoWindowManager.infoSprite = genericInfoWindow.transform.Find("InfoSprite").GetComponent<UISprite>();
 
         //ModalManager
         modalManager.modalBackground = modalBackground;
         modalManager.genericModalWindow = genericModalWindow;
-        modalManager.titleLabel = genericModalWindow.transform.FindChild("TitleLabel").GetComponent<UILocalize>();
-        modalManager.explanationLabel = genericModalWindow.transform.FindChild("ExplanationLabel").GetComponent<UILocalize>();
-        modalManager.setInfoSprite(genericModalWindow.transform.FindChild("InfoSprite").GetComponent<UISprite>());
-        modalManager.genericValidateButton = genericModalWindow.transform.FindChild("ValidateButton").gameObject;
-        modalManager.genericCenteredValidateButton = genericModalWindow.transform.FindChild("CenteredValidateButton").gameObject;
-        modalManager.genericCancelButton = genericModalWindow.transform.FindChild("CancelButton").gameObject;
+        modalManager.titleLabel = genericModalWindow.transform.Find("TitleLabel").GetComponent<UILocalize>();
+        modalManager.explanationLabel = genericModalWindow.transform.Find("ExplanationLabel").GetComponent<UILocalize>();
+        modalManager.setInfoSprite(genericModalWindow.transform.Find("InfoSprite").GetComponent<UISprite>());
+        modalManager.genericValidateButton = genericModalWindow.transform.Find("ValidateButton").gameObject;
+        modalManager.genericCenteredValidateButton = genericModalWindow.transform.Find("CenteredValidateButton").gameObject;
+        modalManager.genericCancelButton = genericModalWindow.transform.Find("CancelButton").gameObject;
 
         //BiobrickInventory
 
         //AvailableBioBricksManager.get().bioBricksPanel = GameObject.Find("BiobricksPanel");
-        availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.FindChild("BottomPanel").transform.FindChild("BiobricksPanel").gameObject;
+        availableBioBricksManager.bioBricksPanel = craftScreenPanel.transform.Find("BottomPanel").transform.Find("BiobricksPanel").gameObject;
         availableBioBricksManager.promoterBrickCategoryGrid = GameObject.Find("PromoterBrickCategoryGrid").transform;
         availableBioBricksManager.rbsBrickCategoryGrid = GameObject.Find("RBSBrickCategoryGrid").transform;
         availableBioBricksManager.geneBrickCategoryGrid = GameObject.Find("CodingSequenceBrickCategoryGrid").transform;
