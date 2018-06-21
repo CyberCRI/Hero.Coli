@@ -86,20 +86,13 @@ public class ResolutionScript : MonoBehaviour
 		// this.GetComponent<Camera>().aspect = 16f / 9f;
 		// Screen.SetResolution(1024, 640, true);
 		Screen.SetResolution(1200, 750, true);
-		this.GetComponent<Camera>().aspect = 16f / 10f;
+		thisCamera.aspect = 16f / 10f;
 
 #elif UNITY_WEBGL && !UNITY_EDITOR
         Screen.SetResolution(Screen.width, Screen.height, false);
-
 #else
         Screen.SetResolution(1920, 1080, true);
-        this.GetComponent<Camera>().aspect = 16f / 9f;
+        thisCamera.aspect = 16f / 9f;
 #endif
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

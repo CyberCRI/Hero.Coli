@@ -3,13 +3,12 @@ using System.Collections;
 
 public class BoundCamera : MonoBehaviour
 {
-
 	public static BoundCamera instance = null;
 	Transform _target;
 	public Transform target {
 		get {
 			if (_target == null) {
-				var character = GameObject.FindGameObjectWithTag (Character.playerTag);
+				var character = GameObject.FindGameObjectWithTag(Character.playerTag);
 				if (character != null)
 					_target = character.transform;
 			}
