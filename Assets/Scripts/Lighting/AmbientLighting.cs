@@ -146,14 +146,16 @@ public class AmbientLighting : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        // BESOIN DE TESTER SI SORTIE PAR ENTREE OU SORTIE
-
         //if (col.CompareTag(_blackLightTag) || col.CompareTag(_blackLightInverseTag))
         //{
+        //    Color color = _backgroundRenderer.material.color;
+
+        //    float lightIntensity = 1 - Mathf.Round(color.a);
+        //    changeLightIntensity(_directionalLight, lightIntensity);
+
         //    _blackLight = false;
         //    _blackLightSpotLight.enabled = false;
         //    _spotLight.enabled = true;
-        //    changeLightIntensity(_directionalLight, _originalDirectionalIntensity);
         //    _ampicillinPulsingLight.TweekRangeIntensity(_originMinPulse, _originMaxPulse);
         //    startReset();
         //}
@@ -170,15 +172,12 @@ public class AmbientLighting : MonoBehaviour
 
             float entryExitDistance = Vector3.Distance(entryPoint, exitPoint);
 
-            Debug.Log("EnEx" + entryExitDistance);
-
             Vector3 entryToExitVector = (exitPoint - entryPoint).normalized;
 
             Vector3 PlayerPosInExitEnterLine = Vector3.Project(entryToPlayerVector, entryToExitVector);
 
             float entryPlayerDistance = PlayerPosInExitEnterLine.magnitude;
-            Debug.Log("EnP' " + entryPlayerDistance);
-            exitRatio = entryPlayerDistance / entryExitDistance;
+            exitRatio = Mathf.Clamp01(entryPlayerDistance / entryExitDistance);
             entryRatio = 1 - exitRatio;
 
             float lightIntensity = entryRatio * entryIntensity + exitRatio * exitIntensity;

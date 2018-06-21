@@ -66,7 +66,8 @@ public class BoundCamera : MonoBehaviour
 
 	void Start()
 	{
-		if (useScenePosition) {
+		if (useScenePosition)
+        {
 			offset = new Vector3 (0, transform.position.y, 0);
 			_originalOffset = offset;
 		}
