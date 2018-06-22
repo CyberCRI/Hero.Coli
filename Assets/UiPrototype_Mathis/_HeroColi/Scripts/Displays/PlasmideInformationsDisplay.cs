@@ -72,7 +72,7 @@ namespace UIProto.Display
             {
                 BricksInformationsDisplay informationDisplay = GetBricksDisplay(brick.type);
 
-                if (brick != null)
+                if (brick.State == DataState.Empty)
                     informationDisplay.gameObject.SetActive(false);
                 else
                 {
@@ -80,10 +80,6 @@ namespace UIProto.Display
                     informationDisplay.BrickName = brick.name;
                     informationDisplay.Informations = brick.Description;
                 }
-            }
-            else
-            {
-                //Afficher placeholders
             }
         }
 

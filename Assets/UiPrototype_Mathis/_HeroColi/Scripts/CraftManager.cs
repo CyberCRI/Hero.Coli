@@ -47,6 +47,8 @@ namespace UIProto.Manager
             {
                 if (value >= minPlasmidesNumber && value <= maxPlasmidesNumber)
                     _plasmideNumber = value;
+                else
+                    throw new Exception("Trying to set a PlasmidesNumber value off-limit");
 
                 CreateDeviceSockets();
             }
