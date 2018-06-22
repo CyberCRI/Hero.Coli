@@ -30,7 +30,8 @@ namespace UIProto.Scriptable
 
         public override void GenerateDescriptionElements()
         {
-            _brickDescription = "A promoter which work in " + _activationMedium.ToString().ToLower() + " environment with an efficacity of " + _efficacity + ".";
+            _brickDescription = 
+            "A promoter which work in " + _activationMedium.ToString().ToLower() + " environment with an efficacity of " + _efficacity + ".";
 
             _deviceDescriptionPart = "in " + _activationMedium.ToString().ToLower() + " environment";
         }
@@ -45,7 +46,7 @@ namespace UIProto.Scriptable
 
         protected override bool CheckState()
         {
-            if (base.CheckState() && _efficacity != 0)
+            if (base.CheckState() && _efficacity != 0 && _activationMedium == PromoterMedium.NONE)
                 return true;
             else
                 return false;

@@ -111,7 +111,7 @@ namespace UIProto.Display
                         display.Image = image;
                 }
                 else
-                    display.Image = brick.symbole;
+                    display.Image = brick.symbol;
             }
         }
 

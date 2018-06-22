@@ -1,5 +1,6 @@
 ﻿using UIProto.Scriptable.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UIProto.Scriptable
 {
@@ -20,7 +21,8 @@ namespace UIProto.Scriptable
             }
         }
 
-        [SerializeField] public Sprite symbole;
+        [FormerlySerializedAs("symbole")]
+        [SerializeField] public Sprite symbol;
         [SerializeField] private new string name;
         public string Name
         {
@@ -42,13 +44,25 @@ namespace UIProto.Scriptable
         protected string _brickDescription;
         public string Description
         {
-            get { return _brickDescription; }
+            get
+            {
+                if (_brickDescription == "")
+                    GenerateDescriptionElements();
+
+                return _brickDescription;
+            }
         }
 
         protected string _deviceDescriptionPart;
         public string DeviceDescriptionPart
         {
-            get { return _deviceDescriptionPart; }
+            get
+            {
+                if (_deviceDescriptionPart == "")
+                    GenerateDescriptionElements();
+
+                return _deviceDescriptionPart;
+            }
         }
 
         virtual public void GenerateDescriptionElements ()
@@ -58,7 +72,7 @@ namespace UIProto.Scriptable
 
         virtual protected void CleanBrickProperties()
         {
-            symbole = null;
+            symbol = null;
             name = "";
         }
         
