@@ -39,8 +39,7 @@ namespace UIProto.Manager
                 return _instance;
             }
         }
-
-        [Header("Main Properties")]
+        
         private int _plasmideNumber;
         public int PlasmidesNumber
         {
@@ -53,6 +52,7 @@ namespace UIProto.Manager
             }
         }
 
+        [Header("Main Properties")]
         [SerializeField] private int minPlasmidesNumber = 1;
         [SerializeField] private int maxPlasmidesNumber = 3;
 
@@ -95,8 +95,8 @@ namespace UIProto.Manager
 
         [SerializeField] private ToggleGroup toggleGroup;
 
-        private Scriptable.DisplayDevice _focus;
-        public Scriptable.DisplayDevice Focus
+        private DisplayDevice _focus;
+        public DisplayDevice Focus
         {
             set
             {
@@ -111,10 +111,6 @@ namespace UIProto.Manager
                 previousPlasmideIndex = focusedPlasmideIndex - 1 < minPlasmidesIndex ? maxPlasmidesIndex : focusedPlasmideIndex - 1;
 
                 plasmideInformationsDisplay.Device = _focus;
-
-                //Debug.Log("Focus : " + _focus.craftManagerIndex);
-                //Debug.Log("Next : " + nextPlasmideIndex);
-                //Debug.Log("Previous : " + previousPlasmideIndex);
             }
         }
         
@@ -194,16 +190,11 @@ namespace UIProto.Manager
         #endregion
 
         #region Device Methods
-
         void CreateDeviceSockets()
         {
-            int startI = _craftingDevices.Count;
-
-            for (int i = startI; i < _plasmideNumber; i++)
+            for (int i = _craftingDevices.Count; i < _plasmideNumber; i++)
             {
                 DisplayDevice newDevice = new DisplayDevice();
-
-                newDevice.Initialyze();
 
                 _craftingDevices.Add(newDevice);
 
@@ -214,7 +205,7 @@ namespace UIProto.Manager
             }  
         }
 
-        public bool CompareWithStoredDevices(DisplayDevice deviceToCompare)
+        public DeviceDisplayData CompareWithStoredDevices(DisplayDevice deviceToCompare)
         {
             for (int i = 0; i < storedDevices.Count; i++)
             {
@@ -230,10 +221,10 @@ namespace UIProto.Manager
                    lDeviceData.terminator == deviceToCompare.Terminator;
 
                 if (identicalPromoter && identicalRBS && identicalCodingSequence && identicalTerminator)
-                    return true;
+                    return lDeviceData;
             }
 
-            return false;
+            return null;
         }
 
         public DeviceDisplayData GetDevice(string id)
@@ -268,12 +259,7 @@ namespace UIProto.Manager
         #endregion
 
         #region Bricks Methods
-        public void SetBrickToDevice (Scriptable.DisplayDevice device, BricksData brick)
-        {
-            device.SetBrick(brick.type, brick);
-        }
-
-        public List<CraftingBricks> GetCraftingBricks(Scriptable.DisplayDevice device)
+        public List<CraftingBricks> GetCraftingBricks(DisplayDevice device)
         {
             List<CraftingBricks> bricks = new List<CraftingBricks>();
 
@@ -292,7 +278,7 @@ namespace UIProto.Manager
                     if (dev == device && dev.GetBrick(type) == data.Brick)
                         return data;
 
-            throw new Exception("No Crafting Bricks found with those parameters");
+            throw new Exception("No Crafting Brick found in this device with this type : " + type);
         }
         #endregion
 

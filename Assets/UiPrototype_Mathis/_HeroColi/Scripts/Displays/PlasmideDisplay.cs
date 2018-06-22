@@ -79,12 +79,12 @@ namespace UIProto.Display
         #region Events Methods
         private void Device_OnBrickChange(BricksData brick)
         {
-            if (_device != null && brick != null)
+            if (brick != null)
             {
                 BricksDisplay display = GetBricksDisplay(brick.type);
 
                 if (brick.State == DataState.Empty)
-                { 
+                {
                     Sprite image;
 
                     switch (brick.type)
@@ -110,11 +110,6 @@ namespace UIProto.Display
                 else
                     display.Image = brick.symbole;
             }
-            else
-            {
-                // Afficher placeholders nul
-            }
-            
         }
 
         private void Device_OnDeviceCompleted()

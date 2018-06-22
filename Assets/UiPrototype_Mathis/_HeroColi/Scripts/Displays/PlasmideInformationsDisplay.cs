@@ -68,24 +68,23 @@ namespace UIProto.Display
         #region Events Methods
         private void Device_OnBrickChange(BricksData brick)
         {
-            if (_device != null && brick != null)
+            if (_device != null)
             {
-                BricksInformationsDisplay display = GetBricksDisplay(brick.type);
+                BricksInformationsDisplay informationDisplay = GetBricksDisplay(brick.type);
 
-                if (brick.State == DataState.Empty)
-                    display.gameObject.SetActive(false);
+                if (brick != null)
+                    informationDisplay.gameObject.SetActive(false);
                 else
                 {
-                    display.gameObject.SetActive(true);
-                    display.BrickName = brick.name;
-                    display.Informations = brick.Description;
+                    informationDisplay.gameObject.SetActive(true);
+                    informationDisplay.BrickName = brick.name;
+                    informationDisplay.Informations = brick.Description;
                 }
             }
             else
             {
                 //Afficher placeholders
             }
-            
         }
 
         private void Device_OnDeviceCompleted()

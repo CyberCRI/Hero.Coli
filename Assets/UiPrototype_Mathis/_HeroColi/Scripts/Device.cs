@@ -13,7 +13,7 @@ namespace UIProto.Scriptable
         public delegate void OnDeviceCompletedEventHandler();
         public OnDeviceCompletedEventHandler OnDeviceCompleted;
 
-        public delegate bool CompareWithStoredDeviceEventHandler(DisplayDevice deviceToCompare);
+        public delegate DeviceDisplayData CompareWithStoredDeviceEventHandler(DisplayDevice deviceToCompare);
         public CompareWithStoredDeviceEventHandler OnCompareWithStoredDevice;
 
         public delegate void OnStoreNewDeviceEventHandler(DeviceDisplayData creationData);
@@ -101,10 +101,10 @@ namespace UIProto.Scriptable
         #region Device Methods
         private void CheckDeviceState ()
         {
-            bool promoterEmpty = _promoter == null || _promoter.State == DataState.Empty;
-            bool RBSEmpty = _RBS == null || _RBS.State == DataState.Empty;
-            bool codingSequenceEmpty = _codingSequence == null || _codingSequence.State == DataState.Empty;
-            bool terminatorEmpty = _terminator == null || _terminator.State == DataState.Empty;
+            bool promoterEmpty = _promoter == null;
+            bool RBSEmpty = _RBS == null;
+            bool codingSequenceEmpty = _codingSequence == null;
+            bool terminatorEmpty = _terminator == null;
 
             if (promoterEmpty && RBSEmpty && codingSequenceEmpty && terminatorEmpty)
                 _state = DeviceState.Empty;
@@ -112,8 +112,8 @@ namespace UIProto.Scriptable
             {
                 if (!promoterEmpty && !RBSEmpty && !codingSequenceEmpty && !terminatorEmpty)
                 {
+                    DeviceDisplayData comparisonResult = null;
                     DeviceDisplayData data = null;
-                    bool comparisonResult = false;
 
                     if (OnCompareWithStoredDevice != null)
                         comparisonResult = OnCompareWithStoredDevice(this);
@@ -123,12 +123,14 @@ namespace UIProto.Scriptable
                     if (comparisonResult)
                     {
                         // FEEDBACK : device already in datebase
+
+                        data = comparisonResult;
                     }
                     else
                     {
-                        data = GetData();
-
                         Finalyze();
+
+                        data = GetData();
 
                         if (OnStoreNewDevice != null)
                             OnStoreNewDevice(data);
