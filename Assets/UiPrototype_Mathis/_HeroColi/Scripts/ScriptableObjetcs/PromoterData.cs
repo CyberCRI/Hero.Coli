@@ -12,10 +12,6 @@ namespace UIProto.Scriptable
         public PromoterMedium ActivationMedium
         {
             get { return _activationMedium; }
-            private set
-            {
-                _activationMedium = value;
-            }
         }
         [SerializeField][Range(0f, 1f)] private float _efficacity;
         public float Efficacity
@@ -27,6 +23,8 @@ namespace UIProto.Scriptable
                     _efficacity = value;
                 else
                     throw new System.Exception("Trying to set Promoter Efficacity with a wrong value");
+
+                _state = CheckState() ? DataState.Filled : DataState.Empty;
             }
         }
 
@@ -39,8 +37,18 @@ namespace UIProto.Scriptable
 
         protected override void CleanBrickProperties()
         {
+            base.CleanBrickProperties();
+
             _efficacity = 0;
             _activationMedium = PromoterMedium.NONE;
+        }
+
+        protected override bool CheckState()
+        {
+            if (base.CheckState() && _efficacity != 0)
+                return true;
+            else
+                return false;
         }
     }
 }

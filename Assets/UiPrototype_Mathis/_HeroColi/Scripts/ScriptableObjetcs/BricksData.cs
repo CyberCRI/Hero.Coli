@@ -7,7 +7,7 @@ namespace UIProto.Scriptable
     public class BricksData : ScriptableObject
     {
         [Header("Main Properties")]
-        protected DataState _state = DataState.Empty;
+        [SerializeField] protected DataState _state = DataState.Empty;
         public DataState State
         {
             get { return _state; }
@@ -21,11 +21,21 @@ namespace UIProto.Scriptable
         }
 
         [SerializeField] public Sprite symbole;
-        [SerializeField] public new string name;
+        [SerializeField] private new string name;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+
+                _state = CheckState() ? DataState.Filled : DataState.Empty;
+            }
+        }
 
         [SerializeField] public BricksType type;
 
-        [SerializeField] public DisplayDevice deviceContainingThis;
+        [HideInInspector] public DisplayDevice deviceContainingThis;
 
         [Space(10)]
 
@@ -48,7 +58,16 @@ namespace UIProto.Scriptable
 
         virtual protected void CleanBrickProperties()
         {
-            
+            symbole = null;
+            name = "";
+        }
+        
+        virtual protected bool CheckState ()
+        {
+            if (name != null && name != "")
+                return true;
+
+            return false;
         }
     }
 }

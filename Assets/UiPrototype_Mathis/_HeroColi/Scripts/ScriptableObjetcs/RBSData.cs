@@ -15,15 +15,25 @@ namespace UIProto.Scriptable
     public class RBSData : BricksData
     {
         [Header("RBS Properties")]
-        [SerializeField] public float expressionLevel;
+        [SerializeField] private float _expressionLevel;
+        public float ExpressionLevel
+        {
+            get { return _expressionLevel; }
+            set
+            {
+                _expressionLevel = value;
+
+                _state = CheckState() ? DataState.Filled : DataState.Empty;
+            }
+        }
 
         [SerializeField] public List<RBSAdjective> rbsAdjective = new List<RBSAdjective>();
 
         public override void GenerateDescriptionElements()
         {
-            expressionLevel = Mathf.Clamp(expressionLevel, 0, 100);
+            ExpressionLevel = Mathf.Clamp(_expressionLevel, 0, 100);
 
-            _brickDescription = "A RBS with an expression level of " + expressionLevel.ToString() + "%";
+            _brickDescription = "A RBS with an expression level of " + _expressionLevel.ToString() + "%";
         }
 
         public string GetDescriptionPart (DeviceAction action)
@@ -39,7 +49,17 @@ namespace UIProto.Scriptable
 
         protected override void CleanBrickProperties()
         {
-            expressionLevel = 0;
+            base.CleanBrickProperties();
+
+            _expressionLevel = 0;
+        }
+
+        protected override bool CheckState()
+        {
+            if (base.CheckState() && _expressionLevel != 0)
+                return true;
+            else
+                return false;
         }
     }
 }

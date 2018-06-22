@@ -30,9 +30,9 @@ namespace UIProto.Scriptable.CodingSequences
 
         public override void GenerateDescriptionElements()
         {
-            _brickDescription = "A CodingSequence which allow your bacterium to " + actionVerb.ToString().ToLower() + " " + fluorescenceColorName.ToString().ToLower() + " fluorescence while being exposed to " + lightColorName.ToString().ToLower() + " light.";
+            _brickDescription = "A CodingSequence which allow your bacterium to " + ActionVerb.ToString().ToLower() + " " + fluorescenceColorName.ToString().ToLower() + " fluorescence while being exposed to " + lightColorName.ToString().ToLower() + " light.";
 
-            _deviceDescriptionPart = actionVerb.ToString().ToLower() + "%RBS% " + fluorescenceColorName.ToString().ToLower() + " fluorescence while being exposed to " + lightColorName.ToString().ToLower() + " light";
+            _deviceDescriptionPart = ActionVerb.ToString().ToLower() + "%RBS% " + fluorescenceColorName.ToString().ToLower() + " fluorescence while being exposed to " + lightColorName.ToString().ToLower() + " light";
         }
 
     }

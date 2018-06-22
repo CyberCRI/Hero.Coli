@@ -85,7 +85,7 @@ namespace UIProto.Display
 
                 if (brick.State == DataState.Empty)
                 {
-                    Sprite image;
+                    Sprite image = null;
 
                     switch (brick.type)
                     {
@@ -102,10 +102,13 @@ namespace UIProto.Display
                             image = TerminatorEmptySprite;
                             break;
                         default:
-                            throw new Exception("No empty Sprite for : " + brick.type);
+                            Debug.Log("Defautl image");
+                            break;
+                            //throw new Exception("No empty Sprite for : " + brick.type);
                     }
 
-                    display.Image = image;
+                    if (image != null)
+                        display.Image = image;
                 }
                 else
                     display.Image = brick.symbole;

@@ -152,15 +152,19 @@ namespace UIProto.Scriptable
         {
             _promoter = ScriptableObject.CreateInstance<PromoterData>();
             _promoter.type = BricksType.Promoter;
+            _promoter.State = DataState.Empty;
 
             _RBS = ScriptableObject.CreateInstance<RBSData>();
             _RBS.type = BricksType.RBS;
+            _RBS.State = DataState.Empty;
 
             _codingSequence = ScriptableObject.CreateInstance<CodingSequenceData>();
             _codingSequence.type = BricksType.CodingSequence;
+            _codingSequence.State = DataState.Empty;
 
             _terminator = ScriptableObject.CreateInstance<TerminatorData>();
             _terminator.type = BricksType.Terminator;
+            _terminator.State = DataState.Empty;
         }
 
         private void Finalyze ()
@@ -169,7 +173,7 @@ namespace UIProto.Scriptable
 
             deviceDescription = "Allow your bacterium to " + _codingSequence.DeviceDescriptionPart + " " + _promoter.DeviceDescriptionPart;
 
-            deviceDescription = deviceDescription.Replace("%RBS%", _RBS.GetDescriptionPart(_codingSequence.actionVerb));
+            deviceDescription = deviceDescription.Replace("%RBS%", _RBS.GetDescriptionPart(_codingSequence.ActionVerb));
 
             //create symbol
         }
