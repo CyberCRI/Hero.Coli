@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66df7bc61d98db34797d7c5bcd3a70f2, type: 3}
+  m_Name: level1
+  m_EditorClassIdentifier: 
+  baseDevices:
+  - {fileID: 11400000, guid: 5d19d413c9df59b4ebce40c05e623ba5, type: 2}
+  baseBricks:
+  - brick: {fileID: 11400000, guid: ac3265d2e8bb0a04f8a95f07abbd5e33, type: 2}
+    _quantity: 1
+  - brick: {fileID: 11400000, guid: a53faba6186ac0046a1846bdcd4a2955, type: 2}
+    _quantity: 1
+  - brick: {fileID: 11400000, guid: 21b65a0ce2297874e8cd4947c26dd33c, type: 2}
+    _quantity: 1
+  - brick: {fileID: 11400000, guid: 105e2a45cb8a91b469b2f2e25e11a9a9, type: 2}
+    _quantity: 1
+  plasmidesNumber: 1

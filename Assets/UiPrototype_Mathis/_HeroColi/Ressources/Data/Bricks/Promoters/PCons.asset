@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c96179d4d36a144c982c8c14ebab878, type: 3}
+  m_Name: PCons
+  m_EditorClassIdentifier: 
+  symbole: {fileID: 21300000, guid: 0552c7da0f6669d40acff38dfa8a6e07, type: 3}
+  brickName: pCons
+  activationMedium: 0
+  efficacity: 0

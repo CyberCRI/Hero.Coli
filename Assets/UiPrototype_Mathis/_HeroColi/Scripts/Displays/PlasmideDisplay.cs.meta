@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 8a78bf71f7fd38d4f8e755bbd9343386
+timeCreated: 1527497606
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - symbole: {instanceID: 0}
+  - promoterDisplay: {instanceID: 0}
+  - RBSDisplay: {instanceID: 0}
+  - CodingSequenceDisplay: {instanceID: 0}
+  - TerminatorDisplay: {instanceID: 0}
+  - promoterEmptySprite: {fileID: 21300000, guid: cd9bdf0bb0bfa6347ade54546517ac01,
+      type: 3}
+  - RBSEmptySprite: {fileID: 21300000, guid: 4e176773c796fb742a4d8fd2448c8385, type: 3}
+  - CodingSequenceEmptySprite: {fileID: 21300000, guid: 8d38cf8ae7a4ec541821c7f3fe43a3f3,
+      type: 3}
+  - TerminatorEmptySprite: {fileID: 21300000, guid: 00bcb67b64d242a42a1f86ce40074d0c,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
