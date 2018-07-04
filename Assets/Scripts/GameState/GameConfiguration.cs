@@ -330,7 +330,10 @@ public class GameConfiguration
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //test
     // public const string testVersionGUID = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";
-    public const string testVersionGUIDString = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";
+    // redmetrics.io
+    // public const string testVersionGUIDString = "83f99dfa-bd87-43e1-940d-f28bbcea5b1d";
+    // http://redmetrics.crigamelab.org/ same as previous
+    public const string testVersionGUIDString = "a98af628-e06e-46ec-98dd-275636dd11ae";    
     public System.Guid testVersionGUID = new System.Guid(testVersionGUIDString);
     // v 1.0
     // private const string gameVersionGuid = "\"99a00e65-6039-41a3-a85b-360c4b30a466\"";
@@ -346,13 +349,12 @@ public class GameConfiguration
     // public const string labelledGameVersionGUID = "fef94d5f-d99a-4212-9f21-87308293fb03";
     // v1.51
     // public System.Guid labelledGameVersionGUID = new System.Guid("043c1977-93bf-4991-804e-53366d2b718b");
-#if !TUTORIAL2
     // v1.52
-    public const string labelledGameVersionGUIDString = "915953b4-f9e1-41ca-acc4-4e4e90667102";
-#else
-    // v1.60
-    public const string labelledGameVersionGUIDString = "284308a6-3c3b-4355-aab3-ee0518f4c42b";
-#endif
+    // public const string labelledGameVersionGUIDString = "915953b4-f9e1-41ca-acc4-4e4e90667102";
+    // v1.60 redmetrics.io
+    // public const string labelledGameVersionGUIDString = "284308a6-3c3b-4355-aab3-ee0518f4c42b";
+    // v1.61 http://redmetrics.crigamelab.org/ same as 1.60
+    public const string labelledGameVersionGUIDString = "ceee388e-aba7-4554-b4ea-a83210e00790";
     public System.Guid labelledGameVersionGUID = new System.Guid(labelledGameVersionGUIDString);
 
     //public string defaultPlayer = "b5ab445a-56c9-4c5b-a6d0-86e8a286cd81";
