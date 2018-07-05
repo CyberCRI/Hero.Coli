@@ -115,7 +115,7 @@ MENU.LEARNMORE.EXPLANATION=Consultez ces sites pour en apprendre plus sur la bio
 LEARNMORE.LINK.MIHS=http://igemhs.wix.com/mooc#!concepts-de-base-/csph
 LEARNMORE.LINK.SB1=https://syntheticbiology1.com/
 STUDY.GAMEDEV.LINK=https://docs.google.com/forms/d/1Dt5kWz5VmdVvsxzPXDNs5FEJjhgY8XLiF11qHZ0OqoU/viewform?usp=send_form
-STUDY.LEARN.LINK=https://docs.google.com/forms/d/e/1FAIpQLSc44RlVE9UuoTJKjA5wtCqq2aOsRoo-7ulFrvVQcTJ2HpLFlg/viewform?usp=pp_url&entry.1083959159=
+STUDY.LEARN.LINK=https://docs.google.com/forms/d/e/1FAIpQLSeKDMPQEJMiX8vqVbwKI8djiuKJO8sAYat5WmzCcqbWICHknw/viewform?usp=pp_url&entry.1083959159=
 MENU.QUIT.LINK=http://herocoli.com
 BRICK.PRBAD1=pBAD fort
 BRICK.PRBAD2=pBAD moyen
