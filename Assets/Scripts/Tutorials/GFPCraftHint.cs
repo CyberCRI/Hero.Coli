@@ -16,7 +16,7 @@ public class GFPCraftHint : StepByStepTutorial
             return _textKeyPrefix;
         }
     }
-    private const int _stepCount = 6;
+    private const int _stepCount = 8;
     protected override int stepCount
     {
         get
@@ -30,7 +30,9 @@ public class GFPCraftHint : StepByStepTutorial
         _MOVbrick,
         _GFPbrick,
         _craftResultPrefix + _GFPdevice1 + _backgroundSuffix,
-        _exitCross
+        _exitCross,
+        _bacterium,
+        _bacterium
         };
     protected override string[] focusObjects
     {
