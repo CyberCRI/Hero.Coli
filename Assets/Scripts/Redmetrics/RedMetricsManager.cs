@@ -93,8 +93,8 @@ public class RedMetricsManager : MonoBehaviour
 
     // redmetrics.io
     // private const string _redMetricsURL = "https://api.redmetrics.io/v1/";
-    // http://redmetrics.crigamelab.org/
-    private const string _redMetricsURL = "http://api.redmetrics.crigamelab.org/v1/";
+    // formerly http://redmetrics.crigamelab.org/ and http://api.redmetrics.crigamelab.org/v1/
+    private const string _redMetricsURL = "http://api.redmetrics.io/v1/";
     private const string _redMetricsPlayer = "player";
     private const string _redMetricsEvent = "event";
 

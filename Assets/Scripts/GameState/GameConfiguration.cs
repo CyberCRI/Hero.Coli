@@ -354,6 +354,7 @@ public class GameConfiguration
     // v1.60 redmetrics.io
     // public const string labelledGameVersionGUIDString = "284308a6-3c3b-4355-aab3-ee0518f4c42b";
     // v1.61 http://redmetrics.crigamelab.org/ same as 1.60
+    // moved to http://redmetrics.io/ but with same content
     public const string labelledGameVersionGUIDString = "ceee388e-aba7-4554-b4ea-a83210e00790";
     public System.Guid labelledGameVersionGUID = new System.Guid(labelledGameVersionGUIDString);
 
